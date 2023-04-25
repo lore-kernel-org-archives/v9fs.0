@@ -1,53 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE45E2F3F
-	for <v9fs@lists.linux.dev>; Mon, 10 Apr 2023 21:21:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5FC03C4339B;
-	Mon, 10 Apr 2023 21:21:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1681161675;
-	bh=s3PzlJPZmrchd9ttp90LKIJ9fi79LAf3Smf5a7Ie4no=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=fiK7+g/rJWELGlqmPOzbL3Q5lO0vaouVQtUeYh6cXQPu3omP2TdC2QHMu3u6AcooX
-	 9IL3/v/+sQT/X9HFJKi6Gn3pY374Bn1aIYZF+OrJhYtSOk1Av+oTk08fnX5E5VzZVS
-	 FMcOl380n2KmPPucyspM/mKyJlJ1IK8BkkdSdylFU9Q6goeiEiHAHXQvP9Mir1AswC
-	 XizIBbwJgw4c79ouKrllFVNfh2K1+Iw2U6L+p1VPCH/npXebwA0tjV2rX+18G5OCBB
-	 JxOqyjK7RpjuLi6jBkxVNxCkX2ZNAAOHisE0Uh35noeF/THNq9W9WC1yZagkdja1Zj
-	 J+0c1gZstuYrA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4320BF8321B;
-	Mon, 10 Apr 2023 21:21:15 +0000 (UTC)
-Subject: Re: [GIT PULL] 9p fixes for 6.3-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <ZDM/4C0PlbbzV/0R@7e9e31583646>
-References: <ZDM/4C0PlbbzV/0R@7e9e31583646>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZDM/4C0PlbbzV/0R@7e9e31583646>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-6.3-fixes-rc7
-X-PR-Tracked-Commit-Id: 347dca97f75d461ac2ac256b68e495dfc6f14d61
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c118b59e71d2a910ee300f8be40fa864a91bb6ca
-Message-Id: <168116167527.31176.17427545781211200295.pr-tracker-bot@kernel.org>
-Date: Mon, 10 Apr 2023 21:21:15 +0000
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev, v9fs-developer@lists.sourceforge.net, linux-kernel@vger.kernel.org
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030597B
+	for <v9fs@lists.linux.dev>; Tue, 25 Apr 2023 06:55:08 +0000 (UTC)
+Received: from pop-os.home ([86.243.2.178])
+	by smtp.orange.fr with ESMTPA
+	id rCSWpcq9sDWp7rCSXpOke8; Tue, 25 Apr 2023 08:47:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1682405251;
+	bh=xSNUhNscxEqVyr5Wkr8JJ5bNbQGHTG7dlAH1ZVdGGxI=;
+	h=From:To:Cc:Subject:Date;
+	b=Nw6mZSkYmqbR8DzTe0qATHJxdNCoJ2gaAENwPMxB70pbs2cD4zwXyPJC+RhvtWI8M
+	 jJ1yeE5sYoUUQP8rAZmfYjMpJMcHavsiDcGRNdJ1J8yGVRq6k7SqJPfFAO6+ZmAgi1
+	 1KuRbXiH+JkmNeZpp5pzShHo5lhGnW7FqFpUlBnPX6TUALps2hNzPRYLdJtFR8FSta
+	 jOlXI3E4EL9JIU6OlPcbO9T9rk3N8WraSZeVZQniIcen58IO3fFzAvJFCR0pyZpTZI
+	 QDOWvg0AJliSCA3NB5SlKQ1G1J8onJmmePwqFgOV2RYJyDIXXe2TqefrAEMGIo+M6F
+	 gfwiaFfcU01Jg==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 25 Apr 2023 08:47:31 +0200
+X-ME-IP: 86.243.2.178
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	v9fs@lists.linux.dev
+Subject: [PATCH] fs/9p: Fix a datatype used with V9FS_DIRECT_IO
+Date: Tue, 25 Apr 2023 08:47:27 +0200
+Message-Id: <80bae984fd5ca49b691bb35f2fd8f345f8bb67f1.1682405206.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Sun, 9 Apr 2023 22:44:48 +0000:
+The commit in Fixes has introduced some "enum p9_session_flags" values
+larger than a char.
+Such values are stored in "v9fs_session_info->flags" which is a char only.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-6.3-fixes-rc7
+Turn it into an int so that the "enum p9_session_flags" values can fit in
+it.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c118b59e71d2a910ee300f8be40fa864a91bb6ca
+Fixes: 6deffc8924b5 ("fs/9p: Add new mount modes")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Un-tested
+---
+ fs/9p/v9fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you!
-
+diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
+index 06a2514f0d88..698c43dd5dc8 100644
+--- a/fs/9p/v9fs.h
++++ b/fs/9p/v9fs.h
+@@ -108,7 +108,7 @@ enum p9_cache_bits {
+ 
+ struct v9fs_session_info {
+ 	/* options */
+-	unsigned char flags;
++	unsigned int flags;
+ 	unsigned char nodev;
+ 	unsigned short debug;
+ 	unsigned int afid;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
