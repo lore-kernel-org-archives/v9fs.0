@@ -1,90 +1,104 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5381101
-	for <v9fs@lists.linux.dev>; Wed, 26 Apr 2023 00:35:46 +0000 (UTC)
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id BC724C01F; Wed, 26 Apr 2023 02:35:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1682469344; bh=WkAOxd1G4B7WbFDuFK2jnLsO97agfT/cj1gWYlIL73s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZe68lAlyVt/HxiPSMN5GL0FDy6zoCEybHQtU6iqUo9/hXQJcYBY/VBz129sC0YfY
-	 +DLMPoNQRxR/SUjiW6quXyPGN/zE1LPBrtFpomRyvokxCODmyNyHxF0UMF+4H3lCzV
-	 F/LU6RCVi9K5TxLgH1j3h0KaryRrew+22D/W9Gxf4wteizilrS74EBniHU+rDW9fQb
-	 3RFe/dMwz3vTsNJNK2NbZ167Qf+lzIiNuIjsIt+ODytYuAlmSdE/9a2BmqwfFZsn5O
-	 LUcnxkJLRcnJ/KJ31VSx/clx9QqnIjM8qPIXDNTlQMIHJXZWFw1H6Ab4uv6g7po+A7
-	 ee0ymPbYmDLww==
-X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on nautica.notk.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.0 required=5.0 tests=UNPARSEABLE_RELAY
-	autolearn=unavailable version=3.3.2
-Received: from odin.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 77F15C009;
-	Wed, 26 Apr 2023 02:35:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1682469343; bh=WkAOxd1G4B7WbFDuFK2jnLsO97agfT/cj1gWYlIL73s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mF/VMeuCx6NWy3dSCaV6givEULXRt8VNNvme65N08336Ai4m5pz2D+6DxOMy4VyJH
-	 0F1xBHRmSk1rsge9RJ+Qo6ABiol5LtD42GTcfKKtPYic+feaEzWOK3+GZOtmfonf4n
-	 BySOYF1NvS05EdhvFZrnwmoVElYMWdI0O1Xf2Ql2FcBGbCWQ3hoqXtmhq/2bKjohf6
-	 SPyAKlbg+6aZA+HCfgU0WkxIVP0fCisuusfpH31GeTARl2KZPNX5wf6Ks+7GXvLW5n
-	 XhMe7s3u9ccMiFgfcOZumBZzMczNniufG/e3RoHZHeJI/NUGRxKIr6OSTZfaYKjMwG
-	 XP1egKzDRErUQ==
-Received: from localhost (odin.codewreck.org [local])
-	by odin.codewreck.org (OpenSMTPD) with ESMTPA id 2208154f;
-	Wed, 26 Apr 2023 00:35:37 +0000 (UTC)
-Date: Wed, 26 Apr 2023 09:35:22 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Dan Carpenter <error27@gmail.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	v9fs@lists.linux.dev
-Subject: Re: [PATCH] fs/9p: Fix a datatype used with V9FS_DIRECT_IO
-Message-ID: <ZEhxygpFsFstKlrX@codewreck.org>
-References: <80bae984fd5ca49b691bb35f2fd8f345f8bb67f1.1682405206.git.christophe.jaillet@wanadoo.fr>
- <ZEd8d7W6HnHE_66m@codewreck.org>
- <CA+_b7DK1s87y-_-D3sQxteqJ+78uvKza-vgWGv9SmGm-tqz7DA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477D53FC2
+	for <v9fs@lists.linux.dev>; Wed, 26 Apr 2023 16:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603BEC433EF;
+	Wed, 26 Apr 2023 16:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1682526680;
+	bh=LsQFJnxGfjStsxu61/64S4NIq//Zy3OsmBBferjPxOk=;
+	h=From:Date:Subject:To:Cc:From;
+	b=tgPB9KRzc+dlkWvvv4GpVng/VuOueuOe3eiOktEzHMBWZ64LNKyEILKnI0wcsCBDD
+	 v22T7aspz8jReXiYx0T+Vht65vG6DlZuvCMRV5mkyoK2ivS5qj4VTmUUA5/9DoAL9Q
+	 n84IC7dhv4DXERvPvT1SBCFVcf5nqrooJlRjpob8wFyR1sy7Wsw6wrHkpy4VoDXMOO
+	 67+IGngac/+oVj1RP/dIUFiArRwKVRrHKtcvB+ZMwlkpQdPMe2MCXRemFAckJsw5b3
+	 e8ZthkHahmbisvS2/LCGNCle5tprATuQ/+dcgbzzCP40+FeCswZUzk20spu5OjRVPf
+	 EiRBGt2XtIKsQ==
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Wed, 26 Apr 2023 16:30:35 +0000
+Subject: [PATCH] fs/9p: Fix bit operation logic error
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+_b7DK1s87y-_-D3sQxteqJ+78uvKza-vgWGv9SmGm-tqz7DA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230426-fix-bitops-v1-1-ab11e8f4f23a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKpRSWQC/x2NQQqDMBBFryKz7tB0WiT2KsVFEsdmNonMiAji3
+ Ru7fPDf+wcYq7DBuztAeROTWho8bh2kHMqXUabGQI6e7kU9zrJjlLUuhsn35IYh+Yk8NCEGY4w
+ aSsqX0sJpy/e5Khbe12uxKDf/f/cZz/MHqlA10H4AAAA=
+To: Eric Van Hensbergen <ericvh@gmail.com>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs-developer@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ v9fs@lists.linux.dev, Christophe Jaillet <christophe.jaillet@wanadoo.fr>, 
+ Eric Van Hensbergen <ericvh@kernel.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1777; i=ericvh@kernel.org;
+ h=from:subject:message-id; bh=LsQFJnxGfjStsxu61/64S4NIq//Zy3OsmBBferjPxOk=;
+ b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkSVHWHtYyqX4pP4R4aeyw6Pv1ElRXf5x9d/rTj
+ j5xcPM9kFiJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZElR1gAKCRCI/9X7Sl//
+ mEHMD/9os90TNiC7CpEujU063unUwCPBB0wMrn1OB8TlFZ9NrB2QeTq9Ki+UCmUgb5fd0MEeLaJ
+ Z5InGevGQhazA5TltCFuWUPT1YtkeY8Z82flW64zSXfYBmJBf80wwAncQUnFX8IxVChRfEVXWlC
+ yudnoqgzGM+k26XrJ2/R0n91f7+sgE1IGMti+SIhww25qh7fergMhIXMos9XKG2t86hyU8F6F1X
+ p6vl+EnZlRyGpNT9otBQaud9sLopTHKAdPu/3dP1lQgUlcbRmGKXOWIdnGDbIOmomYqafjYEp69
+ xRnHm0LU9NDwlxpDY3bP5S/TWlFEE8pUyicVhhMy0JGql3RAiHsOBPTP0nzDLrb0Uqc9ZH17R08
+ YGq7Ix0KGME0f1lbnQV0WhOu7ZcdmVbz7m81RJ/VX2Q0QPrXbrKSXwKCW8isEeeBBgPINafcWwd
+ hsvz8SjoC6xj3cVNDfdPtoXINRyOAeO7MozW/nrNCOUExFUG6CuOKowrsUnswOtMKzfW1jLtZ45
+ dgNbISfl8jK0DSpX2xQ5LcMRaDRBM4qUrDo7Bomws+6CND+cFZRToBvl0cSbIkKm7cFo+tfzmCP
+ jtaKihrCkhzXUBJL9B7+Remq8s7HU9i54alHaMexFwNOl4wVznzSGNM57VmIlACj3bbe4e5hPWH
+ rkown5fAySn5bxQ==
+X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
+ fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
 
-Dan Carpenter wrote on Tue, Apr 25, 2023 at 02:14:52PM +0100:
-> The hash is constant unless Eric does a rebase.  When a maintainer rebases
-> then updating the fixes tags is just part of the process.  Often they end up
-> folding the fix into the original patch at that point so the Fixes tag is not
-> required.  If a maintainer doesn't update the tags then the linux-next
-> maintainers will notice and complain.
+This re-introduces a fix that somehow got dropped during rebase of the
+current series in for-next.  When writeback is enabled, opens
+are forced to support both read and write operations but with the
+logic error other flags may be dropped unintentionaly.
 
-Good to know this is checked as part of the linux-next tree checks.
+Reported-by: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+---
+ fs/9p/vfs_inode.c      | 2 +-
+ fs/9p/vfs_inode_dotl.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-> #GitMagic
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 54dfe4f10f43..3791f642c502 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -823,7 +823,7 @@ v9fs_vfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 	p9_omode = v9fs_uflags2omode(flags, v9fs_proto_dotu(v9ses));
+ 
+ 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
+-		p9_omode = (p9_omode & !P9_OWRITE) | P9_ORDWR;
++		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
+ 		p9_debug(P9_DEBUG_CACHE,
+ 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
+ 	}
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index f9371b5b70ea..3acf2bcb69cc 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -288,7 +288,7 @@ v9fs_vfs_atomic_open_dotl(struct inode *dir, struct dentry *dentry,
+ 	}
+ 
+ 	if ((v9ses->cache & CACHE_WRITEBACK) && (p9_omode & P9_OWRITE)) {
+-		p9_omode = (p9_omode & !P9_OWRITE) | P9_ORDWR;
++		p9_omode = (p9_omode & ~P9_OWRITE) | P9_ORDWR;
+ 		p9_debug(P9_DEBUG_CACHE,
+ 			"write-only file with writeback enabled, creating w/ O_RDWR\n");
+ 	}
 
-This isn't magic, this is painful to update manually and easy to forget,
-which is why as a maintainer I'd appreciate having a heads up here and
-why I mentioned it.
-(I'm sure Eric would have noticed anyway given this is fixing one of the
-patchs he really wants to get in this merge window... But, well, in
-general)
+---
+base-commit: 4eb3117888a923f6b9b1ad2dd093641c49a63ae5
+change-id: 20230426-fix-bitops-c862099c8d28
 
-
-Re: folding into the original patch or not is also tricky as it weakens
-recognition to the contributor, so I tend to keep such fixes separate
-unless the tree becomes completely unusable (e.g. doesn't build) for
-bisectability.
-
-(I really, really wish there was a more mainlined maintainer process
-though, so each maintainer wouldn't have to come up with their own rules
-and tricks for everything... But I think that's a lost battle at this
-point)
-
+Best regards,
 -- 
-Dominique Martinet | Asmadeus
+Eric Van Hensbergen <ericvh@kernel.org>
+
