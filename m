@@ -1,82 +1,128 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2097.outbound.protection.outlook.com [40.107.243.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FFE1C14
-	for <v9fs@lists.linux.dev>; Tue,  2 May 2023 12:03:29 +0000 (UTC)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-959a3e2dd27so730780466b.3
-        for <v9fs@lists.linux.dev>; Tue, 02 May 2023 05:03:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3FE64C
+	for <v9fs@lists.linux.dev>; Tue,  2 May 2023 14:46:28 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=J1GjSA14ehGDf5L2NdyRnOqYw3HFTpDskupOiseDKy09JOotapxpFWMTImC7RYZohW2AR8gLV2GWKy08cvOF0JfGPTa0nqlNufiBMto8xOzZk6ftpuRDj5BDJadGDnFcHYooVSrSQkzhLe8a8E1rvf+bEBOR0jQti8Pv+GqAEz18+klL2NW9qr2Pu+xKBt2fnlAgvjabjpsjBhElc+Tewpt/j7xRQ+d9hjsKKBNoF0HWd2jPIFqRCkkyHce+QRs7e33cdyAMbnfnRHoc+2xVJ6sazAHxBythCYe7X5uJWvoLDatNsXvUdy4VsObXZArck+1Z4pBnLhFtDnTgYBOXTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o9nV0Cyfybjn+2YJIjlzLFXFLtnPcrx8uTUbks71vnA=;
+ b=F5LUx5opdTdworOOETPQPYfOBLByQAlNpERFess75uIy7ULJHbpr4sxsTfqCT7kZNYDTeoWQPGlrv2bcL5nfr4vUf/sI25cZj8JUTT6F9sQnszvOVjAhxPLZoGnkcyJsGb1rhTHDGL/6sn+lnSt+gaErYEuYGUnX+CXTVI0wW1YG9zgfv+LTFDl4arAGaaZLGCJw8CoE73hwHO9OVC7G4KWHUpsUwG/E996rpDRBOwfvZV0DdFlBDk2wR/d9JeLG7tw/rYOmsJR0U8IDDIXCwvqGQyjdvzodONtciFIS/nTgpZU6lVfoTAPmyxCqlY3/2KM2Adcsd92+XKqZQFxVnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683029008; x=1685621008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u/YRcfxmNsr6Lwk5XiJCdhjiGVkTxQwDjCgW062Di2c=;
-        b=o4kdKwTRk33hC4HFcBT+9b69VKLPjjiKCZpZtoFD1ZnB8NitPdOUHk5aiyQQdQKpnE
-         S755qs/iAEPdoqWzgHnm8nvpBxEL4GerVyo1qoRBz8+M+DCyhRyh/07WdUCO2qd2rtKh
-         hn71j5Hb+bm8A3fyrNZz9tXMVybcf3jvbZnA6Xa22Oroh+uATM0eoq4nbzeV9ZvmjmWa
-         CYtI3Y7/Qqe9yDTxyyyPVlzXNgaJe0uU6csAwyWLOQWoZ1egG93e4fNOB4SQuQ2Uukis
-         EF8rlIuLxuXTZTLbNzJ4awhOe8mC14lHN36kPXG8XJeOY5mTMbbyc/MidvKmbiKVf5vh
-         E1qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683029008; x=1685621008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u/YRcfxmNsr6Lwk5XiJCdhjiGVkTxQwDjCgW062Di2c=;
-        b=KYqkeLIqrk+67ct8BkOcpLGsbw+dhBBDuWwWKMwGm+0YMTrxP5j82CZv9ws5a8OlOX
-         dBIsyQKIi8duipyMcuyXnKDfUH0fk0d03l4cX+yvw1t4xMJ1P4lUxjYOeXDyUUc+yWFs
-         /MRNbOXgPdfWQPUbNxd4KN7RmGIja2+P8wU915wRa7tOT/ECM/0GJsZYa1RNkjyURfH6
-         BMzo0fv1166nOKxyXHVNJcmNFGPw4OZQxABdAIqak9JSlYA0NItnw4hrI3epe7ATNLAp
-         mNrqBBFEAcnc7DmxciICq7ZuTGNS5Fcn2nLERlwNrw01ZTUSWSDER/uz6Rl9qRWnV5Ex
-         Zf1g==
-X-Gm-Message-State: AC+VfDxVloe6kZVrh/vLJxqjRo816GeCYV4J2z7BZNCRVXwvmtv+hglX
-	hZeJzeOxKab/sgpm2/stEw1N4j7J8O2YLiUSP6U=
-X-Google-Smtp-Source: ACHHUZ77IpXZRekNr9ddahoipzbC1kDJT3R5mRFNBoWxh8ZKY2WJdgkQlRP98U6GJ3oEml7kk+65AQHLB49FL8/62VM=
-X-Received: by 2002:a17:907:1613:b0:94a:82ca:12e5 with SMTP id
- hb19-20020a170907161300b0094a82ca12e5mr16593096ejc.45.1683029007546; Tue, 02
- May 2023 05:03:27 -0700 (PDT)
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o9nV0Cyfybjn+2YJIjlzLFXFLtnPcrx8uTUbks71vnA=;
+ b=JSqDGGHQbrwExoSo1897P6nY4lfYiOttRxkyReyAQnBgN+5JARX6NQx6KvSDL/NX1kU71f3T/b9ubzSTETPD97u6/Oki1Uq/a8WZo81Lg62BNcnpbzgwSbWXCpkw3K2f2U1r6kvTso5BEFy5blwf5ta8SLOB7tZzrX4g/rEdPr8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by MN2PR13MB3648.namprd13.prod.outlook.com (2603:10b6:208:1e8::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.20; Tue, 2 May
+ 2023 14:46:24 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6340.031; Tue, 2 May 2023
+ 14:46:24 +0000
+Date: Tue, 2 May 2023 16:46:17 +0200
+From: Simon Horman <simon.horman@corigine.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@gmail.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/5] 9p: fix ignored return value in v9fs_dir_release
+Message-ID: <ZFEiOdK0/UxKiPQQ@corigine.com>
+References: <20230427-scan-build-v1-0-efa05d65e2da@codewreck.org>
+ <20230427-scan-build-v1-1-efa05d65e2da@codewreck.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230427-scan-build-v1-1-efa05d65e2da@codewreck.org>
+X-ClientProxiedBy: AS4P251CA0008.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d2::16) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230501190602.86281-1-jandryuk@gmail.com> <ZFAWaQbDR1_r5jf-@codewreck.org>
-In-Reply-To: <ZFAWaQbDR1_r5jf-@codewreck.org>
-From: Jason Andryuk <jandryuk@gmail.com>
-Date: Tue, 2 May 2023 08:03:15 -0400
-Message-ID: <CAKf6xptMDRVet-C_1H7txPb_J_xq+XnNxwrQVbNWL_2JGnbHgw@mail.gmail.com>
-Subject: Re: [PATCH] fs/9p: Remove INET dependency
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|MN2PR13MB3648:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2953b82b-9064-4536-99f0-08db4b1c0086
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	cLBoew0nQkd+aNYB3IlGQVvUKY39OyLXyXT2MG6vaGHtS0DMPPvfTQRqmy3pyqeJNQRl3aOnxkE1JUhDP7TklzYZK+cKar8Nw32d1zYWFWI2nFGmi9vCMkkcQwfFlXVgoKdJANIvd8fO2W4fWFUVH345TC27IC646V2Q72JLjS2x1KdjH1DPPDtLXiDWAED4RFt6gZLTLswoH+m9RLSO0NBwG9uWliZ4m5LqMfJIvwW8C48UDq6ODesdwdWqzRWR7XQmy3evGf10WrcpOiVijvZmkin/vwTrrekMcdIHz3o451L/6f41YlHncCoqHztzNURywLN2LMvr+jTD5RGjnRJFBNA8vyg3tZnG5Nx70FCPwcOBHQoqIPQtYxvvnZlZphhgF0gEBwkb1w7RF5e0GuVqH+L/ZO4RBs8eclaPKZehKDVSUSJOlbw1lsUk3kC3KgeapxG4v1Pe64nSvG0WYQnCWgcAZ1sm/TaKH116/ZVEm6Hx66teTiu9mfnh+1qwnVb2ZXcuCC2e3zvVe9Oc3MXk6yFyIa+2rgodF6nx8CahBpwvVfz5diAjvceX/6cE
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(39830400003)(346002)(376002)(366004)(396003)(451199021)(38100700002)(44832011)(4744005)(2906002)(7416002)(8936002)(5660300002)(8676002)(36756003)(86362001)(2616005)(478600001)(6666004)(54906003)(6512007)(6506007)(6486002)(186003)(83380400001)(6916009)(4326008)(66556008)(66476007)(66946007)(41300700001)(316002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pgFkRkjIY43GUT8llDzLtsT/FdNefwY0Jx5wJdpTfzgVOVWuqisdcW0NaAMb?=
+ =?us-ascii?Q?BidJ4ZJc0tVnBV+ox76RHj1LL9xCriRetIBET9uKbgkYU6RH+dJ1f76c5niT?=
+ =?us-ascii?Q?BnNzAlN7Ct0hByCIr9g8kCjj3JUUY0SW2xUzM1BsvDk6oFCptRyLRqyOXwfz?=
+ =?us-ascii?Q?PRT5EN5VKeOBVSqC12w/Jq6vFr8JIRGRXT/gLv1ZhXYo1oY6+ysQdvFzTmIj?=
+ =?us-ascii?Q?oEEq7KTJJmZXBVMUWV70MtQR9bk/NIc/MNAkgyCjkL+Dcy/eN16e0nMQ2QVF?=
+ =?us-ascii?Q?THoTPUcrV5RNczUtA9JquvvgyfhXwAbKnXNiYiZb8yo87r33+Kdovn+LWqSI?=
+ =?us-ascii?Q?A/lOGj7pJcB53xfrcnR8VdwDmRns/+rUBl+BM8iRiLQaGfAwzNAOvas/ZVDE?=
+ =?us-ascii?Q?7ctzdECjvzBuUcNYTxytyKgz//mC0XbdnF7k7jm78bpr06BfnQc9+PIDipzp?=
+ =?us-ascii?Q?QJjBTI6DczaZhKwicOGY2IbmWby37buonp7GeIHNaLv723J7X8lbykniVgAv?=
+ =?us-ascii?Q?/xCBaOWjbeElrQimbiHNVO02e1WPoP8x9UpBGpHkDpAo5VFTV3cwC5xj2qTR?=
+ =?us-ascii?Q?jto3xBs2K/MSbZX7IXgNYVUgU7Z0D+ASMCmPwrEU2PnXEmERFKxF1tC8zLJo?=
+ =?us-ascii?Q?ZpeTQuF4UQ32v90knvgS4WpUqpFsKwls3qfwKROzMnO0tMCAzwRhW+R0mlL5?=
+ =?us-ascii?Q?0OwukcVMBldDNCiwYibW2T+XV/Nh0NI8wyaJmoor7cgh24i6aaLfaLalWTPf?=
+ =?us-ascii?Q?hT/Z5HYtPRN79YiaPC3hj3OfY2M9tjP9AlT0AfOhllGdPFSxoWz2tW7zs0i/?=
+ =?us-ascii?Q?cAAPl5ofdjCs/+r9uxk5c0Bf1WvrYgwCohx/jS5Ol7UaAe1txz29y9QCTaDm?=
+ =?us-ascii?Q?nhUPTLL0iik6ndLtTqicbqy8EQRqPRnerWTiEXEKbVgpQgtYA6gKPdnLt4dj?=
+ =?us-ascii?Q?Dz3plxDMqocptojwEHHL5lMhCFjyfB73oAvlTFfK87P0RVt04CwWXMJ8ddBj?=
+ =?us-ascii?Q?JZM/x3ujsm1y58ejQV4sgFVQeOhNg/Uc/7//HM8jaqsJnjlHQ+AtG7WmSLML?=
+ =?us-ascii?Q?ca00tqF9Jg+dQZ4rfakeix0k3mqs+XvS0EFAiIUTn/llS4RPE2p3GPkZGUnc?=
+ =?us-ascii?Q?tNYSv5bLiLKFgl4JtgIXd9GIOjxbcY2+SK2W+64mJCmeJh2RiblTmRnfH6ml?=
+ =?us-ascii?Q?63UOoKmP0htgGYTFQFsiwt27Au6VSoB+MPAQqZdQ7SA3Nz8OEF0ZZsmeC/1/?=
+ =?us-ascii?Q?RZJ3CzsuMfKI3UF74eSnFHUiifpB1Q9pk0TvqXAPhbFcITFkJjPJY6CxU8RN?=
+ =?us-ascii?Q?hHcFNw4g+s9etxfcSc4g/xMOHmFyotGLLaFwZdyjPpW9nV00GEHbECCIgA8J?=
+ =?us-ascii?Q?v2j5JFlVR9UnGGSxwdv7QavLv3i3pM21ILuHdx4cFz/M05VQP+cvHyy08NTc?=
+ =?us-ascii?Q?ydXlkr1Q0agl0OtB81ODEl4YI4uNg63ch1vtDLiOeXnQAIcLIcsUbXz8vXRU?=
+ =?us-ascii?Q?mRcK0utcd2emQR4gO+CFX6H7UJiOmg6ecr23X0QEXDZbEPA6jiaCEpcAaXYC?=
+ =?us-ascii?Q?beATP7Q+JbIt4yPKUr96ZJqISJzvpoRKxU1xJy3Qq/YlH/SsMm7auvgpyQt5?=
+ =?us-ascii?Q?zTWxHoEEpMXvs7Va8Z1Y/Bx+/13gAfOszzhqZNiEJbAaxVu2DDurgpey318f?=
+ =?us-ascii?Q?ksY3aA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2953b82b-9064-4536-99f0-08db4b1c0086
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2023 14:46:24.6114
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /pfJjh6iu6GxOuUqi2ipeJq8sKhBqmZGDqZKY3djG67R0uPRvQsaEL59p887lZNqkAU7RmN3nhqnjJP3wbeBkqHg8bwaUlThSxTGW+6dGS8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR13MB3648
 
-Hi, Dominique
+On Thu, Apr 27, 2023 at 08:23:34PM +0900, Dominique Martinet wrote:
+> retval from filemap_fdatawrite was immediately overwritten by the
+> following p9_fid_put: preserve any error in fdatawrite if there
+> was any first.
+> 
+> This fixes the following scan-build warning:
+> fs/9p/vfs_dir.c:220:4: warning: Value stored to 'retval' is never read [deadcode.DeadStores]
+>                         retval = filemap_fdatawrite(inode->i_mapping);
+>                         ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On Mon, May 1, 2023 at 3:43=E2=80=AFPM Dominique Martinet
-<asmadeus@codewreck.org> wrote:
->
-> Jason Andryuk wrote on Mon, May 01, 2023 at 03:06:00PM -0400:
-> > 9pfs can run over assorted transports, so it doesn't have an INET
-> > dependency.  Drop it and remove the includes of linux/inet.h.
-> >
-> > This allows configuring 9pfs over Xen with INET disabled.
->
-> Good catch.
-> Could you add depends on INET to NET_9P_FD in net/9p/Kconfig?
+Perhaps:
 
-trans_fd.o builds without INET and without UNIX.  Looks like trying to
-use either TCP or UNIX sockets would lead to runtime errors, but it
-also supports generic file descriptors.  That could be useful for
-someone.   Since it builds, would it be okay to leave this patch
-unchanged, or do you still want the depends added?  Leaving the patch
-unchanged provides more flexibility, though the runtime errors may
-surprise users.  While I built a Xen kernel without INET or UNIX, that
-is an unusual scenario.  Typically INET and UNIX sockets will be built
-in anyway even without a depends.
+Fixes: 89c58cb395ec ("fs/9p: fix error reporting in v9fs_dir_release")
 
-Thanks,
-Jason
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
