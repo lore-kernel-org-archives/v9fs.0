@@ -1,204 +1,126 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DE09479
-	for <v9fs@lists.linux.dev>; Wed,  3 May 2023 14:11:49 +0000 (UTC)
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-75131c2997bso227471885a.1
-        for <v9fs@lists.linux.dev>; Wed, 03 May 2023 07:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683123108; x=1685715108;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gUG4sgiQ1KTeWUq0RWqJ+AL9Ulz9Emys2lp8p49mD5s=;
-        b=rsVvo1MaAxxvWQVE8a5FCgk271oCPa7AFeqUNjH6/7+2ugf+EiZEGJzNE8ao6Doj6t
-         FCOMbihFCQehwpN97HcEac4vldNeeF+zfGj56xFKoi1kMVDssrFv8AHNdHxVqOrRUCcZ
-         12PbplJFsUI01rHOPI3D8pODprPejrogUCjfF1HO0Yvbfh4rokDqkJqelu06D1HEFali
-         qocdi8YOQYAHDdb/ytqCW/u1w4cyQEx4DYZlo4/6MitiNEOyqbM5rYcSUoJfEAv/vuS8
-         ClfwGMI3fRfTRxZMdUfgMx6IyjcD+X4h5/kPMy5wmnFK71OQ9pyzv+t5/a9BfYXTVej+
-         dZ9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683123108; x=1685715108;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gUG4sgiQ1KTeWUq0RWqJ+AL9Ulz9Emys2lp8p49mD5s=;
-        b=fk9BWQygTXNycRURQKcQiHix91znDglzurFmPhzAT2ZoHG3HzMriTADdNI6RezeLxe
-         8TRNBRmLQXS1j0AZBHJmcFXnltY9FB1cvuHMZzQAKclQ+EwWyhu8W9sl0Nktx7V+pDea
-         wIl8um8GbDASMUIUmha/KDGCM/AjjuFpXvrRZwdU95urXhPD76ZOtUqAKAMXtudXpGpn
-         T5Iwj/58it9flgbyr/58pyZwK+RapkQpKkxtWJRFnyy1zbk/BCfbV62DB3NvgiW/FN81
-         Ou1fW2flmOuLPSS4743xwxAKPou+mbxmh75tjo1gnAR2NOftdraouv0aT6wQePBvNBmQ
-         uaCw==
-X-Gm-Message-State: AC+VfDxJbuaUS8TAoZOHer4Mnz4DvIJfygKvYbuK2QLNtvlvYH/4Fxp2
-	pKobifv2ZW2yb5NKWAR9CwB5nkNNLuI=
-X-Google-Smtp-Source: ACHHUZ61fVaZwt1vUlMIS5/1x/krBw24HmhirjusDb86fZD1DnQ0fQ02fTjFpaw4dwNSF9rp2B/dDg==
-X-Received: by 2002:a05:622a:190c:b0:3ef:3824:b8b0 with SMTP id w12-20020a05622a190c00b003ef3824b8b0mr461735qtc.5.1683123108129;
-        Wed, 03 May 2023 07:11:48 -0700 (PDT)
-Received: from pm2-ws13.praxislan02.com (207-172-141-204.s8906.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [207.172.141.204])
-        by smtp.gmail.com with ESMTPSA id r2-20020a05622a034200b003ef42f84532sm11459281qtw.49.2023.05.03.07.11.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 07:11:47 -0700 (PDT)
-From: Jason Andryuk <jandryuk@gmail.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Jason Andryuk <jandryuk@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v2] 9p: Remove INET dependency
-Date: Wed,  3 May 2023 10:11:20 -0400
-Message-Id: <20230503141123.23290-1-jandryuk@gmail.com>
-X-Mailer: git-send-email 2.40.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE177E
+	for <v9fs@lists.linux.dev>; Thu,  4 May 2023 00:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32931C433D2;
+	Thu,  4 May 2023 00:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683160641;
+	bh=o+DrfImxy5HZeqKr+NFuD5e3O4ohZgxyH+dr5yW6U2g=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Tcc+EouqCxJAnk5hXotUS1JjMfHMtUazb+lvK5zdDKh25yTEDw6fvUjbKsUkqymO3
+	 PLuTUi6qgGvAaBkBTKMJJ0dFrXmxq/fGyHo3XSo71JKJMjkLNqsCRhzE/vHhEAqjCf
+	 mzQNXUtQskS+JwbuZNfNu/z36GYH8Up1rxZLsdOcVLh1aexqImI1s9DAe2q/nK6wU0
+	 1d9sVfDRowXgXbfvnX5hDLB98yD82vZ30ZQuuvLqJozYbPpSrY1VW4HHYeZdsJxEuT
+	 O0QyzdrmYF/kJ+NiHwDplkqey1Z/S3+5jNVBCMw/45HBK0RhOV8c/2KVHg2cAU2YXa
+	 DdvZY21h7+LPA==
+Date: Thu, 4 May 2023 00:37:18 +0000
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: v9fs@lists.linux.dev, v9fs-developer@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p patches for 6.4 merge window
+Message-ID: <ZFL+Pg3IGWeLsQOo@7e9e31583646>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rIx30bTc8oq0MPoy"
+Content-Disposition: inline
 
-9pfs can run over assorted transports, so it doesn't have an INET
-dependency.  Drop it and remove the includes of linux/inet.h.
 
-NET_9P_FD/trans_fd.o builds without INET or UNIX and is unusable over
-plain file descriptors.  However, tcp and unix functionality is still
-built and would generate runtime failures if used.  Add imply INET and
-UNIX to NET_9P_FD, so functionality is enabled by default but can still
-be explicitly disabled.
+--rIx30bTc8oq0MPoy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This allows configuring 9pfs over Xen with INET and UNIX disabled.
+The following changes since commit fe15c26ee26efa11741a7b632e9f23b01aca4cc6:
 
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
----
-v2
-Add imply INET and UNIX
----
- fs/9p/Kconfig          | 2 +-
- fs/9p/vfs_addr.c       | 1 -
- fs/9p/vfs_dentry.c     | 1 -
- fs/9p/vfs_dir.c        | 1 -
- fs/9p/vfs_file.c       | 1 -
- fs/9p/vfs_inode.c      | 1 -
- fs/9p/vfs_inode_dotl.c | 1 -
- fs/9p/vfs_super.c      | 1 -
- net/9p/Kconfig         | 2 ++
- 9 files changed, 3 insertions(+), 8 deletions(-)
+  Linux 6.3-rc1 (2023-03-05 14:52:03 -0800)
 
-diff --git a/fs/9p/Kconfig b/fs/9p/Kconfig
-index d7bc93447c85..0c63df574ee7 100644
---- a/fs/9p/Kconfig
-+++ b/fs/9p/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config 9P_FS
- 	tristate "Plan 9 Resource Sharing Support (9P2000)"
--	depends on INET && NET_9P
-+	depends on NET_9P
- 	select NETFS_SUPPORT
- 	help
- 	  If you say Y here, you will get experimental support for
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 6f46d7e4c750..425956eb9fde 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -12,7 +12,6 @@
- #include <linux/file.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/pagemap.h>
- #include <linux/sched.h>
- #include <linux/swap.h>
-diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-index 65fa2df5e49b..f16f73581634 100644
---- a/fs/9p/vfs_dentry.c
-+++ b/fs/9p/vfs_dentry.c
-@@ -13,7 +13,6 @@
- #include <linux/pagemap.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/namei.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-index 3d74b04fe0de..52bf87934650 100644
---- a/fs/9p/vfs_dir.c
-+++ b/fs/9p/vfs_dir.c
-@@ -13,7 +13,6 @@
- #include <linux/stat.h>
- #include <linux/string.h>
- #include <linux/sched.h>
--#include <linux/inet.h>
- #include <linux/slab.h>
- #include <linux/uio.h>
- #include <linux/fscache.h>
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 44c15eb2b908..367a851eaa82 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -14,7 +14,6 @@
- #include <linux/file.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/list.h>
- #include <linux/pagemap.h>
- #include <linux/utsname.h>
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 1d523bec0a94..502ac74e4959 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -15,7 +15,6 @@
- #include <linux/pagemap.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/namei.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 331ed60d8fcb..a7da49906d99 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -13,7 +13,6 @@
- #include <linux/pagemap.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/namei.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 266c4693e20c..10449994a972 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -12,7 +12,6 @@
- #include <linux/file.h>
- #include <linux/stat.h>
- #include <linux/string.h>
--#include <linux/inet.h>
- #include <linux/pagemap.h>
- #include <linux/mount.h>
- #include <linux/sched.h>
-diff --git a/net/9p/Kconfig b/net/9p/Kconfig
-index deabbd376cb1..00ebce9e5a65 100644
---- a/net/9p/Kconfig
-+++ b/net/9p/Kconfig
-@@ -17,6 +17,8 @@ if NET_9P
- 
- config NET_9P_FD
- 	default NET_9P
-+	imply INET
-+	imply UNIX
- 	tristate "9P FD Transport"
- 	help
- 	  This builds support for transports over TCP, Unix sockets and
--- 
-2.40.1
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-6.4-for-linus
+
+for you to fetch changes up to 21e26d5e54ab7cfe6b488fd27d4d70956d07e03b:
+
+  fs/9p: Fix bit operation logic error (2023-04-28 16:59:26 +0000)
+
+----------------------------------------------------------------
+9p patches for 6.4 merge window
+
+This pull request includes a number of patches that didn't quite make
+the cut last merge window while we addressed some outstanding issues
+and review comments.  It includes some new caching modes for those that
+only want readahead caches and reworks how we do writeback caching so we
+are not keeping extra references around which both causes performance problems
+and uses lots of additional resources on the server.
+
+It also includes a new flag to force disabling of xattrs which can also
+cause major performance issues, particularly if the underlying filesystem
+on the server doesn't support them.
+
+Finally it adds a couple of additional mount options to better support
+directio and enabling caches when the server doesn't support qid.version.
+
+There was one late-breaking bug report that has also been included as its
+own patch where I forgot to propagate an embarassing bit-logic fix to the
+various variations of open.  Since that was only added to for-next a week
+ago, if you would like to not include it, I can include it in the first
+round of fixes for -rc2.
+
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+
+----------------------------------------------------------------
+Eric Van Hensbergen (8):
+      fs/9p: Consolidate file operations and add readahead and writeback
+      fs/9p: Remove unnecessary superblock flags
+      fs/9p: allow disable of xattr support on mount
+      9p: Add additional debug flags and open modes
+      fs/9p: Add new mount modes
+      fs/9p: remove writeback fid and fix per-file modes
+      fs/9p: Rework cache modes and add new options to Documentation
+      fs/9p: Fix bit operation logic error
+
+ Documentation/filesystems/9p.rst |  52 +++++++++++++++++++++++++++++++++++++++-------------
+ fs/9p/cache.h                    |   3 +--
+ fs/9p/fid.c                      |  48 +++++++++++++++++++-----------------------------
+ fs/9p/fid.h                      |  31 ++++++++++++++++++++++++++++++-
+ fs/9p/v9fs.c                     |  59 +++++++++++++++++++++++++++++++----------------------------
+ fs/9p/v9fs.h                     |  62 +++++++++++++++++++++++++++++++++++++++++++-------------------
+ fs/9p/v9fs_vfs.h                 |   4 ----
+ fs/9p/vfs_addr.c                 |  50 ++++++++++++++++++++++++++++----------------------
+ fs/9p/vfs_dir.c                  |  10 +++++++---
+ fs/9p/vfs_file.c                 | 206 ++++++++++++++++++++++++++++++++++++++++++--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ fs/9p/vfs_inode.c                | 111 +++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------------------------
+ fs/9p/vfs_inode_dotl.c           |  90 +++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------
+ fs/9p/vfs_super.c                |  44 ++++++++++++--------------------------------
+ include/net/9p/9p.h              |   6 ++++++
+ net/9p/client.c                  |   8 ++++----
+ 15 files changed, 368 insertions(+), 416 deletions(-)
+
+
+--rIx30bTc8oq0MPoy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElpbw0ZalkJikytFRiP/V+0pf/5gFAmRS/j4ACgkQiP/V+0pf
+/5gEcw//carKAhsy2/af+dEB1Sz2Za+kIABVtto7Sw0bb55FJ21jOw527T/5SNiO
+qoPS+sWKY53Dj6DxJkiUbEJY/wjOxnBLl3LAjS26cpxQ/7Nu/7OjRPVRDPdl36L7
+2bNcM+bMAzFqnbfT1o/OVX8jXN6nbgRarXt9HS/QlseMBGVPEoTRK6jxttQSz7WI
+y807C+yts6uRvQQqlt9GjMliudPw3nNzv/56tbEJN783jxjmaoowgPd61FANAHhS
+Rmn+LTfkYsiU9VHkB535SDb2ih8yk+6zRMmsZUjGjLQDH15/RK1ZuC+jElibV7in
+5K4oh+hK/3BGzZfXWJ68Fx+C24dkiYG2om9h+9AxLSbhOs8hPGpT40ML70c8PtDv
+zWFEJzocZN8nqj0AxEi29OH/boaU8Jp9lPaCl2d+EBrM5ft5pD2IlGh4jIDAKlV7
+k4tM7Dogk8beqozz02OETQR3YeWLoaPIFcAwAxph5uzqrcGHernRYYOVZh4QgC8y
+37anaHDxuHHmeVa4HI/VvfkUV/MmOha5lxA6lKvMjkspmL0ZmqmkmBnSvjgeV6yJ
+e+GVRb0MK98H2UvdizJzd+EWuGB7+7FIshfXPY+DTZR8r6jSsW6LQrPQvCN5Hl69
+awXnPJJGq9rP68aOwpoCpMwA7YnskKD1d6QEZ7hvNoF7BDAXYYw=
+=5L3B
+-----END PGP SIGNATURE-----
+
+--rIx30bTc8oq0MPoy--
