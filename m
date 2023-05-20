@@ -1,31 +1,31 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB442109
-	for <v9fs@lists.linux.dev>; Fri, 19 May 2023 07:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E019363
+	for <v9fs@lists.linux.dev>; Sat, 20 May 2023 00:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1684482107;
+	s=mimecast20190719; t=1684540904;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g820KSNTP7OMqJOKF462B/JivphTXg8NZzTw8fVuImA=;
-	b=R/9hXCCXtpKiiCyOj89qjCGxva3IsayFNYa6nm8WHlkCda1WFeA7XyrZukBIZIMzBttN0o
-	0X117DU4VUKDBdAiUpItWlhtVZE87j3Q2P97eXZqtj9wkzOWl9jFZMRUxIYlP9DOvkYYRH
-	oU6oZAYB0jVnoWv5GMULeDw7nOZ1gv8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=L0untNcr1icklU0hwhU0ty94Xf23B/VjszjVy/DS5Ow=;
+	b=LvAORqsmiT/geNk+t5ShVTJUXOeJvTG4rUmZxxUqlxBtsccu9sdE4aNuhQmQFN4OjuDhCn
+	h9rJfr3AoG08D3TSjG3AOiTWXqivghJZ59daNxxFpTzbqvdjvmKwSQ33HtL4tJwhLvzCxo
+	Cfeg5i5NiUEeVBOc2EeG0bmztsy8N7I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-438-CWsHB0HDM6aXruJL4c8kbg-1; Fri, 19 May 2023 03:41:40 -0400
-X-MC-Unique: CWsHB0HDM6aXruJL4c8kbg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+ us-mta-144-ZoV9UQXCOsyihBFlh8yZBw-1; Fri, 19 May 2023 20:01:39 -0400
+X-MC-Unique: ZoV9UQXCOsyihBFlh8yZBw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8C7E29AB3F4;
-	Fri, 19 May 2023 07:41:39 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C79A38032FA;
+	Sat, 20 May 2023 00:01:37 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.221])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D58D7C0004B;
-	Fri, 19 May 2023 07:41:36 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id F0872492B0A;
+	Sat, 20 May 2023 00:01:34 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jens Axboe <axboe@kernel.dk>,
 	Al Viro <viro@zeniv.linux.org.uk>,
@@ -50,11 +50,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	Latchesar Ionkov <lucho@ionkov.net>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
 	v9fs@lists.linux.dev
-Subject: [PATCH v20 11/32] 9p:  Add splice_read stub
-Date: Fri, 19 May 2023 08:40:26 +0100
-Message-Id: <20230519074047.1739879-12-dhowells@redhat.com>
-In-Reply-To: <20230519074047.1739879-1-dhowells@redhat.com>
-References: <20230519074047.1739879-1-dhowells@redhat.com>
+Subject: [PATCH v21 14/30] 9p:  Add splice_read stub
+Date: Sat, 20 May 2023 01:00:33 +0100
+Message-Id: <20230520000049.2226926-15-dhowells@redhat.com>
+In-Reply-To: <20230520000049.2226926-1-dhowells@redhat.com>
+References: <20230520000049.2226926-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -62,9 +62,9 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 
-Add a splice_read stub for 9p.  We should use direct_splice_read() if
+Add a splice_read stub for 9p.  We should use copy_splice_read() if
 9PL_DIRECT is set and filemap_splice_read() otherwise.  Note that this
 doesn't seem to be particularly related to O_DIRECT.
 
@@ -85,7 +85,7 @@ cc: linux-mm@kvack.org
  1 file changed, 24 insertions(+), 2 deletions(-)
 
 diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 6c31b8c8112d..0f3cb439ab2d 100644
+index 6c31b8c8112d..2996fb00387f 100644
 --- a/fs/9p/vfs_file.c
 +++ b/fs/9p/vfs_file.c
 @@ -374,6 +374,28 @@ v9fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
@@ -110,7 +110,7 @@ index 6c31b8c8112d..0f3cb439ab2d 100644
 +		 fid->fid, len, *ppos);
 +
 +	if (fid->mode & P9L_DIRECT)
-+		return direct_splice_read(in, ppos, pipe, len, flags);
++		return copy_splice_read(in, ppos, pipe, len, flags);
 +	return filemap_splice_read(in, ppos, pipe, len, flags);
 +}
 +
