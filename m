@@ -1,138 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AF71426D
-	for <v9fs@lists.linux.dev>; Mon, 22 May 2023 13:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1684763486;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3P+FOs1njQUxSqylXnXlO9wiVhuujp6lAryk+mz03wc=;
-	b=BgLN1nG99PUxuMcj51wWb9N1E37P88rqXxVmdlQGX+MYsSKVtfAzgwPNdwuuBL+qTkZj1s
-	Z2oy78EDr6eqhftsaVjsIwpbuUOaC7lPaWx5WPI1VKYEZoQ6fvwY+7aq32n7tyGQP+MLiW
-	vuYBJRHbAnYKUZsFX+S9v2HV1JcXf/M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-626-t6IcFv94Ov-E8ijVu7uUwg-1; Mon, 22 May 2023 09:51:22 -0400
-X-MC-Unique: t6IcFv94Ov-E8ijVu7uUwg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A23F0185A78B;
-	Mon, 22 May 2023 13:51:20 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.39.192.68])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 42CD0C1ED99;
-	Mon, 22 May 2023 13:51:17 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christoph Hellwig <hch@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev
-Subject: [PATCH v22 14/31] 9p:  Add splice_read wrapper
-Date: Mon, 22 May 2023 14:50:01 +0100
-Message-Id: <20230522135018.2742245-15-dhowells@redhat.com>
-In-Reply-To: <20230522135018.2742245-1-dhowells@redhat.com>
-References: <20230522135018.2742245-1-dhowells@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874662DBD5
+	for <v9fs@lists.linux.dev>; Tue,  6 Jun 2023 14:30:46 +0000 (UTC)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-3f6ef9a928fso51868555e9.3
+        for <v9fs@lists.linux.dev>; Tue, 06 Jun 2023 07:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1686061844; x=1688653844;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1ganFZFDwH0y2iB/wVZU/hJTzNz61gkwHhwW94fV1tw=;
+        b=6pH1hGcm90G9h9RdLNfqDYUbyj26wiB/9+075f9Bke5g3om8r9F9Ap29TFnqrpL8in
+         q/cmQrQ8zVV3VbCNzp6Zb+AmIt8NBd07zNhbk41lKt0TkcIAFLFnh7GMORkPTk4wZ440
+         siFoyK6Y7+G/d2m24qlBzLCNitxggAA7U6QvddlrYDow3940CBO4mkKfGLEepabvIn9y
+         BPWos52xIpnkOWl3xNTpuVy+htFAPNqd7QG6+pF9UbYXBcUYiDNiDd+8AATK9ibs0F1Q
+         6IO2Qj7xUAYawd+bGvad2S48v93x6z1Gfvhw6oCw7iTu2E8zh6YKXdlsfy10WfnanZFN
+         ptmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686061844; x=1688653844;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1ganFZFDwH0y2iB/wVZU/hJTzNz61gkwHhwW94fV1tw=;
+        b=CCzzbeNsO7QZR1EDULs+xrRK3pqlOLmFx1VKsUD1M0BbjbI3OUFqa4GyeIPObe3/4z
+         0XtFB/ft0dZ+E8Hjhd1rTYxuzLJjKkmyYoGlOLdlHZlbKQy2LMuLw2FyBGPttZ62KjB7
+         jsjZs6iQ+OeXHZjPnl89XGFhl2cHemMhDCas0nuaiXldkE/+i3m7/7vxw1hQeB2OuKEu
+         UWAbh/rBENJeKiP+QXqP4OpeGMc2AJZYvQXkvK+SxAsFbY34HLXMydHgSL/afy37rwcu
+         l3titN6GYzwC4henx2hp6O/MOwfWi3DFG7SQMxPauu4n2GTXyOzcJ4BZ68d8+DTm4rJa
+         5kMQ==
+X-Gm-Message-State: AC+VfDzuGFuUH+j03Lh+j0r98tvj6p8R8JA+GhnsuCI+GwPpVp6x7Whh
+	JK2prGOmF7RgPevhvMcdR1a7KLV7iaZ/2J2G0yo=
+X-Google-Smtp-Source: ACHHUZ6RnROOA4+kHYbkumHme6DXEWTihBdXwoBzvBSL2v1LYRqA/DYhuquy79l1apqkhbzJJ4XjYA==
+X-Received: by 2002:a5d:4712:0:b0:2f7:e3aa:677a with SMTP id y18-20020a5d4712000000b002f7e3aa677amr1742889wrq.46.1686061844183;
+        Tue, 06 Jun 2023 07:30:44 -0700 (PDT)
+Received: from ?IPV6:2a02:578:8593:1200:426c:bb31:d569:3738? ([2a02:578:8593:1200:426c:bb31:d569:3738])
+        by smtp.gmail.com with ESMTPSA id p6-20020a056000018600b0030aefd11892sm12747513wrx.41.2023.06.06.07.30.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jun 2023 07:30:43 -0700 (PDT)
+Message-ID: <855a232a-76d3-7e7b-b2b5-2ebc41bcadd6@tessares.net>
+Date: Tue, 6 Jun 2023 16:30:43 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-GB
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: v9fs@lists.linux.dev, MPTCP Upstream <mptcp@lists.linux.dev>,
+ regressions@lists.linux.dev
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: 9p: MPTCP tests regressions due to new 9p features in v6.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a splice_read wrapper for 9p.  We should use copy_splice_read() if
-9PL_DIRECT is set and filemap_splice_read() otherwise.  Note that this
-doesn't seem to be particularly related to O_DIRECT.
+Hi Eric and other 9p devs,
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Christoph Hellwig <hch@lst.de>
-cc: Al Viro <viro@zeniv.linux.org.uk>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: v9fs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-block@vger.kernel.org
-cc: linux-mm@kvack.org
----
- fs/9p/vfs_file.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+TL;DR: it looks like there is a (small?) problem with the new 9p
+features you recently sent and it causes MPTCP tests to be unstable. It
+is tracked there: https://github.com/multipath-tcp/mptcp_net-next/issues/400
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 6c31b8c8112d..2996fb00387f 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -374,6 +374,28 @@ v9fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
- 	return ret;
- }
- 
-+/*
-+ * v9fs_file_splice_read - splice-read from a file
-+ * @in: The 9p file to read from
-+ * @ppos: Where to find/update the file position
-+ * @pipe: The pipe to splice into
-+ * @len: The maximum amount of data to splice
-+ * @flags: SPLICE_F_* flags
-+ */
-+static ssize_t v9fs_file_splice_read(struct file *in, loff_t *ppos,
-+				     struct pipe_inode_info *pipe,
-+				     size_t len, unsigned int flags)
-+{
-+	struct p9_fid *fid = in->private_data;
-+
-+	p9_debug(P9_DEBUG_VFS, "fid %d count %zu offset %lld\n",
-+		 fid->fid, len, *ppos);
-+
-+	if (fid->mode & P9L_DIRECT)
-+		return copy_splice_read(in, ppos, pipe, len, flags);
-+	return filemap_splice_read(in, ppos, pipe, len, flags);
-+}
-+
- /**
-  * v9fs_file_write_iter - write to a file
-  * @iocb: The operation parameters
-@@ -569,7 +591,7 @@ const struct file_operations v9fs_file_operations = {
- 	.release = v9fs_dir_release,
- 	.lock = v9fs_file_lock,
- 	.mmap = generic_file_readonly_mmap,
--	.splice_read = generic_file_splice_read,
-+	.splice_read = v9fs_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync,
- };
-@@ -583,7 +605,7 @@ const struct file_operations v9fs_file_operations_dotl = {
- 	.lock = v9fs_file_lock_dotl,
- 	.flock = v9fs_file_flock_dotl,
- 	.mmap = v9fs_file_mmap,
--	.splice_read = generic_file_splice_read,
-+	.splice_read = v9fs_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync_dotl,
- };
 
+First, thank you very much for maintaining this very useful FS!
+
+For the MPTCP subsystem, we are running various tests. Many are ran by a
+public CI [1] in a VM by using QEmu with 9p thanks to Virtme [2].
+Virtme, its dependences and a script to compile the kernel and run the
+tests are "packaged" in a Docker container which eases the deployment
+and the reproduction of issues using the same environment [3].
+
+
+Since v6.4-rc1, we noticed that our public CI was reporting various
+instabilities, mainly with Packetdrill tests. Packetdrill [4] allows us
+to easily call some system calls, craft and "inject" some network
+packets and verify that the kernel generates the expected ones. It was
+difficult to reproduce the issue but after investigations, it looks like
+since v6.4-rc1, Packetdrill is slower to craft and inject packets,
+causing the kernel to retransmit packets (retransmission timeout) that
+are not expected and tests are then marked as failed. For more details,
+a ticket [5] has been opened in our public bugs tracker.
+
+I ran a 'git bisect' and found out that it seems to be caused by the new
+9p features for 6.4:
+
+  8e15605be8ba ("Merge tag '9p-6.4-for-linus' of
+git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs")
+
+
+If I revert these commits on top of our "export" branch, I can no longer
+reproduce the bug:
+
+  $ git log --oneline --reverse v6.3-rc1..21e26d5e54ab
+  d9bc0d11e33b fs/9p: Consolidate file operations and add readahead and
+writeback
+  740b8bf87322 fs/9p: Remove unnecessary superblock flags
+  8142db4f2792 fs/9p: allow disable of xattr support on mount
+  46c30cb8f539 9p: Add additional debug flags and open modes
+  6deffc8924b5 fs/9p: Add new mount modes
+  1543b4c5071c fs/9p: remove writeback fid and fix per-file modes
+  4eb3117888a9 fs/9p: Rework cache modes and add new options to
+Documentation
+  21e26d5e54ab fs/9p: Fix bit operation logic error
+
+'git bisect' seems to suggest the issue is due to the first commit
+d9bc0d11e33b ("fs/9p: Consolidate file operations and add readahead and
+writeback").
+
+It is not clear why these modifications are causing such issues because
+the Packetdrill tests are not doing intensive read and no write on the
+disk (only stdout). Not so much info has to be read from the disk: one
+small Python script (255 lines [6]) launches multiple threads, each
+executing the same bash script (22 lines [7]) launching the same
+"packetdrill" binary (1.1 MB) in a newly created and dedicated netns.
+Then each test reads a different test script of ~30 lines, e.g. [8]. I
+think most of the time the problem is seen at the end of a test. From
+what I see [9], Packetdrill tries to read the whole test script. This is
+confirmed by quickly looking at the output of strace available on the
+ticket [5].
+
+
+It is unclear to me what else I can do and share with you to help fixing
+this "regression". I can quite easily reproduce the issue on my side and
+provide more info if needed.
+
+Just in case you wish to reproduce it on your side using our docker
+container [3], it is easy:
+
+  $ cd [kernel source code]
+  $ cat <<'EOF' > .virtme-exec-run
+for z in $(seq 15); do
+  run_packetdrill_one mptcp/dss || true
+  grep -q "[l]ive packet payload:" "${OUTPUT_VIRTME}" && break
+  rm "${RESULTS_DIR}"/*.tap; done
+EOF
+  $ docker run -v "${PWD}:${PWD}:rw" -w "${PWD}" --privileged --rm -it \
+        --pull always mptcp/mptcp-upstream-virtme-docker:latest \
+        auto-debug
+
+This will compile the kernel in ".virtme" dir with the required .config.
+The VM will start and run a category of packetdrill tests 15 times. On
+my side, I was able to reproduce the issue with a busy machine and
+packetdrill had to run ~5 times. To stress my machine, I ran stress-ng
+in parallel (outside the VM) when the tests were being executed (after
+the compilation not to slow down everything), e.g. with
+
+  nproc2=$(nproc); nproc2=$((nproc2 * 2))
+  stress-ng --cpu "${nproc2}" --io "${nproc2}" --vm "${nproc2}" \
+            --vm-bytes 1G --timeout 60m
+
+
+I hope you don't mind if I cc the regression ML: this is probably not an
+important regression but I would not have guessed the issues we had when
+running network tests were due to 9p, this report might help others with
+similar issues :)
+
+#regzbot introduced: d9bc0d11e33b
+
+
+Cheers,
+Matt
+
+[1] https://cirrus-ci.com/github/multipath-tcp/mptcp_net-next/export-net
+[2] https://github.com/amluto/virtme
+[3] https://github.com/multipath-tcp/mptcp-upstream-virtme-docker
+[4] https://github.com/google/packetdrill/
+[5] https://github.com/multipath-tcp/mptcp_net-next/issues/400
+[6]
+https://github.com/multipath-tcp/packetdrill/blob/mptcp-net-next/gtests/net/packetdrill/run_all.py
+[7]
+https://github.com/multipath-tcp/packetdrill/blob/mptcp-net-next/gtests/net/packetdrill/in_netns.sh
+[8]
+https://github.com/multipath-tcp/packetdrill/blob/mptcp-net-next/gtests/net/mptcp/dss/mpc_with_data_client.pkt
+[9]
+https://github.com/google/packetdrill/blob/master/gtests/net/packetdrill/parser.y#L168
+-- 
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net
