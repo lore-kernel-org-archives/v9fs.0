@@ -1,132 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3905413AC3
-	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 17:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16EAC433C8
-	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 17:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1688058287;
-	bh=W0mxEfbyindhWHCwf6Y2WlWdGb10FbEVlaSRMRxxYvc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iGRT7dOIJpMOBcfd3tXeh2Jvt6720YUIfRXjAizv4mNSx50cU4f2XA4/c2UDD3S+C
-	 Z3gAZPt11HVEyA64Abxca+eW0ExZr3oZVLTUwvgIpHTmHi7uv8pJ5fR8SmPqLyo7d9
-	 9Y08haDcngD0n39r405PXJe9PnvFh2R65tVO5zrdn2VU/Gj/qJooiYqwRhR6NFdQ6f
-	 Ih+ZH2NijKsqJ428seraHmVXvUpkh/0GJgLyl+43iP4KoT71b9qn6OSBBI1rQYI1eQ
-	 XeioX8Cv6d+V394hbt1i/9dO6RsYTU8ibOT6paNjsr1iwB8pa3YLfA9xGq9xRm5MsV
-	 ITo0t/FrU0vUw==
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-c3896b4dbd0so777537276.0
-        for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 10:04:47 -0700 (PDT)
-X-Gm-Message-State: ABy/qLae5kWdoPZbNmQ9F/kADEkJW+ERCjVo0wuXuFvWbbgbyq+MWkE9
-	dhPt+hzsKTOpSBSuzfbFpMjeNguEvtgXSf5jxHw=
-X-Google-Smtp-Source: APBJJlENO8TDCYMuDmQUOD/QHPcsqL1yTeF1LsvseLMdAovn8W9cklTQwte/hHEgq1duMX53qxgYA8vlBzOZ/znct80=
-X-Received: by 2002:a25:ac0c:0:b0:c3e:8e3d:f605 with SMTP id
- w12-20020a25ac0c000000b00c3e8e3df605mr492743ybi.48.1688058286794; Thu, 29 Jun
- 2023 10:04:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABE313AC3
+	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 17:25:20 +0000 (UTC)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-98e109525d6so165920966b.0
+        for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 10:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1688059518; x=1690651518;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mnhlLZPHjVW5K8grBRsw1MvJ0F0O78p/eSVkX/pW4g4=;
+        b=TsbH3N1xHDBN69X8isBdCRLKda4JDGRm4vya39GZNh05xCIQFYpmft2AnkosX0yp/g
+         xtrn9br2zNGRh+BTOu695kGEsEN8gqZedGzhtHA/HEdyDgEXeLkYQ+mwQzFPu2nlzDyq
+         AlunVp1I5Qe/Iekovd44KCwP1pMGcUKH2DOrMCOW7+D5o1zsaGAvh9v+ruCPmPjoJcHt
+         Bv+UsniuVQT8cfZ2f9xGdLu6V95lXGx+b8yBgvmM5CW2p/CCI+sLu3k3WOXdsAuUw39K
+         aR0TwZWADz0xRh7DK6B117jCF+IlINyjiw1zvrgqrjqN/fyOacnxD8w9FOGoTS0Yr9l8
+         K1AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688059518; x=1690651518;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mnhlLZPHjVW5K8grBRsw1MvJ0F0O78p/eSVkX/pW4g4=;
+        b=A0N+RfF/AwejVu25+ZtPpnxMtFhOozDS4vbGJqcAfpG7lJjH4bgqZQt/gFzwGGtC9x
+         hXCtj5U7Per8S22NtdYIFYF/C59tBa6ikLPVYt0e2PzAlxZj0rT16O3XpVhJAeUO64mn
+         /riB4NvJwUbQi4FJC/qgYNgvfWhBIDmU8VAm5hRp4B+8kgUlXDonadbbstuZwLY0+atM
+         YOwg3jqHVOURtklPrgGhMGu7BGsNz+3n1BwNB0tbmHR9oZWpQolTNiugGmLLnkYVO8I+
+         9yE7POgHHye291wUprWuCoYk38o0UH9j7OMnozeHgO1wrSYgAUwM0VmK14Mz278bFlHd
+         MzGA==
+X-Gm-Message-State: ABy/qLa5Mhjs1bfjm7SsGhJXGy9P0ENJXe75sqe2sZ4sUzein7rEH/2m
+	0rjScZSYxcMo+BoQxPQDDf4tx7X0lMAtR0RUaDQPCMRj
+X-Google-Smtp-Source: APBJJlGWvGJiYOANDpadw8I013LkyJ2SkpXj5FhB98dAX2zVR7SJWb3teVbDC4AqeEzB6UgSLqL8Xw==
+X-Received: by 2002:a17:906:2a48:b0:98e:2413:952f with SMTP id k8-20020a1709062a4800b0098e2413952fmr535836eje.18.1688059518446;
+        Thu, 29 Jun 2023 10:25:18 -0700 (PDT)
+Received: from [10.120.18.108] ([84.17.46.13])
+        by smtp.gmail.com with ESMTPSA id w10-20020a170906130a00b00992b50fbbe9sm753723ejb.90.2023.06.29.10.25.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Jun 2023 10:25:18 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------Yuq101Ls3bV7W6Atdhf6Ge5p"
+Message-ID: <77a92899-5eb0-8064-26a1-369744829cf9@tessares.net>
+Date: Thu, 29 Jun 2023 19:25:16 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: 9p: MPTCP tests regressions due to new 9p features in v6.4
+Content-Language: en-GB
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: v9fs@lists.linux.dev
 References: <855a232a-76d3-7e7b-b2b5-2ebc41bcadd6@tessares.net>
  <CAFkjPTms30OO-p1-RyhAXKUXmavWQuJku+J-J-d-eqOz=Emkmg@mail.gmail.com>
- <df1fcb9b-27d0-8e64-34fa-e8d480c31721@tessares.net> <CAFkjPT=QLwyw+Pin-s-oqPPd6v++ibq21kj9FsGGHbL8S1cVVw@mail.gmail.com>
+ <df1fcb9b-27d0-8e64-34fa-e8d480c31721@tessares.net>
+ <CAFkjPT=QLwyw+Pin-s-oqPPd6v++ibq21kj9FsGGHbL8S1cVVw@mail.gmail.com>
  <34d5623d-b7e7-aa9e-88fb-42cb9993bc0e@tessares.net>
-In-Reply-To: <34d5623d-b7e7-aa9e-88fb-42cb9993bc0e@tessares.net>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Thu, 29 Jun 2023 19:04:35 +0200
-X-Gmail-Original-Message-ID: <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
-Message-ID: <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
-Subject: Re: 9p: MPTCP tests regressions due to new 9p features in v6.4
-To: Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc: v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
+In-Reply-To: <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
 
-inline
+This is a multi-part message in MIME format.
+--------------Yuq101Ls3bV7W6Atdhf6Ge5p
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 29, 2023 at 6:42=E2=80=AFPM Matthieu Baerts
-<matthieu.baerts@tessares.net> wrote:
->
-> Hi Eric,
->
-> On 29/06/2023 17:17, Eric Van Hensbergen wrote:
-> > one thing that may be worth taking a look at in your test environment
-> > is confirming that there is no "accidental access" to the synthetic
-> > file systems (/sys or /dev) via 9p -- usually the /dev ones wouldn't
-> > be problematic, but if they were being accessed via 9p that may be a
-> > corner case perturbing performance in a way we don't typically test.
->
-> Interesting, I didn't even know it was possible to do that :)
->
+On 29/06/2023 19:04, Eric Van Hensbergen wrote:
+> inline
+> 
+> On Thu, Jun 29, 2023 at 6:42 PM Matthieu Baerts
+> <matthieu.baerts@tessares.net> wrote:
+>>
+>> Hi Eric,
+>>
+>> On 29/06/2023 17:17, Eric Van Hensbergen wrote:
+>>> one thing that may be worth taking a look at in your test environment
+>>> is confirming that there is no "accidental access" to the synthetic
+>>> file systems (/sys or /dev) via 9p -- usually the /dev ones wouldn't
+>>> be problematic, but if they were being accessed via 9p that may be a
+>>> corner case perturbing performance in a way we don't typically test.
+>>
+>> Interesting, I didn't even know it was possible to do that :)
+>>
+> 
+> Well, there is a special mode which usually isn't enabled on mount which
+> is nodevmap which does allow you to access the devices on the host,
+> without that, even if you were accessing devices on the host file system,
+> they should still be serviced by the devices inside the vm.  sysfs a bit
+> more complicated as those are treated as files.  But from your mount
+> list, it looks like you have stuff mounted in a way that shouldn't be a
+> problem.  Thanks for cross-checking, its one less thing to worry about.
 
-Well, there is a special mode which usually isn't enabled on mount which
-is nodevmap which does allow you to access the devices on the host,
-without that, even if you were accessing devices on the host file system,
-they should still be serviced by the devices inside the vm.  sysfs a bit
-more complicated as those are treated as files.  But from your mount
-list, it looks like you have stuff mounted in a way that shouldn't be a
-problem.  Thanks for cross-checking, its one less thing to worry about.
+Thank you for the explanation! That's nice to see how much we can do
+with 9p, thank you for that! :)
 
-> > The other would be to cross check there is no log file writing via 9p
-> > -- again, this should be something that works, but I could imagine the
-> > more synchronous write behavior which we are now doing a better job of
-> > enforcing when cache=3Dnone could cause synchronous delays that might
-> > perturb performance of your tests.  A workaround for the latter would
-> > be to write the log to a tmpfs and then copy to 9p when done.  The
-> > other potential is just to enable caching (cache=3Dmmap should be
-> > sufficient) in your virtme configurations.  The new readahead and
-> > writeback cache modes should be consistent enough for your use case.
-> > I didn't suggest that earlier because I wanted (and still want to)
-> > understand the problems you are seeing.
->
-> Thank you for the idea. We are writing the output of qEmu from the host
-> (docker), not from the VM. We are writing it in the same directory as
-> the one mounted in the VM with 9p in RW mode but I guess that's not an
-> issue, right?
->
+> The conference I am at with horrible internet is over tomorrow so
+> perhaps I'll be able to get a proper virtme / mptcp regression
+> environment going over the weekend to try and continue to drill down
+> on what might be the problem.
+> In the meantime I'm fixing up my own regression infrastructure to
+> start recording latency information to make sure we aren't getting any
+> performance regressions from either latency or bandwidth as we
+> continue to work on 9p in the future.
 
-Yeah, if its writing to the underlying filesystem not through the 9p
-mount, this shouldn't cause any problems.
+Thank you!
 
-> When we execute a test, the output is also written in a dedicated file
-> but this time from the VM and into the same directory as the one mounted
-> in the VM with 9p in RW mode. But when we reproduce the original issue
-> with Packetdrill, Packetdrill is not printing anything in stdout until
-> the end of the test or until an error happened. So likely before or
-> after. Also, Packetdrill is not writing anything in the FS when
-> executing tests as far as I know.
->
+On our side, there is no hurry, we have a revert of the patches from 9p
+from v6.4 in our tree for the CI to be happy. (But I don't know the
+impact others might have: in my case, it was not obvious to see the link
+with 9p :) ).
 
-Okay, then not likely a write versus writeback problem.
+The only drawback is that I'm maintaining this branch with the revert
+and I have to handle conflicts issues in 9p myself in a code I don't
+know but I think it is fine for the moment :)
+Recently I got a merge conflict with commit c829d0bd33ac ("9p: Add
+splice_read wrapper") that recently landed in Linus tree and I had to
+apply the patch attached to this email and visible there:
 
-> So I think not so much is written in the FS when executing the tests.
-> But there is a bit of text (~15 lines) printed just before executing the
-> next one: to reproduce the issue, the tests are executed in a loop.
-> Could this have an impact?
+https://github.com/multipath-tcp/mptcp_net-next/commit/be007e248783
 
-I wouldn't think so, I was more worried about it printing something
-which gets synchronously written to a log in between packet writes
-which might delay them...but doesn't sound like its doing anything
-like that.
+The CI looks happy so far so I guess/hope it was the right modification :)
 
-> If yes, I can look at adding "cache=3Dmmap" but for that, I guess I need
-> to modify virtme to change how the directories are mounted, I don't have
-> a direct control on that and I guess I cannot do a remount once the VM
-> is ready, no?
->
+Cheers,
+Matt
+-- 
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net
+--------------Yuq101Ls3bV7W6Atdhf6Ge5p
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-9p-P9L_DIRECT-flag-is-not-available.patch"
+Content-Disposition: attachment;
+ filename="0001-9p-P9L_DIRECT-flag-is-not-available.patch"
+Content-Transfer-Encoding: base64
 
-That's correct, mount -o remount probably behaves badly with 9p as a
-root file system mount.
+RnJvbSBiZTAwN2UyNDg3ODM0YTNjZDdmN2Y0M2YxODYzYjY4N2MxMmM2YzJlIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNYXR0aGlldSBCYWVydHMgPG1hdHRoaWV1LmJhZXJ0
+c0B0ZXNzYXJlcy5uZXQ+CkRhdGU6IFRodSwgMjkgSnVuIDIwMjMgMTU6NDI6NDUgKzAyMDAK
+U3ViamVjdDogW1BBVENIXSA5cDogUDlMX0RJUkVDVCBmbGFnIGlzIG5vdCBhdmFpbGFibGUK
+ClVzaW5nIENBQ0hFX01NQVAgaW5zdGVhZCwgc2ltaWxhciB0byB3aGF0IGhhcyBiZWVuIGRv
+bmUgaW4Kdjlmc19maWxlX3JlYWRfaXRlcigpIGluIGNvbW1pdCAxNTQzYjRjNTA3MWMgKCJm
+cy85cDogcmVtb3ZlIHdyaXRlYmFjawpmaWQgYW5kIGZpeCBwZXItZmlsZSBtb2RlcyIpLCBo
+b3BlZnVsbHkgdGhlIHJpZ2h0IHRoaW5nLi4uCgpTaWduZWQtb2ZmLWJ5OiBNYXR0aGlldSBC
+YWVydHMgPG1hdHRoaWV1LmJhZXJ0c0B0ZXNzYXJlcy5uZXQ+Ci0tLQogZnMvOXAvdmZzX2Zp
+bGUuYyB8IDQgKysrLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
+dGlvbigtKQoKZGlmZiAtLWdpdCBhL2ZzLzlwL3Zmc19maWxlLmMgYi9mcy85cC92ZnNfZmls
+ZS5jCmluZGV4IDY4NWIyNzcyNTkxMy4uODI4N2IyNmIyM2RjIDEwMDY0NAotLS0gYS9mcy85
+cC92ZnNfZmlsZS5jCisrKyBiL2ZzLzlwL3Zmc19maWxlLmMKQEAgLTM5NSwxMSArMzk1LDEz
+IEBAIHN0YXRpYyBzc2l6ZV90IHY5ZnNfZmlsZV9zcGxpY2VfcmVhZChzdHJ1Y3QgZmlsZSAq
+aW4sIGxvZmZfdCAqcHBvcywKIAkJCQkgICAgIHNpemVfdCBsZW4sIHVuc2lnbmVkIGludCBm
+bGFncykKIHsKIAlzdHJ1Y3QgcDlfZmlkICpmaWQgPSBpbi0+cHJpdmF0ZV9kYXRhOworCXN0
+cnVjdCBpbm9kZSAqaW5vZGUgPSBmaWxlX2lub2RlKGluKTsKKwlzdHJ1Y3Qgdjlmc19zZXNz
+aW9uX2luZm8gKnY5c2VzID0gdjlmc19pbm9kZTJ2OXNlcyhpbm9kZSk7CiAKIAlwOV9kZWJ1
+ZyhQOV9ERUJVR19WRlMsICJmaWQgJWQgY291bnQgJXp1IG9mZnNldCAlbGxkXG4iLAogCQkg
+ZmlkLT5maWQsIGxlbiwgKnBwb3MpOwogCi0JaWYgKGZpZC0+bW9kZSAmIFA5TF9ESVJFQ1Qp
+CisJaWYgKHY5c2VzLT5jYWNoZSA+IENBQ0hFX01NQVApCiAJCXJldHVybiBjb3B5X3NwbGlj
+ZV9yZWFkKGluLCBwcG9zLCBwaXBlLCBsZW4sIGZsYWdzKTsKIAlyZXR1cm4gZmlsZW1hcF9z
+cGxpY2VfcmVhZChpbiwgcHBvcywgcGlwZSwgbGVuLCBmbGFncyk7CiB9Ci0tIAoyLjQwLjEK
+Cg==
 
-The conference I am at with horrible internet is over tomorrow so
-perhaps I'll be able to get a proper virtme / mptcp regression
-environment going over the weekend to try and continue to drill down
-on what might be the problem.
-In the meantime I'm fixing up my own regression infrastructure to
-start recording latency information to make sure we aren't getting any
-performance regressions from either latency or bandwidth as we
-continue to work on 9p in the future.
-
-        -eric
+--------------Yuq101Ls3bV7W6Atdhf6Ge5p--
