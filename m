@@ -1,81 +1,105 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F8BE71;
-	Thu, 29 Jun 2023 14:30:01 +0000 (UTC)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1qEsel-0004jK-Ee; Thu, 29 Jun 2023 16:29:59 +0200
-Message-ID: <3855b327-fc33-364b-f511-0d506c7c18d7@leemhuis.info>
-Date: Thu, 29 Jun 2023 16:29:59 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2626F111BB
+	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 15:17:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC70C433C9
+	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 15:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1688051851;
+	bh=s3ac5bI8zx04UkljAZCTaWqkxZYoDuxzApvYJTJYNKc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XVzeQ6M1Ev78GWrXPrlQ9udfcrd0Wjq4S4qqE8ODwpNF46sSw5NOGDlYWrisgjQ06
+	 XwuS6C3fUc7iWx576qtnxaX81WQCytSB4xgOtDdQRobSFADPrja3zGI6TxuNTETL3F
+	 ykw9R+L44kpu9pIiTzJJxe4rH0qKAxffWq6V9/E8LUhh66WSzGvJItd74Ih5aZcrgt
+	 85mTMUVI98fflvasp3pDvsCj7qxnrzVtbqBx7hZrYEBE/zy7a2XFHdk5ZAzmYqa6V5
+	 nSyeJbRnQ8at7ZJm4cdQSNISZNyQvCdKPj4hwZsWio5eRNTnJxyyYg0hLEw0ScwrF+
+	 N44sZK+HcNrig==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3a0642e4695so430739b6e.2
+        for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 08:17:31 -0700 (PDT)
+X-Gm-Message-State: AC+VfDyliSe+xVLB0GkI8al0UK8gMNl8oHyr0OMW5QG15EE6aKpZR82u
+	HuJmgXTJMPVxpXRR6Irllb1vJNxXMti5Y+7JsDU=
+X-Google-Smtp-Source: ACHHUZ6v1BhjRv82ovluadtgvgdQcSXINqLrWRkyfvHo5hCbeMvow7YWjWalYGLEmxvyoMQ9zsrgAeKnEqHLjbrYc3M=
+X-Received: by 2002:a05:6808:55:b0:39b:bcbc:8943 with SMTP id
+ v21-20020a056808005500b0039bbcbc8943mr33606500oic.1.1688051850868; Thu, 29
+ Jun 2023 08:17:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: 9p: MPTCP tests regressions due to new 9p features in v6.4
-Content-Language: en-US, de-DE
-From: "Linux regression tracking #update (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>, v9fs@lists.linux.dev
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
- Linux regressions mailing list <regressions@lists.linux.dev>
 References: <855a232a-76d3-7e7b-b2b5-2ebc41bcadd6@tessares.net>
- <CAFkjPTnX0=-GK8sFzd4S+V2+cA8E-FAqYHNndZui2Sh_MvoHPw@mail.gmail.com>
- <88f7a06b-b044-9fdc-b3dc-4b374dbca332@tessares.net>
- <3E1DD5A9-A8CB-4951-839A-6EF229CFA8EA@icloud.com>
- <4830cc62-64fd-f74b-bbfc-b8e44e023513@leemhuis.info>
- <CAFkjPTnAV6Rngwn6voCF332CX+eUyeJd7U0GcYn9BbkBqcTkHA@mail.gmail.com>
- <0dd7af94-db5f-ab39-dc79-285de4bf0a11@tessares.net>
- <163df4ec-089d-4bff-c613-dd8a0c3b2110@leemhuis.info>
-In-Reply-To: <163df4ec-089d-4bff-c613-dd8a0c3b2110@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688049001;12345d6e;
-X-HE-SMSGID: 1qEsel-0004jK-Ee
+ <CAFkjPTms30OO-p1-RyhAXKUXmavWQuJku+J-J-d-eqOz=Emkmg@mail.gmail.com> <df1fcb9b-27d0-8e64-34fa-e8d480c31721@tessares.net>
+In-Reply-To: <df1fcb9b-27d0-8e64-34fa-e8d480c31721@tessares.net>
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Thu, 29 Jun 2023 17:17:19 +0200
+X-Gmail-Original-Message-ID: <CAFkjPT=QLwyw+Pin-s-oqPPd6v++ibq21kj9FsGGHbL8S1cVVw@mail.gmail.com>
+Message-ID: <CAFkjPT=QLwyw+Pin-s-oqPPd6v++ibq21kj9FsGGHbL8S1cVVw@mail.gmail.com>
+Subject: Re: 9p: MPTCP tests regressions due to new 9p features in v6.4
+To: Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc: v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[TLDR: This mail in primarily relevant for Linux kernel regression
-tracking. See link in footer if these mails annoy you.]
+one thing that may be worth taking a look at in your test environment
+is confirming that there is no "accidental access" to the synthetic
+file systems (/sys or /dev) via 9p -- usually the /dev ones wouldn't
+be problematic, but if they were being accessed via 9p that may be a
+corner case perturbing performance in a way we don't typically test.
+The other would be to cross check there is no log file writing via 9p
+-- again, this should be something that works, but I could imagine the
+more synchronous write behavior which we are now doing a better job of
+enforcing when cache=3Dnone could cause synchronous delays that might
+perturb performance of your tests.  A workaround for the latter would
+be to write the log to a tmpfs and then copy to 9p when done.  The
+other potential is just to enable caching (cache=3Dmmap should be
+sufficient) in your virtme configurations.  The new readahead and
+writeback cache modes should be consistent enough for your use case.
+I didn't suggest that earlier because I wanted (and still want to)
+understand the problems you are seeing.
 
-On 22.06.23 09:53, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 13.06.23 18:27, Matthieu Baerts wrote:
->> On 13/06/2023 18:07, Eric Van Hensbergen wrote:
->>> Understood, this on top of my 9p stack, but day job has been getting
->>> in the way lately so I need to unstack there first.  Will do my best
->>> to reproduce and understand as quickly as I can -- but given its a
->>> performance regression it is likely going to be tricky to reproduce
->>> and understand, so I'm not sure how confident I am that we'll be able
->>> to close it out prior to the final -rc.
->>
->> Thank you for your message, I understand, no issue.
->> [...]
-> 
-> As Linus will likely release 6.4 on this or the following Sunday a quick
-> status inquiry so I can brief him appropriately: is there any hope the
-> regression will be resolved any time soon? Doesn't look like it from
-> this thread, but maybe I missed something.
-> 
->> (but I don't know what's the impact for other people of course)
-> 
-> Yeah, it's likely not that urgent, if the problem is just showing up in
-> some CI tests. But is that what we assume for now? Eric?
+      -eric
 
-6.4 is out and this is likely to take a while to get fixed given recent
-and today's replies.
-
-To make sure I don't see this all the time while dealing with more
-pressing issues I'm putting it on the backburner:
-
-#regzbot backburner: not urgent, for now seems something that only shows
-up in one CI (and is hard to reproduce)
-#regzbot ignore-activity
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+On Thu, Jun 29, 2023 at 3:26=E2=80=AFPM Matthieu Baerts
+<matthieu.baerts@tessares.net> wrote:
+>
+> Hi Eric,
+>
+> On 29/06/2023 10:46, Eric Van Hensbergen wrote:
+> > (repost so it actually goes to the list and making sure gmail doesn't s=
+end html)
+> >
+> > So, I've not completely reproduced your environment as I've been
+> > traveling and its been a bit more difficult.  I have done some
+> > relative performance regressions (in a virtualized environment just
+> > running qemu inside a docker container on my M1 so perf isn't going to
+> > be fantastic) -- but even in that case when I'm running unloaded I see
+> > very little difference between v6.3 and v6.4.
+>
+> Thank you for looking at that!
+>
+> > So, there is some slight perturbation in average latency, but nothing
+> > that I would think would be significant (particularly in a simulated
+> > platform which carries with it a certain amount of noise).  I'm
+> > working on automated the regressions so I can try them on multiple
+> > platforms and add some rigor to the results but I don't see anything
+> > here that jumps out at me as being an obvious concern.  Of course
+> > there may be differences in your kernel config that could be
+> > perturbing the behavior, I'll continue to try and run with the virtme
+> > configs but my internet is currently on the end of a cocktail straw so
+> > pulling and/or building docker images is challenging.  I may go ahead
+> > and just temporarily rent an aws instance to try and speed that part
+> > of the process up.
+>
+> Thank you for that! If it helps, I can easily run additional tests using
+> our test environment having the performance issue. I can run these tests
+> with and without your modifications in 9p from v6.4 and compare the
+> results: maybe the issue we have is not "cover" by your tests. But I
+> don't know how portable your benchmark tests are :)
+>
+> Cheers,
+> Matt
+> --
+> Tessares | Belgium | Hybrid Access Solutions
+> www.tessares.net
