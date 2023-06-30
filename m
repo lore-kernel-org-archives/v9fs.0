@@ -1,163 +1,222 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABE313AC3
-	for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 17:25:20 +0000 (UTC)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-98e109525d6so165920966b.0
-        for <v9fs@lists.linux.dev>; Thu, 29 Jun 2023 10:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1688059518; x=1690651518;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mnhlLZPHjVW5K8grBRsw1MvJ0F0O78p/eSVkX/pW4g4=;
-        b=TsbH3N1xHDBN69X8isBdCRLKda4JDGRm4vya39GZNh05xCIQFYpmft2AnkosX0yp/g
-         xtrn9br2zNGRh+BTOu695kGEsEN8gqZedGzhtHA/HEdyDgEXeLkYQ+mwQzFPu2nlzDyq
-         AlunVp1I5Qe/Iekovd44KCwP1pMGcUKH2DOrMCOW7+D5o1zsaGAvh9v+ruCPmPjoJcHt
-         Bv+UsniuVQT8cfZ2f9xGdLu6V95lXGx+b8yBgvmM5CW2p/CCI+sLu3k3WOXdsAuUw39K
-         aR0TwZWADz0xRh7DK6B117jCF+IlINyjiw1zvrgqrjqN/fyOacnxD8w9FOGoTS0Yr9l8
-         K1AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688059518; x=1690651518;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mnhlLZPHjVW5K8grBRsw1MvJ0F0O78p/eSVkX/pW4g4=;
-        b=A0N+RfF/AwejVu25+ZtPpnxMtFhOozDS4vbGJqcAfpG7lJjH4bgqZQt/gFzwGGtC9x
-         hXCtj5U7Per8S22NtdYIFYF/C59tBa6ikLPVYt0e2PzAlxZj0rT16O3XpVhJAeUO64mn
-         /riB4NvJwUbQi4FJC/qgYNgvfWhBIDmU8VAm5hRp4B+8kgUlXDonadbbstuZwLY0+atM
-         YOwg3jqHVOURtklPrgGhMGu7BGsNz+3n1BwNB0tbmHR9oZWpQolTNiugGmLLnkYVO8I+
-         9yE7POgHHye291wUprWuCoYk38o0UH9j7OMnozeHgO1wrSYgAUwM0VmK14Mz278bFlHd
-         MzGA==
-X-Gm-Message-State: ABy/qLa5Mhjs1bfjm7SsGhJXGy9P0ENJXe75sqe2sZ4sUzein7rEH/2m
-	0rjScZSYxcMo+BoQxPQDDf4tx7X0lMAtR0RUaDQPCMRj
-X-Google-Smtp-Source: APBJJlGWvGJiYOANDpadw8I013LkyJ2SkpXj5FhB98dAX2zVR7SJWb3teVbDC4AqeEzB6UgSLqL8Xw==
-X-Received: by 2002:a17:906:2a48:b0:98e:2413:952f with SMTP id k8-20020a1709062a4800b0098e2413952fmr535836eje.18.1688059518446;
-        Thu, 29 Jun 2023 10:25:18 -0700 (PDT)
-Received: from [10.120.18.108] ([84.17.46.13])
-        by smtp.gmail.com with ESMTPSA id w10-20020a170906130a00b00992b50fbbe9sm753723ejb.90.2023.06.29.10.25.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jun 2023 10:25:18 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------Yuq101Ls3bV7W6Atdhf6Ge5p"
-Message-ID: <77a92899-5eb0-8064-26a1-369744829cf9@tessares.net>
-Date: Thu, 29 Jun 2023 19:25:16 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAF717752;
+	Fri, 30 Jun 2023 22:16:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mmrCw93FsSgGVqkQGx3tY+c3DxJ3ErMGqt6cuZmQDk4=; b=3Xi9NJjkd4QPELIEMLqHm1+oJy
+	QNIOVPA8HW3kXP6XuZluim3h/1Z/sfwrG9QOzNRHgYq+vOXcblPYVWq7qnircmbeiJPJDVgOjWyzo
+	LbnhyHqo5AegY+fER/tKQShp8dh+Z/+/bv4xI3KoQiSpmxUAYDgP6p5vAe2pi77qFUU0ycsQEmV7V
+	4gCVdOf3P+PueFWMrnvROKMoMz+u7SsILxSnayKbZrj37v0X+NhKaX7iej/SD3IFAsLN2XayGDdUC
+	G3y/vRbujnR04W/Op5jRENlRX4f86+/5+pwYqxdiQMmhYNN5AwTPrNqa/XDugttEtOweLL0X0YqO/
+	pQ84xrwQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1qFML8-004eW8-2f;
+	Fri, 30 Jun 2023 22:11:42 +0000
+Date: Fri, 30 Jun 2023 15:11:42 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Julia Lawall <julia.lawall@inria.fr>, Takashi Iwai <tiwai@suse.de>
+Cc: Jeff Layton <jlayton@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Brad Warrum <bwarrum@linux.ibm.com>,
+	Ritu Agarwal <rituagar@linux.ibm.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Sterba <dsterba@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Ian Kent <raven@themaw.net>,
+	Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <keescook@chromium.org>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>, Jan Harkes <jaharkes@cs.cmu.edu>,
+	coda@cs.cmu.edu, Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>, Nicolas Pitre <nico@fluxnic.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Tyler Hicks <code@tyhicks.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Dave Kleikamp <shaggy@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Anton Altaparmakov <anton@tuxera.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Bob Copeland <me@bobcopeland.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Iurii Zaikin <yzaikin@google.com>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Anders Larsen <al@alarsen.net>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Evgeniy Dushistov <dushistov@mail.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Eric Paris <eparis@parisplace.org>, Juergen Gross <jgross@suse.com>,
+	Ruihan Li <lrh2000@pku.edu.cn>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Udipto Goswami <quic_ugoswami@quicinc.com>,
+	Linyu Yuan <quic_linyyuan@quicinc.com>,
+	John Keeping <john@keeping.me.uk>,
+	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+	Dan Carpenter <error27@gmail.com>, Yuta Hayama <hayama@lineo.co.jp>,
+	Jozef Martiniak <jomajm@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	ZhangPeng <zhangpeng362@huawei.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Aditya Garg <gargaditya08@live.com>,
+	Erez Zadok <ezk@cs.stonybrook.edu>,
+	Yifei Liu <yifeliu@cs.stonybrook.edu>, Yu Zhe <yuzhe@nfschina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Oleg Kanatov <okanatov@gmail.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Jiangshan Yi <yijiangshan@kylinos.cn>, xu xin <cgel.zte@gmail.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Minghao Chi <chi.minghao@zte.com.cn>,
+	Seth Forshee <sforshee@digitalocean.com>,
+	Zeng Jingxiang <linuszeng@tencent.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>, Tom Rix <trix@redhat.com>,
+	"Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+	Chen Zhongjin <chenzhongjin@huawei.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jingyu Wang <jingyuwang_vip@163.com>, Hangyu Hua <hbh25y@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+	autofs@vger.kernel.org, linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	cluster-devel@redhat.com, linux-um@lists.infradead.org,
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+	linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+	linux-ntfs-dev@lists.sourceforge.net, ntfs3@lists.linux.dev,
+	ocfs2-devel@oss.oracle.com, linux-karma-devel@lists.sourceforge.net,
+	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+	linux-hardening@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+	linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	bpf@vger.kernel.org, netdev@vger.kernel.org,
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: Re: [PATCH 00/79] fs: new accessors for inode->i_ctime
+Message-ID: <ZJ9THiUlOUmm0xpD@bombadil.infradead.org>
+References: <20230621144507.55591-1-jlayton@kernel.org>
+ <20230621152141.5961cf5f@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: 9p: MPTCP tests regressions due to new 9p features in v6.4
-Content-Language: en-GB
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: v9fs@lists.linux.dev
-References: <855a232a-76d3-7e7b-b2b5-2ebc41bcadd6@tessares.net>
- <CAFkjPTms30OO-p1-RyhAXKUXmavWQuJku+J-J-d-eqOz=Emkmg@mail.gmail.com>
- <df1fcb9b-27d0-8e64-34fa-e8d480c31721@tessares.net>
- <CAFkjPT=QLwyw+Pin-s-oqPPd6v++ibq21kj9FsGGHbL8S1cVVw@mail.gmail.com>
- <34d5623d-b7e7-aa9e-88fb-42cb9993bc0e@tessares.net>
- <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
-In-Reply-To: <CAFkjPTk_7ceY5495Ro0BdLVwN_xKQG-um0ny=5PrZOwYXjM1vg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621152141.5961cf5f@gandalf.local.home>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 
-This is a multi-part message in MIME format.
---------------Yuq101Ls3bV7W6Atdhf6Ge5p
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-On 29/06/2023 19:04, Eric Van Hensbergen wrote:
-> inline
+On Wed, Jun 21, 2023 at 03:21:41PM -0400, Steven Rostedt wrote:
+> On Wed, 21 Jun 2023 10:45:05 -0400
+> Jeff Layton <jlayton@kernel.org> wrote:
 > 
-> On Thu, Jun 29, 2023 at 6:42 PM Matthieu Baerts
-> <matthieu.baerts@tessares.net> wrote:
->>
->> Hi Eric,
->>
->> On 29/06/2023 17:17, Eric Van Hensbergen wrote:
->>> one thing that may be worth taking a look at in your test environment
->>> is confirming that there is no "accidental access" to the synthetic
->>> file systems (/sys or /dev) via 9p -- usually the /dev ones wouldn't
->>> be problematic, but if they were being accessed via 9p that may be a
->>> corner case perturbing performance in a way we don't typically test.
->>
->> Interesting, I didn't even know it was possible to do that :)
->>
+> > Most of this conversion was done via coccinelle, with a few of the more
+> > non-standard accesses done by hand. There should be no behavioral
+> > changes with this set. That will come later, as we convert individual
+> > filesystems to use multigrain timestamps.
 > 
-> Well, there is a special mode which usually isn't enabled on mount which
-> is nodevmap which does allow you to access the devices on the host,
-> without that, even if you were accessing devices on the host file system,
-> they should still be serviced by the devices inside the vm.  sysfs a bit
-> more complicated as those are treated as files.  But from your mount
-> list, it looks like you have stuff mounted in a way that shouldn't be a
-> problem.  Thanks for cross-checking, its one less thing to worry about.
+> BTW, Linus has suggested to me that whenever a conccinelle script is used,
+> it should be included in the change log.
 
-Thank you for the explanation! That's nice to see how much we can do
-with 9p, thank you for that! :)
+Sometimes people like the coccinelle included in the commit, sometimes
+people don't [0], it really ends up being up to a subjective maintainer
+preference. A compromise could be to use git notes as these are
+optional, however if we want to go down that path we should try to make
+a general consensus on it so we can send a consistent message.
 
-> The conference I am at with horrible internet is over tomorrow so
-> perhaps I'll be able to get a proper virtme / mptcp regression
-> environment going over the weekend to try and continue to drill down
-> on what might be the problem.
-> In the meantime I'm fixing up my own regression infrastructure to
-> start recording latency information to make sure we aren't getting any
-> performance regressions from either latency or bandwidth as we
-> continue to work on 9p in the future.
+[0] https://lore.kernel.org/all/20230512073100.GC32559@twin.jikos.cz/
 
-Thank you!
-
-On our side, there is no hurry, we have a revert of the patches from 9p
-from v6.4 in our tree for the CI to be happy. (But I don't know the
-impact others might have: in my case, it was not obvious to see the link
-with 9p :) ).
-
-The only drawback is that I'm maintaining this branch with the revert
-and I have to handle conflicts issues in 9p myself in a code I don't
-know but I think it is fine for the moment :)
-Recently I got a merge conflict with commit c829d0bd33ac ("9p: Add
-splice_read wrapper") that recently landed in Linus tree and I had to
-apply the patch attached to this email and visible there:
-
-https://github.com/multipath-tcp/mptcp_net-next/commit/be007e248783
-
-The CI looks happy so far so I guess/hope it was the right modification :)
-
-Cheers,
-Matt
--- 
-Tessares | Belgium | Hybrid Access Solutions
-www.tessares.net
---------------Yuq101Ls3bV7W6Atdhf6Ge5p
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-9p-P9L_DIRECT-flag-is-not-available.patch"
-Content-Disposition: attachment;
- filename="0001-9p-P9L_DIRECT-flag-is-not-available.patch"
-Content-Transfer-Encoding: base64
-
-RnJvbSBiZTAwN2UyNDg3ODM0YTNjZDdmN2Y0M2YxODYzYjY4N2MxMmM2YzJlIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNYXR0aGlldSBCYWVydHMgPG1hdHRoaWV1LmJhZXJ0
-c0B0ZXNzYXJlcy5uZXQ+CkRhdGU6IFRodSwgMjkgSnVuIDIwMjMgMTU6NDI6NDUgKzAyMDAK
-U3ViamVjdDogW1BBVENIXSA5cDogUDlMX0RJUkVDVCBmbGFnIGlzIG5vdCBhdmFpbGFibGUK
-ClVzaW5nIENBQ0hFX01NQVAgaW5zdGVhZCwgc2ltaWxhciB0byB3aGF0IGhhcyBiZWVuIGRv
-bmUgaW4Kdjlmc19maWxlX3JlYWRfaXRlcigpIGluIGNvbW1pdCAxNTQzYjRjNTA3MWMgKCJm
-cy85cDogcmVtb3ZlIHdyaXRlYmFjawpmaWQgYW5kIGZpeCBwZXItZmlsZSBtb2RlcyIpLCBo
-b3BlZnVsbHkgdGhlIHJpZ2h0IHRoaW5nLi4uCgpTaWduZWQtb2ZmLWJ5OiBNYXR0aGlldSBC
-YWVydHMgPG1hdHRoaWV1LmJhZXJ0c0B0ZXNzYXJlcy5uZXQ+Ci0tLQogZnMvOXAvdmZzX2Zp
-bGUuYyB8IDQgKysrLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
-dGlvbigtKQoKZGlmZiAtLWdpdCBhL2ZzLzlwL3Zmc19maWxlLmMgYi9mcy85cC92ZnNfZmls
-ZS5jCmluZGV4IDY4NWIyNzcyNTkxMy4uODI4N2IyNmIyM2RjIDEwMDY0NAotLS0gYS9mcy85
-cC92ZnNfZmlsZS5jCisrKyBiL2ZzLzlwL3Zmc19maWxlLmMKQEAgLTM5NSwxMSArMzk1LDEz
-IEBAIHN0YXRpYyBzc2l6ZV90IHY5ZnNfZmlsZV9zcGxpY2VfcmVhZChzdHJ1Y3QgZmlsZSAq
-aW4sIGxvZmZfdCAqcHBvcywKIAkJCQkgICAgIHNpemVfdCBsZW4sIHVuc2lnbmVkIGludCBm
-bGFncykKIHsKIAlzdHJ1Y3QgcDlfZmlkICpmaWQgPSBpbi0+cHJpdmF0ZV9kYXRhOworCXN0
-cnVjdCBpbm9kZSAqaW5vZGUgPSBmaWxlX2lub2RlKGluKTsKKwlzdHJ1Y3Qgdjlmc19zZXNz
-aW9uX2luZm8gKnY5c2VzID0gdjlmc19pbm9kZTJ2OXNlcyhpbm9kZSk7CiAKIAlwOV9kZWJ1
-ZyhQOV9ERUJVR19WRlMsICJmaWQgJWQgY291bnQgJXp1IG9mZnNldCAlbGxkXG4iLAogCQkg
-ZmlkLT5maWQsIGxlbiwgKnBwb3MpOwogCi0JaWYgKGZpZC0+bW9kZSAmIFA5TF9ESVJFQ1Qp
-CisJaWYgKHY5c2VzLT5jYWNoZSA+IENBQ0hFX01NQVApCiAJCXJldHVybiBjb3B5X3NwbGlj
-ZV9yZWFkKGluLCBwcG9zLCBwaXBlLCBsZW4sIGZsYWdzKTsKIAlyZXR1cm4gZmlsZW1hcF9z
-cGxpY2VfcmVhZChpbiwgcHBvcywgcGlwZSwgbGVuLCBmbGFncyk7CiB9Ci0tIAoyLjQwLjEK
-Cg==
-
---------------Yuq101Ls3bV7W6Atdhf6Ge5p--
+  Luis
