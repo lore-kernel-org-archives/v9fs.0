@@ -1,28 +1,28 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609C0441D
-	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD775C43391
-	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF4F253CD
+	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EA5C433C8
+	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689617495;
-	bh=x6Od1TZbGxl+321HBiuZy1eehJ2SStph7ULJvv4jaYk=;
+	s=k20201202; t=1689620374;
+	bh=sTuriLWYJzSSE2jwnJH5JjhAaslcZk5G8VKUlMsh+Yo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lVROgEW4SdcCeH/kOQrIrYPj8UY5F/6pLwCDYvBG7uujel5CkhBQwVRDQFwioYscl
-	 TC8i70EHMfwBazvcsxHZiy+Dva/kjfT4SF08QpgfkKW4UKKIciMBlxHbkPGr4PU3+n
-	 +37nTk3mDrD91coz1n4Ll/GnV0BwaP92nmRZ0/QI609GMn4ViJeqkc8n569obMDrb5
-	 AoRXKjivsLw3DxzqLzVl5qxe4Xu7Pm7NCq/X2rUe8K9nnIGNMFucuLlO53f3UwQYZt
-	 W0YvArTzKP/0liyNNVdNAU/J4/UPmKv3eoXl8/l46SlLoCHoY/6s1QqyLB/z75gUft
-	 sTEzsH1D7VmAw==
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6b9defb36a2so368956a34.2
-        for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 11:11:35 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbUjQpKrV1FvDLspb7Ng2q88ECN9Q5DQNPEKyQbEwkN7lP29c4c
-	2Oy6hVQDnY3J/lsgf2xdQccAWMuycW62Pz9Zwx0=
-X-Google-Smtp-Source: APBJJlGhnA4AuAqBr3YNugJNMVrceJJNNBCBw/ikZJ9qKDe1PYhssueQYMKWjbDNBcDoxvCE322EpnpzEjgwqiCqU/M=
-X-Received: by 2002:a05:6358:931a:b0:130:ebb9:4283 with SMTP id
- x26-20020a056358931a00b00130ebb94283mr10894538rwa.22.1689617495084; Mon, 17
- Jul 2023 11:11:35 -0700 (PDT)
+	b=d56I2ITWUu1mVIOxiDtwfOtStc6XQPSzzK0PPZ9xRVpavIS6uoSXezKuKrIX2Mqo1
+	 qf/LsJ59b7FMWtCHgYjmR4VjdWyiM0PZWKpcbCZoE8V+9ah49OFTvH8nZIgTq/HVo+
+	 fFvFJICVWIzGRPhkX+azZyT4jslnWoEWz4bgpvRcSlCZr/jBbHkv5UWFzqy7PM9rJF
+	 YCtJ8VcRzJUKPrXFJx0CBv7J7b9kjdVLQorbF6xtm8oTMS8l6gGGe+L/EaYJ+mVyrW
+	 GI841eByj3rQmt3Dx24IIc0N5KGIzEbMBgnUzCIHcdviRC/OpE6syEjCb0mY0XgZmt
+	 fAF5QXpsu5udw==
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-57a8080e4a7so48907817b3.0
+        for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 11:59:34 -0700 (PDT)
+X-Gm-Message-State: ABy/qLb7HXSZP7VwI27jB5pCQ55p6i7R4YrucCwDNV3Q8DNZm3aJvLZf
+	hiIYu1Awbk9CaRuIWcLVujhpmI6YBK+gMFL8JAc=
+X-Google-Smtp-Source: APBJJlHzyAZK+86bECGPSBDll+UNWcDd9FO5CEY4PjtnFom/DtR1BWJiZ2RNE0N6CzmBRz+ryCYIFBHIZs9CDKH+Z9w=
+X-Received: by 2002:a0d:f543:0:b0:56d:2189:d87a with SMTP id
+ e64-20020a0df543000000b0056d2189d87amr13867153ywf.15.1689620373760; Mon, 17
+ Jul 2023 11:59:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -35,11 +35,12 @@ References: <ZK25XZ+GpR3KHIB/@pengutronix.de> <8322841.litLk3al4c@silver>
  <CAFkjPTkNhGEDVyozHbVCkkFEkuQKiO6tn8Qjt4occMoupUupZw@mail.gmail.com>
  <CAFkjPTmyo0yXy2cGN9Zzic6Jd3QXLdhj5bUtNpQCvAudShx+Rw@mail.gmail.com>
  <ZLUlWpnmM6068KV3@pengutronix.de> <CAFkjPTkYKeTHk8DUJBCk8T9nmFV27onyU+j9DbcNQPMYAw8sAw@mail.gmail.com>
-In-Reply-To: <CAFkjPTkYKeTHk8DUJBCk8T9nmFV27onyU+j9DbcNQPMYAw8sAw@mail.gmail.com>
+ <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
+In-Reply-To: <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
 From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Mon, 17 Jul 2023 13:11:23 -0500
-X-Gmail-Original-Message-ID: <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
-Message-ID: <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
+Date: Mon, 17 Jul 2023 13:59:22 -0500
+X-Gmail-Original-Message-ID: <CAFkjPTnTEjXiEnf+zNDEav_6SdRB7=72QOUBfbTvpJVC+0wn8g@mail.gmail.com>
+Message-ID: <CAFkjPTnTEjXiEnf+zNDEav_6SdRB7=72QOUBfbTvpJVC+0wn8g@mail.gmail.com>
 Subject: Re: mmap on 9p broken in 6.4
 To: Robert Schwebel <r.schwebel@pengutronix.de>
 Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, Dominique Martinet <asmadeus@codewreck.org>, 
@@ -48,47 +49,60 @@ Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, Dominique Martinet <asmadeu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-nevermind the bit about not being able to reproduce the problem, I
-figured out what I was doing wrong there now and can reliably
-reproduce the problem on v6.5-rc1 before applying any of my patches.
-The patches do appear to fix the problem - but I'm still at a loss as
-to why ignoreqv also seemed to solve the problem.
+forgot to add, while i was able to reproduce the problem I wasn't able
+to reproduce ignoreqv solving it, so I'm going to try and stop
+worrying about that bit.
+I'm cleaning up the new regression test to add to my suite so
+something like this doesn't creep in again.  If someone would kindly
+review the patches I'll get them moved over into fixes/next so we can
+try and get them upstream.
 
-        -eric
+       -eric
 
-
-
-On Mon, Jul 17, 2023 at 10:29=E2=80=AFAM Eric Van Hensbergen <ericvh@kernel=
-.org> wrote:
+On Mon, Jul 17, 2023 at 1:11=E2=80=AFPM Eric Van Hensbergen <ericvh@kernel.=
+org> wrote:
 >
-> Thanks Robert, I was holding off on sending the patches out until I
-> could make sure they fixed the problem, but considering I've been
-> having trouble reproducing in my environment I'll send them out now.
-> They are also currently available on github on this branch if that
-> makes it any easier:
-> https://github.com/v9fs/linux/tree/b4/fixes-overly-restrictive-mmap
+> nevermind the bit about not being able to reproduce the problem, I
+> figured out what I was doing wrong there now and can reliably
+> reproduce the problem on v6.5-rc1 before applying any of my patches.
+> The patches do appear to fix the problem - but I'm still at a loss as
+> to why ignoreqv also seemed to solve the problem.
 >
 >         -eric
 >
-> On Mon, Jul 17, 2023 at 6:26=E2=80=AFAM Robert Schwebel
-> <r.schwebel@pengutronix.de> wrote:
+>
+>
+> On Mon, Jul 17, 2023 at 10:29=E2=80=AFAM Eric Van Hensbergen <ericvh@kern=
+el.org> wrote:
 > >
-> > Hi Eric,
+> > Thanks Robert, I was holding off on sending the patches out until I
+> > could make sure they fixed the problem, but considering I've been
+> > having trouble reproducing in my environment I'll send them out now.
+> > They are also currently available on github on this branch if that
+> > makes it any easier:
+> > https://github.com/v9fs/linux/tree/b4/fixes-overly-restrictive-mmap
 > >
-> > On Sun, Jul 16, 2023 at 02:48:27PM -0500, Eric Van Hensbergen wrote:
-> > > A quick update on this, I have a patch and it passes regressions
+> >         -eric
 > >
-> > Thanks for taking care! If you send the patch(es), I can test them in m=
-y
-> > setup.
-> >
-> > rsc
-> > --
-> > Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel=
-  |
-> > Steuerwalder Str. 21                       | https://www.pengutronix.de=
-/ |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
-  |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9  =
-  |
+> > On Mon, Jul 17, 2023 at 6:26=E2=80=AFAM Robert Schwebel
+> > <r.schwebel@pengutronix.de> wrote:
+> > >
+> > > Hi Eric,
+> > >
+> > > On Sun, Jul 16, 2023 at 02:48:27PM -0500, Eric Van Hensbergen wrote:
+> > > > A quick update on this, I have a patch and it passes regressions
+> > >
+> > > Thanks for taking care! If you send the patch(es), I can test them in=
+ my
+> > > setup.
+> > >
+> > > rsc
+> > > --
+> > > Pengutronix e.K.                           | Dipl.-Ing. Robert Schweb=
+el  |
+> > > Steuerwalder Str. 21                       | https://www.pengutronix.=
+de/ |
+> > > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0=
+    |
+> > > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9=
+    |
