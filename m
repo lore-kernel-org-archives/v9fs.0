@@ -1,108 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF4F253CD
-	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EA5C433C8
-	for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 18:59:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689620374;
-	bh=sTuriLWYJzSSE2jwnJH5JjhAaslcZk5G8VKUlMsh+Yo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d56I2ITWUu1mVIOxiDtwfOtStc6XQPSzzK0PPZ9xRVpavIS6uoSXezKuKrIX2Mqo1
-	 qf/LsJ59b7FMWtCHgYjmR4VjdWyiM0PZWKpcbCZoE8V+9ah49OFTvH8nZIgTq/HVo+
-	 fFvFJICVWIzGRPhkX+azZyT4jslnWoEWz4bgpvRcSlCZr/jBbHkv5UWFzqy7PM9rJF
-	 YCtJ8VcRzJUKPrXFJx0CBv7J7b9kjdVLQorbF6xtm8oTMS8l6gGGe+L/EaYJ+mVyrW
-	 GI841eByj3rQmt3Dx24IIc0N5KGIzEbMBgnUzCIHcdviRC/OpE6syEjCb0mY0XgZmt
-	 fAF5QXpsu5udw==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-57a8080e4a7so48907817b3.0
-        for <v9fs@lists.linux.dev>; Mon, 17 Jul 2023 11:59:34 -0700 (PDT)
-X-Gm-Message-State: ABy/qLb7HXSZP7VwI27jB5pCQ55p6i7R4YrucCwDNV3Q8DNZm3aJvLZf
-	hiIYu1Awbk9CaRuIWcLVujhpmI6YBK+gMFL8JAc=
-X-Google-Smtp-Source: APBJJlHzyAZK+86bECGPSBDll+UNWcDd9FO5CEY4PjtnFom/DtR1BWJiZ2RNE0N6CzmBRz+ryCYIFBHIZs9CDKH+Z9w=
-X-Received: by 2002:a0d:f543:0:b0:56d:2189:d87a with SMTP id
- e64-20020a0df543000000b0056d2189d87amr13867153ywf.15.1689620373760; Mon, 17
- Jul 2023 11:59:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E917F0
+	for <v9fs@lists.linux.dev>; Tue, 18 Jul 2023 02:49:15 +0000 (UTC)
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 347F6C021; Tue, 18 Jul 2023 04:49:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1689648554; bh=gXC7lZsciCoVW9famNK4Ly0sIVABug3pge3MST1GSU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b5n0AKr2E598uHNpVs4UymLGion7uATI9j916d46cgv+0dw2xTmhk+WD5Vmc0GSYa
+	 KYRwU495TfoeFmR6t/SQQ64TN+i1OjteT3eDJcXsRy/ptgmP2CH1bGejfU6eZmVdU8
+	 1NvolZlqSC6yhmLFvcc9qsk8lXjqp4dNiOO0uEqKJNVY3nm9xly0L7LkIQys4OVpJ1
+	 7VUQcg5wOcuwCN8w5BH9WSrHgQwkqrj/QLU4bbXayCoHDwOEpsBT5kokoU6OncpuG4
+	 AMHXSmjNumY+mTCDLhV4PFvBnkn6HzEfnceBaHa1XXbKdVB7MMVUdHNG+7kXx+EReB
+	 woN2d/ZTHlxBw==
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on nautica.notk.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.0 required=5.0 tests=UNPARSEABLE_RELAY
+	autolearn=unavailable version=3.3.2
+Received: from odin.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 7089CC01A;
+	Tue, 18 Jul 2023 04:49:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1689648553; bh=gXC7lZsciCoVW9famNK4Ly0sIVABug3pge3MST1GSU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TeoOe1FO8/AIW8dork5GxRbvcHabHTqzNBr3UBe1qbs9HJNsybNQ11hJD3i+9SPiy
+	 wfUojKTQEsxYI9RYET2dj5wpsWX7qnaTqTzpOQ9q3u8aErRg7MFpn9Q4R/tIpB5nNr
+	 c8mZJbrplzWLGc1Rxdyu141+J+cFXlvhviDgn0wMScRdh7/gQH9cavt0tWTg1nL7Nt
+	 9UFPVD/RbKVqL6LeJE0m4osKotnVwJCUGAVlLD4bTna8rUsDw41u/nMfOSkQPicFl9
+	 utiH8vWpJJfIfemZMt3IBeabKZ7tlz+iZAePANC/2L+ooBinCy3J4EA3LFQYSKWtEy
+	 Pg0g4fP1+fTIQ==
+Received: from localhost (odin.codewreck.org [local])
+	by odin.codewreck.org (OpenSMTPD) with ESMTPA id 3f7d9a9a;
+	Tue, 18 Jul 2023 02:49:09 +0000 (UTC)
+Date: Tue, 18 Jul 2023 11:48:53 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, Robert Schwebel <r.schwebel@pengutronix.de>
+Subject: Re: [PATCH 2/3] fs/9p: fix typo in comparison logic for cache mode
+Message-ID: <ZLX9lUnIwLYT-Oc4@codewreck.org>
+References: <20230716-fixes-overly-restrictive-mmap-v1-0-0683b283b932@kernel.org>
+ <20230716-fixes-overly-restrictive-mmap-v1-2-0683b283b932@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZK25XZ+GpR3KHIB/@pengutronix.de> <8322841.litLk3al4c@silver>
- <CAFkjPTmrbe9Djs_iYf=vu1xbTLhey0OmePR2Jw=C_dbQVYnAhQ@mail.gmail.com>
- <11571626.Ud7ZN73ssd@silver> <ZLDe09znEIA9t+KF@pengutronix.de>
- <CAFkjPTkNhGEDVyozHbVCkkFEkuQKiO6tn8Qjt4occMoupUupZw@mail.gmail.com>
- <CAFkjPTmyo0yXy2cGN9Zzic6Jd3QXLdhj5bUtNpQCvAudShx+Rw@mail.gmail.com>
- <ZLUlWpnmM6068KV3@pengutronix.de> <CAFkjPTkYKeTHk8DUJBCk8T9nmFV27onyU+j9DbcNQPMYAw8sAw@mail.gmail.com>
- <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
-In-Reply-To: <CAFkjPTkDn=uTEZaQ5HwfPb5sLqMgegoHo=_nsyy2G+3nRFB2OQ@mail.gmail.com>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Mon, 17 Jul 2023 13:59:22 -0500
-X-Gmail-Original-Message-ID: <CAFkjPTnTEjXiEnf+zNDEav_6SdRB7=72QOUBfbTvpJVC+0wn8g@mail.gmail.com>
-Message-ID: <CAFkjPTnTEjXiEnf+zNDEav_6SdRB7=72QOUBfbTvpJVC+0wn8g@mail.gmail.com>
-Subject: Re: mmap on 9p broken in 6.4
-To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, kernel@pengutronix.de, v9fs@lists.linux.dev, 
-	groug@kaod.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v1-2-0683b283b932@kernel.org>
 
-forgot to add, while i was able to reproduce the problem I wasn't able
-to reproduce ignoreqv solving it, so I'm going to try and stop
-worrying about that bit.
-I'm cleaning up the new regression test to add to my suite so
-something like this doesn't creep in again.  If someone would kindly
-review the patches I'll get them moved over into fixes/next so we can
-try and get them upstream.
+Eric Van Hensbergen wrote on Mon, Jul 17, 2023 at 04:29:01PM +0000:
+> There appears to be a typo in the comparison statement for the logic
+> which sets a file's cache mode based on mount flags.
 
-       -eric
+Shouldn't break anything, but good fix nevertheless, thanks!
 
-On Mon, Jul 17, 2023 at 1:11=E2=80=AFPM Eric Van Hensbergen <ericvh@kernel.=
-org> wrote:
->
-> nevermind the bit about not being able to reproduce the problem, I
-> figured out what I was doing wrong there now and can reliably
-> reproduce the problem on v6.5-rc1 before applying any of my patches.
-> The patches do appear to fix the problem - but I'm still at a loss as
-> to why ignoreqv also seemed to solve the problem.
->
->         -eric
->
->
->
-> On Mon, Jul 17, 2023 at 10:29=E2=80=AFAM Eric Van Hensbergen <ericvh@kern=
-el.org> wrote:
-> >
-> > Thanks Robert, I was holding off on sending the patches out until I
-> > could make sure they fixed the problem, but considering I've been
-> > having trouble reproducing in my environment I'll send them out now.
-> > They are also currently available on github on this branch if that
-> > makes it any easier:
-> > https://github.com/v9fs/linux/tree/b4/fixes-overly-restrictive-mmap
-> >
-> >         -eric
-> >
-> > On Mon, Jul 17, 2023 at 6:26=E2=80=AFAM Robert Schwebel
-> > <r.schwebel@pengutronix.de> wrote:
-> > >
-> > > Hi Eric,
-> > >
-> > > On Sun, Jul 16, 2023 at 02:48:27PM -0500, Eric Van Hensbergen wrote:
-> > > > A quick update on this, I have a patch and it passes regressions
-> > >
-> > > Thanks for taking care! If you send the patch(es), I can test them in=
- my
-> > > setup.
-> > >
-> > > rsc
-> > > --
-> > > Pengutronix e.K.                           | Dipl.-Ing. Robert Schweb=
-el  |
-> > > Steuerwalder Str. 21                       | https://www.pengutronix.=
-de/ |
-> > > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0=
-    |
-> > > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9=
-    |
+Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
+
+
+> 
+> Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+> ---
+>  fs/9p/fid.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+> index 0c51889a60b33..297c2c377e3dd 100644
+> --- a/fs/9p/fid.h
+> +++ b/fs/9p/fid.h
+> @@ -57,7 +57,7 @@ static inline void v9fs_fid_add_modes(struct p9_fid *fid, int s_flags,
+>  	   (s_flags & V9FS_DIRECT_IO) || (f_flags & O_DIRECT)) {
+>  		fid->mode |= P9L_DIRECT; /* no read or write cache */
+>  	} else if ((!(s_cache & CACHE_WRITEBACK)) ||
+> -				(f_flags & O_DSYNC) | (s_flags & V9FS_SYNC)) {
+> +				(f_flags & O_DSYNC) || (s_flags & V9FS_SYNC)) {
+>  		fid->mode |= P9L_NOWRITECACHE;
+>  	}
+>  }
+> 
+
+-- 
+Dominique Martinet | Asmadeus
