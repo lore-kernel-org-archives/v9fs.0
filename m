@@ -1,23 +1,23 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40331641C
-	for <v9fs@lists.linux.dev>; Wed, 19 Jul 2023 16:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB56C433CA;
-	Wed, 19 Jul 2023 16:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C0911C93
+	for <v9fs@lists.linux.dev>; Wed, 19 Jul 2023 16:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FD3C433CB;
+	Wed, 19 Jul 2023 16:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689783771;
-	bh=K6oAnsvQEIZrftCXh7mBn5FA+pVc8rhUAGklED1yUHw=;
+	s=k20201202; t=1689783772;
+	bh=MhQlJrTsZHmha2KJIBaaG75cljAu9xtlF2pUFmjLQl0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qZv8/kh4Iyuuiswu7oyZwUcv4dJT5RoNFpwxVuluWlCwCWmretLUk5PaKDIhLDoBR
-	 j902l4VPO1zqp8LwQm0lCqOiPKrAzD88mBt8H/3HsjOnXfwPOau7uGUwOyJXJ8FPdH
-	 ErbPXrOPlV3q/wjdLlC68hlxxNlKjHjaHuHdJGCEUdjAuaQLrbjH9N6CNqITucpcgE
-	 K6EzBQV/GhH1UsrcxCeyAw1jTqSI8O3eV4OCzu6HqKyPXYvyr1A/UqiPIwIdudQaTJ
-	 yLmvBN2oR94w8cW7zvq7I4rlg311Ez1B4W3U4Fkv3lOhC6fnGPce7rWM0hkRTyEwDO
-	 is0D+7MER80lg==
+	b=Ybo+jM3VJ9XHhauSCwdIsqdzWeqFQzs/qxba1+/HJ7MFo1coteRMEFtDOAJVonupb
+	 x5V9PtV/MBliY+teolKzToutb94UNyG0gFL+uw5WgWyv6xZ0rvKER6mZqbUaNQAKW6
+	 p3XcOg8yabNhSB+ci6Msr+j6Jjhnh10f5Z31/itKq3Xdhl+MnJvTn10G4OP/uoLmqW
+	 UmwS5f8GF3xEwCLE0e5qxLKHeCRGxP7uPke3mN4GBt+JsOozSU4k1SQ8SJlC5mUOCz
+	 OpHzfdrcrcOqD9Uf6F1e9iX43wj6y5XEnUylH3Ftmea7HdfzxnfhE5GR0ElQ/qrFrX
+	 ivJTQunK94Uww==
 From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Wed, 19 Jul 2023 16:22:30 +0000
-Subject: [PATCH v4 1/4] fs/9p: remove unnecessary and overrestrictive check
+Date: Wed, 19 Jul 2023 16:22:31 +0000
+Subject: [PATCH v4 2/4] fs/9p: fix typo in comparison logic for cache mode
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -26,7 +26,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230716-fixes-overly-restrictive-mmap-v4-1-a3cd1cd32af2@kernel.org>
+Message-Id: <20230716-fixes-overly-restrictive-mmap-v4-2-a3cd1cd32af2@kernel.org>
 References: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
 In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
 To: Latchesar Ionkov <lucho@ionkov.net>, 
@@ -37,52 +37,48 @@ Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
  Robert Schwebel <r.schwebel@pengutronix.de>, 
  Eric Van Hensbergen <ericvh@kernel.org>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1223; i=ericvh@kernel.org;
- h=from:subject:message-id; bh=K6oAnsvQEIZrftCXh7mBn5FA+pVc8rhUAGklED1yUHw=;
- b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkuA3YMIjmuoMKqeY2BsmWo6nZ5varMUeKrXq1A
- ZgW9vAkk0SJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLgN2AAKCRCI/9X7Sl//
- mLVmD/0YVO3O0CHQoWPMnoGtCl1BrCJgi4NkTHU1J4rP0H9hKOJ8OUaephCEQ1KU3WZzKEKMK/b
- uYtwMcqyqd+PX70SbCMFlQhZxsiiNOvDtUpaOVC89rTozUMorggCYvVr95NmQ80HlViSHCadvIX
- K4i1W+sMcga84ViNqDgt+mFn0urJ6z44hs6skVwcIDDImceU9lunAM2BejqtK3w0AFkMXEzqnOX
- SdMeV03rF6zVFwK7/7xACx+dx0MJVlC/UP6o7KLTTkoU0Nzr4hB4ZqaCy61b8vMqUln7lVRxZaZ
- jk0zwMV+5XN0KBN7eb6WtzDeURR97FOLTww1chVWjIaO2W8mNc4z16eSuDHMTk7ZlxkTM6avVSv
- Kqb7YDf5brbCHsuQb/FjwBM1Fq44newsqNlWNVbSIhrRczmt4xD1eRU+B6mfr59IvMOcW5jPEiR
- kzuQevXCHkBmxgMLUXg0cLPCSr8non0kUbz1NQAkU6Ba5mLopt8keYqdr7DeH2blqkUKdRfLp6q
- BHaw4Yjh+y/g62WWlkuHNOfSngAdz4T8tse1IQVoKMbsUiXt9Iof6lBMRPhCLnIGoF/K3pIcLDc
- +mdwaVFmkNp3LYDpIzCwjgUoIYp2gGOZLJsVW0/izToqd0mxVBlXPYXrOgb+ANu0prCENGMgOZ2
- gwFRnjJFnsjC0zw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1023; i=ericvh@kernel.org;
+ h=from:subject:message-id; bh=MhQlJrTsZHmha2KJIBaaG75cljAu9xtlF2pUFmjLQl0=;
+ b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkuA3YG2lCTw7UKGBhazSWgJkV4G2nM6ldEheUr
+ xyRiO0BqDCJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLgN2AAKCRCI/9X7Sl//
+ mKzwEACfb3WBpP4t95Qby/jwVvjdngxQWel1ZL9JHoeb1r1FKF+FybflItJj4JCmqeAcOc9/Vh8
+ xsP8vcee8Wjp2XQ5Z0NEUNX0Rp9taMXvUxKsVkjTrzmpjeRlM8+7dBnZzGWJ3PBGpMEpu0urFJv
+ jIk7515+CoKprBoITqKEORaMcdOSitNRxUhGFZ82XC31fzbdH8ehG+KJ9lLqpNqUd9prTQX6YTr
+ 5lVAhp7ClbOkxH9aefpNBmpWeS0mfTp5FLE4ysrjUANkzqm9biqagH2i79dm/IyY0qEC29BUG9Q
+ hXKuT0RUiNFCX4lB9RLie3dT4217w65D0FcQ18agAEm9pP4nmHoNAB5gtvvQzE6mBYM2rQuZ5WZ
+ lC6z32z+OB5Cb+Qo93fG8lUMPv1egOGP5IqTgHkmqud/RHpLXWHqztbAxB0TnNsXfK81Jj3Hc/v
+ 4IRUtqhBgIoOEPxQQQC7AkJ5TrQUTRvmKJYC3J+RHjd91bd065inBCqd3b9rSaQN7KOcPzMgxcD
+ uLasiATDItiixE4D0Q9Hrq8xCNWdEYbBATcji3CaKbwnT0eKDcOORD1FUOLOPlEdGs56nSC+nHM
+ bVTwsjiIKX5tkQqXnPBchUlUcpLhOm3HKzoQ8s2flq2wWHkuMHedzeT6zH5qURqbQwqCOU0mbEP
+ Pn82PdTDe8cLk3w==
 X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
  fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
 
-This eliminates a check for shared that was overrestrictive and
-prevented read-only mmaps when writeback caches weren't enabled.
+There appears to be a typo in the comparison statement for the logic
+which sets a file's cache mode based on mount flags.
 
 Cc: stable@vger.kernel.org
 Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file modes")
-Reported-by: Robert Schwebel <r.schwebel@pengutronix.de>
-Closes: https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de
-Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
 Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 ---
- fs/9p/vfs_file.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/9p/fid.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 2996fb00387f..9b61b480a9b0 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -505,9 +505,7 @@ v9fs_file_mmap(struct file *filp, struct vm_area_struct *vma)
- 	p9_debug(P9_DEBUG_MMAP, "filp :%p\n", filp);
- 
- 	if (!(v9ses->cache & CACHE_WRITEBACK)) {
--		p9_debug(P9_DEBUG_CACHE, "(no mmap mode)");
--		if (vma->vm_flags & VM_MAYSHARE)
--			return -ENODEV;
-+		p9_debug(P9_DEBUG_CACHE, "(read-only mmap mode)");
- 		invalidate_inode_pages2(filp->f_mapping);
- 		return generic_file_readonly_mmap(filp, vma);
+diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+index 0c51889a60b3..297c2c377e3d 100644
+--- a/fs/9p/fid.h
++++ b/fs/9p/fid.h
+@@ -57,7 +57,7 @@ static inline void v9fs_fid_add_modes(struct p9_fid *fid, int s_flags,
+ 	   (s_flags & V9FS_DIRECT_IO) || (f_flags & O_DIRECT)) {
+ 		fid->mode |= P9L_DIRECT; /* no read or write cache */
+ 	} else if ((!(s_cache & CACHE_WRITEBACK)) ||
+-				(f_flags & O_DSYNC) | (s_flags & V9FS_SYNC)) {
++				(f_flags & O_DSYNC) || (s_flags & V9FS_SYNC)) {
+ 		fid->mode |= P9L_NOWRITECACHE;
  	}
+ }
 
 -- 
 2.39.2
