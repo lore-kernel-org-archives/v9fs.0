@@ -1,75 +1,84 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB0814AA3
-	for <v9fs@lists.linux.dev>; Wed, 19 Jul 2023 13:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=7L+Xkt1Em2DaemKP30bcX/bfNhleDwpX/9tOCT336L4=; b=U4Cm0gWu1IAKrXYF/GNlt975nB
-	c4D6vwd57ekgrf2ZTFg8NYrSlSEFihb3WFyUDoaV/Qm94mTOqq+7SKhzEeiyypAg9JPQj0VlPJoJ3
-	2HJZ35jbGlOx6QY236ZXdtsV+uWvdXhqxnElXznKrswBKJ3Y3elAO9qG+bHs/ck4zjugDZyID0fsu
-	5XcJhod2BXu4tb26RPdCh7O9nrnUb0SMIeGKUFLaHTe/gWFjdphsNmU6SnDbbKy8RZw56Gw1s1rRp
-	X/GZ5ddcjjr26rS8nZ4lo1NgMtNZVesMMndI0xb+tjJLlgw2OglOD3+PxapXfjLeMyNQzu3Synfq6
-	LdFLWIPBfIUNVIKq+3r9b4CHmYbeWvQcemnMLr5zk14aaMGhGCkk1WefwGgMsll1DXgfWIFcRfL4f
-	En5WbUCFRwtXdaNdnvqonl98MSRL0/NyNuqObO4Rp5PZ9e/UIKGQuVnlOeKRK2HNDNw/lbJsptUAW
-	nZEqw5EVqDaGr9ewjVYOQzfZHGIaPrlLDgCQBVw2p2SHHBE0j0sWMjbly272WAo/kPNttgbZ8CES+
-	iETlW1cxbAT8fRKtvbVUxSkBaZvOmjQDdz/8Dpcg2Pdxc3kEtSPHyJ4uNCbkpQDu+XFpAxqnHKJPs
-	rHapZ2eGivRDGrBtJwNa72ebKGCwXOeJkbMnMqe5E=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Eric Van Hensbergen <ericvh@kernel.org>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de,
- Robert Schwebel <r.schwebel@pengutronix.de>,
- Eric Van Hensbergen <ericvh@kernel.org>
-Subject:
- Re: [PATCH v2 1/4] fs/9p: remove unnecessary and overrestrictive check
-Date: Wed, 19 Jul 2023 15:18:33 +0200
-Message-ID: <5578264.lUQuLdSRdS@silver>
-In-Reply-To:
- <20230716-fixes-overly-restrictive-mmap-v2-1-147d6b93f699@kernel.org>
-References:
- <20230716-fixes-overly-restrictive-mmap-v2-0-147d6b93f699@kernel.org>
- <20230716-fixes-overly-restrictive-mmap-v2-1-147d6b93f699@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE1A125AD;
+	Wed, 19 Jul 2023 14:17:52 +0000 (UTC)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qM7zx-0001xr-1o; Wed, 19 Jul 2023 16:17:49 +0200
+Message-ID: <2f873530-9c72-af23-0290-a2100df9ba56@leemhuis.info>
+Date: Wed, 19 Jul 2023 16:17:46 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/3] fs/9p: fix mmap regression
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kernel@pengutronix.de, Robert Schwebel <r.schwebel@pengutronix.de>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20230716-fixes-overly-restrictive-mmap-v1-0-0683b283b932@kernel.org>
+Content-Language: en-US, de-DE
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v1-0-0683b283b932@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689776272;3309b74c;
+X-HE-SMSGID: 1qM7zx-0001xr-1o
 
-On Tuesday, July 18, 2023 10:50:15 PM CEST Eric Van Hensbergen wrote:
-> This eliminates a check for shared that was overrestrictive and
-> duplicated a check in generic_file_readonly_mmap.
+On 17.07.23 18:28, Eric Van Hensbergen wrote:
+> This series attempts to fix a reported exception with mmap
+> on newer kernels. 
 > 
-> Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
-> Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-> Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-> ---
->  fs/9p/vfs_file.c | 2 --
->  1 file changed, 2 deletions(-)
+> -- original regression report --
 > 
-> diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-> index 2996fb00387fa..bda3abd6646b8 100644
-> --- a/fs/9p/vfs_file.c
-> +++ b/fs/9p/vfs_file.c
-> @@ -506,8 +506,6 @@ v9fs_file_mmap(struct file *filp, struct vm_area_struct *vma)
->  
->  	if (!(v9ses->cache & CACHE_WRITEBACK)) {
->  		p9_debug(P9_DEBUG_CACHE, "(no mmap mode)");
-
-"(r/o mmap mode)" ?
-
-> -		if (vma->vm_flags & VM_MAYSHARE)
-> -			return -ENODEV;
->  		invalidate_inode_pages2(filp->f_mapping);
->  		return generic_file_readonly_mmap(filp, vma);
->  	}
+> TL;DR: mmap() seems to be broken on 9pfs on Linux 6.4. setting
+> "rootflags=ignoreqv" fixes it as well, but it feels like a regression.
+>
+> [...]
 > 
+> I could track down the breakage to
 > 
+>   1543b4c5071c54d76aad7a7a26a6e43082269b0c
+> 
+> My test setup has, in addition to the patch above, the following patches also
+> reverted on top of a vanilla 6.4 kernel:
+> 
+>   4eb3117888a923f6b9b1ad2dd093641c49a63ae5
+>   21e26d5e54ab7cfe6b488fd27d4d70956d07e03b
+> 
+> as 1543b cannot be reverted without those; however, the effect only goes away
+> when I also revert 1543b. The kernel has no other patches applied, only these
+> three reverts.
+> 
+> -- end bug report --
+> 
+> Reported-by: Robert Schwebel <r.schwebel@pengutronix.de>
 
+This tag afaics should be in some or all of the commits -- together with
+a Link: or Closes: tag to the report
+(https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de/ ).
 
+'Fixes:' tags would seem appropriate here as well. And to get this fixed
+in Linux 6.4.y. a "Cc: <stable..." would be great as well.
+
+See Documentation/handling-regressions.rst (
+https://docs.kernel.org/process/handling-regressions.html ) and the
+links to Documentation/process/submitting-patches.rst or
+Documentation/process/5.Posting.rst for details.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot ^backmonitor:
+https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de/
