@@ -1,79 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C4B171C6
-	for <v9fs@lists.linux.dev>; Tue, 18 Jul 2023 20:50:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEACFC433CB;
-	Tue, 18 Jul 2023 20:50:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689713425;
-	bh=scxEmsmSS3yAw8Pb9vs+lLcPVOwcbwDaNQFx5fsoDzg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gQLfe2sZU78/8tGyOQjHfsxtD3oQUv+Px5p2nKSG2zOFChi/ssTKr3JBCzye1qq+8
-	 7VNbb0lJBrjlbHvzinxbFVOanGpdbgiFHSIpmwpcfz6sOowDLYcJFdexcC5UZQl2rc
-	 SIWcIec7RA+pcZhOZbMmxW1u/MvG+Q55kF3HcCJ4d2fWg+ORaLXnpXhqrJATV5Jpvc
-	 KfFkXep5yxpZYkcOYus1diAFXr7sFso2FEF81FqQIm89o1eGkiPbDOy+41kVGnGr5w
-	 peJolAYeeC7dwcwWHCBKcGrmv9x7qJfarLKKD29P63QWodHBhllrC+vUff5TJ5SVm8
-	 HgB8WgpmNxWwg==
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Tue, 18 Jul 2023 20:50:18 +0000
-Subject: [PATCH v2 4/4] fs/9p: remove unnecessary invalidate_inode_pages2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C836817CB
+	for <v9fs@lists.linux.dev>; Wed, 19 Jul 2023 01:35:42 +0000 (UTC)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1b0249f1322so4825038fac.3
+        for <v9fs@lists.linux.dev>; Tue, 18 Jul 2023 18:35:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20221208.gappssmtp.com; s=20221208; t=1689730541; x=1692322541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xZssYNKocP7SJAjxckC3wBJ507CzulE9IvrMWjf3P+k=;
+        b=5Slf0Wf1DkEOl9A1TiQUYv8SMKm8hpMZkE2pdlrBFVPzzvpLYuiVjUXLVmHCw57mm3
+         QfMAXPNPanSdHmq5ZWXmuM6TgukKEbveLzpwksx2dw9ZklwdjhA52vimEHT2eirBfa+2
+         IT2vnquxNaJm7BjHGdah8DmKJSIjdo0Yp6c26+N05rt7PzrzOKrn94s8yKsSInPTUfNp
+         YfGoevKBsYDtPuhIbewKvY1jLvJ5fb914inI0h60wc0+K8b0g/S/UYKcw11+BXpzkI08
+         6FecWUvMm8TYFIR2erayRFzaDHDt6sysMcKT2DfDdd2VqMiXCbsW5RRwMl7laE7GyBrL
+         HnfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689730542; x=1692322542;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xZssYNKocP7SJAjxckC3wBJ507CzulE9IvrMWjf3P+k=;
+        b=L2+K1NgNGxD6KG0gt5+9G1B+KMhymM19v9zfSp1ND9xm8YLa4oHvFnRgOFN1NYcbee
+         1G6UfdTMKTaKufpreDjqYO7LBBli95pnu+RJmD1YMJNCdFFyWKMAY0h3iAV+7XxbfLwc
+         8bGz2+2Zvq/3pDWHmNLS22VvOFM6BCJGlWU+BeYpYxJKxgjP2OCWd6oWJSGS9h7jYl9K
+         BkqE2LMkScUy12ESO74Rxozcb6AvZcHXjJKFFnyUM60tpQXfYY2r950zELCHWSzsw2He
+         qvDkd+UzaCy3WNmH+X8KCHNZ8OomyVCOZ3kXLpfE5RICNIyI8wFCBibb94ByVMAlIJ7K
+         7Qbw==
+X-Gm-Message-State: ABy/qLaAhFGJRIKs+F0h8AwdG62ZoUyn4Bl3jtLXP/N3yVmesmKqW1UM
+	jZl3dPMRvS55VyC6de9I+efwUw==
+X-Google-Smtp-Source: APBJJlHb4gEwJfD+TL2icCrXL1rPSO1/If2sqk52+FC1gSV2ztjdma15fYoDbEqUpP5c7bsoFPcHEw==
+X-Received: by 2002:a05:6870:96a6:b0:1b3:8d35:c85f with SMTP id o38-20020a05687096a600b001b38d35c85fmr1011777oaq.1.1689730541592;
+        Tue, 18 Jul 2023 18:35:41 -0700 (PDT)
+Received: from dread.disaster.area (pa49-186-119-116.pa.vic.optusnet.com.au. [49.186.119.116])
+        by smtp.gmail.com with ESMTPSA id 201-20020a6301d2000000b005633311c70dsm2343100pgb.32.2023.07.18.18.35.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 18:35:40 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+	(envelope-from <david@fromorbit.com>)
+	id 1qLw6L-007mcz-1V;
+	Wed, 19 Jul 2023 11:35:37 +1000
+Date: Wed, 19 Jul 2023 11:35:37 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+	Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Richard Weinberger <richard@nod.at>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Darrick J. Wong" <djwong@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-afs@lists.infradead.org,
+	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	cluster-devel@redhat.com, linux-nfs@vger.kernel.org,
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+	devel@lists.orangefs.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org, linux-mtd@lists.infradead.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v5 6/8] xfs: switch to multigrain timestamps
+Message-ID: <ZLc96V2Yo72sthsi@dread.disaster.area>
+References: <20230713-mgctime-v5-0-9eb795d2ae37@kernel.org>
+ <20230713-mgctime-v5-6-9eb795d2ae37@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230716-fixes-overly-restrictive-mmap-v2-4-147d6b93f699@kernel.org>
-References: <20230716-fixes-overly-restrictive-mmap-v2-0-147d6b93f699@kernel.org>
-In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v2-0-147d6b93f699@kernel.org>
-To: Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Robert Schwebel <r.schwebel@pengutronix.de>, 
- Eric Van Hensbergen <ericvh@kernel.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=634; i=ericvh@kernel.org;
- h=from:subject:message-id; bh=scxEmsmSS3yAw8Pb9vs+lLcPVOwcbwDaNQFx5fsoDzg=;
- b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBktvsM6EaD3uQIChje/362palMFSayDgR3qaOWO
- dsMdF9cc6qJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLb7DAAKCRCI/9X7Sl//
- mLrFEACWjUV9pX/ivEzfBsAWNxyETtVIY4AVufEY6ephLHNpEIegrcmzupnJ+Jz7uFRLdTLMF7c
- 9GQPcjG9oq8tu7JxTsvRJd5dRRDunPi+caDam+5BmpVMVJ4JjJEoTyX/EwSylM7BX8zGcYtgcBc
- BOYOTznWqLKc7O6QGewfAl19EbsbZL8d6EFAo19p/LEo7sMR1Jy0u4c0/9gPniZ+3HDMZtz3Hs0
- SXLwNi9gr06sAlxc2jBFyy7cgSbXWHzD/+Wp4WWsIqeL7h7jUHKfH6WYmsIbYi2fPMejghZeNsI
- IDyxbaHm4jSNYnLulLDuTK7JeO/03t1zyZryLh4UfVBeYSXSotY9HycOXQWjDGue0ScZddviXU4
- hxV9+wq5j6Zn2AIpej8C07r5xQ1oNAYRG7xtmbETUYSDUQP+D5fTJHI4JWnZCbRZriNzbgW0TyF
- d6sh9ARoaoyUNabFuzxwobOkuS9w78MPfA7WNOfje2aGsul9v4YT497597CijRYqnRsnudf8Wsg
- ay0c2ME8h8RatfPVZV1GtmqrOTDf5ZzQdforHXTSl99X9VzlunbiDn3dJa50gVc27bOuQ7w6eHi
- m8jBvuxPu6Sb7gDTRshrje4uv32/pYL+0vwN17BLFnq6bYlMSmKqW2ejcx5MNQouF33jBJaX18e
- hUNzK/SW/afmSsg==
-X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
- fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230713-mgctime-v5-6-9eb795d2ae37@kernel.org>
 
-There was an invalidate_inode_pages2
-added to mmap that is unnecessary.
+On Thu, Jul 13, 2023 at 07:00:55PM -0400, Jeff Layton wrote:
+> Enable multigrain timestamps, which should ensure that there is an
+> apparent change to the timestamp whenever it has been written after
+> being actively observed via getattr.
+> 
+> Also, anytime the mtime changes, the ctime must also change, and those
+> are now the only two options for xfs_trans_ichgtime. Have that function
+> unconditionally bump the ctime, and warn if XFS_ICHGTIME_CHG is ever not
+> set.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/xfs/libxfs/xfs_trans_inode.c | 6 +++---
+>  fs/xfs/xfs_iops.c               | 4 ++--
+>  fs/xfs/xfs_super.c              | 2 +-
+>  3 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/xfs/libxfs/xfs_trans_inode.c b/fs/xfs/libxfs/xfs_trans_inode.c
+> index 0c9df8df6d4a..86f5ffce2d89 100644
+> --- a/fs/xfs/libxfs/xfs_trans_inode.c
+> +++ b/fs/xfs/libxfs/xfs_trans_inode.c
+> @@ -62,12 +62,12 @@ xfs_trans_ichgtime(
+>  	ASSERT(tp);
+>  	ASSERT(xfs_isilocked(ip, XFS_ILOCK_EXCL));
+>  
+> -	tv = current_time(inode);
+> +	/* If the mtime changes, then ctime must also change */
+> +	WARN_ON_ONCE(!(flags & XFS_ICHGTIME_CHG));
 
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
----
- fs/9p/vfs_file.c | 1 -
- 1 file changed, 1 deletion(-)
+Make that an ASSERT(flags & XFS_ICHGTIME_CHG), please. There's no
+need to verify this at runtime on production kernels.
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index bda3abd6646b8..3809f3a531499 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -506,7 +506,6 @@ v9fs_file_mmap(struct file *filp, struct vm_area_struct *vma)
- 
- 	if (!(v9ses->cache & CACHE_WRITEBACK)) {
- 		p9_debug(P9_DEBUG_CACHE, "(no mmap mode)");
--		invalidate_inode_pages2(filp->f_mapping);
- 		return generic_file_readonly_mmap(filp, vma);
- 	}
- 
-
+-Dave.
 -- 
-2.39.2
-
+Dave Chinner
+david@fromorbit.com
