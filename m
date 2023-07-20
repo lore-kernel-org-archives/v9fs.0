@@ -1,84 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B10511C93
-	for <v9fs@lists.linux.dev>; Wed, 19 Jul 2023 16:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11562C433C7;
-	Wed, 19 Jul 2023 16:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689783775;
-	bh=k0K6ocifQ0ciwTzxXH7M8DUDHsKfrzNua/KxUjjXkFA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=T2LZDWcO5puV7VRCOsBgGotJisgKYwNNFQPAB/HDRTnd0Ladvgmjla4PWV4BzPlYt
-	 i5xnpx5OP7rCjVfadkGllgwQuwN/eKoDlsQBe22il4LQzHMWer1aApYyMMSLWl93nH
-	 ipkU+jYlLEzhSpmE5oJlURyvBuQEhyZpl47om/5yysQ7Smn3Qg6szrq4OY1rk6R1EV
-	 QNdrGIH+VXh0LsjbUaXTquUsLvNjePH8ah6azGRLt7xXZoIqNaXR0lBsG3js4uYk2S
-	 CLddkeUGPjnORTEJfT5D7Vsoy7rZaCAVSD6xKsOKY0hZtNWJtHMp3p4k1rOqqKOdt3
-	 VtNvQayijlXaw==
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Wed, 19 Jul 2023 16:22:33 +0000
-Subject: [PATCH v4 4/4] fs/9p: remove unnecessary invalidate_inode_pages2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A0D17723
+	for <v9fs@lists.linux.dev>; Thu, 20 Jul 2023 14:35:18 +0000 (UTC)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R6FWQ28QmztR9G;
+	Thu, 20 Jul 2023 22:32:02 +0800 (CST)
+Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
+ (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 20 Jul
+ 2023 22:35:10 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <ericvh@kernel.org>, <lucho@ionkov.net>, <asmadeus@codewreck.org>,
+	<linux_oss@crudebyte.com>
+CC: <v9fs@lists.linux.dev>, <linux-kernel@vger.kernel.org>, YueHaibing
+	<yuehaibing@huawei.com>
+Subject: [PATCH -next] fs/9p: Remove unused extern declaration
+Date: Thu, 20 Jul 2023 22:35:06 +0800
+Message-ID: <20230720143506.33860-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230716-fixes-overly-restrictive-mmap-v4-4-a3cd1cd32af2@kernel.org>
-References: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
-In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
-To: Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, stable@vger.kernel.org, 
- Robert Schwebel <r.schwebel@pengutronix.de>, 
- Eric Van Hensbergen <ericvh@kernel.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=894; i=ericvh@kernel.org;
- h=from:subject:message-id; bh=k0K6ocifQ0ciwTzxXH7M8DUDHsKfrzNua/KxUjjXkFA=;
- b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkuA3ZNyXqWHLoseJ3EWeJrogkDkPGJ82+WR+E+
- 0fnABkiAwuJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLgN2QAKCRCI/9X7Sl//
- mH8ND/9VN84P0uGYO69TQEHK08nFdvfeZKbb3riQpl7CAFJtG+EtOYdws4XwZ8FUHomM1KMghDr
- dPYNggkxw5oDu+dtozFz92PR9eBD8Ip+DBFPoilAM/x4/Z1Uq2emVkldZYVIPu6ry/DxZ+Safne
- pWnMVYb1tK6e8gHgUL85BLi+r4koXFs7GZBtQzjGyiKGE5ruEPgc2/wRuf8z2lceXBVAwjdRvAa
- h2mvQ314jDebSO2w2eBREQvuy2BiylBEHvUHebN/agJpNSeh420tc9N/We9aiybdxflBv777gTq
- Wi3hytnPFjfErlzhhLs0wV1ZOw40DHbMSdlIfUpRg/6JcXmAZF7NEAjmysyMuf1+xtERKNjYFu9
- T2K+G1lQc0oACO07LebKqrY+aOrAYco8FZ9lEiKcnUWGEACgYiJgMIHJso9CCHY9+BM006uCuOW
- nJyWFxuRMYyYVKOh5w9jeKn3xXbx+rgTv4Fyy6Issr0hfD5+vUIckGIX36kaf1FfbsETlkzKrZI
- F1wQGbO466Ji+hjUYC5NpG5IduYMELK2gD5DrPck47M1BbGYhlO0poXe2HY2vRA0yojTLF9D7kd
- qe/S3ODW3fInC1vZsOPDoPtqGpbkF8LuX/G46f/kXVzW0Njm5eExaauysApKAC40+8cztAVmmiL
- ylMKFr4wG2hvSEg==
-X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
- fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
 
-There was an invalidate_inode_pages2 added to readonly mmap path
-that is unnecessary since that path is only entered when writeback
-cache is disabled on mount.
+commit bd238fb431f3 ("9p: Reorganization of 9p file system code")
+left behind this.
 
-Cc: stable@vger.kernel.org
-Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file modes")
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- fs/9p/vfs_file.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/9p/v9fs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 9b61b480a9b0..11cd8d23f6f2 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -506,7 +506,6 @@ v9fs_file_mmap(struct file *filp, struct vm_area_struct *vma)
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index c7f774fe398f..d525957594b6 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -545,8 +545,6 @@ void v9fs_session_begin_cancel(struct v9fs_session_info *v9ses)
+ 	p9_client_begin_disconnect(v9ses->clnt);
+ }
  
- 	if (!(v9ses->cache & CACHE_WRITEBACK)) {
- 		p9_debug(P9_DEBUG_CACHE, "(read-only mmap mode)");
--		invalidate_inode_pages2(filp->f_mapping);
- 		return generic_file_readonly_mmap(filp, vma);
- 	}
+-extern int v9fs_error_init(void);
+-
+ static struct kobject *v9fs_kobj;
  
-
+ #ifdef CONFIG_9P_FSCACHE
 -- 
-2.39.2
+2.34.1
 
