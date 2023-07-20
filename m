@@ -1,70 +1,71 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B0618C05
-	for <v9fs@lists.linux.dev>; Thu, 20 Jul 2023 18:36:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=HliQDCk+4Yn/B9aqgI/4DmJNGu6hnH6geQMJQqj1HGk=; b=ZSLrHpYQCqhJx5Hn+54ULNwbQH
-	4T5Mssipxk7hifgTSQi2ZEgeaISUucwvkRPGm/WhnuxyEkEwzOpUY/vNLeKbg1k8HwF1qJiovf5cE
-	vfVeXCFaPR0iv+d8aoehXEfOvDeim9gnldqPFeJkF8u9r+bpdIYmKH117fJ2RltUbVWBCYTg1+ODh
-	CDLxli5VgywkEx+MfbT5j/A5J4ymouWqSl9BSUJVDzqj+6h2BLocc58X1VAnMUVI0DkEuWTjif2Nl
-	aDt8cbZua3hoXxdqXM3a8EIgxEOYE6rit6K/cyds5nFtPyL/0UpDBj9kxlykwK3sytLhScLZ2iX8i
-	oSo1Y9ZOQr7dO0PFjzCOOXyStER1ZOaVbTdULZAwHRCwE7Tii2cKBEdjyL1N2dmIT59Bsm259QiYn
-	kAc7EUUC5pTje1MBqYSRxr0JFGgxUNEyT7SUx9EWAj3D9/iiSuxPYMm826aN706MnMhFYWG93GIwn
-	b6dP15JIas7tf4vh1t6x1OL3LOljzOmJCL7nmklEoh6OmOMJegDbqgw7mgTlRPTop/rUsDzSVsYaW
-	zsuG2NeXIqzSAdd/vGS/v/uTZLg++i9vrVuNLXe+mRfCFr1As3OTKE6ADxwEAtCYjV6byu0Yu93s+
-	ZVyQQyCUkhdBMLFRfmT6/JJ/e7fOCdYt1JvE//AvM=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- YueHaibing <yuehaibing@huawei.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH -next] fs/9p: Remove unused extern declaration
-Date: Thu, 20 Jul 2023 20:36:11 +0200
-Message-ID: <3136669.aDIXptDytX@silver>
-In-Reply-To: <20230720143506.33860-1-yuehaibing@huawei.com>
-References: <20230720143506.33860-1-yuehaibing@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4980A1BE66;
+	Thu, 20 Jul 2023 21:26:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE5AC433C8;
+	Thu, 20 Jul 2023 21:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689888397;
+	bh=QXJ5DENNJsGYLk/GgQ5ri8+fy+kqaicG8P7w0hubSiA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ft30HvzqWR5WHXm7TaNvcVag948O3BCdkDks7hXb9ryz+DWqTQOpzAhsQwMfCa6cl
+	 qenZi3I9pQvFRfUzI5Q3PSojIiAc3I5b4JZraDqplW1QEbFjYEG/x4iayE7gTMKERT
+	 22qjefFWZdTq8aYIJh8Ii3hIwHjBUu6w7nVpOSI/2Lpt/YG07E/FgV3FtW8fUR0m03
+	 BWlFsG8g8f5CW+s8rTZ5rXoTem2q/L4TvcjogEkZQ9WuV7JDI7/IwD/K5AxbTE93+b
+	 bRirKtx72SbwI1zoBZRXYD1P5U0SFmUQDo+hLTN+tdwq5fvnlfet+6PwO0J4/TnpxI
+	 oOmYfEj2X0Ipw==
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: Eric Van Hensbergen <ericvh@gmail.com>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: Simon Horman <simon.horman@corigine.com>, v9fs@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <20230427-scan-build-v2-0-bb96a6e6a33b@codewreck.org>
+References: <20230427-scan-build-v2-0-bb96a6e6a33b@codewreck.org>
+Subject: Re: [PATCH v2 0/5] Fix scan-build warnings
+Message-Id: <168988839634.88307.10673257683695224856.b4-ty@kernel.org>
+Date: Thu, 20 Jul 2023 21:26:36 +0000
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.2
 
-On Thursday, July 20, 2023 4:35:06 PM CEST YueHaibing wrote:
-> commit bd238fb431f3 ("9p: Reorganization of 9p file system code")
-> left behind this.
 
-Right, it renamed v9fs_error_init() -> p9_error_init().
-
-What a giant patch that was BTW (3422+, 3130-).
-
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-> ---
->  fs/9p/v9fs.c | 2 --
->  1 file changed, 2 deletions(-)
+On Wed, 03 May 2023 16:49:24 +0900, Dominique Martinet wrote:
+> I ran scan-build very crudly on our source files, and there was at least
+> one real bug so we might as well run it once in a while, in which case
+> we probably ought to also fix the less important things hence this
+> series.
+> In here the first patch is a real fix and the rest is low priority, the
+> last one is arguably not an improvement and can be discussed (happy to
+> just move the 0-initializations around to variable declaration which
+> would also silence scan-build afaict)
 > 
-> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-> index c7f774fe398f..d525957594b6 100644
-> --- a/fs/9p/v9fs.c
-> +++ b/fs/9p/v9fs.c
-> @@ -545,8 +545,6 @@ void v9fs_session_begin_cancel(struct v9fs_session_info *v9ses)
->  	p9_client_begin_disconnect(v9ses->clnt);
->  }
->  
-> -extern int v9fs_error_init(void);
-> -
->  static struct kobject *v9fs_kobj;
->  
->  #ifdef CONFIG_9P_FSCACHE
-> 
+> [...]
 
+Applied, thanks!
+
+[1/5] 9p: fix ignored return value in v9fs_dir_release
+      commit: eee4a119e96c2f58cfd1b6d4de42095abc5f8877
+[2/5] 9p: virtio: fix unlikely null pointer deref in handle_rerror
+      commit: 13ade4ac5c28e8a014fa85278f5a4270b215f906
+[3/5] 9p: virtio: make sure 'offs' is initialized in zc_request
+      commit: 4a73edab69d3a6623f03817fe950a2d9585f80e4
+[4/5] 9p: virtio: skip incrementing unused variable
+      commit: f41b402d2572e93bee85669ed05eb5e1f3725704
+[5/5] 9p: remove dead stores (variable set again without being read)
+      commit: cf7c33d332ab67603f159123b691c61270b14c33
+
+Best regards,
+-- 
+Eric Van Hensbergen <ericvh@kernel.org>
 
