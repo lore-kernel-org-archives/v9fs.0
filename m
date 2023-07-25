@@ -1,139 +1,210 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DCD100DE
-	for <v9fs@lists.linux.dev>; Mon, 24 Jul 2023 21:39:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20D1C433C8
-	for <v9fs@lists.linux.dev>; Mon, 24 Jul 2023 21:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFA61F17C;
+	Tue, 25 Jul 2023 14:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1AFC433C7;
+	Tue, 25 Jul 2023 14:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690234793;
-	bh=xzsk77oa/MmXqkkg6zmkBhwbeHVVBpPaTZBJoL2yiSk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mE3pj1jcdJGd2420B2MZzLHNvk5nkkEfWuzFXJ3om9Bj15J4etmG1pPdOd62aqnZ7
-	 cOkyC0FqEXXEuGki++nrrpMe/LhUTorHF5UAavZXj97HMbK0Xdgscq9tkc4HyfmTDm
-	 rhgeFoMfxIfXaa8KUrxgJsAOmaBiBozZQLuOg4qfFjtPig+9XDlXCNtkhuAGkJivVh
-	 JKCOmpOJWu4MILtwCS+H+WCEWxtJ90JrFwX7P6JB/O6wqM0Wb+H2q0MtatzrI25GJl
-	 srk/+oSfn8Lb6AghWfDz/CGcUB04U25Rr4od0BYDbT8eljmf5NoOxBJUNbp5rLw1wj
-	 5f8SBBKVCb4yA==
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5841be7d15eso2833837b3.2
-        for <v9fs@lists.linux.dev>; Mon, 24 Jul 2023 14:39:53 -0700 (PDT)
-X-Gm-Message-State: ABy/qLaMPp+6MVB8Q8d8F3kP4BShYd1xOJzY79EMp+iF4OcBVC+Lk1y2
-	XriacBUoqEu9SDK56Npp6JOKZPfUTQ6E3V5QnzY=
-X-Google-Smtp-Source: APBJJlEtzh0Zak8DLTD3txHST1gAslj5+/hgXN8oWWMtjOhMRXd56KETGfklYbd7TsB4WlRAn/u8WQrGL5jyuFYaIuA=
-X-Received: by 2002:a81:66c4:0:b0:568:d63e:dd2c with SMTP id
- a187-20020a8166c4000000b00568d63edd2cmr9620907ywc.11.1690234792843; Mon, 24
- Jul 2023 14:39:52 -0700 (PDT)
+	s=k20201202; t=1690297130;
+	bh=kJmXJEYOHolov3dHsrtrgrStBu4dP1/spGmtmesqCM4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=tew70jtU4OJWY1VbyooHq/A2VejA7/kDYVzXCKKk0H55cxVTHNA5fhMx/XsjUHQdE
+	 k5N+TCbrt7BP6IVsZV/kGZrQ02GB42Vzuf0A/KFgIUnPd4ROGpWY2ZHkqKjdfticNu
+	 OMaM7K65I6mQEbZGCqcmN0tUAgZUl/rzmSoYBUrwJChy9IKciiWQK4nWbSqxwsObTI
+	 WPQKI9eXf8A84+Mo2pDjNDrS2sLAG7LjBgXOQD6AC8ZVS0weRNDBcGZHDJasTY4XM+
+	 XZNGcH/BVwcKp56pkarr6oFqhSjNamDWitCJbkz8MEmn3MzaR1dixLan1haVIWlNtj
+	 Ymp6wr5QNgrPg==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v6 0/7] fs: implement multigrain timestamps
+Date: Tue, 25 Jul 2023 10:58:13 -0400
+Message-Id: <20230725-mgctime-v6-0-a794c2b7abca@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230716-fixes-overly-restrictive-mmap-v3-0-769791f474fd@kernel.org>
- <ZL7qbTU7D1mAJePi@pengutronix.de>
-In-Reply-To: <ZL7qbTU7D1mAJePi@pengutronix.de>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Mon, 24 Jul 2023 16:39:41 -0500
-X-Gmail-Original-Message-ID: <CAFkjPT=x7y0USLTXPGbC382NoD=eXd18TbRgaB8S=GX0-_AZ+w@mail.gmail.com>
-Message-ID: <CAFkjPT=x7y0USLTXPGbC382NoD=eXd18TbRgaB8S=GX0-_AZ+w@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] fs/9p: fix mmap regression
-To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAbjv2QC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyzHQUlJIzE
+ vPSU3UzU4B8JSMDI2MDc0Nj3dz05JLM3FTdNKNEy7RkYyMTS0MLJaDqgqLUtMwKsEnRsbW1AIV
+ mFAhZAAAA
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, Xiubo Li <xiubli@redhat.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Jan Harkes <jaharkes@cs.cmu.edu>, 
+ coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>, 
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+ Yue Hu <huyue2@coolpad.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+ Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+ Jan Kara <jack@suse.com>, Theodore Ts'o <tytso@mit.edu>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, 
+ OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+ Miklos Szeredi <miklos@szeredi.hu>, Bob Peterson <rpeterso@redhat.com>, 
+ Andreas Gruenbacher <agruenba@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Trond Myklebust <trond.myklebust@hammerspace.com>, 
+ Anna Schumaker <anna@kernel.org>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+ Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Mike Marshall <hubcap@omnibond.com>, 
+ Martin Brandenburg <martin@omnibond.com>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <keescook@chromium.org>, 
+ Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>, 
+ Paulo Alcantara <pc@manguebit.com>, Ronnie Sahlberg <lsahlber@redhat.com>, 
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Richard Weinberger <richard@nod.at>, Hans de Goede <hdegoede@redhat.com>, 
+ Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>, 
+ Anthony Iliopoulos <ailiop@suse.com>, v9fs@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-afs@lists.infradead.org, 
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+ cluster-devel@redhat.com, linux-nfs@vger.kernel.org, ntfs3@lists.linux.dev, 
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
+ linux-mtd@lists.infradead.org, linux-mm@kvack.org, 
+ linux-xfs@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4902; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=kJmXJEYOHolov3dHsrtrgrStBu4dP1/spGmtmesqCM4=;
+ b=owEBbQKS/ZANAwAIAQAOaEEZVoIVAcsmYgBkv+Mj+zS9rris6Kf5SxMrXR2Y/k9AOCJ9z8KPq
+ j3S+WlmJceJAjMEAAEIAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCZL/jIwAKCRAADmhBGVaC
+ FZ/jD/0evq59eIdKfJ48vhkQ834Ov7dXXLAsoPLIBwuMPbqc7pSVOjxB5ATFSwfM9htZKolZ+oY
+ lIU2tVkrgEvzBSvtptGWRr2sarmS792/ET3Q94ZYyI3yGrHeRSXFOCIw1j7WwH2CAixPP7tV3iI
+ CEyu3vkzTFYYrJrAjpZayoN4FMelRFKm9TkDeBNDMR2dHxzPYji2KfnLM8E0QyicvhzMp748ezo
+ gSFE9vYIQeyfCsc0tsb3+xvNeyfrgwWW0Xt+iWheDXhWb2JezV0qwPzhrTI2o0lUu3y5Ak6moUv
+ mxg4LjTEyDiFJS1gFG359AOMdd1Fqe+/hBI/KRZw1FJgHJNrojM6CcefRT/9ld8QucjdHCaei+j
+ wdbwbxqSPCnXE7EyPm6OfdKrz1QY8quS0w28VGDMEoqvWsdi5KDYgaliGZ4xMdeR24lwCGeO1sO
+ CcTk+9XkDMSViFJpiCvlZ1wqjbcy+7bpDotGULl660l29vxwtUOL4OzsFLorGw8J6AVtpr1WcSZ
+ qiHQFHKm0p8TmStpgYdlGpNtZsiMWV5W5ebzMwtMfdk+ItSXAkX5AccmgWA8SF2Lu6i9FkiaOJK
+ 8np/ZINHFrUnnqcT0RhtcBRNRofFbPWW2FPTzqKgpU9tTsrmpbASbI+M+rPlDhulz5q2G6Ka/vp
+ WLXgwe/aGNDuUZQ==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Awesome, thanks for verifying Robert.  Will send a pull request for
-this in a few days.
+The VFS always uses coarse-grained timestamps when updating the
+ctime and mtime after a change. This has the benefit of allowing
+filesystems to optimize away a lot metadata updates, down to around 1
+per jiffy, even when a file is under heavy writes.
 
-      -eric
+Unfortunately, this coarseness has always been an issue when we're
+exporting via NFSv3, which relies on timestamps to validate caches. A
+lot of changes can happen in a jiffy, so timestamps aren't sufficient to
+help the client decide to invalidate the cache.
 
-On Mon, Jul 24, 2023 at 4:17=E2=80=AFPM Robert Schwebel
-<r.schwebel@pengutronix.de> wrote:
->
-> Hi Eric,
->
-> On Wed, Jul 19, 2023 at 03:17:04PM +0000, Eric Van Hensbergen wrote:
-> > This series attempts to fix a reported exception with mmap
-> > on newer kernels.
-> >
-> > Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file mode=
-s")
-> > Link: https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de/
-> > Reported-by: Robert Schwebel <r.schwebel@pengutronix.de>
-> > Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-> > ---
-> > Changes in v3:
-> > - Clarify debug print to read-only mmap mode versus no mmap mode in
-> >   v9fs_file_mmap
-> > - Fix suggested regression tags and propagate across series
-> > - Link to v2: https://lore.kernel.org/r/20230716-fixes-overly-restricti=
-ve-mmap-v2-0-147d6b93f699@kernel.org
-> >
-> > Changes in v2:
-> > - fix requested changes in commit messages
-> > - add patch to remove unnecessary invalidate_inode_pages in mmap readon=
-ly path
-> > - Link to v1: https://lore.kernel.org/r/20230716-fixes-overly-restricti=
-ve-mmap-v1-0-0683b283b932@kernel.org
->
-> I've tested this patch series with my qemu setup and it resolves the
-> issue. Thanks for taking care!
->
-> Tested-by: Robert Schwebel <r.schwebel@pengutronix.de>
->
-> ----------8<----------
->
-> rsc@dude05:~/work/DistroKit$ configs/platform-v7a/run
-> Forwarding SSH port 127.0.0.1:24910 -> qemu:22
-> [    0.000000] L2C: platform modifies aux control register: 0x02020000 ->=
- 0x02420000
-> [    0.000000] L2C: DT/platform modifies aux control register: 0x02020000=
- -> 0x02420000
-> [    0.004896] smp_twd: clock not found -2
-> [    0.726397] simple-pm-bus bus@40000000:motherboard-bus@40000000:iofpga=
-@7,00000000: Failed to create device link (0x180) with dcc:tcrefclk
-> [    0.742338] simple-pm-bus bus@40000000:motherboard-bus@40000000:iofpga=
-@7,00000000: Failed to create device link (0x180) with dcc:tcrefclk
-> [    0.809910] physmap-flash 48000000.psram: map_probe failed
-> [    1.201306] 9pnet_virtio: no channels available for device root
->
->  ____                        _                   _
-> |  _ \ ___ _ __   __ _ _   _| |_ _ __ ___  _ __ (_)_  __
-> | |_) / _ \ '_ \ / _` | | | | __| '__/ _ \| '_ \| \ \/ /
-> |  __/  __/ | | | (_| | |_| | |_| | | (_) | | | | |>  <
-> |_|   \___|_| |_|\__, |\__,_|\__|_|  \___/|_| |_|_/_/\_\
->                  |___/
->
->  ____  _     _             _  ___ _
-> |  _ \(_)___| |_ _ __ ___ | |/ (_) |_
-> | | | | / __| __| '__/ _ \| ' /| | __|
-> | |_| | \__ \ |_| | | (_) | . \| | |_
-> |____/|_|___/\__|_|  \___/|_|\_\_|\__|
->
->
-> OSELAS(R)-DistroKit-2019.12.0-00429-g57ffae760eb9 / v7a-2019.12.0-00429-g=
-57ffae760eb9
-> ptxdist-2023.07.1/2023-07-11T19:56:50+0200
->
-> DistroKit login: root
-> root@DistroKit:~ mount / -o remount,rw
-> root@DistroKit:~ ldconfig
-> root@DistroKit:~ uname -a
-> Linux DistroKit 6.4.0 #1 SMP PREEMPT 2023-07-01T00:00:00+00:00 armv7l GNU=
-/Linux
->
-> ----------8<----------
->
-> rsc
-> --
-> Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel  =
-|
-> Steuerwalder Str. 21                       | https://www.pengutronix.de/ =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    =
-|
->
+Even with NFSv4, a lot of exported filesystems don't properly support a
+change attribute and are subject to the same problems with timestamp
+granularity. Other applications have similar issues with timestamps (e.g
+backup applications).
+
+If we were to always use fine-grained timestamps, that would improve the
+situation, but that becomes rather expensive, as the underlying
+filesystem would have to log a lot more metadata updates.
+
+What we need is a way to only use fine-grained timestamps when they are
+being actively queried. The idea is to use an unused bit in the ctime's
+tv_nsec field to mark when the mtime or ctime has been queried via
+getattr. Once that has been marked, the next m/ctime update will use a
+fine-grained timestamp.
+
+This patch series is based on top of Christian's vfs.all branch, which
+has the recent conversion to the new ctime accessors. It should apply
+cleanly on top of linux-next.
+
+The first two patches should probably go in via the vfs tree. Should the
+fs-specific patches go in that way as well, or should they go via
+maintainer trees? Either should be fine.
+
+The first two patches should probably go in via Christian's vfs tree.
+The rest could go via maintainer trees or the vfs tree.
+
+For now, I'd like to get these into linux-next. Christian, would you be
+willing to pick these up for now? Alternately, I can feed them there via
+the iversion branch that Stephen is already pulling in from my tree.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+base-commit: cf22d118b89a09a0160586412160d89098f7c4c7
+---
+Changes in v6:
+- drop the patch that removed XFS_ICHGTIME_CHG
+- change WARN_ON_ONCE to ASSERT in xfs conversion patch
+
+---
+Jeff Layton (7):
+      fs: pass the request_mask to generic_fillattr
+      fs: add infrastructure for multigrain timestamps
+      tmpfs: bump the mtime/ctime/iversion when page becomes writeable
+      tmpfs: add support for multigrain timestamps
+      xfs: switch to multigrain timestamps
+      ext4: switch to multigrain timestamps
+      btrfs: convert to multigrain timestamps
+
+ fs/9p/vfs_inode.c               |  4 +-
+ fs/9p/vfs_inode_dotl.c          |  4 +-
+ fs/afs/inode.c                  |  2 +-
+ fs/btrfs/file.c                 | 24 ++--------
+ fs/btrfs/inode.c                |  2 +-
+ fs/btrfs/super.c                |  5 ++-
+ fs/ceph/inode.c                 |  2 +-
+ fs/coda/inode.c                 |  3 +-
+ fs/ecryptfs/inode.c             |  5 ++-
+ fs/erofs/inode.c                |  2 +-
+ fs/exfat/file.c                 |  2 +-
+ fs/ext2/inode.c                 |  2 +-
+ fs/ext4/inode.c                 |  2 +-
+ fs/ext4/super.c                 |  2 +-
+ fs/f2fs/file.c                  |  2 +-
+ fs/fat/file.c                   |  2 +-
+ fs/fuse/dir.c                   |  2 +-
+ fs/gfs2/inode.c                 |  2 +-
+ fs/hfsplus/inode.c              |  2 +-
+ fs/inode.c                      | 98 +++++++++++++++++++++++++++++------------
+ fs/kernfs/inode.c               |  2 +-
+ fs/libfs.c                      |  4 +-
+ fs/minix/inode.c                |  2 +-
+ fs/nfs/inode.c                  |  2 +-
+ fs/nfs/namespace.c              |  3 +-
+ fs/ntfs3/file.c                 |  2 +-
+ fs/ocfs2/file.c                 |  2 +-
+ fs/orangefs/inode.c             |  2 +-
+ fs/proc/base.c                  |  4 +-
+ fs/proc/fd.c                    |  2 +-
+ fs/proc/generic.c               |  2 +-
+ fs/proc/proc_net.c              |  2 +-
+ fs/proc/proc_sysctl.c           |  2 +-
+ fs/proc/root.c                  |  3 +-
+ fs/smb/client/inode.c           |  2 +-
+ fs/smb/server/smb2pdu.c         | 22 ++++-----
+ fs/smb/server/vfs.c             |  3 +-
+ fs/stat.c                       | 59 ++++++++++++++++++++-----
+ fs/sysv/itree.c                 |  3 +-
+ fs/ubifs/dir.c                  |  2 +-
+ fs/udf/symlink.c                |  2 +-
+ fs/vboxsf/utils.c               |  2 +-
+ fs/xfs/libxfs/xfs_trans_inode.c |  6 +--
+ fs/xfs/xfs_iops.c               |  4 +-
+ fs/xfs/xfs_super.c              |  2 +-
+ include/linux/fs.h              | 47 ++++++++++++++++++--
+ mm/shmem.c                      | 16 ++++++-
+ 47 files changed, 248 insertions(+), 125 deletions(-)
+---
+base-commit: 810b5fff7917119ea82ff96e312e2d4350d6b681
+change-id: 20230713-mgctime-f2a9fc324918
+
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
+
