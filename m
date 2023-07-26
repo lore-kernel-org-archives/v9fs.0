@@ -1,125 +1,65 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369C7CA4F;
-	Wed, 26 Jul 2023 12:50:50 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5EF8821CA9;
-	Wed, 26 Jul 2023 12:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1690375848;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DLHppaXGFFSDtpuekODV70zFeQ/hmYjpWgjjmDBlxQg=;
-	b=Yh+mGp59Iw5QMGCtlDIlNWwKo/uyyZYjkZAOUcL6/S+OudSRpJwysjDw0guTUrTOsQQjUJ
-	vlNyolBk5JflaK1zzdmDwnwyFhZTbcFdNkUQL3kp1ORYo0nPFT11tc728qt9TxKluIoBYR
-	bvA290OSK3O4YDVlwZxt/i+pZfiN/G8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1690375848;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DLHppaXGFFSDtpuekODV70zFeQ/hmYjpWgjjmDBlxQg=;
-	b=a7yMOzOE9A/VHNwBvkVeC1gNj684SaIQRNq/yMKl3/NNLP4Gf9u2O15OPwh2sc9i7LR/Wz
-	FjWgmRnlqgpU2KBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 13B5E139BD;
-	Wed, 26 Jul 2023 12:50:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 8yDlA6cWwWSeUgAAMHmgww
-	(envelope-from <dsterba@suse.cz>); Wed, 26 Jul 2023 12:50:47 +0000
-Date: Wed, 26 Jul 2023 14:44:02 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-	Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Yue Hu <huyue2@gl0jj8bn.sched.sma.tdnsstic1.cn>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Richard Weinberger <richard@nod.at>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Anthony Iliopoulos <ailiop@suse.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-afs@lists.infradead.org,
-	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	codalist@telemann.coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	cluster-devel@redhat.com, linux-nfs@vger.kernel.org,
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-	devel@lists.orangefs.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-mtd@lists.infradead.org,
-	linux-mm@kvack.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v6 7/7] btrfs: convert to multigrain timestamps
-Message-ID: <20230726124402.GK20457@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20230725-mgctime-v6-0-a794c2b7abca@kernel.org>
- <20230725-mgctime-v6-7-a794c2b7abca@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FCF21D3A;
+	Wed, 26 Jul 2023 14:07:43 +0000 (UTC)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qOfAz-0000Xw-Qr; Wed, 26 Jul 2023 16:07:41 +0200
+Message-ID: <44198ebe-76bc-b4b5-9426-0a65463b4a99@leemhuis.info>
+Date: Wed, 26 Jul 2023 16:07:41 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230725-mgctime-v6-7-a794c2b7abca@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+User-Agent: Mozilla Thunderbird
+Subject: Re: mmap on 9p broken in 6.4
+Content-Language: en-US, de-DE
+From: "Linux regression tracking #update (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Linux kernel regressions list <regressions@lists.linux.dev>
+Cc: v9fs@lists.linux.dev
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+References: <ZK25XZ+GpR3KHIB/@pengutronix.de>
+ <b013c216-2298-05b4-58bc-fd69e13de05e@leemhuis.info>
+In-Reply-To: <b013c216-2298-05b4-58bc-fd69e13de05e@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690380463;752510c9;
+X-HE-SMSGID: 1qOfAz-0000Xw-Qr
 
-On Tue, Jul 25, 2023 at 10:58:20AM -0400, Jeff Layton wrote:
-> Enable multigrain timestamps, which should ensure that there is an
-> apparent change to the timestamp whenever it has been written after
-> being actively observed via getattr.
-> 
-> Beyond enabling the FS_MGTIME flag, this patch eliminates
-> update_time_for_write, which goes to great pains to avoid in-memory
-> stores. Just have it overwrite the timestamps unconditionally.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-Acked-by: David Sterba <dsterba@suse.com>
+On 13.07.23 13:22, Linux regression tracking #adding (Thorsten Leemhuis)
+wrote:
+
+> On 11.07.23 22:19, Robert Schwebel wrote:
+>>
+>> TL;DR: mmap() seems to be broken on 9pfs on Linux 6.4. setting
+>> "rootflags=ignoreqv" fixes it as well, but it feels like a regression.
+>> [...]
+>> I could track down the breakage to
+>>
+>>   1543b4c5071c54d76aad7a7a26a6e43082269b0c
+>> [...]
+> 
+> Thanks for the report. To be sure the issue doesn't fall through the
+> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+> tracking bot:
+> 
+> #regzbot ^introduced 1543b4c5071c54d76aad7a7a26a6e43082269b
+> #regzbot title 9p: mmap() seems to be broken with qemu as server
+> #regzbot ignore-activity
+
+#regzbot fix: fs/9p: remove unnecessary invalidate_inode_pages2
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
