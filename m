@@ -1,119 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8177C
-	for <v9fs@lists.linux.dev>; Fri, 28 Jul 2023 02:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12ACDC433C8;
-	Fri, 28 Jul 2023 02:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF9A125AD;
+	Fri, 28 Jul 2023 11:01:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71689C433C8;
+	Fri, 28 Jul 2023 11:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690510172;
-	bh=Ret+BePR9nqIq/mJb5VuaqGEst0mgMQLaZuEFmWudjQ=;
-	h=Date:From:To:Cc:Subject:From;
-	b=qkWhGuyBStVu5kf1RD9bgHQD8g3GJZuM4cpuMoYg3hZkcdW6ursCMXBALcpXijv9N
-	 U2zFItnDo6l2AJelQwfW/otvVcvp2mo52NXY8qtYVb+YmVQdIUEl1mNeaTw2d+yvEs
-	 VsiRSuMpZMXjWhCuSiGSwowiOBTUtfqq56IvwaXRG9mqds3ATO8MLow0jiKx4zx49a
-	 bpkWQkhFun3iVrxp3IIUBWi22WaiU0wr5V9ZEbDKx0cFF0BMSOO1n5lIknsNwEJYTQ
-	 wXqTBSfUfMtQl2rr99PYN9GCHs0lliB6XAvIeonx+Q1HyUVtH5OAB5ivSPmFvkYoMw
-	 wHrJ8SzC2cEDA==
-Date: Fri, 28 Jul 2023 02:09:29 +0000
-From: Eric Van Hensbergen <ericvh@kernel.org>
-To: torvalds@linux-foundation.org
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] fs/9p fixes for v6.5-rc3
-Message-ID: <ZMMjWSvfFutpaK6t@e8f1df9eb5bc>
+	s=k20201202; t=1690542063;
+	bh=OHILmmeiUht8a/iNB32Wqo6p3CZSNTmmXf/wqdU8eyM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lUHncmkLN11wgaMD1KR1Gy5if09x5xh0KGyx50ZGUuC2fBx+ijTW2wECE/sOye+rG
+	 qDHl4LIc5ruyg2PAO1VZI95ZW/5j7Q0Vo/saVvtDVwvUJlMtgeQjFVYzjalCOIixt6
+	 gEQ+u8asPVZluAxs1HoSNgHXPJA0QhMWBw4NywwMFrjIj9j61U5pX9yO+iEoVUAfbu
+	 mdakOz70WJL7rxDzg7P00Ji6kHPu+xHi68+/TquTtcuasIukOIAL/+DVn48WGku6nx
+	 2ORenDwB3jD7HGc7jH1b/evq7YZ9RS2gsMH8Qjv3EgEZjMk8pxaawj3uGeQKo/zCuQ
+	 +lMRyzmoHCobQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-btrfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu,
+	ecryptfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	cluster-devel@redhat.com,
+	linux-nfs@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev,
+	devel@lists.orangefs.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-mtd@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>,
+	coda@cs.cmu.edu,
+	Tyler Hicks <code@tyhicks.com>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Iurii Zaikin <yzaikin@google.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Richard Weinberger <richard@nod.at>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: Re: (subset) [PATCH v6 0/7] fs: implement multigrain timestamps
+Date: Fri, 28 Jul 2023 13:00:37 +0200
+Message-Id: <20230728-unrecht-ersichtlich-cfa7d0c703d1@brauner>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230725-mgctime-v6-0-a794c2b7abca@kernel.org>
+References: <20230725-mgctime-v6-0-a794c2b7abca@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+r45bYtt1Kdf9dWo"
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1874; i=brauner@kernel.org; h=from:subject:message-id; bh=4DjYiXolHUh8qQu1N+OzbWT4vtvmgyT4c+N7Ht8XGtY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQcnsy9IaFu+ZP9z1N8rj/+PH2Pm5FLY6hTmXAw+6xpv069 EIk93lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARMyFGhh2xp3MqP+WJ6kre7E0z/m vxVuf2tOrqbz/KOXZnbdld4czI8C9ly15G/weVYRsOZM6bEHF4077Al0vcwkM2vDFrTz89nQsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
+On Tue, 25 Jul 2023 10:58:13 -0400, Jeff Layton wrote:
+> The VFS always uses coarse-grained timestamps when updating the
+> ctime and mtime after a change. This has the benefit of allowing
+> filesystems to optimize away a lot metadata updates, down to around 1
+> per jiffy, even when a file is under heavy writes.
+> 
+> Unfortunately, this coarseness has always been an issue when we're
+> exporting via NFSv3, which relies on timestamps to validate caches. A
+> lot of changes can happen in a jiffy, so timestamps aren't sufficient to
+> help the client decide to invalidate the cache.
+> 
+> [...]
 
---+r45bYtt1Kdf9dWo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Survives xfstests (tmpfs, ext4, overlayfs) and the fs portions of LTP.
+Let's keep our eyes open for any potential issues. Past suspects has
+been IMA interacting with overlayfs. We'll see. Picked everything minus
+the tmpfs-writepage patch that was contentious.
 
-The following changes since commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5:
+---
 
-  Linux 6.5-rc1 (2023-07-09 13:53:13 -0700)
+Applied to the vfs.ctime branch of the vfs/vfs.git tree.
+Patches in the vfs.ctime branch should appear in linux-next soon.
 
-are available in the Git repository at:
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git fixes/next
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-for you to fetch changes up to e6ab0b914c12acefbb0880dded48cb930ccab5cf:
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-  fs/9p: Remove unused extern declaration (2023-07-20 19:21:48 +0000)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.ctime
 
---------------
-
-Misc set of fixes for 9p in 6.5
-
-Most of these clean up warnings we've gotten out of compilation tools, but
-several of them were from inspection while hunting down a couple of
-regressions.
-
-The most important one to pull is 75b396821cb71164dac3a1ad51dda4781ea8dbad
-(fs/9p: remove unnecessary and overrestrictive check)
-which caused a regression for some folks by restricting mmap
-in any case where writeback caches weren't enabled.
-
-Most of the other bugs caught via inspection were type mismatches.
-
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      fs/9p: Fix a datatype used with V9FS_DIRECT_IO
-
-Dominique Martinet (5):
-      9p: fix ignored return value in v9fs_dir_release
-      9p: virtio: fix unlikely null pointer deref in handle_rerror
-      9p: virtio: make sure 'offs' is initialized in zc_request
-      9p: virtio: skip incrementing unused variable
-      9p: remove dead stores (variable set again without being read)
-
-Eric Van Hensbergen (4):
-      fs/9p: remove unnecessary and overrestrictive check
-      fs/9p: fix typo in comparison logic for cache mode
-      fs/9p: fix type mismatch in file cache mode helper
-      fs/9p: remove unnecessary invalidate_inode_pages2
-
-YueHaibing (1):
-      fs/9p: Remove unused extern declaration
-
- fs/9p/fid.h            |  6 +++---
- fs/9p/v9fs.c           |  2 --
- fs/9p/v9fs.h           |  2 +-
- fs/9p/vfs_dir.c        |  5 +++--
- fs/9p/vfs_file.c       |  5 +----
- fs/9p/vfs_inode.c      |  6 ------
- fs/9p/vfs_inode_dotl.c |  1 -
- net/9p/client.c        | 46 ++++++++++++----------------------------------
- net/9p/trans_virtio.c  |  8 ++++----
- 9 files changed, 24 insertions(+), 57 deletions(-)
-
-
---+r45bYtt1Kdf9dWo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElpbw0ZalkJikytFRiP/V+0pf/5gFAmTDI1kACgkQiP/V+0pf
-/5hFCQ/9Hp1iDIvM58rkGcDD1qkpwi8jHchF3Sn4i6V+gqEams7oqK3phJq3fYsR
-6EIuNW5cTSEfWCeusTQxsu1ISRAEHb1QbHVREWsZXma5kucwad1rZCE3PULmrlIv
-NucVMBJ09e+rMFeFB78Ej/FgPXHyRAp2Junf4zNtAs+Md9Yc4UYnpLE87EH4M9R/
-Ao1QskCKXPWRcu2pEhkxnQxwUQdJyQa/gr6IOmemlkslmnPmBnLN3oEh76lw3Vni
-EtzqhK0BxXfldao1laXpr63yXAJoUXfANg2WY3U3gw5VQICqqYEJk5KR5CSWj5KZ
-Wn709UxagDPI9aX5NqhY6Z1p+D5R7hV1av5CB0PdOI4vMRaMxzh39JKWsoVFQtX4
-XLIOgDpSH6BhFJ5t7i8MCoNKRMhx/iR5Ln+r79sFR8Hwz7j0QnR0bqfdxywfoP3N
-eZEYbefIXFZscwFkA+gBxZIKu2Ljbtf6ZCxdhlT/O9jWMGLNV54VmcuXUGlLoaad
-cC/Dej7xIM3n1U+DWfsQlW2N47y5WEl8bVvJEpG3uytGMFuZ5rqOF46lkDf41Mrh
-W42nX+qeWln/ymZigSm+bCyRKkfM7SGbWlta0fHRsEYLvlBkQSTfpFJIgm5iqcFG
-aZLEwrSLAN9hi5zgDPTm49RyE/7Bel6Ib9FnewwxvW1+bmCME5w=
-=SXb4
------END PGP SIGNATURE-----
-
---+r45bYtt1Kdf9dWo--
+[1/7] fs: pass the request_mask to generic_fillattr
+      https://git.kernel.org/vfs/vfs/c/0a6ab6dc6958
+[2/7] fs: add infrastructure for multigrain timestamps
+      https://git.kernel.org/vfs/vfs/c/d242b98ac3e9
+[4/7] tmpfs: add support for multigrain timestamps
+      https://git.kernel.org/vfs/vfs/c/1f31c58cf032
+[5/7] xfs: switch to multigrain timestamps
+      https://git.kernel.org/vfs/vfs/c/859dd91017dd
+[6/7] ext4: switch to multigrain timestamps
+      https://git.kernel.org/vfs/vfs/c/093af249eab4
+[7/7] btrfs: convert to multigrain timestamps
+      https://git.kernel.org/vfs/vfs/c/b90a04d1c30c
