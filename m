@@ -1,74 +1,182 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A61917724
-	for <v9fs@lists.linux.dev>; Wed,  9 Aug 2023 12:33:58 +0000 (UTC)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1bc49d0cb4aso41953735ad.2
-        for <v9fs@lists.linux.dev>; Wed, 09 Aug 2023 05:33:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691584438; x=1692189238;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GS5yL+T8aD2jHNBozahJ7byO3Ae03UHDEOMA4UMJMo8=;
-        b=UvLyL86TyYjpUo0AEm7u8PrLR+Rq3VnZqeUQ/3vNouD/5IcaVkdrGzGDBGG6Z+rmZg
-         BOvDqT0P8Fqyz7DFZTNfdJgOhUFwRADkxNwLwPbtNc6ipdn4zk/mkGvagkr4T+pI+fNu
-         SZZqsNioxN/7EUqQez5i1tpEEO1mgA3JLETcABa83yRcEmQjydXXRF2gpxMYL5VEQ6FB
-         dilgBwiLrqjlXYADR8Y1WdXtJ0feIfFtXttGYn7FBoHZJaNwwEgIr493BO14BCrKHrrg
-         TmgPSS6KS8ju+z60B2sfMm2DSlFP9o/CwCMxOpAHkkxBDEPmLBovcXl9fq/+SPP+nc/T
-         /xKQ==
-X-Gm-Message-State: AOJu0Yxk+pMW8MjSHLwR1o0ejpc5W/pBYC7jk6nBC8gZzddALshWSu5z
-	Mcd01jEFBoBBSiYx4lEiIUNvXmgpLvKLIsR76W1Mg3jPp0jp
-X-Google-Smtp-Source: AGHT+IGITw4dGMJn1Xo0MSeJc2h7kpMvFxWOmemJIDH+W89ELiON54RHZRO/bGV8N3JyMp+WNpHH1rACz+GBJtHAttk46gTZx6Xd
+Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59FD18AE2;
+	Wed,  9 Aug 2023 13:36:38 +0000 (UTC)
+Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
+	by mail.parknet.co.jp (Postfix) with ESMTPSA id 6E7A32055FA2;
+	Wed,  9 Aug 2023 22:36:36 +0900 (JST)
+Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
+	by ibmpc.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 379DaZlY216308
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 9 Aug 2023 22:36:36 +0900
+Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
+	by devron.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 379DaZkg190033
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 9 Aug 2023 22:36:35 +0900
+Received: (from hirofumi@localhost)
+	by devron.myhome.or.jp (8.17.2/8.17.2/Submit) id 379DaTmi190025;
+	Wed, 9 Aug 2023 22:36:29 +0900
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner
+ <brauner@kernel.org>,
+        Eric Van Hensbergen <ericvh@kernel.org>,
+        Latchesar
+ Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        David Howells
+ <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>, Chris
+ Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>, David Sterba
+ <dsterba@suse.com>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
+ <idryomov@gmail.com>,
+        Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+        Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
+        Chao Yu
+ <chao@kernel.org>,
+        Yue Hu <huyue2@gl0jj8bn.sched.sma.tdnsstic1.cn>,
+        Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Namjae Jeon
+ <linkinjeon@kernel.org>,
+        Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara
+ <jack@suse.com>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Andreas Dilger
+ <adilger.kernel@dilger.ca>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>,
+        Bob Peterson <rpeterso@redhat.com>,
+        Andreas
+ Gruenbacher <agruenba@redhat.com>,
+        Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,
+        Tejun Heo <tj@kernel.org>,
+        Trond Myklebust
+ <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna@kernel.org>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Mark
+ Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi
+ <joseph.qi@linux.alibaba.com>,
+        Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        Luis Chamberlain
+ <mcgrof@kernel.org>,
+        Kees Cook <keescook@chromium.org>, Iurii Zaikin
+ <yzaikin@google.com>,
+        Steve French <sfrench@samba.org>, Paulo Alcantara
+ <pc@manguebit.com>,
+        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+        Shyam
+ Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+        Sergey
+ Senozhatsky <senozhatsky@chromium.org>,
+        Richard Weinberger
+ <richard@nod.at>,
+        Hans de Goede <hdegoede@redhat.com>, Hugh Dickins
+ <hughd@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Amir
+ Goldstein <amir73il@gmail.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+        linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        codalist@telemann.coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+        linux-nfs@vger.kernel.org, ntfs3@lists.linux.dev,
+        ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-mtd@lists.infradead.org, linux-mm@kvack.org,
+        linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v7 05/13] fat: make fat_update_time get its own timestamp
+In-Reply-To: <52bead1d6a33fec89944b96e2ec20d1ea8747a9a.camel@kernel.org> (Jeff
+	Layton's message of "Wed, 09 Aug 2023 06:10:53 -0400")
+References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
+	<20230807-mgctime-v7-5-d1dec143a704@kernel.org>
+	<87msz08vc7.fsf@mail.parknet.co.jp>
+	<52bead1d6a33fec89944b96e2ec20d1ea8747a9a.camel@kernel.org>
+Date: Wed, 09 Aug 2023 22:36:29 +0900
+Message-ID: <878rak8hia.fsf@mail.parknet.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a17:902:d483:b0:1bb:a78c:7a3e with SMTP id
- c3-20020a170902d48300b001bba78c7a3emr166180plg.3.1691584438324; Wed, 09 Aug
- 2023 05:33:58 -0700 (PDT)
-Date: Wed, 09 Aug 2023 05:33:58 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000008dd5f506027cb146@google.com>
-Subject: [syzbot] Monthly v9fs report (Aug 2023)
-From: syzbot <syzbot+list3095adb18b67ff406bcb@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Hello v9fs maintainers/developers,
+Jeff Layton <jlayton@kernel.org> writes:
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+> On Wed, 2023-08-09 at 17:37 +0900, OGAWA Hirofumi wrote:
+>> Jeff Layton <jlayton@kernel.org> writes:
+>> 
+>> > Also, it may be that things have changed by the time we get to calling
+>> > fat_update_time after checking inode_needs_update_time. Ensure that we
+>> > attempt the i_version bump if any of the S_* flags besides S_ATIME are
+>> > set.
+>> 
+>> I'm not sure what it meaning though, this is from
+>> generic_update_time(). Are you going to change generic_update_time()
+>> too? If so, it doesn't break lazytime feature?
+>> 
+>
+> Yes. generic_update_time is also being changed in a similar fashion.
+> This shouldn't break the lazytime feature: lazytime is all about how and
+> when timestamps get written to disk. This work is all about which
+> clocksource the timestamps originally come from.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 27 have been fixed so far.
+I can only find the following update in this series, another series
+updates generic_update_time()? The patch updates only if S_VERSION is
+set.
 
-Some of the still happening issues:
+Your fat patch sets I_DIRTY_SYNC always instead of I_DIRTY_TIME. When I
+last time checked lazytime, and it was depending on I_DIRTY_TIME.
 
-Ref Crashes Repro Title
-<1> 622     Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 557     Yes   WARNING in inc_nlink (3)
-                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
-<3> 193     Yes   BUG: corrupted list in p9_fd_cancelled (2)
-                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
-<4> 8       No    WARNING: refcount bug in p9_req_put (2)
-                  https://syzkaller.appspot.com/bug?extid=3ba8f2097df93bc26d2f
+Are you sure it doesn't break lazytime? I'm totally confusing, and
+really similar with generic_update_time()?
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
++/**
++ * generic_update_time - update the timestamps on the inode
++ * @inode: inode to be updated
++ * @flags: S_* flags that needed to be updated
++ *
++ * The update_time function is called when an inode's timestamps need to be
++ * updated for a read or write operation. In the case where any of S_MTIME, S_CTIME,
++ * or S_VERSION need to be updated we attempt to update all three of them. S_ATIME
++ * updates can be handled done independently of the rest.
++ *
++ * Returns a S_* mask indicating which fields were updated.
++ */
++int generic_update_time(struct inode *inode, int flags)
++{
++	int updated = inode_update_timestamps(inode, flags);
++	int dirty_flags = 0;
+ 
++	if (updated & (S_ATIME|S_MTIME|S_CTIME))
++		dirty_flags = inode->i_sb->s_flags & SB_LAZYTIME ? I_DIRTY_TIME : I_DIRTY_SYNC;
++	if (updated & S_VERSION)
++		dirty_flags |= I_DIRTY_SYNC;
+ 	__mark_inode_dirty(inode, dirty_flags);
+-	return 0;
++	return updated;
+ }
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+>> > -	if ((flags & S_VERSION) && inode_maybe_inc_iversion(inode, false))
+>> > +	if ((flags & (S_VERSION|S_CTIME|S_MTIME)) && inode_maybe_inc_iversion(inode, false))
+>> >  		dirty_flags |= I_DIRTY_SYNC;
+>> >  
+>> >  	__mark_inode_dirty(inode, dirty_flags);
+>> 
 
-You may send multiple commands in a single email message.
+-- 
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
