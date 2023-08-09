@@ -1,116 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8354D182B0;
-	Wed,  9 Aug 2023 12:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4887C433C8;
-	Wed,  9 Aug 2023 12:31:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691584325;
-	bh=/49df41xVNblH0My6Rm524Eu9/9yj5IuCd5Ahg49nqY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xo6zqoH4tLtpgIRXDvauxCrT9KsgoYcbpb7Q39OdqNhaxst2+pfymQmNTOiDSdYxZ
-	 W4BcOUyM7UH4fU7RUavDiPiPYka0t2THfLgZ/sPqj91yNfPhrZU50FqUyuH9VVZDN8
-	 UNseWaM1PhSJla0ABVoW32qrrE3Fj/MBlpMY6czSB3W+5SSM8Xhf7kREP8isSlgAPq
-	 mRtsepkXMEWgN2zHA9V6nGaEGA60y563M3sOwdLemWTAc2vf9fjCoUS3ya4haU8KNM
-	 Rum+AKrje1glVe09hvcM4W9V4PhuNU1t94pbtKl8Th3CMBiN3Fjj5ODwwQE2LnUyec
-	 5payJ6yoVc//Q==
-Date: Wed, 9 Aug 2023 14:31:48 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-	Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Richard Weinberger <richard@nod.at>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
-	linux-nfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-	linux-mtd@lists.infradead.org, linux-mm@kvack.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v7 08/13] fs: drop the timespec64 argument from
- update_time
-Message-ID: <20230809-segeln-pflaumen-460b81bd2d3a@brauner>
-References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
- <20230807-mgctime-v7-8-d1dec143a704@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A61917724
+	for <v9fs@lists.linux.dev>; Wed,  9 Aug 2023 12:33:58 +0000 (UTC)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1bc49d0cb4aso41953735ad.2
+        for <v9fs@lists.linux.dev>; Wed, 09 Aug 2023 05:33:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691584438; x=1692189238;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GS5yL+T8aD2jHNBozahJ7byO3Ae03UHDEOMA4UMJMo8=;
+        b=UvLyL86TyYjpUo0AEm7u8PrLR+Rq3VnZqeUQ/3vNouD/5IcaVkdrGzGDBGG6Z+rmZg
+         BOvDqT0P8Fqyz7DFZTNfdJgOhUFwRADkxNwLwPbtNc6ipdn4zk/mkGvagkr4T+pI+fNu
+         SZZqsNioxN/7EUqQez5i1tpEEO1mgA3JLETcABa83yRcEmQjydXXRF2gpxMYL5VEQ6FB
+         dilgBwiLrqjlXYADR8Y1WdXtJ0feIfFtXttGYn7FBoHZJaNwwEgIr493BO14BCrKHrrg
+         TmgPSS6KS8ju+z60B2sfMm2DSlFP9o/CwCMxOpAHkkxBDEPmLBovcXl9fq/+SPP+nc/T
+         /xKQ==
+X-Gm-Message-State: AOJu0Yxk+pMW8MjSHLwR1o0ejpc5W/pBYC7jk6nBC8gZzddALshWSu5z
+	Mcd01jEFBoBBSiYx4lEiIUNvXmgpLvKLIsR76W1Mg3jPp0jp
+X-Google-Smtp-Source: AGHT+IGITw4dGMJn1Xo0MSeJc2h7kpMvFxWOmemJIDH+W89ELiON54RHZRO/bGV8N3JyMp+WNpHH1rACz+GBJtHAttk46gTZx6Xd
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230807-mgctime-v7-8-d1dec143a704@kernel.org>
+X-Received: by 2002:a17:902:d483:b0:1bb:a78c:7a3e with SMTP id
+ c3-20020a170902d48300b001bba78c7a3emr166180plg.3.1691584438324; Wed, 09 Aug
+ 2023 05:33:58 -0700 (PDT)
+Date: Wed, 09 Aug 2023 05:33:58 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000008dd5f506027cb146@google.com>
+Subject: [syzbot] Monthly v9fs report (Aug 2023)
+From: syzbot <syzbot+list3095adb18b67ff406bcb@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 07, 2023 at 03:38:39PM -0400, Jeff Layton wrote:
-> Now that all of the update_time operations are prepared for it, we can
-> drop the timespec64 argument from the update_time operation. Do that and
-> remove it from some associated functions like inode_update_time and
-> inode_needs_update_time.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  fs/bad_inode.c           |  3 +--
->  fs/btrfs/inode.c         |  3 +--
->  fs/btrfs/volumes.c       |  4 +---
->  fs/fat/fat.h             |  3 +--
->  fs/fat/misc.c            |  2 +-
->  fs/gfs2/inode.c          |  3 +--
->  fs/inode.c               | 30 +++++++++++++-----------------
->  fs/overlayfs/inode.c     |  2 +-
->  fs/overlayfs/overlayfs.h |  2 +-
->  fs/ubifs/file.c          |  3 +--
->  fs/ubifs/ubifs.h         |  2 +-
->  fs/xfs/xfs_iops.c        |  1 -
->  include/linux/fs.h       |  4 ++--
+Hello v9fs maintainers/developers,
 
-This was missing the conversion of fs/orangefs orangefs_update_time()
-causing the build to fail. So at some point kbuild will yell here.
-Fwiw, I've fixed that up in-tree.
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
+
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 27 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 622     Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 557     Yes   WARNING in inc_nlink (3)
+                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
+<3> 193     Yes   BUG: corrupted list in p9_fd_cancelled (2)
+                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
+<4> 8       No    WARNING: refcount bug in p9_req_put (2)
+                  https://syzkaller.appspot.com/bug?extid=3ba8f2097df93bc26d2f
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
