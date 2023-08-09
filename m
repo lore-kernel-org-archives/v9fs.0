@@ -1,100 +1,121 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316671B7C3
-	for <v9fs@lists.linux.dev>; Tue,  8 Aug 2023 16:44:43 +0000 (UTC)
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-56cc461f34fso3586438eaf.0
-        for <v9fs@lists.linux.dev>; Tue, 08 Aug 2023 09:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691513083; x=1692117883;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zBnFEr6hL7Vf1RaT+Kz/ZGkUB6X3BF40XbTk/IEziOA=;
-        b=Y6W1YKV2lpCReNKInMmBqDB9Einxdn+vs4X3zNb6cxrTCsr3J8zLBOR40vvtyUhprq
-         sMgMEu2qg4dTxpIfOpMFZbM7wVxl3li5zjtr/xcUVNl8NvAH8fpEg48/UnHcyfw+kDpr
-         Ml2TFLJymQSkTsH6/mq/811+QPJuut+euWg+TNsDjEB3YjaxZfTkFjqJV1LUP0JsxLBS
-         UTmcMgtdu2FhqX8x8EA6XZHtQMS6JD56zkRd/9BQimBqaSXnmPHmV76t8p9Xq6WUYnPl
-         Q+C7wFUeFw+4mByB3M0p2twpqQmyZ/twF41QMIio1MjZJJXewHQLcjvzefdZJWWC9HVC
-         1LwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691513083; x=1692117883;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zBnFEr6hL7Vf1RaT+Kz/ZGkUB6X3BF40XbTk/IEziOA=;
-        b=icOFcXomR4oG7QPwy48YQtSGp/DSbm37s/vBG7WCGPw4QVlTu8UD6goXpXnJveSDAs
-         UV7QhXuoSJJYAKWJe+2WKsqxWqeQmMSDzzOGnTiODxMA2l/8RMvdYqv2gIxCw5peTaCf
-         zTw6Da7wW5PQKAjTmukF9hP9TUdrXWd5RFCd4sMfHD4u/HI2NBR78R15Zsvk/zn44iy4
-         NG58Tv5biD5bePpWg3p93LBjOmlG+Zkmj8Niycf4wcCI4qs/WE2fFy36SlySvyM5opJ8
-         W7HSW+S0HAXaEcCmUFGoXNIGmBixBTWt7FlAoiGY5sgkiudjQmk2khoEiVMwLhu1Gn69
-         qH0g==
-X-Gm-Message-State: AOJu0YyBJA2pKN9z5ApWbHY5irHMQJzCJ6N5eGyOjmuw3h8xKkNLt7X4
-	r4Ry4FND3UBCmI5Id9RPxiVKb7Ki8ReBgUV/
-X-Google-Smtp-Source: AGHT+IH3S5h4d0rHL4zXlmIwflGxSWvOSBLz6fXsTI1uU4OPORKHbO+d0e7TYMMgVri2+0OFUP1D3A==
-X-Received: by 2002:a05:6870:2189:b0:1bb:973a:6752 with SMTP id l9-20020a056870218900b001bb973a6752mr147598oae.25.1691513082987;
-        Tue, 08 Aug 2023 09:44:42 -0700 (PDT)
-Received: from smtpclient.apple ([195.252.220.43])
-        by smtp.gmail.com with ESMTPSA id d24-20020a02a498000000b0042916ad15bcsm3126288jam.31.2023.08.08.09.44.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 08 Aug 2023 09:44:42 -0700 (PDT)
-From: Sishuai Gong <sishuai.system@gmail.com>
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9507817D3;
+	Wed,  9 Aug 2023 07:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF415C433C8;
+	Wed,  9 Aug 2023 07:04:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691564670;
+	bh=mNaI4yIhrZSJhUwcMni6JCN62HgxRgb2ToogP2H4jFU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dm1BfYtz2dqQMxa4y4K1DetMu3X3Ln+bwz+2jEemWCBc68DqnWDXfI9TyuC86JRyc
+	 OV6+7i/vF54n6ROMNvy+VNt+3Tcbr5mPPxWG7+kZZzvdk1l5Y2fXqdyi4kiTIEHp6R
+	 c+NokRM5ch22ngFHcUfi3IxiA2Hed3py0L00cGbjgid38+MsphBbYkHDRv8n5kfv6l
+	 165HU85tqTN8dPjx7l1xQ1d3Tv6OZoFdRY/kHWh7X900UpXqc/s3kp4a/FPaL7/Rze
+	 xRv3G8HkDEWg3uieFtEQ8pvVu174WnaDQBFW7zKSqu+mNZR7+LKPBNsWLcV/CsHS/4
+	 sOc78sTonZdgw==
+Date: Wed, 9 Aug 2023 09:04:12 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+	Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Richard Weinberger <richard@nod.at>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+	linux-nfs@vger.kernel.org, ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+	linux-mtd@lists.infradead.org, linux-mm@kvack.org,
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v7 07/13] xfs: have xfs_vn_update_time gets its own
+ timestamp
+Message-ID: <20230809-abartig-lachen-df1965c6b37a@brauner>
+References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
+ <20230807-mgctime-v7-7-d1dec143a704@kernel.org>
+ <20230808093903.2cg5wwbwbvflkeph@quack3>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: [PATCH] 9p/trans_fd: avoid sending req to a cancelled conn
-Message-Id: <AA2DB53B-DFC7-4B88-9515-E4C9AFA6435D@gmail.com>
-Date: Tue, 8 Aug 2023 12:44:31 -0400
-Cc: v9fs@lists.linux.dev
-To: ericvh@kernel.org,
- lucho@ionkov.net,
- asmadeus@codewreck.org,
- linux_oss@crudebyte.com
-X-Mailer: Apple Mail (2.3731.700.6)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230808093903.2cg5wwbwbvflkeph@quack3>
 
-When a connection is cancelled by p9_conn_cancel(), all requests on it
-should be cancelled---mark req->status as REQ_STATUS_ERROR. However,
-because a race over m->err between p9_conn_cancel() and p9_fd_request(),
-p9_fd_request might see the old value of m->err, think that the =
-connection
-is NOT cancelled, and then add new requests to this cancelled =
-connection.
+On Tue, Aug 08, 2023 at 11:39:03AM +0200, Jan Kara wrote:
+> On Mon 07-08-23 15:38:38, Jeff Layton wrote:
+> > In later patches we're going to drop the "now" parameter from the
+> > update_time operation. Prepare XFS for this by reworking how it fetches
+> > timestamps and sets them in the inode. Ensure that we update the ctime
+> > even if only S_MTIME is set.
+> > 
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > ---
+> >  fs/xfs/xfs_iops.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
+> > index 731f45391baa..72d18e7840f5 100644
+> > --- a/fs/xfs/xfs_iops.c
+> > +++ b/fs/xfs/xfs_iops.c
+> > @@ -1037,6 +1037,7 @@ xfs_vn_update_time(
+> >  	int			log_flags = XFS_ILOG_TIMESTAMP;
+> >  	struct xfs_trans	*tp;
+> >  	int			error;
+> > +	struct timespec64	now = current_time(inode);
+> 
+> No need to fetch current_time() here where you overwrite it just a bit
+> later...
 
-Fixing this issue by lock-protecting the check on m->err.
-
-Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
----
- net/9p/trans_fd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 00b684616e8d..e43a850f5190 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -671,10 +671,14 @@ static int p9_fd_request(struct p9_client *client, =
-struct p9_req_t *req)
-
- 	p9_debug(P9_DEBUG_TRANS, "mux %p task %p tcall %p id %d\n",
- 		 m, current, &req->tc, req->tc.id);
--	if (m->err < 0)
--		return m->err;
-
- 	spin_lock(&m->req_lock);
-+
-+	if (m->err < 0) {
-+		spin_unlock(&m->req_lock);
-+		return m->err;
-+	}
-+
- 	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
- 	list_add_tail(&req->req_list, &m->unsent_req_list);
- 	spin_unlock(&m->req_lock);
-=E2=80=94
-
-
+It also shadows the @now parameter of that function. Since that function
+parameter is dropped in follow-up patches I simply s/now/time/g it here.
+In any case, fixed in-tree.
