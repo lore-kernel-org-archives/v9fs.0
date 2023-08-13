@@ -1,20 +1,20 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694828BF4;
-	Sun, 13 Aug 2023 16:10:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02E3C433B6;
-	Sun, 13 Aug 2023 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209178825;
+	Sun, 13 Aug 2023 16:12:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BB0C433C7;
+	Sun, 13 Aug 2023 16:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691943001;
+	s=k20201202; t=1691943128;
 	bh=JbgolobhW7kbZvMZt0HTCiNppeSYP5KrDUBliH8hbVA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYUJVl131ogS0EDvTVizAa2+Xsvlq1pCLGTvBMQm6uvJ9rWodHSLAQVzYh186BE4Z
-	 M4xqDETGDi6RRp8dPLHodxIcJOmW19jso9a34X8m3hZLcyLdhdlTZrhdL0MBcGv2+I
-	 kzFXViWblhB1WAJgKa9U8u9rx/KzVgYYMHAJP8lxy8rxPuevSdI8xccwCAUzyPHkLN
-	 pTSAgQlzLEKj7RP9Q0aJM0GtIClr+M3larYc9R3EodGxA/wA9E4KpEjMpxac9SsIXr
-	 t45QbqLOymWOImDGMwDGimqbrOMD4TbSlnFa2HTXFRMGdqRerTWYFm57kHtxZTV+iG
-	 aUeZRF3GKszTA==
+	h=From:To:Cc:Subject:Date:From;
+	b=dmCTlpuV45l+KsWpMuhIjyXd6vvEHX+RGqZsjxVWCT6JRvsLdr79aGBb/5Z4KlMBl
+	 L3TbVUOtN2o+KhskZfMgcqFVS4/n1DmeoN9Tvv61MFOCaFZ7Lu2XOf4gpDAQQoKmjx
+	 gkx1hsjt4Gr38U026rVoJ+7Bmm0JUZDUrg0+FNZyfOkYPo5geR2vTLBxzwr5KxyjdB
+	 i7qqpmhNQEpxD39qpxCsFBzM0EbZKdUKeW8lz6lsH74dK2EHNW789hCNdmodjXdyKT
+	 xh6upD7QC86vDgL+YtFCW0cGFKuiPmZZ0VTGseqHJOgAvZh5b3iLXeU1Sd72DaBeER
+	 yTdoYcQnIbgxg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -29,12 +29,10 @@ Cc: Dominique Martinet <asmadeus@codewreck.org>,
 	pabeni@redhat.com,
 	v9fs@lists.linux.dev,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/25] 9p: virtio: make sure 'offs' is initialized in zc_request
-Date: Sun, 13 Aug 2023 12:09:16 -0400
-Message-Id: <20230813160936.1082758-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 01/14] 9p: virtio: make sure 'offs' is initialized in zc_request
+Date: Sun, 13 Aug 2023 12:11:49 -0400
+Message-Id: <20230813161202.1086004-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813160936.1082758-1-sashal@kernel.org>
-References: <20230813160936.1082758-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -43,7 +41,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.190
+X-stable-base: Linux 5.4.253
 Content-Transfer-Encoding: 8bit
 
 From: Dominique Martinet <asmadeus@codewreck.org>
