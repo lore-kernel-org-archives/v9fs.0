@@ -1,20 +1,20 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB4A848B;
-	Sun, 13 Aug 2023 16:06:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C02C433C8;
-	Sun, 13 Aug 2023 16:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694828BF4;
+	Sun, 13 Aug 2023 16:10:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02E3C433B6;
+	Sun, 13 Aug 2023 16:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691942793;
-	bh=WJTx7mSV102efOkE7AJn3zpmqnoRRtsjSNkP+ZJIQE0=;
+	s=k20201202; t=1691943001;
+	bh=JbgolobhW7kbZvMZt0HTCiNppeSYP5KrDUBliH8hbVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDCvw3RpY1xMde/qCNd7ylHTvJ8sIyDU2Lddoo8gc1yB99JmjW1gasGzpZiXPegf1
-	 9LrK43ozcMmdhdxlaAdlQ0q9FwgyRIuMTc93xAmewT0qx7zZq58L3rI/oB/n86EZ9p
-	 ebfNn7bSL/SfJ2F2S+0kqY/G2Jg8RRcEKTOBgJ1H2etPEFFkzF4yBkWDsqapV+1zOm
-	 UbMEioA/lTF5cnEIjxeXeA07bnDRB+PO3TgCVDWRn3rpxiYGcJ9jqXP24DNUGnW1pg
-	 p1lI5oXB5LKZBh8AwW4ftfnGaS+2FZcnDKEO4B+gpSMK4mTj48mj7jwOE4h6odF0az
-	 A2G4cGBbPXbHg==
+	b=KYUJVl131ogS0EDvTVizAa2+Xsvlq1pCLGTvBMQm6uvJ9rWodHSLAQVzYh186BE4Z
+	 M4xqDETGDi6RRp8dPLHodxIcJOmW19jso9a34X8m3hZLcyLdhdlTZrhdL0MBcGv2+I
+	 kzFXViWblhB1WAJgKa9U8u9rx/KzVgYYMHAJP8lxy8rxPuevSdI8xccwCAUzyPHkLN
+	 pTSAgQlzLEKj7RP9Q0aJM0GtIClr+M3larYc9R3EodGxA/wA9E4KpEjMpxac9SsIXr
+	 t45QbqLOymWOImDGMwDGimqbrOMD4TbSlnFa2HTXFRMGdqRerTWYFm57kHtxZTV+iG
+	 aUeZRF3GKszTA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -29,12 +29,12 @@ Cc: Dominique Martinet <asmadeus@codewreck.org>,
 	pabeni@redhat.com,
 	v9fs@lists.linux.dev,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 05/31] 9p: virtio: make sure 'offs' is initialized in zc_request
-Date: Sun, 13 Aug 2023 12:05:38 -0400
-Message-Id: <20230813160605.1080385-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 05/25] 9p: virtio: make sure 'offs' is initialized in zc_request
+Date: Sun, 13 Aug 2023 12:09:16 -0400
+Message-Id: <20230813160936.1082758-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813160605.1080385-1-sashal@kernel.org>
-References: <20230813160605.1080385-1-sashal@kernel.org>
+In-Reply-To: <20230813160936.1082758-1-sashal@kernel.org>
+References: <20230813160936.1082758-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.126
+X-stable-base: Linux 5.10.190
 Content-Transfer-Encoding: 8bit
 
 From: Dominique Martinet <asmadeus@codewreck.org>
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index d110df3cb4e1d..96eecc2dcaa36 100644
+index f582351d84ecb..36b5f72e2165c 100644
 --- a/net/9p/trans_virtio.c
 +++ b/net/9p/trans_virtio.c
-@@ -399,7 +399,7 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
+@@ -394,7 +394,7 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
  	struct page **in_pages = NULL, **out_pages = NULL;
  	struct virtio_chan *chan = client->trans;
  	struct scatterlist *sgs[4];
