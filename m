@@ -1,57 +1,82 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA46714AA7
-	for <v9fs@lists.linux.dev>; Tue, 29 Aug 2023 14:11:46 +0000 (UTC)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-401187f8071so28087525e9.0
-        for <v9fs@lists.linux.dev>; Tue, 29 Aug 2023 07:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693318305; x=1693923105;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RJ8yJVk1WanTGK6noPSAuAu8J5j6k7b3gO5IRwPDORc=;
-        b=pDfSqxW/VMwLUzzQxKkJcrvOyXGTdi+m78jrAmELfOR+jSL0bgTFPe2YgNMeaGm350
-         WqLnoRfNyy2lFNrVO4duvKoqPamj5nY9lGvzw2VhoxrwDxyj7nkjxn43BmXimhKvw9NY
-         DwPWGVP7ItRZm6gATl1VZn6FI1X6ELDpEOqWG0TnhPeNPfxnOUX6sHhVBaDdH8trBDJi
-         hF0O3b8w5t0r9ezlMaWcqBM+qQ9jSMzQrJV5eASglFcEEVeR3SVc+HS9Jh89cAsCIHTw
-         tFvOYpPFIMwX50nbMcxQjp9qgV2+tdAd25nqTTPy2pS9KENK9Or7oO2a0fSmt6KedIbd
-         fBOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693318305; x=1693923105;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RJ8yJVk1WanTGK6noPSAuAu8J5j6k7b3gO5IRwPDORc=;
-        b=K8dTCXVvIevvskswzknHroQk141s1URugrIquLQc2O3uYR9UnOM/7YvtgU3fo9WMgI
-         3iFOb32wTzAWycg2rX0vY9A0d32ijwg3ciGwfIEdXQN8ibciPRCRHgGSu5ywKllyrhDQ
-         TgzF6vbSPwm+kStHa5Mb625fglGwsQV6ESo9YmQ+dMDJ/+f2MF2YtIm/l1vhmDmA3BxN
-         6w8gC8+Qj09+w7eEBPGXR5ggoC8tJM5U38xsZl2+zgBfwviYMt+A1TP4w2UHgV+tmuhA
-         Wrbgs6PXwa4+qNXmmdE3Zpr5nW0y1oKtINcgZKdB754AyFCQNsWQHcDJ0tGbR2QVsubD
-         I9cg==
-X-Gm-Message-State: AOJu0Yyoy/mEHaI08tM5U0ej/bZ89Ur2P1kHbgh1hAlZJAj7luphjIGp
-	5psZa0ZJcMw+t4p5oVHH3faVjw==
-X-Google-Smtp-Source: AGHT+IFFCPGxLiaYC5WNJ7fqI+TG+TcdZx3IaR6+EMXKEo+SeqxY92aYFuyGltp0GJAZesLUqlFAyA==
-X-Received: by 2002:a05:600c:3b07:b0:401:b53e:6c55 with SMTP id m7-20020a05600c3b0700b00401b53e6c55mr2216906wms.0.1693318304674;
-        Tue, 29 Aug 2023 07:11:44 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:9c:201:3380:af04:1905:46a])
-        by smtp.gmail.com with ESMTPSA id 24-20020a05600c22d800b003fbe791a0e8sm14138042wmg.0.2023.08.29.07.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 07:11:43 -0700 (PDT)
-Date: Tue, 29 Aug 2023 16:11:38 +0200
-From: Marco Elver <elver@google.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: syzbot <syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com>,
-	davem@davemloft.net, edumazet@google.com, ericvh@kernel.org,
-	kuba@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-	lucho@ionkov.net, netdev@vger.kernel.org, pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [net?] [v9fs?] KCSAN: data-race in p9_fd_create /
- p9_fd_create (2)
-Message-ID: <ZO38mqkS0TYUlpFp@elver.google.com>
-References: <000000000000d26ff606040c9719@google.com>
- <ZO3PFO_OpNfBW7bd@codewreck.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA3F6AAE;
+	Tue, 29 Aug 2023 22:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XGuBrJRA9Fd4AduQK/hSseIFrv8V5F+R7owbTsvIznw=; b=q1V5fHa/AXkRLdmnc9TtDTItxb
+	sjv5FpbdJarUSWDm8h5uqmHXkHTGtBOUlKVK5U/4PExCLqpYcowYZaV/PvP/kk1bfsDWLvRZIDMi6
+	J4YRKXkMJOy3sqhHWZHu4Fl1bfB/qtOHn3XYeh3dGmGOC0qbSQkD2Y+wYSoEusMnNBuy4+VyYQnkY
+	Lc4KlaQORaxPNCRh9pBUGO98Ft5v23nvU0WQJiozkEiistd3znn+J2fx0QgNh+u6E23YopsyfOSpr
+	Rmce2YRpGqgEixjkKJHtsYkWfKbeh3RTX6XJKjEhssGOmTvrkXGjl1f8Qxu8W6gub1Ziw1YBVxlnq
+	0FDl8ZIQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1qb7SA-001wYO-34;
+	Tue, 29 Aug 2023 22:44:55 +0000
+Date: Tue, 29 Aug 2023 23:44:54 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+	Tyler Hicks <code@tyhicks.com>, Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Iurii Zaikin <yzaikin@google.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Richard Weinberger <richard@nod.at>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Anthony Iliopoulos <ailiop@suse.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-afs@lists.infradead.org,
+	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	cluster-devel@redhat.com, linux-nfs@vger.kernel.org,
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+	devel@lists.orangefs.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org, linux-mtd@lists.infradead.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v6 1/7] fs: pass the request_mask to generic_fillattr
+Message-ID: <20230829224454.GA461907@ZenIV>
+References: <20230725-mgctime-v6-0-a794c2b7abca@kernel.org>
+ <20230725-mgctime-v6-1-a794c2b7abca@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -60,107 +85,24 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZO3PFO_OpNfBW7bd@codewreck.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
+In-Reply-To: <20230725-mgctime-v6-1-a794c2b7abca@kernel.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Tue, Aug 29, 2023 at 07:57PM +0900, Dominique Martinet wrote:
-[...]
-> Yes well that doesn't seem too hard to hit, both threads are just
-> setting O_NONBLOCK to the same fd in parallel (0x800 is 04000,
-> O_NONBLOCK)
+On Tue, Jul 25, 2023 at 10:58:14AM -0400, Jeff Layton wrote:
+> generic_fillattr just fills in the entire stat struct indiscriminately
+> today, copying data from the inode. There is at least one attribute
+> (STATX_CHANGE_COOKIE) that can have side effects when it is reported,
+> and we're looking at adding more with the addition of multigrain
+> timestamps.
 > 
-> I'm not quite sure why that'd be a problem; and I'm also pretty sure
-> that wouldn't work anyway (9p has no muxing or anything that'd allow
-> sharing the same fd between multiple mounts)
-> 
-> Can this be flagged "don't care" ?
+> Add a request_mask argument to generic_fillattr and have most callers
+> just pass in the value that is passed to getattr. Have other callers
+> (e.g. ksmbd) just pass in STATX_BASIC_STATS. Also move the setting of
+> STATX_CHANGE_COOKIE into generic_fillattr.
 
-If it's an intentional data race, it could be marked data_race() [1].
+Out of curiosity - how much PITA would it be to put request_mask into
+kstat?  Set it in vfs_getattr_nosec() (and those get_file_..._info()
+on smbd side) and don't bother with that kind of propagation boilerplate
+- just have generic_fillattr() pick it there...
 
-However, staring at this code for a bit, I wonder why the f_flags are
-set on open, and not on initialization somewhere...
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
-
-Anyway, a patch like the below would document that the data race is
-intended and we assume that there is no way (famous last words) the
-compiler or the CPU can mess it up (and KCSAN won't report it again).
-
------- >8 ------
-
-From: Marco Elver <elver@google.com>
-Date: Tue, 29 Aug 2023 15:48:58 +0200
-Subject: [PATCH] 9p: Annotate data-racy writes to file::f_flags
-
-syzbot reported:
-
- | BUG: KCSAN: data-race in p9_fd_create / p9_fd_create
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15599 on cpu 0:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15563 on cpu 1:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | value changed: 0x00008002 -> 0x00008802
-
-Within p9_fd_open(), O_NONBLOCK is added to f_flags of the read and
-write files. This may happen concurrently if e.g. 2 tasks mount the same
-filesystem.
-
-Mark the plain read-modify-writes as intentional data-races, with the
-assumption that the result of executing the accesses concurrently will
-always result in the same result despite the accesses themselves not
-being atomic.
-
-Reported-by: syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
----
- net/9p/trans_fd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 00b684616e8d..9b01e15a758b 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -833,13 +833,13 @@ static int p9_fd_open(struct p9_client *client, int rfd, int wfd)
- 	if (!(ts->rd->f_mode & FMODE_READ))
- 		goto out_put_rd;
- 	/* prevent workers from hanging on IO when fd is a pipe */
--	ts->rd->f_flags |= O_NONBLOCK;
-+	data_race(ts->rd->f_flags |= O_NONBLOCK);
- 	ts->wr = fget(wfd);
- 	if (!ts->wr)
- 		goto out_put_rd;
- 	if (!(ts->wr->f_mode & FMODE_WRITE))
- 		goto out_put_wr;
--	ts->wr->f_flags |= O_NONBLOCK;
-+	data_race(ts->wr->f_flags |= O_NONBLOCK);
- 
- 	client->trans = ts;
- 	client->status = Connected;
--- 
-2.42.0.rc2.253.gd59a3bf2b4-goog
-
+Reduces the patchset size quite a bit...
