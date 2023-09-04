@@ -1,180 +1,150 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B71847
-	for <v9fs@lists.linux.dev>; Wed, 30 Aug 2023 07:59:37 +0000 (UTC)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4013454fa93so46544465e9.0
-        for <v9fs@lists.linux.dev>; Wed, 30 Aug 2023 00:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693382376; x=1693987176; darn=lists.linux.dev;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pMMQyokSBoYi+7NtlQGYb+yVajJvpYPKJBULBUddiXM=;
-        b=T5GDEhQqbhjwmCr8ZT+CrSGHn6mGRILLrN5RlJ5cyV9Q7jPGkZwML21hVDkiXmnbJH
-         asushdp2m0uIBfYHK9Hkl8UhEwUvOmbI/RV7DRFlSlijTkMIklsgX0VoqN5C5WN+T+dl
-         6DSawSmscXPS4oj7okUWbY1/k3pIpOur55gx5LrfBOJ4QzurZbWU2z5z/VwR73QD5qpH
-         DjZdVgJ3Xt7Ye6B8ejwXunwislrTvDUmpUcO9zU5KBvCRMnOjbvXY1S0O3pb3OlSUrI3
-         E9i5LDBMJOrtNJaL9XYKoPj+XEXYA9G9ZVensFWY9iFoCH0SHZiZQe35cQKqv2BPcFtm
-         kCnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693382376; x=1693987176;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pMMQyokSBoYi+7NtlQGYb+yVajJvpYPKJBULBUddiXM=;
-        b=ky7OpTMKKkP23Ts00918ri3uuL7UYCuY3sptlDPsMWsn/i6u8NrYkqWCanQzzlCqvM
-         sta0DCQtFZwsTSLO8Wtte79XAAIB0ratEUXEskijfstcatzBS753BMpFBT2KsId21m9m
-         gcnG8MPqkDQq+ScQfl+bLUJjDx+35TtSs32jfdfjnQQCUpUZKpH02xW+9XxgpI1Xdcqe
-         2XvbiqglBJaPTtdKWyqXOQ2vsc0sA9tGMunAkgIVTCpqdt1/aAJa4NF34viyBKFQH2yi
-         VW5EHu72+Urr/zDCTT0CYwX3rSgrKgcUqkMRYyTXka4ngLB+t3tB+DL/WYg4ZxMHq4fR
-         4iMg==
-X-Gm-Message-State: AOJu0YwY6JG3QEEPEQ/XcwMTR7uxueWj954Eaq1PcQblLpRiLIcYMzvN
-	CvPXDQyJhtTWW9AAXrukCNlXpw==
-X-Google-Smtp-Source: AGHT+IEjcIizQH3HgpknpZ6G1AFB4laTKJh2Uyrdj3Zs0MAtHyfmRBdqpsjNPzBAd35S2HBtWY8ifA==
-X-Received: by 2002:a05:600c:2256:b0:400:6bee:f4fe with SMTP id a22-20020a05600c225600b004006beef4femr1225816wmm.21.1693382375870;
-        Wed, 30 Aug 2023 00:59:35 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:9c:201:3380:af04:1905:46a])
-        by smtp.gmail.com with ESMTPSA id z6-20020a5d4406000000b003143c6e09ccsm15889160wrq.16.2023.08.30.00.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 00:59:35 -0700 (PDT)
-Date: Wed, 30 Aug 2023 09:59:30 +0200
-From: Marco Elver <elver@google.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: syzbot <syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com>,
-	davem@davemloft.net, edumazet@google.com, ericvh@kernel.org,
-	kuba@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-	lucho@ionkov.net, netdev@vger.kernel.org, pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [net?] [v9fs?] KCSAN: data-race in p9_fd_create /
- p9_fd_create (2)
-Message-ID: <ZO724hKaHLCrSOa/@elver.google.com>
-References: <000000000000d26ff606040c9719@google.com>
- <ZO3PFO_OpNfBW7bd@codewreck.org>
- <ZO38mqkS0TYUlpFp@elver.google.com>
- <ZO55o4lE2rKO5AlI@codewreck.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD79C8E6;
+	Mon,  4 Sep 2023 18:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26F6EC433BB;
+	Mon,  4 Sep 2023 18:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1693851069;
+	bh=XLoa47KxRcps38wwidPhLGQHNoTClCg5nlSU2UvnxSI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=XZUD/xT7QAeS9CwkDxlRqT/gRWQx0TmxhnpK0eSpl5TdmWje1tq2yvGH+3vZ2+BCT
+	 jCeZ3PliMwtj4PI/YG14pbxznaZzZiLpm9dwOITxs9QimCVLsdgcY+tXdL8VHHo6Xo
+	 yN1Gfw9YZmIyD8m43UuRL17+XTyHWk7a5WXn6oF5ggWXw6RS9S101xrDjQsPd+ZkCx
+	 1CnWWAtQSCxTFtksNwHsJ+bzmvgeWVNV2ZHBFMah4WlUviOzbSHDkb9JT06sfaty1l
+	 sU4YI09Bt9xI2xASG0RHXL6Mglihp9xk051QekITKNbwSi+f4qbVFzWkXoKrsHAJfp
+	 TL/wsjYXrOQBg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C90EDC2BBD7;
+	Mon,  4 Sep 2023 18:11:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZO55o4lE2rKO5AlI@codewreck.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
+Subject: Re: [f2fs-dev] [PATCH v2 00/89] fs: new accessors for inode->i_ctime
+From: patchwork-bot+f2fs@kernel.org
+Message-Id: 
+ <169385106881.19669.3510550425397118597.git-patchwork-notify@kernel.org>
+Date: Mon, 04 Sep 2023 18:11:08 +0000
+References: <20230705185812.579118-1-jlayton@kernel.org>
+In-Reply-To: <20230705185812.579118-1-jlayton@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
+ maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
+ cmllamas@google.com, surenb@google.com,
+ dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca, leon@kernel.org,
+ bwarrum@linux.ibm.com, rituagar@linux.ibm.com, ericvh@kernel.org,
+ lucho@ionkov.net, asmadeus@codewreck.org, linux_oss@crudebyte.com,
+ dsterba@suse.com, dhowells@redhat.com, marc.dionne@auristor.com,
+ viro@zeniv.linux.org.uk, raven@themaw.net, luisbg@kernel.org,
+ salah.triki@gmail.com, aivazian.tigran@gmail.com, ebiederm@xmission.com,
+ keescook@chromium.org, clm@fb.com, josef@toxicpanda.com, xiubli@redhat.com,
+ idryomov@gmail.com, jaharkes@cs.cmu.edu, coda@cs.cmu.edu, jlbec@evilplan.org,
+ hch@lst.de, nico@fluxnic.net, rafael@kernel.org, code@tyhicks.com,
+ ardb@kernel.org, xiang@kernel.org, chao@kernel.org, huyue2@coolpad.com,
+ jefflexu@linux.alibaba.com, linkinjeon@kernel.org, sj1557.seo@samsung.com,
+ jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
+ hirofumi@mail.parknet.co.jp, miklos@szeredi.hu, rpeterso@redhat.com,
+ agruenba@redhat.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
+ johannes@sipsolutions.net, mikulas@artax.karlin.mff.cuni.cz,
+ mike.kravetz@oracle.com, muchun.song@linux.dev, dwmw2@infradead.org,
+ shaggy@kernel.org, tj@kernel.org, trond.myklebust@hammerspace.com,
+ anna@kernel.org, chuck.lever@oracle.com, neilb@suse.de, kolga@netapp.com,
+ Dai.Ngo@oracle.com, tom@talpey.com, konishi.ryusuke@gmail.com,
+ anton@tuxera.com, almaz.alexandrovich@paragon-software.com, mark@fasheh.com,
+ joseph.qi@linux.alibaba.com, me@bobcopeland.com, hubcap@omnibond.com,
+ martin@omnibond.com, amir73il@gmail.com, mcgrof@kernel.org,
+ yzaikin@google.com, tony.luck@intel.com, gpiccoli@igalia.com, al@alarsen.net,
+ sfrench@samba.org, pc@manguebit.com, lsahlber@redhat.com,
+ sprasad@microsoft.com, senozhatsky@chromium.org, phillip@squashfs.org.uk,
+ rostedt@goodmis.org, mhiramat@kernel.org, dushistov@mail.ru,
+ hdegoede@redhat.com, djwong@kernel.org, dlemoal@kernel.org,
+ naohiro.aota@wdc.com, jth@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+ haoluo@google.com, jolsa@kernel.org, hughd@google.com,
+ akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, john.johansen@canonical.com,
+ paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+ stephen.smalley.work@gmail.com, eparis@parisplace.org, jgross@suse.com,
+ stern@rowland.harvard.edu, lrh2000@pku.edu.cn,
+ sebastian.reichel@collabora.com, wsa+renesas@sang-engineering.com,
+ quic_ugoswami@quicinc.com, quic_linyyuan@quicinc.com, john@keeping.me.uk,
+ error27@gmail.com, quic_uaggarwa@quicinc.com, hayama@lineo.co.jp,
+ jomajm@gmail.com, axboe@kernel.dk, dhavale@google.com, dchinner@redhat.com,
+ hannes@cmpxchg.org, zhangpeng362@huawei.com, slava@dubeyko.com,
+ gargaditya08@live.com, penguin-kernel@I-love.SAKURA.ne.jp,
+ yifeliu@cs.stonybrook.edu, madkar@cs.stonybrook.edu, ezk@cs.stonybrook.edu,
+ yuzhe@nfschina.com, willy@infradead.org, okanatov@gmail.com,
+ jeffxu@chromium.org, linux@treblig.org, mirimmad17@gmail.com,
+ yijiangshan@kylinos.cn, yang.yang29@zte.com.cn, xu.xin16@zte.com.cn,
+ chengzhihao1@huawei.com, shr@devkernel.io, Liam.Howlett@Oracle.com,
+ adobriyan@gmail.com, chi.minghao@zte.com.cn, roberto.sassu@huawei.com,
+ linuszeng@tencent.com, bvanassche@acm.org, zohar@linux.ibm.com,
+ yi.zhang@huawei.com, trix@redhat.com, fmdefrancesco@gmail.com,
+ ebiggers@google.com, princekumarmaurya06@gmail.com, chenzhongjin@huawei.com,
+ riel@surriel.com, shaozhengchao@huawei.com, jingyuwang_vip@163.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+ autofs@vger.kernel.org, linux-mm@kvack.org, linux-btrfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+ ecryptfs@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+ linux-um@lists.infradead.org, linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+ linux-nilfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, linux-hardening@vger.kernel.org,
+ reiserfs-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-trace-kernel@vger.kernel.org,
+ linux-xfs@vger.kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ selinux@vger.kernel.org
 
-On Wed, Aug 30, 2023 at 08:05AM +0900, Dominique Martinet wrote:
-> Marco Elver wrote on Tue, Aug 29, 2023 at 04:11:38PM +0200:
-> > On Tue, Aug 29, 2023 at 07:57PM +0900, Dominique Martinet wrote:
-> > [...]
-> > > Yes well that doesn't seem too hard to hit, both threads are just
-> > > setting O_NONBLOCK to the same fd in parallel (0x800 is 04000,
-> > > O_NONBLOCK)
-> > > 
-> > > I'm not quite sure why that'd be a problem; and I'm also pretty sure
-> > > that wouldn't work anyway (9p has no muxing or anything that'd allow
-> > > sharing the same fd between multiple mounts)
-> > > 
-> > > Can this be flagged "don't care" ?
-> > 
-> > If it's an intentional data race, it could be marked data_race() [1].
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
-> 
-> Thanks!
-> 
-> > However, staring at this code for a bit, I wonder why the f_flags are
-> > set on open, and not on initialization somewhere...
-> 
-> This open is during the mount initialization (mount/p9_client_create,
-> full path in the stack); there's no more initialization-ish code we
-> have.
-> The problem here is that we allow to pass any old arbitrary fd, so the
-> user can open their fd how they want and abuse mount to use it on
-> multiple mounts, even if that has no way of working (as I mentionned,
-> there's no control flow at all -- you'll create two completely separate
-> client state machines that'll both try to read and/or write (separate
-> fds) on the same fd, and it'll all get jumbled up.
-> > 
-> > Anyway, a patch like the below would document that the data race is
-> > intended and we assume that there is no way (famous last words) the
-> > compiler or the CPU can mess it up (and KCSAN won't report it again).
-> 
-> That's good enough for me as my position really is just "don't do
-> that"... Would that also protect from syzcaller sending the fd to mount
-> on one side, and calling fcntl(F_SETFL) on the side?
+Hello:
 
-No, data_race() is only for marking intentional data races. In a
-production kernel, it's a no-op (generated code is identical). In a
-KCSAN kernel, it will make the tool not report such data races.
+This series was applied to jaegeuk/f2fs.git (dev)
+by Christian Brauner <brauner@kernel.org>:
 
-syzkaller doesn't care, and can still produce such programs (so that
-other bug detectors can still see an issue if there is one somewhere).
-
-> At this rate we might as well just take the file's f_lock as setfl does,
-> but perhaps there's a way to steal the fd from userspace somehow?
+On Wed,  5 Jul 2023 14:58:09 -0400 you wrote:
+> v2:
+> - prepend patches to add missing ctime updates
+> - add simple_rename_timestamp helper function
+> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
+> - drop individual inode_ctime_set_{sec,nsec} helpers
 > 
-> It's not just "don't use this fd for another mount", it really is "don't
-> use this fd anymore while it is used by a mount".
+> I've been working on a patchset to change how the inode->i_ctime is
+> accessed in order to give us conditional, high-res timestamps for the
+> ctime and mtime. struct timespec64 has unused bits in it that we can use
+> to implement this. In order to do that however, we need to wrap all
+> accesses of inode->i_ctime to ensure that bits used as flags are
+> appropriately handled.
 > 
-> This is made complicated that we only want to steal half of the fd, you
-> could imagine a weird setup like this:
-> 
->  ┌────────────────────────────────────┐         ┌─────────────────┐
->  │                                    │         │                 │
->  │                                    │         │  kernel client  │
->  │   fd3 tcp to server                │         │                 │
->  │       write end  ◄─────────────────┼─────────┤                 │
->  │                                    │         │                 │
->  │       read end   ──┐               │         │                 │
->  │                    │               │         │                 │
->  │   fd4 pipeA        │ MITMing...    │         │                 │
->  │                    │               │         │                 │
->  │       write end  ◄─┘               │         │                 │
->  │                                    │         │                 │
->  │   fd5 pipeB                        │         │                 │
->  │                                    │         │                 │
->  │       read end  ───────────────────┼────────►│                 │
->  │                                    │         │                 │
->  │                                    │         │                 │
->  └────────────────────────────────────┘         └─────────────────┘
-> 
-> I'm not sure we actually want to support something like that, but it's
-> currently possible and making mount act like close() on the fd would
-> break this... :|
-> 
-> So, yeah, well; this is one of these "please don't do this" that
-> syzcaller has no way of knowing about; it's good to test (please don't
-> do this has no security guarantee so the kernel shouldn't blow up!),
-> but if the only fallout is breakage then yeah data_race() is fine.
+> [...]
 
-Right, if the only breakage is some corruption of the particular file in
-user space, and the kernel is still in a good state, then I think this
-is fine. However, if the kernel can potentially crash or corrupt
-completely unrelated data, it may be a problem.
+Here is the summary with links:
+  - [f2fs-dev,v2,07/92] fs: add ctime accessors infrastructure
+    https://git.kernel.org/jaegeuk/f2fs/c/9b6304c1d537
+  - [f2fs-dev,v2,08/92] fs: new helper: simple_rename_timestamp
+    https://git.kernel.org/jaegeuk/f2fs/c/0c4767923ed6
+  - [f2fs-dev,v2,92/92] fs: rename i_ctime field to __i_ctime
+    https://git.kernel.org/jaegeuk/f2fs/c/13bc24457850
 
-> Compilers and/or CPU might be able to blow this out of proportion, but
-> hopefully they won't go around modifying another unrelated value in
-> memory somewhere, and we do fdget so it shouldn't turn into a UAF, so I
-> guess it's fine?...
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-No, the kernel strongly assumes "locally undefined behaviour" for data
-races in the worst case, i.e. some garbage value being written into
-f_flags. To guard against that we'd have to use READ_ONCE/WRITE_ONCE.
 
-But given the best-effort nature of this based on "don't do this" i.e.
-not really supported, data_race() is probably more than enough. You may
-want to amend the patch I sent to clarify that (I wasn't aware of it).
-
-> Just taking f_lock here won't solve anything and
-> might give the impression we support concurrent uses.
-> 
-> 
-> Sorry for rambling, and thanks for the patch; I'm not sure if Eric has
-> anything planned for next cycle but either of us can take it and call it
-> a day.
-
-Thanks for the explanation!
