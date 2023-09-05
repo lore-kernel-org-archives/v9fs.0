@@ -1,119 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06E5C8E7;
-	Mon,  4 Sep 2023 18:11:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CC393C433CA;
-	Mon,  4 Sep 2023 18:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693851068;
-	bh=KWuluqFF5yFV+lOCkFnoct0phRXw96Jca/CuZaTU2kY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=K3gkbkhJRwgpsacHeBsq0A7kucjUSGo8OzMP1ouPw/XPyf9sD5QK/Sf142+usc7ZE
-	 C827H7oMTO9xQURopm4EWqGoFioLBjSEY4gmbRDnvHI4L+ywXrxJRVy5ldQmRaAtfj
-	 1pffFi8IArgTV4dPuYUPdlhMXVuT7Hb/6kEuD4lj+4NJdrul8tjUb9OXjEUjpGn+jT
-	 2ndFdt5oPLx5wHtLQ20DiaB9Xl09djxp9OA/4zW9QgSOHR3JDKxABg9kMIgFr5Ox62
-	 wqlEdaiOf1aM8ubxkjKV3yvjnRyA83mc2npN6NfYoiPdtaZLbxGvWm4TgDkfWkglX8
-	 L2qkw/qB1Voxg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A2BE4C04E26;
-	Mon,  4 Sep 2023 18:11:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ABAD537
+	for <v9fs@lists.linux.dev>; Tue,  5 Sep 2023 14:16:15 +0000 (UTC)
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 9D9CC6732A; Tue,  5 Sep 2023 16:16:04 +0200 (CEST)
+Date: Tue, 5 Sep 2023 16:16:04 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Jan Kara <jack@suse.cz>, David Howells <dhowells@redhat.com>,
+	David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Cc: Lei Huang <lei.huang@linux.intel.com>, miklos@szeredi.hu,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Boris Pismenny <borisp@nvidia.com>, linux-nfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, ceph-devel@vger.kernel.org,
+	linux-mm@kvack.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
+Subject: getting rid of the last memory modifitions through gup(FOLL_GET)
+Message-ID: <20230905141604.GA27370@lst.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH v7 00/13] fs: implement multigrain timestamps
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <169385106866.19669.14483196627780303129.git-patchwork-notify@kernel.org>
-Date: Mon, 04 Sep 2023 18:11:08 +0000
-References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
-In-Reply-To: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, ericvh@kernel.org,
- lucho@ionkov.net, asmadeus@codewreck.org, linux_oss@crudebyte.com,
- dhowells@redhat.com, marc.dionne@auristor.com, clm@fb.com,
- josef@toxicpanda.com, dsterba@suse.com, xiubli@redhat.com,
- idryomov@gmail.com, jaharkes@cs.cmu.edu, coda@cs.cmu.edu, code@tyhicks.com,
- xiang@kernel.org, chao@kernel.org, huyue2@coolpad.com,
- jefflexu@linux.alibaba.com, linkinjeon@kernel.org, sj1557.seo@samsung.com,
- jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
- hirofumi@mail.parknet.co.jp, miklos@szeredi.hu, rpeterso@redhat.com,
- agruenba@redhat.com, gregkh@linuxfoundation.org, tj@kernel.org,
- trond.myklebust@hammerspace.com, anna@kernel.org,
- almaz.alexandrovich@paragon-software.com, mark@fasheh.com,
- jlbec@evilplan.org, joseph.qi@linux.alibaba.com, hubcap@omnibond.com,
- martin@omnibond.com, mcgrof@kernel.org, keescook@chromium.org,
- yzaikin@google.com, sfrench@samba.org, pc@manguebit.com,
- ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com,
- senozhatsky@chromium.org, richard@nod.at, hdegoede@redhat.com,
- hughd@google.com, akpm@linux-foundation.org, amir73il@gmail.com,
- djwong@kernel.org, bcodding@redhat.com, jack@suse.cz,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-mtd@lists.infradead.org, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, codalist@coda.cs.cmu.edu,
- cluster-devel@redhat.com, linux-ext4@vger.kernel.org,
- devel@lists.orangefs.org, ecryptfs@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, ceph-devel@vger.kernel.org,
- linux-nfs@vger.kernel.org, v9fs@lists.linux.dev,
- samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, ntfs3@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-btrfs@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-Hello:
+Hi all,
 
-This series was applied to jaegeuk/f2fs.git (dev)
-by Christian Brauner <brauner@kernel.org>:
+we've made some nice progress on converting code that modifies user
+memory to the pin_user_pages interface, especially though the work
+from David Howells on iov_iter_extract_pages.  This thread tries to
+coordinate on how to finish off this work.
 
-On Mon, 07 Aug 2023 15:38:31 -0400 you wrote:
-> The VFS always uses coarse-grained timestamps when updating the
-> ctime and mtime after a change. This has the benefit of allowing
-> filesystems to optimize away a lot metadata updates, down to around 1
-> per jiffy, even when a file is under heavy writes.
-> 
-> Unfortunately, this coarseness has always been an issue when we're
-> exporting via NFSv3, which relies on timestamps to validate caches. A
-> lot of changes can happen in a jiffy, so timestamps aren't sufficient to
-> help the client decide to invalidate the cache.
-> 
-> [...]
+The obvious next step is the remaining users of iov_iter_get_pages2
+and iov_iter_get_pages_alloc2.  We have three file system direct I/O
+users of those left: ceph, fuse and nfs.  Lei Huang has sent patches
+to convert fuse to iov_iter_extract_pages which I'd love to see merged,
+and we'd need equivalent work for ceph and nfs.
 
-Here is the summary with links:
-  - [f2fs-dev,v7,01/13] fs: remove silly warning from current_time
-    https://git.kernel.org/jaegeuk/f2fs/c/b3030e4f2344
-  - [f2fs-dev,v7,02/13] fs: pass the request_mask to generic_fillattr
-    https://git.kernel.org/jaegeuk/f2fs/c/0d72b92883c6
-  - [f2fs-dev,v7,03/13] fs: drop the timespec64 arg from generic_update_time
-    https://git.kernel.org/jaegeuk/f2fs/c/541d4c798a59
-  - [f2fs-dev,v7,04/13] btrfs: have it use inode_update_timestamps
-    https://git.kernel.org/jaegeuk/f2fs/c/bb7cc0a62e47
-  - [f2fs-dev,v7,05/13] fat: make fat_update_time get its own timestamp
-    (no matching commit)
-  - [f2fs-dev,v7,06/13] ubifs: have ubifs_update_time use inode_update_timestamps
-    (no matching commit)
-  - [f2fs-dev,v7,07/13] xfs: have xfs_vn_update_time gets its own timestamp
-    (no matching commit)
-  - [f2fs-dev,v7,08/13] fs: drop the timespec64 argument from update_time
-    (no matching commit)
-  - [f2fs-dev,v7,09/13] fs: add infrastructure for multigrain timestamps
-    https://git.kernel.org/jaegeuk/f2fs/c/ffb6cf19e063
-  - [f2fs-dev,v7,10/13] tmpfs: add support for multigrain timestamps
-    https://git.kernel.org/jaegeuk/f2fs/c/d48c33972916
-  - [f2fs-dev,v7,11/13] xfs: switch to multigrain timestamps
-    (no matching commit)
-  - [f2fs-dev,v7,12/13] ext4: switch to multigrain timestamps
-    https://git.kernel.org/jaegeuk/f2fs/c/0269b585868e
-  - [f2fs-dev,v7,13/13] btrfs: convert to multigrain timestamps
-    https://git.kernel.org/jaegeuk/f2fs/c/50e9ceef1d4f
+The non-file system uses are in the vmsplice code, which only reads
+from the pages (but would still benefit from an iov_iter_extract_pages
+conversion), and in net.  Out of the users in net, all but the 9p code
+appear to be for reads from memory, so they don't pin even if a
+conversion would be nice to retire iov_iter_get_pages* APIs.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+After that we might have to do an audit of the raw get_user_pages APIs,
+but there probably aren't many that modify file backed memory.
 
-
+I'm also wondering what a good debug aid would be for detecting
+writes to file backed memory without a previous reservation, but
+everything either involves a page flag or file system code.  But if
+someone has an idea I'm all ear as something mechanical to catch these
+uses would be quite helpful.
