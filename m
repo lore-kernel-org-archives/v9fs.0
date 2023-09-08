@@ -1,88 +1,78 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020BA1C03
-	for <v9fs@lists.linux.dev>; Fri,  8 Sep 2023 08:15:50 +0000 (UTC)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id D265168B05; Fri,  8 Sep 2023 10:15:44 +0200 (CEST)
-Date: Fri, 8 Sep 2023 10:15:44 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-	David Howells <dhowells@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Lei Huang <lei.huang@linux.intel.com>, miklos@szeredi.hu,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Boris Pismenny <borisp@nvidia.com>, linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, ceph-devel@vger.kernel.org,
-	linux-mm@kvack.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: getting rid of the last memory modifitions through
- gup(FOLL_GET)
-Message-ID: <20230908081544.GB8240@lst.de>
-References: <20230905141604.GA27370@lst.de> <0240468f-3cc5-157b-9b10-f0cd7979daf0@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113897E9
+	for <v9fs@lists.linux.dev>; Fri,  8 Sep 2023 08:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1694162505;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hY8tZO882Jl0E+LR6+k1KutgEB/prW8NTGo4X92b6p4=;
+	b=IfIgBxjCn4BEfAjSzIKGScDH3kdgO007gojKJgd8ou1leFNRVH86B0zsK3DoGxffv8KZ9J
+	9WctpwFn+/X67q+w37CbKNdW7jKLD7Yzihq8FAa1hDZudUT3f5VeN90Vu4690y4L7nWILo
+	eAcchGjPcAdkxC4HfbOTwlZmdOdNrGs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-367-cb6fuJdoPgeyTvXtnnt2jQ-1; Fri, 08 Sep 2023 04:41:42 -0400
+X-MC-Unique: cb6fuJdoPgeyTvXtnnt2jQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FCE2817077;
+	Fri,  8 Sep 2023 08:41:41 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.148])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 85397525726;
+	Fri,  8 Sep 2023 08:41:37 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20230905141604.GA27370@lst.de>
+References: <20230905141604.GA27370@lst.de>
+To: Christoph Hellwig <hch@lst.de>
+Cc: dhowells@redhat.com, Jan Kara <jack@suse.cz>,
+    David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+    Lei Huang <lei.huang@linux.intel.com>, miklos@szeredi.hu,
+    Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Anna Schumaker <anna@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>,
+    John Fastabend <john.fastabend@gmail.com>,
+    Jakub Sitnicki <jakub@cloudflare.com>,
+    Boris Pismenny <borisp@nvidia.com>, linux-nfs@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, ceph-devel@vger.kernel.org,
+    linux-mm@kvack.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: getting rid of the last memory modifitions through gup(FOLL_GET)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0240468f-3cc5-157b-9b10-f0cd7979daf0@redhat.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1520559.1694162496.1@warthog.procyon.org.uk>
+Date: Fri, 08 Sep 2023 09:41:36 +0100
+Message-ID: <1520560.1694162496@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 
-On Wed, Sep 06, 2023 at 11:42:33AM +0200, David Hildenbrand wrote:
->> and iov_iter_get_pages_alloc2.  We have three file system direct I/O
->> users of those left: ceph, fuse and nfs.  Lei Huang has sent patches
->> to convert fuse to iov_iter_extract_pages which I'd love to see merged,
->> and we'd need equivalent work for ceph and nfs.
->>
->> The non-file system uses are in the vmsplice code, which only reads
->
-> vmsplice really has to be fixed to specify FOLL_PIN|FOLL_LONGTERM for good; 
-> I recall that David Howells had patches for that at one point. (at least to 
-> use FOLL_PIN)
+Christoph Hellwig <hch@lst.de> wrote:
 
-Hmm, unless I'm misreading the code vmsplace is only using
-iov_iter_get_pages2 for reading from the user address space anyway.
-Or am I missing something?
+> we've made some nice progress on converting code that modifies user
+> memory to the pin_user_pages interface, especially though the work
+> from David Howells on iov_iter_extract_pages.  This thread tries to
+> coordinate on how to finish off this work.
 
->> After that we might have to do an audit of the raw get_user_pages APIs,
->> but there probably aren't many that modify file backed memory.
->
-> ptrace should apply that ends up doing a FOLL_GET|FOLL_WRITE.
+Right at this moment, I'm writing some kunit tests for iov_iter and I've found
+at least one bug.
 
-Yes, if that ends up on file backed shared mappings we also need a pin.
+David
 
-> Further, KVM ends up using FOLL_GET|FOLL_WRITE to populate the second-level 
-> page tables for VMs, and uses MMU notifiers to synchronize the second-level 
-> page tables with process page table changes. So once a PTE goes from 
-> writable -> r/o in the process page table, the second level page tables for 
-> the VM will get updated. Such MMU users are quite different from ordinary 
-> GUP users.
-
-Can KVM page tables use file backed shared mappings?
-
-> Converting ptrace might not be desired/required as well (the reference is 
-> dropped immediately after the read/write access).
-
-But the pin is needed to make sure the file system can account for
-dirtying the pages.  Something we fundamentally can't do with get.
-
-> The end goal as discussed a couple of times would be the to limit FOLL_GET 
-> in general only to a couple of users that can be audited and keep using it 
-> for a good reason. Arbitrary drivers that perform DMA should stop using it 
-> (and ideally be prevented from using it) and switch to FOLL_PIN.
-
-Agreed, that's where I'd like to get to.  Preferably with the non-pin
-API not even beeing epxorted to modules.
