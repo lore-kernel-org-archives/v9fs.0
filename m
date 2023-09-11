@@ -1,100 +1,74 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D1F1FC2
-	for <v9fs@lists.linux.dev>; Sat,  9 Sep 2023 11:18:41 +0000 (UTC)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 54BCD6732D; Sat,  9 Sep 2023 13:18:35 +0200 (CEST)
-Date: Sat, 9 Sep 2023 13:18:34 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-	David Howells <dhowells@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Lei Huang <lei.huang@linux.intel.com>, miklos@szeredi.hu,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Boris Pismenny <borisp@nvidia.com>, linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, ceph-devel@vger.kernel.org,
-	linux-mm@kvack.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: getting rid of the last memory modifitions through
- gup(FOLL_GET)
-Message-ID: <20230909111834.GA11859@lst.de>
-References: <20230905141604.GA27370@lst.de> <0240468f-3cc5-157b-9b10-f0cd7979daf0@redhat.com> <20230908081544.GB8240@lst.de> <8698ba1f-fc5d-a82e-842b-100dc8957f2f@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C22B320A
+	for <v9fs@lists.linux.dev>; Mon, 11 Sep 2023 08:39:01 +0000 (UTC)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-273dfd8c143so3109063a91.3
+        for <v9fs@lists.linux.dev>; Mon, 11 Sep 2023 01:39:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694421540; x=1695026340;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HxyTrS612uNKWLRlaUPNGhJmV5igMh7sLf46Do9wjCw=;
+        b=Mah6NR577GLbQwBVfXlgHJ+F13IfOnzZbee8AYQuHf3i2GroJA9WpqWYoIzrt5G/Io
+         lS0OuixXdzDEN96PQAFSOA4HrgqGW6vfTc8vBSGCEYFjZ7BY91I2/cW90a+M8gI1GIsF
+         zEkdVoh9716xlU562+o1zLXdszY59s7xgXN6LW0tLcJXue9eP/UdUsbqzTHVvz6wazoA
+         8r52JkQ5ADCL05aYzwkvk4iWtErLDBoXEooqbiTqbo/hrxkPP27rOdqCsph6McUstfFp
+         WrJJhtgGvjjojmmvv0r2IJLdMevs+ot3IVwyl/sEcIdj9/dEw7quSL+/EYcggioenzXW
+         d6qA==
+X-Gm-Message-State: AOJu0YwBi82KGI7biIqfbqJlIRxV/NcabKmVDACHuAfuCD/sys9Ozcna
+	nEi/8YUNV7VLEi3RgSXDjwyWsn3B+f/5habh0V3UOkudhUMs
+X-Google-Smtp-Source: AGHT+IHKHEgB1RR9mmJEKW34kFroUCHNZp5Vp9br5ZbLneb8mLVH4M/WR/IvGtAsOTq1oOqZc5l0j76YqKyoZ6G2LvFEqBGW1k0p
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8698ba1f-fc5d-a82e-842b-100dc8957f2f@redhat.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Received: by 2002:a17:90b:8ca:b0:26b:159a:3a9e with SMTP id
+ ds10-20020a17090b08ca00b0026b159a3a9emr2306611pjb.7.1694421540810; Mon, 11
+ Sep 2023 01:39:00 -0700 (PDT)
+Date: Mon, 11 Sep 2023 01:39:00 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000a353f06051142fb@google.com>
+Subject: [syzbot] Monthly v9fs report (Sep 2023)
+From: syzbot <syzbot+list71a44b7d71b8fc9417b4@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 08, 2023 at 06:48:05PM +0200, David Hildenbrand wrote:
-> vmsplice_to_pipe() -> iter_to_pipe() -> iov_iter_get_pages2()
->
-> So it ends up calling get_user_pages_fast()
->
-> ... and not using FOLL_PIN|FOLL_LONGTERM
->
-> Why FOLL_LONGTERM? Because it's a longterm pin, where unprivileged users 
-> can grab a reference on a page for all eternity, breaking CMA and memory 
-> hotunplug (well, and harming compaction).
->
-> Why FOLL_PIN? Well FOLL_LONGTERM only applies to FOLL_PIN. But for 
-> anonymous memory, this will also take care of the last remaining hugetlb 
-> COW test (trigger COW unsharing) as commented back in:
->
-> https://lore.kernel.org/all/02063032-61e7-e1e5-cd51-a50337405159@redhat.com/
+Hello v9fs maintainers/developers,
 
-Well, I'm not against it.  It just isn't required for deadling with
-file system writeback vs GUP modification race this thread was started
-for. 
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
->> Can KVM page tables use file backed shared mappings?
->
-> Yes, usually shmem and hugetlb. But with things like emulated 
-> NVDIMMs/virtio-pmem for VMs, easily also ordinary files.
->
-> But it's really not ordinary write access through GUP. It's write access 
-> via a secondary page table (secondary MMU), that's synchronized to the 
-> process page table -- just like if the CPU would be writing to the page 
-> using the process page tables (primary MMU).
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 7 issues are still open and 27 have been fixed so far.
 
-Writing through the process page tables takes a write faul when first
-writing, which calls into ->page_mkwrite in the file system.  Does the
-synchronization take care of that?  If not we need to add or emulate it.
+Some of the still happening issues:
 
-> ptrace will find the pagecache page writable in the page table (PTE write 
-> bit set), if it intends to write to the page (FOLL_WRITE). If it is not 
-> writable, it will trigger a page fault that informs the file system.
+Ref Crashes Repro Title
+<1> 793     Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 561     Yes   WARNING in inc_nlink (3)
+                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
+<3> 205     Yes   BUG: corrupted list in p9_fd_cancelled (2)
+                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
+<4> 9       No    WARNING: refcount bug in p9_req_put (2)
+                  https://syzkaller.appspot.com/bug?extid=3ba8f2097df93bc26d2f
 
-Yes, that case is (mostly) fine.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
->
-> With an FS that wants writenotify, we will not map a page writable (PTE 
-> write bit not set) unless it is dirty (PTE dirty bit set) IIRC.
->
-> So are we concerned about a race between the filesystem removing the PTE 
-> write bit (to catch next write access before it gets dirtied again) and 
-> ptrace marking the page dirty?
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-Yes.  This is the race that we've run into with various GUP users.
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-> Yes. However, secondary MMU users (like KVM) would need some way to keep 
-> making use of that; ideally, using a proper separate interface instead of 
-> (ab)using plain GUP and confusing people :)
-
-I'mm all for that.
-
+You may send multiple commands in a single email message.
