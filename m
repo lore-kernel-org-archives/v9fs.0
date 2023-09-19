@@ -1,74 +1,131 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C22B320A
-	for <v9fs@lists.linux.dev>; Mon, 11 Sep 2023 08:39:01 +0000 (UTC)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-273dfd8c143so3109063a91.3
-        for <v9fs@lists.linux.dev>; Mon, 11 Sep 2023 01:39:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694421540; x=1695026340;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HxyTrS612uNKWLRlaUPNGhJmV5igMh7sLf46Do9wjCw=;
-        b=Mah6NR577GLbQwBVfXlgHJ+F13IfOnzZbee8AYQuHf3i2GroJA9WpqWYoIzrt5G/Io
-         lS0OuixXdzDEN96PQAFSOA4HrgqGW6vfTc8vBSGCEYFjZ7BY91I2/cW90a+M8gI1GIsF
-         zEkdVoh9716xlU562+o1zLXdszY59s7xgXN6LW0tLcJXue9eP/UdUsbqzTHVvz6wazoA
-         8r52JkQ5ADCL05aYzwkvk4iWtErLDBoXEooqbiTqbo/hrxkPP27rOdqCsph6McUstfFp
-         WrJJhtgGvjjojmmvv0r2IJLdMevs+ot3IVwyl/sEcIdj9/dEw7quSL+/EYcggioenzXW
-         d6qA==
-X-Gm-Message-State: AOJu0YwBi82KGI7biIqfbqJlIRxV/NcabKmVDACHuAfuCD/sys9Ozcna
-	nEi/8YUNV7VLEi3RgSXDjwyWsn3B+f/5habh0V3UOkudhUMs
-X-Google-Smtp-Source: AGHT+IHKHEgB1RR9mmJEKW34kFroUCHNZp5Vp9br5ZbLneb8mLVH4M/WR/IvGtAsOTq1oOqZc5l0j76YqKyoZ6G2LvFEqBGW1k0p
+Received: from rivendell.linuxfromscratch.org (rivendell.linuxfromscratch.org [208.118.68.85])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D6223BC;
+	Tue, 19 Sep 2023 07:14:19 +0000 (UTC)
+Received: from [192.168.3.211] (unknown [36.44.140.33])
+	by rivendell.linuxfromscratch.org (Postfix) with ESMTPSA id 26A431C1DD6;
+	Tue, 19 Sep 2023 07:05:30 +0000 (GMT)
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 1.0.0 at rivendell.linuxfromscratch.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfromscratch.org;
+	s=cert4; t=1695107155;
+	bh=9wNEeAzCOPg0mCdyHRKNEVbZmXBmTaugcI3ERiby3k0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aqoK/Ilc8LvyUE+Xk4kK0TbIhFHarWsn2uBwrCvOIBF6xZoiA1f4tJ9dbKWFKRiu6
+	 paL+GBbo9SPpEBIbiWrsPB0XfpKTd2+G50VtbF86FGHEVOMJSrRDmkMaTUMORk6h/3
+	 qLapgrTCCQmetnyxXQd0oMfEVgIT+/HKvVoU4IKX272amD2+FjwGF7/9QSILQuggfV
+	 BI6kNxpQvUY/+hAogUxC35kr9T5IahyPaFtyYIDE5cZir6pdZggqKuZtpzkHOubZ1J
+	 isHMMtWcQM3xaSsKJn5GsqEfCinyGk71Ww3uWLHV11gy8ssXk8BO2mWnXKo2ok/N19
+	 WGA2g3mo4aO4w==
+Message-ID: <bf0524debb976627693e12ad23690094e4514303.camel@linuxfromscratch.org>
+Subject: Re: [PATCH v7 12/13] ext4: switch to multigrain timestamps
+From: Xi Ruoyao <xry111@linuxfromscratch.org>
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>,  Christian Brauner <brauner@kernel.org>, Eric
+ Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
+ <linux_oss@crudebyte.com>, David Howells <dhowells@redhat.com>, Marc Dionne
+ <marc.dionne@auristor.com>, Chris Mason <clm@fb.com>, Josef Bacik
+ <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Xiubo Li
+ <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>, Gao
+ Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+ <huyue2@coolpad.com>,  Jeffle Xu <jefflexu@linux.alibaba.com>, Namjae Jeon
+ <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara
+ <jack@suse.com>, Theodore Ts'o <tytso@mit.edu>,  Andreas Dilger
+ <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA
+ Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos Szeredi <miklos@szeredi.hu>,
+ Bob Peterson <rpeterso@redhat.com>, Andreas Gruenbacher
+ <agruenba@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Tejun Heo <tj@kernel.org>, Trond Myklebust
+ <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh
+ <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, Martin
+ Brandenburg <martin@omnibond.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Kees Cook <keescook@chromium.org>, Iurii Zaikin <yzaikin@google.com>, 
+ Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N
+ <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Richard Weinberger <richard@nod.at>, Hans de
+ Goede <hdegoede@redhat.com>, Hugh Dickins <hughd@google.com>,  Andrew
+ Morton <akpm@linux-foundation.org>, Amir Goldstein <amir73il@gmail.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, Benjamin Coddington
+ <bcodding@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+ linux-btrfs@vger.kernel.org,  ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+ linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com, 
+ linux-nfs@vger.kernel.org, ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev,  devel@lists.orangefs.org,
+ linux-cifs@vger.kernel.org,  samba-technical@lists.samba.org,
+ linux-mtd@lists.infradead.org,  linux-mm@kvack.org,
+ linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,  Jan Kara
+ <jack@suse.cz>, bug-gnulib@gnu.org
+Date: Tue, 19 Sep 2023 15:05:24 +0800
+In-Reply-To: <20230807-mgctime-v7-12-d1dec143a704@kernel.org>
+References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
+	 <20230807-mgctime-v7-12-d1dec143a704@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0 
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a17:90b:8ca:b0:26b:159a:3a9e with SMTP id
- ds10-20020a17090b08ca00b0026b159a3a9emr2306611pjb.7.1694421540810; Mon, 11
- Sep 2023 01:39:00 -0700 (PDT)
-Date: Mon, 11 Sep 2023 01:39:00 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000000a353f06051142fb@google.com>
-Subject: [syzbot] Monthly v9fs report (Sep 2023)
-From: syzbot <syzbot+list71a44b7d71b8fc9417b4@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+	RCVD_IN_ZEN_BLOCKED_OPENDNS,RDNS_NONE,SPF_FAIL,URIBL_BLOCKED,
+	URIBL_DBL_BLOCKED_OPENDNS,URIBL_ZEN_BLOCKED_OPENDNS autolearn=ham
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	rivendell.linuxfromscratch.org
 
-Hello v9fs maintainers/developers,
+On Mon, 2023-08-07 at 15:38 -0400, Jeff Layton wrote:
+> Enable multigrain timestamps, which should ensure that there is an
+> apparent change to the timestamp whenever it has been written after
+> being actively observed via getattr.
+>=20
+> For ext4, we only need to enable the FS_MGTIME flag.
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+Hi Jeff,
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 7 issues are still open and 27 have been fixed so far.
+This patch causes a gnulib test failure:
 
-Some of the still happening issues:
+$ ~/sources/lfs/grep-3.11/gnulib-tests/test-stat-time
+test-stat-time.c:141: assertion 'statinfo[0].st_mtime < statinfo[2].st_mtim=
+e || (statinfo[0].st_mtime =3D=3D statinfo[2].st_mtime && (get_stat_mtime_n=
+s (&statinfo[0]) < get_stat_mtime_ns (&statinfo[2])))' failed
+Aborted (core dumped)
 
-Ref Crashes Repro Title
-<1> 793     Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 561     Yes   WARNING in inc_nlink (3)
-                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
-<3> 205     Yes   BUG: corrupted list in p9_fd_cancelled (2)
-                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
-<4> 9       No    WARNING: refcount bug in p9_req_put (2)
-                  https://syzkaller.appspot.com/bug?extid=3ba8f2097df93bc26d2f
+The source code of the test:
+https://git.savannah.gnu.org/cgit/gnulib.git/tree/tests/test-stat-time.c
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Is this an expected change?
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+> Acked-by: Theodore Ts'o <tytso@mit.edu>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+> =C2=A0fs/ext4/super.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index b54c70e1a74e..cb1ff47af156 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -7279,7 +7279,7 @@ static struct file_system_type ext4_fs_type =3D {
+> =C2=A0	.init_fs_context	=3D ext4_init_fs_context,
+> =C2=A0	.parameters		=3D ext4_param_specs,
+> =C2=A0	.kill_sb		=3D kill_block_super,
+> -	.fs_flags		=3D FS_REQUIRES_DEV | FS_ALLOW_IDMAP,
+> +	.fs_flags		=3D FS_REQUIRES_DEV | FS_ALLOW_IDMAP |
+> FS_MGTIME,
+> =C2=A0};
+> =C2=A0MODULE_ALIAS_FS("ext4");
+> =C2=A0
+>=20
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
