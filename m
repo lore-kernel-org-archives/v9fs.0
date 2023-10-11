@@ -1,80 +1,75 @@
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 75B6C3D9F
-	for <v9fs@lists.linux.dev>; Tue, 10 Oct 2023 08:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B350E20311
+	for <v9fs@lists.linux.dev>; Wed, 11 Oct 2023 14:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from [172.30.11.106] (unknown [180.167.10.98])
-	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 8FB1D60637837;
-	Tue, 10 Oct 2023 16:19:33 +0800 (CST)
-Message-ID: <d0753768-874e-6f41-550d-c10dfc6f9c5b@nfschina.com>
-Date: Tue, 10 Oct 2023 16:19:32 +0800
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-57b708ce1c1so1227193eaf.1
+        for <v9fs@lists.linux.dev>; Wed, 11 Oct 2023 07:38:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697035129; x=1697639929;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wUy7vO3kXkdPt1NjyYtI2f/jSAzioIQZvSG03dQoFIU=;
+        b=uAXjd2o0ZXD9jMzLDqWksClHZ+y1J03wfhbT5gLdRT3xxxkOSdmgSQ6/Dmf6jSKUTy
+         +VB/pT0EwYx+BZM3d7wP0v5irB0jEtuv8gsX7PrV6ICQLKG6ZzetcwCsXE4HC9wECwqv
+         2LoGx2/vkgm90Sydjqqag3YXB6UcsgOCnFQDUCPpI5zg6h5qzFsjVj52h+eW1P33/JFN
+         LabrH2m0H7hqxQK47g8wbmICkY8LDYRw50SNnafoCbqJGl5evgfTKJwAkA2GaFUbD/35
+         z5V1XYwHAedwao5+Irhoeu93CI6UEbl1Fa97rgNbeqcaxGqBV6zpv4foqg7GHONcPWrt
+         S8ow==
+X-Gm-Message-State: AOJu0YzV0pQL9RDHfEgupUSaiRf4HyriOyrW6pLVaqptWqXmDHnzADIV
+	mVeI2ImOcdjW4v+xCKUguabVU4GdXKi0cU3HFo46Hi8nfVr6
+X-Google-Smtp-Source: AGHT+IHlWTNYXiX2u7Uoy1nd1mj4rz+6NIPADipYD+3CNQlFtiYxyZpw3o2+92RaS7SAffQX9GjzCkLGvUCvEpYTcSDrLvkZtk5f
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] fs/9p/xattr.c: avoid format-overflow warning
-Content-Language: en-US
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- linux_oss@crudebyte.com, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <56aa4f09-8f61-48f3-9836-687bf852b03a@kadam.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a4a:e1a4:0:b0:571:9ccb:f90a with SMTP id
+ 4-20020a4ae1a4000000b005719ccbf90amr7338124ooy.1.1697035128930; Wed, 11 Oct
+ 2023 07:38:48 -0700 (PDT)
+Date: Wed, 11 Oct 2023 07:38:48 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000008081e060771c83d@google.com>
+Subject: [syzbot] Monthly v9fs report (Oct 2023)
+From: syzbot <syzbot+list79315fa270805906878e@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+Hello v9fs maintainers/developers,
 
-On 2023/10/10 15:51, Dan Carpenter wrote:
-> On Sun, Oct 08, 2023 at 02:01:39PM +0800, Su Hui wrote:
->> with gcc and W=1 option, there's a warning like this:
->>
->> In file included from fs/9p/xattr.c:12:
->> In function ‘v9fs_xattr_get’,
->>      inlined from ‘v9fs_listxattr’ at fs/9p/xattr.c:142:9:
->> include/net/9p/9p.h:55:2: error: ‘%s’ directive argument is null
->> [-Werror=format-overflow=]
->>     55 |  _p9_debug(level, __func__, fmt, ##__VA_ARGS__)
->>        |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>
->> use "" replace NULL to silence this warning.
->>
->> Signed-off-by: Su Hui <suhui@nfschina.com>
->> ---
->>   fs/9p/xattr.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
->> index e00cf8109b3f..d995ee080835 100644
->> --- a/fs/9p/xattr.c
->> +++ b/fs/9p/xattr.c
->> @@ -139,7 +139,7 @@ int v9fs_fid_xattr_set(struct p9_fid *fid, const char *name,
->>   
->>   ssize_t v9fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
->>   {
->> -	return v9fs_xattr_get(dentry, NULL, buffer, buffer_size);
->> +	return v9fs_xattr_get(dentry, "", buffer, buffer_size);
-> I'm pretty uncomfortable with this patch...  This code is 13 years old
-> so it can't be too huge of a problem.  We're doing this for the printks,
-> but now they're going to look weird first of all.
->
-> Old: "file = (null)"
-> New: "file = "
-Agreed, this looks  really weird and the patch is just for avoiding 
-gcc's warning.
-Sorry for the noise.
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-Su Hui
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 27 have been fixed so far.
 
->
-> But also this must have some other effects on runtime right?
->
-> regards,
-> dan carpenter
->
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 961     Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 562     Yes   WARNING in inc_nlink (3)
+                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
+<3> 221     Yes   BUG: corrupted list in p9_fd_cancelled (2)
+                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
