@@ -1,35 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF61D2137B
-	for <v9fs@lists.linux.dev>; Fri, 13 Oct 2023 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C842773F
+	for <v9fs@lists.linux.dev>; Fri, 13 Oct 2023 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aafTBE83"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dpjAemf9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1697213212;
+	s=mimecast20190719; t=1697213219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KBU+evKYv1DNx1iSvDhlzRDqOL3+5VRS9ZOU8xNhh8s=;
-	b=aafTBE83wceli+lF4AYEaB/X2h+OODD0k8Q6hS4dzL4BTPp1w6vjMedNV6SB15cEucYELW
-	vlgNH696A9MqkBOf7CrUkNQg/ijHkScdJ1z31qdLZPiqTgEPAZrUV3oGDbsnsmNyeAmejc
-	JKPDIonuDgxdYnMJGEStDBQ+jwAgras=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-463-SPuFm4d-NGGsRvCeqTD79g-1; Fri, 13 Oct 2023 12:06:49 -0400
-X-MC-Unique: SPuFm4d-NGGsRvCeqTD79g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	bh=BY0IZ1puEbWlqmZjAm/oiBzHHsszrgyhlAY+cvlLt1A=;
+	b=dpjAemf9lPPRglaM2d/IGN/X7O6ZlsUtcGAGwxWkRPFCH3Qv4VW5RYq+Ic4kB/BRNshCYr
+	/BM0p0WE5p8H1CWw3d2K1nf7/er+7QNuqvkJfWfo39XE9Y4WdcFrfg6RtsEqSCvOllPeZ2
+	r7ywsUapYDtAlGwpMRjMaxiI4t9DQ9w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-682-Ht3YwKPqOXqHHVTwg42j_A-1; Fri, 13 Oct 2023 12:06:52 -0400
+X-MC-Unique: Ht3YwKPqOXqHHVTwg42j_A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A8E088B7A1;
-	Fri, 13 Oct 2023 16:06:33 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11633380670B;
+	Fri, 13 Oct 2023 16:06:51 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.226])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 661D91C060DF;
-	Fri, 13 Oct 2023 16:06:29 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1556125C1;
+	Fri, 13 Oct 2023 16:06:47 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>,
 	Steve French <smfrench@gmail.com>
@@ -51,10 +51,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
 	linux-cachefs@redhat.com
-Subject: [RFC PATCH 36/53] netfs: Decrypt encrypted content
-Date: Fri, 13 Oct 2023 17:04:05 +0100
-Message-ID: <20231013160423.2218093-37-dhowells@redhat.com>
+Subject: [RFC PATCH 41/53] netfs: Rearrange netfs_io_subrequest to put request pointer first
+Date: Fri, 13 Oct 2023 17:04:10 +0100
+Message-ID: <20231013160423.2218093-42-dhowells@redhat.com>
 In-Reply-To: <20231013160423.2218093-1-dhowells@redhat.com>
 References: <20231013160423.2218093-1-dhowells@redhat.com>
 Precedence: bulk
@@ -64,165 +67,37 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-Implement a facility to provide decryption for encrypted content to a whole
-read-request in one go (which might have been stitched together from
-disparate sources with divisions that don't match page boundaries).
-
-Note that this doesn't necessarily gain the best throughput if the crypto
-block size is equal to or less than the size of a page (in which case we
-might be better doing it as pages become read), but it will handle crypto
-blocks larger than the size of a page.
+Rearrange the netfs_io_subrequest struct to put the netfs_io_request
+pointer (rreq) first.  This then allows netfs_io_subrequest to be put in a
+union with a pointer to a wrapper around netfs_io_request for cifs.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
 cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
 cc: linux-cachefs@redhat.com
 cc: linux-fsdevel@vger.kernel.org
 cc: linux-mm@kvack.org
 ---
- fs/netfs/crypto.c            | 59 ++++++++++++++++++++++++++++++++++++
- fs/netfs/internal.h          |  1 +
- fs/netfs/io.c                |  6 +++-
- include/linux/netfs.h        |  3 ++
- include/trace/events/netfs.h |  2 ++
- 5 files changed, 70 insertions(+), 1 deletion(-)
+ include/linux/netfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/crypto.c b/fs/netfs/crypto.c
-index 943d01f430e2..6729bcda4f47 100644
---- a/fs/netfs/crypto.c
-+++ b/fs/netfs/crypto.c
-@@ -87,3 +87,62 @@ bool netfs_encrypt(struct netfs_io_request *wreq)
- 	wreq->error = ret;
- 	return false;
- }
-+
-+/*
-+ * Decrypt the result of a read request.
-+ */
-+void netfs_decrypt(struct netfs_io_request *rreq)
-+{
-+	struct netfs_inode *ctx = netfs_inode(rreq->inode);
-+	struct scatterlist source_sg[16], dest_sg[16];
-+	unsigned int n_source;
-+	size_t n, chunk, bsize = 1UL << ctx->crypto_bshift;
-+	loff_t pos;
-+	int ret;
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_decrypt);
-+	if (rreq->start >= rreq->i_size)
-+		return;
-+
-+	n = min_t(unsigned long long, rreq->len, rreq->i_size - rreq->start);
-+
-+	_debug("DECRYPT %llx-%llx f=%lx",
-+	       rreq->start, rreq->start + n, rreq->flags);
-+
-+	pos = rreq->start;
-+	for (; n > 0; n -= chunk, pos += chunk) {
-+		chunk = min(n, bsize);
-+
-+		ret = netfs_iter_to_sglist(&rreq->io_iter, chunk,
-+					   source_sg, ARRAY_SIZE(source_sg));
-+		if (ret < 0)
-+			goto error;
-+		n_source = ret;
-+
-+		if (test_bit(NETFS_RREQ_CRYPT_IN_PLACE, &rreq->flags)) {
-+			ret = ctx->ops->decrypt_block(rreq, pos, chunk,
-+						      source_sg, n_source,
-+						      source_sg, n_source);
-+		} else {
-+			ret = netfs_iter_to_sglist(&rreq->iter, chunk,
-+						   dest_sg, ARRAY_SIZE(dest_sg));
-+			if (ret < 0)
-+				goto error;
-+			ret = ctx->ops->decrypt_block(rreq, pos, chunk,
-+						      source_sg, n_source,
-+						      dest_sg, ret);
-+		}
-+
-+		if (ret < 0)
-+			goto error_failed;
-+	}
-+
-+	return;
-+
-+error_failed:
-+	trace_netfs_failure(rreq, NULL, ret, netfs_fail_decryption);
-+error:
-+	rreq->error = ret;
-+	set_bit(NETFS_RREQ_FAILED, &rreq->flags);
-+	return;
-+}
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 3f4e64968623..8dc68a75d6cd 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -26,6 +26,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
-  * crypto.c
-  */
- bool netfs_encrypt(struct netfs_io_request *wreq);
-+void netfs_decrypt(struct netfs_io_request *rreq);
- 
- /*
-  * direct_write.c
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index 36a3f720193a..9887b22e4cb3 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -398,6 +398,9 @@ static void netfs_rreq_assess(struct netfs_io_request *rreq, bool was_async)
- 		return;
- 	}
- 
-+	if (!test_bit(NETFS_RREQ_FAILED, &rreq->flags) &&
-+	    test_bit(NETFS_RREQ_CONTENT_ENCRYPTION, &rreq->flags))
-+		netfs_decrypt(rreq);
- 	if (rreq->origin != NETFS_DIO_READ)
- 		netfs_rreq_unlock_folios(rreq);
- 	else
-@@ -427,7 +430,8 @@ static void netfs_rreq_work(struct work_struct *work)
- static void netfs_rreq_terminated(struct netfs_io_request *rreq,
- 				  bool was_async)
- {
--	if (test_bit(NETFS_RREQ_INCOMPLETE_IO, &rreq->flags) &&
-+	if ((test_bit(NETFS_RREQ_INCOMPLETE_IO, &rreq->flags) ||
-+	     test_bit(NETFS_RREQ_CONTENT_ENCRYPTION, &rreq->flags)) &&
- 	    was_async) {
- 		if (!queue_work(system_unbound_wq, &rreq->work))
- 			BUG();
 diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index cdb471938225..524e6f5ff3fd 100644
+index c416645649e1..ff4f86ae64e4 100644
 --- a/include/linux/netfs.h
 +++ b/include/linux/netfs.h
-@@ -326,6 +326,9 @@ struct netfs_request_ops {
- 	int (*encrypt_block)(struct netfs_io_request *wreq, loff_t pos, size_t len,
- 			     struct scatterlist *source_sg, unsigned int n_source,
- 			     struct scatterlist *dest_sg, unsigned int n_dest);
-+	int (*decrypt_block)(struct netfs_io_request *rreq, loff_t pos, size_t len,
-+			     struct scatterlist *source_sg, unsigned int n_source,
-+			     struct scatterlist *dest_sg, unsigned int n_dest);
- };
- 
- /*
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 70e2f9a48f24..2f35057602fa 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -40,6 +40,7 @@
- #define netfs_rreq_traces					\
- 	EM(netfs_rreq_trace_assess,		"ASSESS ")	\
- 	EM(netfs_rreq_trace_copy,		"COPY   ")	\
-+	EM(netfs_rreq_trace_decrypt,		"DECRYPT")	\
- 	EM(netfs_rreq_trace_done,		"DONE   ")	\
- 	EM(netfs_rreq_trace_encrypt,		"ENCRYPT")	\
- 	EM(netfs_rreq_trace_free,		"FREE   ")	\
-@@ -75,6 +76,7 @@
- #define netfs_failures							\
- 	EM(netfs_fail_check_write_begin,	"check-write-begin")	\
- 	EM(netfs_fail_copy_to_cache,		"copy-to-cache")	\
-+	EM(netfs_fail_decryption,		"decryption")		\
- 	EM(netfs_fail_dio_read_short,		"dio-read-short")	\
- 	EM(netfs_fail_dio_read_zero,		"dio-read-zero")	\
- 	EM(netfs_fail_encryption,		"encryption")		\
+@@ -209,8 +209,8 @@ struct netfs_cache_resources {
+  * the pages it points to can be relied on to exist for the duration.
+  */
+ struct netfs_io_subrequest {
+-	struct work_struct	work;
+ 	struct netfs_io_request *rreq;		/* Supervising I/O request */
++	struct work_struct	work;
+ 	struct list_head	rreq_link;	/* Link in rreq->subrequests */
+ 	struct iov_iter		io_iter;	/* Iterator for this subrequest */
+ 	loff_t			start;		/* Where to start the I/O */
 
