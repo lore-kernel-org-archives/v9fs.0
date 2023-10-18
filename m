@@ -1,97 +1,282 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6954175D
-	for <v9fs@lists.linux.dev>; Tue, 17 Oct 2023 10:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dneg.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dneg.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C831A86;
+	Wed, 18 Oct 2023 15:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b="Vth5G0bN"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d84c24a810dso6458872276.2
-        for <v9fs@lists.linux.dev>; Tue, 17 Oct 2023 03:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dneg.com; s=google; t=1697539408; x=1698144208; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OmZ/33TllYLHL47d/dVmhdUXpMsytcSlpt83kTPbFEw=;
-        b=Vth5G0bN6pZeYHLJ5WSyUlpKeoTCNmqMnlKsBrsVWrNv2EAzF181OvRFaoHpbrSgUY
-         C70XzU7c6iu+IhmXjYzFg82u1669sx6yjr+TdNzTcWXK/51r3v4+fk9n22RT4Zs1zTOl
-         6ZgPRHFrbsAgf1Nk/1HzhG3VoWrB89iEEXNiWiKvoQfEg2H4Xpkl9P6m+cIRVUkaFGvV
-         SwotzDRspuGJg7nHaJ63DpzZgJrtAdl0Xn5kxs2nf4dBjyYMEovds1EFg/q6eP+wLaCT
-         f+d+RFG3s6GKmOcalYkl9WCNJ0sypfG/4NQa6nkzxQiHuiud31ez9BLrpLyqGrKF6wqJ
-         uAqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697539408; x=1698144208;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OmZ/33TllYLHL47d/dVmhdUXpMsytcSlpt83kTPbFEw=;
-        b=xMkE4jwaozCKDVR26b7TZAaFHBlblL2BVMZxYBZjbGUrL/yEQzeU16YghT1nZ3Bi85
-         Qb4xTmhLNkH+6LFzK+weL8FoVbS65K1RaVatjP6Ysx01Vs4YWQCuFJDXF7e5sX+v/4uP
-         agy4yil4ksSqz+vcy9eLx8GYk0nUr0dAawLUJ0a22/VmAbkYuO+YE252TaYW8HMAqclU
-         N4+cm2f2wPnsfkTPXRDnsyRwW9We2Q6pac0Xd5XLP7v83oLsKQ4u7UxBmd+ImpW7JNRH
-         GG81tKjGGMLREOtpEq0mH0Pzst0IVNFmwmOfI2CeHSbLTP78QXwqCDJIhp0v7QnXUXi0
-         4B6A==
-X-Gm-Message-State: AOJu0YwaO1b6/+AGhC3dYAqnGZNmgR7mfiriADDAm1FByh1z1r0pTSSG
-	FuI7IDwSygTVX70dXjRJbPoUwOXE9wWirDyPSEp8/Q==
-X-Google-Smtp-Source: AGHT+IEguG9VkvSZyN+YQKkbnzU4bPPMH68Gm77P3bS20bpQvkVCehXFFJFu9p/7GSuuBt2Sz4dkmWLIuiXDJ62NRdc=
-X-Received: by 2002:a25:cd44:0:b0:d9b:6c9d:e6a with SMTP id
- d65-20020a25cd44000000b00d9b6c9d0e6amr1563929ybf.0.1697539408286; Tue, 17 Oct
- 2023 03:43:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gn2cvizO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3E9C433C8;
+	Wed, 18 Oct 2023 15:03:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697641393;
+	bh=L6D+qpbBdCzUDrl/li04wVioUZCLruBmB/YXF1xf4Bs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Gn2cvizOXkUy01k71YGxTE7X4z6vLqaoJLFafo+1V2D8V7Wv88ZBfmZ6d50ZFxvKj
+	 r0STRxGjErKUq13H3Iv7mn7AvIVCLxpKl0n0AqJx/zBkuo7ZkXLhcheBVnAbwngAJy
+	 S2skRkZqL4VlJYnoY86FUfOK7xrHRmF0ZzWNiFTOC5AyErC5YFeuU702fAYEtK/kQ0
+	 aIQ4dUnbHPpyCEC4k4S/zZbe8fb2opZ517pamFcrGwYG5OKsJ8cUyxGf+7h0XtSe7s
+	 mTD2R7Bi85VJqLSadyBjO5Aq+0cQCsfNSkx/qUgSy3TUsIJ33tfm5uq6iku67rtVOB
+	 05ypzoiMkKRgg==
+Message-ID: <9d2fc137b4295058ac3f88f1cca7a54bc67f01fd.camel@kernel.org>
+Subject: Re: [RFC PATCH 12/53] netfs: Provide tools to create a buffer in an
+ xarray
+From: Jeff Layton <jlayton@kernel.org>
+To: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Marc Dionne
+ <marc.dionne@auristor.com>,  Paulo Alcantara <pc@manguebit.com>, Shyam
+ Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Dominique
+ Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>,
+ Christian Brauner <christian@brauner.io>,  linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org,  linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-cachefs@redhat.com
+Date: Wed, 18 Oct 2023 11:03:10 -0400
+In-Reply-To: <20231013160423.2218093-13-dhowells@redhat.com>
+References: <20231013160423.2218093-1-dhowells@redhat.com>
+	 <20231013160423.2218093-13-dhowells@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231013155727.2217781-1-dhowells@redhat.com>
-In-Reply-To: <20231013155727.2217781-1-dhowells@redhat.com>
-From: Daire Byrne <daire@dneg.com>
-Date: Tue, 17 Oct 2023 11:42:52 +0100
-Message-ID: <CAPt2mGNpo0Uw0Ud18N4dV=ojoGK-xyj1P29tzWEhZw0i4FNVPg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/53] netfs, afs, cifs: Delegate high-level I/O to netfslib
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Marc Dionne <marc.dionne@auristor.com>, 
-	Paulo Alcantara <pc@manguebit.com>, Ronnie Sahlberg <lsahlber@redhat.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Christian Brauner <christian@brauner.io>, linux-afs@lists.infradead.org, 
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 13 Oct 2023 at 16:58, David Howells <dhowells@redhat.com> wrote:
->
->  (2) Use of fscache is not yet tested.  I'm not sure whether to allow a
->      cache to be used with a write-through write.
+On Fri, 2023-10-13 at 17:03 +0100, David Howells wrote:
+> Provide tools to create a buffer in an xarray, with a function to add
+> new folios with a mark.  This will be used to create bounce buffer and ca=
+n be
+> used more easily to create a list of folios the span of which would requi=
+re
+> more than a page's worth of bio_vec structs.
+>=20
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: linux-cachefs@redhat.com
+> cc: linux-fsdevel@vger.kernel.org
+> cc: linux-mm@kvack.org
+> ---
+>  fs/netfs/internal.h   |  16 +++++
+>  fs/netfs/misc.c       | 140 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/netfs.h |   4 ++
+>  3 files changed, 160 insertions(+)
+>=20
+> diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+> index 1f067aa96c50..00e01278316f 100644
+> --- a/fs/netfs/internal.h
+> +++ b/fs/netfs/internal.h
+> @@ -52,6 +52,22 @@ static inline void netfs_proc_add_rreq(struct netfs_io=
+_request *rreq) {}
+>  static inline void netfs_proc_del_rreq(struct netfs_io_request *rreq) {}
+>  #endif
+> =20
+> +/*
+> + * misc.c
+> + */
+> +int netfs_xa_store_and_mark(struct xarray *xa, unsigned long index,
+> +			    struct folio *folio, bool put_mark,
+> +			    bool pagecache_mark, gfp_t gfp_mask);
+> +int netfs_add_folios_to_buffer(struct xarray *buffer,
+> +			       struct address_space *mapping,
+> +			       pgoff_t index, pgoff_t to, gfp_t gfp_mask);
+> +int netfs_set_up_buffer(struct xarray *buffer,
+> +			struct address_space *mapping,
+> +			struct readahead_control *ractl,
+> +			struct folio *keep,
+> +			pgoff_t have_index, unsigned int have_folios);
+> +void netfs_clear_buffer(struct xarray *buffer);
+> +
+>  /*
+>   * objects.c
+>   */
+> diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+> index c3baf2b247d9..c70f856f3129 100644
+> --- a/fs/netfs/misc.c
+> +++ b/fs/netfs/misc.c
+> @@ -8,6 +8,146 @@
+>  #include <linux/swap.h>
+>  #include "internal.h"
+> =20
+> +/*
+> + * Attach a folio to the buffer and maybe set marks on it to say that we=
+ need
+> + * to put the folio later and twiddle the pagecache flags.
+> + */
+> +int netfs_xa_store_and_mark(struct xarray *xa, unsigned long index,
+> +			    struct folio *folio, bool put_mark,
+> +			    bool pagecache_mark, gfp_t gfp_mask)
+> +{
+> +	XA_STATE_ORDER(xas, xa, index, folio_order(folio));
+> +
+> +retry:
+> +	xas_lock(&xas);
+> +	for (;;) {
+> +		xas_store(&xas, folio);
+> +		if (!xas_error(&xas))
+> +			break;
+> +		xas_unlock(&xas);
+> +		if (!xas_nomem(&xas, gfp_mask))
+> +			return xas_error(&xas);
+> +		goto retry;
+> +	}
+> +
+> +	if (put_mark)
+> +		xas_set_mark(&xas, NETFS_BUF_PUT_MARK);
+> +	if (pagecache_mark)
+> +		xas_set_mark(&xas, NETFS_BUF_PAGECACHE_MARK);
+> +	xas_unlock(&xas);
+> +	return xas_error(&xas);
+> +}
+> +
+> +/*
+> + * Create the specified range of folios in the buffer attached to the re=
+ad
+> + * request.  The folios are marked with NETFS_BUF_PUT_MARK so that we kn=
+ow that
+> + * these need freeing later.
+> + */
 
-Just adding a quick end user "thumbs up" for this potential feature.
-We currently use fscache as the backend for "NFS re-export" servers to
-extend our onprem storage to remote cloud compute (which works great).
+Some kerneldoc comments on these new helpers would be nice. I assume
+that "index" and "to" are "start" and "end" for this, but it'd be nice
+to make that explicit.
 
-But batch compute hosts (think VFX render farm) often chunk up stages
-of work into multiple batch jobs such that they read data, write
-results and then read the same data on different clients. Having the
-ability to also cache the recent writes closer to the compute clients
-(on the re-export server) would open up a lot of new workload
-possibilities for us.
 
->  (5) Write-through caching will generate and dispatch write subrequests as
->      it gathers enough data to hit wsize and has whole pages that at least
->      span that size.  This needs to be a bit more flexible, allowing for a
->      filesystem such as CIFS to have a variable wsize.
+> +int netfs_add_folios_to_buffer(struct xarray *buffer,
+> +			       struct address_space *mapping,
+> +			       pgoff_t index, pgoff_t to, gfp_t gfp_mask)
+> +{
+> +	struct folio *folio;
+> +	int ret;
+> +
+> +	if (to + 1 =3D=3D index) /* Page range is inclusive */
+> +		return 0;
+> +
+> +	do {
+> +		/* TODO: Figure out what order folio can be allocated here */
+> +		folio =3D filemap_alloc_folio(readahead_gfp_mask(mapping), 0);
+> +		if (!folio)
+> +			return -ENOMEM;
+> +		folio->index =3D index;
+> +		ret =3D netfs_xa_store_and_mark(buffer, index, folio,
+> +					      true, false, gfp_mask);
+> +		if (ret < 0) {
+> +			folio_put(folio);
+> +			return ret;
+> +		}
+> +
+> +		index +=3D folio_nr_pages(folio);
+> +	} while (index <=3D to && index !=3D 0);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Set up a buffer into which to data will be read or decrypted/decompre=
+ssed.
+> + * The folios to be read into are attached to this buffer and the gaps f=
+illed
+> + * in to form a continuous region.
+> + */
+> +int netfs_set_up_buffer(struct xarray *buffer,
+> +			struct address_space *mapping,
+> +			struct readahead_control *ractl,
+> +			struct folio *keep,
+> +			pgoff_t have_index, unsigned int have_folios)
+> +{
+> +	struct folio *folio;
+> +	gfp_t gfp_mask =3D readahead_gfp_mask(mapping);
+> +	unsigned int want_folios =3D have_folios;
+> +	pgoff_t want_index =3D have_index;
+> +	int ret;
+> +
+> +	ret =3D netfs_add_folios_to_buffer(buffer, mapping, want_index,
+> +					 have_index - 1, gfp_mask);
+> +	if (ret < 0)
+> +		return ret;
+> +	have_folios +=3D have_index - want_index;
+> +
+> +	ret =3D netfs_add_folios_to_buffer(buffer, mapping,
+> +					 have_index + have_folios,
+> +					 want_index + want_folios - 1,
+> +					 gfp_mask);
 
-If I understand correctly, this is above and beyond the normal write
-back cache and is more in tune with the wsize (of NFS, CIFS etc) for
-each file? Again, our workloads are over longer latencies than are
-normal (NFS over 200ms!) so this sounds like a nice optimisation when
-dealing with slow stuttering file writes over high latency.
+I don't get it. Why are you calling netfs_add_folios_to_buffer twice
+here? Why not just make one call? Either way, a comment here explaining
+that would also be nice.
 
-I can definitely volunteer for some of the fscache + NFS testing.
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Transfer the folios proposed by the VM into the buffer and take refs
+> +	 * on them.  The locks will be dropped in netfs_rreq_unlock().
+> +	 */
+> +	if (ractl) {
+> +		while ((folio =3D readahead_folio(ractl))) {
+> +			folio_get(folio);
+> +			if (folio =3D=3D keep)
+> +				folio_get(folio);
+> +			ret =3D netfs_xa_store_and_mark(buffer, folio->index, folio,
+> +						      true, true, gfp_mask);
+> +			if (ret < 0) {
+> +				if (folio !=3D keep)
+> +					folio_unlock(folio);
+> +				folio_put(folio);
+> +				return ret;
+> +			}
+> +		}
+> +	} else {
+> +		folio_get(keep);
+> +		ret =3D netfs_xa_store_and_mark(buffer, keep->index, keep,
+> +					      true, true, gfp_mask);
+> +		if (ret < 0) {
+> +			folio_put(keep);
+> +			return ret;
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Clear an xarray buffer, putting a ref on the folios that have
+> + * NETFS_BUF_PUT_MARK set.
+> + */
+> +void netfs_clear_buffer(struct xarray *buffer)
+> +{
+> +	struct folio *folio;
+> +	XA_STATE(xas, buffer, 0);
+> +
+> +	rcu_read_lock();
+> +	xas_for_each_marked(&xas, folio, ULONG_MAX, NETFS_BUF_PUT_MARK) {
+> +		folio_put(folio);
+> +	}
+> +	rcu_read_unlock();
+> +	xa_destroy(buffer);
+> +}
+> +
+>  /**
+>   * netfs_invalidate_folio - Invalidate or partially invalidate a folio
+>   * @folio: Folio proposed for release
+> diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+> index 66479a61ad00..e8d702ac6968 100644
+> --- a/include/linux/netfs.h
+> +++ b/include/linux/netfs.h
+> @@ -109,6 +109,10 @@ static inline int wait_on_page_fscache_killable(stru=
+ct page *page)
+>  	return folio_wait_private_2_killable(page_folio(page));
+>  }
+> =20
+> +/* Marks used on xarray-based buffers */
+> +#define NETFS_BUF_PUT_MARK	XA_MARK_0	/* - Page needs putting  */
+> +#define NETFS_BUF_PAGECACHE_MARK XA_MARK_1	/* - Page needs wb/dirty flag=
+ wrangling */
+> +
+>  enum netfs_io_source {
+>  	NETFS_FILL_WITH_ZEROES,
+>  	NETFS_DOWNLOAD_FROM_SERVER,
+>=20
 
-Cheers,
-
-Daire
+--=20
+Jeff Layton <jlayton@kernel.org>
