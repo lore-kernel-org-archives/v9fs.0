@@ -1,282 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C831A86;
-	Wed, 18 Oct 2023 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DCC15EBF
+	for <v9fs@lists.linux.dev>; Mon, 23 Oct 2023 13:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gn2cvizO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3E9C433C8;
-	Wed, 18 Oct 2023 15:03:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697641393;
-	bh=L6D+qpbBdCzUDrl/li04wVioUZCLruBmB/YXF1xf4Bs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=Gn2cvizOXkUy01k71YGxTE7X4z6vLqaoJLFafo+1V2D8V7Wv88ZBfmZ6d50ZFxvKj
-	 r0STRxGjErKUq13H3Iv7mn7AvIVCLxpKl0n0AqJx/zBkuo7ZkXLhcheBVnAbwngAJy
-	 S2skRkZqL4VlJYnoY86FUfOK7xrHRmF0ZzWNiFTOC5AyErC5YFeuU702fAYEtK/kQ0
-	 aIQ4dUnbHPpyCEC4k4S/zZbe8fb2opZ517pamFcrGwYG5OKsJ8cUyxGf+7h0XtSe7s
-	 mTD2R7Bi85VJqLSadyBjO5Aq+0cQCsfNSkx/qUgSy3TUsIJ33tfm5uq6iku67rtVOB
-	 05ypzoiMkKRgg==
-Message-ID: <9d2fc137b4295058ac3f88f1cca7a54bc67f01fd.camel@kernel.org>
-Subject: Re: [RFC PATCH 12/53] netfs: Provide tools to create a buffer in an
- xarray
-From: Jeff Layton <jlayton@kernel.org>
-To: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Marc Dionne
- <marc.dionne@auristor.com>,  Paulo Alcantara <pc@manguebit.com>, Shyam
- Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Dominique
- Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>,
- Christian Brauner <christian@brauner.io>,  linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org,  linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-cachefs@redhat.com
-Date: Wed, 18 Oct 2023 11:03:10 -0400
-In-Reply-To: <20231013160423.2218093-13-dhowells@redhat.com>
-References: <20231013160423.2218093-1-dhowells@redhat.com>
-	 <20231013160423.2218093-13-dhowells@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Tv6qq0Ff";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="F+TJdycl"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 7AE94C01C; Mon, 23 Oct 2023 14:55:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1698065714; bh=OvVWLrUGhJVAxZCx/955CCt7646tJfq+nBVmL70GKIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tv6qq0FfdtIa0ETxo0gtZ0NVKEwTuTf6qX4QTdip3ILiE1QFJ5MfrUVbIAXJ+txZW
+	 ztmhy8A2t4p1IQBsfVr668fWHM3ZdPu3PnXhC42y+SQpNgF4aOC66rzeC5oQT41VC9
+	 1q168LrTJwi/7+KOHpQm5OYpI6aaZgKChZHVSMFvc9kuekCwN5Y/3GC5mcDiPgfAr6
+	 Cif1xz7njKHZZ25gayE7Xdrd66L41GGkH6iA8ghLHhSgHS0LwPC6t76/IxApM0OpX4
+	 A7lyZQoS4fXiqmEBt+7GlRS0uYKARVqdKHNBhAwY7DNrStzGeaktzkMHMCB9G0eQ2j
+	 /jUnkj0UPROUw==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 4BD9FC009;
+	Mon, 23 Oct 2023 14:55:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1698065713; bh=OvVWLrUGhJVAxZCx/955CCt7646tJfq+nBVmL70GKIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F+TJdyclf75Zc4GwrXa7jJpmSl1BHz8cB4g1BSfdL4EnnE1GuANR22ymcQ9SARAct
+	 4FFYxN1dTvRWH4PIFwT/3NJgelnFgbo9v2arJPzTQZJ0aoNOKAS/g0pXMFK1tas6Ev
+	 P5xjKOL2PvrLt3SpGBtqFLZre/nW6q7rk3o4HgfmSrfX4u83ZAxd0NO3xj534ESHI4
+	 QSzMY/QP6nGNWkmPlbyDzYqu26qd7FcXSEyQ+qvPy4eiMqYGoPBOolKO6Y9AZo3EJ8
+	 j/zvQM3sUyghJ2u4NscatN5rdBYYBy5Uhi/+O1EQKSp8b2Q6h7oak9rGN32dWwK89E
+	 uDthuwDHqTkGA==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id 50e0490b;
+	Mon, 23 Oct 2023 12:55:08 +0000 (UTC)
+Date: Mon, 23 Oct 2023 21:54:53 +0900
+From: asmadeus@codewreck.org
+To: Sishuai Gong <sishuai.system@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev
+Subject: Re: [PATCH] 9p/trans_fd: avoid sending req to a cancelled conn
+Message-ID: <ZTZtHdqifXlWG8nN@codewreck.org>
+References: <AA2DB53B-DFC7-4B88-9515-E4C9AFA6435D@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AA2DB53B-DFC7-4B88-9515-E4C9AFA6435D@gmail.com>
 
-On Fri, 2023-10-13 at 17:03 +0100, David Howells wrote:
-> Provide tools to create a buffer in an xarray, with a function to add
-> new folios with a mark.  This will be used to create bounce buffer and ca=
-n be
-> used more easily to create a list of folios the span of which would requi=
-re
-> more than a page's worth of bio_vec structs.
->=20
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: linux-cachefs@redhat.com
-> cc: linux-fsdevel@vger.kernel.org
-> cc: linux-mm@kvack.org
+Sishuai Gong wrote on Tue, Aug 08, 2023 at 12:44:31PM -0400:
+> When a connection is cancelled by p9_conn_cancel(), all requests on it
+> should be cancelled---mark req->status as REQ_STATUS_ERROR. However,
+> because a race over m->err between p9_conn_cancel() and p9_fd_request(),
+> p9_fd_request might see the old value of m->err, think that the connection
+> is NOT cancelled, and then add new requests to this cancelled connection.
+> 
+> Fixing this issue by lock-protecting the check on m->err.
+
+Sorry for the (long) delay in reviewing this, and thanks for the patch!
+
+I've got a bit of a mixed feelings on this, as there are other obviously
+unlocked m->err accesses in the work functions and we don't really want
+to take the req lock there everytime.. These should be ok in the normal
+p9_conn_destroy that disarms poll and cancels work before calling
+p9_conn_cancel, but the other calls to p9_conn_cancel are simiarly racy
+and for example a cancel that'd be initiated by the write end could
+process a new request in p9_read_work after the reqs have been drained
+out...
+
+On the the other hand, this is better than the current situation so I
+think we should take it for now until someone has time to do better;
+it's just leak in the unlikely case this race is hit but we might as
+well close part of the problem.
+
+I don't see how that'd break anything anyway, so I'll push this to my
+next branch tomorrow after testing the rest of my patches.
+
+> 
+> Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
 > ---
->  fs/netfs/internal.h   |  16 +++++
->  fs/netfs/misc.c       | 140 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/netfs.h |   4 ++
->  3 files changed, 160 insertions(+)
->=20
-> diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-> index 1f067aa96c50..00e01278316f 100644
-> --- a/fs/netfs/internal.h
-> +++ b/fs/netfs/internal.h
-> @@ -52,6 +52,22 @@ static inline void netfs_proc_add_rreq(struct netfs_io=
-_request *rreq) {}
->  static inline void netfs_proc_del_rreq(struct netfs_io_request *rreq) {}
->  #endif
-> =20
-> +/*
-> + * misc.c
-> + */
-> +int netfs_xa_store_and_mark(struct xarray *xa, unsigned long index,
-> +			    struct folio *folio, bool put_mark,
-> +			    bool pagecache_mark, gfp_t gfp_mask);
-> +int netfs_add_folios_to_buffer(struct xarray *buffer,
-> +			       struct address_space *mapping,
-> +			       pgoff_t index, pgoff_t to, gfp_t gfp_mask);
-> +int netfs_set_up_buffer(struct xarray *buffer,
-> +			struct address_space *mapping,
-> +			struct readahead_control *ractl,
-> +			struct folio *keep,
-> +			pgoff_t have_index, unsigned int have_folios);
-> +void netfs_clear_buffer(struct xarray *buffer);
+>  net/9p/trans_fd.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+> index 00b684616e8d..e43a850f5190 100644
+> --- a/net/9p/trans_fd.c
+> +++ b/net/9p/trans_fd.c
+> @@ -671,10 +671,14 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+> 
+>  	p9_debug(P9_DEBUG_TRANS, "mux %p task %p tcall %p id %d\n",
+>  		 m, current, &req->tc, req->tc.id);
+> -	if (m->err < 0)
+> -		return m->err;
+> 
+>  	spin_lock(&m->req_lock);
 > +
->  /*
->   * objects.c
->   */
-> diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-> index c3baf2b247d9..c70f856f3129 100644
-> --- a/fs/netfs/misc.c
-> +++ b/fs/netfs/misc.c
-> @@ -8,6 +8,146 @@
->  #include <linux/swap.h>
->  #include "internal.h"
-> =20
-> +/*
-> + * Attach a folio to the buffer and maybe set marks on it to say that we=
- need
-> + * to put the folio later and twiddle the pagecache flags.
-> + */
-> +int netfs_xa_store_and_mark(struct xarray *xa, unsigned long index,
-> +			    struct folio *folio, bool put_mark,
-> +			    bool pagecache_mark, gfp_t gfp_mask)
-> +{
-> +	XA_STATE_ORDER(xas, xa, index, folio_order(folio));
-> +
-> +retry:
-> +	xas_lock(&xas);
-> +	for (;;) {
-> +		xas_store(&xas, folio);
-> +		if (!xas_error(&xas))
-> +			break;
-> +		xas_unlock(&xas);
-> +		if (!xas_nomem(&xas, gfp_mask))
-> +			return xas_error(&xas);
-> +		goto retry;
+> +	if (m->err < 0) {
+> +		spin_unlock(&m->req_lock);
+> +		return m->err;
 > +	}
 > +
-> +	if (put_mark)
-> +		xas_set_mark(&xas, NETFS_BUF_PUT_MARK);
-> +	if (pagecache_mark)
-> +		xas_set_mark(&xas, NETFS_BUF_PAGECACHE_MARK);
-> +	xas_unlock(&xas);
-> +	return xas_error(&xas);
-> +}
-> +
-> +/*
-> + * Create the specified range of folios in the buffer attached to the re=
-ad
-> + * request.  The folios are marked with NETFS_BUF_PUT_MARK so that we kn=
-ow that
-> + * these need freeing later.
-> + */
+>  	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
+>  	list_add_tail(&req->req_list, &m->unsent_req_list);
+>  	spin_unlock(&m->req_lock);
+> —
+> 
+> 
 
-Some kerneldoc comments on these new helpers would be nice. I assume
-that "index" and "to" are "start" and "end" for this, but it'd be nice
-to make that explicit.
-
-
-> +int netfs_add_folios_to_buffer(struct xarray *buffer,
-> +			       struct address_space *mapping,
-> +			       pgoff_t index, pgoff_t to, gfp_t gfp_mask)
-> +{
-> +	struct folio *folio;
-> +	int ret;
-> +
-> +	if (to + 1 =3D=3D index) /* Page range is inclusive */
-> +		return 0;
-> +
-> +	do {
-> +		/* TODO: Figure out what order folio can be allocated here */
-> +		folio =3D filemap_alloc_folio(readahead_gfp_mask(mapping), 0);
-> +		if (!folio)
-> +			return -ENOMEM;
-> +		folio->index =3D index;
-> +		ret =3D netfs_xa_store_and_mark(buffer, index, folio,
-> +					      true, false, gfp_mask);
-> +		if (ret < 0) {
-> +			folio_put(folio);
-> +			return ret;
-> +		}
-> +
-> +		index +=3D folio_nr_pages(folio);
-> +	} while (index <=3D to && index !=3D 0);
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Set up a buffer into which to data will be read or decrypted/decompre=
-ssed.
-> + * The folios to be read into are attached to this buffer and the gaps f=
-illed
-> + * in to form a continuous region.
-> + */
-> +int netfs_set_up_buffer(struct xarray *buffer,
-> +			struct address_space *mapping,
-> +			struct readahead_control *ractl,
-> +			struct folio *keep,
-> +			pgoff_t have_index, unsigned int have_folios)
-> +{
-> +	struct folio *folio;
-> +	gfp_t gfp_mask =3D readahead_gfp_mask(mapping);
-> +	unsigned int want_folios =3D have_folios;
-> +	pgoff_t want_index =3D have_index;
-> +	int ret;
-> +
-> +	ret =3D netfs_add_folios_to_buffer(buffer, mapping, want_index,
-> +					 have_index - 1, gfp_mask);
-> +	if (ret < 0)
-> +		return ret;
-> +	have_folios +=3D have_index - want_index;
-> +
-> +	ret =3D netfs_add_folios_to_buffer(buffer, mapping,
-> +					 have_index + have_folios,
-> +					 want_index + want_folios - 1,
-> +					 gfp_mask);
-
-I don't get it. Why are you calling netfs_add_folios_to_buffer twice
-here? Why not just make one call? Either way, a comment here explaining
-that would also be nice.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Transfer the folios proposed by the VM into the buffer and take refs
-> +	 * on them.  The locks will be dropped in netfs_rreq_unlock().
-> +	 */
-> +	if (ractl) {
-> +		while ((folio =3D readahead_folio(ractl))) {
-> +			folio_get(folio);
-> +			if (folio =3D=3D keep)
-> +				folio_get(folio);
-> +			ret =3D netfs_xa_store_and_mark(buffer, folio->index, folio,
-> +						      true, true, gfp_mask);
-> +			if (ret < 0) {
-> +				if (folio !=3D keep)
-> +					folio_unlock(folio);
-> +				folio_put(folio);
-> +				return ret;
-> +			}
-> +		}
-> +	} else {
-> +		folio_get(keep);
-> +		ret =3D netfs_xa_store_and_mark(buffer, keep->index, keep,
-> +					      true, true, gfp_mask);
-> +		if (ret < 0) {
-> +			folio_put(keep);
-> +			return ret;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Clear an xarray buffer, putting a ref on the folios that have
-> + * NETFS_BUF_PUT_MARK set.
-> + */
-> +void netfs_clear_buffer(struct xarray *buffer)
-> +{
-> +	struct folio *folio;
-> +	XA_STATE(xas, buffer, 0);
-> +
-> +	rcu_read_lock();
-> +	xas_for_each_marked(&xas, folio, ULONG_MAX, NETFS_BUF_PUT_MARK) {
-> +		folio_put(folio);
-> +	}
-> +	rcu_read_unlock();
-> +	xa_destroy(buffer);
-> +}
-> +
->  /**
->   * netfs_invalidate_folio - Invalidate or partially invalidate a folio
->   * @folio: Folio proposed for release
-> diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-> index 66479a61ad00..e8d702ac6968 100644
-> --- a/include/linux/netfs.h
-> +++ b/include/linux/netfs.h
-> @@ -109,6 +109,10 @@ static inline int wait_on_page_fscache_killable(stru=
-ct page *page)
->  	return folio_wait_private_2_killable(page_folio(page));
->  }
-> =20
-> +/* Marks used on xarray-based buffers */
-> +#define NETFS_BUF_PUT_MARK	XA_MARK_0	/* - Page needs putting  */
-> +#define NETFS_BUF_PAGECACHE_MARK XA_MARK_1	/* - Page needs wb/dirty flag=
- wrangling */
-> +
->  enum netfs_io_source {
->  	NETFS_FILL_WITH_ZEROES,
->  	NETFS_DOWNLOAD_FROM_SERVER,
->=20
-
---=20
-Jeff Layton <jlayton@kernel.org>
+-- 
+Dominique Martinet | Asmadeus
