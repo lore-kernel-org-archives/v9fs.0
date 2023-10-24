@@ -1,149 +1,136 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55368224FE
-	for <v9fs@lists.linux.dev>; Tue, 24 Oct 2023 11:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FD8273C1
+	for <v9fs@lists.linux.dev>; Tue, 24 Oct 2023 12:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="SZcLUyRF";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="i0FYk4Er"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 59CFFC01B; Tue, 24 Oct 2023 13:58:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698148716; bh=bQCoT5UejVz+iKMF1sL7EOxU2gi6+zjkOOv0qgwRk9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZcLUyRFwOyh+YznvGdCSGTiHh9BJPUVoZwDm+o7LcqA6M5m4LUF1jih3RQBULpJm
-	 gTUldCTOXC12gDuWsYmPNkt/gL/2uZcCHSuxPMxhIZviK01yw4Isph1S6tzxJIDbC6
-	 OYbXrvm1Qp9kEe2Thowyk0osKQeDjlXXbeuCzM7n2BQ/FHE/xqfe5oYHeG6Y4OD+LT
-	 D9tpBJwPRGT2sFQB4o6iCKMz0vHKHI+E9lApW/jSS693g/OPMu0B/kCWEI5rxZXHh3
-	 sham/RUCtVKUAQdmygEOZ0o9Tg3pZ3rTMRl0RsV6yfEIP/mtnsa9QW39gSaM0dCYIe
-	 aj/TTzc9+nPqw==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 505BCC009;
-	Tue, 24 Oct 2023 13:58:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698148714; bh=bQCoT5UejVz+iKMF1sL7EOxU2gi6+zjkOOv0qgwRk9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0FYk4ErFnxLJSnGcNeIhpbvZownUyGYeRuRg38dDiigWxAhFv42qcfQvV24KNX8r
-	 LZp2R42IYo0Oz118Q0DOhY2+4DjhY/l1A0MtiQ/2fFnnyjMhdJGZW5D4ChR5SiCH3b
-	 NbbVdftzp+A6XvoJNBg+uz1vptSdn+j6cbheKgMvyLQ0H/4qG05ec6h6YsfPDUuckP
-	 HvALdwpKtrIeXipoCrU7E2BCS1ygVaOw2fCWcYFcF7PIOAWEqftIcGAyLM5ae6VZxm
-	 VAxeQrp7OLythdqyR0R1etxMyW08XUT0gYF9yRqWSv9tlxPtGx6TndfgZEpctxsA3/
-	 7OrvANRC3O7QQ==
-Received: from gaia.codewreck.org (localhost.lan [::1])
-	by gaia (OpenSMTPD) with ESMTP id 4636d64c;
-	Tue, 24 Oct 2023 11:58:29 +0000 (UTC)
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: v9fs@lists.linux.dev
-Cc: ericvh@kernel.org,
-	linux_oss@crudebyte.com,
-	lucho@ionkov.net,
-	linux-kernel@vger.kernel.org,
-	Marco Elver <elver@google.com>,
-	syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH v2] 9p/trans_fd: Annotate data-racy writes to file::f_flags
-Date: Tue, 24 Oct 2023 20:58:04 +0900
-Message-ID: <20231024115804.1210459-1-asmadeus@codewreck.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231023233704.1185154-2-asmadeus@codewreck.org>
-References: <20231023233704.1185154-2-asmadeus@codewreck.org>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="vS05rz0k"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=mueE/jomDCPZSA4DL8/H01C/6oFaLo6DG99uhgD42AQ=; b=vS05rz0ksq7vNfnDkNeZs7TxYo
+	AijQqd+gnh49vK2EqGrRn52YnHy8o2rOBi2o5+L7N3Gssq6znbeio2SJ37R21wHIfPw8i3otFjezJ
+	QoY3ffAAc4PjyWAbK4FiufvGYT0vrUV9xj9nn8CP5kZh0Kz4BR5UqOVx7TAmzacI+XxeMOyks5HHL
+	3eQPdlhYcWgy/dpoP6ZR4FCZliSSeQpTxjTDGsGAQyJb5JDBUvU7V1Gy9fOYIG4XmXgL4x6EJ3vKN
+	SUV18c38aUzFWZ+DnIyMckUqllBr9lX+WEB990zHkVvxmwM/JXz+4rJH9fBvfwU7wOYAjTIzn7tOn
+	qlBegmElFTZ9kwWAMmH7tuYapoqJ4UREsjXFPvvZokREbbKK+/bZ4FzUg30gTbW/VZXUpsbcumF7g
+	MGnaXNs8Iak6nz3UyN7G1vTXIbmwbOrqmS+xE4lJTHYIBbxtPym8+kZfKops7XLUKzTO3KqM2KXiq
+	To32Ts06PHetv0xxIJ+4drPa8cWWlevUZF2DoFoZqbVKLBwvWxJ8SsVLFGzIIGHvz5mUb5M2eoKpk
+	iJEqyrPHUuxNHwo6Ih/RCi2NTUi7mP3oxlyFGOKFrOzrKCdxLdcNkvYLmkLL/PKldrJeNs/Jw0TSB
+	YukFhFDB89LSnZjAtAdQF/693usoysaOl/Mo2YQvo=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: v9fs@lists.linux.dev, ericvh@kernel.org,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: lucho@ionkov.net, linux-kernel@vger.kernel.org,
+ Dominique Martinet <asmadeus@codewreck.org>, Su Hui <suhui@nfschina.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [PATCH 2/3] 9p: v9fs_listxattr: fix %s null argument warning
+Date: Tue, 24 Oct 2023 14:29:54 +0200
+Message-ID: <2430862.CWyeMz6ufJ@silver>
+In-Reply-To: <20231023233704.1185154-3-asmadeus@codewreck.org>
+References:
+ <20231023233704.1185154-1-asmadeus@codewreck.org>
+ <20231023233704.1185154-3-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 
-From: Marco Elver <elver@google.com>
+On Tuesday, October 24, 2023 1:37:03 AM CEST Dominique Martinet wrote:
+> W=3D1 warns about null argument to kprintf:
+> In file included from fs/9p/xattr.c:12:
+> In function =E2=80=98v9fs_xattr_get=E2=80=99,
+>     inlined from =E2=80=98v9fs_listxattr=E2=80=99 at fs/9p/xattr.c:142:9:
+> include/net/9p/9p.h:55:2: error: =E2=80=98%s=E2=80=99 directive argument =
+is null
+> [-Werror=3Dformat-overflow=3D]
+>    55 |  _p9_debug(level, __func__, fmt, ##__VA_ARGS__)
+>       |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>=20
+> Use an empty string instead of :
+>  - this is ok 9p-wise because p9pdu_vwritef serializes a null string
+> and an empty string the same way (one '0' word for length)
+>  - since this degrades the print statements, add new single quotes for
+> xattr's name delimter (Old: "file =3D (null)", new: "file =3D ''")
+>=20
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+> Link: https://lore.kernel.org/r/20231008060138.517057-1-suhui@nfschina.com
+> Suggested-by: Su Hui <suhui@nfschina.com>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+> I've checked this works as expected (getfattr listing all user.* xattrs
+> after setting some), so let's fix this warning.
+>=20
+> As pointed out by Dan this makes the message les clear, so I added
+> single quotes to make it clear we're dealing with an empty string; I
+> think it's good enough.
+> Su, I made you only Suggested-by because of the extra legwork and
+> format changes, but happy to give you authorship if it's something you
+> care about; I'd just like to get it out during the next merge window
+> in a couple of weeks so please say the word.
+>=20
+> This makes fs/9p build warning-free with W=3D1 on gcc 12
+>=20
+>  fs/9p/xattr.c   | 4 ++--
+>  net/9p/client.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
+> index e00cf8109b3f..d29907c378fd 100644
+> --- a/fs/9p/xattr.c
+> +++ b/fs/9p/xattr.c
+> @@ -68,7 +68,7 @@ ssize_t v9fs_xattr_get(struct dentry *dentry, const cha=
+r *name,
+>  	struct p9_fid *fid;
+>  	int ret;
+> =20
+> -	p9_debug(P9_DEBUG_VFS, "name =3D %s value_len =3D %zu\n",
+> +	p9_debug(P9_DEBUG_VFS, "name =3D '%s' value_len =3D %zu\n",
+>  		 name, buffer_size);
+>  	fid =3D v9fs_fid_lookup(dentry);
+>  	if (IS_ERR(fid))
+> @@ -139,7 +139,7 @@ int v9fs_fid_xattr_set(struct p9_fid *fid, const char=
+ *name,
+> =20
+>  ssize_t v9fs_listxattr(struct dentry *dentry, char *buffer, size_t buffe=
+r_size)
+>  {
+> -	return v9fs_xattr_get(dentry, NULL, buffer, buffer_size);
+> +	return v9fs_xattr_get(dentry, "", buffer, buffer_size);
+>  }
 
-syzbot reported:
+As from the previous discussions on this, it might be worth to add a short
+comment here that the magical empty string in the subsequent 'Txattrwalk' 9p
+request causes 9p server to return a list of xattrs instead of one specific
+xattr.
 
- | BUG: KCSAN: data-race in p9_fd_create / p9_fd_create
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15599 on cpu 0:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15563 on cpu 1:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | value changed: 0x00008002 -> 0x00008802
+Up to you though:
 
-Within p9_fd_open(), O_NONBLOCK is added to f_flags of the read and
-write files. This may happen concurrently if e.g. mounting process
-modifies the fd in another thread.
+Acked-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-Mark the plain read-modify-writes as intentional data-races, with the
-assumption that the result of executing the accesses concurrently will
-always result in the same result despite the accesses themselves not
-being atomic.
+> =20
+>  static int v9fs_xattr_handler_get(const struct xattr_handler *handler,
+> diff --git a/net/9p/client.c b/net/9p/client.c
+> index 86bbc7147fc1..9c2bc15e3cfa 100644
+> --- a/net/9p/client.c
+> +++ b/net/9p/client.c
+> @@ -1979,7 +1979,7 @@ struct p9_fid *p9_client_xattrwalk(struct p9_fid *f=
+ile_fid,
+>  		goto error;
+>  	}
+>  	p9_debug(P9_DEBUG_9P,
+> -		 ">>> TXATTRWALK file_fid %d, attr_fid %d name %s\n",
+> +		 ">>> TXATTRWALK file_fid %d, attr_fid %d name '%s'\n",
+>  		 file_fid->fid, attr_fid->fid, attr_name);
+> =20
+>  	req =3D p9_client_rpc(clnt, P9_TXATTRWALK, "dds",
+>=20
 
-Reported-by: syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/ZO38mqkS0TYUlpFp@elver.google.com
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
----
-v1 -> v2:
- - reworded comment as discussed
- - adjusted commit subject line to match with other trans_fd patch
-
- net/9p/trans_fd.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index f226953577b2..1a3948b8c493 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -836,14 +836,21 @@ static int p9_fd_open(struct p9_client *client, int rfd, int wfd)
- 		goto out_free_ts;
- 	if (!(ts->rd->f_mode & FMODE_READ))
- 		goto out_put_rd;
--	/* prevent workers from hanging on IO when fd is a pipe */
--	ts->rd->f_flags |= O_NONBLOCK;
-+	/* Prevent workers from hanging on IO when fd is a pipe.
-+	 * It's technically possible for userspace or concurrent mounts to
-+	 * modify this flag concurrently, which will likely result in a
-+	 * broken filesystem. However, just having bad flags here should
-+	 * not crash the kernel or cause any other sort of bug, so mark this
-+	 * particular data race as intentional so that tooling (like KCSAN)
-+	 * can allow it and detect further problems.
-+	 */
-+	data_race(ts->rd->f_flags |= O_NONBLOCK);
- 	ts->wr = fget(wfd);
- 	if (!ts->wr)
- 		goto out_put_rd;
- 	if (!(ts->wr->f_mode & FMODE_WRITE))
- 		goto out_put_wr;
--	ts->wr->f_flags |= O_NONBLOCK;
-+	data_race(ts->wr->f_flags |= O_NONBLOCK);
- 
- 	client->trans = ts;
- 	client->status = Connected;
--- 
-2.41.0
 
