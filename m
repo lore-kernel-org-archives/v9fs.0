@@ -1,158 +1,94 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3024211
-	for <v9fs@lists.linux.dev>; Mon, 23 Oct 2023 23:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9431863
+	for <v9fs@lists.linux.dev>; Tue, 24 Oct 2023 05:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JoAGkMLw";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="yTkF16U1"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 446C0C027; Tue, 24 Oct 2023 01:37:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698104248; bh=PAQp5SIrJ7XuUtekxxpfQVf8Z9TTes94CioyEDOPYG4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JoAGkMLwF/hU60s6Sgh6rf6EguqlKFuoHACG0Fy8iSD+CB2vnarVD57Z++VTvSxAe
-	 xCNg8/ezhNR/eerd763GH06GEG2fjtZ7UdP0g//Kj/hYtR5zfVIkC2YUxqnkniHvLY
-	 jYO0BBOKNLelxt6ZVXTeCxmq57ssiPf2r+PjlCO9s1K/AZQYAGncXc3tghwCOE4Rnb
-	 +dQdkHTp9MNOo9fOOnD6MwFCytqnTjIBqTwKj0gSenKAqFp8M8LEl4oLGpmNcGRwKR
-	 jrm9szAuoRa7U64tQVtaQtjEfGyA96vtgHPih25D18Gj5h47sIFsr39GbU5ZuL53fK
-	 roNPIulDdFgOg==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id D30EAC009;
-	Tue, 24 Oct 2023 01:37:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698104247; bh=PAQp5SIrJ7XuUtekxxpfQVf8Z9TTes94CioyEDOPYG4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTkF16U1S0b5LURxbJwpDpE8+qs0L83azlbkQc8rpwPkYLUiztpmKeMRFHxtjkwEO
-	 uPiqz3RQGZO7C4oVxea87MzcKR71nqC8b7HgbhaiPh8A3voiGHGEYfi8XeCVdfXBdN
-	 QGv0WKg/jWAB64PEbFEc18LG4kFh5OzMcnn0VVgT3o/c/mmC7TH+2iEO+9ne0CPsxI
-	 9Hg9gNFAjAEQHOQVL8ylY97Wlw4a11NQKhnhPEdlEHqdoNjxMPsQsvtPYqx5aY4DO+
-	 3VDoLhOChf5YgixX329Sk8PgD6Oq/2wJ85b1Vok7JZQp3uQX3p6nQAbRefi4NRCT24
-	 79aw9kHvY/ulg==
-Received: from gaia.codewreck.org (localhost.lan [::1])
-	by gaia (OpenSMTPD) with ESMTP id 0a3de4cb;
-	Mon, 23 Oct 2023 23:37:17 +0000 (UTC)
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: v9fs@lists.linux.dev,
-	ericvh@kernel.org,
-	linux_oss@crudebyte.com
-Cc: lucho@ionkov.net,
-	linux-kernel@vger.kernel.org,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 3/3] 9p/net: xen: fix false positive printf format overflow warning
-Date: Tue, 24 Oct 2023 08:37:04 +0900
-Message-ID: <20231023233704.1185154-4-asmadeus@codewreck.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231023233704.1185154-1-asmadeus@codewreck.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Kk3qjUu6"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2b9c907bc68so60599671fa.2
+        for <v9fs@lists.linux.dev>; Mon, 23 Oct 2023 22:16:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698124575; x=1698729375; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aE2lxw/rNDGPdJ05hPD2uVnr0m8qN8L+coi09dprodY=;
+        b=Kk3qjUu6h+mNy/jBoxYivrLFoW5RkDEw3CkOZKbQKh6aDFB74Da4vqNBwacE04vkrR
+         m28fXJJWONr9eHO88fyLAafkNkiiCcEZ+sYWKWjaby6y7eHXd4OZjzynpIJ1iXDOPRwQ
+         i7JnMjfjZ7PLWL1PSShOvByyGsCBy5yUYXsRm6QvMn4NDBsNwTPdKvFqenlnlcAdVmXD
+         vCu8c2daK9LUJCjm1BWVA80mP0ckQcDf1xH9HaQQ8ur1M05wodQzWgWum6p9wey/MnwA
+         4A7F0vPXDa0f/zdVPXuLbpFLD4ABWr2GaXQ/RNrO6ZouXffGEtw8nGVgkkl5bh85DKqx
+         cBpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698124575; x=1698729375;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aE2lxw/rNDGPdJ05hPD2uVnr0m8qN8L+coi09dprodY=;
+        b=FbSTive/5efQ5Ch2Q50YeH1Dbl5yi40EN7SFm8/abdZAxMsBW8AgF3zfStAYi5xnVB
+         zLwrXLe9e9BVv0Yf/f1kv7tlQo/SkzpHOnAJVVeM/cFRCD/cSeRhlGwssD+U90xOVal7
+         fmUZJTOASNi8eYm62NdTgrQxcIpVzQVLob6EcC4oeHTU/GQme8LE64w9Jzu1/w+ClwrR
+         VxbJeChbRxElTZ9IES19O5plQlr43abbx+GotVJTC3Unlzv9+nCv4hFdneaNuIMaBM6J
+         mYSPRo6THjzzwf3HZZdy7i65901sEvqtk0bIWvifU3HLZKtRO+bjTc7DjwSHEm19MBxj
+         cz6Q==
+X-Gm-Message-State: AOJu0YxUOw8mLGp9hN2dbAp94unw1vIhR29wo9IT7yrp2ivCNbc1SL5D
+	6MxILHyrKu6qTO973HQMZA2shg==
+X-Google-Smtp-Source: AGHT+IHjW90meTVeICIf9vFGqWrh2jrlNk4jyKzQOzYpwwr591HktRYBLgZz3B9ZPTt8EKOFSYqyOA==
+X-Received: by 2002:a05:651c:70f:b0:2c5:2cd7:62e8 with SMTP id z15-20020a05651c070f00b002c52cd762e8mr6721518ljb.12.1698124574533;
+        Mon, 23 Oct 2023 22:16:14 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id m29-20020a05600c3b1d00b003fe61c33df5sm15988490wms.3.2023.10.23.22.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 22:16:14 -0700 (PDT)
+Date: Tue, 24 Oct 2023 08:16:10 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: v9fs@lists.linux.dev, ericvh@kernel.org, linux_oss@crudebyte.com,
+	lucho@ionkov.net, linux-kernel@vger.kernel.org,
+	Su Hui <suhui@nfschina.com>
+Subject: Re: [PATCH 2/3] 9p: v9fs_listxattr: fix %s null argument warning
+Message-ID: <03a1c530-ac79-4286-9156-b258f79d1fca@kadam.mountain>
 References: <20231023233704.1185154-1-asmadeus@codewreck.org>
+ <20231023233704.1185154-3-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231023233704.1185154-3-asmadeus@codewreck.org>
 
-Use a local variable to make the compiler happy about this warning:
-net/9p/trans_xen.c: In function ‘xen_9pfs_front_changed’:
-net/9p/trans_xen.c:444:39: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 8 [-Wformat-overflow=]
-  444 |                 sprintf(str, "ring-ref%d", i);
-      |                                       ^~
-In function ‘xen_9pfs_front_init’,
-    inlined from ‘xen_9pfs_front_changed’ at net/9p/trans_xen.c:516:8,
-    inlined from ‘xen_9pfs_front_changed’ at net/9p/trans_xen.c:504:13:
-net/9p/trans_xen.c:444:30: note: directive argument in the range [-2147483644, 2147483646]
-  444 |                 sprintf(str, "ring-ref%d", i);
-      |                              ^~~~~~~~~~~~
-net/9p/trans_xen.c:444:17: note: ‘sprintf’ output between 10 and 20 bytes into a destination of size 16
-  444 |                 sprintf(str, "ring-ref%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-net/9p/trans_xen.c: In function ‘xen_9pfs_front_changed’:
-net/9p/trans_xen.c:450:45: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 2 [-Wformat-overflow=]
-  450 |                 sprintf(str, "event-channel-%d", i);
-      |                                             ^~
-In function ‘xen_9pfs_front_init’,
-    inlined from ‘xen_9pfs_front_changed’ at net/9p/trans_xen.c:516:8,
-    inlined from ‘xen_9pfs_front_changed’ at net/9p/trans_xen.c:504:13:
-net/9p/trans_xen.c:450:30: note: directive argument in the range [-2147483644, 2147483646]
-  450 |                 sprintf(str, "event-channel-%d", i);
-      |                              ^~~~~~~~~~~~~~~~~~
-net/9p/trans_xen.c:450:17: note: ‘sprintf’ output between 16 and 26 bytes into a destination of size 16
-  450 |                 sprintf(str, "event-channel-%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On Tue, Oct 24, 2023 at 08:37:03AM +0900, Dominique Martinet wrote:
+> W=1 warns about null argument to kprintf:
+> In file included from fs/9p/xattr.c:12:
+> In function ‘v9fs_xattr_get’,
+>     inlined from ‘v9fs_listxattr’ at fs/9p/xattr.c:142:9:
+> include/net/9p/9p.h:55:2: error: ‘%s’ directive argument is null
+> [-Werror=format-overflow=]
+>    55 |  _p9_debug(level, __func__, fmt, ##__VA_ARGS__)
+>       |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Use an empty string instead of :
+>  - this is ok 9p-wise because p9pdu_vwritef serializes a null string
+> and an empty string the same way (one '0' word for length)
+>  - since this degrades the print statements, add new single quotes for
+> xattr's name delimter (Old: "file = (null)", new: "file = ''")
+> 
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+> Link: https://lore.kernel.org/r/20231008060138.517057-1-suhui@nfschina.com
+> Suggested-by: Su Hui <suhui@nfschina.com>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+> I've checked this works as expected (getfattr listing all user.* xattrs
+> after setting some), so let's fix this warning.
 
-There is no change in logic: there only are a constant number of rings,
-and there also already is a BUILD_BUG_ON that checks if that constant
-goes over 9 as anything bigger would no longer fit the event-channel-%d
-destination size.
+Awesome.  Thanks!
 
-In theory having that size as part of the struct means it could be
-modified by another thread and makes the compiler lose track of possible
-values for 'i' here, using a local variable makes it happy.
-
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
----
-While looking at warnings with W=1, I noticed this one in net/9p.
-
-This is silly but shouldn't hurt, num_rings is never changed so there is
-no risk of introducing a race here, it's just helping the compiler a
-bit.
-
-net/9p is also now warning-free at W=1
-
- net/9p/trans_xen.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 1fffe2bed5b0..79e91f31a84a 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -382,7 +382,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	struct xenbus_transaction xbt;
- 	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
- 	char *versions, *v;
--	unsigned int max_rings, max_ring_order, len = 0;
-+	unsigned int num_rings, max_rings, max_ring_order, len = 0;
- 
- 	versions = xenbus_read(XBT_NIL, dev->otherend, "versions", &len);
- 	if (IS_ERR(versions))
-@@ -408,15 +408,15 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	if (p9_xen_trans.maxsize > XEN_FLEX_RING_SIZE(max_ring_order))
- 		p9_xen_trans.maxsize = XEN_FLEX_RING_SIZE(max_ring_order) / 2;
- 
--	priv->num_rings = XEN_9PFS_NUM_RINGS;
--	priv->rings = kcalloc(priv->num_rings, sizeof(*priv->rings),
-+	num_rings = priv->num_rings = XEN_9PFS_NUM_RINGS;
-+	priv->rings = kcalloc(num_rings, sizeof(*priv->rings),
- 			      GFP_KERNEL);
- 	if (!priv->rings) {
- 		kfree(priv);
- 		return -ENOMEM;
- 	}
- 
--	for (i = 0; i < priv->num_rings; i++) {
-+	for (i = 0; i < num_rings; i++) {
- 		priv->rings[i].priv = priv;
- 		ret = xen_9pfs_front_alloc_dataring(dev, &priv->rings[i],
- 						    max_ring_order);
-@@ -434,10 +434,11 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	if (ret)
- 		goto error_xenbus;
- 	ret = xenbus_printf(xbt, dev->nodename, "num-rings", "%u",
--			    priv->num_rings);
-+			    num_rings);
- 	if (ret)
- 		goto error_xenbus;
--	for (i = 0; i < priv->num_rings; i++) {
-+
-+	for (i = 0; i < num_rings; i++) {
- 		char str[16];
- 
- 		BUILD_BUG_ON(XEN_9PFS_NUM_RINGS > 9);
--- 
-2.41.0
+regards,
+dan carpenter
 
