@@ -1,113 +1,70 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD42D05F
-	for <v9fs@lists.linux.dev>; Thu, 26 Oct 2023 11:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71EE2DF72
+	for <v9fs@lists.linux.dev>; Thu, 26 Oct 2023 12:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="dobSHw5f";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="pIFlgNGB"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 22492C023; Thu, 26 Oct 2023 13:54:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698321258; bh=ee0LYBUjIFZ+7KVLOmz33ifp2D3uBc4odSfidsaynyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dobSHw5fXqoNtWFULH+zH44DBHcmqIJ5U6QRE7a8oqB7Zjy2v8HSieUwM3ongq4YK
-	 tajjyQVHmAuIWz2I+m3SVmoFyCkQ9P+viJ1KFL4cC6G9753r/eVZZwxI2B4jSiw8OB
-	 7RLCmJij8cj5AU6ysa3DePs1FnSajBhgs6xuxt/T6PXFMKhTlK0vK8YvHSDFzbzsXp
-	 MdXb3EA+jz5fifAtXsHNgzMmEgQvLav0zD8QGH8rqbItxjKWz/wpLzxwjHbEufPcW/
-	 35UvUvsElpaGk3ApjItyJIQWhLozn1iJ8mnZ/4KzmBpG9W8VuLjY7hI6g3dAnK1Rqs
-	 ohPynPrJHaGEw==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id E70DCC01C;
-	Thu, 26 Oct 2023 13:54:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1698321257; bh=ee0LYBUjIFZ+7KVLOmz33ifp2D3uBc4odSfidsaynyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pIFlgNGB79E3zgP+Of/xeL7Me4MOjTBeWoN5+cvcg1kp0/7dnTps/n2eOzdCuBPH9
-	 zt+3n8/k/az/otUb1DHRGxNwj5UhKM92Gu0wbhhlRWdc48tE7xkEKYNDGy6MVUJ5/D
-	 m8/B/2a9prVBcUN7lX3FH9tcv5TBArfJ1YNs8BEqRtdgljDcuUKlbZnSVtlRinyOHP
-	 dz87ZCjVWM8ufjJ+vnqgCxwjDiCDcRp7knn1UTd9hn5VFsgrMfIxW6f7tgvJJBPBfb
-	 DriZq3/3rbo32PKQ55zeXH+v4J40BzFv3DuAiHI/IGYO1YwDp6RoNLulO5GXDYVLp7
-	 3M2/Uxgzkr+Xg==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 272289d4;
-	Thu, 26 Oct 2023 11:54:10 +0000 (UTC)
-Date: Thu, 26 Oct 2023 20:53:55 +0900
-From: asmadeus@codewreck.org
-To: Hangyu Hua <hbh25y@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jvrao@linux.vnet.ibm.com, v9fs@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: 9p: fix possible memory leak in p9_check_errors()
-Message-ID: <ZTpTU8-1zn_P22QX@codewreck.org>
-References: <20231026092351.30572-1-hbh25y@gmail.com>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="UJ8adKPL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=r2dz3acTOn5lRwuIUAODszuiv28kHPULtXvdoKcdzhM=; b=UJ8adKPLz6HgOt1eyoE2Yxb4rl
+	sbIkrJfDqY6lYjk1o6QzyI1j0A8iwcAUQHfb3e4ZrHbIF2kuLXXr9o/Q3uP3f5mKicqU/bkGHGRIs
+	3mvz2p+G0uPR5lsB+b2HX1CSL5fc/irlyOtf5kontKRZUu+RE6jmSH35VP64g+YgSsVQDCEz7gR8V
+	wEdyCUjO4r9SDEDiaaCBB7mIzlXMMdRm6wP67qypTkx6Ui/LmH1t+jPrYtj/Pxtk3NUEk4rQJ+KRf
+	t6P/o6I2QaKvmFLwAVvCzi5CjY0V95+Tbd4h4B+Qs5OlptGAOJQKqe9YMQfbdE9KYo0rYwRC2HxW2
+	WEdAiDyKiIefb5ulvu1yzeNqT7+SuFTnFYd2kDUgF5i4q0I74vwoQYndvzakSWO5X+kqTXuG0FJT1
+	tMuccsohlEW2IG8XJyMhTFI4Bv1umvGyyqzAJbKOQZn+/fzFRo4LDivjMIxzvDUhEeNk5wnz/BB/K
+	ANQSxoxLepGy2dfOBqiVZB2NCpXjzBViwbKCia4jWtMLYcEvZeDwbnh/1kSCgLTtELou3yiOikK/K
+	2wcznNnHEkCaYXolMoIQ/bt3Mch+2RqyZDQZB1vIa4rKwmBf8cG5PswMD5eHRVDmx/s+Mn+q45i8/
+	Q8S1v1RqDNsPCoXnBOaoS9bPM0s6QAuLcETr0i/sA=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: v9fs@lists.linux.dev, Dominique Martinet <asmadeus@codewreck.org>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org,
+ Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH] 9p/fs: add MODULE_DESCIPTION
+Date: Thu, 26 Oct 2023 14:47:33 +0200
+Message-ID: <2207070.NGFuZe4fYI@silver>
+In-Reply-To: <20231025223107.1274963-1-asmadeus@codewreck.org>
+References: <20231025223107.1274963-1-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231026092351.30572-1-hbh25y@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-
-Hangyu Hua wrote on Thu, Oct 26, 2023 at 05:23:51PM +0800:
-> When p9pdu_readf is called with "s?d" attribute, it allocates a pointer
-> that will store a string. But when p9pdu_readf() fails while handling "d"
-> then this pointer will not be freed in p9_check_errors.
-
-Right, that sounds correct to me.
-
-Out of curiosity how did you notice this? The leak shouldn't happen with
-any valid server.
-
-This cannot break anything so I'll push this to -next tomorrow and
-submit to Linus next week
-
-> Fixes: ca41bb3e21d7 ("[net/9p] Handle Zero Copy TREAD/RERROR case in !dotl case.")
-
-This commit moves this code a bit, but the p9pdu_readf call predates
-it -- in this case the Fixes tag is probably not useful; this affects
-all maintained kernels.
-
-> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-> ---
->  net/9p/client.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+On Thursday, October 26, 2023 12:31:07 AM CEST Dominique Martinet wrote:
+> Fix modpost warning that MODULE_DESCRIPTION is missing in fs/9p/9p.o
 > 
-> diff --git a/net/9p/client.c b/net/9p/client.c
-> index 86bbc7147fc1..6c7cd765b714 100644
-> --- a/net/9p/client.c
-> +++ b/net/9p/client.c
-> @@ -540,12 +540,15 @@ static int p9_check_errors(struct p9_client *c, struct p9_req_t *req)
->  		return 0;
->  
->  	if (!p9_is_proto_dotl(c)) {
-> -		char *ename;
-> +		char *ename = NULL;
->  
->  		err = p9pdu_readf(&req->rc, c->proto_version, "s?d",
->  				  &ename, &ecode);
-> -		if (err)
-> +		if (err) {
-> +			if (ename != NULL)
-> +				kfree(ename);
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+> ---
 
-Don't check for NULL before kfree - kfree does it.
-If that's the only remark you get I can fix it when applying the commit
-on my side.
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+
+> Probably doesn't really matter after all this time, but noticed this
+> when double-checking there weren't any warnings left in W=1... Might as
+> well get rid of this:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in fs/9p/9p.o
+> 
+>  fs/9p/v9fs.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+> index d525957594b6..61dbe52bb3a3 100644
+> --- a/fs/9p/v9fs.c
+> +++ b/fs/9p/v9fs.c
+> @@ -732,4 +732,5 @@ module_exit(exit_v9fs)
+>  MODULE_AUTHOR("Latchesar Ionkov <lucho@ionkov.net>");
+>  MODULE_AUTHOR("Eric Van Hensbergen <ericvh@gmail.com>");
+>  MODULE_AUTHOR("Ron Minnich <rminnich@lanl.gov>");
+> +MODULE_DESCRIPTION("9P Client File System");
+>  MODULE_LICENSE("GPL");
+> 
 
 
->  			goto out_err;
-> +		}
->  
->  		if (p9_is_proto_dotu(c) && ecode < 512)
->  			err = -ecode;
-
--- 
-Dominique Martinet | Asmadeus
