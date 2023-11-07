@@ -1,55 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4D23C34
-	for <v9fs@lists.linux.dev>; Sat,  4 Nov 2023 19:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0503066C;
+	Tue,  7 Nov 2023 23:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX2fZuzC"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A97EC433C9;
-	Sat,  4 Nov 2023 19:39:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2xvom7q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBE4C433CA;
+	Tue,  7 Nov 2023 23:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699126756;
-	bh=BOZpFArWW1T5xfM9DHadV/pgH4GJEb9Dty1PKf4xMKc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=HX2fZuzCP1rovxZm6Tt3xYcp4AlYFZygvPgq2RbMhcfecSHqgUBNXEU0teX+5R+Me
-	 ZSDX4tw5dG1530GTGWKFak264IHPw6MOY4ofFA3M9LaKbx+zvc9ZQaDg0rNLofGP+o
-	 HNwyUIriTgBDmBUp1ZrBxxtxRIiGeojDQbjQWfw237Dyel6eho7RitmvKBlcQUzxp2
-	 OlCVUnF4o/DyAhs9paI+DEEULHV/7MXxXCqz8yVQftpWB66EPHd2twcZZB1yuhT0hL
-	 IgX7VZ5BQBjQo2cIXlurf0Fe95DMHQaTGT5xNz/DddOmcCyEtIdIRBe0UyfQRNhFQ2
-	 EuSZGYdX1tjWQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3A8A8C4316B;
-	Sat,  4 Nov 2023 19:39:16 +0000 (UTC)
-Subject: Re: [GIT PULL] 9p fixes for 6.7-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <ZUW82S8bGg2BAeNU@codewreck.org>
-References: <ZUW82S8bGg2BAeNU@codewreck.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZUW82S8bGg2BAeNU@codewreck.org>
-X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.7-rc1
-X-PR-Tracked-Commit-Id: ce07087964208eee2ca2f9ee4a98f8b5d9027fe6
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c9b93cafb69cbbbe375de29c1ebf410dbc33ebfc
-Message-Id: <169912675623.21555.5765396165383990631.pr-tracker-bot@kernel.org>
-Date: Sat, 04 Nov 2023 19:39:16 +0000
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=k20201202; t=1699399390;
+	bh=8LLAVN37ZkxOoKP/PIwFB1R3Dw5Nr9o1s4ATZRbvKPQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T2xvom7qH98BvE0JLE0AoGDwkwFmyY64x5hdFgSBE+k6V5qRVPX97ZWt+Y6H+qsST
+	 L0/uEB9FAb+ZJzC4b2lt2Vbxsy9h0y/i9ZT7Tyxvs+MZ/slDJjmr/BN4R5o6zCCxSx
+	 AlfTuPzrorPeNV+H3JWzgTUXgtcdIiI7FJibUW8veSbTsvQzKLWlwpNFX31tjDkQiP
+	 ljd7pILYxZWaUflsGfJupXG3DUd9mBszpXsufYKPP8UlZnx9hfN7qm5+/yDqHsaTf2
+	 p1kSJk42G0eBhvq8BBlwNPxvNM3qoR2COjb4VucxlcuGj04lSHoCjDuUQdFLOt1SzE
+	 yXhTlRa+rNa5A==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Marco Elver <elver@google.com>,
+	syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>,
+	ericvh@kernel.org,
+	lucho@ionkov.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	v9fs@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 17/18] 9p/trans_fd: Annotate data-racy writes to file::f_flags
+Date: Tue,  7 Nov 2023 18:22:11 -0500
+Message-ID: <20231107232231.3775605-17-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231107232231.3775605-1-sashal@kernel.org>
+References: <20231107232231.3775605-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Sat, 4 Nov 2023 12:39:05 +0900:
+From: Marco Elver <elver@google.com>
 
-> https://github.com/martinetd/linux tags/9p-for-6.7-rc1
+[ Upstream commit 355f074609dbf3042900ea9d30fcd2b0c323a365 ]
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c9b93cafb69cbbbe375de29c1ebf410dbc33ebfc
+syzbot reported:
 
-Thank you!
+ | BUG: KCSAN: data-race in p9_fd_create / p9_fd_create
+ |
+ | read-write to 0xffff888130fb3d48 of 4 bytes by task 15599 on cpu 0:
+ |  p9_fd_open net/9p/trans_fd.c:842 [inline]
+ |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
+ |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
+ |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
+ |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
+ |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
+ |  vfs_get_tree+0x51/0x190 fs/super.c:1519
+ |  do_new_mount+0x203/0x660 fs/namespace.c:3335
+ |  path_mount+0x496/0xb30 fs/namespace.c:3662
+ |  do_mount fs/namespace.c:3675 [inline]
+ |  __do_sys_mount fs/namespace.c:3884 [inline]
+ |  [...]
+ |
+ | read-write to 0xffff888130fb3d48 of 4 bytes by task 15563 on cpu 1:
+ |  p9_fd_open net/9p/trans_fd.c:842 [inline]
+ |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
+ |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
+ |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
+ |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
+ |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
+ |  vfs_get_tree+0x51/0x190 fs/super.c:1519
+ |  do_new_mount+0x203/0x660 fs/namespace.c:3335
+ |  path_mount+0x496/0xb30 fs/namespace.c:3662
+ |  do_mount fs/namespace.c:3675 [inline]
+ |  __do_sys_mount fs/namespace.c:3884 [inline]
+ |  [...]
+ |
+ | value changed: 0x00008002 -> 0x00008802
 
+Within p9_fd_open(), O_NONBLOCK is added to f_flags of the read and
+write files. This may happen concurrently if e.g. mounting process
+modifies the fd in another thread.
+
+Mark the plain read-modify-writes as intentional data-races, with the
+assumption that the result of executing the accesses concurrently will
+always result in the same result despite the accesses themselves not
+being atomic.
+
+Reported-by: syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com
+Signed-off-by: Marco Elver <elver@google.com>
+Link: https://lore.kernel.org/r/ZO38mqkS0TYUlpFp@elver.google.com
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Message-ID: <20231025103445.1248103-1-asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/9p/trans_fd.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index c4015f30f9fa7..d0eb03ada704d 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -832,14 +832,21 @@ static int p9_fd_open(struct p9_client *client, int rfd, int wfd)
+ 		goto out_free_ts;
+ 	if (!(ts->rd->f_mode & FMODE_READ))
+ 		goto out_put_rd;
+-	/* prevent workers from hanging on IO when fd is a pipe */
+-	ts->rd->f_flags |= O_NONBLOCK;
++	/* Prevent workers from hanging on IO when fd is a pipe.
++	 * It's technically possible for userspace or concurrent mounts to
++	 * modify this flag concurrently, which will likely result in a
++	 * broken filesystem. However, just having bad flags here should
++	 * not crash the kernel or cause any other sort of bug, so mark this
++	 * particular data race as intentional so that tooling (like KCSAN)
++	 * can allow it and detect further problems.
++	 */
++	data_race(ts->rd->f_flags |= O_NONBLOCK);
+ 	ts->wr = fget(wfd);
+ 	if (!ts->wr)
+ 		goto out_put_rd;
+ 	if (!(ts->wr->f_mode & FMODE_WRITE))
+ 		goto out_put_wr;
+-	ts->wr->f_flags |= O_NONBLOCK;
++	data_race(ts->wr->f_flags |= O_NONBLOCK);
+ 
+ 	client->trans = ts;
+ 	client->status = Connected;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.42.0
+
