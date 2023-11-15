@@ -1,140 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AD23454F;
-	Tue,  7 Nov 2023 23:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9E3D6C
+	for <v9fs@lists.linux.dev>; Wed, 15 Nov 2023 07:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WyWcFOIA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE653C433C8;
-	Tue,  7 Nov 2023 23:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699399515;
-	bh=qJtWx3f4fBPLawgGRAFQH7C8tgx7KsAlgSLYSxKFWNk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyWcFOIAJFcQlPk9DE45imiZEnkyAOQhmPQA/S/3MViZion//Vg+BDnRvsST5CUZh
-	 KERix8S2OJc7aq3OYKrvGyQKORJl2Nfh3KPbYJn+54wEeUycd0nGOoLr6y0Joaiy8D
-	 jnihA7FXoa0bLNpCryNLOz8ZF+rCJCB1em3e1Tj6eBgV9oCZ4DmO6ptlvO6N5Xa6eO
-	 SHzJG9acQoOSYap82Y9DzKS+EyZrySPYN5eB1n4pl1kZtwliY43vS7e3sTPyoICx7Z
-	 of2U70iiiiyaJ4Va2yyHH+XDBPMt04LS0jf5dIs2U9B+1QqjY2Sz+FZYkBaSIbVh7+
-	 z3GNwcsO/a5rg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Marco Elver <elver@google.com>,
-	syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>,
-	ericvh@kernel.org,
-	lucho@ionkov.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	v9fs@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 5/5] 9p/trans_fd: Annotate data-racy writes to file::f_flags
-Date: Tue,  7 Nov 2023 18:25:00 -0500
-Message-ID: <20231107232503.3776802-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107232503.3776802-1-sashal@kernel.org>
-References: <20231107232503.3776802-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ih3Vmn8D";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Lr8X1VL+"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id EE544C009; Wed, 15 Nov 2023 08:07:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1700032023; bh=XeRLQ/ZbHAhANYJbae35MvxoExBCZAaYiuVIDO+z5XU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ih3Vmn8D/uBdgYnvi+7m+l6Pp0pxyHIjmjKKpfmhPv9WrL5OTnl1LdNlSK/IBhMHO
+	 AVkqIETpPyAtc17CY3fFMwYUDB2P1gKRlQI77TWFqkVxHtTFEilFTw2YciqZD/FWsv
+	 un5gvIZ51w6TmpXVF9RPNxf34Q7EZdb+8eYb1ZWMk7Od8FU8wyu+wjV9DQg9wwPVvR
+	 zOUapwHYpVV31T3FkQH78v5RzAm1n9FGMVT/umS5O0LOeH7rRoqCUN3Mr3m24Ur2/e
+	 ooJLj9F7uVNeKmGFnOhoo/gGQtYd0MVQ9V9NjASFKAvjYXSPSAhvTyFKU767h7l1pu
+	 VLWEzUOvC3FRQ==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 12B74C009;
+	Wed, 15 Nov 2023 08:07:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1700032022; bh=XeRLQ/ZbHAhANYJbae35MvxoExBCZAaYiuVIDO+z5XU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lr8X1VL+SGwAvhkZLLHdA8XM2j/wkI+oons8D1Qk4LnwYsbj3nOA4CAXQXkpFHqgC
+	 V6CVsDz2cgdRKsasq9MC7geIfcdCn7SKk2xdw+Ox9+1qyOurhMNCjuceCXzU0ITSBR
+	 pQ1HcEmUB9Sxpdzuk3mrS0sYc1HAMeFeF+vYYQoRqPinb30E3gt9hwwvlIi8fznnr4
+	 rXgGJtNX0WAAInmrZfF773BkxwWhHNhuemEvi2zB6NY5IPkGcKF80ZGvYF4x5x+8Z1
+	 XYPuNUm19b/2Wb6AqU+/5E5VuxMQT7at6HARsWe8/ITqic2mNmdbfEzNxQ9DtvgpxL
+	 bpQdV0szzYIlA==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id d6a5a159;
+	Wed, 15 Nov 2023 07:06:58 +0000 (UTC)
+Date: Wed, 15 Nov 2023 16:06:43 +0900
+From: "asmadeus@codewreck.org" <asmadeus@codewreck.org>
+To: Albert Guo <aguo@vmware.com>
+Cc: v9fs@lists.linux.dev
+Subject: Re: [syzbot] WARNING: refcount bug in p9_client_walk
+Message-ID: <ZVRuAzFQfLX162ye@codewreck.org>
+References: <PH0PR05MB832071E5E0944D7C5CEA81DFB3B1A@PH0PR05MB8320.namprd05.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.199
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <PH0PR05MB832071E5E0944D7C5CEA81DFB3B1A@PH0PR05MB8320.namprd05.prod.outlook.com>
 
-From: Marco Elver <elver@google.com>
+Albert Guo wrote on Wed, Nov 15, 2023 at 03:50:48AM +0000:
+> Hi Asemadeus,
 
-[ Upstream commit 355f074609dbf3042900ea9d30fcd2b0c323a365 ]
+Please always cc the subsystem's mailing list when asking such
+questions; there's no point in singling out maintainers.
+(And it'd really help if you wouldn't mispell names; although I guess
+you could also say it does help since rilled up folks are more likely to
+answer...)
 
-syzbot reported:
+> I’m Albert Guo from VMware.  Sorry to disturb you. I’m writing to you to seek some help for Linux 9p driver.
+> We use 9p driver in our product.  We seem to encounter similar refcount issue in our test:
+> [syzbot] WARNING: refcount bug in p9_client_walk
+> https://groups.google.com/g/syzkaller-bugs/c/UrvjxOLiykQ/m/LlVAtCzQBQAJ?pli=1
+> 
+> syzbot
+> 2023年3月23日 06:02:37
+> 
+> 收件人 syzkall...@googlegroups.com<mailto:syzkall...@googlegroups.com>
+> Auto-closing this bug as obsolete.
+> No recent activity, existing reproducers are no longer triggering the issue.
+> 
+> 
+> Looks like the issue isn’t reproducible from syzbot? Is it fixed? Do
+> you know which commit fix the issue?
 
- | BUG: KCSAN: data-race in p9_fd_create / p9_fd_create
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15599 on cpu 0:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15563 on cpu 1:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | value changed: 0x00008002 -> 0x00008802
+It might have been fixed in 26273ade77f54716e30dfd40ac6e85ceb54ac0f9 as
+uninitialized use could be causing that, otherwise I don't know --
+there's been no other fix around refcounting since that report...
 
-Within p9_fd_open(), O_NONBLOCK is added to f_flags of the read and
-write files. This may happen concurrently if e.g. mounting process
-modifies the fd in another thread.
+> Our kernel version is  6.1.56: https://elixir.bootlin.com/linux/v6.1.56/source
 
-Mark the plain read-modify-writes as intentional data-races, with the
-assumption that the result of executing the accesses concurrently will
-always result in the same result despite the accesses themselves not
-being atomic.
+But it's long been fixed (included in 6.2 and 6.1.2), so there must be
+another problem.
 
-Reported-by: syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/ZO38mqkS0TYUlpFp@elver.google.com
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Message-ID: <20231025103445.1248103-1-asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/9p/trans_fd.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Please give your full stack trace (and not just a link to syzbot); the
+warn message might help.
+Also, how often do you hit this? (Can we consider it "reproductible"
+under test where you would be able to run with tracepoints, or
+simplifying the load etc?)
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index e070a0b8e5ca3..63f4d2067059e 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -823,14 +823,21 @@ static int p9_fd_open(struct p9_client *client, int rfd, int wfd)
- 		goto out_free_ts;
- 	if (!(ts->rd->f_mode & FMODE_READ))
- 		goto out_put_rd;
--	/* prevent workers from hanging on IO when fd is a pipe */
--	ts->rd->f_flags |= O_NONBLOCK;
-+	/* Prevent workers from hanging on IO when fd is a pipe.
-+	 * It's technically possible for userspace or concurrent mounts to
-+	 * modify this flag concurrently, which will likely result in a
-+	 * broken filesystem. However, just having bad flags here should
-+	 * not crash the kernel or cause any other sort of bug, so mark this
-+	 * particular data race as intentional so that tooling (like KCSAN)
-+	 * can allow it and detect further problems.
-+	 */
-+	data_race(ts->rd->f_flags |= O_NONBLOCK);
- 	ts->wr = fget(wfd);
- 	if (!ts->wr)
- 		goto out_put_rd;
- 	if (!(ts->wr->f_mode & FMODE_WRITE))
- 		goto out_put_wr;
--	ts->wr->f_flags |= O_NONBLOCK;
-+	data_race(ts->wr->f_flags |= O_NONBLOCK);
- 
- 	client->trans = ts;
- 	client->status = Connected;
 -- 
-2.42.0
-
+Dominique Martinet | Asmadeus
