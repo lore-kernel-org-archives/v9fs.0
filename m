@@ -1,64 +1,75 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABCC30675
-	for <v9fs@lists.linux.dev>; Tue, 21 Nov 2023 14:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dEW0Uvme"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6cb4d366248so2487095b3a.0
-        for <v9fs@lists.linux.dev>; Tue, 21 Nov 2023 06:36:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700577370; x=1701182170; darn=lists.linux.dev;
-        h=mime-version:date:subject:to:reply-to:message-id:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XV6UR/uqbizDTKuibVSCS9ynErUXjAvfmZpffIDfxUU=;
-        b=dEW0Uvme5WeivxyJQV3d7jBlVFn5HKcFN4PS1wIG9qx9Mc1BUMy1faqg+YAgPDl1Wl
-         wBsvVTmla54UveVZXM8MxjCy5wZm5nj1iuu0qPM1Dkt8Dxacdwl7qrOeFzQTH6rL6rUf
-         ooTG9hzCkb8f4H++zYu5Y8wqFNCe53qhXqFg8qynC1bcCQj98vPngdjNDOzC5WenwlfB
-         bnBldVDR3DPocyqHWpH4lUYcvuN+dvtemgAyGPRSfkYhqgNC7+FR5rh63/O1MFyL2YS8
-         sl3dw+D0kT4l3wB+7L60tMtg9vWI3p+SOPoURdNdZHLWgnj83CICuNs52/7w2E1c1E0H
-         Bfqg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E65D1E524
+	for <v9fs@lists.linux.dev>; Wed, 22 Nov 2023 09:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1cf6a7539c0so25607085ad.2
+        for <v9fs@lists.linux.dev>; Wed, 22 Nov 2023 01:42:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700577370; x=1701182170;
-        h=mime-version:date:subject:to:reply-to:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XV6UR/uqbizDTKuibVSCS9ynErUXjAvfmZpffIDfxUU=;
-        b=bgFYodkgmdG1UMGacCbVWLwS5jDYXWe1E0ZeNcqULPKf2bUcC4mBysdCIUyqL3w8pJ
-         2fC5s8iWEB/OzaRp6T43hbrjnrTnGxNUWgTcQTm/coE7Nvq2/yEQQM5SeAVlVWvHpiZp
-         ZwKiHQjZZ0g4fwrqwfcA8ejo5a44aFg4Vr7VlFXS8UoFt1nF4MMYvf/UFrvp0a/Zi+1f
-         pv/Y2LuGKupcUdEkgEPwENOFyIRBzR2rkec/iDZpc0RslH6PbRp234SiGr1iD1kUy0gr
-         1KSGFJ1uQyYn/rwxOIHsj5UTz1SFYCNxM54/r+t+AawM86VuW1LYUdECiqsQBDDKmGax
-         EU3g==
-X-Gm-Message-State: AOJu0Yx2guGRRnF/Laj7v7WGFBWz3XPXP9AVSjz5c4yokNoUjarfkj2Q
-	n8ZKIIVlPVch0o1jEf+xamvGW/XZHDY=
-X-Google-Smtp-Source: AGHT+IHiyXk0t8dPLBCO6xtIEf3CEyk4vABAUxypnv5SxLBkfQWLs62OLf6/nDGzc0lVqUUcm0Edig==
-X-Received: by 2002:a05:6a20:3c90:b0:187:a2b9:cd75 with SMTP id b16-20020a056a203c9000b00187a2b9cd75mr9775073pzj.50.1700577370136;
-        Tue, 21 Nov 2023 06:36:10 -0800 (PST)
-Received: from [198.135.52.44] ([198.135.52.44])
-        by smtp.gmail.com with ESMTPSA id v4-20020aa78504000000b006cb884c0362sm4433499pfn.87.2023.11.21.06.36.09
-        for <v9fs@lists.linux.dev>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Nov 2023 06:36:09 -0800 (PST)
-From: Peter Wilson <joshuamuchuha@gmail.com>
-X-Google-Original-From: Peter Wilson <info@alrigga.com>
-Message-ID: <c5344389d63bb2b519c2bd10d99458a5322ceb911e20bf32643949d302f500df@mx.google.com>
-Reply-To: loansmanager@alriggainvestments.com
-To: v9fs@lists.linux.dev
-Subject: :once again
-Date: Tue, 21 Nov 2023 06:36:09 -0800
+        d=1e100.net; s=20230601; t=1700646148; x=1701250948;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1T+93vCDRK8BYjprsT1qzxW/851397gT+M6pJaUACfk=;
+        b=Qkbi8qw01kap+adc8ZU1iubIS/G3T5mNlrzQcCjIHEZC4kB0bX0aaA81vOOo+9dd1W
+         YNW/CTCUraSI/9agYp9EaCq56nQ0MYhiLcz1bUv7hPv526gGFzHGrdPM94FAFyX7/sz/
+         c6xFTSLxlmLAsGrEd2+DJfuc9ixQrM5mj9Nao/3JX06gMo4d9CxxAFpgYvCodGTUMUfB
+         N3EQjFhDHabiyOT9jQTH6y/h8dKuax3QJuCIuWZ+kpMS1Hnd9Gi2uvdMH6eh1MFSNSiM
+         nxhzILd1D6Hsqvw96c99N0sCd0ZsNOI4eRtv6Lfd3DzXGA7x9XfSvaSB3Y5Ll9oDvVkP
+         MaOA==
+X-Gm-Message-State: AOJu0YzrFC1bQeGbNfKICec48T2n+T6RBrZwVzpMmerw75MB352j+wZT
+	lqFg/Jvh8PD2BPodIVY/cR4BUtddc/PjRb9SQ22ETevvgRaG
+X-Google-Smtp-Source: AGHT+IHZmR0d2nlEJg9ofGajznzVagLZecgn3uFHMSrI6EvQX6/0BZoi4HYfJ42I9nN4fDPkg1BoLWmWTmeV8cThTHqD1+9jXoaf
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+X-Received: by 2002:a17:902:e846:b0:1cf:5964:372f with SMTP id
+ t6-20020a170902e84600b001cf5964372fmr464380plg.13.1700646148743; Wed, 22 Nov
+ 2023 01:42:28 -0800 (PST)
+Date: Wed, 22 Nov 2023 01:42:28 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000095a8ed060aba8909@google.com>
+Subject: [syzbot] Monthly v9fs report (Nov 2023)
+From: syzbot <syzbot+list4fe8356d4d7f5f1fd545@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hello v9fs,
+Hello v9fs maintainers/developers,
 
-Are you Thinking of starting a new project or expanding your business? We can fund it. Terms and Conditions Apply.
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-Regards,
-Peter Wilson
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 27 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 1206    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 564     Yes   WARNING in inc_nlink (3)
+                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
+<3> 240     Yes   BUG: corrupted list in p9_fd_cancelled (2)
+                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
