@@ -1,75 +1,72 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E65D1E524
-	for <v9fs@lists.linux.dev>; Wed, 22 Nov 2023 09:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1cf6a7539c0so25607085ad.2
-        for <v9fs@lists.linux.dev>; Wed, 22 Nov 2023 01:42:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700646148; x=1701250948;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1T+93vCDRK8BYjprsT1qzxW/851397gT+M6pJaUACfk=;
-        b=Qkbi8qw01kap+adc8ZU1iubIS/G3T5mNlrzQcCjIHEZC4kB0bX0aaA81vOOo+9dd1W
-         YNW/CTCUraSI/9agYp9EaCq56nQ0MYhiLcz1bUv7hPv526gGFzHGrdPM94FAFyX7/sz/
-         c6xFTSLxlmLAsGrEd2+DJfuc9ixQrM5mj9Nao/3JX06gMo4d9CxxAFpgYvCodGTUMUfB
-         N3EQjFhDHabiyOT9jQTH6y/h8dKuax3QJuCIuWZ+kpMS1Hnd9Gi2uvdMH6eh1MFSNSiM
-         nxhzILd1D6Hsqvw96c99N0sCd0ZsNOI4eRtv6Lfd3DzXGA7x9XfSvaSB3Y5Ll9oDvVkP
-         MaOA==
-X-Gm-Message-State: AOJu0YzrFC1bQeGbNfKICec48T2n+T6RBrZwVzpMmerw75MB352j+wZT
-	lqFg/Jvh8PD2BPodIVY/cR4BUtddc/PjRb9SQ22ETevvgRaG
-X-Google-Smtp-Source: AGHT+IHZmR0d2nlEJg9ofGajznzVagLZecgn3uFHMSrI6EvQX6/0BZoi4HYfJ42I9nN4fDPkg1BoLWmWTmeV8cThTHqD1+9jXoaf
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAD25ABA6;
+	Tue, 28 Nov 2023 14:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeHVTmzL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9995EC433C8;
+	Tue, 28 Nov 2023 14:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701183558;
+	bh=N3lECUyvXgqAdJlM/yuev49kTxv51GJ5+dkdngMrg8g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CeHVTmzLHdo8A0IMTe2aHsjsKbhZi2dc1wiIJ8H5twwlSrrzND/lUZfwDpo7466gg
+	 Spb44TP2PDdfQswejZm6nBvRQQEnHJu1Gsd128nC9ynAIA0cRkAcKdZEeQGB/vUDk9
+	 W24Z8ozVu3Y668OBlgrGACIPUDk27ZxYeg6FhK/jVJQ93ap63pcOCfe65QA5cRa/7D
+	 IIms36jlL1i4ibTqhoegBTp3jR0lq2R/gfuWO0qVikSzpEF8tgOUIHGp9fMU9BduzK
+	 dsVM5U4Mv3eXsBtWp+l7M2pFsDThivgxGCCYd0OdcQPdDBAoyWFwZaQnxGGsEtSs4I
+	 +ndDfHxEoTU2Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	nogikh@google.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev
+Subject: [PATCH net] MAINTAINERS: exclude 9p from networking
+Date: Tue, 28 Nov 2023 06:59:15 -0800
+Message-ID: <20231128145916.2475659-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a17:902:e846:b0:1cf:5964:372f with SMTP id
- t6-20020a170902e84600b001cf5964372fmr464380plg.13.1700646148743; Wed, 22 Nov
- 2023 01:42:28 -0800 (PST)
-Date: Wed, 22 Nov 2023 01:42:28 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000095a8ed060aba8909@google.com>
-Subject: [syzbot] Monthly v9fs report (Nov 2023)
-From: syzbot <syzbot+list4fe8356d4d7f5f1fd545@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello v9fs maintainers/developers,
+We don't have much to say about 9p, even tho it lives under net/.
+Avoid CCing netdev.
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
-
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 27 have been fixed so far.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 1206    Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 564     Yes   WARNING in inc_nlink (3)
-                  https://syzkaller.appspot.com/bug?extid=2b3af42c0644df1e4da9
-<3> 240     Yes   BUG: corrupted list in p9_fd_cancelled (2)
-                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
-
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+CC: Eric Van Hensbergen <ericvh@kernel.org>
+CC: Latchesar Ionkov <lucho@ionkov.net>
+CC: Dominique Martinet <asmadeus@codewreck.org>
+CC: Christian Schoenebeck <linux_oss@crudebyte.com>
+CC: v9fs@lists.linux.dev
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 509281e9e169..87d6cc3db4b1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15068,6 +15068,7 @@ F:	lib/random32.c
+ F:	net/
+ F:	tools/net/
+ F:	tools/testing/selftests/net/
++X:	net/9p/
+ X:	net/bluetooth/
+ 
+ NETWORKING [IPSEC]
+-- 
+2.42.0
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
