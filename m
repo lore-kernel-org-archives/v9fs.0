@@ -1,41 +1,41 @@
 Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46371C05
-	for <v9fs@lists.linux.dev>; Sat,  2 Dec 2023 04:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8E88BF6
+	for <v9fs@lists.linux.dev>; Sat,  2 Dec 2023 07:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="BGBZrvSG";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="jheFlFzO"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="bUN1wjHO";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="uVp9Vc0/"
 Received: by nautica.notk.org (Postfix, from userid 108)
-	id BAA7EC01F; Sat,  2 Dec 2023 05:35:40 +0100 (CET)
+	id 8A055C020; Sat,  2 Dec 2023 08:19:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701491740; bh=EHtuY+ZTQozc/pAxW1sLN8rUDRz7/Fs/l38w+xtirgg=;
+	t=1701501579; bh=uj47G2ezwiDNNC0q8ArJKjE+ShMruYh4/IQySt2Q1kU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BGBZrvSGPoBSb+7CEuliH0XuPPca4bYOvO/7Y9xCh71Vs1L1EG4pJwy6Bctt6xMwL
-	 td5rxZBBMq/pd5bfodfOJK3I0he2PRM/zU+OeIW6iBYuzJBa+qaN2J08RMZ5YgNJdv
-	 WKhvMYFTvvq1AvqibeV/0I6jiReVYlIzY2ppwHIc/l1Es0AipYzTZJP11tj8TLAO/4
-	 Wf5kA6k6v0mTmFHuGVsDE0ZLeV2wNgatF7zfrt4/9xLu9Vf71PhMRRhQrY8NQLy2Q3
-	 KGzf0qkoeVhgGrrBjaOTgo879toGjlfiX+Yh/5b4lU9+uZhC6W57nzv2Dte7yTnl3Z
-	 ljqBZwzJtJyFA==
+	b=bUN1wjHOSw5o0/eviawkv+AlSLeshOFFp3xAGtkACAOwmo7t1M0fMJhxN8e3x6d2K
+	 na9JJegTD/QySIbJlXHXg6BBdnqdBTeXozwO3byK+2+i9gZUlqbOl44hsZEHzSkLCa
+	 s4JCT5gLxtIikPOZ5kCYcaLrG9zTonkscSyAhGoDoFQ1KjCsxiBtAQWP2J9OJ785wk
+	 E75gu8ENQ9jw9hWTmGlzEIeXfHkF4mXVKqTuJqXF+qBUxaTt6RAAfFk6n+ukCfu3SX
+	 gwwTwIlAGPmo4WQrHEyqMVJIp5e5b9qPpmM6kRSXpC3v+C9xa+3+mVWVY0ycW3wlJq
+	 U0X0sdH6YNldg==
 X-Spam-Level: 
 Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id B4D1CC009;
-	Sat,  2 Dec 2023 05:35:36 +0100 (CET)
+	by nautica.notk.org (Postfix) with ESMTPS id 8F83FC009;
+	Sat,  2 Dec 2023 08:19:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701491739; bh=EHtuY+ZTQozc/pAxW1sLN8rUDRz7/Fs/l38w+xtirgg=;
+	t=1701501578; bh=uj47G2ezwiDNNC0q8ArJKjE+ShMruYh4/IQySt2Q1kU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jheFlFzOb3OcVyhkYRH7zb3WFZij7taRROQrfocw0Apx3F68tOpey6Fu6adJmYI/N
-	 jli+PjVcJosvb7bXdKYufhjI1VF9Bf1aj3Hne3KSru4mGdaSrzHvsHD5zO1Qp6Hgxb
-	 nAASEEFzGHMEKbJYOOP1gYLET5uAF5LbNonwyFonDL79Y3CtH/LKctlKpSdFipd40F
-	 W+9ABwq6il30TLZsZVkM7BbvgxE+sTApxs/H1XH6yjQhuo61lqpxuDYRUiwYHjgmpQ
-	 mWP1m3z8p3gk8YeZJOIiO+4dd/orKgQgLlmguPw5jAwPnNdIz0Oq6xrCVulENFnIL2
-	 wpowXciMxBLhA==
+	b=uVp9Vc0/KRnvmopALf4G/0UPptouI1+n9IgRRlCjiQFAGQLv8nPyTNhRIsQsB2Oyp
+	 bGvszI4hInYNjSjOYoaktMrurw6RhrCZUul44kbFra3LtAb1FZpPBL9doWLuc2WqJP
+	 5H6oIqqd54rDAjJXJy5ix2xVqXC2vVHXGo3/u2fDhvjXFPpO2mgudjjXJ+nUz/4z23
+	 NuCGmOpEUR5wO33WZjuNeVFXQ07zRWsDx8FB2nzJyxJDFOfdyhGW4T7mxoj+7z24xm
+	 CrHJ3+u+OJqVk1SpPqSPGACMvlEyEoqwIFedua2m3u7lPjK8juhoyk9gbEH6Gwb4D7
+	 oZpnbuqgLYvqA==
 Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 784fdc4a;
-	Sat, 2 Dec 2023 04:35:33 +0000 (UTC)
-Date: Sat, 2 Dec 2023 13:35:18 +0900
+	by gaia (OpenSMTPD) with ESMTPA id 767761df;
+	Sat, 2 Dec 2023 07:19:31 +0000 (UTC)
+Date: Sat, 2 Dec 2023 16:19:16 +0900
 From: asmadeus@codewreck.org
 To: JP Kobryn <inwardvessel@gmail.com>
 Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
@@ -44,8 +44,9 @@ Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
 	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	kernel-team@meta.com
 Subject: Re: [PATCH] 9p: prevent read overrun in protocol dump tracepoint
-Message-ID: <ZWq0BvPGYMTi-WfC@codewreck.org>
+Message-ID: <ZWradOa-e1SM8MDZ@codewreck.org>
 References: <20231202030410.61047-1-inwardvessel@gmail.com>
+ <ZWq0BvPGYMTi-WfC@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,90 +55,33 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231202030410.61047-1-inwardvessel@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZWq0BvPGYMTi-WfC@codewreck.org>
 
-JP Kobryn wrote on Fri, Dec 01, 2023 at 07:04:10PM -0800:
-> An out of bounds read can occur within the tracepoint 9p_protocol_dump().
-> In the fast assign, there is a memcpy that uses a constant size of 32
-> (macro definition as P9_PROTO_DUMP_SZ). When the copy is invoked, the
-> source buffer is not guaranteed match this size. It was found that in some
-> cases the source buffer size is less than 32, resulting in a read that
-> overruns.
-> 
-> The size of the source buffer seems to be known at the time of the
-> tracepoint being invoked. The allocations happen within p9_fcall_init(),
-> where the capacity field is set to the allocated size of the payload
-> buffer. This patch tries to fix the overrun by using the minimum of that
-> field (size of source buffer) and the size of destination buffer when
-> performing the copy.
+asmadeus@codewreck.org wrote on Sat, Dec 02, 2023 at 01:35:18PM +0900:
+> > diff --git a/include/trace/events/9p.h b/include/trace/events/9p.h
+> > index 4dfa6d7f83ba..8690a7086252 100644
+> > --- a/include/trace/events/9p.h
+> > +++ b/include/trace/events/9p.h
+> > @@ -185,7 +185,8 @@ TRACE_EVENT(9p_protocol_dump,
+> >  		    __entry->clnt   =  clnt;
+> >  		    __entry->type   =  pdu->id;
+> >  		    __entry->tag    =  pdu->tag;
+> > -		    memcpy(__entry->line, pdu->sdata, P9_PROTO_DUMP_SZ);
+> > +		    memcpy(__entry->line, pdu->sdata,
+> > +				min(pdu->capacity, P9_PROTO_DUMP_SZ));
 
-Good catch; this is a regression due to a semi-recent optimization in
-commit 60ece0833b6c ("net/9p: allocate appropriate reduced message
-buffers")
-For some reason I thought we rounded up small messages alloc to 4k but
-I've just confirmed we don't, so these overruns are quite frequent.
-I'll add the fixes tag and cc to stable if there's no other comment.
+Building with W=1 yields a warning:
+./include/linux/minmax.h:21:35: warning: comparison of distinct pointer types lacks a cast
+...
+./include/trace/events/9p.h:189:33: note: in expansion of macro ‘min’
+  189 |                                 min(pdu->capacity, P9_PROTO_DUMP_SZ));
 
-Thanks!
+I've updated the patch to:
++				min_t(size_t, pdu->capacity, P9_PROTO_DUMP_SZ));
 
-> 
-> A repro can be performed by different ways. The simplest might just be
-> mounting a shared filesystem (between host and guest vm) using the plan
-> 9 protocol while the tracepoint is enabled.
-> 
-> mount -t 9p -o trans=virtio <mount_tag> <mount_path>
-> 
-> The bpftrace program below can be used to show the out of bounds read.
-> Note that a recent version of bpftrace is needed for the raw tracepoint
-> support. The script was tested using v0.19.0.
-> 
-> /* from include/net/9p/9p.h */
-> struct p9_fcall {
->     u32 size;
->     u8 id;
->     u16 tag;
->     size_t offset;
->     size_t capacity;
->     struct kmem_cache *cache;
->     u8 *sdata;
->     bool zc;
-> };
-> 
-> tracepoint:9p:9p_protocol_dump
-> {
->     /* out of bounds read can happen when this tracepoint is enabled */
-> }
-> 
-> rawtracepoint:9p_protocol_dump
-> {
->     $pdu = (struct p9_fcall *)arg1;
->     $dump_sz = (uint64)32;
-> 
->     if ($dump_sz > $pdu->capacity) {
->         printf("reading %zu bytes from src buffer of %zu bytes\n",
->             $dump_sz, $pdu->capacity);
->     }
-> }
-> 
-> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> ---
->  include/trace/events/9p.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/trace/events/9p.h b/include/trace/events/9p.h
-> index 4dfa6d7f83ba..8690a7086252 100644
-> --- a/include/trace/events/9p.h
-> +++ b/include/trace/events/9p.h
-> @@ -185,7 +185,8 @@ TRACE_EVENT(9p_protocol_dump,
->  		    __entry->clnt   =  clnt;
->  		    __entry->type   =  pdu->id;
->  		    __entry->tag    =  pdu->tag;
-> -		    memcpy(__entry->line, pdu->sdata, P9_PROTO_DUMP_SZ);
-> +		    memcpy(__entry->line, pdu->sdata,
-> +				min(pdu->capacity, P9_PROTO_DUMP_SZ));
->  		    ),
->  	    TP_printk("clnt %lu %s(tag = %d)\n%.3x: %16ph\n%.3x: %16ph\n",
->  		      (unsigned long)__entry->clnt, show_9p_op(__entry->type),
+and pushed to my -next branch:
+https://github.com/martinetd/linux/commits/9p-next
 
 -- 
 Dominique Martinet | Asmadeus
