@@ -1,101 +1,159 @@
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668B12E847
-	for <v9fs@lists.linux.dev>; Mon,  4 Dec 2023 16:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BE630CFB
+	for <v9fs@lists.linux.dev>; Mon,  4 Dec 2023 20:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMmp/SB6"
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-35d62401a3dso7229095ab.3
-        for <v9fs@lists.linux.dev>; Mon, 04 Dec 2023 08:20:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ual9iV9Y"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d069b1d127so14139845ad.0
+        for <v9fs@lists.linux.dev>; Mon, 04 Dec 2023 12:23:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701706847; x=1702311647; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Es+hCWrFXDwniwMcfM2dvcckNIuZXiwDz+UAIj8VFJA=;
-        b=NMmp/SB6Slkl/ialX7GaCi36yVduapFKHlgHBHN5d+GL4W0+9bBRsQb4d3RWvgunTD
-         0l7+2SF8HMKDSrUhHQ7TqgcGU4SF3WOrQkDW7BDot6oS2iguWvrkIRGjYcOAhpT1ToXG
-         ZWEHhKmEw9mtRVMedsP/lAeIHdQBLGn2c4phDZR4dXGxD0CoVTHUJgXYOY9PU4IPoPFd
-         RZ8XL9+Cf53R6fMvk1UQGsaUIQpGkgSfUDv4UQhDaui4jMR4ht+OXQQzywUnQQ+JMttc
-         E9/Ol8vJqXYkdr5CkIsqGgVzVK3L3FJUT2dvTO9RojCZ9+1rA3sq5CEFhlClxWmiz5Af
-         b9PQ==
+        d=gmail.com; s=20230601; t=1701721413; x=1702326213; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zVjS70OS71a4UFnI0/y09WP8jWT0Ha288mxabbPI+EM=;
+        b=Ual9iV9Y5C17KoIFKPqa/x9162nXqXn0mrIGbvw8eKL1qISNn8UQaCvvdbjNdnxD2N
+         TpZGIBRGMFkzypIZCUyUcyioii3QoAbUFTN4XTI4z2I8p8NtfIkYxFURrZBdv6sNkWe5
+         UsRFwrq6CIrYDa/dSSuoWjcISFR0G5PjAL3u3xbw7BZpz2pzfI2gz+4QWNESlOXRlp1L
+         rI9pCLhG6GpAzxUIWrdsG197QzdWe0WJ9OJ882H478xqUI/gpb0sX4sfSV/cG6zuxl4d
+         uIVtp6o/E50t2LwWcykP07OYiHKvLXnl7llrBaKehbeA9H0YrGca4eKbAY2rvVGc0Lgk
+         6MXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701706847; x=1702311647;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Es+hCWrFXDwniwMcfM2dvcckNIuZXiwDz+UAIj8VFJA=;
-        b=OjNyu3pZS78mfeVOlw0jNc1+eloKk4vtD/PvY00akOTNbTtaBgpAPfHrcGJOwi8/yb
-         d5c5fKkiNSCmrhKz0jeEWfkKaCyz338bQeX72oXa+2wy/sXGfd6tML9Ah4BX6Nw3pJWR
-         YtcPk7+wWpwCDux/VKnmZ6/RPD24Elfo3vaH039kcTEDGCSkMEl6W3FF7ZNmBg0h2jIo
-         1nj+h1rRKPlSvSwtoj4+KSzs+XVyIqGWe+n5q1sP8LAAo6KAJFHeCLTKeTS3BTV6qXm8
-         Cb0ZG5WDWAytNkWq35mGCjcFxCLPaEK74VcaG+BlTBs+qRQ3VpylA+f5TE7HvFmYugMf
-         Db+w==
-X-Gm-Message-State: AOJu0YxjKEXKrjGj14Qv7+Hxg2g5jhXQywyiTrawvV+6X2SaRG1We7ya
-	oCYYyIXgMAhj5Fm6zJlUVPg=
-X-Google-Smtp-Source: AGHT+IEhr/y73+C8HGzgQnVsW0Y2ggL68hFdiBnBrbUv0IqcwH3zLyhK0X0PJii3PpbhwIeqJ1NM7A==
-X-Received: by 2002:a92:d082:0:b0:35d:59a2:6452 with SMTP id h2-20020a92d082000000b0035d59a26452mr4564300ilh.37.1701706847586;
-        Mon, 04 Dec 2023 08:20:47 -0800 (PST)
-Received: from localhost.localdomain ([2601:648:8900:1ba9:692:26ff:fed8:afdd])
-        by smtp.gmail.com with ESMTPSA id y24-20020a637d18000000b005742092c211sm2492261pgc.64.2023.12.04.08.20.46
+        d=1e100.net; s=20230601; t=1701721413; x=1702326213;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zVjS70OS71a4UFnI0/y09WP8jWT0Ha288mxabbPI+EM=;
+        b=B7dcgpDtPGzudI8SS5o9DSigWOHJp43aIOsdxhRGtqUm6ZpaKsJPztBdCD+GrpY2ME
+         eyTWtCzd6A0zp/u9k3F5y9McQzpbI31vt+hkE+JN0ewJV1/pkKs61SvcXSqe90mVArBC
+         i0Bz3SE4LJmFDeHDc3Q6ePeqLK4lCesEph/RQCXMFOxesqzydkVVZOzLqId+OD82fjE7
+         mSALCgi/xJTPSUcFESiuRCIFmXOwCBomFs3qhA6ZknvdzE+NgSDzUY5yt1t4L/YIY5HC
+         t5gYB4KFt6q5eQZ7noM4z8bs9fRw6a1R7M5G1dJH9Zel+y999lb3vyiXvqBpSIDjL2P6
+         uTTw==
+X-Gm-Message-State: AOJu0YxKJFVmhirzhLElqu5DfmtcxMRXLra2DWYV8urFnh0VYMVS7jkM
+	ZSw1tfOB0UaAmqHLLOW9bZM=
+X-Google-Smtp-Source: AGHT+IEZnHypQNo+wnImWpW1CT4pRSkna+76zEAA20WYV5o93R7E6DkHV3NFild2kYTqVRC4Ks15zw==
+X-Received: by 2002:a17:902:7616:b0:1d0:ad56:d879 with SMTP id k22-20020a170902761600b001d0ad56d879mr1335824pll.14.1701721413254;
+        Mon, 04 Dec 2023 12:23:33 -0800 (PST)
+Received: from localhost.lan ([2601:648:8900:1ba9:692:26ff:fed8:afdd])
+        by smtp.gmail.com with ESMTPSA id x14-20020a170902820e00b001cc52ca2dfbsm11740pln.120.2023.12.04.12.23.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 08:20:47 -0800 (PST)
-Date: Mon, 4 Dec 2023 08:20:37 -0800
+        Mon, 04 Dec 2023 12:23:32 -0800 (PST)
 From: JP Kobryn <inwardvessel@gmail.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>, ericvh@kernel.org,
-	lucho@ionkov.net, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, v9fs@lists.linux.dev,
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com
+Cc: v9fs@lists.linux.dev,
+	linux-trace-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH] 9p: prevent read overrun in protocol dump tracepoint
-Message-ID: <ZW38VTs2L4vbcJLO@localhost.localdomain>
-References: <20231202030410.61047-1-inwardvessel@gmail.com>
- <ZWq0BvPGYMTi-WfC@codewreck.org>
- <1881630.VfuOzHrogK@silver>
- <20231202201409.10223677@rorschach.local.home>
- <ZWva7DYTPUG95xv8@codewreck.org>
- <20231202231524.4ce1d342@gandalf.local.home>
- <ZWwS3_DGmqc73dxm@codewreck.org>
+Subject: [PATCH v2] 9p: prevent read overrun in protocol dump tracepoint
+Date: Mon,  4 Dec 2023 12:23:20 -0800
+Message-ID: <20231204202321.22730-1-inwardvessel@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWwS3_DGmqc73dxm@codewreck.org>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Dec 03, 2023 at 02:32:15PM +0900, Dominique Martinet wrote:
-> Steven Rostedt wrote on Sat, Dec 02, 2023 at 11:15:24PM -0500:
-> > > Also, for custom tracepoints e.g. bpftrace the program needs to know how
-> > > many bytes can be read safely even if it's just for dumping -- unless
-> > > dynamic_array is a "fat pointer" that conveys its own size?
-> > > (Sorry didn't take the time to check)
-> > 
-> > Yes, there's also a __get_dynamic_array_len(line) that will return the
-> > allocated length of the line. Is that what you need?
-> 
-> Yes, thanks! So the lower two bytes of the field are its position in
-> the entry and the higher two bytes its size; ok.
-> It doesn't look like bpftrace has any helper for it but that can
-> probably be sorted out if someone wants to dump data there.
-> 
-> 
-> Let's update the event to use a dynamic array and have printk fomrat to
-> use %*ph with that length.
-> 
-> JP Kobryn, does that sound good to you? I'm not sure what you were
-> trying to do in the first place.
-> Do you want to send a v2 or shall I?
+An out of bounds read can occur within the tracepoint 9p_protocol_dump. In
+the fast assign, there is a memcpy that uses a constant size of 32 (macro
+named P9_PROTO_DUMP_SZ). When the copy is invoked, the source buffer is not
+guaranteed match this size.  It was found that in some cases the source
+buffer size is less than 32, resulting in a read that overruns.
 
-Sounds good. I'll send out a v2. Thanks Steve for recommending the
-dynamic array macros.
+The size of the source buffer seems to be known at the time of the
+tracepoint being invoked. The allocations happen within p9_fcall_init(),
+where the capacity field is set to the allocated size of the payload
+buffer. This patch tries to fix the overrun by changing the fixed array to
+a dynamically sized array and using the minimum of the capacity value or
+P9_PROTO_DUMP_SZ as its length. The trace log statement is adjusted to
+account for this. Note that the trace log no longer splits the payload on
+the first 16 bytes. The full payload is now logged to a single line.
 
-JP
-> 
-> -- 
-> Dominique Martinet | Asmadeus
+To repro the orignal problem, operations to a plan 9 managed resource can
+be used. The simplest approach might just be mounting a shared filesystem
+(between host and guest vm) using the plan 9 protocol while the tracepoint
+is enabled.
+
+mount -t 9p -o trans=virtio <mount_tag> <mount_path>
+
+The bpftrace program below can be used to show the out of bounds read.
+Note that a recent version of bpftrace is needed for the raw tracepoint
+support. The script was tested using v0.19.0.
+
+/* from include/net/9p/9p.h */
+struct p9_fcall {
+    u32 size;
+    u8 id;
+    u16 tag;
+    size_t offset;
+    size_t capacity;
+    struct kmem_cache *cache;
+    u8 *sdata;
+    bool zc;
+};
+
+tracepoint:9p:9p_protocol_dump
+{
+    /* out of bounds read can happen when this tracepoint is enabled */
+}
+
+rawtracepoint:9p_protocol_dump
+{
+    $pdu = (struct p9_fcall *)arg1;
+    $dump_sz = (uint64)32;
+
+    if ($dump_sz > $pdu->capacity) {
+        printf("reading %zu bytes from src buffer of %zu bytes\n",
+            $dump_sz, $pdu->capacity);
+    }
+}
+
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+---
+ include/trace/events/9p.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/include/trace/events/9p.h b/include/trace/events/9p.h
+index 4dfa6d7f83ba..cd104a1343e2 100644
+--- a/include/trace/events/9p.h
++++ b/include/trace/events/9p.h
+@@ -178,18 +178,21 @@ TRACE_EVENT(9p_protocol_dump,
+ 		    __field(	void *,		clnt				)
+ 		    __field(	__u8,		type				)
+ 		    __field(	__u16,		tag				)
+-		    __array(	unsigned char,	line,	P9_PROTO_DUMP_SZ	)
++		    __dynamic_array(unsigned char, line,
++				min_t(size_t, pdu->capacity, P9_PROTO_DUMP_SZ))
+ 		    ),
+ 
+ 	    TP_fast_assign(
+ 		    __entry->clnt   =  clnt;
+ 		    __entry->type   =  pdu->id;
+ 		    __entry->tag    =  pdu->tag;
+-		    memcpy(__entry->line, pdu->sdata, P9_PROTO_DUMP_SZ);
++		    memcpy(__get_dynamic_array(line), pdu->sdata,
++				__get_dynamic_array_len(line));
+ 		    ),
+-	    TP_printk("clnt %lu %s(tag = %d)\n%.3x: %16ph\n%.3x: %16ph\n",
++	    TP_printk("clnt %lu %s(tag = %d)\n%*ph\n",
+ 		      (unsigned long)__entry->clnt, show_9p_op(__entry->type),
+-		      __entry->tag, 0, __entry->line, 16, __entry->line + 16)
++		      __entry->tag, __get_dynamic_array_len(line),
++		      __get_dynamic_array(line))
+  );
+ 
+ 
+-- 
+2.43.0
+
