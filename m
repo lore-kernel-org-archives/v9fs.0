@@ -1,110 +1,99 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B6A3D96D
-	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 09:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72F83E49A
+	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 09:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="OOs6rrNx"
-Received: from localhost.ispras.ru (unknown [10.10.165.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 3F8CD40F1DE9;
-	Tue,  5 Dec 2023 09:20:04 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 3F8CD40F1DE9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1701768007;
-	bh=Xkj0nuUUERVo3DmD0W5CbQml3tG2cDGWBXJRyDsrHq8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOs6rrNxIXNTpiu+wwKGkoIxiCIgN0JjlOkTYcgNboYScKjXAtJUNbYxCx1uhxUV8
-	 V+dSISTy/vUdFlBok1a3MZBkLoxXytP8ZzQhgiKfvPLttDjHjp4EYZz5IX8s9V5rXa
-	 43jfNC40GiHt+8/BgkeP+wcGGsb2DrgnsNzJMeOs=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Latchesar Ionkov <lucho@ionkov.net>,
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xFTMUKXr";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="aW6B6SpX"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 35C9FC021; Tue,  5 Dec 2023 10:32:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1701768725; bh=Bcs2wqbN9pFVw67N2sNg9eeh6V11qjKxUE3FaK/pUSg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xFTMUKXrihhDPAXEq6ldua3G1TG6BFCYfSdnMZVvsrIkdaiL5tRpFWgWUiHwXQSja
+	 lP3w87pKZyI+0ctVEoF51b8dm3zwwA+5fD8femtJakh9CThlmdMYGtNepsDc5ys2fV
+	 poR8aiWuxQu/DffkdVEbYPwBCMNq0EPJ3T9QOF6WSvrIaT9z4+/gn0x7Sl2ngtzmHy
+	 1aenxesO023aylpNmoGXrs7cA1n7MKujJJfjzW5zlioIEuxKVsF2NNyypE2T+sm9pW
+	 SmLbAVEDeRQIsf11jpLmElPeFHS8Flas3P0oub32MoIDGUYmOPfBhRzeUqc3nUaAFc
+	 dA3/YWg7cN+HQ==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 7F8ECC009;
+	Tue,  5 Dec 2023 10:32:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1701768724; bh=Bcs2wqbN9pFVw67N2sNg9eeh6V11qjKxUE3FaK/pUSg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aW6B6SpX7GCIFOKh1snzGGYDqWdOHLrB2fzRC5ZxtYbsQMtDsIpyZK8HIgMuCV+gj
+	 Bcn00mMZ+oGZNIpxt2G72E5g2rVJb84YmptEXh05b2Vio1Q48groPrD1wSAwS4mwig
+	 OQkEtroJPLaPmBRJMp3iNqdS5qZBXWe8GTfhNWYCXU+OBlGIZHBgMCWIHIsRuFvbuy
+	 qbrHrm9WkIrOaUcrKKLN23N47vaXfmRpokGhD1P5pREqAJWiGKSftubt96DIkFXaJR
+	 ZJe3EiVPELTs3epJmoDYarjYKUpfMEANLfR/0O3clADUtEWrYCQ46CgJt+ZFDCWlbd
+	 rhZ/Qvucjdv5w==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id 8d6a1af9;
+	Tue, 5 Dec 2023 09:31:57 +0000 (UTC)
+Date: Tue, 5 Dec 2023 18:31:42 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Latchesar Ionkov <lucho@ionkov.net>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	v9fs@lists.linux.dev,
-	netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	v9fs@lists.linux.dev, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Alexey Khoroshilov <khoroshilov@ispras.ru>,
 	lvc-project@linuxtesting.org
-Subject: [PATCH v2] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Date: Tue,  5 Dec 2023 12:19:50 +0300
-Message-ID: <20231205091952.24754-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ZW7oQ1KPWTbiGSzL@codewreck.org>
-References: 
+Subject: Re: [PATCH v2] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+Message-ID: <ZW7t_rq_a2ag5eoU@codewreck.org>
+References: <ZW7oQ1KPWTbiGSzL@codewreck.org>
+ <20231205091952.24754-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231205091952.24754-1-pchelkin@ispras.ru>
 
-If an error occurs while processing an array of strings in p9pdu_vreadf
-then uninitialized members of *wnames array are freed.
+Fedor Pchelkin wrote on Tue, Dec 05, 2023 at 12:19:50PM +0300:
+> If an error occurs while processing an array of strings in p9pdu_vreadf
+> then uninitialized members of *wnames array are freed.
+> 
+> Fix this by iterating over only lower indices of the array. Also handle
+> possible uninit *wnames usage if first p9pdu_readf() call inside 'T' case
+> fails.
+> 
+> Found by Linux Verification Center (linuxtesting.org).
+> 
+> Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> ---
+> v2: I've missed that *wnames can also be left uninitialized. Please
+> ignore the patch v1.
 
-Fix this by iterating over only lower indices of the array. Also handle
-possible uninit *wnames usage if first p9pdu_readf() call inside 'T' case
-fails.
+While I agree it's good to initialize it in general, how is that a
+problem here? Do we have users that'd ignore the return code and try to
+use *wnames?
+(The first initialization is required in case the first p9pdu_readf
+fails and *wnames had a non-null initial value, but the second is
+unrelated)
 
-Found by Linux Verification Center (linuxtesting.org).
+I don't mind the change even if there isn't but let's add a word in the
+commit message.
 
-Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
-v2: I've missed that *wnames can also be left uninitialized. Please
-ignore the patch v1. As an answer to Dominique's comment: my
-organization marks this statement in all commits.
+> As an answer to Dominique's comment: my organization marks this
+> statement in all commits.
 
- net/9p/protocol.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+Fair enough, I think you'd get more internet points with a 'Reported-by'
+but I see plenty of such messages in old commits and this isn't
+something I want to argue about -- ok.
 
-diff --git a/net/9p/protocol.c b/net/9p/protocol.c
-index 4e3a2a1ffcb3..043b621f8b84 100644
---- a/net/9p/protocol.c
-+++ b/net/9p/protocol.c
-@@ -393,6 +393,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
- 		case 'T':{
- 				uint16_t *nwname = va_arg(ap, uint16_t *);
- 				char ***wnames = va_arg(ap, char ***);
-+				int i;
-+				*wnames = NULL;
- 
- 				errcode = p9pdu_readf(pdu, proto_version,
- 								"w", nwname);
-@@ -406,8 +408,6 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
- 				}
- 
- 				if (!errcode) {
--					int i;
--
- 					for (i = 0; i < *nwname; i++) {
- 						errcode =
- 						    p9pdu_readf(pdu,
-@@ -421,13 +421,11 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
- 
- 				if (errcode) {
- 					if (*wnames) {
--						int i;
--
--						for (i = 0; i < *nwname; i++)
-+						while (--i >= 0)
- 							kfree((*wnames)[i]);
-+						kfree(*wnames);
-+						*wnames = NULL;
- 					}
--					kfree(*wnames);
--					*wnames = NULL;
- 				}
- 			}
- 			break;
 -- 
-2.43.0
-
+Dominique Martinet | Asmadeus
