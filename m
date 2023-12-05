@@ -1,123 +1,123 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B53541747
-	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 13:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDB86A323
+	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 18:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="piEwCZuX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=MlRWkhJV0qSH5U01QGui4oeTrYqJubGpGLDBsWklraw=; b=piEwCZuXLbbZffbD9RGKdATv2V
-	lX7W3X2jTvFhBOMIx1Lzdjkem4jhtNxBBF9vhEi0jsinJi/xaTTSiiWZxCNl4SN99ZNY2E/Vd/dv2
-	XmMq34fW6blMK64yeTu1vzV5NqxUI5phRButXMNKebRmcLjeLjgC1edbxzdSxuvBI3BuLdXuTK6PZ
-	q7BLzVO7nKzn9aTw8RHoxw3mbFUGJ3i61lZUKK+4rkr+23lQV4J9bc9vG8dtYHAt76BDcCrZ+5Gep
-	v6KXGWhHrb/LP2M9VThSPFYFvXNHy1zzihNVOwIybbi9HBZKbFXFFciiQQm3U+Z2gigQHgSJaqU9O
-	Q4KZioqrhI9Lukv9a4nxCHZtrXqXhaJGL+atif60c0igPeAAErevIzaa8e29K1iVljWAMh+sb+gYq
-	LtsCDw8b9YFyldvL0yW8mGTSY3lbXlVIXP85jzXZlN2dOguEjnknzBm908I6tNIQ0GayTn5PCKYVg
-	E8giISdkklKHaU/xPpeb4tdzBND1+O11KoO9oxUfFhjNGxEAxIeBQmcz73LPgAV7QUSBI1DAVOe5L
-	uE+k6iLYnGqHAKeM/MaPVvk+dVIv3m9CHIhYOCZEWHCalsxDB6hkRZ1DIgK3HJK3WIwZcVXJ60bPh
-	2Zv/K88X8HOgsRQNivAvtkcv2Ru+Bez6Oq1t1WNDc=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>, Latchesar Ionkov <lucho@ionkov.net>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- v9fs@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Date: Tue, 05 Dec 2023 13:29:49 +0100
-Message-ID: <1741521.OAD31uVnNo@silver>
-In-Reply-To: <20231205091952.24754-1-pchelkin@ispras.ru>
-References: <20231205091952.24754-1-pchelkin@ispras.ru>
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="qjGGvX+q"
+Received: from localhost.localdomain (unknown [46.242.8.170])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 60EAF40F1DE8;
+	Tue,  5 Dec 2023 18:05:32 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 60EAF40F1DE8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1701799532;
+	bh=iSQFzh6kLnBCcudLetoO0SevfeUo1ajFojtQyoqXpBQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qjGGvX+q5/okA2ccONfrW/JIILDtVsCtbi/3lK6KMl7/MKeXrk9Y7g1krpec6W8Q4
+	 MeNVeYPnw637K1E2S+L0ZBw1Sj4vTg4eGXzUDMIoe2stuRvJ82adZVg/+lcNdXhrtu
+	 LxQuq8jpwgyfD99rtJTxly4iAOqyk1RvNMLheh3I=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	v9fs@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v3] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+Date: Tue,  5 Dec 2023 21:05:22 +0300
+Message-ID: <20231205180523.11318-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <9f21f00b-0806-4811-8d0a-9b6175eaedeb-pchelkin@ispras.ru>
+References: 
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On Tuesday, December 5, 2023 10:19:50 AM CET Fedor Pchelkin wrote:
-> If an error occurs while processing an array of strings in p9pdu_vreadf
-> then uninitialized members of *wnames array are freed.
-> 
-> Fix this by iterating over only lower indices of the array. Also handle
-> possible uninit *wnames usage if first p9pdu_readf() call inside 'T' case
-> fails.
-> 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
-> v2: I've missed that *wnames can also be left uninitialized. Please
-> ignore the patch v1. As an answer to Dominique's comment: my
-> organization marks this statement in all commits.
-> 
->  net/9p/protocol.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/net/9p/protocol.c b/net/9p/protocol.c
-> index 4e3a2a1ffcb3..043b621f8b84 100644
-> --- a/net/9p/protocol.c
-> +++ b/net/9p/protocol.c
-> @@ -393,6 +393,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  		case 'T':{
->  				uint16_t *nwname = va_arg(ap, uint16_t *);
->  				char ***wnames = va_arg(ap, char ***);
-> +				int i;
-> +				*wnames = NULL;
+If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
+the error path is not handled properly. *wnames or members of *wnames
+array may be left uninitialized and invalidly freed.
 
-Consider also initializing `int i = 0;` here. Because ...
+In order not to complicate the code with array index processing, fix the
+problem with initializing *wnames to NULL in beginning of case 'T' and
+using kcalloc() to allocate and initialize the array. For assurance,
+nullify the failing *wnames element (the callee handles that already -
+e.g. see 's' case).
 
->  
->  				errcode = p9pdu_readf(pdu, proto_version,
->  								"w", nwname);
-> @@ -406,8 +408,6 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  				}
->  
->  				if (!errcode) {
-> -					int i;
-> -
->  					for (i = 0; i < *nwname; i++) {
+Found by Linux Verification Center (linuxtesting.org).
 
-... this block that initializes `i` is conditional. I mean it does work right
-now as-is, because ...
+Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+v2: I've missed that *wnames can also be left uninitialized. Please
+ignore the patch v1. As an answer to Dominique's comment: my
+organization marks this statement in all commits.
+v3: Simplify the patch by using kcalloc() instead of array indices
+manipulation per Christian Schoenebeck's remark. Update the commit
+message accordingly.
 
->  						errcode =
->  						    p9pdu_readf(pdu,
-> @@ -421,13 +421,11 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  
->  				if (errcode) {
->  					if (*wnames) {
-> -						int i;
-> -
-> -						for (i = 0; i < *nwname; i++)
-> +						while (--i >= 0)
->  							kfree((*wnames)[i]);
-> +						kfree(*wnames);
-> +						*wnames = NULL;
->  					}
+ net/9p/protocol.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-... this is wrapped into `if (*wnames) {` and you initialized *wnames with
-NULL, but it just feels like a potential future trap somehow.
-
-Anyway, at least it looks like correct behaviour (ATM), so:
-
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-> -					kfree(*wnames);
-> -					*wnames = NULL;
->  				}
->  			}
->  			break;
-> 
-
+diff --git a/net/9p/protocol.c b/net/9p/protocol.c
+index 4e3a2a1ffcb3..7067fb49d713 100644
+--- a/net/9p/protocol.c
++++ b/net/9p/protocol.c
+@@ -394,13 +394,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
+ 				uint16_t *nwname = va_arg(ap, uint16_t *);
+ 				char ***wnames = va_arg(ap, char ***);
+ 
++				*wnames = NULL;
++
+ 				errcode = p9pdu_readf(pdu, proto_version,
+ 								"w", nwname);
+ 				if (!errcode) {
+ 					*wnames =
+-					    kmalloc_array(*nwname,
+-							  sizeof(char *),
+-							  GFP_NOFS);
++					    kcalloc(*nwname, sizeof(char *),
++						    GFP_NOFS);
+ 					if (!*wnames)
+ 						errcode = -ENOMEM;
+ 				}
+@@ -414,8 +415,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
+ 								proto_version,
+ 								"s",
+ 								&(*wnames)[i]);
+-						if (errcode)
++						if (errcode) {
++							(*wnames)[i] = NULL;
+ 							break;
++						}
+ 					}
+ 				}
+ 
+@@ -425,9 +428,9 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
+ 
+ 						for (i = 0; i < *nwname; i++)
+ 							kfree((*wnames)[i]);
++						kfree(*wnames);
++						*wnames = NULL;
+ 					}
+-					kfree(*wnames);
+-					*wnames = NULL;
+ 				}
+ 			}
+ 			break;
+-- 
+2.43.0
 
