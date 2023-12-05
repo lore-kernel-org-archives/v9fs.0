@@ -1,99 +1,139 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72F83E49A
-	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 09:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307135675F
+	for <v9fs@lists.linux.dev>; Tue,  5 Dec 2023 11:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xFTMUKXr";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="aW6B6SpX"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 35C9FC021; Tue,  5 Dec 2023 10:32:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701768725; bh=Bcs2wqbN9pFVw67N2sNg9eeh6V11qjKxUE3FaK/pUSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xFTMUKXrihhDPAXEq6ldua3G1TG6BFCYfSdnMZVvsrIkdaiL5tRpFWgWUiHwXQSja
-	 lP3w87pKZyI+0ctVEoF51b8dm3zwwA+5fD8femtJakh9CThlmdMYGtNepsDc5ys2fV
-	 poR8aiWuxQu/DffkdVEbYPwBCMNq0EPJ3T9QOF6WSvrIaT9z4+/gn0x7Sl2ngtzmHy
-	 1aenxesO023aylpNmoGXrs7cA1n7MKujJJfjzW5zlioIEuxKVsF2NNyypE2T+sm9pW
-	 SmLbAVEDeRQIsf11jpLmElPeFHS8Flas3P0oub32MoIDGUYmOPfBhRzeUqc3nUaAFc
-	 dA3/YWg7cN+HQ==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 7F8ECC009;
-	Tue,  5 Dec 2023 10:32:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701768724; bh=Bcs2wqbN9pFVw67N2sNg9eeh6V11qjKxUE3FaK/pUSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aW6B6SpX7GCIFOKh1snzGGYDqWdOHLrB2fzRC5ZxtYbsQMtDsIpyZK8HIgMuCV+gj
-	 Bcn00mMZ+oGZNIpxt2G72E5g2rVJb84YmptEXh05b2Vio1Q48groPrD1wSAwS4mwig
-	 OQkEtroJPLaPmBRJMp3iNqdS5qZBXWe8GTfhNWYCXU+OBlGIZHBgMCWIHIsRuFvbuy
-	 qbrHrm9WkIrOaUcrKKLN23N47vaXfmRpokGhD1P5pREqAJWiGKSftubt96DIkFXaJR
-	 ZJe3EiVPELTs3epJmoDYarjYKUpfMEANLfR/0O3clADUtEWrYCQ46CgJt+ZFDCWlbd
-	 rhZ/Qvucjdv5w==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 8d6a1af9;
-	Tue, 5 Dec 2023 09:31:57 +0000 (UTC)
-Date: Tue, 5 Dec 2023 18:31:42 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Latchesar Ionkov <lucho@ionkov.net>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	v9fs@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Message-ID: <ZW7t_rq_a2ag5eoU@codewreck.org>
-References: <ZW7oQ1KPWTbiGSzL@codewreck.org>
- <20231205091952.24754-1-pchelkin@ispras.ru>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="ipQCrbT6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=zwVfOTnPEwMgV+Q6MmlQtNUwKyYyS/fNwYtgjSme1Lg=; b=ipQCrbT6+r4M4gb9FBhdBPne78
+	+9Befd+d/sTIdIwcuYCPdQNiDNa/t93zfRQHdj6mdyL/9Nz38bFxxsZ1kwuoqW+zTFnyacw0yDUMZ
+	UgwcpQcYKUib7a35fJdtQTRkRtljJnkWtVfd3ZUMJLOBSgl1xl9E2Zg8f82RlCJiORmsLu3iFmFYZ
+	Z78vXT0qoaX4z7y4Orn5eTQEszzfQBKgHyGgjU/ww9Tr+3jofAD6gDOYhXRSNTIzpyyNNHcRZHK/I
+	/K4Gkfd9GL+1IYz6CzFxdMMgy/+rM93NDbRLH4vNOY/TezY8a9N9HYXDFCQmvAYxNBU9pRqfkrMEm
+	794jlWl8me9VrvL93e3oGCc3a+hcp6eN3mr9DS9O1HxSc6X9ADYFtpQjhx73OmXCl6isgcZs/jmfJ
+	a4xyk/ZfrE8EEhGwu+oeA7+VnF44hqWewQrnOzfH60RtHNcL3fmQTRI52BRxv8Hdn4uGhkX17IYPR
+	9sVByoButV6zZe3NoKlJWk7G+gYtxuev0xROyNQM6czLB6iEjyJocVG/eSowlc8K1Ef0H0e674fV9
+	ymCqhmNPl1npLw/xxBclISKhEVXv5lRislNBrw9s334umXEKETQw6mBhsR8ys17PYe04SkemZwDeY
+	bJT7yzNPpAJgZ8CmGnzBTeVemzPWYz6V/C8DFskOo=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ JP Kobryn <inwardvessel@gmail.com>
+Cc: v9fs@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] 9p: prevent read overrun in protocol dump tracepoint
+Date: Tue, 05 Dec 2023 12:41:49 +0100
+Message-ID: <8864880.fcQpaHM20G@silver>
+In-Reply-To: <20231204202321.22730-1-inwardvessel@gmail.com>
+References: <20231204202321.22730-1-inwardvessel@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231205091952.24754-1-pchelkin@ispras.ru>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Fedor Pchelkin wrote on Tue, Dec 05, 2023 at 12:19:50PM +0300:
-> If an error occurs while processing an array of strings in p9pdu_vreadf
-> then uninitialized members of *wnames array are freed.
+On Monday, December 4, 2023 9:23:20 PM CET JP Kobryn wrote:
+> An out of bounds read can occur within the tracepoint 9p_protocol_dump. In
+> the fast assign, there is a memcpy that uses a constant size of 32 (macro
+> named P9_PROTO_DUMP_SZ). When the copy is invoked, the source buffer is not
+> guaranteed match this size.  It was found that in some cases the source
+> buffer size is less than 32, resulting in a read that overruns.
 > 
-> Fix this by iterating over only lower indices of the array. Also handle
-> possible uninit *wnames usage if first p9pdu_readf() call inside 'T' case
-> fails.
+> The size of the source buffer seems to be known at the time of the
+> tracepoint being invoked. The allocations happen within p9_fcall_init(),
+> where the capacity field is set to the allocated size of the payload
+> buffer. This patch tries to fix the overrun by changing the fixed array to
+> a dynamically sized array and using the minimum of the capacity value or
+> P9_PROTO_DUMP_SZ as its length. The trace log statement is adjusted to
+> account for this. Note that the trace log no longer splits the payload on
+> the first 16 bytes. The full payload is now logged to a single line.
 > 
-> Found by Linux Verification Center (linuxtesting.org).
+> To repro the orignal problem, operations to a plan 9 managed resource can
+> be used. The simplest approach might just be mounting a shared filesystem
+> (between host and guest vm) using the plan 9 protocol while the tracepoint
+> is enabled.
 > 
-> Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> mount -t 9p -o trans=virtio <mount_tag> <mount_path>
+> 
+> The bpftrace program below can be used to show the out of bounds read.
+> Note that a recent version of bpftrace is needed for the raw tracepoint
+> support. The script was tested using v0.19.0.
+> 
+> /* from include/net/9p/9p.h */
+> struct p9_fcall {
+>     u32 size;
+>     u8 id;
+>     u16 tag;
+>     size_t offset;
+>     size_t capacity;
+>     struct kmem_cache *cache;
+>     u8 *sdata;
+>     bool zc;
+> };
+> 
+> tracepoint:9p:9p_protocol_dump
+> {
+>     /* out of bounds read can happen when this tracepoint is enabled */
+> }
+> 
+> rawtracepoint:9p_protocol_dump
+> {
+>     $pdu = (struct p9_fcall *)arg1;
+>     $dump_sz = (uint64)32;
+> 
+>     if ($dump_sz > $pdu->capacity) {
+>         printf("reading %zu bytes from src buffer of %zu bytes\n",
+>             $dump_sz, $pdu->capacity);
+>     }
+> }
+> 
+> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
 > ---
-> v2: I've missed that *wnames can also be left uninitialized. Please
-> ignore the patch v1.
 
-While I agree it's good to initialize it in general, how is that a
-problem here? Do we have users that'd ignore the return code and try to
-use *wnames?
-(The first initialization is required in case the first p9pdu_readf
-fails and *wnames had a non-null initial value, but the second is
-unrelated)
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-I don't mind the change even if there isn't but let's add a word in the
-commit message.
+>  include/trace/events/9p.h | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/trace/events/9p.h b/include/trace/events/9p.h
+> index 4dfa6d7f83ba..cd104a1343e2 100644
+> --- a/include/trace/events/9p.h
+> +++ b/include/trace/events/9p.h
+> @@ -178,18 +178,21 @@ TRACE_EVENT(9p_protocol_dump,
+>  		    __field(	void *,		clnt				)
+>  		    __field(	__u8,		type				)
+>  		    __field(	__u16,		tag				)
+> -		    __array(	unsigned char,	line,	P9_PROTO_DUMP_SZ	)
+> +		    __dynamic_array(unsigned char, line,
+> +				min_t(size_t, pdu->capacity, P9_PROTO_DUMP_SZ))
+>  		    ),
+>  
+>  	    TP_fast_assign(
+>  		    __entry->clnt   =  clnt;
+>  		    __entry->type   =  pdu->id;
+>  		    __entry->tag    =  pdu->tag;
+> -		    memcpy(__entry->line, pdu->sdata, P9_PROTO_DUMP_SZ);
+> +		    memcpy(__get_dynamic_array(line), pdu->sdata,
+> +				__get_dynamic_array_len(line));
+>  		    ),
+> -	    TP_printk("clnt %lu %s(tag = %d)\n%.3x: %16ph\n%.3x: %16ph\n",
+> +	    TP_printk("clnt %lu %s(tag = %d)\n%*ph\n",
+>  		      (unsigned long)__entry->clnt, show_9p_op(__entry->type),
+> -		      __entry->tag, 0, __entry->line, 16, __entry->line + 16)
+> +		      __entry->tag, __get_dynamic_array_len(line),
+> +		      __get_dynamic_array(line))
+>   );
+>  
+>  
+> 
 
-> As an answer to Dominique's comment: my organization marks this
-> statement in all commits.
 
-Fair enough, I think you'd get more internet points with a 'Reported-by'
-but I see plenty of such messages in old commits and this isn't
-something I want to argue about -- ok.
-
--- 
-Dominique Martinet | Asmadeus
