@@ -1,36 +1,36 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B3155C2F
-	for <v9fs@lists.linux.dev>; Thu,  7 Dec 2023 21:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1D654BE0
+	for <v9fs@lists.linux.dev>; Thu,  7 Dec 2023 21:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tv56AEZj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M9Z4K6VB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701984139;
+	s=mimecast20190719; t=1701984146;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IzuVkw4VZ3UrV6xGBCZQd4vHNMJ381OqDJgz5iHnyqI=;
-	b=Tv56AEZjXNEhXmUALpCt9pBE9iSokoL6qFgcWMnSwgQtoF38A9BxXwa79WMXARBVAjpbaZ
-	UV3+6h2tIM7xH6tX+Om7mIiWe0Rx/m3Kyy1YxgRzjH7Xp2G0AFAsk3IDtMGWFvzLeGFQt7
-	7lTrSK58zE7NNs6SVTdkkbw/PjELH2k=
+	bh=mZrm/dYKxXrvd0xi3EByzY+bhbU0/1OC5R18onTmJ2I=;
+	b=M9Z4K6VBQxIKmuxwAMfIw41HBKYOfbOMRmQNlnMsLq4K6GyNJsqsJ7Uv/bJ7n/Fg+b88K/
+	uZMX0MB6hVhYwGzRriq6X++aPqPujhMhH87wlntOFqJqL3am/eG9HV4B8MwSVrt05w/2K2
+	GdLwjp/dGx5A1leQD+fauCFvZIESiKY=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-uOQ0t7B1PPabfHJrhS_xkg-1; Thu,
- 07 Dec 2023 16:22:16 -0500
-X-MC-Unique: uOQ0t7B1PPabfHJrhS_xkg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-9iNE9QfEPdeJ_Zb__RCV2A-1; Thu,
+ 07 Dec 2023 16:22:23 -0500
+X-MC-Unique: 9iNE9QfEPdeJ_Zb__RCV2A-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 15A553C29A6A;
-	Thu,  7 Dec 2023 21:22:15 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF91429AC006;
+	Thu,  7 Dec 2023 21:22:21 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.161])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 75263112131D;
-	Thu,  7 Dec 2023 21:22:12 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 262E840C6EB9;
+	Thu,  7 Dec 2023 21:22:19 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>,
 	Steve French <smfrench@gmail.com>
@@ -54,9 +54,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 01/59] netfs, fscache: Move fs/fscache/* into fs/netfs/
-Date: Thu,  7 Dec 2023 21:21:08 +0000
-Message-ID: <20231207212206.1379128-2-dhowells@redhat.com>
+Subject: [PATCH v3 03/59] netfs, fscache: Remove ->begin_cache_operation
+Date: Thu,  7 Dec 2023 21:21:10 +0000
+Message-ID: <20231207212206.1379128-4-dhowells@redhat.com>
 In-Reply-To: <20231207212206.1379128-1-dhowells@redhat.com>
 References: <20231207212206.1379128-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,15 +66,9 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-There's a problem with dependencies between netfslib and fscache as each
-wants to access some functions of the other.  Deal with this by moving
-fs/fscache/* into fs/netfs/ and renaming those files to begin with
-"fscache-".
-
-For the moment, the moved files are changed as little as possible and an
-fscache module is still built.  A subsequent patch will integrate them.
+Remove ->begin_cache_operation() in favour of just calling fscache directly.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Jeff Layton <jlayton@kernel.org>
@@ -82,287 +76,296 @@ cc: Christian Brauner <christian@brauner.io>
 cc: linux-fsdevel@vger.kernel.org
 cc: linux-cachefs@redhat.com
 ---
- MAINTAINERS                                   |  2 +-
- fs/Kconfig                                    |  1 -
- fs/Makefile                                   |  1 -
- fs/fscache/Kconfig                            | 40 -------------------
- fs/fscache/Makefile                           | 16 --------
- fs/netfs/Kconfig                              | 39 ++++++++++++++++++
- fs/netfs/Makefile                             | 14 ++++++-
- fs/{fscache/cache.c => netfs/fscache_cache.c} |  0
- .../cookie.c => netfs/fscache_cookie.c}       |  0
- .../internal.h => netfs/fscache_internal.h}   |  0
- fs/{fscache/io.c => netfs/fscache_io.c}       |  0
- fs/{fscache/main.c => netfs/fscache_main.c}   |  0
- fs/{fscache/proc.c => netfs/fscache_proc.c}   |  0
- fs/{fscache/stats.c => netfs/fscache_stats.c} |  0
- .../volume.c => netfs/fscache_volume.c}       |  0
- fs/netfs/internal.h                           |  5 +++
- fs/netfs/main.c                               |  1 +
- 17 files changed, 59 insertions(+), 60 deletions(-)
- delete mode 100644 fs/fscache/Kconfig
- delete mode 100644 fs/fscache/Makefile
- rename fs/{fscache/cache.c => netfs/fscache_cache.c} (100%)
- rename fs/{fscache/cookie.c => netfs/fscache_cookie.c} (100%)
- rename fs/{fscache/internal.h => netfs/fscache_internal.h} (100%)
- rename fs/{fscache/io.c => netfs/fscache_io.c} (100%)
- rename fs/{fscache/main.c => netfs/fscache_main.c} (100%)
- rename fs/{fscache/proc.c => netfs/fscache_proc.c} (100%)
- rename fs/{fscache/stats.c => netfs/fscache_stats.c} (100%)
- rename fs/{fscache/volume.c => netfs/fscache_volume.c} (100%)
+ Documentation/filesystems/netfs_library.rst | 23 +++-----------
+ fs/9p/vfs_addr.c                            | 16 ----------
+ fs/afs/file.c                               | 13 --------
+ fs/ceph/addr.c                              |  1 -
+ fs/ceph/cache.h                             | 12 --------
+ fs/netfs/buffered_read.c                    | 33 +++++++++++----------
+ fs/nfs/fscache.c                            |  7 -----
+ include/linux/fscache.h                     |  3 --
+ include/linux/netfs.h                       |  4 +--
+ 9 files changed, 23 insertions(+), 89 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a229ce6f4169..d6bb71b65032 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8601,7 +8601,7 @@ M:	David Howells <dhowells@redhat.com>
- L:	linux-cachefs@redhat.com (moderated for non-subscribers)
- S:	Supported
- F:	Documentation/filesystems/caching/
--F:	fs/fscache/
-+F:	fs/netfs/fscache-*
- F:	include/linux/fscache*.h
+diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+index 48b95d04f72d..4cc657d743f7 100644
+--- a/Documentation/filesystems/netfs_library.rst
++++ b/Documentation/filesystems/netfs_library.rst
+@@ -295,7 +295,6 @@ through which it can issue requests and negotiate::
+ 	struct netfs_request_ops {
+ 		void (*init_request)(struct netfs_io_request *rreq, struct file *file);
+ 		void (*free_request)(struct netfs_io_request *rreq);
+-		int (*begin_cache_operation)(struct netfs_io_request *rreq);
+ 		void (*expand_readahead)(struct netfs_io_request *rreq);
+ 		bool (*clamp_length)(struct netfs_io_subrequest *subreq);
+ 		void (*issue_read)(struct netfs_io_subrequest *subreq);
+@@ -317,20 +316,6 @@ The operations are as follows:
+    [Optional] This is called as the request is being deallocated so that the
+    filesystem can clean up any state it has attached there.
  
- FSCRYPT: FILE SYSTEM LEVEL ENCRYPTION SUPPORT
-diff --git a/fs/Kconfig b/fs/Kconfig
-index cf62d86b514f..26c3821bf1fb 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -140,7 +140,6 @@ source "fs/overlayfs/Kconfig"
- menu "Caches"
+- * ``begin_cache_operation()``
+-
+-   [Optional] This is called to ask the network filesystem to call into the
+-   cache (if present) to initialise the caching state for this read.  The netfs
+-   library module cannot access the cache directly, so the cache should call
+-   something like fscache_begin_read_operation() to do this.
+-
+-   The cache gets to store its state in ->cache_resources and must set a table
+-   of operations of its own there (though of a different type).
+-
+-   This should return 0 on success and an error code otherwise.  If an error is
+-   reported, the operation may proceed anyway, just without local caching (only
+-   out of memory and interruption errors cause failure here).
+-
+  * ``expand_readahead()``
  
- source "fs/netfs/Kconfig"
--source "fs/fscache/Kconfig"
- source "fs/cachefiles/Kconfig"
+    [Optional] This is called to allow the filesystem to expand the size of a
+@@ -460,14 +445,14 @@ When implementing a local cache to be used by the read helpers, two things are
+ required: some way for the network filesystem to initialise the caching for a
+ read request and a table of operations for the helpers to call.
  
- endmenu
-diff --git a/fs/Makefile b/fs/Makefile
-index 75522f88e763..af7632368e98 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -60,7 +60,6 @@ obj-$(CONFIG_DLM)		+= dlm/
-  
- # Do not add any filesystems before this line
- obj-$(CONFIG_NETFS_SUPPORT)	+= netfs/
--obj-$(CONFIG_FSCACHE)		+= fscache/
- obj-$(CONFIG_REISERFS_FS)	+= reiserfs/
- obj-$(CONFIG_EXT4_FS)		+= ext4/
- # We place ext4 before ext2 so that clean ext3 root fs's do NOT mount using the
-diff --git a/fs/fscache/Kconfig b/fs/fscache/Kconfig
-deleted file mode 100644
-index b313a978ae0a..000000000000
---- a/fs/fscache/Kconfig
-+++ /dev/null
-@@ -1,40 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--config FSCACHE
--	tristate "General filesystem local caching manager"
--	select NETFS_SUPPORT
--	help
--	  This option enables a generic filesystem caching manager that can be
--	  used by various network and other filesystems to cache data locally.
--	  Different sorts of caches can be plugged in, depending on the
--	  resources available.
--
--	  See Documentation/filesystems/caching/fscache.rst for more information.
--
--config FSCACHE_STATS
--	bool "Gather statistical information on local caching"
--	depends on FSCACHE && PROC_FS
--	select NETFS_STATS
--	help
--	  This option causes statistical information to be gathered on local
--	  caching and exported through file:
--
--		/proc/fs/fscache/stats
--
--	  The gathering of statistics adds a certain amount of overhead to
--	  execution as there are a quite a few stats gathered, and on a
--	  multi-CPU system these may be on cachelines that keep bouncing
--	  between CPUs.  On the other hand, the stats are very useful for
--	  debugging purposes.  Saying 'Y' here is recommended.
--
--	  See Documentation/filesystems/caching/fscache.rst for more information.
--
--config FSCACHE_DEBUG
--	bool "Debug FS-Cache"
--	depends on FSCACHE
--	help
--	  This permits debugging to be dynamically enabled in the local caching
--	  management module.  If this is set, the debugging output may be
--	  enabled by setting bits in /sys/modules/fscache/parameter/debug.
--
--	  See Documentation/filesystems/caching/fscache.rst for more information.
-diff --git a/fs/fscache/Makefile b/fs/fscache/Makefile
-deleted file mode 100644
-index afb090ea16c4..000000000000
---- a/fs/fscache/Makefile
-+++ /dev/null
-@@ -1,16 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0
--#
--# Makefile for general filesystem caching code
--#
--
--fscache-y := \
--	cache.o \
--	cookie.o \
--	io.o \
--	main.o \
--	volume.o
--
--fscache-$(CONFIG_PROC_FS) += proc.o
--fscache-$(CONFIG_FSCACHE_STATS) += stats.o
--
--obj-$(CONFIG_FSCACHE) := fscache.o
-diff --git a/fs/netfs/Kconfig b/fs/netfs/Kconfig
-index b4db21022cb4..b4378688357c 100644
---- a/fs/netfs/Kconfig
-+++ b/fs/netfs/Kconfig
-@@ -21,3 +21,42 @@ config NETFS_STATS
- 	  multi-CPU system these may be on cachelines that keep bouncing
- 	  between CPUs.  On the other hand, the stats are very useful for
- 	  debugging purposes.  Saying 'Y' here is recommended.
-+
-+config FSCACHE
-+	tristate "General filesystem local caching manager"
-+	select NETFS_SUPPORT
-+	help
-+	  This option enables a generic filesystem caching manager that can be
-+	  used by various network and other filesystems to cache data locally.
-+	  Different sorts of caches can be plugged in, depending on the
-+	  resources available.
-+
-+	  See Documentation/filesystems/caching/fscache.rst for more information.
-+
-+config FSCACHE_STATS
-+	bool "Gather statistical information on local caching"
-+	depends on FSCACHE && PROC_FS
-+	select NETFS_STATS
-+	help
-+	  This option causes statistical information to be gathered on local
-+	  caching and exported through file:
-+
-+		/proc/fs/fscache/stats
-+
-+	  The gathering of statistics adds a certain amount of overhead to
-+	  execution as there are a quite a few stats gathered, and on a
-+	  multi-CPU system these may be on cachelines that keep bouncing
-+	  between CPUs.  On the other hand, the stats are very useful for
-+	  debugging purposes.  Saying 'Y' here is recommended.
-+
-+	  See Documentation/filesystems/caching/fscache.rst for more information.
-+
-+config FSCACHE_DEBUG
-+	bool "Debug FS-Cache"
-+	depends on FSCACHE
-+	help
-+	  This permits debugging to be dynamically enabled in the local caching
-+	  management module.  If this is set, the debugging output may be
-+	  enabled by setting bits in /sys/modules/fscache/parameter/debug.
-+
-+	  See Documentation/filesystems/caching/fscache.rst for more information.
-diff --git a/fs/netfs/Makefile b/fs/netfs/Makefile
-index 386d6fb92793..bbb2b824bd5e 100644
---- a/fs/netfs/Makefile
-+++ b/fs/netfs/Makefile
-@@ -1,5 +1,17 @@
- # SPDX-License-Identifier: GPL-2.0
+-The network filesystem's ->begin_cache_operation() method is called to set up a
+-cache and this must call into the cache to do the work.  If using fscache, for
+-example, the cache would call::
++To begin a cache operation on an fscache object, the following function is
++called::
  
-+fscache-y := \
-+	fscache_cache.o \
-+	fscache_cookie.o \
-+	fscache_io.o \
-+	fscache_main.o \
-+	fscache_volume.o
+ 	int fscache_begin_read_operation(struct netfs_io_request *rreq,
+ 					 struct fscache_cookie *cookie);
+ 
+-passing in the request pointer and the cookie corresponding to the file.
++passing in the request pointer and the cookie corresponding to the file.  This
++fills in the cache resources mentioned below.
+ 
+ The netfs_io_request object contains a place for the cache to hang its
+ state::
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 8a635999a7d6..39db7c01e30a 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -82,25 +82,9 @@ static void v9fs_free_request(struct netfs_io_request *rreq)
+ 	p9_fid_put(fid);
+ }
+ 
+-/**
+- * v9fs_begin_cache_operation - Begin a cache operation for a read
+- * @rreq: The read request
+- */
+-static int v9fs_begin_cache_operation(struct netfs_io_request *rreq)
+-{
+-#ifdef CONFIG_9P_FSCACHE
+-	struct fscache_cookie *cookie = v9fs_inode_cookie(V9FS_I(rreq->inode));
+-
+-	return fscache_begin_read_operation(&rreq->cache_resources, cookie);
+-#else
+-	return -ENOBUFS;
+-#endif
+-}
+-
+ const struct netfs_request_ops v9fs_req_ops = {
+ 	.init_request		= v9fs_init_request,
+ 	.free_request		= v9fs_free_request,
+-	.begin_cache_operation	= v9fs_begin_cache_operation,
+ 	.issue_read		= v9fs_issue_read,
+ };
+ 
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index d37dd201752b..8c17e37c2e59 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -366,18 +366,6 @@ static int afs_init_request(struct netfs_io_request *rreq, struct file *file)
+ 	return 0;
+ }
+ 
+-static int afs_begin_cache_operation(struct netfs_io_request *rreq)
+-{
+-#ifdef CONFIG_AFS_FSCACHE
+-	struct afs_vnode *vnode = AFS_FS_I(rreq->inode);
+-
+-	return fscache_begin_read_operation(&rreq->cache_resources,
+-					    afs_vnode_cache(vnode));
+-#else
+-	return -ENOBUFS;
+-#endif
+-}
+-
+ static int afs_check_write_begin(struct file *file, loff_t pos, unsigned len,
+ 				 struct folio **foliop, void **_fsdata)
+ {
+@@ -394,7 +382,6 @@ static void afs_free_request(struct netfs_io_request *rreq)
+ const struct netfs_request_ops afs_req_ops = {
+ 	.init_request		= afs_init_request,
+ 	.free_request		= afs_free_request,
+-	.begin_cache_operation	= afs_begin_cache_operation,
+ 	.check_write_begin	= afs_check_write_begin,
+ 	.issue_read		= afs_issue_read,
+ };
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 13af429ab030..654f408a0aca 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -509,7 +509,6 @@ static void ceph_netfs_free_request(struct netfs_io_request *rreq)
+ const struct netfs_request_ops ceph_netfs_ops = {
+ 	.init_request		= ceph_init_request,
+ 	.free_request		= ceph_netfs_free_request,
+-	.begin_cache_operation	= ceph_begin_cache_operation,
+ 	.issue_read		= ceph_netfs_issue_read,
+ 	.expand_readahead	= ceph_netfs_expand_readahead,
+ 	.clamp_length		= ceph_netfs_clamp_length,
+diff --git a/fs/ceph/cache.h b/fs/ceph/cache.h
+index dc502daac49a..b804f1094764 100644
+--- a/fs/ceph/cache.h
++++ b/fs/ceph/cache.h
+@@ -57,13 +57,6 @@ static inline int ceph_fscache_dirty_folio(struct address_space *mapping,
+ 	return fscache_dirty_folio(mapping, folio, ceph_fscache_cookie(ci));
+ }
+ 
+-static inline int ceph_begin_cache_operation(struct netfs_io_request *rreq)
+-{
+-	struct fscache_cookie *cookie = ceph_fscache_cookie(ceph_inode(rreq->inode));
+-
+-	return fscache_begin_read_operation(&rreq->cache_resources, cookie);
+-}
+-
+ static inline bool ceph_is_cache_enabled(struct inode *inode)
+ {
+ 	return fscache_cookie_enabled(ceph_fscache_cookie(ceph_inode(inode)));
+@@ -135,11 +128,6 @@ static inline bool ceph_is_cache_enabled(struct inode *inode)
+ 	return false;
+ }
+ 
+-static inline int ceph_begin_cache_operation(struct netfs_io_request *rreq)
+-{
+-	return -ENOBUFS;
+-}
+-
+ static inline void ceph_fscache_note_page_release(struct inode *inode)
+ {
+ }
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 2cd3ccf4c439..d39d0ffe75d2 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -147,6 +147,15 @@ static void netfs_rreq_expand(struct netfs_io_request *rreq,
+ 	}
+ }
+ 
++/*
++ * Begin an operation, and fetch the stored zero point value from the cookie if
++ * available.
++ */
++static int netfs_begin_cache_read(struct netfs_io_request *rreq, struct netfs_inode *ctx)
++{
++	return fscache_begin_read_operation(&rreq->cache_resources, netfs_i_cookie(ctx));
++}
 +
-+fscache-$(CONFIG_PROC_FS) += fscache_proc.o
-+fscache-$(CONFIG_FSCACHE_STATS) += fscache_stats.o
-+
-+obj-$(CONFIG_FSCACHE) := fscache.o
-+
- netfs-y := \
- 	buffered_read.o \
- 	io.o \
-@@ -9,4 +21,4 @@ netfs-y := \
+ /**
+  * netfs_readahead - Helper to manage a read request
+  * @ractl: The description of the readahead request
+@@ -180,11 +189,9 @@ void netfs_readahead(struct readahead_control *ractl)
+ 	if (IS_ERR(rreq))
+ 		return;
  
- netfs-$(CONFIG_NETFS_STATS) += stats.o
+-	if (ctx->ops->begin_cache_operation) {
+-		ret = ctx->ops->begin_cache_operation(rreq);
+-		if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
+-			goto cleanup_free;
+-	}
++	ret = netfs_begin_cache_read(rreq, ctx);
++	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
++		goto cleanup_free;
  
--obj-$(CONFIG_NETFS_SUPPORT) := netfs.o
-+obj-$(CONFIG_NETFS_SUPPORT) += netfs.o
-diff --git a/fs/fscache/cache.c b/fs/netfs/fscache_cache.c
-similarity index 100%
-rename from fs/fscache/cache.c
-rename to fs/netfs/fscache_cache.c
-diff --git a/fs/fscache/cookie.c b/fs/netfs/fscache_cookie.c
-similarity index 100%
-rename from fs/fscache/cookie.c
-rename to fs/netfs/fscache_cookie.c
-diff --git a/fs/fscache/internal.h b/fs/netfs/fscache_internal.h
-similarity index 100%
-rename from fs/fscache/internal.h
-rename to fs/netfs/fscache_internal.h
-diff --git a/fs/fscache/io.c b/fs/netfs/fscache_io.c
-similarity index 100%
-rename from fs/fscache/io.c
-rename to fs/netfs/fscache_io.c
-diff --git a/fs/fscache/main.c b/fs/netfs/fscache_main.c
-similarity index 100%
-rename from fs/fscache/main.c
-rename to fs/netfs/fscache_main.c
-diff --git a/fs/fscache/proc.c b/fs/netfs/fscache_proc.c
-similarity index 100%
-rename from fs/fscache/proc.c
-rename to fs/netfs/fscache_proc.c
-diff --git a/fs/fscache/stats.c b/fs/netfs/fscache_stats.c
-similarity index 100%
-rename from fs/fscache/stats.c
-rename to fs/netfs/fscache_stats.c
-diff --git a/fs/fscache/volume.c b/fs/netfs/fscache_volume.c
-similarity index 100%
-rename from fs/fscache/volume.c
-rename to fs/netfs/fscache_volume.c
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 43fac1b14e40..e96432499eb2 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -5,9 +5,12 @@
-  * Written by David Howells (dhowells@redhat.com)
-  */
+ 	netfs_stat(&netfs_n_rh_readahead);
+ 	trace_netfs_read(rreq, readahead_pos(ractl), readahead_length(ractl),
+@@ -238,11 +245,9 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 		goto alloc_error;
+ 	}
  
-+#include <linux/slab.h>
-+#include <linux/seq_file.h>
- #include <linux/netfs.h>
- #include <linux/fscache.h>
- #include <trace/events/netfs.h>
-+#include "fscache_internal.h"
+-	if (ctx->ops->begin_cache_operation) {
+-		ret = ctx->ops->begin_cache_operation(rreq);
+-		if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
+-			goto discard;
+-	}
++	ret = netfs_begin_cache_read(rreq, ctx);
++	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
++		goto discard;
  
- #ifdef pr_fmt
- #undef pr_fmt
-@@ -107,6 +110,7 @@ static inline bool netfs_is_cache_enabled(struct netfs_inode *ctx)
+ 	netfs_stat(&netfs_n_rh_readpage);
+ 	trace_netfs_read(rreq, rreq->start, rreq->len, netfs_read_trace_readpage);
+@@ -390,11 +395,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	rreq->no_unlock_folio	= folio_index(folio);
+ 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
+ 
+-	if (ctx->ops->begin_cache_operation) {
+-		ret = ctx->ops->begin_cache_operation(rreq);
+-		if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
+-			goto error_put;
+-	}
++	ret = netfs_begin_cache_read(rreq, ctx);
++	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
++		goto error_put;
+ 
+ 	netfs_stat(&netfs_n_rh_write_begin);
+ 	trace_netfs_read(rreq, pos, len, netfs_read_trace_write_begin);
+diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
+index b05717fe0d4e..2d1bfee225c3 100644
+--- a/fs/nfs/fscache.c
++++ b/fs/nfs/fscache.c
+@@ -274,12 +274,6 @@ static void nfs_netfs_free_request(struct netfs_io_request *rreq)
+ 	put_nfs_open_context(rreq->netfs_priv);
+ }
+ 
+-static inline int nfs_netfs_begin_cache_operation(struct netfs_io_request *rreq)
+-{
+-	return fscache_begin_read_operation(&rreq->cache_resources,
+-					    netfs_i_cookie(netfs_inode(rreq->inode)));
+-}
+-
+ static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subrequest *sreq)
+ {
+ 	struct nfs_netfs_io_data *netfs;
+@@ -387,7 +381,6 @@ void nfs_netfs_read_completion(struct nfs_pgio_header *hdr)
+ const struct netfs_request_ops nfs_netfs_ops = {
+ 	.init_request		= nfs_netfs_init_request,
+ 	.free_request		= nfs_netfs_free_request,
+-	.begin_cache_operation	= nfs_netfs_begin_cache_operation,
+ 	.issue_read		= nfs_netfs_issue_read,
+ 	.clamp_length		= nfs_netfs_clamp_length
+ };
+diff --git a/include/linux/fscache.h b/include/linux/fscache.h
+index 8e312c8323a8..9ed6696aee7a 100644
+--- a/include/linux/fscache.h
++++ b/include/linux/fscache.h
+@@ -437,9 +437,6 @@ const struct netfs_cache_ops *fscache_operation_valid(const struct netfs_cache_r
+  * indicates the cache resources to which the operation state should be
+  * attached; @cookie indicates the cache object that will be accessed.
+  *
+- * This is intended to be called from the ->begin_cache_operation() netfs lib
+- * operation as implemented by the network filesystem.
+- *
+  * @cres->inval_counter is set from @cookie->inval_counter for comparison at
+  * the end of the operation.  This allows invalidation during the operation to
+  * be detected by the caller.
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index b11a84f6c32b..d294ff8f9ae4 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -208,7 +208,6 @@ struct netfs_io_request {
+ struct netfs_request_ops {
+ 	int (*init_request)(struct netfs_io_request *rreq, struct file *file);
+ 	void (*free_request)(struct netfs_io_request *rreq);
+-	int (*begin_cache_operation)(struct netfs_io_request *rreq);
+ 
+ 	void (*expand_readahead)(struct netfs_io_request *rreq);
+ 	bool (*clamp_length)(struct netfs_io_subrequest *subreq);
+@@ -229,8 +228,7 @@ enum netfs_read_from_hole {
+ };
+ 
  /*
-  * debug tracing
+- * Table of operations for access to a cache.  This is obtained by
+- * rreq->ops->begin_cache_operation().
++ * Table of operations for access to a cache.
   */
-+#if 0
- #define dbgprintk(FMT, ...) \
- 	printk("[%-6.6s] "FMT"\n", current->comm, ##__VA_ARGS__)
- 
-@@ -143,3 +147,4 @@ do {						\
- #define _leave(FMT, ...) no_printk("<== %s()"FMT"", __func__, ##__VA_ARGS__)
- #define _debug(FMT, ...) no_printk(FMT, ##__VA_ARGS__)
- #endif
-+#endif
-diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-index 068568702957..1f3d5a9e0a12 100644
---- a/fs/netfs/main.c
-+++ b/fs/netfs/main.c
-@@ -15,6 +15,7 @@ MODULE_DESCRIPTION("Network fs support");
- MODULE_AUTHOR("Red Hat, Inc.");
- MODULE_LICENSE("GPL");
- 
-+unsigned fscache_debug;
- unsigned netfs_debug;
- module_param_named(debug, netfs_debug, uint, S_IWUSR | S_IRUGO);
- MODULE_PARM_DESC(netfs_debug, "Netfs support debugging mask");
+ struct netfs_cache_ops {
+ 	/* End an operation */
 
