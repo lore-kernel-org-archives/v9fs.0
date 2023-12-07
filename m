@@ -1,140 +1,383 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D54535273
-	for <v9fs@lists.linux.dev>; Thu,  7 Dec 2023 12:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C348142A9C
+	for <v9fs@lists.linux.dev>; Thu,  7 Dec 2023 21:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="EEgZ+Cgs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=xaCvAzlwzR9Hokmynfu7A4/6oLv+b96ic63xDkUsACk=; b=EEgZ+CgszC5pK4/GcUfCvYqH04
-	GLu1k/eCfcwojQHQ5el6pDSztUvnFz19Bl4B2/S8XTbmFiANjFkROQg0dFUlw/NCGnX6MiqL/cvho
-	AB0dPPlwnfe0bwKWgoWkf3FXVQcAZJaTf0OtuMbZxN4DH+978qnPwc8rZ/yZz2U8FZf3f5zp5/nR1
-	/e/q06i2kmDqEveKXy6S6DcUP7Xgb77s/B5y9AZjjgHPWsR+L2o0LYLxAdIEXJFhle2FemDi0yWy1
-	0sgqlFw2Eck9usYCTda4MIQPQ6gO4KN5DYfQ4u54ZG2pDBfGxhjrmW/UCNtlAs37a63+MHcfWvsrZ
-	9h0RGIAgpiD6l0Yf0OyRLhOKreubHCTgeFfmiqM9QyjQgKY2Ck3XY3AXNwUFoxMrf0bgWWps3KOPq
-	EXhaWCwetQmq7zhqlDMndBxh4MjDkjMSc+/+OjAZFmqGcUBqYttE8L7zVKNydG81AjqeEaMwcjOoX
-	DASbpuccxYgxTCA8YPjQKjImXNSk53F8DrMQkrMSo4fhNCeh5ZxzRimcEy+oCTqziTm9Jdv/zX8E4
-	oapJatLZiXWmQ80xIHNG11D02ziTpiahg61UjfZ6iNF/TXc260fF0beo7BcsT+G6g5l35qcVf1hnb
-	Pn5UT8uk+aLvs2SmkEbRyRDU7kyAEsOIvr8XWcVLw=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- v9fs@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org
-Subject: Re: [PATCH v4] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Date: Thu, 07 Dec 2023 13:54:02 +0100
-Message-ID: <1808202.Umia7laAZq@silver>
-In-Reply-To: <20231206200913.16135-1-pchelkin@ispras.ru>
-References: <20231206200913.16135-1-pchelkin@ispras.ru>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eSlHW1nw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701984138;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=obK9oWE6o3VIPZKQ3NT303srS8CJDX4FzQ6SdddDGq4=;
+	b=eSlHW1nwUGVtQN5RhCHS4pvm+QuLMU6UR3tdfRT98MkK3VSAil7JpTW38YT8qM2oB3xv0B
+	WkG2XnkaM63m3W0+yh8518vG1YES9wn0ZE1Ew1O1sZ+0f8gV+52U2AbM3mQmYrJ4Q+k8xF
+	yuHrrrYzeFZSy4ZzQ0quvitcKOWGLDM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-267-QUCZvw5GNuCGZBBFt2NHVw-1; Thu, 07 Dec 2023 16:22:12 -0500
+X-MC-Unique: QUCZvw5GNuCGZBBFt2NHVw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB64D101A551;
+	Thu,  7 Dec 2023 21:22:11 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.161])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id CE9B02026D66;
+	Thu,  7 Dec 2023 21:22:08 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Jeff Layton <jlayton@kernel.org>,
+	Steve French <smfrench@gmail.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Christian Brauner <christian@brauner.io>,
+	linux-cachefs@redhat.com,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/59] netfs, afs, 9p, cifs: Delegate high-level I/O to netfslib
+Date: Thu,  7 Dec 2023 21:21:07 +0000
+Message-ID: <20231207212206.1379128-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-On Wednesday, December 6, 2023 9:09:13 PM CET Fedor Pchelkin wrote:
-> If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
-> the error path is not handled properly. *wnames or members of *wnames
-> array may be left uninitialized and invalidly freed.
-> 
-> Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
-> *wnames array element to NULL and nullify the failing *wnames element so
-> that the error path freeing loop stops on the first NULL element and
-> doesn't proceed further.
-> 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
-> v2: I've missed that *wnames can also be left uninitialized. Please
-> ignore the patch v1. As an answer to Dominique's comment: my
-> organization marks this statement in all commits.
-> v3: Simplify the patch by using kcalloc() instead of array indices
-> manipulation per Christian Schoenebeck's remark. Update the commit
-> message accordingly.
-> v4: Per Christian's suggestion, apply another strategy: mark failing
-> array element as NULL and move in the freeing loop until it is found.
-> Update the commit message accordingly. If v4 is more appropriate than the
-> version at
-> https://github.com/martinetd/linux/commit/69cc23eb3a0b79538e9b5face200c4cd5cd32ae0
-> then please use it, otherwise, I don't think we can provide more
-> convenient solution here than the one already queued at github.
-> 
->  net/9p/protocol.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/9p/protocol.c b/net/9p/protocol.c
-> index 4e3a2a1ffcb3..0e6603b1ec90 100644
-> --- a/net/9p/protocol.c
-> +++ b/net/9p/protocol.c
-> @@ -394,6 +394,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  				uint16_t *nwname = va_arg(ap, uint16_t *);
->  				char ***wnames = va_arg(ap, char ***);
->  
-> +				*wnames = NULL;
-> +
->  				errcode = p9pdu_readf(pdu, proto_version,
->  								"w", nwname);
->  				if (!errcode) {
-> @@ -403,6 +405,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  							  GFP_NOFS);
->  					if (!*wnames)
->  						errcode = -ENOMEM;
-> +					else
-> +						(*wnames)[0] = NULL;
->  				}
->  
->  				if (!errcode) {
-> @@ -414,8 +418,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  								proto_version,
->  								"s",
->  								&(*wnames)[i]);
-> -						if (errcode)
-> +						if (errcode) {
-> +							(*wnames)[i] = NULL;
->  							break;
-> +						}
+Hi Jeff, Steve, Dominique,
 
-I just checked whether this could create a leak, but it looks clean, so LGTM:
+I have been working on my netfslib helpers to the point that I can run
+xfstests on AFS to completion (both with write-back buffering and, with a
+small patch, write-through buffering in the pagecache).  I can also run a
+certain amount of xfstests on CIFS, though I'm running into ksmbd bugs and
+not all the tests work correctly because of fallocate issues.  I have a
+patch for 9P, but am currently unable to test it.
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+The patches remove a little over 800 lines from AFS, 300 from 9P and over
+2000 from CIFS, albeit with around 3000 lines added to netfs.  Hopefully, I
+will be able to remove a bunch of lines from Ceph too.
 
-Dominique, I would tend to use this v4 instead of v2. What do you think?
+The main aims of these patches are to get high-level I/O and knowledge of
+the pagecache out of the filesystem drivers as much as possible and to get
+rid, as much of possible, of the knowledge that pages/folios exist.
 
->  					}
->  				}
->  
-> @@ -423,11 +429,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int proto_version, const char *fmt,
->  					if (*wnames) {
->  						int i;
->  
-> -						for (i = 0; i < *nwname; i++)
-> +						for (i = 0; i < *nwname; i++) {
-> +							if (!(*wnames)[i])
-> +								break;
->  							kfree((*wnames)[i]);
-> +						}
-> +						kfree(*wnames);
-> +						*wnames = NULL;
->  					}
-> -					kfree(*wnames);
-> -					*wnames = NULL;
->  				}
->  			}
->  			break;
-> 
+Further, I would like to see ->write_begin, ->write_end and ->launder_folio
+go away.
 
+Features that are added by these patches to that which is already there in
+netfslib:
+
+ (1) NFS-style (and Ceph-style) locking around DIO vs buffered I/O calls to
+     prevent these from happening at the same time.  mmap'd I/O can, of
+     necessity, happen at any time ignoring these locks.
+
+ (2) Support for unbuffered I/O.  The data is kept in the bounce buffer and
+     the pagecache is not used.  This can be turned on with an inode flag.
+
+ (3) Support for direct I/O.  This is basically unbuffered I/O with some
+     extra restrictions and no RMW.
+
+ (4) Support for using a bounce buffer in an operation.  The bounce buffer
+     may be bigger than the target data/buffer, allowing for crypto
+     rounding.
+
+ (5) Support for content encryption.  This isn't supported yet by AFS/CIFS
+     but is aimed initially at Ceph.
+
+ (6) ->write_begin() and ->write_end() are ignored in favour of merging all
+     of that into one function, netfs_perform_write(), thereby avoiding the
+     function pointer traversals.
+
+ (7) Support for write-through caching in the pagecache.
+     netfs_perform_write() adds the pages is modifies to an I/O operation
+     as it goes and directly marks them writeback rather than dirty.  When
+     writing back from write-through, it limits the range written back.
+     This should allow CIFS to deal with byte-range mandatory locks
+     correctly.
+
+ (8) O_*SYNC and RWF_*SYNC writes use write-through rather than writing to
+     the pagecache and then flushing afterwards.  An AIO O_*SYNC write will
+     notify of completion when the sub-writes all complete.
+
+ (9) Support for write-streaming where modifed data is held in !uptodate
+     folios, with a private struct attached indicating the range that is
+     valid.
+
+(10) Support for write grouping, multiplexing a pointer to a group in the
+     folio private data with the write-streaming data.  The writepages
+     algorithm only writes stuff back that's in the nominated group.  This
+     is intended for use by Ceph to write is snaps in order.
+
+(11) Skipping reads for which we know the server could only supply zeros or
+     EOF (for instance if we've done a local write that leaves a hole in
+     the file and extends the local inode size).
+
+(12) PG_fscache is no longer used; instead, if a folio needs writing to the
+     cache after being downloaded, it's marked dirty and a magic value is
+     set in folio->private.  writepages is then left to do the writing to
+     the cache.  If userspace modifies those pages, that simply supersedes
+     the mark and they'll get written to the server also.  One downside is
+     that we lose the content-encrypted version of the page and have to
+     reencrypt before writing to the cache - though this can be done in the
+     background.
+
+General notes:
+
+ (1) The fscache module is merged into the netfslib module to avoid cyclic
+     exported symbol usage that prevents either module from being loaded.
+
+ (2) Some helpers from fscache are reassigned to netfslib by name.
+
+ (3) netfslib now makes use of folio->private, which means the filesystem
+     can't use it.
+
+ (4) The filesystem provides wrappers to call the write helpers, allowing
+     it to do pre-validation, oplock/capability fetching and the passing in
+     of write group info.
+
+ (5) I want to try flushing the data when tearing down an inode before
+     invalidating it to try and render launder_folio unnecessary.
+
+ (6) Write-through caching will generate and dispatch write subrequests as
+     it gathers enough data to hit wsize and has whole pages that at least
+     span that size.  This needs to be a bit more flexible, allowing for a
+     filesystem such as CIFS to have a variable wsize.
+
+ (7) The filesystem driver is just given read and write calls with an
+     iov_iter describing the data/buffer to use.  Ideally, they don't see
+     pages or folios at all.  A function, extract_iter_to_sg(), is already
+     available to decant part of an iterator into a scatterlist for crypto
+     purposes.
+
+
+CIFS notes:
+
+ (1) CIFS is made to use unbuffered I/O for unbuffered caching modes and
+     write-through caching for cache=strict.
+
+ (2) Various cifs fallocate() function implementations needed fixing and
+     those fixes are upstream or on the way.
+
+ (3) It should be possible to turn on multipage folio support in CIFS now.
+
+ (4) The then-unused CIFS code is removed in three patches, not one, to
+     avoid the git patch generator from producing confusing patches in
+     which it thinks code is being moved around rather than just being
+     removed.
+
+
+9P notes:
+
+ (1) I haven't managed to test this as I haven't been able to get Ganesha
+     to work correctly with 9P.
+
+ (2) Writes should now occur in larger-than-page-sized chunks.
+
+ (3) It should be possible to turn on multipage folio support in 9P now.
+
+
+Changes
+=======
+ver #3)
+ - Moved the fscache module into netfslib to avoid export cycles.
+ - Fixed a bunch of bugs.
+ - Got CIFS to pass as much of xfstests as possible.
+ - Added a patch to make 9P use all the helpers.
+ - Added a patch to stop using PG_fscache, but rather dirty pages on
+   reading and have writepages write to the cache.
+
+ver #2)
+ - Folded the addition of NETFS_RREQ_NONBLOCK/BLOCKED into first patch that
+   uses them.
+ - Folded addition of rsize member into first user.
+ - Don't set rsize in ceph (yet) and set it in kafs to 256KiB.  cifs sets
+   it dynamically.
+ - Moved direct_bv next to direct_bv_count in struct netfs_io_request and
+   labelled it with a __counted_by().
+ - Passed flags into netfs_xa_store_and_mark() rather than two bools.
+ - Removed netfs_set_up_buffer() as it wasn't used.
+
+David
+
+Link: https://lore.kernel.org/r/20231013160423.2218093-1-dhowells@redhat.com/ # v1
+Link: https://lore.kernel.org/r/20231117211544.1740466-1-dhowells@redhat.com/ # v2
+
+David Howells (59):
+  netfs, fscache: Move fs/fscache/* into fs/netfs/
+  netfs, fscache: Combine fscache with netfs
+  netfs, fscache: Remove ->begin_cache_operation
+  netfs, fscache: Move /proc/fs/fscache to /proc/fs/netfs and put in a
+    symlink
+  netfs: Move pinning-for-writeback from fscache to netfs
+  netfs: Add a procfile to list in-progress requests
+  netfs: Allow the netfs to make the io (sub)request alloc larger
+  netfs: Add a ->free_subrequest() op
+  afs: Don't use folio->private to record partial modification
+  netfs: Provide invalidate_folio and release_folio calls
+  netfs: Implement unbuffered/DIO vs buffered I/O locking
+  netfs: Add iov_iters to (sub)requests to describe various buffers
+  netfs: Add support for DIO buffering
+  netfs: Provide tools to create a buffer in an xarray
+  netfs: Add bounce buffering support
+  netfs: Add func to calculate pagecount/size-limited span of an
+    iterator
+  netfs: Limit subrequest by size or number of segments
+  netfs: Export netfs_put_subrequest() and some tracepoints
+  netfs: Extend the netfs_io_*request structs to handle writes
+  netfs: Add a hook to allow tell the netfs to update its i_size
+  netfs: Make netfs_put_request() handle a NULL pointer
+  netfs: Make the refcounting of netfs_begin_read() easier to use
+  netfs: Prep to use folio->private for write grouping and streaming
+    write
+  netfs: Dispatch write requests to process a writeback slice
+  netfs: Provide func to copy data to pagecache for buffered write
+  netfs: Make netfs_read_folio() handle streaming-write pages
+  netfs: Allocate multipage folios in the writepath
+  netfs: Implement support for unbuffered/DIO read
+  netfs: Implement unbuffered/DIO write support
+  netfs: Implement buffered write API
+  netfs: Allow buffered shared-writeable mmap through
+    netfs_page_mkwrite()
+  netfs: Provide netfs_file_read_iter()
+  netfs, cachefiles: Pass upper bound length to allow expansion
+  netfs: Provide a writepages implementation
+  netfs: Provide minimum blocksize parameter
+  netfs: Make netfs_skip_folio_read() take account of blocksize
+  netfs: Perform content encryption
+  netfs: Decrypt encrypted content
+  netfs: Support decryption on ubuffered/DIO read
+  netfs: Support encryption on Unbuffered/DIO write
+  netfs: Provide a launder_folio implementation
+  netfs: Implement a write-through caching option
+  netfs: Rearrange netfs_io_subrequest to put request pointer first
+  netfs: Optimise away reads above the point at which there can be no
+    data
+  afs: Use the netfs write helpers
+  9p: Use netfslib read/write_iter
+  cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest
+  cifs: Share server EOF pos with netfslib
+  cifs: Set zero_point in the copy_file_range() and remap_file_range()
+  cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest
+  cifs: Use more fields from netfs_io_subrequest
+  cifs: Make wait_mtu_credits take size_t args
+  cifs: Implement netfslib hooks
+  cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c
+  cifs: Cut over to using netfslib
+  cifs: Remove some code that's no longer used, part 1
+  cifs: Remove some code that's no longer used, part 2
+  cifs: Remove some code that's no longer used, part 3
+  netfs: Eliminate PG_fscache by setting folio->private and marking
+    dirty
+
+ Documentation/filesystems/netfs_library.rst   |   23 +-
+ MAINTAINERS                                   |    2 +-
+ fs/9p/vfs_addr.c                              |  351 +-
+ fs/9p/vfs_file.c                              |   89 +-
+ fs/9p/vfs_inode.c                             |    5 +-
+ fs/9p/vfs_super.c                             |   14 +-
+ fs/Kconfig                                    |    1 -
+ fs/Makefile                                   |    1 -
+ fs/afs/file.c                                 |  209 +-
+ fs/afs/inode.c                                |   26 +-
+ fs/afs/internal.h                             |   72 +-
+ fs/afs/super.c                                |    2 +-
+ fs/afs/write.c                                |  826 +----
+ fs/cachefiles/internal.h                      |    2 +-
+ fs/cachefiles/io.c                            |   10 +-
+ fs/cachefiles/ondemand.c                      |    2 +-
+ fs/ceph/addr.c                                |   45 +-
+ fs/ceph/cache.h                               |   35 +-
+ fs/ceph/inode.c                               |    2 +-
+ fs/fs-writeback.c                             |   10 +-
+ fs/fscache/Kconfig                            |   40 -
+ fs/fscache/Makefile                           |   16 -
+ fs/fscache/internal.h                         |  277 --
+ fs/netfs/Kconfig                              |   39 +
+ fs/netfs/Makefile                             |   23 +-
+ fs/netfs/buffered_read.c                      |  299 +-
+ fs/netfs/buffered_write.c                     | 1248 +++++++
+ fs/netfs/crypto.c                             |  148 +
+ fs/netfs/direct_read.c                        |  263 ++
+ fs/netfs/direct_write.c                       |  370 +++
+ fs/{fscache/cache.c => netfs/fscache_cache.c} |    0
+ .../cookie.c => netfs/fscache_cookie.c}       |    0
+ fs/netfs/fscache_internal.h                   |   14 +
+ fs/{fscache/io.c => netfs/fscache_io.c}       |   46 +-
+ fs/{fscache/main.c => netfs/fscache_main.c}   |   25 +-
+ fs/{fscache/proc.c => netfs/fscache_proc.c}   |   23 +-
+ fs/{fscache/stats.c => netfs/fscache_stats.c} |    4 +-
+ .../volume.c => netfs/fscache_volume.c}       |    0
+ fs/netfs/internal.h                           |  325 ++
+ fs/netfs/io.c                                 |  480 +--
+ fs/netfs/iterator.c                           |   97 +
+ fs/netfs/locking.c                            |  215 ++
+ fs/netfs/main.c                               |  112 +
+ fs/netfs/misc.c                               |  252 ++
+ fs/netfs/objects.c                            |   65 +-
+ fs/netfs/output.c                             |  483 +++
+ fs/netfs/stats.c                              |   31 +-
+ fs/nfs/Kconfig                                |    4 +-
+ fs/nfs/fscache.c                              |    7 -
+ fs/smb/client/Kconfig                         |    1 +
+ fs/smb/client/cifsfs.c                        |   95 +-
+ fs/smb/client/cifsfs.h                        |   10 +-
+ fs/smb/client/cifsglob.h                      |   59 +-
+ fs/smb/client/cifsproto.h                     |   14 +-
+ fs/smb/client/cifssmb.c                       |  111 +-
+ fs/smb/client/file.c                          | 2922 +++--------------
+ fs/smb/client/fscache.c                       |  109 -
+ fs/smb/client/fscache.h                       |   54 -
+ fs/smb/client/inode.c                         |   27 +-
+ fs/smb/client/smb2ops.c                       |   28 +-
+ fs/smb/client/smb2pdu.c                       |  168 +-
+ fs/smb/client/smb2proto.h                     |    5 +-
+ fs/smb/client/trace.h                         |  144 +-
+ fs/smb/client/transport.c                     |   17 +-
+ include/linux/fs.h                            |    2 +-
+ include/linux/fscache.h                       |   45 -
+ include/linux/netfs.h                         |  207 +-
+ include/linux/writeback.h                     |    2 +-
+ include/trace/events/afs.h                    |   31 -
+ include/trace/events/netfs.h                  |  165 +-
+ mm/filemap.c                                  |    1 +
+ 71 files changed, 5677 insertions(+), 5173 deletions(-)
+ delete mode 100644 fs/fscache/Kconfig
+ delete mode 100644 fs/fscache/Makefile
+ delete mode 100644 fs/fscache/internal.h
+ create mode 100644 fs/netfs/buffered_write.c
+ create mode 100644 fs/netfs/crypto.c
+ create mode 100644 fs/netfs/direct_read.c
+ create mode 100644 fs/netfs/direct_write.c
+ rename fs/{fscache/cache.c => netfs/fscache_cache.c} (100%)
+ rename fs/{fscache/cookie.c => netfs/fscache_cookie.c} (100%)
+ create mode 100644 fs/netfs/fscache_internal.h
+ rename fs/{fscache/io.c => netfs/fscache_io.c} (85%)
+ rename fs/{fscache/main.c => netfs/fscache_main.c} (84%)
+ rename fs/{fscache/proc.c => netfs/fscache_proc.c} (58%)
+ rename fs/{fscache/stats.c => netfs/fscache_stats.c} (97%)
+ rename fs/{fscache/volume.c => netfs/fscache_volume.c} (100%)
+ create mode 100644 fs/netfs/locking.c
+ create mode 100644 fs/netfs/misc.c
+ create mode 100644 fs/netfs/output.c
 
