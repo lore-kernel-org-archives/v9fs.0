@@ -1,79 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC21840CB
-	for <v9fs@lists.linux.dev>; Thu,  7 Dec 2023 21:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C70338DD0;
+	Mon, 11 Dec 2023 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zn4BRdw5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701986281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2gpuqenBf/seLQmhrTte/4HdPOyV33jxxLbSCYkPyeM=;
-	b=Zn4BRdw5e9GjbQlK/IzkyGHo2P2snQ9aVjyzHl7CBGCn0Ug/azInrjBWraSxiqU6lLvDvt
-	Upc4q8kY9wUuP1rRG0Ey4tcGouk/mzkKkmOzf9Vk9Ajf+AF0jerdG9jj6htXGO7Xo+SHhb
-	ssmpxCkT0UKGx21cgU8rmIUBI7T4Gmg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-3pxRZfFcM5CBFUREWELNAA-1; Thu,
- 07 Dec 2023 16:57:57 -0500
-X-MC-Unique: 3pxRZfFcM5CBFUREWELNAA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B64C1C0BB50;
-	Thu,  7 Dec 2023 21:57:56 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.161])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id E59971C060AF;
-	Thu,  7 Dec 2023 21:57:53 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ZXI7aGHkxZyiytXg@casper.infradead.org>
-References: <ZXI7aGHkxZyiytXg@casper.infradead.org> <20231207212206.1379128-1-dhowells@redhat.com> <20231207212206.1379128-60-dhowells@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Steve French <smfrench@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 59/59] netfs: Eliminate PG_fscache by setting folio->private and marking dirty
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZTaiK5H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FF9C433C7;
+	Mon, 11 Dec 2023 13:51:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702302708;
+	bh=nIyuqcp4+4582x1GA9+XcGxtdjfRCxJK9Ur7alA/OAw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GZTaiK5Hs1zkFuyL8Ccm4MUAI7dzy6fHvQtOQP5QeL4ZU8FE5u/fDIYOIYjBN3ksM
+	 VXLRHOlJrkSfItbJ0VGSaF6IZWFQ6e5ZAuJI2A8y665EGsp2SZi4bXQQjn1AhPRjT0
+	 YrIoaxY7qCKLgO3d8G70VDMWfyVfQHUe1WI9J1EndI/O/RKfyUNwgVdAvj+QGgfSY1
+	 qCMyOvDEoKi/uulMaVKNU5cAG8rytCsqDdDjic5hU7bp75KYKVlPIuzQiBdK+A9YuP
+	 Rhja9p0ckqfW5W70JKXViaS8WmchCK1QSc5pFkqul0qwZ+PFlE64nrz3SNx5l7Qsan
+	 67WMgQtyjvfZw==
+Date: Mon, 11 Dec 2023 13:51:42 +0000
+From: Simon Horman <horms@kernel.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	v9fs@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH v4] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+Message-ID: <20231211135142.GO5817@kernel.org>
+References: <10981267.HhOBSzzNiN@silver>
+ <20231206200913.16135-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1451125.1701986273.1@warthog.procyon.org.uk>
-Date: Thu, 07 Dec 2023 21:57:53 +0000
-Message-ID: <1451127.1701986273@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231206200913.16135-1-pchelkin@ispras.ru>
 
-Matthew Wilcox <willy@infradead.org> wrote:
-
-> On Thu, Dec 07, 2023 at 09:22:06PM +0000, David Howells wrote:
-> > With this, PG_fscache is no longer required.
+On Wed, Dec 06, 2023 at 11:09:13PM +0300, Fedor Pchelkin wrote:
+> If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
+> the error path is not handled properly. *wnames or members of *wnames
+> array may be left uninitialized and invalidly freed.
 > 
-> ... for filesystems that use netfslib, right?  ie we can't delete
-> folio_wait_private_2_killable() and friends because nfs still uses it?
+> Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
+> *wnames array element to NULL and nullify the failing *wnames element so
+> that the error path freeing loop stops on the first NULL element and
+> doesn't proceed further.
+> 
+> Found by Linux Verification Center (linuxtesting.org).
+> 
+> Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Yeah.  Though I have my eye on NFS too ;-)
-
-David
+Reviewed-by: Simon Horman <horms@kernel.org>
 
