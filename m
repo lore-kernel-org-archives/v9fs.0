@@ -1,36 +1,36 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16421364A0
-	for <v9fs@lists.linux.dev>; Wed, 13 Dec 2023 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714B47E79D
+	for <v9fs@lists.linux.dev>; Wed, 13 Dec 2023 15:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bVBDuhbj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q+Ug86vW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702481175;
+	s=mimecast20190719; t=1702481179;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YcUt6Wlq9qFzNGrM+VViKKkJSoOctikTKew3FuWO+5w=;
-	b=bVBDuhbjuCC8pXmFB6PRXaREmi7r+cQ1VqijpDkheuMhBABb0jiZ3aryIaZ2Bnf2Jk9lTC
-	poezXTfkVGMls3ErCMXlL4N4cekTedUKzEnDqn0CAoPapIGKQLI0dhzAK1UKZsYelkaWt/
-	6hSJhxLDbZZ2ALklehKUcLuQcFAVL8M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-izgs5zPOPzO_FpSrM-V7uQ-1; Wed, 13 Dec 2023 10:26:13 -0500
-X-MC-Unique: izgs5zPOPzO_FpSrM-V7uQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	bh=KbBg4oLyg/4VjucqWLPnAUrUGVI7xibirsiFMNrNygw=;
+	b=Q+Ug86vWjZAsGsE3THdDA7kSqDhOlcHMc/vjTfhxORNGFVq3BkVUwKnk2D3urQNk+ydLpk
+	47WzjSPAQewaWLk9NpNHFRv4aFFGuO/51dmIL6Eyx8XroIR4FVwdCNqQzszjM00+aSdYw6
+	ZOX3qf5ypJKINdjoqrnTl5YUqPFFduk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-K1t_OTENORi1A-IFlHrJWg-1; Wed,
+ 13 Dec 2023 10:25:59 -0500
+X-MC-Unique: K1t_OTENORi1A-IFlHrJWg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD5CC890FCD;
-	Wed, 13 Dec 2023 15:26:11 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 797C53811F42;
+	Wed, 13 Dec 2023 15:25:50 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2EE7F40C6EB9;
-	Wed, 13 Dec 2023 15:26:08 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BD51451E3;
+	Wed, 13 Dec 2023 15:25:46 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>,
 	Steve French <smfrench@gmail.com>
@@ -54,9 +54,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 31/39] netfs: Allow buffered shared-writeable mmap through netfs_page_mkwrite()
-Date: Wed, 13 Dec 2023 15:23:41 +0000
-Message-ID: <20231213152350.431591-32-dhowells@redhat.com>
+Subject: [PATCH v4 27/39] netfs: Allocate multipage folios in the writepath
+Date: Wed, 13 Dec 2023 15:23:37 +0000
+Message-ID: <20231213152350.431591-28-dhowells@redhat.com>
 In-Reply-To: <20231213152350.431591-1-dhowells@redhat.com>
 References: <20231213152350.431591-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,11 +66,10 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Provide an entry point to delegate a filesystem's ->page_mkwrite() to.
-This checks for conflicting writes, then attached any netfs-specific group
-marking (e.g. ceph snap) to the page to be considered dirty.
+Allocate a multipage folio when copying data into the pagecache if possible
+if there's sufficient data to warrant it.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Jeff Layton <jlayton@kernel.org>
@@ -78,90 +77,33 @@ cc: linux-cachefs@redhat.com
 cc: linux-fsdevel@vger.kernel.org
 cc: linux-mm@kvack.org
 ---
- fs/netfs/buffered_write.c | 59 +++++++++++++++++++++++++++++++++++++++
- include/linux/netfs.h     |  4 +++
- 2 files changed, 63 insertions(+)
+ fs/netfs/buffered_write.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index f244123ab568..70cb8e98d068 100644
+index 6e7f06d9962d..b76688e98f81 100644
 --- a/fs/netfs/buffered_write.c
 +++ b/fs/netfs/buffered_write.c
-@@ -416,3 +416,62 @@ ssize_t netfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	return ret;
+@@ -84,14 +84,19 @@ static enum netfs_how_to_modify netfs_how_to_modify(struct netfs_inode *ctx,
  }
- EXPORT_SYMBOL(netfs_file_write_iter);
-+
-+/*
-+ * Notification that a previously read-only page is about to become writable.
-+ * Note that the caller indicates a single page of a multipage folio.
-+ */
-+vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_group)
-+{
-+	struct folio *folio = page_folio(vmf->page);
-+	struct file *file = vmf->vma->vm_file;
-+	struct inode *inode = file_inode(file);
-+	vm_fault_t ret = VM_FAULT_RETRY;
-+	int err;
-+
-+	_enter("%lx", folio->index);
-+
-+	sb_start_pagefault(inode->i_sb);
-+
-+	if (folio_wait_writeback_killable(folio))
-+		goto out;
-+
-+	if (folio_lock_killable(folio) < 0)
-+		goto out;
-+
-+	/* Can we see a streaming write here? */
-+	if (WARN_ON(!folio_test_uptodate(folio))) {
-+		ret = VM_FAULT_SIGBUS | VM_FAULT_LOCKED;
-+		goto out;
-+	}
-+
-+	if (netfs_folio_group(folio) != netfs_group) {
-+		folio_unlock(folio);
-+		err = filemap_fdatawait_range(inode->i_mapping,
-+					      folio_pos(folio),
-+					      folio_pos(folio) + folio_size(folio));
-+		switch (err) {
-+		case 0:
-+			ret = VM_FAULT_RETRY;
-+			goto out;
-+		case -ENOMEM:
-+			ret = VM_FAULT_OOM;
-+			goto out;
-+		default:
-+			ret = VM_FAULT_SIGBUS;
-+			goto out;
-+		}
-+	}
-+
-+	if (folio_test_dirty(folio))
-+		trace_netfs_folio(folio, netfs_folio_trace_mkwrite_plus);
-+	else
-+		trace_netfs_folio(folio, netfs_folio_trace_mkwrite);
-+	netfs_set_group(folio, netfs_group);
-+	file_update_time(file);
-+	ret = VM_FAULT_LOCKED;
-+out:
-+	sb_end_pagefault(inode->i_sb);
-+	return ret;
-+}
-+EXPORT_SYMBOL(netfs_page_mkwrite);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 702b864a4993..46c0a6b45bb8 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -403,6 +403,10 @@ void netfs_clear_inode_writeback(struct inode *inode, const void *aux);
- void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length);
- bool netfs_release_folio(struct folio *folio, gfp_t gfp);
  
-+/* VMA operations API. */
-+vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_group);
+ /*
+- * Grab a folio for writing and lock it.
++ * Grab a folio for writing and lock it.  Attempt to allocate as large a folio
++ * as possible to hold as much of the remaining length as possible in one go.
+  */
+ static struct folio *netfs_grab_folio_for_write(struct address_space *mapping,
+ 						loff_t pos, size_t part)
+ {
+ 	pgoff_t index = pos / PAGE_SIZE;
++	fgf_t fgp_flags = FGP_WRITEBEGIN;
+ 
+-	return __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
++	if (mapping_large_folio_support(mapping))
++		fgp_flags |= fgf_set_order(pos % PAGE_SIZE + part);
 +
-+/* (Sub)request management API. */
- void netfs_subreq_terminated(struct netfs_io_subrequest *, ssize_t, bool);
- void netfs_get_subrequest(struct netfs_io_subrequest *subreq,
- 			  enum netfs_sreq_ref_trace what);
++	return __filemap_get_folio(mapping, index, fgp_flags,
+ 				   mapping_gfp_mask(mapping));
+ }
+ 
 
