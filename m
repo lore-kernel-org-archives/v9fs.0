@@ -1,43 +1,25 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E3331A64
-	for <v9fs@lists.linux.dev>; Fri, 15 Dec 2023 13:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88595199A5;
+	Mon, 18 Dec 2023 11:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="L+tc9AV7";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="L+tc9AV7"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id B016FC01D; Fri, 15 Dec 2023 14:30:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1702647008; bh=b20vpyg00WVKyH6ybuqsHsgOXZgJ2nb71oRe/G0ycJk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkL3jKDV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46498C433C7;
+	Mon, 18 Dec 2023 11:05:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702897558;
+	bh=WTNLubnfyisNRdtZDWlLkSm9Rz36/vqI/xP24+xTDcM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L+tc9AV77ZtJkbnBcyJo/SQdJxBCl8J00AjfEfjPJmuB3W7CjYkI69XJqbf38qbVT
-	 iN+BVGUZw1IYvZhn1OkWsRzzuwmEc7GnlsnkX4mCFTRmV6WY6RBx7G5X6Vfhpk3XWX
-	 wBNxZF1klac/LiiNCkqMeYfLQsZz1fiAjDDp+YL/ln7seybyTXVhRQdhKNBhbPDqtD
-	 kQrnngf4YY5S7T1KSuB565s8Mj6l7wUDoBCP9f/DxD8OojN/sRJRPVDJTiNwnqRgAP
-	 XW+EhZXAuxEGyJR4xoprwR5o8PgJeUaAxnDl+jDKDdW2/e0t2NfYEWTLP2bGT8gWku
-	 LoIkI9axCVNMA==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 4FAF9C009;
-	Fri, 15 Dec 2023 14:30:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1702647008; bh=b20vpyg00WVKyH6ybuqsHsgOXZgJ2nb71oRe/G0ycJk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L+tc9AV77ZtJkbnBcyJo/SQdJxBCl8J00AjfEfjPJmuB3W7CjYkI69XJqbf38qbVT
-	 iN+BVGUZw1IYvZhn1OkWsRzzuwmEc7GnlsnkX4mCFTRmV6WY6RBx7G5X6Vfhpk3XWX
-	 wBNxZF1klac/LiiNCkqMeYfLQsZz1fiAjDDp+YL/ln7seybyTXVhRQdhKNBhbPDqtD
-	 kQrnngf4YY5S7T1KSuB565s8Mj6l7wUDoBCP9f/DxD8OojN/sRJRPVDJTiNwnqRgAP
-	 XW+EhZXAuxEGyJR4xoprwR5o8PgJeUaAxnDl+jDKDdW2/e0t2NfYEWTLP2bGT8gWku
-	 LoIkI9axCVNMA==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 6ce99df9;
-	Fri, 15 Dec 2023 13:29:58 +0000 (UTC)
-Date: Fri, 15 Dec 2023 22:29:43 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Brauner <brauner@kernel.org>
+	b=KkL3jKDVwOB5N0/qhs/9JjBN+vonQpMsSa26ZBjSeCRCaulbO8roJteQgbMujfTXZ
+	 3Pk24oNiYkl7kaOJH4+l0B3vvYwfgHe+iQlHgl15JWbDlqDuqUGQCkNX74IYjTVe8/
+	 WAi00oyNO8Glx7CMmqcF7w8ioqLSdeBZVo+RVjflOBISKeZQ9jhqo6YoYcd635YauS
+	 Nsvk9hyOKA3yRH7fpSLt2AJb6VqO2taL90lrMsyF44GZGUESZwPaw3Y5N/W7g2DNrx
+	 nBHyVnuPNVNNsyf1euBS6V7GssBV7vDeg58lO1OxEBSBMWuW+9Gg4JBPJiuck8Y32G
+	 /lwgRnx87ZYWw==
+Date: Mon, 18 Dec 2023 12:05:50 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
 Cc: Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
 	David Howells <dhowells@redhat.com>,
 	Matthew Wilcox <willy@infradead.org>,
@@ -53,9 +35,10 @@ Cc: Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v4 00/39] netfs, afs, 9p: Delegate high-level I/O to
  netfslib
-Message-ID: <ZXxUx_nh4HNTaDJx@codewreck.org>
+Message-ID: <20231218-gegen-unumstritten-fb0aeb7519af@brauner>
 References: <20231213152350.431591-1-dhowells@redhat.com>
  <20231215-einziehen-landen-94a63dd17637@brauner>
+ <ZXxUx_nh4HNTaDJx@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -64,36 +47,14 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231215-einziehen-landen-94a63dd17637@brauner>
+In-Reply-To: <ZXxUx_nh4HNTaDJx@codewreck.org>
 
-Christian Brauner wrote on Fri, Dec 15, 2023 at 01:03:14PM +0100:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> branch: vfs.netfs
+On Fri, Dec 15, 2023 at 10:29:43PM +0900, Dominique Martinet wrote:
+> Christian Brauner wrote on Fri, Dec 15, 2023 at 01:03:14PM +0100:
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+> > branch: vfs.netfs
+> 
+> This doesn't seem to build:
 
-This doesn't seem to build:
--------
-  CC [M]  fs/netfs/buffered_write.o
-fs/netfs/buffered_write.c: In function ‘netfs_kill_pages’:
-fs/netfs/buffered_write.c:569:17: error: implicit declaration of function ‘generic_error_remove_folio’; did you mean ‘generic_error_remove_page’? [-Werror=implicit-function-declaration]
-  569 |                 generic_error_remove_folio(mapping, folio);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                 generic_error_remove_page
-cc1: some warnings being treated as errors
--------
-
-This helper is present in -next as commit af7628d6ec19 ("fs: convert
-error_remove_page to error_remove_folio") (as of now's next), apparently
-from akpm's mm-stable:
-git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm mm-stable
-
-(which obviously have some conflict in afs when trying to merge...)
-
-
-I'll go back to dhowell's tree to finally test 9p a bit,
-sorry for lack of involvement just low on time all around.
-
-
-Good luck (?),
--- 
-Dominique Martinet | Asmadeus
+Yeah, I'm aware. That's why I didn't push it out. I couldn't finish the
+rebase completely on Friday.
