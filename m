@@ -1,36 +1,36 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F202780DFB
-	for <v9fs@lists.linux.dev>; Thu, 21 Dec 2023 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CE381E32
+	for <v9fs@lists.linux.dev>; Thu, 21 Dec 2023 13:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZ+nRmci"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DOIqpvnc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703165135;
+	s=mimecast20190719; t=1703165138;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/poDr8aeuvYsVSyxBxV9eTNahVNZ3naX9lqBidu9TAg=;
-	b=JZ+nRmci9qFhAKSq1iOnyHC9wMxflZL4F/7WyZjsEIDLZ4TmWNTZVd/gua5WpMF6s23Ovh
-	Q6ZpSM4fAeS5I+gpkjl8oxb2qkXtffPQxj0fpJqVNiUWeprPfYU6t4k3m47yXDNPfqhcmk
-	RanLI3qam81EisKm8vwmZe7Dn28Qc6s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-pEi7nM3GOhe0QMRKh-q7ig-1; Thu,
- 21 Dec 2023 08:25:30 -0500
-X-MC-Unique: pEi7nM3GOhe0QMRKh-q7ig-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	bh=X8K+OvIZVFEHRX7sH3CruOEYZX1ff0eup403Lbxotk8=;
+	b=DOIqpvnc6Xa25Ls6/OQxl5WYGvIKOXwpirQK1KIAVYLZEGc34231L3yJJnO4AU/S6TiSXB
+	R7SSew9coBMK7BdVNVXfkrg/IDzRGvbk11tewdjeKRpZ+z1lj1ikSVe5QZiY4+hE5iZdRm
+	GW5ruC9LWnTKiMUS0TLHclp1kgRX4G0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-39-Xy-IC_YbNmSx5qxFD0MfpQ-1; Thu, 21 Dec 2023 08:25:35 -0500
+X-MC-Unique: Xy-IC_YbNmSx5qxFD0MfpQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD5113830089;
-	Thu, 21 Dec 2023 13:25:29 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C94A85CEA7;
+	Thu, 21 Dec 2023 13:25:22 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.39.195.169])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 00987C15968;
-	Thu, 21 Dec 2023 13:25:26 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id ACF17492BC6;
+	Thu, 21 Dec 2023 13:25:18 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>,
 	Steve French <smfrench@gmail.com>
@@ -54,9 +54,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 22/40] netfs: Make the refcounting of netfs_begin_read() easier to use
-Date: Thu, 21 Dec 2023 13:23:17 +0000
-Message-ID: <20231221132400.1601991-23-dhowells@redhat.com>
+Subject: [PATCH v5 20/40] netfs: Add a hook to allow tell the netfs to update its i_size
+Date: Thu, 21 Dec 2023 13:23:15 +0000
+Message-ID: <20231221132400.1601991-21-dhowells@redhat.com>
 In-Reply-To: <20231221132400.1601991-1-dhowells@redhat.com>
 References: <20231221132400.1601991-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,11 +66,10 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Make the refcounting of netfs_begin_read() easier to use by not eating the
-caller's ref on the netfs_io_request it's given.  This makes it easier to
-use when we need to look in the request struct after.
+Add a hook for netfslib's write helpers to call to tell the network
+filesystem that it should update its i_size.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
@@ -78,143 +77,29 @@ cc: linux-cachefs@redhat.com
 cc: linux-fsdevel@vger.kernel.org
 cc: linux-mm@kvack.org
 ---
- fs/netfs/buffered_read.c     |  6 +++++-
- fs/netfs/io.c                | 28 +++++++++++++---------------
- include/trace/events/netfs.h |  9 +++++----
- 3 files changed, 23 insertions(+), 20 deletions(-)
+ include/linux/netfs.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 751556faa70b..6b9a44cafbac 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -210,6 +210,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 		;
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index d08bd37bc3ce..f87193fa0f16 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -243,6 +243,7 @@ struct netfs_request_ops {
+ 	void (*free_request)(struct netfs_io_request *rreq);
+ 	void (*free_subrequest)(struct netfs_io_subrequest *rreq);
  
- 	netfs_begin_read(rreq, false);
-+	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
- 	return;
- 
- cleanup_free:
-@@ -260,7 +261,9 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	iov_iter_xarray(&rreq->iter, ITER_DEST, &mapping->i_pages,
- 			rreq->start, rreq->len);
- 
--	return netfs_begin_read(rreq, true);
-+	ret = netfs_begin_read(rreq, true);
-+	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
-+	return ret;
- 
- discard:
- 	netfs_put_request(rreq, false, netfs_rreq_trace_put_discard);
-@@ -429,6 +432,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	ret = netfs_begin_read(rreq, true);
- 	if (ret < 0)
- 		goto error;
-+	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
- 
- have_folio:
- 	ret = folio_wait_fscache_killable(folio);
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index e228bfb530ea..e83ef5835d25 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -362,6 +362,7 @@ static void netfs_rreq_assess(struct netfs_io_request *rreq, bool was_async)
- 
- 	netfs_rreq_unlock_folios(rreq);
- 
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_wake_ip);
- 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
- 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
- 
-@@ -657,7 +658,6 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 
- 	if (rreq->len == 0) {
- 		pr_err("Zero-sized read [R=%x]\n", rreq->debug_id);
--		netfs_put_request(rreq, false, netfs_rreq_trace_put_zero_len);
- 		return -EIO;
- 	}
- 
-@@ -665,12 +665,10 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 
- 	INIT_WORK(&rreq->work, netfs_rreq_work);
- 
--	if (sync)
--		netfs_get_request(rreq, netfs_rreq_trace_get_hold);
--
- 	/* Chop the read into slices according to what the cache and the netfs
- 	 * want and submit each one.
- 	 */
-+	netfs_get_request(rreq, netfs_rreq_trace_get_for_outstanding);
- 	atomic_set(&rreq->nr_outstanding, 1);
- 	io_iter = rreq->io_iter;
- 	do {
-@@ -680,25 +678,25 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 	} while (rreq->submitted < rreq->len);
- 
- 	if (sync) {
--		/* Keep nr_outstanding incremented so that the ref always belongs to
--		 * us, and the service code isn't punted off to a random thread pool to
--		 * process.
-+		/* Keep nr_outstanding incremented so that the ref always
-+		 * belongs to us, and the service code isn't punted off to a
-+		 * random thread pool to process.  Note that this might start
-+		 * further work, such as writing to the cache.
- 		 */
--		for (;;) {
--			wait_var_event(&rreq->nr_outstanding,
--				       atomic_read(&rreq->nr_outstanding) == 1);
-+		wait_var_event(&rreq->nr_outstanding,
-+			       atomic_read(&rreq->nr_outstanding) == 1);
-+		if (atomic_dec_and_test(&rreq->nr_outstanding))
- 			netfs_rreq_assess(rreq, false);
--			if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags))
--				break;
--			cond_resched();
--		}
++	/* Read request handling */
+ 	void (*expand_readahead)(struct netfs_io_request *rreq);
+ 	bool (*clamp_length)(struct netfs_io_subrequest *subreq);
+ 	void (*issue_read)(struct netfs_io_subrequest *subreq);
+@@ -250,6 +251,9 @@ struct netfs_request_ops {
+ 	int (*check_write_begin)(struct file *file, loff_t pos, unsigned len,
+ 				 struct folio **foliop, void **_fsdata);
+ 	void (*done)(struct netfs_io_request *rreq);
 +
-+		trace_netfs_rreq(rreq, netfs_rreq_trace_wait_ip);
-+		wait_on_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS,
-+			    TASK_UNINTERRUPTIBLE);
++	/* Modification handling */
++	void (*update_i_size)(struct inode *inode, loff_t i_size);
+ };
  
- 		ret = rreq->error;
- 		if (ret == 0 && rreq->submitted < rreq->len) {
- 			trace_netfs_failure(rreq, NULL, ret, netfs_fail_short_read);
- 			ret = -EIO;
- 		}
--		netfs_put_request(rreq, false, netfs_rreq_trace_put_hold);
- 	} else {
- 		/* If we decrement nr_outstanding to 0, the ref belongs to us. */
- 		if (atomic_dec_and_test(&rreq->nr_outstanding))
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 4ea4e34d279f..6daadf2aac8a 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -34,7 +34,9 @@
- 	EM(netfs_rreq_trace_free,		"FREE   ")	\
- 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
- 	EM(netfs_rreq_trace_unlock,		"UNLOCK ")	\
--	E_(netfs_rreq_trace_unmark,		"UNMARK ")
-+	EM(netfs_rreq_trace_unmark,		"UNMARK ")	\
-+	EM(netfs_rreq_trace_wait_ip,		"WAIT-IP")	\
-+	E_(netfs_rreq_trace_wake_ip,		"WAKE-IP")
- 
- #define netfs_sreq_sources					\
- 	EM(NETFS_FILL_WITH_ZEROES,		"ZERO")		\
-@@ -65,14 +67,13 @@
- 	E_(netfs_fail_prepare_write,		"prep-write")
- 
- #define netfs_rreq_ref_traces					\
--	EM(netfs_rreq_trace_get_hold,		"GET HOLD   ")	\
-+	EM(netfs_rreq_trace_get_for_outstanding,"GET OUTSTND")	\
- 	EM(netfs_rreq_trace_get_subreq,		"GET SUBREQ ")	\
- 	EM(netfs_rreq_trace_put_complete,	"PUT COMPLT ")	\
- 	EM(netfs_rreq_trace_put_discard,	"PUT DISCARD")	\
- 	EM(netfs_rreq_trace_put_failed,		"PUT FAILED ")	\
--	EM(netfs_rreq_trace_put_hold,		"PUT HOLD   ")	\
-+	EM(netfs_rreq_trace_put_return,		"PUT RETURN ")	\
- 	EM(netfs_rreq_trace_put_subreq,		"PUT SUBREQ ")	\
--	EM(netfs_rreq_trace_put_zero_len,	"PUT ZEROLEN")	\
- 	E_(netfs_rreq_trace_new,		"NEW        ")
- 
- #define netfs_sreq_ref_traces					\
+ /*
 
