@@ -1,61 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0652D61A;
-	Wed, 20 Dec 2023 13:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXTLzOXE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69AFC433C8;
-	Wed, 20 Dec 2023 13:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703078770;
-	bh=OGDFupW/lrJ4In3Ae6A2r5TchkKyHnaqzc41395ls0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aXTLzOXEK4YxbwzzbwJkVxUDiunCKJ8geO0vL45tzk2Dm59xQ+a5u/N0nI9TbepRI
-	 e2lFT8vxSf5+h9gXtdmT/0tQnjzn9DqjFAxYSbXe+efImEgqdyzElr8azPk5erWORF
-	 amI/iOrk0bBTZWbwHdtaU6RugKi4SasZF09nwa7nIpGBZysntJReLOZuWvIBuT8Gst
-	 zlPcgklGGRT7wZ88sfiu7xGfjc2y/po+9ewYgJqJMje+0q4toXqPKHS6VcA4ji+r+x
-	 SnZVNRKZSNz8P1WQcihDJD9aI2Dp4GYowWZRPDdAX1rSwMP/trbIWuZys6v0Y1P/Ld
-	 PGkubzZpcx06Q==
-Date: Wed, 20 Dec 2023 14:26:03 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>,
-	Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, linux-cachefs@redhat.com,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 00/39] netfs, afs, 9p: Delegate high-level I/O to
- netfslib
-Message-ID: <20231220-abgepfiffen-realisieren-5aa54fba2453@brauner>
-References: <ZXxUx_nh4HNTaDJx@codewreck.org>
- <20231213152350.431591-1-dhowells@redhat.com>
- <20231215-einziehen-landen-94a63dd17637@brauner>
- <1384979.1703066666@warthog.procyon.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103806A33D
+	for <v9fs@lists.linux.dev>; Thu, 21 Dec 2023 11:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id CB1C31868D3B;
+	Thu, 21 Dec 2023 14:01:58 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id gt00sCmcMSre; Thu, 21 Dec 2023 14:01:58 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 7DA651868CE0;
+	Thu, 21 Dec 2023 14:01:58 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GtlX3tkcyl9n; Thu, 21 Dec 2023 14:01:58 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.177.185.102])
+	by mail.astralinux.ru (Postfix) with ESMTPS id E00AB1867B5E;
+	Thu, 21 Dec 2023 14:01:57 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.177.232.135])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4SwnYx0D5MzfYkm;
+	Thu, 21 Dec 2023 14:01:56 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	v9fs@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 0/1] 9p/net: fix possible memory leak in p9_check_errors()
+Date: Thu, 21 Dec 2023 14:01:21 +0300
+Message-Id: <20231221110122.9838-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1384979.1703066666@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 20, 2023 at 10:04:26AM +0000, David Howells wrote:
-> Dominique Martinet <asmadeus@codewreck.org> wrote:
-> 
-> > I'll go back to dhowell's tree to finally test 9p a bit,
-> > sorry for lack of involvement just low on time all around.
-> 
-> I've rebased my tree on -rc6 rather than linux-next for Christian to pull.
+Syzkaller reports "memory leak in p9pdu_readf" in 5.10 stable releases.
+I've attached reproducers in Bugzilla [1].
 
-Pulled. Thank you, David. It's on vfs.netfs.
+The problem has been fixed by the following patch which can be applied
+to the 5.10 branch.
+The fix is already present in all stable branches starting from 5.15.
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D218235
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
