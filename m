@@ -1,87 +1,99 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE9EA49
-	for <v9fs@lists.linux.dev>; Fri, 22 Dec 2023 01:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508691798F
+	for <v9fs@lists.linux.dev>; Fri, 22 Dec 2023 11:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="UHLaNfBU";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qpWJAUAn"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 00A62C01D; Fri, 22 Dec 2023 02:07:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1703207271; bh=4ozmH151xu58IYSuMT/BMJQH629RfyPY+CsrR3SsG2s=;
-	h=Date:From:To:Cc:Subject:From;
-	b=UHLaNfBU/9fTOcuS0I4jxgafL5G5GdqRYSmC1CGmtiUpoTjH+N/QxL+FGs7968uWe
-	 9jtlAvMojqNiT6VWM/4ryF4RQwPRmWsJwivP5dyDzZsJ0I3laZvum8bDR4f/ATDlXw
-	 9U3ul0Xhh/0kF9jebzNEUW5BgkEJr85ac1Tbr8LmToJ1QfyyImPs17p8UaYrshJyTX
-	 1vksgm7lVYtdPFUbxhu0SzQ36DrFsJIygeWtZPscehusPWVwMfEExSx5siHKx2alAW
-	 lN4+T8uJ/7syC8sBblEVpNi1sUZNubxvV8WX7td5rolNUhI0Y5lukS4e85En0zMSc1
-	 oXv1Ie0Z+rgjQ==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 9408AC009;
-	Fri, 22 Dec 2023 02:07:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1703207270; bh=4ozmH151xu58IYSuMT/BMJQH629RfyPY+CsrR3SsG2s=;
-	h=Date:From:To:Cc:Subject:From;
-	b=qpWJAUAn/kfKjL+tKGxlgjWFtAbCKpeJmdHiwCDFbAXQ8e3PZMaOHXkYtXxLbrwKA
-	 BH+6FuGhdPGG6mOt0TPflzeouav3j2MMUzP8HuPA99+atmv/5nrPoWxqvW9CyIn+Zd
-	 UHtvoa/IGxXQkjb7w8OYpn8cN4D9+KCutuJjrvngPvNm5mgzO54frYMnZIR/Lj/+uH
-	 6EfWMKwlcTMgHTPnP81OGxtUR+V/YD/wzObQkfeOn30zvd8nG7q95CXdmgJ2oGxPck
-	 U/fY1aUnLgQ+ePJTttgrxzjjcP6kNrDNnTV9WKR2uD3xbiyAesSV9eMMuI1ijiE/YY
-	 JqPenbqWqpdiQ==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 46d12d02;
-	Fri, 22 Dec 2023 01:07:45 +0000 (UTC)
-Date: Fri, 22 Dec 2023 10:07:30 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] 9p fixes for 6.7-rc7
-Message-ID: <ZYThUpCUMJUMP3Oy@codewreck.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CRURTACp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703245801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b2Kc5SDyR2sa98m7GGfG0OJjTCYVmXAF9D404GjbeCw=;
+	b=CRURTACpBzbE6yVfJaX4KXc/6LUeCQPtt4vM38/xiKaLx/ocYmIOXn4SkqIQKGb2z8ORuT
+	r70yfFF5lqiCTV3ETWJivYzIni+PTp/unvK267+sX5+kN8/rW9fPz9JXGPQuUcz2PIwdGb
+	ywxsydgxB1JzfnYWN44BEoxrNu1wh/M=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-399-gMeN3nQqMpKa8ASINIbPcw-1; Fri, 22 Dec 2023 06:49:57 -0500
+X-MC-Unique: gMeN3nQqMpKa8ASINIbPcw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2C45868A20;
+	Fri, 22 Dec 2023 11:49:55 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.39.195.169])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 71FCC2026D66;
+	Fri, 22 Dec 2023 11:49:52 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20231221230153.GA1607352@dev-arch.thelio-3990X>
+References: <20231221230153.GA1607352@dev-arch.thelio-3990X> <20231221132400.1601991-1-dhowells@redhat.com> <20231221132400.1601991-38-dhowells@redhat.com>
+To: Nathan Chancellor <nathan@kernel.org>,
+    Anna Schumaker <Anna.Schumaker@Netapp.com>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Steve French <smfrench@gmail.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 37/40] netfs: Optimise away reads above the point at which there can be no data
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2202547.1703245791.1@warthog.procyon.org.uk>
+Date: Fri, 22 Dec 2023 11:49:51 +0000
+Message-ID: <2202548.1703245791@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-The following changes since commit 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab:
+Nathan Chancellor <nathan@kernel.org> wrote:
 
-  Linux 6.7-rc3 (2023-11-26 19:59:33 -0800)
+> It appears that ctx->inode.i_mapping is NULL in netfs_inode_init(). This
+> patch appears to cure the problem for me but I am not sure if it is
+> proper or not.
 
-are available in the Git repository at:
+I'm not sure that's the best way.  It kind of indicates that
+nfs_netfs_inode_init() is not being called in the right place - it should
+really be called after alloc_inode() has called inode_init_always().
 
-  https://github.com/martinetd/linux tags/9p-for-6.7-rc7
+However, mapping_set_release_always() makes ->release_folio() and
+->invalidate_folio() always called for an inode's folios, even if PG_private
+is not set - the idea being that this allows netfslib to update the
+"zero_point" when a page we've written to the server gets invalidated here,
+thereby requiring us to go fetch it again.
 
-for you to fetch changes up to ff49bf1867578f23a5ffdd38f927f6e1e16796c4:
+Now, NFS doesn't make use of this feature and fscache and cachefiles don't use
+it directly, so we might not want to call mapping_set_release_always() for
+NFS.
 
-  net: 9p: avoid freeing uninit memory in p9pdu_vreadf (2023-12-13 05:44:30 +0900)
+I'm not sure NFS can even reliably make use of it unless it's using a lease
+unless it gets change notifications from the server.
 
-----------------------------------------------------------------
-Two small fixes scheduled for stable trees
+So I'm thinking of applying your patch but add a comment to say why we're
+doing it.  A better way, though, is to move the call to nfs_netfs_inode_init()
+and give it a flag to say whether or not we want the facility.
 
-A tracepoint fix that's been reading past the end of messages forever,
-but semi-recently also went over the end of the buffer.
-And a potential incorrectly freeing garbage in pdu parsing error path
+David
 
-----------------------------------------------------------------
-Fedor Pchelkin (1):
-      net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-
-JP Kobryn (1):
-      9p: prevent read overrun in protocol dump tracepoint
-
- include/trace/events/9p.h | 11 +++++++----
- net/9p/protocol.c         | 17 +++++++++++++----
- 2 files changed, 20 insertions(+), 8 deletions(-)
-
-Cheers,
--- 
-Dominique
