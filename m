@@ -1,113 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542F1125A4
-	for <v9fs@lists.linux.dev>; Fri, 29 Dec 2023 16:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1LMHD63"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DDFC433C8;
-	Fri, 29 Dec 2023 16:16:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703866611;
-	bh=r+rcYgYIBVZ1rhwkMC4SW/XjhMxWtpxtlcug89+xlRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F1LMHD63R9rSvzzYGI6p0Na5D+sNWSApLpBAO6yioEx4YxelFGMDlrAWC0HaEV7Nu
-	 64LvRsba7duqcnfgbOuGu27sEI+TYiANu2N9UR0HaWELilEnDATb5MgWZODZRxXNPP
-	 czS0kbqmHv80nt6bXd0/yMi0lDvqocUo2fOzXC//eo5mnXczdf+iLj9vgWrRUcJhpY
-	 9Vg9EZkmJ/mTOI5LZQGxbeDSTXWPSrihIPrWRJXuDLi26twCf85ANLMKYK/r2uoxc4
-	 I2e/eDSsu7Yo5qNlqdhBnkDeHREHFeVSAUIn9+g/7YWmaqhMpkGAo8kZqP/K6FIa09
-	 U2ycdRWyAMipw==
-Date: Fri, 29 Dec 2023 10:16:48 -0600
-From: Eric Van Hensbergen <ericvh@kernel.org>
-To: asmadeus@codewreck.org
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
-	ericvh@gmail.com
-Subject: Re: cache fixes (redux)
-Message-ID: <ZY7w8NJdQ6CO8nQF@FV7GG9FTHL>
-References: <CAFkjPTk-kgjejhMs1q5XB_PMhVk8awhevkPkxQwQCPNcUSwdAQ@mail.gmail.com>
- <ZY2PQkJ6jq4dx9p_@FV7GG9FTHL>
- <ZY3tJ0eD73Gmy_PQ@codewreck.org>
- <2850709.f7ZBceQk0b@silver>
- <ZY7An6VBb0GCEMFu@codewreck.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340BF1095C
+	for <v9fs@lists.linux.dev>; Tue,  2 Jan 2024 14:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0VzqtEDH_1704204253;
+Received: from 192.168.33.9(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VzqtEDH_1704204253)
+          by smtp.aliyun-inc.com;
+          Tue, 02 Jan 2024 22:04:14 +0800
+Message-ID: <750e8251-ba30-4f53-a17b-73c79e3739ce@linux.alibaba.com>
+Date: Tue, 2 Jan 2024 22:04:12 +0800
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <ZY7An6VBb0GCEMFu@codewreck.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 33/40] netfs, cachefiles: Pass upper bound length to
+ allow expansion
+To: David Howells <dhowells@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Marc Dionne <marc.dionne@auristor.com>, Paulo Alcantara <pc@manguebit.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+ Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
+ Steve French <smfrench@gmail.com>
+References: <20231221132400.1601991-1-dhowells@redhat.com>
+ <20231221132400.1601991-34-dhowells@redhat.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20231221132400.1601991-34-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 29, 2023 at 09:50:39PM +0900, asmadeus@codewreck.org wrote:
+Hi David,
+
+On 2023/12/21 21:23, David Howells wrote:
+> Make netfslib pass the maximum length to the ->prepare_write() op to tell
+> the cache how much it can expand the length of a write to.  This allows a
+> write to the server at the end of a file to be limited to a few bytes
+> whilst writing an entire block to the cache (something required by direct
+> I/O).
 > 
-> It's not strictly needed though; in practice the vfs can handle
-> duplicate i_ino as long as appropriate functions are used for iget
-> (iget5_locked in fs/9p/vfs_inode.c); although now I'm thinking about it
-> that won't work for programs like tar that'll notice the inode number is
-> identical and consider the second file to be a hard link of the first...
->
-
-This is the problem though, iget functions use lookup functions which
-right now compare a bunch of state requiring a getattr to validate.  This
-is one of the things I was trying to eliminate.  The other option would
-be putting some of these additional bits (device, i_generation, etc.) in 
-the qid.
-
->
-> I guess we could swipe it under the rug by making the inode number a
-> hash of everything in qid.path, and pretend collisions never happenTM?
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> cc: linux-cachefs@redhat.com
+> cc: linux-fsdevel@vger.kernel.org
+> cc: linux-mm@kvack.org
+> ---
+>   fs/cachefiles/internal.h |  2 +-
+>   fs/cachefiles/io.c       | 10 ++++++----
+>   fs/cachefiles/ondemand.c |  2 +-
+>   fs/netfs/fscache_io.c    |  2 +-
+>   fs/netfs/io.c            |  2 +-
+>   fs/netfs/objects.c       |  1 +
+>   fs/netfs/output.c        | 25 ++++++++++---------------
+>   fs/smb/client/fscache.c  |  2 +-
+>   include/linux/netfs.h    |  5 +++--
+>   9 files changed, 25 insertions(+), 26 deletions(-)
 > 
+> diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+> index 2ad58c465208..1af48d576a34 100644
+> --- a/fs/cachefiles/internal.h
+> +++ b/fs/cachefiles/internal.h
+> @@ -233,7 +233,7 @@ extern bool cachefiles_begin_operation(struct netfs_cache_resources *cres,
+>   				       enum fscache_want_state want_state);
+>   extern int __cachefiles_prepare_write(struct cachefiles_object *object,
+>   				      struct file *file,
+> -				      loff_t *_start, size_t *_len,
+> +				      loff_t *_start, size_t *_len, size_t upper_len,
+>   				      bool no_space_allocated_yet);
+>   extern int __cachefiles_write(struct cachefiles_object *object,
+>   			      struct file *file,
+> diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+> index 009d23cd435b..bffffedce4a9 100644
+> --- a/fs/cachefiles/io.c
+> +++ b/fs/cachefiles/io.c
+> @@ -518,7 +518,7 @@ cachefiles_prepare_ondemand_read(struct netfs_cache_resources *cres,
+>    */
+>   int __cachefiles_prepare_write(struct cachefiles_object *object,
+>   			       struct file *file,
+> -			       loff_t *_start, size_t *_len,
+> +			       loff_t *_start, size_t *_len, size_t upper_len,
+>   			       bool no_space_allocated_yet)
+>   {
+>   	struct cachefiles_cache *cache = object->volume->cache;
+> @@ -530,6 +530,8 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>   	down = start - round_down(start, PAGE_SIZE);
+>   	*_start = start - down;
+>   	*_len = round_up(down + len, PAGE_SIZE);
+> +	if (down < start || *_len > upper_len)
+> +		return -ENOBUFS;
 
-feels wrong, hashes always have collisions and it makes me uncomfortable.
-I know some of the other on disk file systems have moved to 128-bit inodes,
-does that help or just push out the problem (or make it less likely I suppose).
-The combo of qid.path and qid.version is probably a pretty good mix, if
-qid.version is some hash on time then the likelyhood of collision goes way
-down (but notably isn't zero..) and servers don't always populate qid.version,
-but that's something to fix server side.
- 
-> 
-> ... Actually didn't think it'd be this easy to reproduce, but ext4
-> reliably recyles the same inodes after unlink:
-> h
-> # touch a b c
-> # ls -li a b c
-> 357 -rw-r--r--. 1 root root 0 Dec 29 21:39 a
-> 365 -rw-r--r--. 1 root root 0 Dec 29 21:39 b
-> 366 -rw-r--r--. 1 root root 0 Dec 29 21:39 c
-> # rm -f a b c
-> # touch new
-> # ls -li new
-> 357 -rw-r--r--. 1 root root 0 Dec 29 21:40 new
-> # rm -f new
-> # touch again
-> # ls -li again
-> 357 -rw-r--r--. 1 root root 0 Dec 29 21:40 again
-> 
-> (works even if I actually write something into the files and sync them)
->
-...
-> 
-> If the file's still open, it's not removed from the fs -- we're
-> guaranted the inode won't come back yet.
-> For a networked file system though I was thinking of cache more than
-> open files, e.g. in the previous example a 9p client might think 'new'
-> and 'again' are the same file.
+Sorry for bothering. We just found some strange when testing
+today-next EROFS over fscache.
 
-So this is just a cache race problem potentially.  The real concern 
-being that the cache is out of date with the server and then we get
-an inode collision.  But that probably likely for other reasons with
-a loose cache -- I guess the question is how to handle for a tight
-cache.  qid.path+qid.vers maybe enough - but races still possible.
+I'm not sure the meaning of
+     if (down < start
 
->
-> I guess it doesn't really matter since we have no cache invalidation /
-> refresh logic...
->
+For example, if start is page-aligned, down == 0.
 
-Well, we have logic - its just always valid or always invalid.  The real
-question is how do we want it to work in tight mode.  Is qid valid or do
-we always need to do a stat/getattr.
+so as long as start > 0 and page-aligned, it will return
+-ENOBUFS.  Does it an intended behavior?
 
-    -eric
+Thanks,
+Gao Xiang
