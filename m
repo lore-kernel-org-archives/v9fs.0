@@ -1,358 +1,73 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08141C281
-	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 16:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=auristor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a28b2e1a13fso45267066b.3
-        for <v9fs@lists.linux.dev>; Wed, 03 Jan 2024 08:50:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704300610; x=1704905410;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KyxC65ZUHhJNVZLWmNzwaZSs3wWveWb1iIYNlwWiPu4=;
-        b=hlVvPS0Wweofe7iOzuoPN2sp+Rn73x6BYorIR9tUi/1om71eeG7BR2gp5TUieJxBlC
-         iinX+P6XpLRN/F+vujT/aswCEbsf8KX2r9gb9RTN/U/2bCfTHyfq4TDFBO5cCQeEbo76
-         mqH/eRpwAF06+BhagYTfusyEsCykIqtuZIwu7LwfpGQWvfP1YS9uMC9EDGV8bYIrA6uU
-         mrvo/b+v/cg4ATa3BtlFBs5VbpjHIOiRE00WSvxnYzdvK1ltFN7KcGdnYEw7h4v2JBCk
-         GhxsdBWTtrAcmfwAyUXoV0ZjajulALfzrRY2nfE5E39qjUDY+epi63fGl7dJM4JTggFA
-         mIbA==
-X-Gm-Message-State: AOJu0Ywwmwb76FhnhzEGYsQsYrxilE5DdnLReFEGWGU1HUYdGCTH3pNb
-	o30bDZERv38KxCHUHqx6bfUTUqdwK1yaKpWL
-X-Google-Smtp-Source: AGHT+IFxJSrtZm0osTRNk59f0WdEdIkm6v2fqxLCyCXV+2JlgSYzC4Hl4WrYPnaGxb+oigpuYG+n7Q==
-X-Received: by 2002:a17:906:374d:b0:a27:e2b2:7840 with SMTP id e13-20020a170906374d00b00a27e2b27840mr2972095ejc.33.1704300610519;
-        Wed, 03 Jan 2024 08:50:10 -0800 (PST)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
-        by smtp.gmail.com with ESMTPSA id ff15-20020a1709069c0f00b00a2801041a15sm3062638ejc.149.2024.01.03.08.50.10
-        for <v9fs@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 08:50:10 -0800 (PST)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a287be6dbc0so146573866b.1
-        for <v9fs@lists.linux.dev>; Wed, 03 Jan 2024 08:50:10 -0800 (PST)
-X-Received: by 2002:a17:907:2d9f:b0:a23:6230:6213 with SMTP id
- gt31-20020a1709072d9f00b00a2362306213mr11110657ejc.98.1704300609810; Wed, 03
- Jan 2024 08:50:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9851C687
+	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 18:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pdq+OZrD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB958C433C8;
+	Wed,  3 Jan 2024 18:09:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704305388;
+	bh=nUckmbnzJOyyjYd1SZWyF+hHhan8ASqO/qmJ4FIs76Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pdq+OZrDC4AcRCIE2iFDj9ZHdPGBFv0spbX2gxw8uJDE/cCW6leFC6gS2VKUT5vZr
+	 fEFyB73nDg+4GqsG+ICrw2cYhXydnvIxCUfLD9T9eR0q7MOoqbqKpvrrQ9ElWUIn4a
+	 VsOl3lojZyPm8R0lsaVyk17Yg4pCQfPgjsuiDNXCxq1yxkVwo25lkPKHQZcdVGHSMi
+	 HX9yMh6yUmyioeO7H1rjJt9XS0A6nSCWWvBwYCgRRhTZ9u9CCN8fo+Cx0FwekZHoze
+	 Rp/U0+dO143nyn4ef1b2xDV7iS7o/+0vaQccRy6Va6iXx3ZJzuF4dSkzWUANMANq2o
+	 BEu9YaZJ9T3CA==
+Date: Wed, 3 Jan 2024 12:09:45 -0600
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: asmadeus@codewreck.org
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
+	ericvh@gmail.com
+Subject: Re: cache fixes (redux) (a tale of many inode numbers...)
+Message-ID: <ZZWi6fbgy8oGwR1D@FV7GG9FTHL>
+References: <CAFkjPTk-kgjejhMs1q5XB_PMhVk8awhevkPkxQwQCPNcUSwdAQ@mail.gmail.com>
+ <CAFkjPT=8CZHATaraBrqAZGDKjQLOp=U1gdgteJ5jpXRGJyBojQ@mail.gmail.com>
+ <ZYzCERk_dg1-CEjb@codewreck.org>
+ <3936280.6WX1Z9CqS8@silver>
+ <ZY2PQkJ6jq4dx9p_@FV7GG9FTHL>
+ <ZY3tJ0eD73Gmy_PQ@codewreck.org>
+ <ZY7qr1Dy_aS716dC@FV7GG9FTHL>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231221132400.1601991-1-dhowells@redhat.com> <20231221132400.1601991-7-dhowells@redhat.com>
-In-Reply-To: <20231221132400.1601991-7-dhowells@redhat.com>
-From: Marc Dionne <marc.dionne@auristor.com>
-Date: Wed, 3 Jan 2024 12:49:58 -0400
-X-Gmail-Original-Message-ID: <CAB9dFdufPXLZJAKZbzSfsv4o=SzwKfeW4WGrAdFTmn6B0on63Q@mail.gmail.com>
-Message-ID: <CAB9dFdufPXLZJAKZbzSfsv4o=SzwKfeW4WGrAdFTmn6B0on63Q@mail.gmail.com>
-Subject: Re: [PATCH v5 06/40] netfs, fscache: Move /proc/fs/fscache to
- /proc/fs/netfs and put in a symlink
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Paulo Alcantara <pc@manguebit.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Ilya Dryomov <idryomov@gmail.com>, Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZY7qr1Dy_aS716dC@FV7GG9FTHL>
 
-On Thu, Dec 21, 2023 at 9:24=E2=80=AFAM David Howells <dhowells@redhat.com>=
- wrote:
->
-> Rename /proc/fs/fscache to "netfs" and make a symlink from fscache to tha=
-t.
->
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
-> cc: Christian Brauner <christian@brauner.io>
-> cc: linux-fsdevel@vger.kernel.org
-> cc: linux-cachefs@redhat.com
-> ---
->
-> Notes:
->     Changes
->     =3D=3D=3D=3D=3D=3D=3D
->     ver #5)
->      - fscache_init/exit() should depend on CONFIG_FSCACHE, not CONFIG_PR=
-OC_FS.
->
->  fs/netfs/fscache_main.c  |  8 ++------
->  fs/netfs/fscache_proc.c  | 23 ++++++++---------------
->  fs/netfs/fscache_stats.c |  4 +---
->  fs/netfs/internal.h      | 12 +++++++++++-
->  fs/netfs/main.c          | 33 +++++++++++++++++++++++++++++++++
->  fs/netfs/stats.c         | 13 +++++++------
->  include/linux/netfs.h    |  1 -
->  7 files changed, 62 insertions(+), 32 deletions(-)
->
-> diff --git a/fs/netfs/fscache_main.c b/fs/netfs/fscache_main.c
-> index 00600a4d9ce5..42e98bb523e3 100644
-> --- a/fs/netfs/fscache_main.c
-> +++ b/fs/netfs/fscache_main.c
-> @@ -62,7 +62,7 @@ unsigned int fscache_hash(unsigned int salt, const void=
- *data, size_t len)
->  /*
->   * initialise the fs caching module
->   */
-> -static int __init fscache_init(void)
-> +int __init fscache_init(void)
->  {
->         int ret =3D -ENOMEM;
->
-> @@ -94,12 +94,10 @@ static int __init fscache_init(void)
->         return ret;
->  }
->
-> -fs_initcall(fscache_init);
-> -
->  /*
->   * clean up on module removal
->   */
-> -static void __exit fscache_exit(void)
-> +void __exit fscache_exit(void)
->  {
->         _enter("");
->
-> @@ -108,5 +106,3 @@ static void __exit fscache_exit(void)
->         destroy_workqueue(fscache_wq);
->         pr_notice("FS-Cache unloaded\n");
->  }
-> -
-> -module_exit(fscache_exit);
-> diff --git a/fs/netfs/fscache_proc.c b/fs/netfs/fscache_proc.c
-> index dc3b0e9c8cce..ecd0d1edafaa 100644
-> --- a/fs/netfs/fscache_proc.c
-> +++ b/fs/netfs/fscache_proc.c
-> @@ -12,41 +12,34 @@
->  #include "internal.h"
->
->  /*
-> - * initialise the /proc/fs/fscache/ directory
-> + * Add files to /proc/fs/netfs/.
->   */
->  int __init fscache_proc_init(void)
->  {
-> -       if (!proc_mkdir("fs/fscache", NULL))
-> -               goto error_dir;
-> +       if (!proc_symlink("fs/fscache", NULL, "../netfs"))
+Okay, been delving through this code.  Most (all?) was added by
+Aneesh when he did the cache stuff and I clearly wasn't paying
+close attention a decade ago (mostly because I didn't care about
+the cache then).  In any case, I think there is a ton of code
+I am going to be able to delete (patches coming soon), but wanted
+to sanity check one thing with you folks.
 
-This should be just "netfs"
+Looking at the inode get code (which also doubles as inode creation
+code).  The inodes are hashed with qid2ino(qid) which I get to take
+the blame for because its been there for 18th years.
+If the size of the inode_tt is 64-bit, it just
+assigns the qid->path+2 (+2?) to the i_ino.  If not (presumably for 32
+bit) it sets the inode to (qid->path+2) ^ (qid->path+2 >> 32). 
 
-> +               goto error_sym;
->
-> -       if (!proc_create_seq("fs/fscache/caches", S_IFREG | 0444, NULL,
-> +       if (!proc_create_seq("fs/netfs/caches", S_IFREG | 0444, NULL,
->                              &fscache_caches_seq_ops))
->                 goto error;
->
-> -       if (!proc_create_seq("fs/fscache/volumes", S_IFREG | 0444, NULL,
-> +       if (!proc_create_seq("fs/netfs/volumes", S_IFREG | 0444, NULL,
->                              &fscache_volumes_seq_ops))
->                 goto error;
->
-> -       if (!proc_create_seq("fs/fscache/cookies", S_IFREG | 0444, NULL,
-> +       if (!proc_create_seq("fs/netfs/cookies", S_IFREG | 0444, NULL,
->                              &fscache_cookies_seq_ops))
->                 goto error;
-> -
-> -#ifdef CONFIG_FSCACHE_STATS
-> -       if (!proc_create_single("fs/fscache/stats", S_IFREG | 0444, NULL,
-> -                               fscache_stats_show))
-> -               goto error;
-> -#endif
-> -
->         return 0;
->
->  error:
->         remove_proc_entry("fs/fscache", NULL);
-> -error_dir:
-> +error_sym:
->         return -ENOMEM;
->  }
->
->  /*
-> - * clean up the /proc/fs/fscache/ directory
-> + * Clean up the /proc/fs/fscache symlink.
->   */
->  void fscache_proc_cleanup(void)
->  {
-> diff --git a/fs/netfs/fscache_stats.c b/fs/netfs/fscache_stats.c
-> index fc94e5e79f1c..aad812ead398 100644
-> --- a/fs/netfs/fscache_stats.c
-> +++ b/fs/netfs/fscache_stats.c
-> @@ -52,7 +52,7 @@ EXPORT_SYMBOL(fscache_n_culled);
->  /*
->   * display the general statistics
->   */
-> -int fscache_stats_show(struct seq_file *m, void *v)
-> +int fscache_stats_show(struct seq_file *m)
->  {
->         seq_puts(m, "FS-Cache statistics\n");
->         seq_printf(m, "Cookies: n=3D%d v=3D%d vcol=3D%u voom=3D%u\n",
-> @@ -96,7 +96,5 @@ int fscache_stats_show(struct seq_file *m, void *v)
->         seq_printf(m, "IO     : rd=3D%u wr=3D%u\n",
->                    atomic_read(&fscache_n_read),
->                    atomic_read(&fscache_n_write));
-> -
-> -       netfs_stats_show(m);
->         return 0;
->  }
-> diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-> index 43769ac606e8..3f6e22229433 100644
-> --- a/fs/netfs/internal.h
-> +++ b/fs/netfs/internal.h
-> @@ -76,6 +76,7 @@ extern atomic_t netfs_n_rh_write_done;
->  extern atomic_t netfs_n_rh_write_failed;
->  extern atomic_t netfs_n_rh_write_zskip;
->
-> +int netfs_stats_show(struct seq_file *m, void *v);
->
->  static inline void netfs_stat(atomic_t *stat)
->  {
-> @@ -166,6 +167,13 @@ static inline void fscache_see_cookie(struct fscache=
-_cookie *cookie,
->   * fscache-main.c
->   */
->  extern unsigned int fscache_hash(unsigned int salt, const void *data, si=
-ze_t len);
-> +#ifdef CONFIG_FSCACHE
-> +int __init fscache_init(void);
-> +void __exit fscache_exit(void);
-> +#else
-> +static inline int fscache_init(void) { return 0; }
-> +static inline void fscache_exit(void) {}
-> +#endif
->
->  /*
->   * fscache-proc.c
-> @@ -216,12 +224,14 @@ static inline void fscache_stat_d(atomic_t *stat)
->
->  #define __fscache_stat(stat) (stat)
->
-> -int fscache_stats_show(struct seq_file *m, void *v);
-> +int fscache_stats_show(struct seq_file *m);
->  #else
->
->  #define __fscache_stat(stat) (NULL)
->  #define fscache_stat(stat) do {} while (0)
->  #define fscache_stat_d(stat) do {} while (0)
-> +
-> +static inline int fscache_stats_show(struct seq_file *m) { return 0; }
->  #endif
->
->  /*
-> diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-> index 1ba8091fcf3e..c9af6e0896d3 100644
-> --- a/fs/netfs/main.c
-> +++ b/fs/netfs/main.c
-> @@ -7,6 +7,8 @@
->
->  #include <linux/module.h>
->  #include <linux/export.h>
-> +#include <linux/proc_fs.h>
-> +#include <linux/seq_file.h>
->  #include "internal.h"
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/netfs.h>
-> @@ -19,3 +21,34 @@ unsigned netfs_debug;
->  module_param_named(debug, netfs_debug, uint, S_IWUSR | S_IRUGO);
->  MODULE_PARM_DESC(netfs_debug, "Netfs support debugging mask");
->
-> +static int __init netfs_init(void)
-> +{
-> +       int ret =3D -ENOMEM;
-> +
-> +       if (!proc_mkdir("fs/netfs", NULL))
-> +               goto error;
-> +
-> +#ifdef CONFIG_FSCACHE_STATS
-> +       if (!proc_create_single("fs/netfs/stats", S_IFREG | 0444, NULL,
-> +                               netfs_stats_show))
-> +               goto error_proc;
-> +#endif
-> +
-> +       ret =3D fscache_init();
-> +       if (ret < 0)
-> +               goto error_proc;
-> +       return 0;
-> +
-> +error_proc:
-> +       remove_proc_entry("fs/netfs", NULL);
-> +error:
-> +       return ret;
-> +}
-> +fs_initcall(netfs_init);
-> +
-> +static void __exit netfs_exit(void)
-> +{
-> +       fscache_exit();
-> +       remove_proc_entry("fs/netfs", NULL);
-> +}
-> +module_exit(netfs_exit);
-> diff --git a/fs/netfs/stats.c b/fs/netfs/stats.c
-> index 5510a7a14a40..6025dc485f7e 100644
-> --- a/fs/netfs/stats.c
-> +++ b/fs/netfs/stats.c
-> @@ -28,31 +28,32 @@ atomic_t netfs_n_rh_write_done;
->  atomic_t netfs_n_rh_write_failed;
->  atomic_t netfs_n_rh_write_zskip;
->
-> -void netfs_stats_show(struct seq_file *m)
-> +int netfs_stats_show(struct seq_file *m, void *v)
->  {
-> -       seq_printf(m, "RdHelp : RA=3D%u RP=3D%u WB=3D%u WBZ=3D%u rr=3D%u =
-sr=3D%u\n",
-> +       seq_printf(m, "Netfs  : RA=3D%u RP=3D%u WB=3D%u WBZ=3D%u rr=3D%u =
-sr=3D%u\n",
->                    atomic_read(&netfs_n_rh_readahead),
->                    atomic_read(&netfs_n_rh_readpage),
->                    atomic_read(&netfs_n_rh_write_begin),
->                    atomic_read(&netfs_n_rh_write_zskip),
->                    atomic_read(&netfs_n_rh_rreq),
->                    atomic_read(&netfs_n_rh_sreq));
-> -       seq_printf(m, "RdHelp : ZR=3D%u sh=3D%u sk=3D%u\n",
-> +       seq_printf(m, "Netfs  : ZR=3D%u sh=3D%u sk=3D%u\n",
->                    atomic_read(&netfs_n_rh_zero),
->                    atomic_read(&netfs_n_rh_short_read),
->                    atomic_read(&netfs_n_rh_write_zskip));
-> -       seq_printf(m, "RdHelp : DL=3D%u ds=3D%u df=3D%u di=3D%u\n",
-> +       seq_printf(m, "Netfs  : DL=3D%u ds=3D%u df=3D%u di=3D%u\n",
->                    atomic_read(&netfs_n_rh_download),
->                    atomic_read(&netfs_n_rh_download_done),
->                    atomic_read(&netfs_n_rh_download_failed),
->                    atomic_read(&netfs_n_rh_download_instead));
-> -       seq_printf(m, "RdHelp : RD=3D%u rs=3D%u rf=3D%u\n",
-> +       seq_printf(m, "Netfs  : RD=3D%u rs=3D%u rf=3D%u\n",
->                    atomic_read(&netfs_n_rh_read),
->                    atomic_read(&netfs_n_rh_read_done),
->                    atomic_read(&netfs_n_rh_read_failed));
-> -       seq_printf(m, "RdHelp : WR=3D%u ws=3D%u wf=3D%u\n",
-> +       seq_printf(m, "Netfs  : WR=3D%u ws=3D%u wf=3D%u\n",
->                    atomic_read(&netfs_n_rh_write),
->                    atomic_read(&netfs_n_rh_write_done),
->                    atomic_read(&netfs_n_rh_write_failed));
-> +       return fscache_stats_show(m);
->  }
->  EXPORT_SYMBOL(netfs_stats_show);
-> diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-> index d294ff8f9ae4..9bd91cd615d5 100644
-> --- a/include/linux/netfs.h
-> +++ b/include/linux/netfs.h
-> @@ -294,7 +294,6 @@ void netfs_get_subrequest(struct netfs_io_subrequest =
-*subreq,
->                           enum netfs_sreq_ref_trace what);
->  void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
->                           bool was_async, enum netfs_sreq_ref_trace what)=
-;
-> -void netfs_stats_show(struct seq_file *);
->  ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
->                                 struct iov_iter *new,
->                                 iov_iter_extraction_t extraction_flags);
->
+If ino_t goes to 64 bit this means we reduce precision for no reason,
+so that has to be fixed -- but I'm trying to remember the relevance
+of +2 which dates back all the way to the original submission.  I
+don't remember why we did this, but I think I'm gonna kill that in
+one patch and in a second patch fix the length check.
 
-Marc
+Moving up the stack a bit, we use the modified qid.path to hash the
+inode, but then we also assign it (overriding the allocated inode number
+on the client).  I'm gonna say this is wrong (definitely wrong in the
+case where we are allocated inodes willy-nilly) and we should probably
+continue to use qid.path to hash, but then keep the client side inode
+number which is guarenteed unique on allocation.  Or do you folks think
+we should align client-side inode with server-side inode to help with
+debug?  We should still have consistent qid->paths regardless.  Thoughts?
+
+        -eric
