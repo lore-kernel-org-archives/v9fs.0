@@ -1,78 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A09D1A27E
-	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 14:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C98C1A702
+	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qq4RNc0W"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HSbXC+oD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704290668;
+	s=mimecast20190719; t=1704293986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dm5uQwn+49K96zJWxQsiqkazcQLayYKEShHZEQ+JYDg=;
-	b=Qq4RNc0WrjJrliYJ+kpAlXYnsf5TlPMVhPyXik46QjsaOTqcxAU/aXdrm96WH1aDmQIJWe
-	olN0e4TU4X+aVBf3YNlafOUj3m/wamBfz2w8CO/F69gqSn8q/+mfwRCyaS54kWh8sA2WWd
-	qYAbnPbxXnULSHlQ5OOKBxyAIlUnPmE=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s3o3MrTd6nm5lawOB5Ax6jA2uuGzy36Eef5IBUe+5HY=;
+	b=HSbXC+oDHmMAyySC3bMh7FgNgTVOVbCgEnEEWtcpmKf+8EtyO6Q5oQOINXsz82KWZaPGzN
+	gNSzryMtuoh4BO1DgIXY2iEUxkpufkN8aa5xU62d/kFnb+0uTPsK2/CXVPCM3Oo2sKJsmL
+	ARHAZ9JCcv7to9MTlNMWYRyvCuzdBng=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-i-DxWH5nPu6c-fysuoabdA-1; Wed, 03 Jan 2024 09:04:26 -0500
-X-MC-Unique: i-DxWH5nPu6c-fysuoabdA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+ us-mta-298-3VxcmtpCOkq8GL6PiBMlJQ-1; Wed, 03 Jan 2024 09:59:43 -0500
+X-MC-Unique: 3VxcmtpCOkq8GL6PiBMlJQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1041384AF84;
-	Wed,  3 Jan 2024 14:04:22 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.68])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 372852026D66;
-	Wed,  3 Jan 2024 14:04:18 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F93C83B821;
+	Wed,  3 Jan 2024 14:59:42 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.68])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 24175C15A0C;
+	Wed,  3 Jan 2024 14:59:37 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ZZVctju5TEjS218p@codewreck.org>
-References: <ZZVctju5TEjS218p@codewreck.org> <20231221132400.1601991-41-dhowells@redhat.com> <20231221132400.1601991-1-dhowells@redhat.com> <292837.1704232179@warthog.procyon.org.uk>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: dhowells@redhat.com, Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH] 9p: Fix initialisation of netfs_inode for 9p
+To: Christian Brauner <christian@brauner.io>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	linux-cachefs@redhat.com,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] netfs, cachefiles, 9p: Additional patches
+Date: Wed,  3 Jan 2024 14:59:24 +0000
+Message-ID: <20240103145935.384404-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <368445.1704290657.1@warthog.procyon.org.uk>
-Date: Wed, 03 Jan 2024 14:04:17 +0000
-Message-ID: <368446.1704290657@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-Dominique Martinet <asmadeus@codewreck.org> wrote:
+Hi Christian, Jeff, Gao, Dominique,
 
-> Would it make sense to just always update netfs's ctx->remote_i_size in
-> the various stat2inode calls instead?
+Here are some additional patches for my netfs-lib tree:
 
-Btw, v9fs_i_size_write() should be redundant.  It should be sufficient to just
-use i_size_write() as long as you use i_size_read().
+ (1) Fix __cachefiles_prepare_write() to correctly validate against the DIO
+     alignment.
+
+ (2) 9p: Fix initialisation of the netfs_inode so that i_size is set before
+     netfs_inode_init() is called.
+
+ (3) 9p: Do a couple of cleanups (remove a couple of unused vars and turn a
+     BUG_ON() into a warning).
+
+ (4) 9p: Always update remote_i_size, even if we're asked not to update
+     i_size in stat2inode.
+
+ (5) 9p: Return the amount written in preference to an error if we wrote
+     something.
 
 David
+
+The netfslib postings:
+Link: https://lore.kernel.org/r/20231013160423.2218093-1-dhowells@redhat.com/ # v1
+Link: https://lore.kernel.org/r/20231117211544.1740466-1-dhowells@redhat.com/ # v2
+Link: https://lore.kernel.org/r/20231207212206.1379128-1-dhowells@redhat.com/ # v3
+Link: https://lore.kernel.org/r/20231213152350.431591-1-dhowells@redhat.com/ # v4
+Link: https://lore.kernel.org/r/20231221132400.1601991-1-dhowells@redhat.com/ # v5
+
+David Howells (5):
+  cachefiles: Fix __cachefiles_prepare_write()
+  9p: Fix initialisation of netfs_inode for 9p
+  9p: Do a couple of cleanups
+  9p: Always update remote_i_size in stat2inode
+  9p: Use length of data written to the server in preference to error
+
+ fs/9p/v9fs_vfs.h       |  1 +
+ fs/9p/vfs_addr.c       | 24 ++++++++++++------------
+ fs/9p/vfs_inode.c      |  6 +++---
+ fs/9p/vfs_inode_dotl.c |  7 ++++---
+ fs/cachefiles/io.c     | 28 +++++++++++++++++-----------
+ 5 files changed, 37 insertions(+), 29 deletions(-)
 
