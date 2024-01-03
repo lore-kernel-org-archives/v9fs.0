@@ -1,94 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76EC1DA45
-	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 21:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCF420B06
+	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 22:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cmB3Hgwn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704316556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lz9BpuJT9ZqjBzLEQFTtycxe4tbIVPZFPrNygtaFHDI=;
-	b=cmB3HgwnEhw2XjlJmSnU2O+F4zWorYjDfjCvvdM1TWpq2Eac0/0otHGjngw10C7BRuP1oQ
-	pwgsBN4KP4nOo/37495BBQqdGG0bCL+ptLM4Ebs503XglAigzw69fOCQEL/JKSFNhfFwJI
-	iTNVrB3RWkj7mNUGMpYwNA1oJyuBnIo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-1v-GWHbRM9e1RxN52-Av-w-1; Wed,
- 03 Jan 2024 16:15:48 -0500
-X-MC-Unique: 1v-GWHbRM9e1RxN52-Av-w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5354F3806710;
-	Wed,  3 Jan 2024 21:15:47 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.68])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 576BF492BC6;
-	Wed,  3 Jan 2024 21:15:44 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240103145935.384404-1-dhowells@redhat.com>
-References: <20240103145935.384404-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-    Jeff Layton <jlayton@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>
-Cc: dhowells@redhat.com, Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Steve French <smfrench@gmail.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, linux-cachefs@redhat.com,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/5] netfs: Fix proc/fs/fscache symlink to point to "netfs" not "../netfs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bikmZJlq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6747DC433C7
+	for <v9fs@lists.linux.dev>; Wed,  3 Jan 2024 22:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704321785;
+	bh=lEPfNgH2AD2aIalPmctqwU8SgSPmTv8obGMo/0YK8vg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bikmZJlqWHht3wZfV2AnSHaSOsiyWcTM5VNKmi2029/eOLPdyND+K1uRKhU+CC8iU
+	 Q+rUDwWGPXzgO9G0h6xhVSf99y7Hbe/XqDFzKIQUTFHzLPWw1c85VMs8i8xzekGmwR
+	 Ndvzh3mWmZqfEDDg0QNOI2ISuSi+8Gd+pEczs8x+0Nt8LHn+KMvR079GW0TaOR/4X0
+	 fiOUTfgXC7LvBRPWLOnnhLNWZ2yRVnCTITKusodMOvXW3IeraGB2b78rO1Lpy2e8bM
+	 NfexjjhiFcWg3bzl4YV07Rqx9dOB13T6Y/ANJYq5s5VYJ8G3iLqPQP1fbC8oOPzoQ9
+	 q72wxlIaCuYSw==
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dbdb8e032f7so764860276.1
+        for <v9fs@lists.linux.dev>; Wed, 03 Jan 2024 14:43:05 -0800 (PST)
+X-Gm-Message-State: AOJu0YzcmynI9YbYB4AICEh97JNgJrbNqWeMBZNTfd0tQOyywNYPQjHJ
+	KXZn3FLDjFH86bbKXU3jbVnkXRX0yw9eb9T4+g0=
+X-Google-Smtp-Source: AGHT+IHXYvAgVsxz1w7rye0TVO0yJ180lghxQ/0ezR3js8AaDHFrKyh0+kyVgvI7N9ngnKdRY8CCQpTaHCC2MA6OzhY=
+X-Received: by 2002:a05:6902:532:b0:dbd:b081:964b with SMTP id
+ y18-20020a056902053200b00dbdb081964bmr1102767ybs.28.1704321784666; Wed, 03
+ Jan 2024 14:43:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <900276.1704316543.1@warthog.procyon.org.uk>
-Date: Wed, 03 Jan 2024 21:15:43 +0000
-Message-ID: <900277.1704316543@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+References: <ZZWi6fbgy8oGwR1D@FV7GG9FTHL> <ZY7qr1Dy_aS716dC@FV7GG9FTHL>
+ <ZZXCiSlrAMI5sMr3@codewreck.org> <CAFkjPT=61yygntbhSJMMWeK4JBrm85EZpz387aPHD_xmHVBbog@mail.gmail.com>
+In-Reply-To: <CAFkjPT=61yygntbhSJMMWeK4JBrm85EZpz387aPHD_xmHVBbog@mail.gmail.com>
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Wed, 3 Jan 2024 16:42:53 -0600
+X-Gmail-Original-Message-ID: <CAFkjPTktfEwcH5fa-JooR+8OV_bbEX3u8niKS7TQcNU5G2WUCg@mail.gmail.com>
+Message-ID: <CAFkjPTktfEwcH5fa-JooR+8OV_bbEX3u8niKS7TQcNU5G2WUCg@mail.gmail.com>
+Subject: Fwd: cache fixes (redux)
+To: v9fs@lists.linux.dev
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix the proc/fs/fscache symlink to point to "netfs" not "../netfs".
+ooops, didn't hit reply all.
 
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Christian Brauner <christian@brauner.io>
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-cachefs@redhat.com
----
- fs/netfs/fscache_proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+---------- Forwarded message ---------
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Wed, Jan 3, 2024 at 2:52=E2=80=AFPM
+Subject: Re: cache fixes (redux)
+To: Dominique Martinet <asmadeus@codewreck.org>
 
-diff --git a/fs/netfs/fscache_proc.c b/fs/netfs/fscache_proc.c
-index ecd0d1edafaa..874d951bc390 100644
---- a/fs/netfs/fscache_proc.c
-+++ b/fs/netfs/fscache_proc.c
-@@ -16,7 +16,7 @@
-  */
- int __init fscache_proc_init(void)
- {
--	if (!proc_symlink("fs/fscache", NULL, "../netfs"))
-+	if (!proc_symlink("fs/fscache", NULL, "netfs"))
- 		goto error_sym;
- 
- 	if (!proc_create_seq("fs/netfs/caches", S_IFREG | 0444, NULL,
 
+On Wed, Jan 3, 2024 at 2:25=E2=80=AFPM <asmadeus@codewreck.org> wrote:
+> > Moving up the stack a bit, we use the modified qid.path to hash the
+> > inode, but then we also assign it (overriding the allocated inode numbe=
+r
+> > on the client).  I'm gonna say this is wrong (definitely wrong in the
+> > case where we are allocated inodes willy-nilly) and we should probably
+> > continue to use qid.path to hash, but then keep the client side inode
+> > number which is guarenteed unique on allocation.  Or do you folks think
+> > we should align client-side inode with server-side inode to help with
+> > debug?  We should still have consistent qid->paths regardless.  Thought=
+s?
+>
+> I ended up suggesting something similar above without reading this
+> properly, if I read this correctly I think we agree -- use as much bits
+> as we can internally and keep it coherent, then just downsize for
+> getattr if required.
+>
+
+One gotcha here and I'm inclined to maybe ignore it.  readdir uses
+qid2ino to populate the inode number for directory listings.  So, I'd
+need to convert that code to lookup the inode just to extract the
+client-side inode number.  But this is all client side, so maybe not a
+big deal and we aren't even using the readdir code right now in .L so
+its not really on the critical path.
+
+The other problem of course is that the inode hash is also an unsigned
+long in the kernel. So really same problem applies... But I'm inclined
+to switch to using qid.path to hash anyways as I think it makes the
+code more understandable and we can get rid of weirdness like +2 and
+get guarenteed unique inode numbers.
+
+The other thing that needs to change though is v9fs_mount needs to use
+iunique to grab a new inode number versus using qid.path from the
+mount which means the logic there needs to change to using iget so we
+can insert the mount point into the hash table.  I'm assuming that
+just works, but gonna reorder my changes to try doing that first and
+see if anything blows up.
+
+        -eric
