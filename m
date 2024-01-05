@@ -1,48 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E212624A17
-	for <v9fs@lists.linux.dev>; Thu,  4 Jan 2024 15:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477DD5242;
+	Fri,  5 Jan 2024 04:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWfwYbRB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C86C433C8
-	for <v9fs@lists.linux.dev>; Thu,  4 Jan 2024 15:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704383960;
-	bh=vUL0D3GnJf4l9qW3ozj0rNSrFbRz7RuM7/7V+0Km/zU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QWfwYbRBN4aAszNZGqCZZ3JVG6ceYHHqrx3t6fgzoeIAHSqfiACKTe9xFAzasaZ9+
-	 aVwCytuXNLfIUVM2mwqWKEGOlpV9Zuss6LD1gwfdvLML9+fKLD/VAh+ltfodr6qIXb
-	 P2YKR82RurlPvqLLGCbAHJAQhzzVx+Be6Re9KBlZSrkc5MDEY1cA+HD0YGbGECE48J
-	 oPMPVxeWY2WaLcy5kP3HWI5eYx7tekRNotHr/Op91KrBdk2InhJFKPUcOAB+fEsWVa
-	 YAHtJh/6Bk1gn8MFvfEp8v30DVlaleMdiwD9/O7L8Y38bRbcETFFjQr953xwVbJn8N
-	 KTFLILf97LFtA==
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dbe78430946so627062276.0
-        for <v9fs@lists.linux.dev>; Thu, 04 Jan 2024 07:59:20 -0800 (PST)
-X-Gm-Message-State: AOJu0Yw5LldkT82EGpQipNzp574734iRnrw5V+jIv+OAThph5D3S9Yel
-	NxDo73LJdlYnbPOcXeovnaOaD42EZeHUc1G41kQ=
-X-Google-Smtp-Source: AGHT+IFL4byfmaVMqxJ3Si14loa7SbWmuikeoJO86v7j0rSykaebJfsEqXmY9ivd04y0zNizgsf/zMsonCG2wxiXZ6s=
-X-Received: by 2002:a5b:14e:0:b0:dbe:a6da:204d with SMTP id
- c14-20020a5b014e000000b00dbea6da204dmr644989ybp.81.1704383959767; Thu, 04 Jan
- 2024 07:59:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VTLZVg7n"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mJPEL62eVi84Xk7Scl6XWRFXGzmJNpF/Y9oGJQjtN1Y=; b=VTLZVg7nKMZm2KMb7lg5o9PvD5
+	EuqpAOQdauiVq2ESgt9amfX38XAf1Eqi30RKATfAQwiC/S26DRQe7Xg551K/uydbVKqSrYBHhgzkQ
+	HZGLojzYHxm4D70Yt265+wjirR1nF8dkpWKbkjDzu7U75qpfE0vlUkN07fYxHbtZEcVQ/SNlbqES4
+	/MN3Pbux3ZFtP4r+fR6Y2T67jx1rtDwl0HLQy38FmRaUjcNxCm0kup5Lqq9a7ASB4vAHdaJN08D6G
+	7RUGVMngFqMssgEZomd1Shj2d37M6lrh7x3H+GYVkuVoLkd8u/f15GD5BFjMiqwewHWlMm3/pAaZ/
+	DtD0tYiw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rLcBs-00GuHr-UY; Fri, 05 Jan 2024 04:52:17 +0000
+Date: Fri, 5 Jan 2024 04:52:16 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix oops in NFS
+Message-ID: <ZZeLAAf6qiieA5fy@casper.infradead.org>
+References: <2202548.1703245791@warthog.procyon.org.uk>
+ <20231221230153.GA1607352@dev-arch.thelio-3990X>
+ <20231221132400.1601991-1-dhowells@redhat.com>
+ <20231221132400.1601991-38-dhowells@redhat.com>
+ <2229136.1703246451@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZZWi6fbgy8oGwR1D@FV7GG9FTHL> <ZZXCiSlrAMI5sMr3@codewreck.org>
- <CAFkjPTnCoQXMaRXhFuzquZaKe7DFfzEEGi_Z8f7hA6Rn0wHtYA@mail.gmail.com> <2900064.uouh5yoDIQ@silver>
-In-Reply-To: <2900064.uouh5yoDIQ@silver>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Thu, 4 Jan 2024 09:59:08 -0600
-X-Gmail-Original-Message-ID: <CAFkjPT=aRGWVjEH5KLPxH5+qBkWXWtkMNP2Hxi-T3b6_k8nqAA@mail.gmail.com>
-Message-ID: <CAFkjPT=aRGWVjEH5KLPxH5+qBkWXWtkMNP2Hxi-T3b6_k8nqAA@mail.gmail.com>
-Subject: Re: cache fixes (redux)
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: asmadeus@codewreck.org, v9fs@lists.linux.dev, Greg Kurz <groug@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2229136.1703246451@warthog.procyon.org.uk>
 
-Makes sense I guess - I'll leave ACLs alone for now.
+On Fri, Dec 22, 2023 at 12:00:51PM +0000, David Howells wrote:
+> David Howells <dhowells@redhat.com> wrote:
+> 
+> > A better way, though, is to move the call to nfs_netfs_inode_init()
+> > and give it a flag to say whether or not we want the facility.
+> 
+> Okay, I think I'll fold in the attached change.
 
-       -eric
+This commit (100ccd18bb41 in linux-next 20240104) is bad for me.  After
+it, running xfstests gives me first a bunch of errors along these lines:
+
+00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/fs/gfs2/gfs2.ko: Exec format error
+00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/fs/zonefs/zonefs.ko: Exec format error
+00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/security/keys/encrypted-keys/encrypted-keys.ko: Exec format error
+
+and then later:
+
+00016 generic/001       run fstests generic/001 at 2024-01-05 04:50:46
+00017 [not run] this test requires a valid $TEST_DEV
+00017 generic/002       run fstests generic/002 at 2024-01-05 04:50:46
+00017 [not run] this test requires a valid $TEST_DEV
+00017 generic/003       run fstests generic/003 at 2024-01-05 04:50:47
+00018 [not run] this test requires a valid $SCRATCH_DEV
+...
+
+so I think that's page cache corruption of some kind.
