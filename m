@@ -1,83 +1,104 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477DD5242;
-	Fri,  5 Jan 2024 04:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DAE24B4D
+	for <v9fs@lists.linux.dev>; Fri,  5 Jan 2024 10:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VTLZVg7n"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mJPEL62eVi84Xk7Scl6XWRFXGzmJNpF/Y9oGJQjtN1Y=; b=VTLZVg7nKMZm2KMb7lg5o9PvD5
-	EuqpAOQdauiVq2ESgt9amfX38XAf1Eqi30RKATfAQwiC/S26DRQe7Xg551K/uydbVKqSrYBHhgzkQ
-	HZGLojzYHxm4D70Yt265+wjirR1nF8dkpWKbkjDzu7U75qpfE0vlUkN07fYxHbtZEcVQ/SNlbqES4
-	/MN3Pbux3ZFtP4r+fR6Y2T67jx1rtDwl0HLQy38FmRaUjcNxCm0kup5Lqq9a7ASB4vAHdaJN08D6G
-	7RUGVMngFqMssgEZomd1Shj2d37M6lrh7x3H+GYVkuVoLkd8u/f15GD5BFjMiqwewHWlMm3/pAaZ/
-	DtD0tYiw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rLcBs-00GuHr-UY; Fri, 05 Jan 2024 04:52:17 +0000
-Date: Fri, 5 Jan 2024 04:52:16 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i1StD7iI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704449586;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ogjygCadqZqQPF0RXbXaEDph9fgsETZY7v/OnrLD3js=;
+	b=i1StD7iIATqSAKMXcHGre/9paMnzNs9zDOEuIPlm8eHCZ01WHp+R/+eZQ5dHNymDFZE5II
+	gJvjjgwtIr3HLC4JKMxpqo0HrEbivOpAJSvp0el6WK8orWp5dmuFYSrgrKwSuoN7t9x4M1
+	+D6XsEih2ct+du6hiMRxBUDr7vjCZXA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-4WUKZcOBNQ-J7NNVXyZBEg-1; Fri,
+ 05 Jan 2024 05:13:01 -0500
+X-MC-Unique: 4WUKZcOBNQ-J7NNVXyZBEg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC9E41C05148;
+	Fri,  5 Jan 2024 10:12:59 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 96FAA40C6EB9;
+	Fri,  5 Jan 2024 10:12:56 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZZeLAAf6qiieA5fy@casper.infradead.org>
+References: <ZZeLAAf6qiieA5fy@casper.infradead.org> <2202548.1703245791@warthog.procyon.org.uk> <20231221230153.GA1607352@dev-arch.thelio-3990X> <20231221132400.1601991-1-dhowells@redhat.com> <20231221132400.1601991-38-dhowells@redhat.com> <2229136.1703246451@warthog.procyon.org.uk>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: dhowells@redhat.com, Nathan Chancellor <nathan@kernel.org>,
+    Anna Schumaker <Anna.Schumaker@netapp.com>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] Fix oops in NFS
-Message-ID: <ZZeLAAf6qiieA5fy@casper.infradead.org>
-References: <2202548.1703245791@warthog.procyon.org.uk>
- <20231221230153.GA1607352@dev-arch.thelio-3990X>
- <20231221132400.1601991-1-dhowells@redhat.com>
- <20231221132400.1601991-38-dhowells@redhat.com>
- <2229136.1703246451@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2229136.1703246451@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1094258.1704449575.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 05 Jan 2024 10:12:55 +0000
+Message-ID: <1094259.1704449575@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-On Fri, Dec 22, 2023 at 12:00:51PM +0000, David Howells wrote:
-> David Howells <dhowells@redhat.com> wrote:
-> 
-> > A better way, though, is to move the call to nfs_netfs_inode_init()
-> > and give it a flag to say whether or not we want the facility.
-> 
-> Okay, I think I'll fold in the attached change.
+Matthew Wilcox <willy@infradead.org> wrote:
 
-This commit (100ccd18bb41 in linux-next 20240104) is bad for me.  After
-it, running xfstests gives me first a bunch of errors along these lines:
+> This commit (100ccd18bb41 in linux-next 20240104) is bad for me.  After
+> it, running xfstests gives me first a bunch of errors along these lines:
+> =
 
-00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/fs/gfs2/gfs2.ko: Exec format error
-00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/fs/zonefs/zonefs.ko: Exec format error
-00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-00037-g100ccd18bb41/kernel/security/keys/encrypted-keys/encrypted-keys.ko: Exec format error
+> 00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-=
+00037-g100ccd18bb41/kernel/fs/gfs2/gfs2.ko: Exec format error
+> 00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-=
+00037-g100ccd18bb41/kernel/fs/zonefs/zonefs.ko: Exec format error
+> 00004 depmod: ERROR: failed to load symbols from /lib/modules/6.7.0-rc7-=
+00037-g100ccd18bb41/kernel/security/keys/encrypted-keys/encrypted-keys.ko:=
+ Exec format error
+> =
 
-and then later:
+> and then later:
+> =
 
-00016 generic/001       run fstests generic/001 at 2024-01-05 04:50:46
-00017 [not run] this test requires a valid $TEST_DEV
-00017 generic/002       run fstests generic/002 at 2024-01-05 04:50:46
-00017 [not run] this test requires a valid $TEST_DEV
-00017 generic/003       run fstests generic/003 at 2024-01-05 04:50:47
-00018 [not run] this test requires a valid $SCRATCH_DEV
-...
+> 00016 generic/001       run fstests generic/001 at 2024-01-05 04:50:46
+> 00017 [not run] this test requires a valid $TEST_DEV
+> 00017 generic/002       run fstests generic/002 at 2024-01-05 04:50:46
+> 00017 [not run] this test requires a valid $TEST_DEV
+> 00017 generic/003       run fstests generic/003 at 2024-01-05 04:50:47
+> 00018 [not run] this test requires a valid $SCRATCH_DEV
+> ...
+> =
 
-so I think that's page cache corruption of some kind.
+> so I think that's page cache corruption of some kind.
+
+Is that being run on NFS?  Is /lib on NFS?
+
+David
+
