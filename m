@@ -1,91 +1,159 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9B112B80
-	for <v9fs@lists.linux.dev>; Sun,  7 Jan 2024 10:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B17513AD1;
+	Sun,  7 Jan 2024 16:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="cCAh+KaV";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="2IydRGWO"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 499CAC01E; Sun,  7 Jan 2024 11:26:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1704623208; bh=Ga6+A9cwq7fuTFNzHnNcQM73H/BQTgpX+VIIomVa33M=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Je4QSk1X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDAAC433C8;
+	Sun,  7 Jan 2024 16:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704643764;
+	bh=vtEdJ8x0t9Cig7F/OQ58765CvJpN5U3pnuPNn8bEtX0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cCAh+KaVsTqWTJZUlpjJJHi5l02ZixUhXOfMchd8cNdp+ugjbyB9f7rV8UTp1whjA
-	 argbE6PPo3bR6DKN9rpCkAWmXVlfRytioNOq2DF3Jyh1hxxme2g/Sse9BK2tuKCHYc
-	 m65FJfuFHnP+yvuTE5+eaSaA1cYJ5fwALp8bu1lDf3CtEhzFSf2un03moUMtZcGXNf
-	 IbWYCqKqctVPtJmeNhVYEXF+dROSwIyrEUhLdy15OC0i38amOAjffoJLZbtC+O5m2u
-	 rpdAXwRkoVpNDH+J1I5rZAybH47NqVBYJurH85vTNzgJ6TyQpHC/l7IQE4Ez3AgDli
-	 fHb5UrH1GMSgA==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 41EAEC009;
-	Sun,  7 Jan 2024 11:26:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1704623207; bh=Ga6+A9cwq7fuTFNzHnNcQM73H/BQTgpX+VIIomVa33M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2IydRGWOTysQ8G6+EBZMnwsgxmp1yOF+lpkxOPTa37yMiOLo3QRmRmvM1NVicBVTM
-	 oY6lMGpPXie7JITYpogkmL32qOQ78/xOrB/4/F9994kz0kkelOstUzkVwa1tDnZS1Q
-	 4aWfArX+USObNxrWQKBEFXxjM/ys9k2ZdGQ5/UbuKhQv2A6aWW3fMx9u4Db5JhsFUt
-	 yg7x56RjFRhzkAB5KgbBnXaScOPjeU8x8/0rm/HsJweVasvQAqghykX9mT5/b+m5qJ
-	 ra/ZcmHJSFcGfO36CEo3fVy0C/uau0qPuLmeeHK82/Xrj7qgQI/3ploPaZA/uuym69
-	 A/K3VPjwJnW6Q==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id a0446c8c;
-	Sun, 7 Jan 2024 10:26:39 +0000 (UTC)
-Date: Sun, 7 Jan 2024 19:26:24 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
+	b=Je4QSk1Xsi5jvomPOikxCGlVFwk8iqkAbNF6aVYGaBGYI1jkUw+CADMBs0/wZQr36
+	 xy22SDkRZMP5sMid5EvoeH3h/Kwf68Tcbn77GX8EDm+cjFQlFTs6TguY93Et6BFDPv
+	 UlIs+e2Jheeb2/ck0biFbtZrf0Vw9LMCbIX3TaJmqJZgdrEhhfSfxUMIfjU8lZxJF7
+	 Q+aCdvG3kA6VLZkjLHS+Vga8pwGe2Z6VghL3LobYtAq3sM2rUGAW8uNlztGT7uqIEc
+	 x+WdUyce0Wh+SeZcYOdm2MG39rO2B8pkIyqp3viKoDClILrK1BwA1eJJXlvP2hGICM
+	 kq7yyH7rMCZgg==
+Date: Sun, 7 Jan 2024 16:09:16 +0000
+From: Simon Horman <horms@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	v9fs@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH v4] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Message-ID: <ZZp8UPkH-TJIUngl@codewreck.org>
-References: <20231206200913.16135-1-pchelkin@ispras.ru>
- <1808202.Umia7laAZq@silver>
- <ZXeZevFb1oDvMFns@codewreck.org>
- <2et72smsvglzicqsyvt5m7bx2akyqzi2moq7tjupppygbsme3u@o2sltttok5wy>
+	Ilya Dryomov <idryomov@gmail.com>, linux-cachefs@redhat.com,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Yiqun Leng <yqleng@linux.alibaba.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>
+Subject: Re: [PATCH 1/5] cachefiles: Fix __cachefiles_prepare_write()
+Message-ID: <20240107160916.GA129355@kernel.org>
+References: <20240103145935.384404-1-dhowells@redhat.com>
+ <20240103145935.384404-2-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2et72smsvglzicqsyvt5m7bx2akyqzi2moq7tjupppygbsme3u@o2sltttok5wy>
+In-Reply-To: <20240103145935.384404-2-dhowells@redhat.com>
 
-Vitaly Chikunov wrote on Sun, Jan 07, 2024 at 10:56:23AM +0300:
-> On Tue, Dec 12, 2023 at 08:21:30AM +0900, Dominique Martinet wrote:
-> > Christian Schoenebeck wrote on Thu, Dec 07, 2023 at 01:54:02PM +0100:
-> > > I just checked whether this could create a leak, but it looks clean, so LGTM:
-> > 
-> > Right, either version look good to me.
+On Wed, Jan 03, 2024 at 02:59:25PM +0000, David Howells wrote:
+> Fix __cachefiles_prepare_write() to correctly determine whether the
+> requested write will fit correctly with the DIO alignment.
 > 
-> Also, there was unnoticed bug in v2[1] - `int i` is moved to outer block
-> and `i` counld be used uninitialized inside of `if (errcode) {`.
+> Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Tested-by: Yiqun Leng <yqleng@linux.alibaba.com>
+> Tested-by: Jia Zhu <zhujia.zj@bytedance.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: linux-cachefs@redhat.com
+> cc: linux-erofs@lists.ozlabs.org
+> cc: linux-fsdevel@vger.kernel.org
+> cc: linux-mm@kvack.org
+> ---
+>  fs/cachefiles/io.c | 28 +++++++++++++++++-----------
+>  1 file changed, 17 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+> index bffffedce4a9..7529b40bc95a 100644
+> --- a/fs/cachefiles/io.c
+> +++ b/fs/cachefiles/io.c
+> @@ -522,16 +522,22 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>  			       bool no_space_allocated_yet)
+>  {
+>  	struct cachefiles_cache *cache = object->volume->cache;
+> -	loff_t start = *_start, pos;
+> -	size_t len = *_len, down;
+> +	unsigned long long start = *_start, pos;
+> +	size_t len = *_len;
+>  	int ret;
+>  
+>  	/* Round to DIO size */
+> -	down = start - round_down(start, PAGE_SIZE);
+> -	*_start = start - down;
+> -	*_len = round_up(down + len, PAGE_SIZE);
+> -	if (down < start || *_len > upper_len)
+> +	start = round_down(*_start, PAGE_SIZE);
+> +	if (start != *_start) {
+> +		kleave(" = -ENOBUFS [down]");
+> +		return -ENOBUFS;
+> +	}
+> +	if (*_len > upper_len) {
+> +		kleave(" = -ENOBUFS [up]");
+>  		return -ENOBUFS;
+> +	}
+> +
+> +	*_len = round_up(len, PAGE_SIZE);
+>  
+>  	/* We need to work out whether there's sufficient disk space to perform
+>  	 * the write - but we can skip that check if we have space already
+> @@ -542,7 +548,7 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>  
+>  	pos = cachefiles_inject_read_error();
+>  	if (pos == 0)
+> -		pos = vfs_llseek(file, *_start, SEEK_DATA);
+> +		pos = vfs_llseek(file, start, SEEK_DATA);
+>  	if (pos < 0 && pos >= (loff_t)-MAX_ERRNO) {
 
-Thanks for pointing it out; I'm not sure if it's the same thing
-Christian noticed but I believe what I had applied with his suggestion
-of initializing i worked either way... But this is moot since I updated
-to v4 afterwards:
-this v4 has been merged in 6.7-rc7 as follow:
-https://git.kernel.org/linus/ff49bf1867578f23a5ffdd38f927f6e1e16796c4
+Hi David,
 
-(the message-id also points to the v4 correctly, e.g.
-https://lkml.kernel.org/r/20231206200913.16135-1-pchelkin@ispras.ru )
+I realise these patches have been accepted, but I have a minor nit:
+pos is now unsigned, and so cannot be less than zero.
 
+Flagged by Smatch and Coccinelle.
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+>  		if (pos == -ENXIO)
+>  			goto check_space; /* Unallocated tail */
+> @@ -550,7 +556,7 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>  					  cachefiles_trace_seek_error);
+>  		return pos;
+>  	}
+> -	if ((u64)pos >= (u64)*_start + *_len)
+> +	if (pos >= start + *_len)
+>  		goto check_space; /* Unallocated region */
+>  
+>  	/* We have a block that's at least partially filled - if we're low on
+> @@ -563,13 +569,13 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>  
+>  	pos = cachefiles_inject_read_error();
+>  	if (pos == 0)
+> -		pos = vfs_llseek(file, *_start, SEEK_HOLE);
+> +		pos = vfs_llseek(file, start, SEEK_HOLE);
+>  	if (pos < 0 && pos >= (loff_t)-MAX_ERRNO) {
+
+Ditto.
+
+>  		trace_cachefiles_io_error(object, file_inode(file), pos,
+>  					  cachefiles_trace_seek_error);
+>  		return pos;
+>  	}
+> -	if ((u64)pos >= (u64)*_start + *_len)
+> +	if (pos >= start + *_len)
+>  		return 0; /* Fully allocated */
+>  
+>  	/* Partially allocated, but insufficient space: cull. */
+> @@ -577,7 +583,7 @@ int __cachefiles_prepare_write(struct cachefiles_object *object,
+>  	ret = cachefiles_inject_remove_error();
+>  	if (ret == 0)
+>  		ret = vfs_fallocate(file, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+> -				    *_start, *_len);
+> +				    start, *_len);
+>  	if (ret < 0) {
+>  		trace_cachefiles_io_error(object, file_inode(file), ret,
+>  					  cachefiles_trace_fallocate_error);
+> 
