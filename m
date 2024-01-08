@@ -1,101 +1,207 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7E745C18;
-	Mon,  8 Jan 2024 14:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4101D4B5AB;
+	Mon,  8 Jan 2024 15:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="RJU3hCOO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=eeXtdx992y+1nJUpXYwWG19Qi8cqqD3QCgs9gZkGRVw=; b=RJU3hCOOKl9TthnSWlI9/vqN1w
-	++SllsTqIyWLVyh3itvO5JO3Mr0EYyn0RTszfozQUgUZQ3So6QvzUozTDE0AGPGngr0b/JniJMZ80
-	p3W7uHj0NLHrfu+pL2PeQTN+oVHes+5pYE/LUaf8C/4vcew3jSoC4z+iZjbTjHVqLQRsq1sCzIvFR
-	cxH07pVhBo0tYdBYIB9iroixwcRL4bp91upCQuG/SwL94rGZqAFWSJ63z7CTHCjFqTHOyTLfypb9J
-	8nwEe64n6URWC8+E9uXkzsCYPVRdOV09V/JUFMda5ZZ4yeBcdJzfs+639VpjSHOY9mZE/DTuHFoxA
-	9UJWqayb5aAgwLAoHTCOPBW1im824y4iLxk7s4wtAy5vQ1MUaTtg2bgMeA3bSD7sEuwmVcHmTCKi8
-	toGPuK5VEqWSAl+/BF8r7oOypYrJ6258Y77yRQUH0HZimkEo5AmNYELQa0CvlYHML5wm4kuWyTANv
-	dt75uUlhYPkPFIoP1xeLQJRTE48iL7S/YUu5dwwVDIdKmkHBjnQl9ox3u/0mCuEiULDcD7/gJq6ZY
-	z6q/GQIfQlOxSqSQ9NZpWiOOV/pZ1mqe8gY2kPS5QiHBc/OAo+yxcFioS0339Uju7ZHa5z/f7FrZ3
-	1FOHjLWC1WlOG1CbEk9BG/OUfpdtqD6qd3VUZSBrs=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: asmadeus@codewreck.org, linux-kernel@vger.kernel.org,
- v9fs@lists.linux.dev, rminnich@gmail.com, lucho@ionkov.net
-Subject: Re: [PATCH] fs/9p: fix inode nlink accounting
-Date: Mon, 08 Jan 2024 15:55:53 +0100
-Message-ID: <7785659.j189Hiylts@silver>
-In-Reply-To:
- <CAFkjPTn0HFnnZk8rt7m+mfLyPofMxZC6EzaoFChoyRVdVnwM6Q@mail.gmail.com>
-References:
- <20240107-fix-nlink-handling-v1-1-8b1f65ebc9b2@kernel.org>
- <8004884.rDQMAZhJ5Z@silver>
- <CAFkjPTn0HFnnZk8rt7m+mfLyPofMxZC6EzaoFChoyRVdVnwM6Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHMsUEby"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381F1C433C7;
+	Mon,  8 Jan 2024 15:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704726976;
+	bh=pm+4yFYVonV6Zzldj+NrNd+/et88iyvBegHbnPeZk2U=;
+	h=From:Date:Subject:To:Cc:From;
+	b=aHMsUEbyM6beRAt/N4Nbo6qA0CNRt9KdjAVW4duW4ez/10d7bf+a7KLslrLJeC1Ps
+	 YBA8/1wGFSY8Jp6CX5sHpAiFsC0ai1LE89oXXiJDfs0+ncD2mcCufSWT/+WTXlrS66
+	 6u/o++2qnA5Wo56esB9A/6Yp4gNBoWDCwjKMxtxbAZ4n0BczfZYS1xMPPJjWyizHKR
+	 /URjZxu2ifnbMdQdTZbXZ033/uy07lzVM+ZWptlsQeVZ1M9Ud6X/ghSWZ8oFwYkWlL
+	 3t3A0UOni6vAHBBqcY7PSxbwQNo6nOPeQ4LRz8bjTnrbTCNFa7iVaXbBxqcLZw88Ga
+	 Cf4EPqMiatEcw==
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Mon, 08 Jan 2024 15:16:12 +0000
+Subject: [PATCH v2] fs/9p: fix inode nlink accounting
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240108-fix-nlink-handling-v2-1-8718b4c7199a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIALsRnGUC/32N0Q6CMAxFf4X02ZptwhCf/A/Dg4MOGshGNkM0h
+ H+38gG+9fTenm6QKTFluBUbJFo5cwwC5lRANz7DQMi9MBhlSqVVjZ7fGGYOE0rcyzDgpVO2tL7
+ qG1ODHC6JpHVIH63wyPkV0+f4serf9q9u1ajx6rS3FbmuceY+UQo0n2MaoN33/QtmK02BtQAAA
+ A==
+To: Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Eric Van Hensbergen <ericvh@kernel.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5012; i=ericvh@kernel.org;
+ h=from:subject:message-id; bh=pm+4yFYVonV6Zzldj+NrNd+/et88iyvBegHbnPeZk2U=;
+ b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBlnBG/IltsYxfYykoLiMUfl1vLEu9pi+uvumcUH
+ IfjjMY0XquJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZZwRvwAKCRCI/9X7Sl//
+ mOYhD/9jnIsjCpey+D9stE/YfgIGA7eorR4QnZJUQXWuu9g8MxZ6nVGXbJHdOwJ7SPJXc+zZAWe
+ uJwIdbmv0AeHMEHHMjM5U79ZxYb6BaRWGcmAFIaqgBi1JyfU4rdR+XVWFtWkK12ElQ+uLzPSYh4
+ cL3EmuydJm+kLsfGVRrA14Pxgs+XOedxzN3PHBAU+k0IwN4WvldwcohmK9hEyTlry2e0qecIn/y
+ F6oi6GolsZA3yrGplbyqtXvr8lPobWjXWLN33ykCYwXz6ihs9Lw/YrQLd8F3j/DU8/4/864myTe
+ aU3ja7nqWVtsjc48nnv+L7u4evduZwTzM5Ja3idjo3jmrNSg/dpgYXnIqKJKBAB4R0s2KX6Fvhw
+ cUq94S6NnNGA2HkJQ4TYlFHtyZpA/LaXYKO1YHzZpKsF/9ScTG2OioSGgn8mSeBHlZAix7TuFwM
+ MXy8MzUj0bkFReDFNvMct9JLwL4ck1UIr3RYxNT0sR5TSfNFTxXzpJJOOcsDDjuHx4epbCNGqkX
+ vQWTyiHHAgzC6ZXEbTmr6SwfB1egCtcVXY3GOqZNWrVjpcd5KWRCLLNu7xh6yrQcRX9WFZsNLgR
+ EGNxvklueF+poTEhugkJhYRhRoF+5kM8dPYXzlwklvY6xCTmDQIrhPGavkNjaeGLjiOxU+6ZIkV
+ 3FdypiQKdUgo00Q==
+X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
+ fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
 
-On Monday, January 8, 2024 3:12:24 PM CET Eric Van Hensbergen wrote:
-> On Mon, Jan 8, 2024 at 6:08=E2=80=AFAM Christian Schoenebeck
-> <linux_oss@crudebyte.com> wrote:
-> >
-> > On Monday, January 8, 2024 12:19:34 PM CET asmadeus@codewreck.org wrote:
-> > > Eric Van Hensbergen wrote on Sun, Jan 07, 2024 at 07:07:52PM +0000:
-> > > > I was running some regressions and noticed a (race-y) kernel warnin=
-g that
-> > > > happens when nlink becomes less than zero.  Looking through the code
-> > > > it looks like we aren't good about protecting the inode lock when
-> > > > manipulating nlink and some code that was added several years ago to
-> > > > protect against bugs in underlying file systems nlink handling didn=
-'t
-> > > > look quite right either.  I took a look at what NFS was doing and t=
-ried to
-> > > > follow similar approaches in the 9p code.
-> > >
-> > > I was about to say the set/inc/etc_nlink helpers could probably just =
-be
-> > > using atomic (there's an atomic_dec_if_postive that we could have used
-> > > for the v9fs_dec_count warning), but this isn't our code so not much =
-to
-> > > do about that -- I agree it needs a lock.
-> > >
-> > > I didn't take the time to check if you missed any, but it won't be wo=
-rse
-> > > than what we have right now:
-> > > Acked-by: Dominique Martinet <asmadeus@codewreck.org>
-> >
-> > That's actually a good point. For these tasks atomic inc/sub/etc are us=
-ually
-> > used instead of locks.
-> >
-> > I would at least add local wrapper functions that would do these spinlo=
-cks for
-> > us.
-> >
->=20
-> I'm good with adding local wrapper functions,  I imagine these aren't
-> used in the kernel because for regular file-systems maybe you want the
-> warning that your inode link accounting is wrong.
-> I suppose we could be naughty and not use the kernel functions (which
-> themselves are basically wrappers).
+I was running some regressions and noticed a (race-y) kernel warning
+that happens when nlink becomes less than zero.  Looking through the
+code it looks like we aren't good about protecting the inode lock when
+manipulating nlink and some code that was added several years ago to
+protect against bugs in underlying file systems nlink handling didn't
+look quite right either.  I took a look at what NFS was doing and tried
+to follow similar approaches in the 9p code.
 
-Well, one half of that code is actually using atomic operations to incremen=
-t/
-decrement the private counter. Which means to me those kernel functions were
-intended to be called from a concurrent context. So I don't get why the oth=
-er
-variable is not atomic there. They should be I think.
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+---
+Changes in v2:
+- add wrappers
+- fix checkpatch errors
+- Link to v1: https://lore.kernel.org/r/20240107-fix-nlink-handling-v1-1-8b1f65ebc9b2@kernel.org
+---
+ fs/9p/v9fs_vfs.h       |  1 +
+ fs/9p/vfs_inode.c      | 49 +++++++++++++++++++++++++++++++++++--------------
+ fs/9p/vfs_inode_dotl.c |  2 +-
+ 3 files changed, 37 insertions(+), 15 deletions(-)
 
-I would probably try and send a patch for changing those kernel functions a=
-nd
-see if people are fine with that. But up to you.
+diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
+index 731e3d14b67d..6019909445d4 100644
+--- a/fs/9p/v9fs_vfs.h
++++ b/fs/9p/v9fs_vfs.h
+@@ -37,6 +37,7 @@ extern const struct file_operations v9fs_dir_operations_dotl;
+ extern const struct dentry_operations v9fs_dentry_operations;
+ extern const struct dentry_operations v9fs_cached_dentry_operations;
+ extern struct kmem_cache *v9fs_inode_cache;
++extern void v9fs_inc_nlink(struct inode *inode);
+ 
+ struct inode *v9fs_alloc_inode(struct super_block *sb);
+ void v9fs_free_inode(struct inode *inode);
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index b845ee18a80b..fbd87f43aea2 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -506,21 +506,43 @@ static int v9fs_at_to_dotl_flags(int flags)
+ }
+ 
+ /**
+- * v9fs_dec_count - helper functon to drop i_nlink.
++ * v9fs_dec_nlink - helper functon to drop i_nlink.
+  *
+- * If a directory had nlink <= 2 (including . and ..), then we should not drop
+- * the link count, which indicates the underlying exported fs doesn't maintain
+- * nlink accurately. e.g.
++ * Put a guards around this so we are only dropping nlink
++ * if it would be valid.  This prevents bugs from an underlying
++ * filesystem implementations from triggering kernel WARNs.  We'll
++ * still print 9p debug messages if the underlying filesystem is wrong.
++ *
++ * known underlying filesystems which might exhibit this issue:
+  * - overlayfs sets nlink to 1 for merged dir
+  * - ext4 (with dir_nlink feature enabled) sets nlink to 1 if a dir has more
+  *   than EXT4_LINK_MAX (65000) links.
+  *
+  * @inode: inode whose nlink is being dropped
+  */
+-static void v9fs_dec_count(struct inode *inode)
++static void v9fs_dec_nlink(struct inode *inode)
+ {
+-	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
++	spin_lock(&inode->i_lock);
++	if (inode->i_nlink > 0)
+ 		drop_nlink(inode);
++	else
++		p9_debug(P9_DEBUG_ERROR, "WARNING: nlink is already 0 inode %p\n",
++			inode);
++	spin_unlock(&inode->i_lock);
++}
++
++static void v9fs_clear_nlink(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	clear_nlink(inode);
++	spin_unlock(&inode->i_lock);
++}
++
++void v9fs_inc_nlink(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	inc_nlink(inode);
++	spin_unlock(&inode->i_lock);
+ }
+ 
+ /**
+@@ -566,10 +588,9 @@ static int v9fs_remove(struct inode *dir, struct dentry *dentry, int flags)
+ 		 * link count
+ 		 */
+ 		if (flags & AT_REMOVEDIR) {
+-			clear_nlink(inode);
+-			v9fs_dec_count(dir);
++			v9fs_clear_nlink(inode);
+ 		} else
+-			v9fs_dec_count(inode);
++			v9fs_dec_nlink(inode);
+ 
+ 		v9fs_invalidate_inode_attr(inode);
+ 		v9fs_invalidate_inode_attr(dir);
+@@ -713,7 +734,7 @@ static int v9fs_vfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 		err = PTR_ERR(fid);
+ 		fid = NULL;
+ 	} else {
+-		inc_nlink(dir);
++		v9fs_inc_nlink(dir);
+ 		v9fs_invalidate_inode_attr(dir);
+ 	}
+ 
+@@ -963,14 +984,14 @@ v9fs_vfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	if (!retval) {
+ 		if (new_inode) {
+ 			if (S_ISDIR(new_inode->i_mode))
+-				clear_nlink(new_inode);
++				v9fs_clear_nlink(new_inode);
+ 			else
+-				v9fs_dec_count(new_inode);
++				v9fs_dec_nlink(new_inode);
+ 		}
+ 		if (S_ISDIR(old_inode->i_mode)) {
+ 			if (!new_inode)
+-				inc_nlink(new_dir);
+-			v9fs_dec_count(old_dir);
++				v9fs_inc_nlink(new_dir);
++			v9fs_dec_nlink(old_dir);
+ 		}
+ 		v9fs_invalidate_inode_attr(old_inode);
+ 		v9fs_invalidate_inode_attr(old_dir);
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index c7319af2f471..fe0c41d042a1 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -427,7 +427,7 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
+ 		v9fs_set_create_acl(inode, fid, dacl, pacl);
+ 		d_instantiate(dentry, inode);
+ 	}
+-	inc_nlink(dir);
++	v9fs_inc_nlink(dir);
+ 	v9fs_invalidate_inode_attr(dir);
+ error:
+ 	p9_fid_put(fid);
 
+---
+base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+change-id: 20240107-fix-nlink-handling-3c0646f5d927
+
+Best regards,
+-- 
+Eric Van Hensbergen <ericvh@kernel.org>
 
