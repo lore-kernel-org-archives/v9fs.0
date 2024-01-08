@@ -1,79 +1,89 @@
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981853FE46;
-	Mon,  8 Jan 2024 12:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D462341226
+	for <v9fs@lists.linux.dev>; Mon,  8 Jan 2024 12:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="lBOnSMzz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1704716145; x=1705320945; i=markus.elfring@web.de;
-	bh=ftjai2gBCPxKGA6L3Dpqoe1qrerRfyJo5B7ew4NadGg=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=lBOnSMzzO6p7d7Xo5ePpJsEXEwS6zqWYzEMDguVbRwAoE/qCXAC2IwDkobxku46o
-	 PQ14T39Wc14/Dx1p75PfECfQpKzjL+xUBzjhBQIyJS3ybQHkSR8xdvXrSu8s2Foma
-	 DxVhvvERW538CDVBMpCAhfx/4YWDQS3as4JT+H4dVUeAczfYeSfUlLnZptqqVRUpG
-	 6v9q64vHlvhTMyX1z9uXDhOCms/NTRH1MykwJXaBxjAEP1PgBxH081EHtPcvi52an
-	 z/AEUAb5l8e29udWnSdD9t8nqrWgPP1HVOClLADDqJrh2pjwSKNwpxMzRT6ZN5fA9
-	 LfKNBcCwNL5rbjNLqQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MDe2F-1rVqYI0Te3-00AhCL; Mon, 08
- Jan 2024 13:15:45 +0100
-Message-ID: <f97521ef-0600-401a-8fdb-9648d576ea4c@web.de>
-Date: Mon, 8 Jan 2024 13:15:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFmceNIZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E18C433C8;
+	Mon,  8 Jan 2024 12:56:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704718603;
+	bh=CI9WZbFsKpI4w2t6C08wTtvZLR9Dl548SViUhtWK5MQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SFmceNIZAKqOQQSQNfmshI/z5iv6jwWCE3Df3Ha+Ce/QmH+c7NhigQfK2/Dp3q2wH
+	 ZCCcSmXzQ9+scQrjsZ0C+digPwg/S4L372E1IDX8CBhGACkEuBKunxvHByzdYTHqe+
+	 kb/95sCa/zey89+o7JLESHT3/PQPrcqUmgBtr+tg7h9aqNLnKoyNHsfxIzYJqotqZt
+	 9e09otxIoTURBNUE5TyGCvH0S1HAzM/qY/uYsVoWN0CDKDEqsFrInjZOor3ow/0C3O
+	 H0OtVTbcX0xcEniRn9lJmV3vkDiW+M1ytQfs2umfz4fyIOAVLEsKYf0PDWHGhXa33D
+	 3olS7iNhSWIyg==
+Date: Mon, 8 Jan 2024 06:56:39 -0600
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: asmadeus@codewreck.org
+Cc: v9fs@lists.linux.dev, linux_oss@crudebyte.com, rminnich@gmail.com,
+	lucho@ionkov.net
+Subject: Re: [PATCH 7/9] fs/9p: rework qid2ino logic
+Message-ID: <ZZvxB3u-yMypFI6c@FV7GG9FTHL>
+References: <20240106-ericvh-fix-cache-dups-v1-0-538c2074f363@kernel.org>
+ <20240106-ericvh-fix-cache-dups-v1-7-538c2074f363@kernel.org>
+ <ZZvcT2__1syWHdbC@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: fs/9p: Improve exception handling in v9fs_session_init()
-Content-Language: en-GB
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
- kernel-janitors@vger.kernel.org
-Cc: =?UTF-8?Q?Christian_Sch=C3=B6nebeck?= <linux_oss@crudebyte.com>,
- Latchesar Ionkov <lucho@ionkov.net>, LKML <linux-kernel@vger.kernel.org>
-References: <7203d3fc-f1e4-4fb1-8dd3-068b0ec6c752@web.de>
- <ZZvX6sQLkgm0kOTN@codewreck.org>
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <ZZvX6sQLkgm0kOTN@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gl0ACkqWjLQpN7DW1bz4DW6OBTXzylZArZ0ih9Y/aiilrlZgNZe
- XUmANt6EhrcgjAVHNF8zdBBCvqDIQ3YrautoPK5CSjcqYLJlaW4OlTXG0G/ixfn/LQGg5eG
- oj3t57hiuLAB3DnoPPMC09aLGkTHoAqG6O7SZZiTsDXhS8yImSIQ6hDEuB0C0+vInuMQNR4
- j5RRVo3PEA/aJJmmTV0WA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:c4zC0rRpEzg=;0HOZ/Whp5g4WVRdV8jvuDJ7cskc
- wU2huU4c5dedgcwfj/7o+YTZbN8f6xbNNRiITjBrHKxxnE6GVdTeGLL45yk2a7AIyky+ORej8
- XxOsG0Tbz9fb/Na4c7syYGLjyo4XVlIzavF58rcVg6MoiXioriaDjaiKVGfpntdeVsZCK21IP
- WjReKwsaIUXy2hAtyJDWQkMHMFiNHn70pOzwHMVEHMmmC+RxmBiy0GUV6vgnP7sTWa6NTC7TU
- NOBpKpCXxDLlLR/gOHqphasi75b+9q2jquxo+0SpOgTNsFp+wG4g3QhDydO8PT1HShQ6155+W
- w40tAd6YahtG6NQGduSTdabFE7248fptr7JJMbiZmVKaeAKf1mIB1XtYzDROmdCPMWlPnCQx8
- MJ49XgNVjWC6tWAV5wMxtcWHK6Pf5F7guEXVYMMA8fhGf0gE4U1t08erPNannjZ6bIsJDWqj8
- N7FDH3xq5gamrsO/LIZNFpHIZGdegigvnaNvEQ/famzj7Sqa58X8BT6DbDyR0JjYEwJLntHTV
- lEWoq0KKGUAHEqKek+krvDYY16VFFIv5r/d256pSNF4z3eKdyE8twHPqQtb9rGWWGcE0MFKjw
- bXJejYSfNnINiZsaonf/MbmigYwD8vmLq3LHJiD+bSjhmQD5a8j03UvtkViYwVenR35Xs0l4k
- Und6INeC0QFy4bcCqDMeaQZd0XB6WwOY0ZncPIfxz2VqaX6p08F2eybeBYhB1VYGRz5sbnBbU
- lwm8b1CY+H1qFRoSS3MAmtWZ8hA4XLCKHb2RmK/z9C13b6FC1R8tXa1S+ak/0DUqPN/Dd5nET
- OLcXvaV9iaST+E6bfEksxYINh4AjugubHZyUMtCOoI+bcucioQhAIHtY2viF1srydDiUGdNO1
- Jg/eIrj4jXprZ5y3zkSJk06lsXPmistrI5UAmaf4Y6tcJciLUuwHe3fHEsrMpAAHyLe2A5LF3
- Fa2xcw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZZvcT2__1syWHdbC@codewreck.org>
 
->> The kfree() function was called in up to two cases by
->> the v9fs_session_init() function during error handling
->> even if the passed variable contained a null pointer.
+On Mon, Jan 08, 2024 at 08:28:15PM +0900, asmadeus@codewreck.org wrote:
+> Eric Van Hensbergen wrote on Sat, Jan 06, 2024 at 02:11:14AM +0000:
+> > 
+> > diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
+> > index ad0310deb6c8..789e1188d5dc 100644
+> > --- a/fs/9p/v9fs_vfs.h
+> > +++ b/fs/9p/v9fs_vfs.h
+> > @@ -43,7 +43,12 @@ void v9fs_free_inode(struct inode *inode);
+> >  int v9fs_init_inode(struct v9fs_session_info *v9ses,
+> >  		    struct inode *inode, umode_t mode, dev_t rdev);
+> >  void v9fs_evict_inode(struct inode *inode);
+> > -ino_t v9fs_qid2ino(struct p9_qid *qid);
+> > +#if (ULONG_MAX == 0xffffffffUL)
+> 
+> The standard preprocessor condition in the kernel for this is checking
+> BITS_PER_LONG, e.g.
+> include/asm-generic/bitops/fls64.h
+> 18:#if BITS_PER_LONG == 32
+> 26:#elif BITS_PER_LONG == 64
+> 33:#else
+> 34:#error BITS_PER_LONG not 32 or 64
+> 35:#endif
 >
-> I don't see the problem in calling kfree on null things (especially on
-> error path).
 
-Will you become willing to reduce the number of redundant function calls
-for improved exception handling?
+Thanks for that, will update to be consistent with rest of kernel.
+ 
+> > -
+> > +
+> 
+> stray white space?
+> 
 
-Regards,
-Markus
+oops, will fix.
+
+> > @@ -428,7 +426,6 @@ static struct inode *v9fs_qid_iget(struct super_block *sb,
+> >  	 * FIXME!! we may need support for stale inodes
+> >  	 * later.
+> >  	 */
+> > -	inode->i_ino = i_ino;
+> 
+> This is gone, but v9fs_qid_iget_dotl() still sets i_ino -- didn't check
+> which is needed but we probably want to stay coherent between the two.
+>
+
+Good catch, deleted it from .L (and later here but in a different patch)
+because its largely vestigial since this gets set in iget_locked anyways.
+Will fix up to be more consistent.
+
+      -eric
+ 
