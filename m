@@ -1,74 +1,79 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3292575B;
-	Mon,  8 Jan 2024 12:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981853FE46;
+	Mon,  8 Jan 2024 12:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="akIgN35X"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=cagyf7j04cToSXabvYW43dze5arP+lifLYmlhSYnUZ8=; b=akIgN35X1P9RGr00+WcbSHEpBA
-	klW5ykJiJY05ljY+rZoWhILwOYxxB5r64OavHvm4Mje2AG/MKG48BzUAc+MPr+y8h5ThPd7K5s7ns
-	wVBJ2PgIt7UT6nSxYuZx65QN6OVPQpYm+53lSlmUhkto9Gj4XtQLXy+OKwcFL//MWdWpTHOF1AtnZ
-	kET5KB9UikjlWEuwPbZRQn4ro6TqGSxi8S4qttZW4qAVl/DbTlF9UDqpD9hM57PDFa3bq+S3P0L82
-	deh4802xgtgzU2y3C67DKzHPgJJfJgEVR23qMs0jnspYyo+X5xA206XwzB9aOhJC2PXIaXEAVuT2S
-	Wq+hliOs1vmiDVlzGD2Nqva6eedM/0/NIB1zYRFJM61FxEXLA1z83PIqINokjzDsSxU3HvwHBvK96
-	C1kktiEoGfhm788/YST6bb5IW5hC9mNuIoCS00Ov0J9jtP2BCWPKdIep2zV+LktCw7Q2fKeJ/zg97
-	mWJkHtXud5ApC9XPMfPGcSFf+panICrd6rQrgUHxCAuEcyiYNWZRDLCOxS3NinDc+VzBoaMEbOKIv
-	i6KbywucrpnD+2lrY27plMaBE0AIcD37WhVnE/j7TKHUchJYfKaubZ8ZQh3pQW1TBL3W0lq5aKHMi
-	hr7s7BZRrWVcM/8gK6nb41bF80Vo3NWbGJB/XNndY=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>, asmadeus@codewreck.org
-Cc: linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, rminnich@gmail.com,
- lucho@ionkov.net
-Subject: Re: [PATCH] fs/9p: fix inode nlink accounting
-Date: Mon, 08 Jan 2024 13:08:31 +0100
-Message-ID: <8004884.rDQMAZhJ5Z@silver>
-In-Reply-To: <ZZvaRt4T-RjOBoS2@codewreck.org>
-References:
- <20240107-fix-nlink-handling-v1-1-8b1f65ebc9b2@kernel.org>
- <ZZvaRt4T-RjOBoS2@codewreck.org>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="lBOnSMzz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1704716145; x=1705320945; i=markus.elfring@web.de;
+	bh=ftjai2gBCPxKGA6L3Dpqoe1qrerRfyJo5B7ew4NadGg=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=lBOnSMzzO6p7d7Xo5ePpJsEXEwS6zqWYzEMDguVbRwAoE/qCXAC2IwDkobxku46o
+	 PQ14T39Wc14/Dx1p75PfECfQpKzjL+xUBzjhBQIyJS3ybQHkSR8xdvXrSu8s2Foma
+	 DxVhvvERW538CDVBMpCAhfx/4YWDQS3as4JT+H4dVUeAczfYeSfUlLnZptqqVRUpG
+	 6v9q64vHlvhTMyX1z9uXDhOCms/NTRH1MykwJXaBxjAEP1PgBxH081EHtPcvi52an
+	 z/AEUAb5l8e29udWnSdD9t8nqrWgPP1HVOClLADDqJrh2pjwSKNwpxMzRT6ZN5fA9
+	 LfKNBcCwNL5rbjNLqQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MDe2F-1rVqYI0Te3-00AhCL; Mon, 08
+ Jan 2024 13:15:45 +0100
+Message-ID: <f97521ef-0600-401a-8fdb-9648d576ea4c@web.de>
+Date: Mon, 8 Jan 2024 13:15:43 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: fs/9p: Improve exception handling in v9fs_session_init()
+Content-Language: en-GB
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+ kernel-janitors@vger.kernel.org
+Cc: =?UTF-8?Q?Christian_Sch=C3=B6nebeck?= <linux_oss@crudebyte.com>,
+ Latchesar Ionkov <lucho@ionkov.net>, LKML <linux-kernel@vger.kernel.org>
+References: <7203d3fc-f1e4-4fb1-8dd3-068b0ec6c752@web.de>
+ <ZZvX6sQLkgm0kOTN@codewreck.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <ZZvX6sQLkgm0kOTN@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gl0ACkqWjLQpN7DW1bz4DW6OBTXzylZArZ0ih9Y/aiilrlZgNZe
+ XUmANt6EhrcgjAVHNF8zdBBCvqDIQ3YrautoPK5CSjcqYLJlaW4OlTXG0G/ixfn/LQGg5eG
+ oj3t57hiuLAB3DnoPPMC09aLGkTHoAqG6O7SZZiTsDXhS8yImSIQ6hDEuB0C0+vInuMQNR4
+ j5RRVo3PEA/aJJmmTV0WA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:c4zC0rRpEzg=;0HOZ/Whp5g4WVRdV8jvuDJ7cskc
+ wU2huU4c5dedgcwfj/7o+YTZbN8f6xbNNRiITjBrHKxxnE6GVdTeGLL45yk2a7AIyky+ORej8
+ XxOsG0Tbz9fb/Na4c7syYGLjyo4XVlIzavF58rcVg6MoiXioriaDjaiKVGfpntdeVsZCK21IP
+ WjReKwsaIUXy2hAtyJDWQkMHMFiNHn70pOzwHMVEHMmmC+RxmBiy0GUV6vgnP7sTWa6NTC7TU
+ NOBpKpCXxDLlLR/gOHqphasi75b+9q2jquxo+0SpOgTNsFp+wG4g3QhDydO8PT1HShQ6155+W
+ w40tAd6YahtG6NQGduSTdabFE7248fptr7JJMbiZmVKaeAKf1mIB1XtYzDROmdCPMWlPnCQx8
+ MJ49XgNVjWC6tWAV5wMxtcWHK6Pf5F7guEXVYMMA8fhGf0gE4U1t08erPNannjZ6bIsJDWqj8
+ N7FDH3xq5gamrsO/LIZNFpHIZGdegigvnaNvEQ/famzj7Sqa58X8BT6DbDyR0JjYEwJLntHTV
+ lEWoq0KKGUAHEqKek+krvDYY16VFFIv5r/d256pSNF4z3eKdyE8twHPqQtb9rGWWGcE0MFKjw
+ bXJejYSfNnINiZsaonf/MbmigYwD8vmLq3LHJiD+bSjhmQD5a8j03UvtkViYwVenR35Xs0l4k
+ Und6INeC0QFy4bcCqDMeaQZd0XB6WwOY0ZncPIfxz2VqaX6p08F2eybeBYhB1VYGRz5sbnBbU
+ lwm8b1CY+H1qFRoSS3MAmtWZ8hA4XLCKHb2RmK/z9C13b6FC1R8tXa1S+ak/0DUqPN/Dd5nET
+ OLcXvaV9iaST+E6bfEksxYINh4AjugubHZyUMtCOoI+bcucioQhAIHtY2viF1srydDiUGdNO1
+ Jg/eIrj4jXprZ5y3zkSJk06lsXPmistrI5UAmaf4Y6tcJciLUuwHe3fHEsrMpAAHyLe2A5LF3
+ Fa2xcw==
 
-On Monday, January 8, 2024 12:19:34 PM CET asmadeus@codewreck.org wrote:
-> Eric Van Hensbergen wrote on Sun, Jan 07, 2024 at 07:07:52PM +0000:
-> > I was running some regressions and noticed a (race-y) kernel warning that
-> > happens when nlink becomes less than zero.  Looking through the code
-> > it looks like we aren't good about protecting the inode lock when
-> > manipulating nlink and some code that was added several years ago to
-> > protect against bugs in underlying file systems nlink handling didn't
-> > look quite right either.  I took a look at what NFS was doing and tried to
-> > follow similar approaches in the 9p code.
-> 
-> I was about to say the set/inc/etc_nlink helpers could probably just be
-> using atomic (there's an atomic_dec_if_postive that we could have used
-> for the v9fs_dec_count warning), but this isn't our code so not much to
-> do about that -- I agree it needs a lock.
-> 
-> I didn't take the time to check if you missed any, but it won't be worse
-> than what we have right now:
-> Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+>> The kfree() function was called in up to two cases by
+>> the v9fs_session_init() function during error handling
+>> even if the passed variable contained a null pointer.
+>
+> I don't see the problem in calling kfree on null things (especially on
+> error path).
 
-That's actually a good point. For these tasks atomic inc/sub/etc are usually
-used instead of locks.
+Will you become willing to reduce the number of redundant function calls
+for improved exception handling?
 
-I would at least add local wrapper functions that would do these spinlocks for
-us.
-
-However would it be too bold to change those inode functions to use atomic
-operations directly on their end?
-
-/Christian
-
-
+Regards,
+Markus
