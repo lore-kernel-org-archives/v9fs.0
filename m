@@ -1,104 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6911537FF;
-	Mon,  8 Jan 2024 15:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E1C5644F
+	for <v9fs@lists.linux.dev>; Mon,  8 Jan 2024 21:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8W5ldSG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AD5C433CB;
-	Mon,  8 Jan 2024 15:18:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704727115;
-	bh=JAXtta6eBaQuUW49iLcF5j0hoJdzALXBq37p3uzPtxo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=G8W5ldSGTcXe1wI85QiNk/R4Nt5M91jkwxAgBe7JJWfQVHEnkgQGFTbv6dOrakM5w
-	 gc9ZTQ75jGGpTENuwGqaq7ouk57FJdGulSMQHIBlQwpo1CSQmQDvlkyVT5WqMesilS
-	 k3SuOPvJNU7DOgq8jXIxtfQYV/XYoZ1/d4dRLvLhReGCi3M+OKBfdC3wlgJF+quFi3
-	 L/86jSQk+SAMPcRpB82COCFopTbp/0SrP6l2Dbn+FCUcdI6n9ReBoE7c3eDGnIGCQf
-	 YpLNhI9nUhjrENtUo5gQo7W0CT+ug7ZUwKnY3F1InrYA8ZVYUzMp7gQXpiRn99cCOZ
-	 pO66HJ+wrohgw==
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Mon, 08 Jan 2024 15:18:24 +0000
-Subject: [PATCH v2 8/8] fs/9p: fix dups even in uncached mode
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ITQDZ6iq";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ITQDZ6iq"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id AF8F7C01E; Mon,  8 Jan 2024 22:37:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1704749850; bh=T6pq3oYZAwBjvYhcZTgNrAtF5tCRRgkDFhYs7BfLir8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ITQDZ6iqaLfLHC5UUsHqjfFvbktxVVqYvTxfWjlL41MS8MMqR47N4UEeUwszv2tEG
+	 m0VVtwgBombUEUOH5wNIannU7ZRT3RSf3Mo2tDf4DLrOPKL7dsAuuBm8zIZ338IYal
+	 UcMBOAe1j/2eudAhTBXPgAevEemDm7AtA4bvVniJmjJtjdVK5D0xFrndUjXklSB62G
+	 rLhKozO5UgF5lcx0jYCInqIqRfF0rd5I3djmnsxlkFWnW5NZp+DiqbJJv90u7DkZMY
+	 UBIyFGFUfaEMUlEyaB37QEXPfWNmuNK/G7K1he3T+N7OF4KHwBk6ij2dNuq/uOf8or
+	 XFHphi5/bLXrw==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 2FE59C009;
+	Mon,  8 Jan 2024 22:37:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1704749850; bh=T6pq3oYZAwBjvYhcZTgNrAtF5tCRRgkDFhYs7BfLir8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ITQDZ6iqaLfLHC5UUsHqjfFvbktxVVqYvTxfWjlL41MS8MMqR47N4UEeUwszv2tEG
+	 m0VVtwgBombUEUOH5wNIannU7ZRT3RSf3Mo2tDf4DLrOPKL7dsAuuBm8zIZ338IYal
+	 UcMBOAe1j/2eudAhTBXPgAevEemDm7AtA4bvVniJmjJtjdVK5D0xFrndUjXklSB62G
+	 rLhKozO5UgF5lcx0jYCInqIqRfF0rd5I3djmnsxlkFWnW5NZp+DiqbJJv90u7DkZMY
+	 UBIyFGFUfaEMUlEyaB37QEXPfWNmuNK/G7K1he3T+N7OF4KHwBk6ij2dNuq/uOf8or
+	 XFHphi5/bLXrw==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id 1df35907;
+	Mon, 8 Jan 2024 21:37:25 +0000 (UTC)
+Date: Tue, 9 Jan 2024 06:37:09 +0900
+From: asmadeus@codewreck.org
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, linux-kernel@vger.kernel.org,
+	v9fs@lists.linux.dev, rminnich@gmail.com, lucho@ionkov.net
+Subject: Re: [PATCH] fs/9p: fix inode nlink accounting
+Message-ID: <ZZxrBbR2YHz0E5v0@codewreck.org>
+References: <20240107-fix-nlink-handling-v1-1-8b1f65ebc9b2@kernel.org>
+ <8004884.rDQMAZhJ5Z@silver>
+ <CAFkjPTn0HFnnZk8rt7m+mfLyPofMxZC6EzaoFChoyRVdVnwM6Q@mail.gmail.com>
+ <7785659.j189Hiylts@silver>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240108-ericvh-fix-cache-dups-v2-8-a73f8822838c@kernel.org>
-References: <20240108-ericvh-fix-cache-dups-v2-0-a73f8822838c@kernel.org>
-In-Reply-To: <20240108-ericvh-fix-cache-dups-v2-0-a73f8822838c@kernel.org>
-To: Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Eric Van Hensbergen <ericvh@kernel.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1475; i=ericvh@kernel.org;
- h=from:subject:message-id; bh=JAXtta6eBaQuUW49iLcF5j0hoJdzALXBq37p3uzPtxo=;
- b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBlnBJDMKN7uTDozbiBwYw6Uw+238ExMxgmeCOXH
- MVtGpdR1/6JAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZZwSQwAKCRCI/9X7Sl//
- mAAnEACF+V9GYs3urXSoT14H4gdEtiV8xD2pN2kphsn7+ltgzvWpkOPglthv7i2EcrX6IFLUaMY
- BqITnL8z0RjKO8FY5MFcoUiz+5ROo2gr63Me1HOYmJb4H+lH5Xj/XmBGTltdtZpblJhcpAD7xI6
- mQxAB85VQp7jzbCO7Vj5Aamf/SlIyD/CI6yYh0IRI7XBJG2b7AzjeUP2iKWXAHqnnX4KTiOptHn
- I/adoxCTrkL5wJixuFYBGRLNGWlHBrkntkGse65utIbuHOGKADPU+u0kxnw6FUGE/vjIMQt0vdF
- fk45nf4YHmvvyxYcuvgN11ua4e38hJs8dfKMRNOlBNEZ21Ck/87LtT/6mZNZzZWt5U+DLOsNPGH
- V7zB8BExdew9hrai/DkW6QBkPIBo8YLBBOShuLskj52H8XLT/D1YX0gAImgvDtMOcG7TvAQbthS
- OXTfa+040u8xfVK7TpGCwbsGw4uhNGe/oaLZr8HFbHGrNXziiUUBeLrVaHp2a13wcS1sBqZ8jI6
- Fzm3S29DkK8OLmZA8kSbqXAGEN/+7UbZnLpbIlMNvIzbjtZhKjLUAmFYtpaTTySBjZ01oRjTaiw
- ga1EE8R+v46LgJLD43Ri9p+yqld9tIgHY036w+1Xh4EsKk/XRiyg7QIvguTMfz1M0a7nanGP5O2
- rfsuDmgHuskwUiQ==
-X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
- fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7785659.j189Hiylts@silver>
 
-In uncached mode we were still seeing duplicate getattr requests
-because of aggressive dropping of inodes.  Inode "freshness" is
-guarded by other mechanisms when caches are disabled so this
-is unnecessary and increases overhead of almost every operation.
+Christian Schoenebeck wrote on Mon, Jan 08, 2024 at 03:55:53PM +0100:
+> > I'm good with adding local wrapper functions,
 
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
----
- fs/9p/vfs_super.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+(Agreed having a local wrapper that locks + use these is better than this
+current patch -- v2 looks much better, thanks!)
 
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 6d9a98c57185..a898dbf97710 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -244,21 +244,6 @@ static int v9fs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 	return res;
- }
- 
--static int v9fs_drop_inode(struct inode *inode)
--{
--	struct v9fs_session_info *v9ses;
--
--	v9ses = v9fs_inode2v9ses(inode);
--	if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
--		return generic_drop_inode(inode);
--	/*
--	 * in case of non cached mode always drop the
--	 * inode because we want the inode attribute
--	 * to always match that on the server.
--	 */
--	return 1;
--}
--
- static int v9fs_write_inode(struct inode *inode,
- 			    struct writeback_control *wbc)
- {
-@@ -303,7 +288,6 @@ static const struct super_operations v9fs_super_ops_dotl = {
- 	.alloc_inode = v9fs_alloc_inode,
- 	.free_inode = v9fs_free_inode,
- 	.statfs = v9fs_statfs,
--	.drop_inode = v9fs_drop_inode,
- 	.evict_inode = v9fs_evict_inode,
- 	.show_options = v9fs_show_options,
- 	.umount_begin = v9fs_umount_begin,
+> > I imagine these aren't
+> > used in the kernel because for regular file-systems maybe you want the
+> > warning that your inode link accounting is wrong.
+> > I suppose we could be naughty and not use the kernel functions (which
+> > themselves are basically wrappers).
+> 
+> Well, one half of that code is actually using atomic operations to increment/
+> decrement the private counter. Which means to me those kernel functions were
+> intended to be called from a concurrent context. So I don't get why the other
+> variable is not atomic there. They should be I think.
+
+I think the key difference is inode level vs superblock level -- the
+inode is local and holding a lock can be faster if manipulations are
+grouped together (x atomic operations are usually slower than a spinlock
+and x normal operations), while the sb potentially has contentions and
+would be more likely to use atomic...
+
+> I would probably try and send a patch for changing those kernel functions and
+> see if people are fine with that. But up to you.
+
+With that said I just checked ext4 and it looks just as racy as we do in
+particular the rmdir/unlink case doesn't seem to take any lock, so it's
+definitely worth raising the subject on fsdevel!
+I'll see how work is busy and ask later today if time allows
+
 
 -- 
-2.41.0
-
+Dominique Martinet | Asmadeus
