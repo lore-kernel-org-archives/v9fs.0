@@ -1,152 +1,279 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA3BA53
-	for <v9fs@lists.linux.dev>; Mon,  8 Jan 2024 22:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED036D6CE
+	for <v9fs@lists.linux.dev>; Tue,  9 Jan 2024 03:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OZ2kbWTE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704753100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g3fhJdYhF0Jh8djZ9CbUM5+BZiYxRI9hKlm7wmHneNE=;
-	b=OZ2kbWTEKRjY7eLh/D6Pl/LNC4wp20P+DlQGzXqRRcV3H6fXLsrgkoa/RUhyHLVcdRDt8L
-	Z7d/Kaf2lPh4bRlWiVBboEFPQfIJGUkuWdDSNa1akYM0q2wQ6+DVbrEk/rqFw+y4PgSAMu
-	3qIkfa5i8zavapoiHZ7MfjUnQ2G5J2U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-mFt6nnssNiyKD7dLtjUHgg-1; Mon,
- 08 Jan 2024 17:31:35 -0500
-X-MC-Unique: mFt6nnssNiyKD7dLtjUHgg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CFBE1C29EAA;
-	Mon,  8 Jan 2024 22:31:34 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.27])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BECCF1121306;
-	Mon,  8 Jan 2024 22:31:30 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240107160916.GA129355@kernel.org>
-References: <20240107160916.GA129355@kernel.org> <20240103145935.384404-1-dhowells@redhat.com> <20240103145935.384404-2-dhowells@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Jeff Layton <jlayton@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Steve French <smfrench@gmail.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, linux-cachefs@redhat.com,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-    netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-    Yiqun Leng <yqleng@linux.alibaba.com>,
-    Jia Zhu <zhujia.zj@bytedance.com>
-Subject: Re: [PATCH 1/5] cachefiles: Fix __cachefiles_prepare_write()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4KU61vT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48660C433C7;
+	Tue,  9 Jan 2024 03:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704770831;
+	bh=WgewrTItOAQlr4HiToExjYr+NGisneCrdPmYsdtv8NE=;
+	h=From:Date:Subject:To:Cc:From;
+	b=K4KU61vTIckT4YB+liIijSUUlKXjp0uVj3uY+rz3/3HqG0INPK13AGYIM6UQBIVPq
+	 hErqc8pbPfnTy66Ab4FtE+jYSBRjoKqCU1gd3uIl1tbNXKagQuMqA8Zy2GvU1OjgeF
+	 u7aufZdAqvZOmZvkSsSnA8IxvHHqoFkLd8ZDuMkK5q1afCSDPK+B93RDGGsRdvIeSf
+	 E84eEAuu3rZXBhfypzOWXxhztx15ctsPkj8RPhFJrPUEo/Nl8qUcA7LhAm08/U06cV
+	 GN/KHPKfWCN0P8fgiaLuBvSyXi6og7MrOyTmMObfD2GpdwIntMcJ/CXbAXKIeWReJX
+	 crIkeDF6WOjRA==
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Tue, 09 Jan 2024 03:26:59 +0000
+Subject: [PATCH RFC] fs/9p: restructure code to make use of multiwalk
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1544729.1704753090.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jan 2024 22:31:30 +0000
-Message-ID: <1544730.1704753090@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240109-multiwalk-by-default-v1-1-12226a296f29@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAK9nGUC/x3MSQqAMAxA0atI1gZaq6BeRVy0mmpwpHVEvLvF5
+ Vv8/4Anx+ShjB5wdLDnZQ6QcQRNr+eOkNtgSESSCilynPZx41OPA5obW7I6GI1SNjOykbYwENL
+ VkeXr31b1+35JeQWmZgAAAA==
+To: Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6370; i=ericvh@kernel.org;
+ h=from:subject:message-id; bh=WgewrTItOAQlr4HiToExjYr+NGisneCrdPmYsdtv8NE=;
+ b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBlnL0NGPYYQdhZdNE8U3VmS78wo/UhAZ2SLTcd1
+ zSiDBPQs4SJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZZy9DQAKCRCI/9X7Sl//
+ mE2gD/0Wfe0drJfuxPzwhR/DRUEP8e9AG5F1SsrsbLvxR4adZFPtkJUVqmCtWogNKgGOwQrynzo
+ TCwaxwvokqG2wE15JXAw/oZvFjRN3EH1F0iY23wEPSEUNvxulDIqlMxEdyzjYw3n4HhqpzRmu5v
+ CerWHtdL4+bEjiELn4XNHr25JKbA4hQpVyN9EG4DjM4dMKVjhYdiY09BbAD3g+6+6rvEE1oqzLu
+ uYzhf4Dq0wULAMsTxpOZQfpju6sGLEW3/sACDy7JzJpm8Kkr183vDaFx3TdD6RWIAh+W/neFqr4
+ sYyyJfz01BhhYuVa1HerTVVgThqAeM/Z73kyUGexU5bN/Xo5O+ZdvBjn8U1T0L5/y0beu/JPneA
+ vR5U+Asj3jTDYHNQ2iDYOFstvum3NjHjh2AAauX+Ic5BFyvajD0UEKxsZPS7HU8VMZDzVJXb+yn
+ 7J/F0jAxmkFYgaCp2QCu1G3ya/DDDzvTiJUiAVSGoX9vIj3qHyF3ikXM4oiX9R0+AKpVZi26DkA
+ 3Od9ZXNz9+bxrp4If1fA5NqPMJVzRJRVUjGxWKs2viLIHryOM+61BO9S6Rt4n6sBY9/pCtKMe7E
+ vWnyhqBv89itvunh7+i555FLlsg0Z1jjYOls/X1YQ3A/dL7EXrtpG/UCD6Qdd4iXMYJCWDd0GtD
+ unwB5JzD96cVu0g==
+X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
+ fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
 
-Simon Horman <horms@kernel.org> wrote:
+There was some code to use multiwalk, but based
+on the existing code it would never be used.  This
+patch makes the default to try and use multiwalk
+as much as possible.
 
-> I realise these patches have been accepted, but I have a minor nit:
-> pos is now unsigned, and so cannot be less than zero.
+In single-user code path, I couldn't get this to actually
+get tested because it always finds the fid.  I think I
+can test with an su environment, but I don't have one setup
+at the moment.
 
-Good point.  How about the attached patch.  Whilst I would prefer to use
-unsigned long long to avoid the casts, it might =
+Dominique was right that multiwalk is difficult to trigger
+due to call-path (it'll always establish entry, by entry and
+when those have fids we don't need multiwalk).  I went down
+a rat-hole to circumvent this (which started looking very
+similar to my transient fid rework).  I do think there is a
+path there, but its a much more invasive rewrite than I want
+to do this evening.
 
+This patch on its own seems like a cleaner solution than what
+was there before, but I really need to find a way to test it
+before submitting upstream.
 
-David
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 ---
-cachefiles: Fix signed/unsigned mixup
+ fs/9p/fid.c | 146 +++++++++++++++---------------------------------------------
+ 1 file changed, 35 insertions(+), 111 deletions(-)
 
-In __cachefiles_prepare_write(), the start and pos variables were made
-unsigned 64-bit so that the casts in the checking could be got rid of -
-which should be fine since absolute file offsets can't be negative, except
-that an error code may be obtained from vfs_llseek(), which *would* be
-negative.  This breaks the error check.
-
-Fix this for now by reverting pos and start to be signed and putting back
-the casts.  Unfortunately, the error value checks cannot be replaced with
-IS_ERR_VALUE() as long might be 32-bits.
-
-Fixes: 7097c96411d2 ("cachefiles: Fix __cachefiles_prepare_write()")
-Reported-by: Simon Horman <horms@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401071152.DbKqMQMu-lkp@in=
-tel.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Gao Xiang <hsiangkao@linux.alibaba.com>
-cc: Yiqun Leng <yqleng@linux.alibaba.com>
-cc: Jia Zhu <zhujia.zj@bytedance.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cachefs@redhat.com
-cc: linux-erofs@lists.ozlabs.org
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
----
- fs/cachefiles/io.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-index 3eec26967437..9a2cb2868e90 100644
---- a/fs/cachefiles/io.c
-+++ b/fs/cachefiles/io.c
-@@ -522,7 +522,7 @@ int __cachefiles_prepare_write(struct cachefiles_objec=
-t *object,
- 			       bool no_space_allocated_yet)
+diff --git a/fs/9p/fid.c b/fs/9p/fid.c
+index de009a33e0e2..502fd8dd1295 100644
+--- a/fs/9p/fid.c
++++ b/fs/9p/fid.c
+@@ -139,69 +139,19 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
+ 	return ret;
+ }
+ 
+-/*
+- * We need to hold v9ses->rename_sem as long as we hold references
+- * to returned path array. Array element contain pointers to
+- * dentry names.
+- */
+-static int build_path_from_dentry(struct v9fs_session_info *v9ses,
+-				  struct dentry *dentry, const unsigned char ***names)
+-{
+-	int n = 0, i;
+-	const unsigned char **wnames;
+-	struct dentry *ds;
+-
+-	for (ds = dentry; !IS_ROOT(ds); ds = ds->d_parent)
+-		n++;
+-
+-	wnames = kmalloc_array(n, sizeof(char *), GFP_KERNEL);
+-	if (!wnames)
+-		goto err_out;
+-
+-	for (ds = dentry, i = (n-1); i >= 0; i--, ds = ds->d_parent)
+-		wnames[i] = ds->d_name.name;
+-
+-	*names = wnames;
+-	return n;
+-err_out:
+-	return -ENOMEM;
+-}
+-
+-static struct p9_fid *v9fs_fid_lookup_with_uid(struct dentry *dentry,
+-					       kuid_t uid, int any)
++static struct p9_fid *v9fs_first_fid(struct dentry *dentry,
++					       kuid_t uid, int any, const unsigned char ***wnames, 
++						   int *wn, int n)
  {
- 	struct cachefiles_cache *cache =3D object->volume->cache;
--	unsigned long long start =3D *_start, pos;
-+	loff_t start =3D *_start, pos;
- 	size_t len =3D *_len;
- 	int ret;
- =
-
-@@ -556,7 +556,7 @@ int __cachefiles_prepare_write(struct cachefiles_objec=
-t *object,
- 					  cachefiles_trace_seek_error);
- 		return pos;
+-	struct dentry *ds;
+-	const unsigned char **wnames, *uname;
+-	int i, n, l, access;
++	const unsigned char *uname;
++	int access;
+ 	struct v9fs_session_info *v9ses;
+-	struct p9_fid *fid, *root_fid, *old_fid;
++	struct p9_fid *fid;
+ 
+ 	v9ses = v9fs_dentry2v9ses(dentry);
+ 	access = v9ses->flags & V9FS_ACCESS_MASK;
+ 	fid = v9fs_fid_find(dentry, uid, any);
+-	if (fid)
+-		return fid;
+-	/*
+-	 * we don't have a matching fid. To do a TWALK we need
+-	 * parent fid. We need to prevent rename when we want to
+-	 * look at the parent.
+-	 */
+-	down_read(&v9ses->rename_sem);
+-	ds = dentry->d_parent;
+-	fid = v9fs_fid_find(ds, uid, any);
+-	if (fid) {
+-		/* Found the parent fid do a lookup with that */
+-		old_fid = fid;
+-
+-		fid = p9_client_walk(old_fid, 1, &dentry->d_name.name, 1);
+-		p9_fid_put(old_fid);
+-		goto fid_out;
+-	}
+-	up_read(&v9ses->rename_sem);
+-
+-	/* start from the root and try to do a lookup */
+-	root_fid = v9fs_fid_find(dentry->d_sb->s_root, uid, any);
+-	if (!root_fid) {
++	if ((!fid) && (dentry->d_sb->s_root == dentry)) { 
+ 		/* the user is not attached to the fs yet */
+ 		if (access == V9FS_ACCESS_SINGLE)
+ 			return ERR_PTR(-EPERM);
+@@ -216,63 +166,22 @@ static struct p9_fid *v9fs_fid_lookup_with_uid(struct dentry *dentry,
+ 		if (IS_ERR(fid))
+ 			return fid;
+ 
+-		root_fid = p9_fid_get(fid);
++		fid = p9_fid_get(fid);
+ 		v9fs_fid_add(dentry->d_sb->s_root, &fid);
  	}
--	if (pos >=3D start + *_len)
-+	if ((u64)pos >=3D (u64)start + *_len)
- 		goto check_space; /* Unallocated region */
- =
-
- 	/* We have a block that's at least partially filled - if we're low on
-@@ -575,7 +575,7 @@ int __cachefiles_prepare_write(struct cachefiles_objec=
-t *object,
- 					  cachefiles_trace_seek_error);
- 		return pos;
+-	/* If we are root ourself just return that */
+-	if (dentry->d_sb->s_root == dentry)
+-		return root_fid;
+-
+-	/*
+-	 * Do a multipath walk with attached root.
+-	 * When walking parent we need to make sure we
+-	 * don't have a parallel rename happening
+-	 */
+-	down_read(&v9ses->rename_sem);
+-	n  = build_path_from_dentry(v9ses, dentry, &wnames);
+-	if (n < 0) {
+-		fid = ERR_PTR(n);
+-		goto err_out;
+-	}
+-	fid = root_fid;
+-	old_fid = root_fid;
+-	i = 0;
+-	while (i < n) {
+-		l = min(n - i, P9_MAXWELEM);
+-		/*
+-		 * We need to hold rename lock when doing a multipath
+-		 * walk to ensure none of the path components change
+-		 */
+-		fid = p9_client_walk(old_fid, l, &wnames[i],
+-				     old_fid == root_fid /* clone */);
+-		/* non-cloning walk will return the same fid */
+-		if (fid != old_fid) {
+-			p9_fid_put(old_fid);
+-			old_fid = fid;
+-		}
+-		if (IS_ERR(fid)) {
+-			kfree(wnames);
+-			goto err_out;
+-		}
+-		i += l;
+-	}
+-	kfree(wnames);
+-fid_out:
+-	if (!IS_ERR(fid)) {
+-		spin_lock(&dentry->d_lock);
+-		if (d_unhashed(dentry)) {
+-			spin_unlock(&dentry->d_lock);
+-			p9_fid_put(fid);
+-			fid = ERR_PTR(-ENOENT);
+-		} else {
+-			__add_fid(dentry, fid);
+-			p9_fid_get(fid);
+-			spin_unlock(&dentry->d_lock);
++	if (fid) {
++		*wn = n;
++		if(n>0) {
++			*wnames = kmalloc_array(n, sizeof(char *), GFP_KERNEL);
++			if (!*wnames)
++				return ERR_PTR(-ENOMEM);
++			*wnames[n-1] = dentry->d_name.name;	
+ 		}
++ 		return fid;
  	}
--	if (pos >=3D start + *_len)
-+	if ((u64)pos >=3D (u64)start + *_len)
- 		return 0; /* Fully allocated */
- =
+-err_out:
+-	up_read(&v9ses->rename_sem);
+-	return fid;
++
++	/* recurse up tree */
++	return v9fs_first_fid(dentry->d_parent, uid, any, wnames, wn, n+1);
+ }
+ 
+ /**
+@@ -290,6 +199,9 @@ struct p9_fid *v9fs_fid_lookup(struct dentry *dentry)
+ 	kuid_t uid;
+ 	int  any, access;
+ 	struct v9fs_session_info *v9ses;
++	const unsigned char **wnames;
++	struct p9_fid *fid;
++	int wn;
+ 
+ 	v9ses = v9fs_dentry2v9ses(dentry);
+ 	access = v9ses->flags & V9FS_ACCESS_MASK;
+@@ -311,6 +223,18 @@ struct p9_fid *v9fs_fid_lookup(struct dentry *dentry)
+ 		any = 0;
+ 		break;
+ 	}
+-	return v9fs_fid_lookup_with_uid(dentry, uid, any);
++
++	fid = v9fs_fid_find(dentry, uid, any);
++	if (!fid) {
++		down_read(&v9ses->rename_sem);
++		fid = v9fs_first_fid(dentry, uid, any, &wnames, &wn, 0);
++		if ((!IS_ERR(fid)) && (wn>0)) {
++			fid = p9_client_walk(fid, wn, wnames, 1);
++			kfree(wnames);
++		}
++		up_read(&v9ses->rename_sem);
++	}
++
++	return fid;
+ }
+ 
 
- 	/* Partially allocated, but insufficient space: cull. */
+---
+base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+change-id: 20240108-multiwalk-by-default-b33f5b1c1f9b
+
+Best regards,
+-- 
+Eric Van Hensbergen <ericvh@kernel.org>
 
