@@ -1,79 +1,140 @@
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 83CBD1C2A3
-	for <v9fs@lists.linux.dev>; Tue, 16 Jan 2024 15:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 746033 invoked by uid 1000); 16 Jan 2024 10:45:13 -0500
-Date: Tue, 16 Jan 2024 10:45:13 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-  Eric Van Hensbergen <ericvh@kernel.org>,
-  Latchesar Ionkov <lucho@ionkov.net>,
-  Christian Schoenebeck <linux_oss@crudebyte.com>,
-  Jonathan Corbet <corbet@lwn.net>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, v9fs@lists.linux.dev,
-  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-  linux-usb@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 1/3] usb: gadget: function: 9pfs
-Message-ID: <206e4e7b-0ba4-4177-b04d-cab67c2bba2d@rowland.harvard.edu>
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018AA1C2B3
+	for <v9fs@lists.linux.dev>; Tue, 16 Jan 2024 15:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1rPlj4-0003Dv-L9; Tue, 16 Jan 2024 16:51:42 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1rPlj3-000H4W-Sb; Tue, 16 Jan 2024 16:51:41 +0100
+Received: from localhost ([127.0.0.1])
+	by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1rPlj3-0012XM-2I;
+	Tue, 16 Jan 2024 16:51:41 +0100
+Message-ID: <0aba51a8be0fb165b44ec956bec7a9698a9518a2.camel@pengutronix.de>
+Subject: Re: [PATCH 0/3] usb: gadget: 9pfs transport
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: Dominique Martinet <asmadeus@codewreck.org>, Michael Grzeschik
+	 <m.grzeschik@pengutronix.de>
+Cc: Latchesar Ionkov <lucho@ionkov.net>, linux-usb@vger.kernel.org, Jonathan
+ Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ v9fs@lists.linux.dev,  Christian Schoenebeck <linux_oss@crudebyte.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@pengutronix.de,  Eric Van Hensbergen <ericvh@kernel.org>
+Date: Tue, 16 Jan 2024 16:51:41 +0100
+In-Reply-To: <ZaZsUQUhSlMPLJg0@codewreck.org>
 References: <20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de>
- <20240116-ml-topic-u9p-v1-1-ad8c306f9a4e@pengutronix.de>
- <4856923e-3ce8-4372-9451-f9c8aa157111@rowland.harvard.edu>
- <ZaYAONB-fUB3gjBl@codewreck.org>
+	 <ZaZsUQUhSlMPLJg0@codewreck.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZaYAONB-fUB3gjBl@codewreck.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: jlu@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-On Tue, Jan 16, 2024 at 01:04:08PM +0900, Dominique Martinet wrote:
-> Alan Stern wrote on Mon, Jan 15, 2024 at 10:17:34PM -0500:
-> > > diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-> > > index b3592bcb0f966..72cdecaef6aa9 100644
-> > > --- a/drivers/usb/gadget/Kconfig
-> > > +++ b/drivers/usb/gadget/Kconfig
-> > > @@ -153,6 +153,10 @@ config USB_F_ACM
-> > >  config USB_F_SS_LB
-> > >  	tristate
-> > >  
-> > > +config USB_F_9PFS
-> > > +	tristate
-> > > +	select NET_9P
-> > > +
-> > >  config USB_U_SERIAL
-> > >  	tristate
-> > >  
-> > > @@ -363,6 +367,13 @@ config USB_CONFIGFS_F_LB_SS
-> > >  	  test software, like the "usbtest" driver, to put your hardware
-> > >  	  and its driver through a basic set of functional tests.
-> > >  
-> > > +config USB_CONFIGFS_F_9PFS
-> > > +	bool "9pfs over usb gadget"
-> > > +	depends on USB_CONFIGFS
-> > > +	select USB_F_9PFS
-> > > +	help
-> > > +	  9pfs support for usb gadget
-> > 
-> > This may be a dumb question, but what is the purpose of this CONFIG
-> > symbol?  It doesn't get used by any of the patches in this series, as
-> > far as I can see.
-> 
-> USB_F_9PFS cannot be selected directly in menuconfig so this allows
-> configuring the build option -- that appears to be how the other usb
-> gadgets are configured so I assume it's done that way for consistency
-> more than out of necessity (I don't see a problem in making the build
-> system use USB_CONFIGFS_F_9PFS directly, it'd just be different from the
-> rest)
+On Tue, 2024-01-16 at 20:45 +0900, Dominique Martinet wrote:
+> Michael Grzeschik wrote on Tue, Jan 16, 2024 at 02:49:40AM +0100:
+> > This series is adding support to mount 9pfs exported filesystems via th=
+e
+> > usb gadget interface. It also includes tools and descriptions on how to
+> > translate an tcp 9pfs and use it via the usb interface.
+>=20
+> So I didn't have time to look at everything through, just want to make
+> sure, this series allows sharing data from an usb gadget (e.g. some
+> device with storage) over 9p as an alternative to things like MTP ?
 
-Oh, I see.  Patch 2/3 selects USB_F_9PFS directly in legacy/Kconfig 
-without touching USB_CONFIGFS_F_9PFS.  Thus they need to be separate 
-symbols.
+It's the other way around. :) The USB host exports a filesystem, while the
+gadget on the USB device side makes it mountable. Our main use-case is to u=
+se it
+as an alternative to NFS root booting during the development of embedded Li=
+nux
+devices. NFS root works in many cases, but has some downsides, which make i=
+t
+cumbersome to use in more and more cases.
 
-That explains it, thanks.
+NFS root needs correctly configured Ethernet interfaces on both the develop=
+ment
+host and the target device. On the target, this can interfere with the netw=
+ork
+configuration that is used for the normal device operation (DHCP client, ..=
+.).
+For the host, configuring a NFS (and perhaps DHCP) server can be an obstacl=
+e.
 
-Alan Stern
+For target devices which don't have a real Ethernet interface, NFS root wou=
+ld
+also work with the USB Ethernet gadget, but this increases the complexity
+further.
+
+As many embedded boards have a USB device port anyway, which is used during
+development for uploading the boot-loader and to flash filesystem images (i=
+.e.
+via the fastboot protocol), we want to just reuse that single data cable to
+allow access to the root filesystem as well.=20
+
+Compared to flashing images, using a network filesystem like NFS and 9P red=
+uces
+the time between compiling on the host and running the binary on the target=
+, as
+no flash and reboot cycle is needed. That can get rid of many minutes of wa=
+iting
+over a day. :)
+
+> I don't quite understand what the forwarder and diod have to do with
+> this; you're emulating a fake usb device with the forwarder that just
+> transmits requests to diod as backend implementation?
+> But 'usb.core.find(idVendor=3D0x1D6B, idProduct=3D0x0109)' looks like it'=
+s
+> searching for a real device not creating one, so that doesn't seem to
+> match up...
+
+diod (9pfs server) and the forwarder are on the development host, where the=
+ root
+filesystem is actually stored. The gadget is initialized during boot (or la=
+ter)
+on the embedded board. Then the forwarder will find it on the USB bus and s=
+tart
+forwarding requests.
+
+It may seem a bit unusual that in this case the requests come from the devi=
+ce
+and are handled by the host. The reason is that USB device ports are normal=
+ly
+not available on PCs, so a connection in the other direction would not work=
+.
+
+In the future, the functionality of the forwarder could be integrated into =
+the
+9pfs server. Alternatively, an improved forwarder could also react to udev
+events of gadgets showing up and forward them to different 9PFS server over=
+ the
+network (when you have multiple target devices connected to one USB host).
+
+Perhaps, the inverse setup (9PFS server on the USB gadget side, mounted on =
+a PC)
+also would be useful in the future and could share some of this code. Then,
+you'd have an alternative to MTP.
+
+> If you have any background information on where you're coming from and
+> where this is headed it'd be great to include in the cover letter.
+
+Yes. Probably also in Documentation/.
+
+Thanks,
+Jan
