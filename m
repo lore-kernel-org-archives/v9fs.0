@@ -1,163 +1,270 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D739414AA8
-	for <v9fs@lists.linux.dev>; Wed, 17 Jan 2024 10:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836E36FBD;
+	Wed, 17 Jan 2024 12:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705488922; cv=none; b=hiFVWO7GMGruCZRb0F4PIkspwfZyplwoE9JFBTUWfWLPSssImDdMvEkUURO/M4YL9RtilktAp/C+X7ZXIlFd8s/Ku8addfwrifcmYT2HURg9oplmWE42bUvCf2CWkA4y/95M90zCjTTfK2XCncJ6OxITkz4IrAlA9Ptc/I7aE84=
+	t=1705494767; cv=none; b=l083+iwGzOK9uNqZIXu1u5siLwFVpodWuzAO1TApPFjcM3YpjTGPD4Oz2iweryeyZa+UDRA0ldhHCKMkCKvG7k5lXFGWkZW623TfIxNgTGdVelUWJn4cGi6VazHHDuRYqNIBzlzdTaXThfwcz1owAu4DCfiJoAw6NMNqaL8W1Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705488922; c=relaxed/simple;
-	bh=X7ri6/DC7dQ0k7GmkIF8uzW4YU+DeXLsZrOtnLLUppM=;
-	h=Received:DKIM-Signature:X-Spam-Checker-Version:X-Spam-Level:
-	 X-Spam-Status:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To; b=NIoiDPU67Az3p8uA9dQgkU96jw7y25Ywe0AsPzLSgmtTyvTS03ll2zs4ZP0TKrNPVDMsOmEnA1T4onuO4efygu+rDqulI4CohZsxu8fdV57Qstv9EfQ5STZC6BpIEgoXtH1asFZQ24EreB50gjnJS2cMY+nyp4Jg6W/iDEUWrXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Y80toRAW; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=t+n8lC+5; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1705494767; c=relaxed/simple;
+	bh=kFseNNDDFXsTkLVOac7dLtXGTxxpxvq33vT+KrKhxBU=;
+	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version; b=rWrevRXOd7amdwzrZuKQWRmvystB0ahqwxCYprFnPQfcyg35hkIoj1roLayAyogOeuh4L0e8MPBl7Hapz00BculEn/8TD8GotEFn4uZf4AwKgdcJ3HRXsh7te53Cavh4vw46MzxMEvJQlhED92GW0qqQpmR8Mo5paL3sdUF7Si8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=klqpyPhl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Y80toRAW";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="t+n8lC+5"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 96258C01D; Wed, 17 Jan 2024 11:55:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1705488917; bh=QPQ1kHwkpR/bSo/5dfdZfVGrQA0NVwMsugmiUUBqUUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y80toRAWRVoIuFVFMKt8O9CH9+xIjHlZIcq0xVi94TZUHBF9cwWdav3kqOXFW9J/U
-	 k8RaIOlzOZc0z/7MJ4MqxnKiO9m0DEQ7TdvvpvcZH44Q1CsJXDOpOfHJaeZrBltCtZ
-	 /ltzVpUFNJpTg75NCLpAVWwTW9IPwiGyXnU+aKDtUbgdmZjb+/mmyg0D3ERy9O3KUL
-	 KeGqo3jtpMDeDZX1JClvR9uGV9vM7BlvpqpEyeeYIXd/mu1sGy8SKUxUKZAo6dhByx
-	 MiTx+tLd2cptwL8pHDLbjQ/gWRnW8h4veeWdpUFffxclpnhYHpYnih2T0l69Ys0XJf
-	 H3NYWSe98cZCw==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 1EC8DC009;
-	Wed, 17 Jan 2024 11:55:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1705488916; bh=QPQ1kHwkpR/bSo/5dfdZfVGrQA0NVwMsugmiUUBqUUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t+n8lC+5sdDFiHuENr4ruAOhrP5KsC2TfPzE81RyUjeCaSeWq1Dg/N1SuVOBLU2wZ
-	 I01/y48CGIUHlPrJqda07B7OR1HfSzbXAy7LnjE3JBYZx0RJdUQtGBx3QNeGyecCee
-	 d8XqzNq5hdZmQHtk0uAnxxBuVXEUiQcK5k9n0dLNk5rDtC9QSK4F78HD0C4r58yLMq
-	 NlHGvCDqQ9UNxn8MdSvQcxv0gn/OxysVNbNSTao35v8v+r12I3GbnpxD4lyu4p9gr4
-	 1YPEFUO6ItprrRyMSqSKD23o+ZU/dQfP8uTFpNqWozhLSRZeynqlqq8oSkp1cbkm5y
-	 JuP4s6mfnz8zw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 9ed4a2fc;
-	Wed, 17 Jan 2024 10:55:08 +0000 (UTC)
-Date: Wed, 17 Jan 2024 19:54:53 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Jan =?utf-8?B?TMO8YmJl?= <jlu@pengutronix.de>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Latchesar Ionkov <lucho@ionkov.net>, linux-usb@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	v9fs@lists.linux.dev,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, Eric Van Hensbergen <ericvh@kernel.org>
-Subject: Re: [PATCH 0/3] usb: gadget: 9pfs transport
-Message-ID: <Zaex_fkKcui7QZd7@codewreck.org>
-References: <20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de>
- <ZaZsUQUhSlMPLJg0@codewreck.org>
- <0aba51a8be0fb165b44ec956bec7a9698a9518a2.camel@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="klqpyPhl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B46C433F1;
+	Wed, 17 Jan 2024 12:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705494767;
+	bh=kFseNNDDFXsTkLVOac7dLtXGTxxpxvq33vT+KrKhxBU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=klqpyPhlpc3EbsETl7+4DmDsY5IUwFvg/MCE0QAKiPFSGVphBF6x+ocmb8std1NGg
+	 mJtOUmw/Q+GJEHIht8i9KVfGSS6McelzW81m7s/PzMaah8ogJxoxkEd2ONThn7JshL
+	 6If9uvE7jDOldvJdaDDsk7/VnVfw5+BkyJ12YUHHfdB0SZ8jzIXyF4uNYAKUuiq7hx
+	 /diwSKYW7NDxbazw70yhFYJ7LH/foBIXe3QR73imvcW78Q+NFLLb5Kr9Tf5W7hsRw7
+	 JSi03apwvJMaATEXJGjec0pnwtGwRmmKrkTGDu3JKKGdz9VSjgj5M5a8gTqVpfKY/z
+	 H2VuPyOTrHePA==
+Message-ID: <7e1026b829cff2e59bc7edfe29faea5572c841ea.camel@kernel.org>
+Subject: Re: [PATCH 11/20] filelock: convert the IS_* macros to take
+ file_lock_core
+From: Jeff Layton <jlayton@kernel.org>
+To: NeilBrown <neilb@suse.de>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
+ <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne
+ <marc.dionne@auristor.com>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
+ <idryomov@gmail.com>, Alexander Aring <aahringo@redhat.com>, David Teigland
+ <teigland@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, Andreas
+ Gruenbacher <agruenba@redhat.com>, Trond Myklebust
+ <trond.myklebust@hammerspace.com>,  Anna Schumaker <anna@kernel.org>, Chuck
+ Lever <chuck.lever@oracle.com>, Olga Kornievskaia <kolga@netapp.com>, Dai
+ Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,  Jan Kara
+ <jack@suse.cz>, Mark Fasheh <mark@fasheh.com>, Joel Becker
+ <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, Steve French
+ <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, Ronnie Sahlberg
+ <lsahlber@redhat.com>, Shyam Prasad N <sprasad@microsoft.com>, Namjae Jeon
+ <linkinjeon@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
+ linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+ gfs2@lists.linux.dev,  linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org,  ocfs2-devel@lists.linux.dev,
+ linux-cifs@vger.kernel.org,  samba-technical@lists.samba.org,
+ linux-trace-kernel@vger.kernel.org
+Date: Wed, 17 Jan 2024 07:32:42 -0500
+In-Reply-To: <170544341684.23031.11038222640477022046@noble.neil.brown.name>
+References: <20240116-flsplit-v1-0-c9d0f4370a5d@kernel.org>
+	, <20240116-flsplit-v1-11-c9d0f4370a5d@kernel.org>
+	 <170544341684.23031.11038222640477022046@noble.neil.brown.name>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+	kZWuOsJdJQdmwlWC5L5ln9xgfr/4mOY38B0U=
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0aba51a8be0fb165b44ec956bec7a9698a9518a2.camel@pengutronix.de>
 
-Jan Lübbe wrote on Tue, Jan 16, 2024 at 04:51:41PM +0100:
-> > So I didn't have time to look at everything through, just want to make
-> > sure, this series allows sharing data from an usb gadget (e.g. some
-> > device with storage) over 9p as an alternative to things like MTP ?
-> 
-> It's the other way around. :) The USB host exports a filesystem, while the
-> gadget on the USB device side makes it mountable. Our main use-case is to use it
-> as an alternative to NFS root booting during the development of embedded Linux
-> devices. NFS root works in many cases, but has some downsides, which make it
-> cumbersome to use in more and more cases.
+On Wed, 2024-01-17 at 09:16 +1100, NeilBrown wrote:
+> On Wed, 17 Jan 2024, Jeff Layton wrote:
+> > I couldn't get them to work properly as macros, so convert them
+> > to static inlines instead (which is probably better for the type safety
+> > anyway).
+> >=20
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > ---
+> >  fs/locks.c | 46 +++++++++++++++++++++++++++++++++-------------
+> >  1 file changed, 33 insertions(+), 13 deletions(-)
+> >=20
+> > diff --git a/fs/locks.c b/fs/locks.c
+> > index 770aaa5809ba..eddf4d767d5d 100644
+> > --- a/fs/locks.c
+> > +++ b/fs/locks.c
+> > @@ -70,10 +70,26 @@
+> > =20
+> >  #include <linux/uaccess.h>
+> > =20
+> > -#define IS_POSIX(fl)	(fl->fl_core.fl_flags & FL_POSIX)
+> Used 3 times... once as
+> 	if (IS_POSIX(blocker) && !IS_OFDLCK(blocker))
+> Can an IS_POSIX lock also be IS_OFDLCK ??
+>=20
 
-Oh!
-Okay, this makes a lot more sense. And that'll need a bit more
-explanations in the commits & Documentation/ as you've concluded :)
+Yes. They conflict with one another so they're both considered POSIX
+locks.
 
+>=20
+> > -#define IS_FLOCK(fl)	(fl->fl_core.fl_flags & FL_FLOCK)
+> Used once.
+>=20
+> > -#define IS_LEASE(fl)	(fl->fl_core.fl_flags & (FL_LEASE|FL_DELEG|FL_LAY=
+OUT))
+> Used twice.  Either "IS_LEASE" approves things that aren't leases, or
+> FL_LEASE is not set on all leases.... Names could be improved.
+>=20
 
-> NFS root needs correctly configured Ethernet interfaces on both the development
-> host and the target device. On the target, this can interfere with the network
-> configuration that is used for the normal device operation (DHCP client, ...).
-> For the host, configuring a NFS (and perhaps DHCP) server can be an obstacle.
-> 
-> For target devices which don't have a real Ethernet interface, NFS root would
-> also work with the USB Ethernet gadget, but this increases the complexity
-> further.
-> 
-> As many embedded boards have a USB device port anyway, which is used during
-> development for uploading the boot-loader and to flash filesystem images (i.e.
-> via the fastboot protocol), we want to just reuse that single data cable to
-> allow access to the root filesystem as well. 
-> 
-> Compared to flashing images, using a network filesystem like NFS and 9P reduces
-> the time between compiling on the host and running the binary on the target, as
-> no flash and reboot cycle is needed. That can get rid of many minutes of waiting
-> over a day. :)
+Good point.
 
-My other hat is on embedded development (dayjob at Atmark Techno[1], the
-only english page linked is about 4 years out of date but I guess it's
-better than no page at all), so I can understand where you're coming
-from -- thanks for the background.
+> > -#define IS_OFDLCK(fl)	(fl->fl_core.fl_flags & FL_OFDLCK)
+>=20
+> used 4 times - a clear winner :-)
+>=20
+> If it would me, I would simply discard these macros and open-code the
+> tests.  I don't think IS_FLOCK() is easier to read for someone who knows
+> the code, and I think IS_LEASE() is actually harder to read for someone
+> who doesn't know the code, as that it does it not really obvious.
+>=20
+> But this is just a suggestion, I won't push it.
+>=20
+> Thanks,
+> NeilBrown
+>=20
+>=20
 
-[1] https://www.atmark-techno.com/english
+It's a good suggestion, and I considered doing this when I converted
+over the macros to inlines. I may go ahead and make this change for v2.
 
-That means I'll actually want to test this, but kind of always busy so
-it might take a few weeks...
-Or better, do you happen to know if qemu can create a USB controller
-that supports OTG so it'll be easy to test for folks with no such
-hardware?
-We've got enough 9p protocols that aren't actually tested on a regular
-basis, it'd be great if we could have something that can run anywhere. 
+> > +static inline bool IS_POSIX(struct file_lock_core *flc)
+> > +{
+> > +	return flc->fl_flags & FL_POSIX;
+> > +}
+> > +
+> > +static inline bool IS_FLOCK(struct file_lock_core *flc)
+> > +{
+> > +	return flc->fl_flags & FL_FLOCK;
+> > +}
+> > +
+> > +static inline bool IS_OFDLCK(struct file_lock_core *flc)
+> > +{
+> > +	return flc->fl_flags & FL_OFDLCK;
+> > +}
+> > +
+> > +static inline bool IS_LEASE(struct file_lock_core *flc)
+> > +{
+> > +	return flc->fl_flags & (FL_LEASE|FL_DELEG|FL_LAYOUT);
+> > +}
+> > +
+> >  #define IS_REMOTELCK(fl)	(fl->fl_core.fl_pid <=3D 0)
+> > =20
+> >  static bool lease_breaking(struct file_lock *fl)
+> > @@ -761,6 +777,7 @@ static void __locks_insert_block(struct file_lock *=
+blocker,
+> >  					       struct file_lock *))
+> >  {
+> >  	struct file_lock *fl;
+> > +	struct file_lock_core *bflc;
+> >  	BUG_ON(!list_empty(&waiter->fl_core.fl_blocked_member));
+> > =20
+> >  new_blocker:
+> > @@ -773,7 +790,9 @@ static void __locks_insert_block(struct file_lock *=
+blocker,
+> >  	waiter->fl_core.fl_blocker =3D blocker;
+> >  	list_add_tail(&waiter->fl_core.fl_blocked_member,
+> >  		      &blocker->fl_core.fl_blocked_requests);
+> > -	if (IS_POSIX(blocker) && !IS_OFDLCK(blocker))
+> > +
+> > +	bflc =3D &blocker->fl_core;
+> > +	if (IS_POSIX(bflc) && !IS_OFDLCK(bflc))
+> >  		locks_insert_global_blocked(&waiter->fl_core);
+> > =20
+> >  	/* The requests in waiter->fl_blocked are known to conflict with
+> > @@ -998,6 +1017,7 @@ static int posix_locks_deadlock(struct file_lock *=
+caller_fl,
+> >  				struct file_lock *block_fl)
+> >  {
+> >  	int i =3D 0;
+> > +	struct file_lock_core *flc =3D &caller_fl->fl_core;
+> > =20
+> >  	lockdep_assert_held(&blocked_lock_lock);
+> > =20
+> > @@ -1005,7 +1025,7 @@ static int posix_locks_deadlock(struct file_lock =
+*caller_fl,
+> >  	 * This deadlock detector can't reasonably detect deadlocks with
+> >  	 * FL_OFDLCK locks, since they aren't owned by a process, per-se.
+> >  	 */
+> > -	if (IS_OFDLCK(caller_fl))
+> > +	if (IS_OFDLCK(flc))
+> >  		return 0;
+> > =20
+> >  	while ((block_fl =3D what_owner_is_waiting_for(block_fl))) {
+> > @@ -2157,7 +2177,7 @@ static pid_t locks_translate_pid(struct file_lock=
+ *fl, struct pid_namespace *ns)
+> >  	pid_t vnr;
+> >  	struct pid *pid;
+> > =20
+> > -	if (IS_OFDLCK(fl))
+> > +	if (IS_OFDLCK(&fl->fl_core))
+> >  		return -1;
+> >  	if (IS_REMOTELCK(fl))
+> >  		return fl->fl_core.fl_pid;
+> > @@ -2721,19 +2741,19 @@ static void lock_get_status(struct seq_file *f,=
+ struct file_lock *fl,
+> >  	if (repeat)
+> >  		seq_printf(f, "%*s", repeat - 1 + (int)strlen(pfx), pfx);
+> > =20
+> > -	if (IS_POSIX(fl)) {
+> > +	if (IS_POSIX(&fl->fl_core)) {
+> >  		if (fl->fl_core.fl_flags & FL_ACCESS)
+> >  			seq_puts(f, "ACCESS");
+> > -		else if (IS_OFDLCK(fl))
+> > +		else if (IS_OFDLCK(&fl->fl_core))
+> >  			seq_puts(f, "OFDLCK");
+> >  		else
+> >  			seq_puts(f, "POSIX ");
+> > =20
+> >  		seq_printf(f, " %s ",
+> >  			     (inode =3D=3D NULL) ? "*NOINODE*" : "ADVISORY ");
+> > -	} else if (IS_FLOCK(fl)) {
+> > +	} else if (IS_FLOCK(&fl->fl_core)) {
+> >  		seq_puts(f, "FLOCK  ADVISORY  ");
+> > -	} else if (IS_LEASE(fl)) {
+> > +	} else if (IS_LEASE(&fl->fl_core)) {
+> >  		if (fl->fl_core.fl_flags & FL_DELEG)
+> >  			seq_puts(f, "DELEG  ");
+> >  		else
+> > @@ -2748,7 +2768,7 @@ static void lock_get_status(struct seq_file *f, s=
+truct file_lock *fl,
+> >  	} else {
+> >  		seq_puts(f, "UNKNOWN UNKNOWN  ");
+> >  	}
+> > -	type =3D IS_LEASE(fl) ? target_leasetype(fl) : fl->fl_core.fl_type;
+> > +	type =3D IS_LEASE(&fl->fl_core) ? target_leasetype(fl) : fl->fl_core.=
+fl_type;
+> > =20
+> >  	seq_printf(f, "%s ", (type =3D=3D F_WRLCK) ? "WRITE" :
+> >  			     (type =3D=3D F_RDLCK) ? "READ" : "UNLCK");
+> > @@ -2760,7 +2780,7 @@ static void lock_get_status(struct seq_file *f, s=
+truct file_lock *fl,
+> >  	} else {
+> >  		seq_printf(f, "%d <none>:0 ", fl_pid);
+> >  	}
+> > -	if (IS_POSIX(fl)) {
+> > +	if (IS_POSIX(&fl->fl_core)) {
+> >  		if (fl->fl_end =3D=3D OFFSET_MAX)
+> >  			seq_printf(f, "%Ld EOF\n", fl->fl_start);
+> >  		else
+> >=20
+> > --=20
+> > 2.43.0
+> >=20
+> >=20
+>=20
 
-
-> diod (9pfs server) and the forwarder are on the development host, where the root
-> filesystem is actually stored. The gadget is initialized during boot (or later)
-> on the embedded board. Then the forwarder will find it on the USB bus and start
-> forwarding requests.
-> 
-> It may seem a bit unusual that in this case the requests come from the device
-> and are handled by the host. The reason is that USB device ports are normally
-> not available on PCs, so a connection in the other direction would not work.
-
-Right, most host PCs won't have OTG available...
-I was also perplexed by the linux foundation (0x1d6b):0x0109 id, that
-might be clearer once it's properly documented -- I'll let someone from
-the usb side chime on this as I have no idea what's appropriate.
-
-
-> In the future, the functionality of the forwarder could be integrated into the
-> 9pfs server. Alternatively, an improved forwarder could also react to udev
-> events of gadgets showing up and forward them to different 9PFS server over the
-> network (when you have multiple target devices connected to one USB host).
-
-Plenty of potential work ahead :)
-Frankly at this stage I don't think it's much simpler than e.g. CDC
-ethernet gadget and mounting nfs over tcp, but with further improvements
-it can definitely get simpler.
-
-
-> Perhaps, the inverse setup (9PFS server on the USB gadget side, mounted on a PC)
-> also would be useful in the future and could share some of this code. Then,
-> you'd have an alternative to MTP.
-
-(Yeah, I'm not actively looking for that -- was just asking because MTP
-has been kind of dead lately and I'm not aware of any potential
-alternative, but I didn't go looking for them either -- let's leave that
-to later)
-
--- 
-Dominique Martinet | Asmadeus
+--=20
+Jeff Layton <jlayton@kernel.org>
