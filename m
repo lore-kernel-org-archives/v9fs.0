@@ -1,176 +1,123 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4B51D695;
-	Tue, 16 Jan 2024 22:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CB37F;
+	Wed, 17 Jan 2024 00:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705445072; cv=none; b=J/j0nT2kqmRDP1KqtTQbciSLQ2OX2cYla/SyXga4mjSS99EIc6MSSSXNOHg0VuqcZhmbOh4eCHbc+mYrwTujc/nSIPSX8f6G/ChuGjS2FkRlHR6Ggyqn/t3btH1Z03DEcBPDIJO4UZBjbesCkEZYeCb43chcGhbwQdBhnarJKkQ=
+	t=1705449766; cv=none; b=PqrWtj7QYtJtpTL8ik9QDnT9Mjik5Ke/L7mvn3+5ez0jsnOxNTwPwmzqTjlKZk312k+maF4EnsUwUnuppzYf8MV4gpjtVYNtkGeNn+mUjrJPtPbTq6bX9YhsPCVgwDsRqPmOcrYl44RpyZojG0HG+Mb+RKNPyTCjTSkRchE/WnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705445072; c=relaxed/simple;
-	bh=AKPYrNOerbRHsirgEfZ0p1S5QHwiWw7x8ovHOI5lE1o=;
-	h=Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From:To:Cc:Subject:
-	 In-reply-to:References:Date:Message-id:X-Spam-Level:X-Spam-Score:
-	 X-Spamd-Result:X-Spam-Flag; b=M39EnUL400qnev8vMtKtrSlTaRf0Olee+4TYLnWnh/irCGY0qRKsRWPx8RU6z4BjeZqp/R813liO1wdQ1Uu7aopyop39IitwlZBIhUYZ4I2FrHo6ZNpeDSaAEl7xAC/eM648B+DboBLqfKXPCZBEoEjIfpQCfKVafnTrPiDStqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=f6Kejs3y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HjfwTsYn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=f6Kejs3y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HjfwTsYn; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1705449766; c=relaxed/simple;
+	bh=aePeyFduRfjV06agsTSgcBO9WyTyujZeq0WIAUBMi3I=;
+	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=gMbArkSD439wBdDIKfvPJnaOpK8UpnRiBWacnWjj6ezUTKbZ4W4IiMLFAUTPzZb/sJFOwb0ZPC3HLJpowySCSBIK0al3Ca7iGxJ3WIYM2d/8B+yh75/eiijOicBGw0BiXzm/zAFRF2pif5WS6/1EP1jrKm3Re1S/eloo4MK5IWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CL0HZHXA; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="f6Kejs3y";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HjfwTsYn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="f6Kejs3y";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HjfwTsYn"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0DE9E21FD7;
-	Tue, 16 Jan 2024 22:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705445069; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rh+oq1spB9mXnL92/e4GJ7ibfkaNrbj9dH8Tk64Djcw=;
-	b=f6Kejs3ynwExykrJLsf6I7d5bcEDabcWJXxJV92F4iHVc7UOqw1z6bgFyUdjZB1nZZzUCy
-	uYn6ovQ2wTV5Uxps5LTHqoIi8FbN9c3jpKoKlo+yzVUeHRhsOYMjfowfic3prCOTRXHmJI
-	i8ViuIPt524UHL9J9oGTH1HL5w0L8M4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705445069;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rh+oq1spB9mXnL92/e4GJ7ibfkaNrbj9dH8Tk64Djcw=;
-	b=HjfwTsYnAa/QGGZbmcPUUDcpirEYaDZy2aVFXUHAzwLEEj1ZabVT5GkD0w3g233fYFYFkp
-	/MP1zNcr5sIVRlCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705445069; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rh+oq1spB9mXnL92/e4GJ7ibfkaNrbj9dH8Tk64Djcw=;
-	b=f6Kejs3ynwExykrJLsf6I7d5bcEDabcWJXxJV92F4iHVc7UOqw1z6bgFyUdjZB1nZZzUCy
-	uYn6ovQ2wTV5Uxps5LTHqoIi8FbN9c3jpKoKlo+yzVUeHRhsOYMjfowfic3prCOTRXHmJI
-	i8ViuIPt524UHL9J9oGTH1HL5w0L8M4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705445069;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rh+oq1spB9mXnL92/e4GJ7ibfkaNrbj9dH8Tk64Djcw=;
-	b=HjfwTsYnAa/QGGZbmcPUUDcpirEYaDZy2aVFXUHAzwLEEj1ZabVT5GkD0w3g233fYFYFkp
-	/MP1zNcr5sIVRlCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BCF6513751;
-	Tue, 16 Jan 2024 22:44:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nzD3HL8Gp2UWAgAAD6G6ig
-	(envelope-from <neilb@suse.de>); Tue, 16 Jan 2024 22:44:15 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CL0HZHXA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705449765; x=1736985765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aePeyFduRfjV06agsTSgcBO9WyTyujZeq0WIAUBMi3I=;
+  b=CL0HZHXA1eABc1acOnM6dthnsy2TGcXkgHf3C/EsfLk5IeuhsPy/tQjq
+   FcrHydWEe56TsJjBK89Sch122WOlgUTUYA1MX6cSaf51YrzezUrkHbTpp
+   AgQc3KSzTuqezLlfCfxz5Vipn75KthsWJKsovFhvEpgFsAbKkDSqWFnkJ
+   TZ3gRBtw/bXt2vAqTNCX26Ib/6k5dFsS847ObfJSydEAAl6D5ZtaxbWsd
+   Fo5HVhQCWH6fSYFZuSi3YYVGez0s43GskYpQA73ktq795/b0qBKsEDn7/
+   uYHAwsKUMgL+3DMRfuvrTsvbu5IslAYeRV4rDIH0IH+8sQxglkEAsFiJy
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="6732069"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="6732069"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 16:02:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="818331734"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="818331734"
+Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 16 Jan 2024 16:02:36 -0800
+Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rPtO5-0001Ne-2l;
+	Wed, 17 Jan 2024 00:02:33 +0000
+Date: Wed, 17 Jan 2024 08:02:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, kernel@pengutronix.de,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH 1/3] usb: gadget: function: 9pfs
+Message-ID: <202401170734.7rHBG2LF-lkp@intel.com>
+References: <20240116-ml-topic-u9p-v1-1-ad8c306f9a4e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Jeff Layton" <jlayton@kernel.org>
-Cc: "Christian Brauner" <brauner@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>,
- "Dominique Martinet" <asmadeus@codewreck.org>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>, "Xiubo Li" <xiubli@redhat.com>,
- "Ilya Dryomov" <idryomov@gmail.com>, "Alexander Aring" <aahringo@redhat.com>,
- "David Teigland" <teigland@redhat.com>, "Miklos Szeredi" <miklos@szeredi.hu>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "Trond Myklebust" <trond.myklebust@hammerspace.com>,
- "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <chuck.lever@oracle.com>,
- "Olga Kornievskaia" <kolga@netapp.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Jan Kara" <jack@suse.cz>,
- "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
- "Joseph Qi" <joseph.qi@linux.alibaba.com>, "Steve French" <sfrench@samba.org>,
- "Paulo Alcantara" <pc@manguebit.com>, "Ronnie Sahlberg" <lsahlber@redhat.com>,
- "Shyam Prasad N" <sprasad@microsoft.com>,
- "Namjae Jeon" <linkinjeon@kernel.org>,
- "Sergey Senozhatsky" <senozhatsky@chromium.org>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
- gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-trace-kernel@vger.kernel.org, "Jeff Layton" <jlayton@kernel.org>
-Subject: Re: [PATCH 20/20] filelock: split leases out of struct file_lock
-In-reply-to: <20240116-flsplit-v1-20-c9d0f4370a5d@kernel.org>
-References: <20240116-flsplit-v1-0-c9d0f4370a5d@kernel.org>,
- <20240116-flsplit-v1-20-c9d0f4370a5d@kernel.org>
-Date: Wed, 17 Jan 2024 09:44:12 +1100
-Message-id: <170544505284.23031.2594557379971928071@noble.neil.brown.name>
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -5.32
-X-Spamd-Result: default: False [-5.32 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLY(-4.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 R_RATELIMIT(0.00)[to_ip_from(RLx183r465j9c4mdtrpq4cws5u)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_TWELVE(0.00)[46];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[kernel.org,zeniv.linux.org.uk,ionkov.net,codewreck.org,crudebyte.com,redhat.com,auristor.com,gmail.com,szeredi.hu,hammerspace.com,oracle.com,netapp.com,talpey.com,suse.cz,fasheh.com,evilplan.org,linux.alibaba.com,samba.org,manguebit.com,microsoft.com,chromium.org,goodmis.org,efficios.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,lists.samba.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.02)[54.77%]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240116-ml-topic-u9p-v1-1-ad8c306f9a4e@pengutronix.de>
 
-On Wed, 17 Jan 2024, Jeff Layton wrote:
-> Add a new struct file_lease and move the lease-specific fields from
-> struct file_lock to it. Convert the appropriate API calls to take
-> struct file_lease instead, and convert the callers to use them.
+Hi Michael,
 
-I think that splitting of struct lease_manager_operations out from
-lock_manager_operations should be mentioned here too.
+kernel test robot noticed the following build warnings:
 
+[auto build test WARNING on 052d534373b7ed33712a63d5e17b2b6cdbce84fd]
 
-> =20
-> +struct file_lease {
-> +	struct file_lock_core fl_core;
-> +	struct fasync_struct *	fl_fasync; /* for lease break notifications */
-> +	/* for lease breaks: */
-> +	unsigned long fl_break_time;
-> +	unsigned long fl_downgrade_time;
-> +	const struct lease_manager_operations *fl_lmops;	/* Callbacks for lockman=
-agers */
+url:    https://github.com/intel-lab-lkp/linux/commits/Michael-Grzeschik/usb-gadget-function-9pfs/20240116-095914
+base:   052d534373b7ed33712a63d5e17b2b6cdbce84fd
+patch link:    https://lore.kernel.org/r/20240116-ml-topic-u9p-v1-1-ad8c306f9a4e%40pengutronix.de
+patch subject: [PATCH 1/3] usb: gadget: function: 9pfs
+config: microblaze-randconfig-r132-20240117 (https://download.01.org/0day-ci/archive/20240117/202401170734.7rHBG2LF-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240117/202401170734.7rHBG2LF-lkp@intel.com/reproduce)
 
-comment should be "Callbacks for leasemanagers".  Or maybe=20
-"lease managers".=20
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401170734.7rHBG2LF-lkp@intel.com/
 
-It is unfortunate that "lock" and "lease" both start with 'l' as we now
-have two quite different fields in different structures with the same
-name - fl_lmops.
+sparse warnings: (new ones prefixed by >>)
+>> drivers/usb/gadget/function/f_9pfs.c:825:12: sparse: sparse: symbol 'usb9pfs_modinit' was not declared. Should it be static?
+>> drivers/usb/gadget/function/f_9pfs.c:838:13: sparse: sparse: symbol 'usb9pfs_modexit' was not declared. Should it be static?
 
-NeilBrown
+vim +/usb9pfs_modinit +825 drivers/usb/gadget/function/f_9pfs.c
+
+   824	
+ > 825	int __init usb9pfs_modinit(void)
+   826	{
+   827		int ret;
+   828	
+   829		INIT_LIST_HEAD(&usbg_function_list);
+   830	
+   831		ret = usb_function_register(&usb9pfsusb_func);
+   832		if (!ret)
+   833			v9fs_register_trans(&p9_usbg_trans);
+   834	
+   835		return ret;
+   836	}
+   837	
+ > 838	void __exit usb9pfs_modexit(void)
+   839	{
+   840		usb_function_unregister(&usb9pfsusb_func);
+   841		v9fs_unregister_trans(&p9_usbg_trans);
+   842	}
+   843	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
