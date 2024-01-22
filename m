@@ -1,43 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5923E3B287
-	for <v9fs@lists.linux.dev>; Mon, 22 Jan 2024 11:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFA3CF62
+	for <v9fs@lists.linux.dev>; Mon, 22 Jan 2024 11:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705924217; cv=none; b=fNLSPixxpgXFMHMSyVmO3CbO6JI+kx1EOaY5+ZW9EhPTY23ChI6SHxw7R9g/S7qjSiAgUGthf6q9mqXZf+z5mTCN46dA1pzSuKcreqtrCN6Le8nVy6OMMaSyhpxnS0NYuIMEkVygD86W2GOpHHmZRZjRiF/3P/Wr9lQ5V1aYEGw=
+	t=1705924222; cv=none; b=WRn94C80VNbJjtV84nlCUy/hcpDJatOC7uELVg1ehdvswBepFYO/a8W/8lIf5Q58SksKCwBbunf9bytmhW9fMTkMFjoMPKt1GZuPn4sm3dOrL0aPHCeFyKnNTcRRCki9ky4viPPqZIFZ/+tMK9Pizt5Nc/nEMFG+nCp9btneN3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705924217; c=relaxed/simple;
-	bh=kFnATUc6YR+2EBGeiZ34YCxV4uvK7zx2v+t9COfwuaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dX41hiF2CN00wdpfqPq+TeTS9OmuXTI4a620almeCa8ApctDrhNQiZn5fWBgbv6BDbPRKFQVCd7R1TqWWbiALwx5qJeXFwGaubW7DDMTgobEpCfwg2bzFiM8lL6VE/HAO8yHkegFDMZS6sTln8ihkib73PwPz3zs3vG/zEcNxao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gh9NK/GY; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1705924222; c=relaxed/simple;
+	bh=6kwAXtFGpxmtnXDRdMN/50kipDwC3uxCADBEG0Y+epo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dbjG0BftmEoThwkrS2SgeQ7otjup4f5k8PB1JQuvYdeh3Ceuplo5CDFciMZXhfHIJnpqTU02iYJASfIZYVrsUiH0hP5x6dlGW0mQWaq9J8PdrqVKDQhA++ZfeNm1JmmnavpNzi/a7olZh9fIcIBcwceGk/qwzxwy5mN1LXUKJ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WpnwWr9w; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gh9NK/GY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WpnwWr9w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705924214;
+	s=mimecast20190719; t=1705924220;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qWBG3EUB+eR+nnWK36e3AyikYbZKtHzO5qoTjiHlzFA=;
-	b=Gh9NK/GYe804+99OMyP7/2n8XBvc0SJr63Espxk84gFjniL4ZxCFt7ZS+mrvhRU21V092q
-	BNh7c8gz+vNcwdknqyEqkjGVXp2JZNijqp8qErvdWIUIUOTn2sYnOrsc02KSNfEV4ZuhnE
-	Xuc0GuGB7+4jtpSI3eRZRnr2YoMDIlI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-dkNhJT87Mlyeyizr-tyMEA-1; Mon, 22 Jan 2024 06:50:12 -0500
-X-MC-Unique: dkNhJT87Mlyeyizr-tyMEA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2AeAHAEfe6p91PoKvpPp+65g3eYULuZvdVr2/JzDo7o=;
+	b=WpnwWr9w8rkFYcZAmX4VfQU+iynxaQddOLokUzgQZR9+biMcVojWMgjQ5HHoPmkKaYDVHo
+	/lNX9hon2YkfpnQbpwCUrl0qz9L37ZQQ63GUZisxx+VPSLFk11luAQVQhpmvc5WtLR8wv4
+	aIoEWHIbU02u7ngARwi+YL/3Dsfcq0c=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-HBkRZ6-iO5eUtV0wvl8VqQ-1; Mon,
+ 22 Jan 2024 06:50:15 -0500
+X-MC-Unique: HBkRZ6-iO5eUtV0wvl8VqQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0238684852A;
-	Mon, 22 Jan 2024 11:50:12 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CB373812587;
+	Mon, 22 Jan 2024 11:50:14 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id E527B111E40C;
-	Mon, 22 Jan 2024 11:50:09 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AA6FC2026D66;
+	Mon, 22 Jan 2024 11:50:12 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netfs@lists.linux.dev
 Cc: David Howells <dhowells@redhat.com>,
@@ -54,9 +56,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] netfs, cachefiles: Update MAINTAINERS records
-Date: Mon, 22 Jan 2024 11:49:59 +0000
-Message-ID: <20240122115007.3820330-1-dhowells@redhat.com>
+Subject: [PATCH 1/2] netfs, cachefiles: Change mailing list
+Date: Mon, 22 Jan 2024 11:50:00 +0000
+Message-ID: <20240122115007.3820330-2-dhowells@redhat.com>
+In-Reply-To: <20240122115007.3820330-1-dhowells@redhat.com>
+References: <20240122115007.3820330-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -64,27 +68,52 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Update the MAINTAINERS records for netfs and cachefiles to reflect a change of
-mailing list for both as Red Hat no longer archives the mailing list in a
-publicly accessible place.
+The publicly accessible archives for Red Hat mailing lists stop at Oct
+2023; messages sent after that time are in internal-only archives.
 
-Also add Jeff Layton as a reviewer.
+Change the netfs and cachefiles mailing list to one that has publicly
+accessible archives:
 
-The patches are here:
+	netfs@lists.linux.dev
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-cachefs@redhat.com
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: ceph-devel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-erofs@lists.ozlabs.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-tagged as netfs-lib-20240122.
-
-Thanks,
-David
-
-David Howells (2):
-  netfs, cachefiles: Change mailing list
-  netfs: Add Jeff Layton as reviewer
-
- MAINTAINERS | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8d1052fa6a69..ab5858d24ffc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4547,7 +4547,7 @@ F:	drivers/net/ieee802154/ca8210.c
+ 
+ CACHEFILES: FS-CACHE BACKEND FOR CACHING ON MOUNTED FILESYSTEMS
+ M:	David Howells <dhowells@redhat.com>
+-L:	linux-cachefs@redhat.com (moderated for non-subscribers)
++L:	netfs@lists.linux.dev
+ S:	Supported
+ F:	Documentation/filesystems/caching/cachefiles.rst
+ F:	fs/cachefiles/
+@@ -8223,7 +8223,7 @@ F:	include/linux/iomap.h
+ 
+ FILESYSTEMS [NETFS LIBRARY]
+ M:	David Howells <dhowells@redhat.com>
+-L:	linux-cachefs@redhat.com (moderated for non-subscribers)
++L:	netfs@lists.linux.dev
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Supported
+ F:	Documentation/filesystems/caching/
 
