@@ -1,62 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EF7481DE;
-	Mon, 22 Jan 2024 17:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745FC48CC9
+	for <v9fs@lists.linux.dev>; Mon, 22 Jan 2024 22:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705945637; cv=none; b=X5Xdx1Q/8XPWYXnneYFQOMv4EZGkoWGpgit3FDiLzIxBilq+iVm5a9Nme4u/5Ep1kvT05+kepPE2WmaE2dbOAGUlGGsK4MOZXXXEJ5sLx0O+uVeWzTXoINlYOHgG2D8vOcTzd2oN4Uo9atT77IMhMWmlSvgbruI12aHnnQSrK7o=
+	t=1705960892; cv=none; b=Qpe/F8hMaTa/UnHbFdUTzFj6UnjZ+v/RMXb/TavSnDVNKbmkyho7c44wulkAuWekduQse/dzRDa5qSyWgckgmMrnNm4YBYnVkdvNF37gBuBtLsHWRKlNvz+/DrtUvh04LIp4bhBl0Aj6+uGzDcGNBvBe4gHAGAsrXRVRbdmis2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705945637; c=relaxed/simple;
-	bh=2vo08b2Ou5lDv9bhTL7tbHP6Dp5vD0sS8zH3saqrEnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ViLWVIgqD6P768KVO2qtPmFP1ub89ymmxv+74QR5tiUQcQrCk0PVXnfJQiWxpAIAbXhhFiCDG3rp5yy8VpvsBD6Ww8rAEAeWe5N54b6ynbPnjhGT9xpwhmNvf8tc44PlEizyV9E5Slj65M3PNYyfTjiDaqc9dI3I0nNVfscYpbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsGODYUn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1705960892; c=relaxed/simple;
+	bh=V1yJVFjM67labChbznd10CJnK+mwAgP7GMH9rMtUC+s=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=re39RfgLH/j1Zu82FCzfuxNjaaIxUTpJBRO+0Gq4WVHBf2a8AK5yKPNq9OJco+SMKgeZqFl/4KeG/hOnVLZjqXsXtipKnoXXjGxe30BSWUm774tRJ079xckXpfu8LNAxOs89ug5kRQ2zMdFhEtJQ8coMDJgrypXfgwS2pnyf/tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CiYu4C/y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsGODYUn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDD2C433F1;
-	Mon, 22 Jan 2024 17:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705945636;
-	bh=2vo08b2Ou5lDv9bhTL7tbHP6Dp5vD0sS8zH3saqrEnI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UsGODYUn8s1g3P0RKWQnD8pjFzXxWrq53q5UCkEBfj7IQOC90BdWV9GTQgQEn2SzE
-	 ObrawDtkJ3tXS4yOY3xwU5PSQ0UotTey6UTGnvMgu7jII3+3vlz4trsrrID3CZdgku
-	 PLKNoKJPzOcyiXFXSdBNaeX70lXLl3YBghXBawdD8EnkWMwnmgj7I6t9XrDrVEXah8
-	 nP10bn5rZ+LmpbczOjtwGTlhSte50tHJRI2/3XKXNaWoTeyVOoM37brH7es3gkSD02
-	 4mpzeoopEuyLPOJfFEA4Cr7EB5ipc1TZHsjI9xI6ufzzr68ZOJPL20i7xHDAw5wLKs
-	 VkcXefQQKj+GA==
-Date: Mon, 22 Jan 2024 17:47:11 +0000
-From: Simon Horman <horms@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: netdev@vger.kernel.org, patches@lists.linux.dev,
-	Eric Van Hensbergen <ericvh@gmail.com>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH] 9p/trans_fd: remove Excess kernel-doc comment
-Message-ID: <20240122174711.GD126470@kernel.org>
-References: <20240122053832.15811-1-rdunlap@infradead.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CiYu4C/y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705960889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YgorZ9y1ABigf+8AfYUUWexSMaoGg5QlyfBL6eKu5CY=;
+	b=CiYu4C/yKv3jA9YMLERjCsmqai3i625wHtaIuS0Y/yOeS48iGU3wWOz9XZqWaEYnWDmZqQ
+	YGWemaMX0fvBFlbvylBUnq0QqoKS+3CvTXm3Y9MmIV2IRB9WPOu4+0GkSA6gpn7/RPpVke
+	76l0uxBAur1U3nsnl91zkhB3Nqm9l5k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-FVBxaMfkOUaLwqIkj88Zsg-1; Mon, 22 Jan 2024 17:01:24 -0500
+X-MC-Unique: FVBxaMfkOUaLwqIkj88Zsg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9621845E60;
+	Mon, 22 Jan 2024 22:01:22 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 77F78492BC6;
+	Mon, 22 Jan 2024 22:01:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <7790423f-665e-44cc-b4ae-d3f3d2996af5@linux.alibaba.com>
+References: <7790423f-665e-44cc-b4ae-d3f3d2996af5@linux.alibaba.com> <20240122123845.3822570-1-dhowells@redhat.com> <20240122123845.3822570-7-dhowells@redhat.com>
+To: Jingbo Xu <jefflexu@linux.alibaba.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Jeff Layton <jlayton@kernel.org>,
+    Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+    linux-kernel@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>,
+    Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+    Yue Hu <huyue2@coolpad.com>
+Subject: Re: [PATCH 06/10] cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240122053832.15811-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3980815.1705960879.1@warthog.procyon.org.uk>
+Date: Mon, 22 Jan 2024 22:01:19 +0000
+Message-ID: <3980816.1705960879@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On Sun, Jan 21, 2024 at 09:38:32PM -0800, Randy Dunlap wrote:
-> Remove the "@req" kernel-doc description since there is not 'req'
-> member in the struct p9_conn.
-> 
-> Fixes one kernel-doc warning:
-> trans_fd.c:133: warning: Excess struct member 'req' description in 'p9_conn'
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Jingbo Xu <jefflexu@linux.alibaba.com> wrote:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> > -	ret = cachefiles_ondemand_init_object(object);
+> > -	if (ret < 0)
+> > -		goto err_unuse;
+> > +	if (object->ondemand) {
+> > +		ret = cachefiles_ondemand_init_object(object);
+> > +		if (ret < 0)
+> > +			goto err_unuse;
+> > +	}
+> 
+> I'm not sure if object->ondemand shall be checked by the caller or
+> inside cachefiles_ondemand_init_object(), as
+> cachefiles_ondemand_clean_object() is also called without checking
+> object->ondemand. cachefiles_ondemand_clean_object() won't trigger the
+> NULL oops as the called cachefiles_ondemand_send_req() will actually
+> checks that.
+
+Meh.  The above doesn't actually build if CONFIG_CACHEFILES_ONDEMAND=N.  I
+think I have to push the check down into cachefiles_ondemand_init_object()
+instead.
+
+David
 
