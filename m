@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCB348CC0
-	for <v9fs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71D238FB8
+	for <v9fs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705962772; cv=none; b=Ri/zJXEeZgCyy+0a1+Bh1wZPn2gjJbsCvWAKyXgAVaAsLV72TfWwVAaXck7hIK/ugm17XkoZCq6iqxkab8BKBl237JiR5ekIsV8b32xj3igV/LibixIB9yTi3oziBCEYYWyLuCXu6/fXaWqhfwE0TZdMC54vALZLN62HG0UEKfE=
+	t=1705962772; cv=none; b=l1x+LokYAFVBt0ZEY4QJjbYl3bb/Y7/JCUClsBDYT/2sYndHcQBK+0JVh7Y6cdouKRd5SegMenDviN9BMGtdIThQsWPmQpNHcE8wyLFS4RbOt/6vX7fdyegt2gpCWVTrnqOx6ezkJGKzxz3LeFmjalzicD/dpmt1tFTynp7RZtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705962772; c=relaxed/simple;
-	bh=Qn7dd9HK9v0F1KFFIftRsyM5xQPDc6YGUH7hJwsGprs=;
+	bh=OfIzfUBOegY/aA+DNYcmnKkvNEOiMv9jvlr290zr5sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESwQiCe0fYZBZPSXjTn2N0x/2RI3srpO/fS5p3N1VxGV9Lh6A6MuSOwS3iYBfq4QgO+wOyDqlbhAhLF2T3gzqrmaO8A0uE2fy0FRXxKq5xnS0U/eGir/xUpO1EJmnFgGInPgAx+FQzvB26i/9lm7yf/rA78dXp41ZkXqXni/hsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h4747ivT; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=hY4eOFPSxIjkcatJMl3WNNEi5Va+BR8MoNR3TJo5ojHkpM8XxAQCQrbBedmk0gMAIdHjyieRBoTpJDUa6CZCUv7d3jbGFsufl7hVroa9NbVMcDoGWcrsgorcvfk48um4UFIqW4qtHyoNuqlVF0XcLntBG/mEyCTj8eEzIGW84ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aHud4XwU; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h4747ivT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aHud4XwU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705962769;
+	s=mimecast20190719; t=1705962768;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dTDK7i2Q4hPQnzfb2SdByLYJyeMyokMSiVdAUDeKcK0=;
-	b=h4747ivTgV+M6Ny4Mp7jZKjXzDEptFDufeSddiGY9orQLEZ1gvfk3JmAuiKiCd2KNiorxx
-	tiaIQFK0GqHUi3uFi+T8gb+CblPQh9asRtIHlA7LBPFJitELtPH76VjbD7nKTavsTT5vBm
-	gQlrs8Zc4/x/BdZzbEEY2dQ9HZJY7B8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-Qkey4K3HML2HB-kO-l1Q7Q-1; Mon,
- 22 Jan 2024 17:32:48 -0500
-X-MC-Unique: Qkey4K3HML2HB-kO-l1Q7Q-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	bh=8CJ3I/7LDGs8hexTud6zRTfvlS0atGDHH81M3ADEHcQ=;
+	b=aHud4XwUiCzDnHmLUdWbyaRsy41l+XdKyxF2Gi94FY8gavgVyTDB9tvcB/Fogc1IKFfSfc
+	ma+Tm+RyjEmkiZ705cgmeeTYZIG1LeGoBlwcxokVmqwbt8nc+FqzBMUWZ3GnFCB1dUCADl
+	s/RawRz1+bH5hmzX7YatSVELGxTP37s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-kqQQMgafNgqLwRACAr_1zQ-1; Mon, 22 Jan 2024 17:32:45 -0500
+X-MC-Unique: kqQQMgafNgqLwRACAr_1zQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A62011C0418A;
-	Mon, 22 Jan 2024 22:32:47 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D92CC106CFE2;
+	Mon, 22 Jan 2024 22:32:44 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 80C1F1C060B1;
-	Mon, 22 Jan 2024 22:32:45 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 040A32026D66;
+	Mon, 22 Jan 2024 22:32:42 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -56,9 +56,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH v2 05/10] netfs: Fix a NULL vs IS_ERR() check in netfs_perform_write()
-Date: Mon, 22 Jan 2024 22:32:18 +0000
-Message-ID: <20240122223230.4000595-6-dhowells@redhat.com>
+Subject: [PATCH v2 04/10] netfs, fscache: Prevent Oops in fscache_put_cache()
+Date: Mon, 22 Jan 2024 22:32:17 +0000
+Message-ID: <20240122223230.4000595-5-dhowells@redhat.com>
 In-Reply-To: <20240122223230.4000595-1-dhowells@redhat.com>
 References: <20240122223230.4000595-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,37 +68,39 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-The netfs_grab_folio_for_write() function doesn't return NULL, it returns
-error pointers.  Update the check accordingly.
+This function dereferences "cache" and then checks if it's
+IS_ERR_OR_NULL().  Check first, then dereference.
 
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
+Fixes: 9549332df4ed ("fscache: Implement cache registration")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/29fb1310-8e2d-47ba-b68d-40354eb7b896@moroto.mountain/
+Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
 ---
- fs/netfs/buffered_write.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/netfs/fscache_cache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index e7f9ba6fb16b..a3059b3168fd 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -221,10 +221,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		if (unlikely(fault_in_iov_iter_readable(iter, part) == part))
- 			break;
+diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
+index d645f8b302a2..9397ed39b0b4 100644
+--- a/fs/netfs/fscache_cache.c
++++ b/fs/netfs/fscache_cache.c
+@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
+ void fscache_put_cache(struct fscache_cache *cache,
+ 		       enum fscache_cache_trace where)
+ {
+-	unsigned int debug_id = cache->debug_id;
++	unsigned int debug_id;
+ 	bool zero;
+ 	int ref;
  
--		ret = -ENOMEM;
- 		folio = netfs_grab_folio_for_write(mapping, pos, part);
--		if (!folio)
-+		if (IS_ERR(folio)) {
-+			ret = PTR_ERR(folio);
- 			break;
-+		}
+ 	if (IS_ERR_OR_NULL(cache))
+ 		return;
  
- 		flen = folio_size(folio);
- 		offset = pos & (flen - 1);
++	debug_id = cache->debug_id;
+ 	zero = __refcount_dec_and_test(&cache->ref, &ref);
+ 	trace_fscache_cache(debug_id, ref - 1, where);
+ 
 
