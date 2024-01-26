@@ -1,240 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEBC1AAAE;
-	Thu, 25 Jan 2024 23:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FAD60267
+	for <v9fs@lists.linux.dev>; Fri, 26 Jan 2024 09:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706227131; cv=none; b=et/ZCkHUfjvmfwXwMrhMe5XNgLgfd+raf26gEZDUQhP67KV8McK/OqwYHVCeHFDGmbJo58QBfZxPE4hKMWs6FkpypzMamy11h2WZO7H6oRnDYUo4w/TRKNcM9fbIDp8hgqoKJfDq+pQ53qzp5RqmILQP7/4qwq4HaR3lEmETtwY=
+	t=1706259931; cv=none; b=C0TJnukPUn9dtPwJwshAR9sPMpvTrIAQ6W6Nb8o4s4SCM/NoqVI6Hiw/8DC9caVfCXjoKzIWStoWaPsSWsavnKLjY+1dYmmRPTxVXkWJobZztLQi1ecXLRsKQ3dijlXiMRuu0HjCFIJ/zpbeqbISi4dF8QkhuRqCsutFj/Z6ZAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706227131; c=relaxed/simple;
-	bh=w8Z2v8eWoiJq1KFQQoVyrYEjjqrH587hUb7OHEk3JzE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=as7ZF//oWWOHk4lhy8Uowf5cVBM436y1X47oBjdRJYcKQIWq3sgFzaJIXiRSSaKpUSMwhkJ4GtTyjsHzi4lWcegS8tijNmGaU3yeNNW6lhbnDvnRUrkkTb4ucFB1UTdm+eV6wSPWrqiVIFDO+IeZKYp1WeEWl8+vcK7+6e2/EYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9bk/xiq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9bk/xiq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB8DC433F1;
-	Thu, 25 Jan 2024 23:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706227130;
-	bh=w8Z2v8eWoiJq1KFQQoVyrYEjjqrH587hUb7OHEk3JzE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=R9bk/xiqu9MU45vfFwXI2QGlTSHXdVAez2C/YS831sj+G4W1ZbQJQwBqiYggnPkGE
-	 3ANq4+eudHEK1a9BOT+J0eyPmhaWicZ7G19OMnghg595eUwmOFEV+dEyd3wLnKKxen
-	 uBUWXWzjobhCrDKjD7taM4NOtWN5UElfsyATilByPAQ9voFN7EUxCHoW5y3Zu42dbx
-	 gLYJHmrfyWwqOp2KFV0GRsczxwUygBS2cLlPPIKaxJi3eqepWT2qFGnejKppQGDSnA
-	 008+rAFQBh3UAUzkAsm5Cm3Y+Ks38mdSQwZj2EsFCJmIxTGATnod2MeV4zDIya+iG8
-	 I8/8jPHXHyeIg==
-Message-ID: <0d95c18c9142b5e9e542280806afbb47734f0f95.camel@kernel.org>
-Subject: Re: [PATCH v2 00/41] filelock: split struct file_lock into
- file_lock and file_lease structs
-From: Jeff Layton <jlayton@kernel.org>
-To: NeilBrown <neilb@suse.de>, Chuck Lever <chuck.lever@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
- <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne
- <marc.dionne@auristor.com>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
- <idryomov@gmail.com>, Alexander Aring <aahringo@redhat.com>, David Teigland
- <teigland@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, Andreas
- Gruenbacher <agruenba@redhat.com>, Trond Myklebust
- <trond.myklebust@hammerspace.com>,  Anna Schumaker <anna@kernel.org>, Olga
- Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
- <tom@talpey.com>, Jan Kara <jack@suse.cz>,  Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, Shyam
- Prasad N <sprasad@microsoft.com>,  Namjae Jeon <linkinjeon@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ronnie Sahlberg
- <ronniesahlberg@gmail.com>,  linux-kernel@vger.kernel.org,
- v9fs@lists.linux.dev,  linux-afs@lists.infradead.org,
- ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
- linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org
-Date: Thu, 25 Jan 2024 18:58:46 -0500
-In-Reply-To: <170622208395.21664.2510213291504081000@noble.neil.brown.name>
-References: <20240125-flsplit-v2-0-7485322b62c7@kernel.org>
-	, <ZbJ2zc3I3uBwF/RE@tissot.1015granger.net>
-	 <170622208395.21664.2510213291504081000@noble.neil.brown.name>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
-	kZWuOsJdJQdmwlWC5L5ln9xgfr/4mOY38B0U=
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1706259931; c=relaxed/simple;
+	bh=T9wpoH0F1cIP8eVCnBQyB/bvSH/l99a66hT/RBmiLG4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=O389zo94uKQgn60b5okwu9hvloZormcmA2/vYcpXHXfL6qB5lNeC22EM1g9+g/lGmWV+xW4wduHzE0TP6GlM8FJprQ1NDfx5xtPyc3Z3Ji6bGH9FUVD8KF5gWge313m88L76k0dLiBVmWom4RrbGiQsqjZj/IsRfgRJ4kt1w/eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7ba97338185so11700339f.1
+        for <v9fs@lists.linux.dev>; Fri, 26 Jan 2024 01:05:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706259928; x=1706864728;
+        h=content-transfer-encoding:to:from:subject:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=spc1ShxOmdgB1pC4pVuSbJpCr0hgxztE/zkQiLNA1BA=;
+        b=lxZdsLi9O5xZzET+uvwri7tDaeGMxSreEem6IK4TLUs2Or+fAzlSB283bb8GCZVG22
+         VV1GSGX7vB5dgospdF3PvYvmDAL6mvHOszGGFjDnQxah3jfcwrmCRBB3XEPFlvIe/InL
+         TmJ3qJ+jMAOZjgbEDSxJA1xZvntAEV/ghkyEjacVq+Jb3lpBjSDe8EZve2nhYhRdYq1C
+         jv6KjOt4rM1LQ0LJ9BX+73FhXzlrKesVg8A+6rLp/4EOPzSbePnTSb1xsmaAc1oOwztQ
+         YtVNbLBbRofmQV1moUtOmHHc0aeULggPI50sw8e6xNmILdlNGExQmUEMEgFgYpCOJsx8
+         4ywQ==
+X-Gm-Message-State: AOJu0YytBez/i2baOvzDQuMDQ3ulnC3yTKM4sXpyKrALUYk5A+anLqY0
+	edHR00Opb0QmJDQqBAbeOQiXII5tria4MMVJUg1fhpB0tYOFjEjvGrLfhINotwo+YjEuCe/WVTk
+	jKC4cNFrNC7M4ATJOU0WHgpqVPN3gcAUIw971kXAkb9Kk2aSsJlH/M74=
+X-Google-Smtp-Source: AGHT+IHkbZUO6XeiPdqbgZ81JcfuzhhS+rfbSkGWl/OfSYFJsF50hYFc2QlOeN4HJWElFBahgMEfpsWHgH1d9zPXSqNXmaddU+mo
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Received: by 2002:a02:cacd:0:b0:46e:668b:58d7 with SMTP id
+ f13-20020a02cacd000000b0046e668b58d7mr7716jap.0.1706259928470; Fri, 26 Jan
+ 2024 01:05:28 -0800 (PST)
+Date: Fri, 26 Jan 2024 01:05:28 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ee5c6c060fd59890@google.com>
+Subject: [syzbot] [net?] [v9fs?] WARNING: refcount bug in p9_req_put (3)
+From: syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-01-26 at 09:34 +1100, NeilBrown wrote:
-> On Fri, 26 Jan 2024, Chuck Lever wrote:
-> > On Thu, Jan 25, 2024 at 05:42:41AM -0500, Jeff Layton wrote:
-> > > Long ago, file locks used to hang off of a singly-linked list in stru=
-ct
-> > > inode. Because of this, when leases were added, they were added to th=
-e
-> > > same list and so they had to be tracked using the same sort of
-> > > structure.
-> > >=20
-> > > Several years ago, we added struct file_lock_context, which allowed u=
-s
-> > > to use separate lists to track different types of file locks. Given
-> > > that, leases no longer need to be tracked using struct file_lock.
-> > >=20
-> > > That said, a lot of the underlying infrastructure _is_ the same betwe=
-en
-> > > file leases and locks, so we can't completely separate everything.
-> > >=20
-> > > This patchset first splits a group of fields used by both file locks =
-and
-> > > leases into a new struct file_lock_core, that is then embedded in str=
-uct
-> > > file_lock. Coccinelle was then used to convert a lot of the callers t=
-o
-> > > deal with the move, with the remaining 25% or so converted by hand.
-> > >=20
-> > > It then converts several internal functions in fs/locks.c to work
-> > > with struct file_lock_core. Lastly, struct file_lock is split into
-> > > struct file_lock and file_lease, and the lease-related APIs converted=
- to
-> > > take struct file_lease.
-> > >=20
-> > > After the first few patches (which I left split up for easier review)=
-,
-> > > the set should be bisectable. I'll plan to squash the first few
-> > > together to make sure the resulting set is bisectable before merge.
-> > >=20
-> > > Finally, I left the coccinelle scripts I used in tree. I had heard it
-> > > was preferable to merge those along with the patches that they
-> > > generate, but I wasn't sure where they go. I can either move those to=
- a
-> > > more appropriate location or we can just drop that commit if it's not
-> > > needed.
-> > >=20
-> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> >=20
-> > v2 looks nicer.
-> >=20
-> > I would add a few list handling primitives, as I see enough
-> > instances of list_for_each_entry, list_for_each_entry_safe,
-> > list_first_entry, and list_first_entry_or_null on fl_core.flc_list
-> > to make it worth having those.
-> >=20
-> > Also, there doesn't seem to be benefit for API consumers to have to
-> > understand the internal structure of struct file_lock/lease to reach
-> > into fl_core. Having accessor functions for common fields like
-> > fl_type and fl_flags could be cleaner.
->=20
-> I'm not a big fan of accessor functions.  They don't *look* like normal
-> field access, so a casual reader has to go find out what the function
-> does, just to find the it doesn't really do anything.
+Hello,
 
-I might have been a bit too hasty with the idea. I took a look earlier
-today and it gets pretty ugly trying to handle these fields with
-accessors. flc_flags, for instance will need both a get and a set
-method, which gets wordy after a while.
+syzbot found the following issue on:
 
-Some of the flc_list accesses don't involve list walks either so I don't
-think we'll ever be able to make this "neat" without a ton of one-off
-accessors.
+HEAD commit:    4fbbed787267 Merge tag 'timers-core-2024-01-21' of git://g.=
+.
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D11bfbdc7e80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4059ab9bf06b6ce=
+b
+dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd99d2414db66171fc=
+cbb
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Deb=
+ian) 2.40
+userspace arch: i386
 
-> But neither am I a fan have requiring filesystems to use
-> "fl_core.flc_foo".  As you say, reaching into fl_core isn't ideal.
->=20
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I too think it's ugly.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc=
+7510fe41f/non_bootable_disk-4fbbed78.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/13a98041382d/vmlinux-=
+4fbbed78.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0a02086862ee/bzI=
+mage-4fbbed78.xz
 
-> It would be nice if we could make fl_core and anonymous structure, but
-> that really requires -fplan9-extensions which Linus is on-record as not
-> liking.
-> Unless...
->=20
-> How horrible would it be to use
->=20
->    union {
->        struct file_lock_core flc_core;
->        struct file_lock_core;
->    };
->=20
-> I think that only requires -fms-extensions, which Linus was less
-> negative towards.  That would allow access to the members of
-> file_lock_core without the "flc_core." prefix, but would still allow
-> getting the address of 'flc_core'.
-> Maybe it's too ugly.
->=20
+IMPORTANT: if you fix the issue, please add the following tag to the commit=
+:
+Reported-by: syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com
 
-I'd rather not rely on special compiler flags.
+9p: Unknown Cache mode or invalid value fsca=EF=BF=BDhe
+9pnet: Tag 65535 still in use
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 3 PID: 30609 at lib/refcount.c:28 refcount_warn_saturate+0x14=
+a/0x210 lib/refcount.c:28
+Modules linked in:
+CPU: 3 PID: 30609 Comm: syz-executor.1 Not tainted 6.7.0-syzkaller-13004-g4=
+fbbed787267 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16=
+.2-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
+Code: ff 89 de e8 e8 af 1e fd 84 db 0f 85 66 ff ff ff e8 ab b4 1e fd c6 05 =
+1b 87 bb 0a 01 90 48 c7 c7 c0 70 2f 8b e8 97 a9 e4 fc 90 <0f> 0b 90 90 e9 4=
+3 ff ff ff e8 88 b4 1e fd 0f b6 1d f6 86 bb 0a 31
+RSP: 0018:ffffc9000345f9b0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90006349000
+RDX: 0000000000040000 RSI: ffffffff814e1906 RDI: 0000000000000001
+RBP: ffff8880687d59a0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffffc9000345fa48
+R13: ffff8880687d59a0 R14: ffff888026a9d800 R15: 1ffff9200068bf41
+FS:  0000000000000000(0000) GS:ffff88802c900000(0063) knlGS:00000000f7ff1b4=
+0
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 0000000020003000 CR3: 000000006eb7c000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __refcount_sub_and_test include/linux/refcount.h:272 [inline]
+ __refcount_dec_and_test include/linux/refcount.h:304 [inline]
+ refcount_dec_and_test include/linux/refcount.h:322 [inline]
+ p9_req_put+0x1f0/0x250 net/9p/client.c:401
+ p9_tag_cleanup net/9p/client.c:428 [inline]
+ p9_client_destroy+0x226/0x480 net/9p/client.c:1073
+ v9fs_session_init+0xba5/0x1a80 fs/9p/v9fs.c:490
+ v9fs_mount+0xc6/0xcd0 fs/9p/vfs_super.c:123
+ legacy_get_tree+0x109/0x220 fs/fs_context.c:662
+ vfs_get_tree+0x8c/0x370 fs/super.c:1784
+ do_new_mount fs/namespace.c:3352 [inline]
+ path_mount+0x14e6/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount fs/namespace.c:3875 [inline]
+ __ia32_sys_mount+0x291/0x310 fs/namespace.c:3875
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0x79/0x110 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x70/0x7a
+RIP: 0023:0xf7ff6579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 =
+00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 9=
+0 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000f7ff15ac EFLAGS: 00000292 ORIG_RAX: 0000000000000015
+RAX: ffffffffffffffda RBX: 00000000200001c0 RCX: 0000000020000480
+RDX: 00000000200004c0 RSI: 0000000000000404 RDI: 0000000020001080
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	10 06                	adc    %al,(%rsi)
+   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
+   6:	10 07                	adc    %al,(%rdi)
+   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
+   c:	10 08                	adc    %cl,(%rax)
+   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
+  1e:	00 51 52             	add    %dl,0x52(%rcx)
+  21:	55                   	push   %rbp
+  22:	89 e5                	mov    %esp,%ebp
+  24:	0f 34                	sysenter
+  26:	cd 80                	int    $0x80
+* 28:	5d                   	pop    %rbp <-- trapping instruction
+  29:	5a                   	pop    %rdx
+  2a:	59                   	pop    %rcx
+  2b:	c3                   	ret
+  2c:	90                   	nop
+  2d:	90                   	nop
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
 
-> While fl_type and fl_flags are most common, fl_pid, fl_owner, fl_file
-> and even fl_wait are also used.  Having accessor functions for all of tho=
-se
-> would be too much I think.
->=20
 
-Some of them need setters too, and some like fl_flags like to be able to
-do this:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-    fl->fl_flags |=3D FL_SLEEP;
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-That's hard to deal with in an accessor unless you want to do it with
-macros or something.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> Maybe higher-level functions which meet the real need of the filesystem
-> might be a useful approach:
->=20
->  locks_wakeup(lock)
->  locks_wait_interruptible(lock, condition)
->  locks_posix_init(lock, type, pid, ...) ??
->  locks_is_unlock() - fl_type is compared with F_UNLCK 22 times.
->=20
-> While those are probably a good idea, through don't really help much
-> with reducing the need for accessor functions.
->=20
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-I can take a look at some of those. Reducing the number of instances can
-only help.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-> I don't suppose we could just leave the #defines in place?  Probably not
-> a good idea.
->=20
-> Maybe spell "fl_core" as "c"?  lk->c.flc_flags ???
->=20
-
-It's at least a little shorter. I can make that change if it's
-preferred.
-
->=20
-> And I wonder if we could have a new fl_flag for 'FOREIGN' locks rather
-> than encoding that flag in the sign of the pid.  That seems a bit ...
-> clunky?
->=20
-
-The kernel just treats the fl_pid as an opaque value that gets reported
-to various consumers. Having it encoded in the sign is actually more
-convenient, since reporting "foreign" lock holders as negative pid
-values has some precedent in Unix.
-
-flock and posix locks conflict on BSD, and the POSIX lock API reports
-fl_pid as '-1' when there is a conflicting flock lock. I think solaris
-may also report remote NFS locks as negative numbers too? (not certain
-there).
-
-So it works in our favor in this case, but it is a hack.
-
-Now that I look too, I'm not sure why fl_pid is unsigned given that
-pid_t is signed. I'll have to look into that as well.
---=20
-Jeff Layton <jlayton@kernel.org>
+If you want to undo deduplication, reply with:
+#syz undup
