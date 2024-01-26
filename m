@@ -1,189 +1,162 @@
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FAD60267
-	for <v9fs@lists.linux.dev>; Fri, 26 Jan 2024 09:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC267225A5
+	for <v9fs@lists.linux.dev>; Fri, 26 Jan 2024 19:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706259931; cv=none; b=C0TJnukPUn9dtPwJwshAR9sPMpvTrIAQ6W6Nb8o4s4SCM/NoqVI6Hiw/8DC9caVfCXjoKzIWStoWaPsSWsavnKLjY+1dYmmRPTxVXkWJobZztLQi1ecXLRsKQ3dijlXiMRuu0HjCFIJ/zpbeqbISi4dF8QkhuRqCsutFj/Z6ZAk=
+	t=1706298447; cv=none; b=bV1llpwcGA9sISpmebVzGoAz9tXm3PqvMnnhdG6CiEHfIiklIOV9IIWjGCQ3lbPoIu2tIeNoaFAEPh+CtmmgMl+DvVe/JHL2Pt8xg3BCdDYQDk6kiHJQVFcNRAgPiswqr0eAF6D5eYPGOUVjzvmYqcdrffbKfga5iv2gr11/eU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706259931; c=relaxed/simple;
-	bh=T9wpoH0F1cIP8eVCnBQyB/bvSH/l99a66hT/RBmiLG4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=O389zo94uKQgn60b5okwu9hvloZormcmA2/vYcpXHXfL6qB5lNeC22EM1g9+g/lGmWV+xW4wduHzE0TP6GlM8FJprQ1NDfx5xtPyc3Z3Ji6bGH9FUVD8KF5gWge313m88L76k0dLiBVmWom4RrbGiQsqjZj/IsRfgRJ4kt1w/eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7ba97338185so11700339f.1
-        for <v9fs@lists.linux.dev>; Fri, 26 Jan 2024 01:05:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706259928; x=1706864728;
-        h=content-transfer-encoding:to:from:subject:message-id:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=spc1ShxOmdgB1pC4pVuSbJpCr0hgxztE/zkQiLNA1BA=;
-        b=lxZdsLi9O5xZzET+uvwri7tDaeGMxSreEem6IK4TLUs2Or+fAzlSB283bb8GCZVG22
-         VV1GSGX7vB5dgospdF3PvYvmDAL6mvHOszGGFjDnQxah3jfcwrmCRBB3XEPFlvIe/InL
-         TmJ3qJ+jMAOZjgbEDSxJA1xZvntAEV/ghkyEjacVq+Jb3lpBjSDe8EZve2nhYhRdYq1C
-         jv6KjOt4rM1LQ0LJ9BX+73FhXzlrKesVg8A+6rLp/4EOPzSbePnTSb1xsmaAc1oOwztQ
-         YtVNbLBbRofmQV1moUtOmHHc0aeULggPI50sw8e6xNmILdlNGExQmUEMEgFgYpCOJsx8
-         4ywQ==
-X-Gm-Message-State: AOJu0YytBez/i2baOvzDQuMDQ3ulnC3yTKM4sXpyKrALUYk5A+anLqY0
-	edHR00Opb0QmJDQqBAbeOQiXII5tria4MMVJUg1fhpB0tYOFjEjvGrLfhINotwo+YjEuCe/WVTk
-	jKC4cNFrNC7M4ATJOU0WHgpqVPN3gcAUIw971kXAkb9Kk2aSsJlH/M74=
-X-Google-Smtp-Source: AGHT+IHkbZUO6XeiPdqbgZ81JcfuzhhS+rfbSkGWl/OfSYFJsF50hYFc2QlOeN4HJWElFBahgMEfpsWHgH1d9zPXSqNXmaddU+mo
+	s=arc-20240116; t=1706298447; c=relaxed/simple;
+	bh=mpaehXT92oEyt7WvFKlN6cee4Uxho3u/Xaiy2EFAXr4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dXSigL4z1pGn32G7sfTk34IkO4f0NqV2JwXRkKbQKmzi5EnYowIrTmk3jIMjpE1ZZHF3hUIiSy1BKfXeFghePi3z3XybQpNqZtbWSzqNzJ5lo3MCWMA05MyvN3XHYMyzMTR00iKjcdpG8V6KOQYAOy2F4oKjnaOUPu1ZB8AVrPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=B9F2mmXk; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="B9F2mmXk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1706298443;
+	bh=mpaehXT92oEyt7WvFKlN6cee4Uxho3u/Xaiy2EFAXr4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B9F2mmXkx+PFEFu5mWIP8bluZ6K7yEz+4debiEWRLDhzgM+haHQ+58AMt0kU9LO+C
+	 zGLowxhe0OlYY5LK7DcPNfoR9W+gZjAfD9LERc5xAro5FQrMfhuKr9f4f2pmzml62L
+	 Fk0bwEift428nbXwp40Zszo42RgdQNEcFOkwCviXZ+Go9BqA+5/vxTifHCaFYRWiuk
+	 IgsZ2MNjSeso1B20yB5TeSKLsMSwmR7Mxlx+n+Ki9311lETDnAFmc14rNQCeucAcSi
+	 RCUOm3ghgskmXAEqnIjHgnlsKwPvhe3b8i5aOaXyciHoYq3kV7nt+PEcDa3miPJvQC
+	 adyqg3vJkrcnA==
+Received: from [100.95.196.182] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: andrzej.p)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 3D0963780629;
+	Fri, 26 Jan 2024 19:47:23 +0000 (UTC)
+Message-ID: <80c4e788-65df-4a82-8453-74683289abcb@collabora.com>
+Date: Fri, 26 Jan 2024 20:47:22 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a02:cacd:0:b0:46e:668b:58d7 with SMTP id
- f13-20020a02cacd000000b0046e668b58d7mr7716jap.0.1706259928470; Fri, 26 Jan
- 2024 01:05:28 -0800 (PST)
-Date: Fri, 26 Jan 2024 01:05:28 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ee5c6c060fd59890@google.com>
-Subject: [syzbot] [net?] [v9fs?] WARNING: refcount bug in p9_req_put (3)
-From: syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] usb: gadget: 9pfs transport
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ Latchesar Ionkov <lucho@ionkov.net>, linux-usb@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, v9fs@lists.linux.dev,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+ Eric Van Hensbergen <ericvh@kernel.org>
+References: <20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de>
+ <ZaZsUQUhSlMPLJg0@codewreck.org>
+ <0aba51a8be0fb165b44ec956bec7a9698a9518a2.camel@pengutronix.de>
+ <Zaex_fkKcui7QZd7@codewreck.org>
+Content-Language: en-US
+From: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+In-Reply-To: <Zaex_fkKcui7QZd7@codewreck.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Hi,
 
-syzbot found the following issue on:
+W dniu 17.01.2024 o 11:54, Dominique Martinet pisze:
+> Jan Lübbe wrote on Tue, Jan 16, 2024 at 04:51:41PM +0100:
+>>> So I didn't have time to look at everything through, just want to make
+>>> sure, this series allows sharing data from an usb gadget (e.g. some
+>>> device with storage) over 9p as an alternative to things like MTP ?
+>>
+>> It's the other way around. :) The USB host exports a filesystem, while the
+>> gadget on the USB device side makes it mountable. Our main use-case is to use it
+>> as an alternative to NFS root booting during the development of embedded Linux
+>> devices. NFS root works in many cases, but has some downsides, which make it
+>> cumbersome to use in more and more cases.
+> 
+> Oh!
+> Okay, this makes a lot more sense. And that'll need a bit more
+> explanations in the commits & Documentation/ as you've concluded :)
+> 
+> 
+>> NFS root needs correctly configured Ethernet interfaces on both the development
+>> host and the target device. On the target, this can interfere with the network
+>> configuration that is used for the normal device operation (DHCP client, ...).
+>> For the host, configuring a NFS (and perhaps DHCP) server can be an obstacle.
+>>
+>> For target devices which don't have a real Ethernet interface, NFS root would
+>> also work with the USB Ethernet gadget, but this increases the complexity
+>> further.
+>>
+>> As many embedded boards have a USB device port anyway, which is used during
+>> development for uploading the boot-loader and to flash filesystem images (i.e.
+>> via the fastboot protocol), we want to just reuse that single data cable to
+>> allow access to the root filesystem as well.
+>>
+>> Compared to flashing images, using a network filesystem like NFS and 9P reduces
+>> the time between compiling on the host and running the binary on the target, as
+>> no flash and reboot cycle is needed. That can get rid of many minutes of waiting
+>> over a day. :)
+> 
+> My other hat is on embedded development (dayjob at Atmark Techno[1], the
+> only english page linked is about 4 years out of date but I guess it's
+> better than no page at all), so I can understand where you're coming
+> from -- thanks for the background.
+> 
+> [1] https://www.atmark-techno.com/english
+> 
+> That means I'll actually want to test this, but kind of always busy so
+> it might take a few weeks...
+> Or better, do you happen to know if qemu can create a USB controller
+> that supports OTG so it'll be easy to test for folks with no such
+> hardware?
 
-HEAD commit:    4fbbed787267 Merge tag 'timers-core-2024-01-21' of git://g.=
-.
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=3D11bfbdc7e80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4059ab9bf06b6ce=
-b
-dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd99d2414db66171fc=
-cbb
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Deb=
-ian) 2.40
-userspace arch: i386
+Maybe dummy_hcd is what you want?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Regards,
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc=
-7510fe41f/non_bootable_disk-4fbbed78.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/13a98041382d/vmlinux-=
-4fbbed78.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/0a02086862ee/bzI=
-mage-4fbbed78.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit=
-:
-Reported-by: syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com
-
-9p: Unknown Cache mode or invalid value fsca=EF=BF=BDhe
-9pnet: Tag 65535 still in use
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 3 PID: 30609 at lib/refcount.c:28 refcount_warn_saturate+0x14=
-a/0x210 lib/refcount.c:28
-Modules linked in:
-CPU: 3 PID: 30609 Comm: syz-executor.1 Not tainted 6.7.0-syzkaller-13004-g4=
-fbbed787267 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16=
-.2-1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
-Code: ff 89 de e8 e8 af 1e fd 84 db 0f 85 66 ff ff ff e8 ab b4 1e fd c6 05 =
-1b 87 bb 0a 01 90 48 c7 c7 c0 70 2f 8b e8 97 a9 e4 fc 90 <0f> 0b 90 90 e9 4=
-3 ff ff ff e8 88 b4 1e fd 0f b6 1d f6 86 bb 0a 31
-RSP: 0018:ffffc9000345f9b0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90006349000
-RDX: 0000000000040000 RSI: ffffffff814e1906 RDI: 0000000000000001
-RBP: ffff8880687d59a0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffc9000345fa48
-R13: ffff8880687d59a0 R14: ffff888026a9d800 R15: 1ffff9200068bf41
-FS:  0000000000000000(0000) GS:ffff88802c900000(0063) knlGS:00000000f7ff1b4=
-0
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 0000000020003000 CR3: 000000006eb7c000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __refcount_sub_and_test include/linux/refcount.h:272 [inline]
- __refcount_dec_and_test include/linux/refcount.h:304 [inline]
- refcount_dec_and_test include/linux/refcount.h:322 [inline]
- p9_req_put+0x1f0/0x250 net/9p/client.c:401
- p9_tag_cleanup net/9p/client.c:428 [inline]
- p9_client_destroy+0x226/0x480 net/9p/client.c:1073
- v9fs_session_init+0xba5/0x1a80 fs/9p/v9fs.c:490
- v9fs_mount+0xc6/0xcd0 fs/9p/vfs_super.c:123
- legacy_get_tree+0x109/0x220 fs/fs_context.c:662
- vfs_get_tree+0x8c/0x370 fs/super.c:1784
- do_new_mount fs/namespace.c:3352 [inline]
- path_mount+0x14e6/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount fs/namespace.c:3875 [inline]
- __ia32_sys_mount+0x291/0x310 fs/namespace.c:3875
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0x79/0x110 arch/x86/entry/common.c:321
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x70/0x7a
-RIP: 0023:0xf7ff6579
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 =
-00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 9=
-0 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-RSP: 002b:00000000f7ff15ac EFLAGS: 00000292 ORIG_RAX: 0000000000000015
-RAX: ffffffffffffffda RBX: 00000000200001c0 RCX: 0000000020000480
-RDX: 00000000200004c0 RSI: 0000000000000404 RDI: 0000000020001080
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	10 06                	adc    %al,(%rsi)
-   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
-   6:	10 07                	adc    %al,(%rdi)
-   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
-   c:	10 08                	adc    %cl,(%rax)
-   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
-  1e:	00 51 52             	add    %dl,0x52(%rcx)
-  21:	55                   	push   %rbp
-  22:	89 e5                	mov    %esp,%ebp
-  24:	0f 34                	sysenter
-  26:	cd 80                	int    $0x80
-* 28:	5d                   	pop    %rbp <-- trapping instruction
-  29:	5a                   	pop    %rdx
-  2a:	59                   	pop    %rcx
-  2b:	c3                   	ret
-  2c:	90                   	nop
-  2d:	90                   	nop
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
-  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+Andrzej
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> We've got enough 9p protocols that aren't actually tested on a regular
+> basis, it'd be great if we could have something that can run anywhere.
+> 
+> 
+>> diod (9pfs server) and the forwarder are on the development host, where the root
+>> filesystem is actually stored. The gadget is initialized during boot (or later)
+>> on the embedded board. Then the forwarder will find it on the USB bus and start
+>> forwarding requests.
+>>
+>> It may seem a bit unusual that in this case the requests come from the device
+>> and are handled by the host. The reason is that USB device ports are normally
+>> not available on PCs, so a connection in the other direction would not work.
+> 
+> Right, most host PCs won't have OTG available...
+> I was also perplexed by the linux foundation (0x1d6b):0x0109 id, that
+> might be clearer once it's properly documented -- I'll let someone from
+> the usb side chime on this as I have no idea what's appropriate.
+> 
+> 
+>> In the future, the functionality of the forwarder could be integrated into the
+>> 9pfs server. Alternatively, an improved forwarder could also react to udev
+>> events of gadgets showing up and forward them to different 9PFS server over the
+>> network (when you have multiple target devices connected to one USB host).
+> 
+> Plenty of potential work ahead :)
+> Frankly at this stage I don't think it's much simpler than e.g. CDC
+> ethernet gadget and mounting nfs over tcp, but with further improvements
+> it can definitely get simpler.
+> 
+> 
+>> Perhaps, the inverse setup (9PFS server on the USB gadget side, mounted on a PC)
+>> also would be useful in the future and could share some of this code. Then,
+>> you'd have an alternative to MTP.
+> 
+> (Yeah, I'm not actively looking for that -- was just asking because MTP
+> has been kind of dead lately and I'm not aware of any potential
+> alternative, but I didn't go looking for them either -- let's leave that
+> to later)
+> 
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
