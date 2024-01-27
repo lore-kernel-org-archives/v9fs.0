@@ -1,65 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A10625636;
-	Fri, 26 Jan 2024 22:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2383BA55
+	for <v9fs@lists.linux.dev>; Sat, 27 Jan 2024 01:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706307817; cv=none; b=O0uQ7W0smMiiF3ATjH3TjUh/OFTF0fNn3BPeLmGrZMhPQe69JM0OmTvQqqaS9O1uEi23SWlFoGjJTsqgvE90OLKdTX4d8FR+mhf9zydoKMlXrd9xAvgyDWm/09hdjVhw+4/zyKfF0PwnO8UHLmUfYISEzsa7H0yX00s88SkKCx4=
+	t=1706320432; cv=none; b=ZTdB5QqqH5LZ9JeTLFH7kx4ocTIwJbHqQlIRegupG0iuUEHj7IGKBt7RubtXOuI8xJA0J9sE8e57GCBJEcb1JIQeVrT+yIfnamS6HbeOHeHPGteOB4kTb91BB+fv0FH8Y0uNxu0CiVOqi7KsTnbHZEZX6sdj4iKgzH9jm7qSkzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706307817; c=relaxed/simple;
-	bh=3a2frhHXQISxXY9oeFM5r0zBXGcl8B7EtAddIILkH4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jPDSPOqWQ9WhzpukX8uLzl0iAcEnP2bZ0RVWjhkLPhImlTmSJ7tsua4WgepTK33mARRLcItqS+NKLEgj/jH9JfBRFD2by6LyWH5SwmGl90X2qRuIZ6NIy5Ss+vhAhzvNyFYlXqWjeLWKyrecJRhDieRgQ1dosDcqZCjWr7KsaKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6o8451m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706320432; c=relaxed/simple;
+	bh=Y6yN27k74/Y+JOEcNkTKQ6x5QUFGRFBeklM6SZJHkpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VM0g3SvBTRAsfbcJcwp3cTUCSq6sXeiZeSNgf9dRkNfykxWQQqRKrS1frh51t564kTLX2OSU5EcmmK/+95cwbq9O+DvKGpER3hs1NcmoZoAymAv+iQwCehv8enM11pWwali3BklPeG4gXZb3N8qRCXPfgu9sUB1Wy6w71pr19Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=bI7Lipyj; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=bI7Lipyj; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6o8451m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B18FC433F1;
-	Fri, 26 Jan 2024 22:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706307816;
-	bh=3a2frhHXQISxXY9oeFM5r0zBXGcl8B7EtAddIILkH4M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q6o8451mPfBNpAwvrn79DeNRGR+zTb2WftPR95DqiosCUYNIl3w5CyDYjVQqde6iV
-	 b+K/NwDoxy8vnIwJy+WUArN85m6BXH1RZGNmmmR4hv4OoqG5AETTPbqe8naIBkO5oV
-	 iRl5er9RVSTPwXKOTxVn8yGM7yaSyb4NkElZ0cgpawI0osKPsOlf7pDt5M5cMbutyS
-	 nNopJCUXxXoSRuhz4+Yb7GQDciAGQ7AR3Vt2gi4azmxWW+u4yBmD/9aMvFPdBGsQAW
-	 u5qcIsO3YzLOj5R8y6FUkwWzVSpSFJwolST8eJHhec1/pRN7pzHnL5+PbQu2P7whji
-	 KBn4u0kn8BQFA==
-Date: Fri, 26 Jan 2024 14:23:35 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Aleksandr Nogikh <nogikh@google.com>
-Cc: syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>,
- asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net,
- netdev@vger.kernel.org, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [net?] [v9fs?] WARNING: refcount bug in p9_req_put (3)
-Message-ID: <20240126142335.6a01b39f@kernel.org>
-In-Reply-To: <000000000000ee5c6c060fd59890@google.com>
-References: <000000000000ee5c6c060fd59890@google.com>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="bI7Lipyj";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="bI7Lipyj"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id BC8EDC01C; Sat, 27 Jan 2024 02:53:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706320421; bh=8ATDnkgivy7+0wg7TR6l159yJcdnVSLc63oTKtEwX6g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bI7Lipyjqhxx73YxidLmgkTp/hBb1nQ0vuiRN4ePEwkCwxe50idK0x+/tILSzxkKQ
+	 lNC6LgzSJedUnwABd3b4D4HjCYnLgQgN0Q9tA/4WEfTIunXrMSj7U8mxp7fGF8fAEo
+	 GxxwiI4P6YY7jTOSXMwCCyz1F7wvTzGzET8cED/QJVdIedHHQwlWi2t6rN/0y4ICp1
+	 rUyf8lsrCmZRxkKbB539SZP6qePcsXjLQXS7lvfq17nD5GR0/fcjXwQ2tW8az4i/+5
+	 V2ZXI0mK1z/GS4XC/iHtRC+WuNCnLW3uX1q+gMBFA/STURusWkm1BJD6U8u6AZSvqJ
+	 loZPXxPlfTsVg==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id E6AE1C009;
+	Sat, 27 Jan 2024 02:53:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706320421; bh=8ATDnkgivy7+0wg7TR6l159yJcdnVSLc63oTKtEwX6g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bI7Lipyjqhxx73YxidLmgkTp/hBb1nQ0vuiRN4ePEwkCwxe50idK0x+/tILSzxkKQ
+	 lNC6LgzSJedUnwABd3b4D4HjCYnLgQgN0Q9tA/4WEfTIunXrMSj7U8mxp7fGF8fAEo
+	 GxxwiI4P6YY7jTOSXMwCCyz1F7wvTzGzET8cED/QJVdIedHHQwlWi2t6rN/0y4ICp1
+	 rUyf8lsrCmZRxkKbB539SZP6qePcsXjLQXS7lvfq17nD5GR0/fcjXwQ2tW8az4i/+5
+	 V2ZXI0mK1z/GS4XC/iHtRC+WuNCnLW3uX1q+gMBFA/STURusWkm1BJD6U8u6AZSvqJ
+	 loZPXxPlfTsVg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 18b062bd;
+	Sat, 27 Jan 2024 01:53:34 +0000 (UTC)
+Date: Sat, 27 Jan 2024 10:53:19 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: dhowells@redhat.com, v9fs@lists.linux.dev, linux_oss@crudebyte.com
+Subject: Re: fs/9p: regression in 6.8-rc1
+Message-ID: <ZbRiD2a6F9cDm_9n@codewreck.org>
+References: <ZbQUU6QKmIftKsmo@FV7GG9FTHL>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZbQUU6QKmIftKsmo@FV7GG9FTHL>
 
-On Fri, 26 Jan 2024 01:05:28 -0800 syzbot wrote:
-> HEAD commit:    4fbbed787267 Merge tag 'timers-core-2024-01-21' of git://g..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=11bfbdc7e80000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4059ab9bf06b6ceb
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
-> compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-> userspace arch: i386
+Eric Van Hensbergen wrote on Fri, Jan 26, 2024 at 02:21:39PM -0600:
+> I caught a problem in the new netfs code when running in 9p when running
+> with nocache mode.  A regression sweep is turning up a:
+>  [ 1084.438387] netfs: Zero-sized write [R=1b6da]
+> when running my ldconfig test (included at the end of this)
+> it reports:
+> /sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+> 
+> I will try to dig into this later today if I have time, but not sure I'll get
+> to it so I wanted to make other folks aware.  I'm not sure how much other
+> elements of my test harness are contributing to reproducing the problem.
 
-Hi Aleksandr,
 
-we did add a X:	net/9p entry to MAINTAINERS back in November [1]
-but looks like 9p still gets counted as networking. Is it going
-to peter out over time or something's not parsing things right?
+The syzbot report (refcount underflow[1]) is also probably related; I'll
+try to find some time to check a bit more this weekend
 
-[1]
-https://lore.kernel.org/all/CANp29Y77rtNrUgQA9HKcB3=bt8FrhbqUSnbZJi3_OGmTpSda6A@mail.gmail.com/
+[1] https://lkml.kernel.org/r/000000000000ee5c6c060fd59890@google.com
+
+-- 
+Dominique Martinet | Asmadeus
