@@ -1,43 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470035C8E4
-	for <v9fs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30665FEFE
+	for <v9fs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706529325; cv=none; b=C8QMmq62KpEpvEspghX6946k1dS5BXnv23vOcSRWSYWafECQngKupapkG5KQdWF5BARdjIQ6tfLXJ69adquXgvt1A6kFvg55tJlsDk3Qm4vRJRz7ArS9Bd20GD28f+h7CishNB/8ROtXfZGCB+JVUeAwxQuZ37AdeUNhfqyEMlM=
+	t=1706529329; cv=none; b=VXblEEaGgMsAT1E2JLZGq1ZFWvVRd7nge85sN7Scxv5o2Q0G37Q3twcLxb38cZio1DEFqIVCe8hX4NtAyO+ZSpd0NyJMBY58ek1jatF7f8MHoeRT67N+5GO1Yr+KgB4IHMRz+5SjXoB3YbsuPH7uamAwA6HjIbd/QMec5Df7H/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706529325; c=relaxed/simple;
-	bh=PMrkwWNf0Ov30HBPXASH7CkKvXggMgrqzxgN3NrV/VY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BO/TisX3sPy0CTvnYQkmT7XHZ9EypvllhZyFmc09tcwA2NydYZJbn8FliBN+vL5tMWQKrkeYisqm1aWRauQnihsKJZoL5MbZ7u0E5sNF5VURE0tVzStKPGaqCkVp+HxSn6BL0pYfigKBxPLroan7haImsSr85H7kCq0WwWXPNZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=igw5lcxN; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1706529329; c=relaxed/simple;
+	bh=1byjLmjT6ZOpcnDHKbSQxLlzmYce9B40FvFh6bkgVOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=trucYSEYtwIpAQvmLAwwLh24cGEnFoeVXeoFUvfHsIbxB6ukXb15vorv1UOiZcH0YRL7eqla6JytUoyrl1p4udF+ZcbBJl6NTwFhSGEYWKYAPDuHkJtTCqfkwb6+sKG7JoS+ka1KnG0CoLrW/wuzkDMcc1LFdTAhAJNGv4oYnMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUwysoF+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="igw5lcxN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUwysoF+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706529322;
+	s=mimecast20190719; t=1706529326;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ywApO59Mwrb0F3WdOnI+RuaKXV32Yr1moSFyFDBVZS8=;
-	b=igw5lcxNsqD6Reidyq514XVVxx81MmjwXO9T0D4DlkNsE/q8GDAfL+ZGA1grw5sC05jtbV
-	uvP4BI8q2KoAvuet/F+xvEyqflj7HTJGn9uugSY+fGLkIFWwROjiMDvrcYM8ZVeg/aJ3j7
-	Bdinq8qYFVUbrxooxmV4xFUnyVTTpg0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-_hvLZoDIM-y0hjc_RyKfow-1; Mon,
- 29 Jan 2024 06:55:18 -0500
-X-MC-Unique: _hvLZoDIM-y0hjc_RyKfow-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l/klC/ghutWIOc1+EVzXLrxXcGHqt0/sieVr6S5RVKE=;
+	b=OUwysoF+DrYt0uW2NcL3E3FgyDKMR6tA2mk35XNbX2ZXCryLTEa2MQCNAkP4Vjd6KzSjaZ
+	EU91YBsAqKEBVN+Xt8KzE7rsAArIxkugs6N2DJYqrGgaeUE3ksNGqequjp1Qa+dqCJSgGU
+	TzNKf1dFj++yROnnjl9wwHhsMukSDJY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-221-d1lzjPdMMbCmhQXLAPqJfA-1; Mon, 29 Jan 2024 06:55:25 -0500
+X-MC-Unique: d1lzjPdMMbCmhQXLAPqJfA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 348C929AA3AC;
-	Mon, 29 Jan 2024 11:55:18 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADC73185A782;
+	Mon, 29 Jan 2024 11:55:24 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.245])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 967671121306;
-	Mon, 29 Jan 2024 11:55:16 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 013882166B31;
+	Mon, 29 Jan 2024 11:55:22 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
@@ -50,10 +52,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	netfs@lists.linux.dev,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/3] 9p: Further netfslib-related changes
-Date: Mon, 29 Jan 2024 11:54:34 +0000
-Message-ID: <20240129115512.1281624-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	linux-cachefs@redhat.com
+Subject: [RFC PATCH 3/3] 9p: Always update remote_i_size in stat2inode
+Date: Mon, 29 Jan 2024 11:54:37 +0000
+Message-ID: <20240129115512.1281624-4-dhowells@redhat.com>
+In-Reply-To: <20240129115512.1281624-1-dhowells@redhat.com>
+References: <20240129115512.1281624-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -61,43 +66,40 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Hi Eric, Dominique,
+Always update remote_i_size in v9fs_stat2inode*() if the size is available,
+even if we are asked not to update i_isize
 
-Here are some netfslib-related changes we might want to consider applying
-to 9p:
-
- (1) Enable large folio support for 9p.  This is handled entirely by
-     netfslib and is already supported in afs.  I wonder if we should limit
-     the maximum folio size to 1MiB to match the maximum I/O size in the 9p
-     protocol.
-
- (2) Make better use of netfslib's writethrough caching support by not
-     disabling caching for O_DSYNC.  netfs_perform_write() will set up
-     and dispatch write requests as it copies data into the pagecache.
-
- (3) Always update netfs_inode::remote_size to reflect what we think the
-     server's idea of the file size is.  This is separate from
-     inode::i_size which is our idea of what it should be if all of our
-     outstanding dirty data is committed.
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-9p
-
-Thanks,
-David
-
-David Howells (2):
-  9p: Make better use of netfslib's writethrough caching
-  9p: Always update remote_i_size in stat2inode
-
-Dominique Martinet (1):
-  9p: Enable large folio support
-
- fs/9p/fid.h            | 3 +--
- fs/9p/vfs_inode.c      | 1 +
+Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+Link: https://lore.kernel.org/r/ZZVctju5TEjS218p@codewreck.org/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
+cc: linux-cachefs@redhat.com
+cc: linux-fsdevel@vger.kernel.org
+---
  fs/9p/vfs_inode_dotl.c | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 3505227e1704..aa3a77bb5e86 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -684,10 +684,10 @@ v9fs_stat2inode_dotl(struct p9_stat_dotl *stat, struct inode *inode,
+ 			mode |= inode->i_mode & ~S_IALLUGO;
+ 			inode->i_mode = mode;
+ 		}
+-		if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE) &&
+-		    stat->st_result_mask & P9_STATS_SIZE) {
++		if (stat->st_result_mask & P9_STATS_SIZE) {
+ 			v9inode->netfs.remote_i_size = stat->st_size;
+-			v9fs_i_size_write(inode, stat->st_size);
++			if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE))
++				v9fs_i_size_write(inode, stat->st_size);
+ 		}
+ 		if (stat->st_result_mask & P9_STATS_BLOCKS)
+ 			inode->i_blocks = stat->st_blocks;
 
