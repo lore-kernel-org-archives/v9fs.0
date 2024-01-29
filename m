@@ -1,151 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D339474E28;
-	Sun, 28 Jan 2024 16:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAF35576C
+	for <v9fs@lists.linux.dev>; Mon, 29 Jan 2024 09:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706458487; cv=none; b=jDD48kaNwh2LwtyjTm50EguZkYda1ELYaP1xJ3yBMDGmffuqmOAbrt66zph3rtWYOjyUqAjqfceObflokYHzk8HH6AfsU8AGgfWHsVu6SU2O3GzgsO4WC+gXINPSSqvfOmg/yrKhzOL2fKJYZzPhXBXa6Gud5kAG7CVpvVDFpuA=
+	t=1706520018; cv=none; b=G2SzGaC8aRgKiz9U8KQNPmwzgRu6nAS2WVT0m3nX8OMPL6EVYJyldSLH2Chcl49fZaLgI6vsOEz8PEsVP3h2SNLfJbgry5ikTbnfK3blP1lHXOqj4n6CgWfOFMGbexn07gcwkmZkxln5v/t9TRYHH+k+yMmTcGMLu/NBYdhfzJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706458487; c=relaxed/simple;
-	bh=u7SVI9qUo9q53OR8A8IJE7j3KNcd9J1N/pSHxSjcf/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giI5jasActGJhyjkpsb0vcSJWmiqJdTveRy+Ch/Pc3VbrUw62Zxs+y8INUsEMJS1BXh2TkrwABqGi8SsMcaUSh9k2YlCFDBHpA4x6gW3kRlJZgGx0EsWKZRO7cJjd4itUbzSeEbD7gQq6fHqeOeKTTYB4I4b7JIbxu2GjiyLwr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVHaagHJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706520018; c=relaxed/simple;
+	bh=LbT0h7I/khtawXpM4JWajyKGu9MxvthOZ4Avo9E26OY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=LUAlgfSrve0f1w10e8LyC46hoZu1/zkoWycLKjgjs1iLDhE0k8gu0I465DIALCHMjy4PR3tm8LXtNyVpuZg6Mr84F5KpdHWlf5LG9oOv/jiCG1lbm/xJGc2cmEQKRsHRC71ko4YqhDXooOggmIGALQbtca3B8U+Pbdur6VXBN90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I45ST0PX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVHaagHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AB5C433A6;
-	Sun, 28 Jan 2024 16:14:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706458487;
-	bh=u7SVI9qUo9q53OR8A8IJE7j3KNcd9J1N/pSHxSjcf/8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVHaagHJdsoY3NnJoGaLpNk2gXFFXtSb5bKoDmX1+7/M9ZoC5aPnc/SlLotMSDGCr
-	 /OyeKk06IPMAfCX58gYAWooSTR9dUcYSVPimfPvZj2931GLo/E2Kb4LR5nlxCwx77P
-	 kx+FWBMYE9jUu1hVXS54o27NB8GupakibOpnJcyqRyFiRjj79n/W5qwev272brdI3W
-	 f34C/+QdfAywKaVuZ5/ynpFh/38EI5y6ryX016s7qFKR9ZknFgCc497UU3qTs3NZy/
-	 3rUZxomU4O1NDKts9PRwZaEnEF3VATxIE1TevBK0TKMqamPUJMKB9QCLLhI94Erylk
-	 NKt3TH/yf96PA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	linux-cachefs@redhat.com,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 13/27] 9p: Fix initialisation of netfs_inode for 9p
-Date: Sun, 28 Jan 2024 11:13:58 -0500
-Message-ID: <20240128161424.203600-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240128161424.203600-1-sashal@kernel.org>
-References: <20240128161424.203600-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I45ST0PX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706520015;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q1qnJyU+OqBjXnjA274wGrx2fIgyJAmc6VYOr1sVyHY=;
+	b=I45ST0PXd8iBTq7vKy5PGHk52NJoB/ASOP2eRvknM+cs5VCwIWkUjAWTwaVZiq9s1ClQzN
+	L1JnPcK7aYEGq5TUH9yKHVwiAsQlhJJHpJAg7dMNdUvWW8wUn3L87OG4bMdQdnT2Sl62M5
+	OLa4Xu/syLd73KhBvUkcd3HawnrWKuE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-759oXP6NPnuxhK4i0dlKlA-1; Mon, 29 Jan 2024 04:20:10 -0500
+X-MC-Unique: 759oXP6NPnuxhK4i0dlKlA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9BCE868907;
+	Mon, 29 Jan 2024 09:20:09 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0A7741C060B2;
+	Mon, 29 Jan 2024 09:20:08 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZbZRRBP453U8PZ8a@codewreck.org>
+References: <ZbZRRBP453U8PZ8a@codewreck.org> <ZbQUU6QKmIftKsmo@FV7GG9FTHL> <ZbRiD2a6F9cDm_9n@codewreck.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: dhowells@redhat.com, Eric Van Hensbergen <ericvh@kernel.org>,
+    v9fs@lists.linux.dev, linux_oss@crudebyte.com
+Subject: Re: fs/9p: regression in 6.8-rc1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.75
-Content-Transfer-Encoding: 8bit
+Date: Mon, 29 Jan 2024 09:20:08 +0000
+Message-ID: <1217440.1706520008@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: David Howells <dhowells@redhat.com>
+Dominique Martinet <asmadeus@codewreck.org> wrote:
 
-[ Upstream commit 9546ac78b232bac56ff975072b1965e0e755ebd4 ]
+> I was going to say we probably need to filter it out - but it looks like
+> that might be netfs' job given the call trace I get:
+>=20
+> # retsnoop -T -e vfs_write -a :fs/9p/*.c -a :fs/netfs/*.c
+> FUNCTION CALL TRACE                 RESULT                  DURATION
+> ---------------------------------   --------------------  ----------
+> =E2=86=92 vfs_write                                                      =
+  =20
+>     =E2=86=92 netfs_unbuffered_write_iter                                =
+  =20
 
-The 9p filesystem is calling netfs_inode_init() in v9fs_init_inode() -
-before the struct inode fields have been initialised from the obtained file
-stats (ie. after v9fs_stat2inode*() has been called), but netfslib wants to
-set a couple of its fields from i_size.
+Yeah - I should check to see if generic_write_checks() returned 0 and skip =
+if
+it did (as does netfs_file_write_iter()).
 
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Marc Dionne <marc.dionne@auristor.com>
-Tested-by: Dominique Martinet <asmadeus@codewreck.org>
-Acked-by: Dominique Martinet <asmadeus@codewreck.org>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: v9fs@lists.linux.dev
-cc: linux-cachefs@redhat.com
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/9p/v9fs_vfs.h       | 1 +
- fs/9p/vfs_inode.c      | 6 +++---
- fs/9p/vfs_inode_dotl.c | 1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+It might also be worth doing the check before even taking any locks.
 
-diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
-index bc417da7e9c1..633fe4f527b8 100644
---- a/fs/9p/v9fs_vfs.h
-+++ b/fs/9p/v9fs_vfs.h
-@@ -46,6 +46,7 @@ struct inode *v9fs_alloc_inode(struct super_block *sb);
- void v9fs_free_inode(struct inode *inode);
- struct inode *v9fs_get_inode(struct super_block *sb, umode_t mode,
- 			     dev_t rdev);
-+void v9fs_set_netfs_context(struct inode *inode);
- int v9fs_init_inode(struct v9fs_session_info *v9ses,
- 		    struct inode *inode, umode_t mode, dev_t rdev);
- void v9fs_evict_inode(struct inode *inode);
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 4d1a4a8d9277..5e2657c1dbbe 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -250,7 +250,7 @@ void v9fs_free_inode(struct inode *inode)
- /*
-  * Set parameters for the netfs library
-  */
--static void v9fs_set_netfs_context(struct inode *inode)
-+void v9fs_set_netfs_context(struct inode *inode)
- {
- 	struct v9fs_inode *v9inode = V9FS_I(inode);
- 	netfs_inode_init(&v9inode->netfs, &v9fs_req_ops);
-@@ -344,8 +344,6 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
- 		err = -EINVAL;
- 		goto error;
- 	}
--
--	v9fs_set_netfs_context(inode);
- error:
- 	return err;
- 
-@@ -377,6 +375,7 @@ struct inode *v9fs_get_inode(struct super_block *sb, umode_t mode, dev_t rdev)
- 		iput(inode);
- 		return ERR_PTR(err);
- 	}
-+	v9fs_set_netfs_context(inode);
- 	return inode;
- }
- 
-@@ -479,6 +478,7 @@ static struct inode *v9fs_qid_iget(struct super_block *sb,
- 		goto error;
- 
- 	v9fs_stat2inode(st, inode, sb, 0);
-+	v9fs_set_netfs_context(inode);
- 	v9fs_cache_inode_get_cookie(inode);
- 	unlock_new_inode(inode);
- 	return inode;
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 5cfa4b4f070f..e15ad46833e0 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -130,6 +130,7 @@ static struct inode *v9fs_qid_iget_dotl(struct super_block *sb,
- 		goto error;
- 
- 	v9fs_stat2inode_dotl(st, inode, 0);
-+	v9fs_set_netfs_context(inode);
- 	v9fs_cache_inode_get_cookie(inode);
- 	retval = v9fs_get_acl(inode, fid);
- 	if (retval)
--- 
-2.43.0
+David
 
