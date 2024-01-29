@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30665FEFE
-	for <v9fs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAAD604B7
+	for <v9fs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706529329; cv=none; b=VXblEEaGgMsAT1E2JLZGq1ZFWvVRd7nge85sN7Scxv5o2Q0G37Q3twcLxb38cZio1DEFqIVCe8hX4NtAyO+ZSpd0NyJMBY58ek1jatF7f8MHoeRT67N+5GO1Yr+KgB4IHMRz+5SjXoB3YbsuPH7uamAwA6HjIbd/QMec5Df7H/w=
+	t=1706529330; cv=none; b=J7EGdlFEI848dkMuxTXn+dflIbQa+L01Fo2mTKM84lGx/ZkeFQgakLbC8JqvuuI3aHRoHEh9samDBWIDhqd45nWS+8vdgTrn03UUYZGqgIl++CCSsIMRm5CD6t2rMKGmpXEiJLYSW/cqyc6HMpct9/oURHBtSFXmVAbfee8jEus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706529329; c=relaxed/simple;
-	bh=1byjLmjT6ZOpcnDHKbSQxLlzmYce9B40FvFh6bkgVOc=;
+	s=arc-20240116; t=1706529330; c=relaxed/simple;
+	bh=AnzxcJj9wjtJkMYs3W/gQlln1rYbehXjbzJ6iBM9txw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trucYSEYtwIpAQvmLAwwLh24cGEnFoeVXeoFUvfHsIbxB6ukXb15vorv1UOiZcH0YRL7eqla6JytUoyrl1p4udF+ZcbBJl6NTwFhSGEYWKYAPDuHkJtTCqfkwb6+sKG7JoS+ka1KnG0CoLrW/wuzkDMcc1LFdTAhAJNGv4oYnMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUwysoF+; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=nGSAuVn4r/zxbCfqjzsLBcSDUZ232+Qdq0A/nSWKLPYDAvrohAVCE+EkZffKo2Dhx6KCvwSQDskWjbM/im/nKrum6sCydKQeiRy+I96iBwCFr9IVVoO8FIK78DDu0/+4H+/7pFP+OmXT8mcMcUMTVLMbK61uo4ozkBpjutWvPPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q9jNRbWT; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUwysoF+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q9jNRbWT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706529326;
+	s=mimecast20190719; t=1706529328;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l/klC/ghutWIOc1+EVzXLrxXcGHqt0/sieVr6S5RVKE=;
-	b=OUwysoF+DrYt0uW2NcL3E3FgyDKMR6tA2mk35XNbX2ZXCryLTEa2MQCNAkP4Vjd6KzSjaZ
-	EU91YBsAqKEBVN+Xt8KzE7rsAArIxkugs6N2DJYqrGgaeUE3ksNGqequjp1Qa+dqCJSgGU
-	TzNKf1dFj++yROnnjl9wwHhsMukSDJY=
+	bh=kFEwBUvtYUzBE87TzSBBZpD+94Lt4ih08V10OQ70ATs=;
+	b=Q9jNRbWTCUx2Mey5F3LfJTpLEgIxIIcCW+foREbG7KIQtjCozGJfq8bVQq2TC3ikMSPPw9
+	lnIlz+i6Ua66/zqFAPEnJi9Pw3em9NCt43Uhnmm27A2jYUBQN+nU/pRDAd1r3oTuowLLAf
+	k9TLlPdFAt6fpivZg4DEJHR5PAdjRTs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-d1lzjPdMMbCmhQXLAPqJfA-1; Mon, 29 Jan 2024 06:55:25 -0500
-X-MC-Unique: d1lzjPdMMbCmhQXLAPqJfA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+ us-mta-470-3fM3ZQmaN2O0NeesbjZpxw-1; Mon, 29 Jan 2024 06:55:21 -0500
+X-MC-Unique: 3fM3ZQmaN2O0NeesbjZpxw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADC73185A782;
-	Mon, 29 Jan 2024 11:55:24 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FC87185A780;
+	Mon, 29 Jan 2024 11:55:20 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.245])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 013882166B31;
-	Mon, 29 Jan 2024 11:55:22 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C99E4492BC6;
+	Mon, 29 Jan 2024 11:55:18 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
@@ -52,11 +52,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	netfs@lists.linux.dev,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-cachefs@redhat.com
-Subject: [RFC PATCH 3/3] 9p: Always update remote_i_size in stat2inode
-Date: Mon, 29 Jan 2024 11:54:37 +0000
-Message-ID: <20240129115512.1281624-4-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 1/3] 9p: Enable large folio support
+Date: Mon, 29 Jan 2024 11:54:35 +0000
+Message-ID: <20240129115512.1281624-2-dhowells@redhat.com>
 In-Reply-To: <20240129115512.1281624-1-dhowells@redhat.com>
 References: <20240129115512.1281624-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,40 +65,35 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Always update remote_i_size in v9fs_stat2inode*() if the size is available,
-even if we are asked not to update i_isize
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
-Link: https://lore.kernel.org/r/ZZVctju5TEjS218p@codewreck.org/
+Enable large folio support in 9P now that the VM/VFS data I/O interface is
+handled through netfslib.
+
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Eric Van Hensbergen <ericvh@kernel.org>
 cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
 cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Matthew Wilcox <willy@infradead.org>
 cc: v9fs@lists.linux.dev
-cc: linux-cachefs@redhat.com
-cc: linux-fsdevel@vger.kernel.org
+cc: netfs@lists.linux.dev
 ---
- fs/9p/vfs_inode_dotl.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/9p/vfs_inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 3505227e1704..aa3a77bb5e86 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -684,10 +684,10 @@ v9fs_stat2inode_dotl(struct p9_stat_dotl *stat, struct inode *inode,
- 			mode |= inode->i_mode & ~S_IALLUGO;
- 			inode->i_mode = mode;
- 		}
--		if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE) &&
--		    stat->st_result_mask & P9_STATS_SIZE) {
-+		if (stat->st_result_mask & P9_STATS_SIZE) {
- 			v9inode->netfs.remote_i_size = stat->st_size;
--			v9fs_i_size_write(inode, stat->st_size);
-+			if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE))
-+				v9fs_i_size_write(inode, stat->st_size);
- 		}
- 		if (stat->st_result_mask & P9_STATS_BLOCKS)
- 			inode->i_blocks = stat->st_blocks;
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 32572982f72e..ca9f504b9daf 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -262,6 +262,7 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
+ 	inode->i_rdev = rdev;
+ 	simple_inode_init_ts(inode);
+ 	inode->i_mapping->a_ops = &v9fs_addr_operations;
++	mapping_set_large_folios(inode->i_mapping);
+ 	inode->i_private = NULL;
+ 
+ 	switch (mode & S_IFMT) {
 
