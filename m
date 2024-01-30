@@ -1,112 +1,106 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333411272A3
-	for <v9fs@lists.linux.dev>; Tue, 30 Jan 2024 16:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA347D3FD;
+	Tue, 30 Jan 2024 21:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632886; cv=none; b=Mc30DaecX20MM2eER/K5+YR6FqXO2LOoPde5rUY5V7LuY5mXulTF9x2XI3gzodCgBBp6Z9aDnsH4Zq5HWTLNRXCdBru5DhxZwLun7rz1g+89FKI/mKi/RH+Txn7phj+43KUMuoGxLYBqQJE6fc0De3532rmEBmWuQc8Ug9gzDJo=
+	t=1706651878; cv=none; b=XtabcM7/OvCk1ym9b032rJm8OCPmZ9QNCV+V2n8a0CJNo98IMdE1hKuSxQyK0m6vdhpH7BIf6d4Uribwn4oiiBKpUXoPCvZAOnZT2WAlzE5FsPNH6id42pKivcycvYZs1HDPgxRmha9WKynX9grkr5PIDF/IQEvELtvAxUMKsE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632886; c=relaxed/simple;
-	bh=xjzjJrysSvPLCMEzQXvZ+Yu3MMpIhvxElmjRfyJJaJA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tFno38FmstpE2jPkEOG0kHUjir1qArCeMBjeO7XqxLffUEesgvg0wAogZ3vEA1OKAanHrMbtN5NUWRkwZmROViKCuDq9bps0Cx9dDffVIxeyW0BmNyyxDDz5DAwd3odebI3jjwNuMs53e4Fe4nRcz3kkFQDZr5GhKUWmahMWVYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0GFknfUJ; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706651878; c=relaxed/simple;
+	bh=LhastNy1vEGEXwl9qsykeN3HvyBhGxId+V1bFptNfuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+GIcRbPx1KAeo294IwOZSEPaVhAtaMkwfS1aiQKRRBhxiVXL5H2M3Un+9mMKeiNZDZT5H11zp14M+IftPaAjDRddM6UJJXXFdObItLlVLRAl9l8NYuyjuJHaubXOgFb+7J1v+YQk4vvvdRLgJCl//G6gg5lPKqrURs2QA1/vyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=f/lTyC7A; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Jz95UDCB; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0GFknfUJ"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d8d08f9454so186895ad.1
-        for <v9fs@lists.linux.dev>; Tue, 30 Jan 2024 08:41:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706632884; x=1707237684; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=90dsUhogDic1HENZzxBxVkMyjCg4enXsEvtqV/HnIcY=;
-        b=0GFknfUJpv0If3rp6vB4o2LqnOm8Z0c878rY0baOsaa82x0l5aliKEy9oDmy6sVC4I
-         kTgByxFvoKa1vQq/lBEPbWsrPTulxkBVy+RCI22IPr8vwBlet+7J9+5JCf6RyJM+DzaW
-         FlYnc7tCeOqgfJmse5hjkIjVQrUX0ihKauYoOrmUmyXogDV+V4EnrruPB7yNSc5qVl+D
-         U5hDh2wJrP1wIFN2JAFpbUMkuzZyyNi+vLo7IdKLfQaQa3qFSr5lJwFn8aqLqZeQ2Its
-         jYJUpUFyJJRWZL8B8R8gDH5Ut1vaH/4NwbNjdA8gEBLp3HbM5y7YnCJnRyul0uJx7XGU
-         r9uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706632884; x=1707237684;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=90dsUhogDic1HENZzxBxVkMyjCg4enXsEvtqV/HnIcY=;
-        b=keMZvDkmBjtytTJZG3TbAGwU1qLWCNs05VuI3hs/94u+cW4KkB1sM9kPLYyTNkjavD
-         bOdZrqEBiyRtWlRIzuHGrTnqcGldP2VEBXlM+sxYC/AjV1ow8wUutyudsBKxC20/keE9
-         aO9lFbaPErK6uYa6/bkvj1hhjvAeVrozdNR6I6LnrCN9RyPe8+MizM7NVeQqlcJQ+gjl
-         taqYAdVFFhLlTRDDC67F7mYuODF1FiSlg49Y2lrkDTicuhabf40lCJq91Qk6wk9Fp/ta
-         ZLItHcFxs+OBCdyHMzZHx1MmkyfnaJvo0Z8xA8x0S5NWEFYjR9r9oIUiiPU1fIPC9JVQ
-         2tsw==
-X-Gm-Message-State: AOJu0YyRO2AlSdFAOj4oKiZuKcVPC3KwP3Z9W7aPZOemamrFlyl+BQIx
-	zSySSHWWoj9iGUI/lTr+K2oFfbND58RJbYTxH0wcB5Lk9hhT9CwcGkkI2QiPYczjrloCkqWKtj4
-	g8AM3f8DNOsVQA92sh8wJgHAP7B94glaMBTXO
-X-Google-Smtp-Source: AGHT+IHIP7C3utp4fY/dALdbVUWF+osAYCzO9ppmlrDUJjiU1ke2Swm5Kxm7V+pizKtZTAN6z4eEbMWQ0Gqqu4lSIek=
-X-Received: by 2002:a17:902:dccd:b0:1d3:7db1:388b with SMTP id
- t13-20020a170902dccd00b001d37db1388bmr233504pll.11.1706632884096; Tue, 30 Jan
- 2024 08:41:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="f/lTyC7A";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Jz95UDCB"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 83F23C020; Tue, 30 Jan 2024 22:57:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706651868; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f/lTyC7AylluE9U/rrb+EqMMb08YeAv56CHHe1zQ15EqWYC2qNjDv9qB8JyKcrcDi
+	 qo+Su4xRp1/QH2BIlOO9yb1sQmzrZDBFiJYn22LcRnLm1jWO3hlouD0PgkXU4htvng
+	 V7l1OLr86QG6KCKzFLIrWaXrAR79KCo8Etpqnuvwxvi1v2U3X/G02BaOvDgW/Khphr
+	 88j5Z5iqSj+/DNp9D0RLw4ZXfMDZbh0/P9qUDcknOvaIPuLk4S+YgxfK7HjqdxrL1r
+	 ZUDUsrWqCVK6ONeNFP1mL470dFi7654rmnqSCC8U1IL9GcUlEUOaAVHM+0fIaQlepN
+	 Aa6V/YaBN9fGg==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 1F1A9C009;
+	Tue, 30 Jan 2024 22:57:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706651867; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jz95UDCBaCc7DNbBv88Y6UtPW8uWNycCk6cHz5RjFY/3zlaTuCtTXG9Rt3/uY0uG5
+	 5TNOGUBtkKibEUm+xkwQt/w1KbKcI8teuo9q4z4hcv1gQpDXQu3sPlKtdi4t9NBtrH
+	 8hWZlXkK6p3tF+iLckxAh3vygIMPNOTVSuPOqudJjBmw6OiMkqHk5OCcl2WcxvHU/E
+	 +GS0FLMkD8Z+632TihN4Q/JR2fW2x351vGu4dw7Hc7cTA4cBIFIXw61BAOcHBYYp8Y
+	 U1yfe1icLInyDTUSSeQ9f+RBg8KbXPYx62fbcRiQ1mEjyt+wrKr6hYWqFX34wlPxGo
+	 EPGrBHtPIhA8Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c6e1a942;
+	Tue, 30 Jan 2024 21:57:38 +0000 (UTC)
+Date: Wed, 31 Jan 2024 06:57:23 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com
+Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
+ write
+Message-ID: <Zblww5O_bRvKx36g@codewreck.org>
+References: <20240129094924.1221977-1-dhowells@redhat.com>
+ <20240129094924.1221977-3-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <000000000000ee5c6c060fd59890@google.com> <20240126142335.6a01b39f@kernel.org>
-In-Reply-To: <20240126142335.6a01b39f@kernel.org>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Tue, 30 Jan 2024 17:41:12 +0100
-Message-ID: <CANp29Y65E_jqfhkipGzJQ5DuDhpZzLrNJmL=foAgk9cgD8L5tw@mail.gmail.com>
-Subject: Re: [syzbot] [net?] [v9fs?] WARNING: refcount bug in p9_req_put (3)
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: syzkaller-bugs@googlegroups.com, 
-	syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>, 
-	asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	netdev@vger.kernel.org, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240129094924.1221977-3-dhowells@redhat.com>
 
-[resending the same reply in plaintext]
+David Howells wrote on Mon, Jan 29, 2024 at 09:49:19AM +0000:
+> Fix netfs_unbuffered_write_iter() to return immediately if
+> generic_write_checks() returns 0, indicating there's nothing to write.
+> Note that netfs_file_write_iter() already does this.
+> 
+> Also, whilst we're at it, put in checks for the size being zero before we
+> even take the locks.  Note that generic_write_checks() can still reduce the
+> size to zero, so we still need that check.
+> 
+> Without this, a warning similar to the following is logged to dmesg:
+> 
+> 	netfs: Zero-sized write [R=1b6da]
+> 
+> and the syscall fails with EIO, e.g.:
+> 
+> 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+> 
+> This can be reproduced on 9p by:
+> 
+> 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
+> 
+> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+> Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
+> Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Dominique Martinet <asmadeus@codewreck.org>
 
-Hi!
+Thanks!
 
-Thanks for reminding me. I've just regenerated the list of
-classification rules based on the latest linux-next[1], syzbot will
-reclassify all findings once the PR is merged.
+Tested-by: Dominique Martinet <asmadeus@codewreck.org>
 
-[1] https://github.com/google/syzkaller/pull/4471
-
---=20
-Aleksandr
-
-
-On Fri, Jan 26, 2024 at 11:23=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Fri, 26 Jan 2024 01:05:28 -0800 syzbot wrote:
-> > HEAD commit:    4fbbed787267 Merge tag 'timers-core-2024-01-21' of git:=
-//g..
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D11bfbdc7e80=
-000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4059ab9bf06=
-b6ceb
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd99d2414db661=
-71fccbb
-> > compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for=
- Debian) 2.40
-> > userspace arch: i386
->
-> Hi Aleksandr,
->
-> we did add a X: net/9p entry to MAINTAINERS back in November [1]
-> but looks like 9p still gets counted as networking. Is it going
-> to peter out over time or something's not parsing things right?
->
-> [1]
-> https://lore.kernel.org/all/CANp29Y77rtNrUgQA9HKcB3=3Dbt8FrhbqUSnbZJi3_OG=
-mTpSda6A@mail.gmail.com/
+-- 
+Dominique Martinet | Asmadeus
