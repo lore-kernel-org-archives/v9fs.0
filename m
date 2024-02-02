@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB32B1374
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2331104
 	for <v9fs@lists.linux.dev>; Fri,  2 Feb 2024 00:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706832329; cv=none; b=bxrl5lOZpp9G2ul/24rKyi8uNt+vf5UjQ3Vf2y8RmePCJDycLR72uwT7KDXNCZ97AeEIEto5mpX5gBdFHRsTLQFpNFRTaE1rv5z1kMZfCsMuIJ0ech4kfl6ERQkJ8T9SB0Rn5/szzad0cbDJrGxaU3fr8ykNAtBRSh7CmRtLxJk=
+	t=1706832330; cv=none; b=ksbL6U1EG/aLR5B42ynny+Un9xzJYKU1ORxWpUriCHiV56RMxlVucFJ8kZ0NBOFQGpx4yzmuQ/sVMrb11Wjg4MRWRSvoCF2ZB4FmkC4+x72y0Yty5RODQVHC5NggNAaO6gcmgDZg0qp/0xA3RW7+sgk29e7d7pnB2f8HXc0X73E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706832329; c=relaxed/simple;
-	bh=xahuZ34zPisir7l+Lld5N6MtW7jBLctWjC+/rW1z0ug=;
+	s=arc-20240116; t=1706832330; c=relaxed/simple;
+	bh=kd7VQnmUsU71voZAonpOddNGWnAdyA27EvCrZxkYNtE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ms68upW4t5H79Gn57Ubtuan9PkQwIgwQ8DWZGOsupofIp/9vlBRT07ZvaHGtVsnvzZLhgxhNfHLw92xIj+sIg1la3FHd9zwgWmRafXEdqHrVY/JIyxHA4LhZCL1g7siSCPDvfjCOrDhDMrLj5qumQ4/rDXpjgSptj9UMRcQe97M=
+	 In-Reply-To:To:Cc; b=No0/NkU1n0mIvIXe79oduLN+jbx24xmVIcz6I82Mw1mZT2UhWIWJ1BILsyBu08bom1kpde1CevOns8ELc60HRWxWRxDmzZ+geAbKiMMXwlQTQBIOoFXeO/CmYqTKbvJjGWsU04JMvPjBHTTTQxZqZ121OuvB+m1euXd7DXZmijE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,21 +18,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1rVh3Z-0000d2-Re; Fri, 02 Feb 2024 01:05:21 +0100
+	id 1rVh3Z-0000d1-Rc; Fri, 02 Feb 2024 01:05:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1rVh3W-003xQ8-39; Fri, 02 Feb 2024 01:05:18 +0100
+	id 1rVh3W-003xQ4-2u; Fri, 02 Feb 2024 01:05:18 +0100
 Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
 	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1rVh3V-00AFlM-1l;
+	id 1rVh3V-00AFlM-1i;
 	Fri, 02 Feb 2024 01:05:18 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Fri, 02 Feb 2024 01:05:13 +0100
-Subject: [PATCH v2 4/4] tools: usb: p9_fwd: add usb gadget packet forwarder
- script
+Date: Fri, 02 Feb 2024 01:05:10 +0100
+Subject: [PATCH v2 1/4] usb: gadget: function: move u_f.h to
+ include/linux/usb/
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240116-ml-topic-u9p-v2-4-b46cbf592962@pengutronix.de>
+Message-Id: <20240116-ml-topic-u9p-v2-1-b46cbf592962@pengutronix.de>
 References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
 In-Reply-To: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
@@ -54,21 +54,21 @@ Cc: v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
  kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9207;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4753;
  i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=xahuZ34zPisir7l+Lld5N6MtW7jBLctWjC+/rW1z0ug=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBlvDG9NEOGflYQjx9gIoLCgj6t4KvulBz75sp5U
- HelQskD9GSJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZbwxvQAKCRC/aVhE+XH0
- qy0wEACpT2RlxnfBP48RD0POGPqIR/dU95jTJHJV3KACFhKtD4bmMcvmUPMncAWBzSzl7iKxcZw
- FRXhe8R75nFiLFo7QHdh0O3mZE2pj72wLjy1W3ERHaNzmpBTbWJ4YO1W2P3RZrIkhIiDhC6q7o+
- gBx7V+BXQdXRX5xMLzTgY9nhG4vThlJY99mkw4lX3NFSussQhCM/palTLzF/oh4afPddH0DIYnq
- KZaOB2fTFeP4JMbNeVk6gtIhsCxBO4QVFBIEONRXZnLZ0MjUahdtZGx+mExOY9g2u0TYrf2ktwO
- vL0yvWRubOVpVABrMLe7sCzlcoJJHNJQQlMK9uir7LDyRP7mfvG3uv514kWH2tuCMxaWjHAi+I9
- 8vf4cGyTENBsWQ1yHIgRJWIq3klC3bDJ+ZrTGE3hkCYxE2CD2mvzEOEidPKs2ixiFQ77Kim4mJ1
- rIMKgk+2FmImAIzH9L8opJ7V/GQhgtf10GZC9Ltl2wXmAf5GNV4xVVvDjTqcbuI6jd2b9a2qXVY
- hsd1deGIgTtVj7VKV09YXc9pg72U/k3QWGX79HttJNwKtwOpFkhYa9oy2yVdKufYzZPirNWHMD7
- nnvZJAST5dwjVTcMS3QDfNXRxRuN+wZkfFJ93X/XTiQ+AN2EfjbgtrwutPTx2UYQ4VBqzLW/0me
- b7+/1SSA1OasFBg==
+ bh=kd7VQnmUsU71voZAonpOddNGWnAdyA27EvCrZxkYNtE=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBlvDG8vb2JOsyYBFyujuEewJZ6KYXGm1e9DbMmf
+ HZzC8NbYGKJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZbwxvAAKCRC/aVhE+XH0
+ q4QSD/9DlXykK/GdUGTIk0dZrjfZ2NO6ybr8iWub5ZNkM+HRa2vK+wgpnaA1Lp0ZuGx7AdE+btI
+ GhobdvFlAfkJm5s7DIaBiAwWPVVRsG+0iOq8ijbudTpZNjaRkYa2as8grR46uYti8rLIp531Xwl
+ tH7+Yqa+qSRCfcT2SsJLT+1E7BLs0moqWCM9SPWtDpJ2IC5DMAKzui3uEtmwQMG3TjQhKO/tLbQ
+ eFT5eLja7+Z1XePuOd+JINcYG39SNxnYh58N4u2fPRu017waV9pymdoT02KVQxjRQ6RT7+fhKxA
+ n9BU033ocdSD8C43bVmXg4caKFPeIk1qeklnN3ypV3bid3HG7gGUu3W/CzR5VVNca4bVwrZ+aCN
+ mEscAisDgAit57QyY4jZLgXh9OIKmlFJ4CDQ7NDJtguebd/2NNn6DNMHYkkM3sdjUQrBnpNGOup
+ kqaMojrb10ajkK/kczqvERlSpk4DSkYryUzWqHZXZHHSLIHs/x1mvZKggZPxSpIUPzmOxfWl9ei
+ SvBYVrJBRaem9lxeSZ+KilLMMS6C6fQGyX2V0JczkzIhNOAD2roATBqkWnnjJ8ocV0vE4ZMSW3x
+ 9a6eecgk9ddUUfvD3ZnLI9WwcS48HplXoQ1UY2oubzxU6DnFoTF9O9vWwkAKvKZScKn8i9HfYeL
+ PPAX19srMDFvTtA==
 X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -76,267 +76,151 @@ X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-This patch is adding an small python tool to forward 9pfs requests
-from the USB gadget to an existing 9pfs TCP server. Since currently all
-9pfs servers lack support for the usb transport this tool is an useful
-helper to get started.
-
-Refer the Documentation section "USBG Example" in
-Documentation/filesystems/9p.rst on how to use it.
+We move the u_f.h header to include/linux/usb to be
+able to compile function drivers outside of the
+drivers/usb/gadget/function directory.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
 ---
 v1 -> v2:
-  - added usbg 9pfs detailed instructions to 9p.rst doc
+  - new introduced patch
 ---
- Documentation/filesystems/9p.rst |  32 +++++++
- tools/usb/p9_fwd.py              | 194 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 226 insertions(+)
+ drivers/usb/gadget/configfs.c                   | 2 +-
+ drivers/usb/gadget/function/f_fs.c              | 2 +-
+ drivers/usb/gadget/function/f_hid.c             | 2 +-
+ drivers/usb/gadget/function/f_loopback.c        | 2 +-
+ drivers/usb/gadget/function/f_midi.c            | 2 +-
+ drivers/usb/gadget/function/f_midi2.c           | 2 +-
+ drivers/usb/gadget/function/f_sourcesink.c      | 2 +-
+ drivers/usb/gadget/u_f.c                        | 2 +-
+ {drivers/usb/gadget => include/linux/usb}/u_f.h | 0
+ 9 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
-index 64439068a8fc5..264265c72ba67 100644
---- a/Documentation/filesystems/9p.rst
-+++ b/Documentation/filesystems/9p.rst
-@@ -67,6 +67,38 @@ To mount a 9p FS on a USB Host accessible via the gadget as root filesystem::
- where mount_tag is the tag associated by the usb gadget transport. The
- pattern is usb9pfs0, usb9pfs1, ...
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index ce3cfa1f36f51..4fa3eeafba814 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -8,8 +8,8 @@
+ #include <linux/usb/composite.h>
+ #include <linux/usb/gadget_configfs.h>
+ #include <linux/usb/webusb.h>
++#include <linux/usb/u_f.h>
+ #include "configfs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
  
-+USBG Example
-+============
-+
-+The USB host exports a filesystem, while the gadget on the USB device
-+side makes it mountable.
-+
-+Diod (9pfs server) and the forwarder are on the development host, where
-+the root filesystem is actually stored. The gadget is initialized during
-+boot (or later) on the embedded board. Then the forwarder will find it
-+on the USB bus and start forwarding requests.
-+
-+In this case the 9p requests come from the device and are handled by the
-+host. The reason is that USB device ports are normally not available on
-+PCs, so a connection in the other direction would not work.
-+
-+When using the usbg transport, for now there is no native usb host
-+service capable to handle the requests from the gadget driver. For
-+this we have to use the extra python tool p9_fwd.py from tools/usb.
-+
-+Just start the 9pfs capable network server like diod/nfs-ganesha e.g.:
-+
-+	$ diod -f -n -d 0 -S -l 0.0.0.0:9999 -e $PWD
-+
-+Then start the python transport:
-+
-+	$ python $kernel_dir/tools/usb/p9_fwd.py -p 9999
-+
-+After that the gadget driver can be used as described above.
-+
-+One use-case is to use it as an alternative to NFS root booting during
-+the development of embedded Linux devices.
-+
- Options
- =======
+ int check_user_usb_string(const char *name,
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 6bff6cb937891..c7f6e06f39b31 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -30,6 +30,7 @@
+ #include <linux/usb/ccid.h>
+ #include <linux/usb/composite.h>
+ #include <linux/usb/functionfs.h>
++#include <linux/usb/u_f.h>
  
-diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
-new file mode 100755
-index 0000000000000..95208df11abef
---- /dev/null
-+++ b/tools/usb/p9_fwd.py
-@@ -0,0 +1,194 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import argparse
-+import errno
-+import logging
-+import socket
-+import struct
-+import sys
-+import time
-+
-+import usb.core
-+import usb.util
-+
-+
-+class Forwarder:
-+    HEXDUMP_FILTER = (
-+        "".join(chr(x).isprintable() and chr(x) or "." for x in range(128)) + "." * 128
-+    )
-+
-+    @staticmethod
-+    def _log_hexdump(data):
-+        if not logging.root.isEnabledFor(logging.TRACE):
-+            return
-+        L = 16
-+        for c in range(0, len(data), L):
-+            chars = data[c : c + L]
-+            dump = " ".join(f"{x:02x}" for x in chars)
-+            printable = "".join(HEXDUMP_FILTER[x] for x in chars)
-+            line = f"{c:08x}  {dump:{L*3}s} |{printable:{L}s}|"
-+            logging.root.log(logging.TRACE, "%s", line)
-+
-+    def __init__(self, server):
-+        self.stats = {
-+            "c2s packets": 0,
-+            "c2s bytes": 0,
-+            "s2c packets": 0,
-+            "s2c bytes": 0,
-+        }
-+        self.stats_logged = time.monotonic()
-+
-+        dev = usb.core.find(idVendor=0x1D6B, idProduct=0x0109)
-+        if dev is None:
-+            raise ValueError("Device not found")
-+
-+        logging.info(f"found device: {dev.bus}/{dev.address}")
-+
-+        # dev.set_configuration() is not necessary since g_multi has only one
-+        usb9pfs = None
-+        # g_multi adds 9pfs as last interface
-+        cfg = dev.get_active_configuration()
-+        for intf in cfg:
-+            # we have to detach the usb-storage driver from multi gadget since
-+            # stall option could be set, which will lead to spontaneous port
-+            # resets and our transfers will run dead
-+            if intf.bInterfaceClass == 0x08:
-+                if dev.is_kernel_driver_active(intf.bInterfaceNumber):
-+                    dev.detach_kernel_driver(intf.bInterfaceNumber)
-+
-+            if (
-+                intf.bInterfaceClass == 0xFF
-+                and intf.bInterfaceSubClass == 0xFF
-+                and intf.bInterfaceProtocol == 0x09
-+            ):
-+                usb9pfs = intf
-+        if usb9pfs is None:
-+            raise ValueError("Interface not found")
-+
-+        logging.info(f"claiming interface:\n{usb9pfs}")
-+        usb.util.claim_interface(dev, usb9pfs.bInterfaceNumber)
-+        ep_out = usb.util.find_descriptor(
-+            usb9pfs,
-+            custom_match=lambda e: usb.util.endpoint_direction(e.bEndpointAddress)
-+            == usb.util.ENDPOINT_OUT,
-+        )
-+        assert ep_out is not None
-+        ep_in = usb.util.find_descriptor(
-+            usb9pfs,
-+            custom_match=lambda e: usb.util.endpoint_direction(e.bEndpointAddress)
-+            == usb.util.ENDPOINT_IN,
-+        )
-+        assert ep_in is not None
-+        logging.info(f"interface claimed")
-+
-+        self.ep_out = ep_out
-+        self.ep_in = ep_in
-+        self.dev = dev
-+
-+        # create and connect socket
-+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-+        self.s.connect(server)
-+
-+        logging.info(f"connected to server")
-+
-+    def c2s(self):
-+        """forward a request from the USB client to the TCP server"""
-+        data = None
-+        while data is None:
-+            try:
-+                logging.log(logging.TRACE, "c2s: reading")
-+                data = self.ep_in.read(self.ep_in.wMaxPacketSize)
-+            except usb.core.USBTimeoutError:
-+                logging.log(logging.TRACE, "c2s: reading timed out")
-+                continue
-+            except usb.core.USBError as e:
-+                if e.errno == errno.EIO:
-+                    logging.debug("c2s: reading failed with %s, retrying", repr(e))
-+                    time.sleep(0.5)
-+                    continue
-+                else:
-+                    logging.error("c2s: reading failed with %s, aborting", repr(e))
-+                    raise
-+        size = struct.unpack("<I", data[:4])[0]
-+        while len(data) < size:
-+            data += self.ep_in.read(size - len(data))
-+        logging.log(logging.TRACE, "c2s: writing")
-+        self._log_hexdump(data)
-+        self.s.send(data)
-+        logging.debug("c2s: forwarded %i bytes", size)
-+        self.stats["c2s packets"] += 1
-+        self.stats["c2s bytes"] += size
-+
-+    def s2c(self):
-+        """forward a response from the TCP server to the USB client"""
-+        logging.log(logging.TRACE, "s2c: reading")
-+        data = self.s.recv(4)
-+        size = struct.unpack("<I", data[:4])[0]
-+        while len(data) < size:
-+            data += self.s.recv(size - len(data))
-+        logging.log(logging.TRACE, "s2c: writing")
-+        self._log_hexdump(data)
-+        while data:
-+            written = self.ep_out.write(data)
-+            assert written > 0
-+            data = data[written:]
-+        if size % self.ep_out.wMaxPacketSize == 0:
-+            logging.log(logging.TRACE, "sending zero length packet")
-+            self.ep_out.write(b"")
-+        logging.debug("s2c: forwarded %i bytes", size)
-+        self.stats["s2c packets"] += 1
-+        self.stats["s2c bytes"] += size
-+
-+    def log_stats(self):
-+        logging.info("statistics:")
-+        for k, v in self.stats.items():
-+            logging.info(f"  {k+':':14s} {v}")
-+
-+    def log_stats_interval(self, interval=5):
-+        if (time.monotonic() - self.stats_logged) < interval:
-+            return
-+
-+        self.log_stats()
-+        self.stats_logged = time.monotonic()
-+
-+
-+def main():
-+    parser = argparse.ArgumentParser(
-+        description="Forward 9PFS requests from USB to TCP",
-+    )
-+
-+    parser.add_argument(
-+        "-s", "--server", type=str, default="127.0.0.1", help="server hostname"
-+    )
-+    parser.add_argument("-p", "--port", type=int, default=564, help="server port")
-+    parser.add_argument("-v", "--verbose", action="count", default=0)
-+
-+    args = parser.parse_args()
-+
-+    logging.TRACE = logging.DEBUG - 5
-+    logging.addLevelName(logging.TRACE, "TRACE")
-+
-+    if args.verbose >= 2:
-+        level = logging.TRACE
-+    elif args.verbose:
-+        level = logging.DEBUG
-+    else:
-+        level = logging.INFO
-+    logging.basicConfig(
-+        level=level, format="%(asctime)-15s %(levelname)-8s %(message)s"
-+    )
-+
-+    f = Forwarder(server=(args.server, args.port))
-+
-+    try:
-+        while True:
-+            f.c2s()
-+            f.s2c()
-+            f.log_stats_interval()
-+    finally:
-+        f.log_stats()
-+
-+
-+if __name__ == "__main__":
-+    main()
+ #include <linux/aio.h>
+ #include <linux/kthread.h>
+@@ -37,7 +38,6 @@
+ #include <linux/eventfd.h>
+ 
+ #include "u_fs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
+ #include "configfs.h"
+ 
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 3c8a9dd585c09..a5b667a03ca83 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -16,8 +16,8 @@
+ #include <linux/wait.h>
+ #include <linux/sched.h>
+ #include <linux/usb/g_hid.h>
++#include <linux/usb/u_f.h>
+ 
+-#include "u_f.h"
+ #include "u_hid.h"
+ 
+ #define HIDG_MINORS	4
+diff --git a/drivers/usb/gadget/function/f_loopback.c b/drivers/usb/gadget/function/f_loopback.c
+index 17ac6ace0cffa..d500025f45128 100644
+--- a/drivers/usb/gadget/function/f_loopback.c
++++ b/drivers/usb/gadget/function/f_loopback.c
+@@ -14,9 +14,9 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/u_f.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * LOOPBACK FUNCTION ... a testing vehicle for USB peripherals,
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 20c6fbd94f32d..2d551ba385c71 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -33,8 +33,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi.h>
++#include <linux/usb/u_f.h>
+ 
+-#include "u_f.h"
+ #include "u_midi.h"
+ 
+ MODULE_AUTHOR("Ben Williamson");
+diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
+index ec8cd7c7bbfc1..ad59be1f9c54d 100644
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -18,8 +18,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi-v2.h>
++#include <linux/usb/u_f.h>
+ 
+-#include "u_f.h"
+ #include "u_midi2.h"
+ 
+ struct f_midi2;
+diff --git a/drivers/usb/gadget/function/f_sourcesink.c b/drivers/usb/gadget/function/f_sourcesink.c
+index 2edbd9b510d60..4283fb2e365bd 100644
+--- a/drivers/usb/gadget/function/f_sourcesink.c
++++ b/drivers/usb/gadget/function/f_sourcesink.c
+@@ -13,10 +13,10 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/u_f.h>
+ #include <linux/err.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * SOURCE/SINK FUNCTION ... a primary testing vehicle for USB peripheral
+diff --git a/drivers/usb/gadget/u_f.c b/drivers/usb/gadget/u_f.c
+index 6aea1ecb39999..90a7f742549a4 100644
+--- a/drivers/usb/gadget/u_f.c
++++ b/drivers/usb/gadget/u_f.c
+@@ -8,7 +8,7 @@
+  * Author: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
+  */
+ 
+-#include "u_f.h"
++#include <linux/usb/u_f.h>
+ #include <linux/usb/ch9.h>
+ 
+ struct usb_request *alloc_ep_req(struct usb_ep *ep, size_t len)
+diff --git a/drivers/usb/gadget/u_f.h b/include/linux/usb/u_f.h
+similarity index 100%
+rename from drivers/usb/gadget/u_f.h
+rename to include/linux/usb/u_f.h
 
 -- 
 2.39.2
