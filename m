@@ -1,247 +1,236 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FCF101C6
-	for <v9fs@lists.linux.dev>; Fri,  2 Feb 2024 04:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058647F78;
+	Fri,  2 Feb 2024 11:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706849371; cv=none; b=sNbvtKlwZfM2aI+4gxsROmDF/8Ha6INUXYgWWHk+glUARnZJVdVpvub2ezcKqPB/H7MRlf3IUMfjHPO/ItUMpFEif4NYY/ybnPrMrJo8DBZkWnTV7apZFv35l1PLzbkyBp+gjeEf9/l/lRnNNKaULgu6xxBsnua1TCJiWDJD/KM=
+	t=1706872623; cv=none; b=i8OC3HwIAcQLCUQvYIIhpocvqr7QYvdkwKeEn5rZpUR5r1uUk4wC0RcJMIQB2gPjL1mXxzkvfaU+BF8ejAXoQ0X7+jOC841jamO8CSBhhqR5GJfyiNgZ80KcEmcKPMqnC/KAYuzXRzqN8mENNfE2HfH6Ur4tFmeuACBkvyu2ytk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706849371; c=relaxed/simple;
-	bh=Hl1RshuMx+02yuuVjIIZYxYd5g1+ii10CB95NuLkCJQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sRIBMNhkpO/TGuu5Yld6F/LQKTaC0uTDG5emjYxBrPWFsSOuTleE7XCGmLby/EZncYho1m15vVESnpHqT2DYbg3OdZMokcz6Cd+GeErn2cbGEd0MEVu+BrIXxoYtlLoDEiC/6l0aBBJbxeinfJLF7IyEksJuLPlX4yrG1DtqXBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3637fbf4d1eso14388725ab.1
-        for <v9fs@lists.linux.dev>; Thu, 01 Feb 2024 20:49:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706849369; x=1707454169;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yldXXvBQxXDqTydnus0ehNthfX5/keabFAHFyQe7ozw=;
-        b=B7SCcl+Om2s6MyWqYuPT1ocZfNT1Qgstdh1x1oozewSH9gyoFtNM4dzKMc+rBFQITe
-         oMEmgrhDso8QOG34xBp8cXrvrArjQhk6WRNGi1OGivlKHdDu8JqY3CqflNfOh/L46zR8
-         Pq0sckajk+/z6PyxOiL+L4mMR6UDoVEHNV/W85t5q0R8aq4w+aD0lAfnFOmtO28qm0cY
-         iQbY5FYnccusJNycZUGzeuCQ893X8tGauMYqtMPfW32ivfJ2P209YnLy0+KBiHakHTjq
-         IW6STmcxtvUOgR4K6f3AxvPQxqREkoQvleRDrMbVsvYRfzpb0YGZFMuVJ7q9laJPPFAK
-         XcMQ==
-X-Gm-Message-State: AOJu0YxwfNzYjdgZAurR1kF6Z4kbBeJOI027LV9+PBoz9sOYInggWlZq
-	3RMkBWhjk5Lqoaa8YGMFR/xFxshrYwy/NbmddhDKWoOeQxelWwTSQ1IzLAiHZgaARc5cxXFk41x
-	35nEWGRvtbDE/MMOtdsJM0fHloFJHUwiovcBwnNZpm5wuJRQbwJnZUEg=
-X-Google-Smtp-Source: AGHT+IG+ygqKezv89JfyLJkMW6K9WmKY9u5awuJVxvKiRmbmKvpq8PiKWIFLIR1BkIQUuBwbEilv2zQwlfFvfFJVBmry6eKVnuz7
+	s=arc-20240116; t=1706872623; c=relaxed/simple;
+	bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YW5RgozmrnQ3pKS8CLKjnYgWhW9NIXk2Weoy3c5IhG7Dw3tlLq/UhF5nZQ8nANs0DQ6GAyMtyLgx3GiKWvngya6VLk3l4qGGPezq+Zu0z/XJjHCxC4KVhzahkVLDtYCluvffqUXRSDhwkG5i5cmgfqyYvDoepAjW2lFPBr79dtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIClvloQ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HIClvloQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0642EC433C7;
+	Fri,  2 Feb 2024 11:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706872622;
+	bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HIClvloQZ1M129peATTtWb6atela5X7cYHFsZrb67lwZ1vtHh1l4IF6scBTjv/PzB
+	 87X+qdn9IaowdLggFLz78Dw2QGQYzTGTKYlYjesUecF7SKGmXP3K7d4MiNpysRK0C4
+	 t1j6G+/iD6LfqO1isYZWLf7PzibnKlRmHEvbs7+NgM3HuNE42GCI1Q9GRAefkReH7D
+	 h1xPrbjqj6a/OYMEAXoJHIZOoDahFAwploUpVgqALFamW0OGHq4qX5LWxM1UPydgH/
+	 YFeXyS+Ct198tCxuXtgduVxQagdX4vudq08ofGv4NLeAgh6fW/WoGrhSFTAIx7hFzB
+	 9jJR67v3JsAHQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	ceph-devel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Neil Brown <neilb@suse.de>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Miklos Szeredi <miklos@szeredi.hu>
+Subject: Re: [PATCH v3 00/47] filelock: split file leases out of struct file_lock
+Date: Fri,  2 Feb 2024 12:16:44 +0100
+Message-ID: <20240202-neigung-ergiebig-9e4a18e7afa3@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
+References: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1cad:b0:361:a961:b31a with SMTP id
- x13-20020a056e021cad00b00361a961b31amr620828ill.5.1706849369187; Thu, 01 Feb
- 2024 20:49:29 -0800 (PST)
-Date: Thu, 01 Feb 2024 20:49:29 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000055ecb906105ed669@google.com>
-Subject: [syzbot] [v9fs?] KASAN: slab-use-after-free Read in v9fs_stat2inode_dotl
-From: syzbot <syzbot+7a3d75905ea1a830dbe5@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7495; i=brauner@kernel.org; h=from:subject:message-id; bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTuOS+797jkjleqZtyND8RfphxXTPnGFqfbdXTF9ZorU m3xJaVmHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMp/szIsFSbbfeTWHs/ozKH C7Ehv34yMCgvm1q6s+pDttikJ9sudzD8d1F9tTlx75EtAWdeGenLRlVo7ZEr/xU0sd55YRk/75c /7AA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On Wed, 31 Jan 2024 18:01:41 -0500, Jeff Layton wrote:
+> I'm not sure this is much prettier than the last, but contracting
+> "fl_core" to "c", as Neil suggested is a bit easier on the eyes.
+> 
+> I also added a few small helpers and converted several users over to
+> them. That reduces the size of the per-fs conversion patches later in
+> the series. I played with some others too, but they were too awkward
+> or not frequently used enough to make it worthwhile.
+> 
+> [...]
 
-syzbot found the following issue on:
+Fyi, I've merged this series as in I've turned this series into a pull
+request based on the patches. And this has a merge commit of the
+following form:
 
-HEAD commit:    596764183be8 Add linux-next specific files for 20240129
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=1612e22fe80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=584144ad19f381aa
-dashboard link: https://syzkaller.appspot.com/bug?extid=7a3d75905ea1a830dbe5
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12251228180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1641bcdfe80000
+commit 363af2435e403ac323ab2543da91f5984047bdb8
+Merge: 6613476e225e 6c6109548454
+Author:     Christian Brauner <brauner@kernel.org>
+AuthorDate: Fri Feb 2 12:09:26 2024 +0100
+Commit:     Christian Brauner <brauner@kernel.org>
+CommitDate: Fri Feb 2 12:09:26 2024 +0100
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/b647c038857b/disk-59676418.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/729e26c3ac55/vmlinux-59676418.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/15aa5e287059/bzImage-59676418.xz
+    Merge patch series "filelock: split file leases out of struct file_lock"
 
-The issue was bisected to:
+    Pull file locking patch series from Jeff Layton:
 
-commit 724a08450f74b02bd89078a596fd24857827c012
-Author: Eric Van Hensbergen <ericvh@kernel.org>
-Date:   Fri Jan 5 22:25:39 2024 +0000
+For larger series such as this this is what I think we should end up
+doing because it gives bigger series an overall summary without forcing
+the author to always provide a tag or branch or whatever. Often the
+cover letter description is good for long term contributors already. So
+I stole most of it from v1.
 
-    fs/9p: simplify iget to remove unnecessary paths
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=165c6d0fe80000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=155c6d0fe80000
-console output: https://syzkaller.appspot.com/x/log.txt?x=115c6d0fe80000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7a3d75905ea1a830dbe5@syzkaller.appspotmail.com
-Fixes: 724a08450f74 ("fs/9p: simplify iget to remove unnecessary paths")
-
-==================================================================
-BUG: KASAN: slab-use-after-free in v9fs_stat2inode_dotl+0xb3f/0xce0 fs/9p/vfs_inode_dotl.c:569
-Read of size 8 at addr ffff8880172d4bb0 by task syz-executor117/5063
-
-CPU: 1 PID: 5063 Comm: syz-executor117 Not tainted 6.8.0-rc1-next-20240129-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- v9fs_stat2inode_dotl+0xb3f/0xce0 fs/9p/vfs_inode_dotl.c:569
- v9fs_fid_iget_dotl+0x1cb/0x260 fs/9p/vfs_inode_dotl.c:85
- v9fs_get_inode_from_fid fs/9p/v9fs.h:230 [inline]
- v9fs_mount+0x515/0xa90 fs/9p/vfs_super.c:142
- legacy_get_tree+0x109/0x220 fs/fs_context.c:662
- vfs_get_tree+0x8f/0x380 fs/super.c:1784
- do_new_mount fs/namespace.c:3352 [inline]
- path_mount+0x14e6/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount fs/namespace.c:3875 [inline]
- __x64_sys_mount+0x297/0x320 fs/namespace.c:3875
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd2/0x260 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-RIP: 0033:0x7f88a76d7b69
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff734da2a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f88a76d7b69
-RDX: 0000000020004500 RSI: 00000000200002c0 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000020000300 R09: 00007fff734da2e0
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff734da2e0
-R13: 00007fff734da568 R14: 431bde82d7b634db R15: 00007f88a7720074
- </TASK>
-
-Allocated by task 5063:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:372 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:389
- kmalloc include/linux/slab.h:590 [inline]
- p9_client_getattr_dotl+0x4c/0x1e0 net/9p/client.c:1726
- v9fs_fid_iget_dotl+0xe7/0x260 fs/9p/vfs_inode_dotl.c:73
- v9fs_get_inode_from_fid fs/9p/v9fs.h:230 [inline]
- v9fs_mount+0x515/0xa90 fs/9p/vfs_super.c:142
- legacy_get_tree+0x109/0x220 fs/fs_context.c:662
- vfs_get_tree+0x8f/0x380 fs/super.c:1784
- do_new_mount fs/namespace.c:3352 [inline]
- path_mount+0x14e6/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount fs/namespace.c:3875 [inline]
- __x64_sys_mount+0x297/0x320 fs/namespace.c:3875
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd2/0x260 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Freed by task 5063:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- kasan_save_free_info+0x3f/0x60 mm/kasan/generic.c:640
- poison_slab_object mm/kasan/common.c:241 [inline]
- __kasan_slab_free+0x121/0x1c0 mm/kasan/common.c:257
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2122 [inline]
- slab_free mm/slub.c:4296 [inline]
- kfree+0x129/0x370 mm/slub.c:4406
- v9fs_fid_iget_dotl+0x195/0x260 fs/9p/vfs_inode_dotl.c:81
- v9fs_get_inode_from_fid fs/9p/v9fs.h:230 [inline]
- v9fs_mount+0x515/0xa90 fs/9p/vfs_super.c:142
- legacy_get_tree+0x109/0x220 fs/fs_context.c:662
- vfs_get_tree+0x8f/0x380 fs/super.c:1784
- do_new_mount fs/namespace.c:3352 [inline]
- path_mount+0x14e6/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount fs/namespace.c:3875 [inline]
- __x64_sys_mount+0x297/0x320 fs/namespace.c:3875
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd2/0x260 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-The buggy address belongs to the object at ffff8880172d4bb0
- which belongs to the cache kmalloc-192 of size 192
-The buggy address is located 0 bytes inside of
- freed 192-byte region [ffff8880172d4bb0, ffff8880172d4c70)
-
-The buggy address belongs to the physical page:
-page:ffffea00005cb500 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x172d4
-flags: 0xfff80000000800(slab|node=0|zone=1|lastcpupid=0xfff)
-page_type: 0xffffffff()
-raw: 00fff80000000800 ffff888014c41a00 ffffea00005fa5c0 dead000000000004
-raw: 0000000000000000 00000000800f000f 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid 7, tgid 7 (kworker/0:0), ts 3076962571, free_ts 0
- set_page_owner include/linux/page_owner.h:31 [inline]
- post_alloc_hook+0x2d4/0x350 mm/page_alloc.c:1539
- prep_new_page mm/page_alloc.c:1546 [inline]
- get_page_from_freelist+0xa19/0x3740 mm/page_alloc.c:3353
- __alloc_pages+0x22e/0x2420 mm/page_alloc.c:4609
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2191 [inline]
- allocate_slab mm/slub.c:2354 [inline]
- new_slab+0xcc/0x3a0 mm/slub.c:2407
- ___slab_alloc+0x66d/0x17a0 mm/slub.c:3541
- __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3626
- __slab_alloc_node mm/slub.c:3679 [inline]
- slab_alloc_node mm/slub.c:3851 [inline]
- kmalloc_node_trace+0x113/0x390 mm/slub.c:4021
- kmalloc_node include/linux/slab.h:606 [inline]
- kzalloc_node include/linux/slab.h:722 [inline]
- alloc_worker+0x40/0x1b0 kernel/workqueue.c:2078
- create_worker+0xf3/0x730 kernel/workqueue.c:2186
- maybe_create_worker kernel/workqueue.c:2468 [inline]
- manage_workers kernel/workqueue.c:2520 [inline]
- worker_thread+0xca1/0x1290 kernel/workqueue.c:2766
- kthread+0x2c1/0x3a0 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:242
-page_owner free stack trace missing
-
-Memory state around the buggy address:
- ffff8880172d4a80: fc fc fc fc fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880172d4b00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
->ffff8880172d4b80: fc fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb
-                                     ^
- ffff8880172d4c00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
- ffff8880172d4c80: fc fc fc fc fc fc fc fc 00 00 00 00 00 00 00 00
-==================================================================
-
+Thanks for basing this on a mainline tag!
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Applied to the vfs.file branch of the vfs/vfs.git tree.
+Patches in the vfs.file branch should appear in linux-next soon.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.file
 
-If you want to undo deduplication, reply with:
-#syz undup
+[01/47] filelock: fl_pid field should be signed int
+        https://git.kernel.org/vfs/vfs/c/0e9876d8e88d
+[02/47] filelock: rename some fields in tracepoints
+        https://git.kernel.org/vfs/vfs/c/587a67b6830b
+[03/47] filelock: rename fl_pid variable in lock_get_status
+        https://git.kernel.org/vfs/vfs/c/6021d62c677f
+[04/47] filelock: add some new helper functions
+        https://git.kernel.org/vfs/vfs/c/403594111407
+[05/47] 9p: rename fl_type variable in v9fs_file_do_lock
+        https://git.kernel.org/vfs/vfs/c/2911c0e3a5dd
+[06/47] afs: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/46a9b98baecc
+[07/47] ceph: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/7c82f3103915
+[08/47] dlm: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/7851cb526662
+[09/47] gfs2: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/47bc8fa51b46
+[10/47] lockd: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/b9570e87b652
+[11/47] nfs: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/28ad1884a338
+[12/47] nfsd: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/4e2cd366d826
+[13/47] ocfs2: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/a336b91b2340
+[14/47] smb/client: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/39647541cb26
+[15/47] smb/server: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/1d9b1c4525f6
+[16/47] filelock: drop the IS_* macros
+        https://git.kernel.org/vfs/vfs/c/22716eba8323
+[17/47] filelock: split common fields into struct file_lock_core
+        https://git.kernel.org/vfs/vfs/c/b2566e35e7d6
+[18/47] filelock: have fs/locks.c deal with file_lock_core directly
+        https://git.kernel.org/vfs/vfs/c/424dc929f8f1
+[19/47] filelock: convert more internal functions to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/2d1cfb3cf69e
+[20/47] filelock: make posix_same_owner take file_lock_core pointers
+        https://git.kernel.org/vfs/vfs/c/c91b6f218894
+[21/47] filelock: convert posix_owner_key to take file_lock_core arg
+        https://git.kernel.org/vfs/vfs/c/6944d789d1a1
+[22/47] filelock: make locks_{insert,delete}_global_locks take file_lock_core arg
+        https://git.kernel.org/vfs/vfs/c/ff30006ce158
+[23/47] filelock: convert locks_{insert,delete}_global_blocked
+        https://git.kernel.org/vfs/vfs/c/b7ae01bb4138
+[24/47] filelock: make __locks_delete_block and __locks_wake_up_blocks take file_lock_core
+        https://git.kernel.org/vfs/vfs/c/6ada65e99171
+[25/47] filelock: convert __locks_insert_block, conflict and deadlock checks to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/f449edd19f07
+[26/47] filelock: convert fl_blocker to file_lock_core
+        https://git.kernel.org/vfs/vfs/c/9bb41e6b6ea5
+[27/47] filelock: clean up locks_delete_block internals
+        https://git.kernel.org/vfs/vfs/c/78d1567cb873
+[28/47] filelock: reorganize locks_delete_block and __locks_insert_block
+        https://git.kernel.org/vfs/vfs/c/b261e8d3d5eb
+[29/47] filelock: make assign_type helper take a file_lock_core pointer
+        https://git.kernel.org/vfs/vfs/c/ae37275d53ed
+[30/47] filelock: convert locks_wake_up_blocks to take a file_lock_core pointer
+        https://git.kernel.org/vfs/vfs/c/acd1c6f76c17
+[31/47] filelock: convert locks_insert_lock_ctx and locks_delete_lock_ctx
+        https://git.kernel.org/vfs/vfs/c/77d7ed489db4
+[32/47] filelock: convert locks_translate_pid to take file_lock_core
+        https://git.kernel.org/vfs/vfs/c/e2c23bf73104
+[33/47] filelock: convert seqfile handling to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/a15d945405a3
+[34/47] 9p: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/d09f798f208c
+[35/47] afs: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/febb326af51b
+[36/47] ceph: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/afd5898079d2
+[37/47] dlm: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/f40b314ab0f2
+[38/47] gfs2: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/f1b0d238e179
+[39/47] fuse: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/ca2a24a9ff7f
+[40/47] lockd: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/1c910b2459cf
+[41/47] nfs: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/455100f41471
+[42/47] nfsd: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/48c7900f7b21
+[43/47] ocfs2: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/b7b8c39a9587
+[44/47] smb/client: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/7cd03c482447
+[45/47] smb/server: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/5087b21fd5ee
+[46/47] filelock: remove temporary compatibility macros
+        https://git.kernel.org/vfs/vfs/c/e0bde6d6d7e3
+[47/47] filelock: split leases out of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/6c6109548454
