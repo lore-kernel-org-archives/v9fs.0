@@ -1,318 +1,159 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55D645BF8;
-	Thu,  1 Feb 2024 22:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB20E10F2
+	for <v9fs@lists.linux.dev>; Fri,  2 Feb 2024 00:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706827789; cv=none; b=Sp4vv7XT3vEsNR/JGTY/3SJo6z+M6h7nY+3pRKg1AvzTE4KvZk8yICpQVx0Tmb7MKdYySHVoflHNj+uFAUW2KVxiv8mf8dCgnQM74Kk/AoKGQK18IgoUNP/AR1ZW07TWjpvtMiI0SuoJ/DJIZK+8zQ7dD/Vxf7Wodj0TE4gnOHY=
+	t=1706832329; cv=none; b=fLP6aB/SO5N/Rl5Phj7M9KfVBrQsejDtey8eAOvFPvupKNfIC8WvKo4H7CQzDAb+5FJY3Bl31y0d8ikGOWT6ElXw39g/OyMpWywIjwtcps03XJNRGIJ7HzoeF1RYgQcpioHPadAmtfKMniex05J8yaXpiwNQQFnG5r6euOKY/WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706827789; c=relaxed/simple;
-	bh=x9ZhYMkj/aa+ezAniKGau1L1wNsh5jGEb6UhbI+rWK0=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=hVMlmF01nkLEPLmBuW+dKsnZNJUav68jAfxmjY1JIYz/rQNbxtEReCXj7c6/awIblOgjDhrxK2vt0w18cQpO3LEGfnKdI3JnaAvgaxmBaeE+YAx9CQzVR0sWaoGugIRUJqN9fi2wTQlytbr8WZutuL7uVOpPVCXo8nzRLUC+vy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZikCwOfQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=42Wd/tDk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZikCwOfQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=42Wd/tDk; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZikCwOfQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="42Wd/tDk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZikCwOfQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="42Wd/tDk"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7F8AB1FC2A;
-	Thu,  1 Feb 2024 22:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706827785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pHjYgoT7uzw4oaYjtctwuPeVz4bbHKhCV0HwFPxFmM=;
-	b=ZikCwOfQRWIvGmZintbhuLmKpO3x/YkFdnE+Hh3GzMP34NXJMoEVSTRyo6fP7m3I7cFy0s
-	GvaEfWebvHzTS0AytYB2NbWZx5f+E40Ymmf/WXJZR7o6WCc16m2trt2AL7mNIBXMqDz4Xy
-	uhy2CU9UtKW9c11OMw0/MHWFFNOg96s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706827785;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pHjYgoT7uzw4oaYjtctwuPeVz4bbHKhCV0HwFPxFmM=;
-	b=42Wd/tDkkJmkv/D/MGpFdMv+OZ8y03F/rFaMxiF4ctMtNLzFeYOtjO4HxX7xP6MoVkAjRv
-	Oi+0zcUwUkdoSnBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706827785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pHjYgoT7uzw4oaYjtctwuPeVz4bbHKhCV0HwFPxFmM=;
-	b=ZikCwOfQRWIvGmZintbhuLmKpO3x/YkFdnE+Hh3GzMP34NXJMoEVSTRyo6fP7m3I7cFy0s
-	GvaEfWebvHzTS0AytYB2NbWZx5f+E40Ymmf/WXJZR7o6WCc16m2trt2AL7mNIBXMqDz4Xy
-	uhy2CU9UtKW9c11OMw0/MHWFFNOg96s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706827785;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pHjYgoT7uzw4oaYjtctwuPeVz4bbHKhCV0HwFPxFmM=;
-	b=42Wd/tDkkJmkv/D/MGpFdMv+OZ8y03F/rFaMxiF4ctMtNLzFeYOtjO4HxX7xP6MoVkAjRv
-	Oi+0zcUwUkdoSnBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6717A139AB;
-	Thu,  1 Feb 2024 22:49:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jLyIB/wfvGWUawAAD6G6ig
-	(envelope-from <neilb@suse.de>); Thu, 01 Feb 2024 22:49:32 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1706832329; c=relaxed/simple;
+	bh=IdiYYWpzmr9RPusGSBqszbMgZq+ap0BptPduyKLTtUQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qnaVueQPR9ODDNmyLQspr+hRKsdSwgLPk4a0TjaRpyEK6MU9LIyhbJXajhkmPo3xLhISMkCXQSXW3O/beLz8rKzLWTybrkXCW8wQNNTZtHP+IEyKn612q6gVwDNnHsB58g44XLKDmXI8RCPP2dPaZ92DDbK/n7LJBiRpW6QBmRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1rVh3Z-0000cz-Rd; Fri, 02 Feb 2024 01:05:21 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1rVh3W-003xQ5-2P; Fri, 02 Feb 2024 01:05:18 +0100
+Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
+	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1rVh3V-00AFlM-1h;
+	Fri, 02 Feb 2024 01:05:18 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: [PATCH v2 0/4] usb: gadget: 9pfs transport
+Date: Fri, 02 Feb 2024 01:05:09 +0100
+Message-Id: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Jeff Layton" <jlayton@kernel.org>
-Cc: "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Chuck Lever" <chuck.lever@oracle.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>,
- "Dominique Martinet" <asmadeus@codewreck.org>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>, "Xiubo Li" <xiubli@redhat.com>,
- "Ilya Dryomov" <idryomov@gmail.com>, "Alexander Aring" <aahringo@redhat.com>,
- "David Teigland" <teigland@redhat.com>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "Olga Kornievskaia" <kolga@netapp.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trond.myklebust@hammerspace.com>,
- "Anna Schumaker" <anna@kernel.org>, "Mark Fasheh" <mark@fasheh.com>,
- "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>,
- "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.com>,
- "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
- "Shyam Prasad N" <sprasad@microsoft.com>,
- "Namjae Jeon" <linkinjeon@kernel.org>,
- "Sergey Senozhatsky" <senozhatsky@chromium.org>,
- "Miklos Szeredi" <miklos@szeredi.hu>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
- ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org,
- "Jeff Layton" <jlayton@kernel.org>
-Subject:
- Re: [PATCH v3 00/47] filelock: split file leases out of struct file_lock
-In-reply-to: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
-References: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
-Date: Fri, 02 Feb 2024 09:49:29 +1100
-Message-id: <170682776950.13976.8032076527553420784@noble.neil.brown.name>
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZikCwOfQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="42Wd/tDk"
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-5.51 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
-	 R_RATELIMIT(0.00)[to_ip_from(RLouahofup1mwqksbidco3ksry)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_TWELVE(0.00)[45];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FREEMAIL_CC(0.00)[goodmis.org,kernel.org,efficios.com,oracle.com,zeniv.linux.org.uk,suse.cz,ionkov.net,codewreck.org,crudebyte.com,redhat.com,auristor.com,gmail.com,netapp.com,talpey.com,hammerspace.com,fasheh.com,evilplan.org,linux.alibaba.com,samba.org,manguebit.com,microsoft.com,chromium.org,szeredi.hu,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: -5.51
-X-Rspamd-Queue-Id: 7F8AB1FC2A
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALUxvGUC/3WNyw6DIBBFf6Vh3amAj2pX/Y/GBeKokygQUGNj/
+ Pei+y7Pzbk5OwvoCQN73XbmcaVA1kSQ9xvTgzI9ArWRmeQy40IUMI0wW0calspBWeXymeUpx0a
+ weGlUQGi8Mno4T9M4jcllJ9E+Beexo+3qferIA4XZ+u+VX8W5/imtAjiottQpL7pKZfh2aPpl9
+ tbQ9miR1cdx/AAoAvyKzgAAAA==
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: v9fs@lists.linux.dev, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+ kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4125;
+ i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
+ bh=IdiYYWpzmr9RPusGSBqszbMgZq+ap0BptPduyKLTtUQ=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBlvDG3xC0tz0b2twuAdUyIaYaJ4coWj3Icx3NeB
+ ifEniisW+2JAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZbwxtwAKCRC/aVhE+XH0
+ q/VwEAClVZxlYo9pt5R9IA48qsaUIdVtnj9CEnWtFWRUZPbZvJWnrdkHIB315nssDgIJtxBaACf
+ IodfZ0EyaqO4CTxGmw92QO+h9awNG3YztU3BCQMeUEn0KGaejkDgApCZt/pjlIQMkspKyxw01D6
+ FHCPEvvw5y840MEN0Vxe4OLfwTUCNroyRHf8kXoeTjY7Vu+KQ/ZOU4a8tWVG5HBEg74iGQ/l/3B
+ V7irmYXy1ji6T9y+o9eyN8Q8uYEU6b1SBVEkNVopW3qJ119xVKqj29t+EENLL9Fktt0607xYLip
+ 3iCwXi7CRM7xawRMaKaXq1nxW2fH57cL6XxXnlDTKDf3vy2GShwKFenCSKttmaWLEwMZTlJdrzR
+ 8HrHBvAIBWAVhH4ijtkTYPeTui4AIHT8G3X/f2WFSf2ORj/XaP7/3hYvLto23Z5SSkydA9DRYNB
+ oDfKemkAfpocnon4LUML3rSgtUtcR1vqtVKXObidbloxFZdnSijb41ygpgVg/zo35pdlzucFnqG
+ gJcQGHfayZ1l/6u66p+gkauKYB+EmPZLdKRHoN5SRA/TT+2VtFdM5AIgveXCjGmXWIvmdcuIo8m
+ 2z+x4YbEGlJKRQ0fD9lFukcFSEjrpQq28bQOLNibrmKXn78DLUcGKsdt73vMAQsVDWoob3CgjQa
+ f995mmHE7u1FQKg==
+X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-On Thu, 01 Feb 2024, Jeff Layton wrote:
-> I'm not sure this is much prettier than the last, but contracting
-> "fl_core" to "c", as Neil suggested is a bit easier on the eyes.
->=20
-> I also added a few small helpers and converted several users over to
-> them. That reduces the size of the per-fs conversion patches later in
-> the series. I played with some others too, but they were too awkward
-> or not frequently used enough to make it worthwhile.
->=20
-> Many thanks to Chuck and Neil for the earlier R-b's and comments. I've
-> dropped those for now since this set is a bit different from the last.
->=20
-> I'd like to get this into linux-next soon and we can see about merging
-> it for v6.9, unless anyone has major objections.
+This series is adding support to mount usb hostside exported 9pfs
+filesystems via the usb gadget interface. It also includes a simple tool
+(p9_fwd.py) to translate an tcp 9pfs transport and reuse it via the usb
+interface.
 
-For all patches:
-  Reviewed-by: NeilBrown <neilb@suse.de>
+    +--------------------------+    |    +--------------------------+
+    |  9PFS mounting client    |    |    |  9PFS exporting server   |
+ SW |                          |    |    |                          |
+    |   (this:trans_usbg)      |    |    |(e.g. diod or nfs-ganesha)|
+    +-------------^------------+    |    +-------------^------------+
+                  |                 |                  |
+                  |                 |           +------v------+
+                  |                 |           |  p9_fwd.py  |
+                  |                 |           +------^------+
+                  |                 |                  |
+------------------|------------------------------------|-------------
+                  |                 |                  |
+    +-------------v------------+    |    +-------------v------------+
+    |                          |    |    |                          |
+ HW |   USB Device Controller  <--------->   USB Host Controller    |
+    |                          |    |    |                          |
+    +--------------------------+    |    +--------------------------+
 
-Thanks Jeff - I think this is a good and useful change and while it
-might not all be as pretty as I might like, I don't see any way to
-improve it and think it is certainly good enough to merge.
+The USB host exports a filesystem, while the gadget on the USB device
+side makes it mountable.
 
-I think the conversion from "fl_core" to "c" does work well enough.
-I particularly like how the removal of the IS_* macros (patch 16) turned
-out.  The inline expansion of IS_LEASE() in particular makes the code
-clearer to me.
+Diod (9pfs server) and the forwarder are on the development host, where
+the root filesystem is actually stored. The gadget is initialized during
+boot (or later) on the embedded board. Then the forwarder will find it
+on the USB bus and start forwarding requests.
 
-Thanks,
-NeilBrown
+In this case the 9p requests come from the device and are handled by the
+host. The reason is that USB device ports are normally not available on
+PCs, so a connection in the other direction would not work.
 
+One use-case is to use it as an alternative to NFS root booting during
+the development of embedded Linux devices.
 
->=20
-> Thanks!
->=20
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
-> Changes in v3:
-> - Rename "flc_core" fields in file_lock and file_lease to "c"
-> - new helpers: locks_wake_up, for_each_file_lock, and lock_is_{unlock,read,=
-write}
-> - Link to v2: https://lore.kernel.org/r/20240125-flsplit-v2-0-7485322b62c7@=
-kernel.org
->=20
-> Changes in v2:
-> - renamed file_lock_core fields to have "flc_" prefix
-> - used macros to more easily do the change piecemeal
-> - broke up patches into per-subsystem ones
-> - Link to v1: https://lore.kernel.org/r/20240116-flsplit-v1-0-c9d0f4370a5d@=
-kernel.org
->=20
-> ---
-> Jeff Layton (47):
->       filelock: fl_pid field should be signed int
->       filelock: rename some fields in tracepoints
->       filelock: rename fl_pid variable in lock_get_status
->       filelock: add some new helper functions
->       9p: rename fl_type variable in v9fs_file_do_lock
->       afs: convert to using new filelock helpers
->       ceph: convert to using new filelock helpers
->       dlm: convert to using new filelock helpers
->       gfs2: convert to using new filelock helpers
->       lockd: convert to using new filelock helpers
->       nfs: convert to using new filelock helpers
->       nfsd: convert to using new filelock helpers
->       ocfs2: convert to using new filelock helpers
->       smb/client: convert to using new filelock helpers
->       smb/server: convert to using new filelock helpers
->       filelock: drop the IS_* macros
->       filelock: split common fields into struct file_lock_core
->       filelock: have fs/locks.c deal with file_lock_core directly
->       filelock: convert more internal functions to use file_lock_core
->       filelock: make posix_same_owner take file_lock_core pointers
->       filelock: convert posix_owner_key to take file_lock_core arg
->       filelock: make locks_{insert,delete}_global_locks take file_lock_core=
- arg
->       filelock: convert locks_{insert,delete}_global_blocked
->       filelock: make __locks_delete_block and __locks_wake_up_blocks take f=
-ile_lock_core
->       filelock: convert __locks_insert_block, conflict and deadlock checks =
-to use file_lock_core
->       filelock: convert fl_blocker to file_lock_core
->       filelock: clean up locks_delete_block internals
->       filelock: reorganize locks_delete_block and __locks_insert_block
->       filelock: make assign_type helper take a file_lock_core pointer
->       filelock: convert locks_wake_up_blocks to take a file_lock_core point=
-er
->       filelock: convert locks_insert_lock_ctx and locks_delete_lock_ctx
->       filelock: convert locks_translate_pid to take file_lock_core
->       filelock: convert seqfile handling to use file_lock_core
->       9p: adapt to breakup of struct file_lock
->       afs: adapt to breakup of struct file_lock
->       ceph: adapt to breakup of struct file_lock
->       dlm: adapt to breakup of struct file_lock
->       gfs2: adapt to breakup of struct file_lock
->       fuse: adapt to breakup of struct file_lock
->       lockd: adapt to breakup of struct file_lock
->       nfs: adapt to breakup of struct file_lock
->       nfsd: adapt to breakup of struct file_lock
->       ocfs2: adapt to breakup of struct file_lock
->       smb/client: adapt to breakup of struct file_lock
->       smb/server: adapt to breakup of struct file_lock
->       filelock: remove temporary compatibility macros
->       filelock: split leases out of struct file_lock
->=20
->  fs/9p/vfs_file.c                |  40 +-
->  fs/afs/flock.c                  |  60 +--
->  fs/ceph/locks.c                 |  74 ++--
->  fs/dlm/plock.c                  |  44 +--
->  fs/fuse/file.c                  |  14 +-
->  fs/gfs2/file.c                  |  16 +-
->  fs/libfs.c                      |   2 +-
->  fs/lockd/clnt4xdr.c             |  14 +-
->  fs/lockd/clntlock.c             |   2 +-
->  fs/lockd/clntproc.c             |  65 +--
->  fs/lockd/clntxdr.c              |  14 +-
->  fs/lockd/svc4proc.c             |  10 +-
->  fs/lockd/svclock.c              |  64 +--
->  fs/lockd/svcproc.c              |  10 +-
->  fs/lockd/svcsubs.c              |  24 +-
->  fs/lockd/xdr.c                  |  14 +-
->  fs/lockd/xdr4.c                 |  14 +-
->  fs/locks.c                      | 851 ++++++++++++++++++++++--------------=
-----
->  fs/nfs/delegation.c             |   4 +-
->  fs/nfs/file.c                   |  22 +-
->  fs/nfs/nfs3proc.c               |   2 +-
->  fs/nfs/nfs4_fs.h                |   2 +-
->  fs/nfs/nfs4file.c               |   2 +-
->  fs/nfs/nfs4proc.c               |  39 +-
->  fs/nfs/nfs4state.c              |  22 +-
->  fs/nfs/nfs4trace.h              |   4 +-
->  fs/nfs/nfs4xdr.c                |   8 +-
->  fs/nfs/write.c                  |   8 +-
->  fs/nfsd/filecache.c             |   4 +-
->  fs/nfsd/nfs4callback.c          |   2 +-
->  fs/nfsd/nfs4layouts.c           |  34 +-
->  fs/nfsd/nfs4state.c             | 120 +++---
->  fs/ocfs2/locks.c                |  12 +-
->  fs/ocfs2/stack_user.c           |   2 +-
->  fs/open.c                       |   2 +-
->  fs/posix_acl.c                  |   4 +-
->  fs/smb/client/cifsfs.c          |   2 +-
->  fs/smb/client/cifssmb.c         |   8 +-
->  fs/smb/client/file.c            |  78 ++--
->  fs/smb/client/smb2file.c        |   2 +-
->  fs/smb/server/smb2pdu.c         |  44 +--
->  fs/smb/server/vfs.c             |  14 +-
->  include/linux/filelock.h        | 103 +++--
->  include/linux/fs.h              |   5 +-
->  include/linux/lockd/lockd.h     |   8 +-
->  include/linux/lockd/xdr.h       |   2 +-
->  include/trace/events/afs.h      |   4 +-
->  include/trace/events/filelock.h | 102 ++---
->  48 files changed, 1064 insertions(+), 933 deletions(-)
-> ---
-> base-commit: e96efe9f69ebb12b38c722c159413fd6850b782c
-> change-id: 20240116-flsplit-bdb46824db68
->=20
-> Best regards,
-> --=20
-> Jeff Layton <jlayton@kernel.org>
->=20
->=20
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+Changes in v2:
+- improved the commit messages
+- introduced an patch to move the header u_f.h to include/linux/usb to compile usb gadget functions treewide
+- moved usbg gadget function to net/9p/
+- adderessed several comments in function driver, like the cleanup path and kbuild errors
+- improved the documentation in Documentation/filesystems/9p.rst
+- Link to v1: https://lore.kernel.org/r/20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de
+
+---
+Michael Grzeschik (4):
+      usb: gadget: function: move u_f.h to include/linux/usb/
+      net/9p/usbg: Add new usb gadget function transport
+      usb: gadget: legacy: add 9pfs multi gadget
+      tools: usb: p9_fwd: add usb gadget packet forwarder script
+
+ Documentation/filesystems/9p.rst                |  47 ++
+ drivers/usb/gadget/configfs.c                   |   2 +-
+ drivers/usb/gadget/function/f_fs.c              |   2 +-
+ drivers/usb/gadget/function/f_hid.c             |   2 +-
+ drivers/usb/gadget/function/f_loopback.c        |   2 +-
+ drivers/usb/gadget/function/f_midi.c            |   2 +-
+ drivers/usb/gadget/function/f_midi2.c           |   2 +-
+ drivers/usb/gadget/function/f_sourcesink.c      |   2 +-
+ drivers/usb/gadget/legacy/9pfs.c                | 268 ++++++++
+ drivers/usb/gadget/legacy/Kconfig               |  16 +
+ drivers/usb/gadget/legacy/Makefile              |   2 +
+ drivers/usb/gadget/u_f.c                        |   2 +-
+ {drivers/usb/gadget => include/linux/usb}/u_f.h |   0
+ net/9p/Kconfig                                  |   6 +
+ net/9p/Makefile                                 |   4 +
+ net/9p/trans_usbg.c                             | 871 ++++++++++++++++++++++++
+ tools/usb/p9_fwd.py                             | 194 ++++++
+ 17 files changed, 1416 insertions(+), 8 deletions(-)
+---
+base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+change-id: 20240116-ml-topic-u9p-895274530eb1
+
+Best regards,
+-- 
+Michael Grzeschik <m.grzeschik@pengutronix.de>
 
