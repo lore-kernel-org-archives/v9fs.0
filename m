@@ -1,50 +1,57 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB6C14199C
-	for <v9fs@lists.linux.dev>; Fri,  2 Feb 2024 12:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63497E76D
+	for <v9fs@lists.linux.dev>; Fri,  2 Feb 2024 12:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706876021; cv=none; b=FKhUbuw5r+AvOCIxin7PD3Z+pXo64dGusul+c5mBxh5lSMSrJVyVuR7FND6L8OynUcuBO9zx2zimqsExW0jrTzXACzKhFUqMtxzjC1SmLir43+u6aIh5wYPDJ7J4x97spfXt+e+NMfJNmUr/NB0GKQLpw5GNDFds4hM1+/cH8aI=
+	t=1706876212; cv=none; b=NzwDnl5jUQeF4t+KN3Rsqp9z94DT6UgIXpbKc49yNuyVihkBV3k9nPNEZ8QCbvnAKIh+w21T0aHZXu77aPPFedwylIKO1BTUQpTuaJ/XqHKAVpsvRiyEYh95MdNU8+rmdHQhc49jZ6HRCwb6e9sAgTZBiHZZnj39wme58pnPTvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706876021; c=relaxed/simple;
-	bh=/MYz96hTgmyfUKN8lIz6Wn2kXH/W5xiuldsDugYBDUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gO9rb3nXrQhYs+WrLACGRHyOwMuffPkvV6DQyXN9Z56hmFqGuA3W1/8nvJqWjlGYJK6DE3lkGXRi9io9DFscKQaPI8DeC78y14d0GkMmFlfU10xRfOqSCOvNpGev9lZPpx5BzS7kiVelPxLZO/vFFTfKLcbdaeuYSIPoAryDnbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Lxb87qz2; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	s=arc-20240116; t=1706876212; c=relaxed/simple;
+	bh=l/aopIMOwoJ7HIS7T+cRzAwMN/3xy7HCXK2/ibsdft4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S1I24K5KuzTbB5yUP84Ip9MWaviRLsaRjWpnfSznCS4V03Xx2DKGbNpZdeQ3h8kSoTTSWaLPU5273mP2+P+6D7oF4ty+vQmI7DkoX1cwNVxJL0qqwpKxi2U3oVVoGmIwdablWTzpkyInABuyNJO6bDADvAW2yPiEgURv9BHmXP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=WCVxY8Vi; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Lxb87qz2"
-Received: from localhost.ispras.ru (unknown [10.10.165.19])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 96CEF40F1DFF;
-	Fri,  2 Feb 2024 12:13:34 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 96CEF40F1DFF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1706876014;
-	bh=eA0x4JCi+JyPKsZLcRH52SdlMvZD8FLMA9pRbfG8Ano=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Lxb87qz2ETojmszILfllYWsjKulf2HoQQ2pH6pW1jgMjUGenElWZsVzl45cgVNr0A
-	 sKxOtGaCxs/8+lsr8G8Fwr5zE+9VuX8VECkEA73KVIdeY8bzX/DR467QNniwXGxZpO
-	 /gAcpDzTDCP4pBUQGJNaZfLK9QUckjgxYFbVLh9A=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Venkateswararao Jujjuri <jvrao@linux.vnet.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org,
-	syzbot+56fdf7f6291d819b9b19@syzkaller.appspotmail.com,
-	syzbot+a83dc51a78f0f4cf20da@syzkaller.appspotmail.com,
-	Pavel Skripkin <paskripkin@gmail.com>
-Subject: [PATCH] fs: 9p: avoid warning during xattr allocation
-Date: Fri,  2 Feb 2024 15:13:17 +0300
-Message-ID: <20240202121319.21743-1-pchelkin@ispras.ru>
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="WCVxY8Vi"
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 412BQoac017730;
+	Fri, 2 Feb 2024 04:15:35 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	PPS06212021; bh=UYcTMeXPca+N73s96cgEXe+7bZsHSgkXHU5oK5Zc7aU=; b=
+	WCVxY8VinqwuwawmN5DF+AGfiuAh90rRLXOR+wjLtLmpSdHoVCi0pDsKX7J6IVWf
+	Q/oBTNzvgxR2xNc6ExsXuCUXlmjtiVXNeTa35z4TBuX8DeQalh9LbykqsnvWWAUQ
+	0VVCLjf5li+K0OlJbHFqSQY/n3/PCkbPdFcaQMZRIIwB4GfrLp4Jy8/3Wnyefuga
+	S3jVRC3SONfcWGKj7vCkmreaL5+kt5DxrehB+Q4EVlxTZVedTfPTgDGE6drJ/VaH
+	LkVvwLWySOta2yvp2nxdQm03T1RHvTyiDUSawWlVlOrDqUPklCMusNsha8A9ek5W
+	724xz/iA7/RfpEZd1IuSoQ==
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3w0puv0dvd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 02 Feb 2024 04:15:35 -0800 (PST)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 2 Feb 2024 04:15:34 -0800
+Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Fri, 2 Feb 2024 04:15:32 -0800
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <syzbot+7a3d75905ea1a830dbe5@syzkaller.appspotmail.com>
+CC: <asmadeus@codewreck.org>, <ericvh@kernel.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux_oss@crudebyte.com>, <lucho@ionkov.net>,
+        <syzkaller-bugs@googlegroups.com>, <v9fs@lists.linux.dev>
+Subject: [PATCH next] fs/9p: fix uaf in in v9fs_stat2inode_dotl
+Date: Fri, 2 Feb 2024 20:15:31 +0800
+Message-ID: <20240202121531.2550018-1-lizhi.xu@windriver.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <00000000000055ecb906105ed669@google.com>
+References: <00000000000055ecb906105ed669@google.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,40 +59,45 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: F0ZlN-hNRdusUqWNtk5stVihewg4qzWd
+X-Proofpoint-ORIG-GUID: F0ZlN-hNRdusUqWNtk5stVihewg4qzWd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_06,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 adultscore=0 suspectscore=0 impostorscore=0 clxscore=1011
+ lowpriorityscore=0 spamscore=0 mlxlogscore=753 phishscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402020090
 
-An invalid server may reply with an xattr size which still fits into
-ssize_t but is large enough to cause splat during kzalloc().
+The incorrect logical order of accessing the st object code in v9fs_fid_iget_dotl
+is causing this uaf.
 
-Add __GFP_NOWARN flag for the allocation. It seems client side can't do
-much more about sanity checking here so it's better to return ENOMEM
-silently.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 85ff872d3f4a ("fs/9p: Implement POSIX ACL permission checking function")
-Reported-by: syzbot+56fdf7f6291d819b9b19@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000789bcd05c9aa3d5d@google.com/
-Reported-by: syzbot+a83dc51a78f0f4cf20da@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/00000000000086a03405eec3a706@google.com/
-Suggested-by: Pavel Skripkin <paskripkin@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Fixes: 724a08450f74 ("fs/9p: simplify iget to remove unnecessary paths")
+Reported-and-tested-by: syzbot+7a3d75905ea1a830dbe5@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 ---
- fs/9p/acl.c | 2 +-
+ fs/9p/vfs_inode_dotl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/9p/acl.c b/fs/9p/acl.c
-index eed551d8555f..e19a46192d2e 100644
---- a/fs/9p/acl.c
-+++ b/fs/9p/acl.c
-@@ -29,7 +29,7 @@ static struct posix_acl *v9fs_fid_get_acl(struct p9_fid *fid, const char *name)
- 	if (size == 0)
- 		return ERR_PTR(-ENODATA);
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index ef9db3e03506..2b313fe7003e 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -78,11 +78,11 @@ struct inode *v9fs_fid_iget_dotl(struct super_block *sb, struct p9_fid *fid)
  
--	value = kzalloc(size, GFP_NOFS);
-+	value = kzalloc(size, GFP_NOFS | __GFP_NOWARN);
- 	if (!value)
- 		return ERR_PTR(-ENOMEM);
+ 	retval = v9fs_init_inode(v9ses, inode, &fid->qid,
+ 				 st->st_mode, new_decode_dev(st->st_rdev));
++	v9fs_stat2inode_dotl(st, inode, 0);
+ 	kfree(st);
+ 	if (retval)
+ 		goto error;
  
+-	v9fs_stat2inode_dotl(st, inode, 0);
+ 	v9fs_set_netfs_context(inode);
+ 	v9fs_cache_inode_get_cookie(inode);
+ 	retval = v9fs_get_acl(inode, fid);
 -- 
 2.43.0
 
