@@ -1,28 +1,28 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861D12B9C;
-	Sat,  3 Feb 2024 04:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD2D171A4;
+	Sat,  3 Feb 2024 04:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933674; cv=none; b=dAmxYLunu9k/eq9FXogsdXuveM+qKNBVvyWDYKKDUAC8ekV4VA7rb+btHjyxJst+5wOoHZlF2rXCwjMHS86Ljx6dLrwoGEGcNyHUtprbwKbIHLtJbUG9rBoyGRH34dSKEv1LLtBWjBNjK5IhL0njzD2GsUjRPKlW+HC1Vf2vRdQ=
+	t=1706933912; cv=none; b=dvR21u4wiCzfgp9LmZi4/oZvcE9rnBnkaXRxwDz8bbEsJUmmXZu5WbtyXRd91O8VULRdlEPNnx2nQxa42aNa60XjkNBZP2LoZwq0PqPz0Yd8BQ/pb/veSNnhqvs5rP7cyQFZeqfrk//3QaXAYki9JszDCUG3IkPdqC6jnhe6RNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933674; c=relaxed/simple;
-	bh=0VMOBfnAIjkG+vtb8kO8dzVZvSKz9695JrKeBWWlVBc=;
+	s=arc-20240116; t=1706933912; c=relaxed/simple;
+	bh=cgFMRMvYvGnZeANhKquEqx4qWLEygxH3wJoIAdMwFjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raTBzvMObmsba2ktKWCzuW+ZpAmULqGIbd6yunvS32b8nZLU5iPMZxUSNb4yDGOQcoTMaDu3JghoRUPDvqhNiFhy1Oh5YH3aOKRilAZBHHfQxl1ZKeOPAVT+lP3MR98TGQb1M7KDj/Zer2OxbYPb/FyCV0oQHFr4S5wmh8aLtBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIC82qJh; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=W00dmho22zkxStWcuLBC82B4E+cJJLU6NfBYLiPxVIxnnDNOjYC/QTM6J4cxkTzHps2PvfJ/p8hsz6m5nq4sVGPDb507zODnrksWY0ElGX4lZaLdJW9EF2UjxFWY+AzyTrcEdVDnejfdn6mEMzUJbWsKx2j/5zKD1sD6/D0L91E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wtk88UI1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIC82qJh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89350C43399;
-	Sat,  3 Feb 2024 04:14:34 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wtk88UI1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8ABC433F1;
+	Sat,  3 Feb 2024 04:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933674;
-	bh=0VMOBfnAIjkG+vtb8kO8dzVZvSKz9695JrKeBWWlVBc=;
+	s=korg; t=1706933912;
+	bh=cgFMRMvYvGnZeANhKquEqx4qWLEygxH3wJoIAdMwFjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIC82qJhmMz5UMCv8WOzKKPCvBifNuNcMtt2VMDRUUzlDIjXH4AeTs689LbEmjiTk
-	 +9LjLcp4v7vhkkwU3zuTrfMYLWiK750LTrRCyEUJVMjrdB3mTjW0O1Red4y7eveBIU
-	 91i1OcsPe7MUURNKw2VfQcZSm+65cXiGATEbclNk=
+	b=Wtk88UI16tU6URrrBdVyjvFdAeH5TIpi1bR9SqeMRN3Tk1oOoRtJbW3/rnB7664Ec
+	 Xw8mQevWiGj5ayfT24RDFdU8o4fKQwNBj8OCiTyTkJh5VNArE8kPQli1Gs1zuMy+ws
+	 IFE8TdBiBtZFP/mnvYfiqDKLnJ+PVdSmkC8xPClk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-cachefs@redhat.com,
 	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/322] 9p: Fix initialisation of netfs_inode for 9p
-Date: Fri,  2 Feb 2024 20:05:39 -0800
-Message-ID: <20240203035406.997024446@linuxfoundation.org>
+Subject: [PATCH 6.7 265/353] 9p: Fix initialisation of netfs_inode for 9p
+Date: Fri,  2 Feb 2024 20:06:23 -0800
+Message-ID: <20240203035412.136380818@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,7 +87,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
-index cdf441f22e07..dcce42d55d68 100644
+index 731e3d14b67d..0e8418066a48 100644
 --- a/fs/9p/v9fs_vfs.h
 +++ b/fs/9p/v9fs_vfs.h
 @@ -42,6 +42,7 @@ struct inode *v9fs_alloc_inode(struct super_block *sb);
@@ -99,7 +99,7 @@ index cdf441f22e07..dcce42d55d68 100644
  		    struct inode *inode, umode_t mode, dev_t rdev);
  void v9fs_evict_inode(struct inode *inode);
 diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 0d28ecf668d0..ea695c4a7a3f 100644
+index b845ee18a80b..90dc5ef75516 100644
 --- a/fs/9p/vfs_inode.c
 +++ b/fs/9p/vfs_inode.c
 @@ -246,7 +246,7 @@ void v9fs_free_inode(struct inode *inode)
@@ -137,7 +137,7 @@ index 0d28ecf668d0..ea695c4a7a3f 100644
  	unlock_new_inode(inode);
  	return inode;
 diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 1312f68965ac..91bcee2ab3c4 100644
+index c7319af2f471..d0636b99f05b 100644
 --- a/fs/9p/vfs_inode_dotl.c
 +++ b/fs/9p/vfs_inode_dotl.c
 @@ -128,6 +128,7 @@ static struct inode *v9fs_qid_iget_dotl(struct super_block *sb,
