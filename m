@@ -1,84 +1,316 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BDB266D4
-	for <v9fs@lists.linux.dev>; Fri, 16 Feb 2024 13:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E107CF09;
+	Sat, 17 Feb 2024 15:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708089802; cv=none; b=e+sGxBet2j6Roohj6pVWws1YbSER6cYbOwJj7R2N0Ft83Gp9PFk3X3F1s2sor4KO4XJ5qxiGgeUyVWG+bMCypdrP2jS/o6nPOtSOi0X9OHhSmjcmHMuxB4RGxG6rzoIkwDyhAHIXZwUR/j0Hnxbg+QYRer64bqe3oatY+cj6fhg=
+	t=1708185572; cv=none; b=N5445aJXLfD1M4PECHgd3gAn7axNkrlOOzHYMdGB/te7Knm9CPnSaQKKOR/VYOUdItitYtKCcQwOvojW/ydD1oZNB6+Z492vfa+3ux9FT0e17shStgUzLyTZfPF7MwNlf6AfXttTe1ne7Q/Sd6yUwXN3LUThTRsJTy1VgzDMRrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708089802; c=relaxed/simple;
-	bh=FqSWe7JHiE+uJcy2YTdzs/EetirgcQbQTZpnVkzmo8Q=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=U7z69AChDVJD37wowEKDrGqQ5cHoQrhdmUX2kJ7fwRoGscd1u1HFj2M8mW0EKMVSmrqH+1VEVlTQObuh5nnYbg8RC1HEGZb+EbTyscJpKkQfJeCiNAWD9STbFb7FfwW/ePkheP+C2L++7HnmuF1cxJ1Zu9J4ESL94QrNlrElO48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-363d86bef43so11698925ab.0
-        for <v9fs@lists.linux.dev>; Fri, 16 Feb 2024 05:23:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708089800; x=1708694600;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pui2IuVeVwTnvL6WtkW/nNwS2Ezf2FXXIiCC2gR7PNI=;
-        b=f100kffNYGCt6EtIILSYFbghp4UpMQEML5TNoYfE3So8eN6T2emmILhcRNZ8e42tjj
-         YORhYh4HkbZsgivQsQcrZgw8jnZI4pB7ke2C/TLJGCiIqIuebYOOxj8GM754Chvu5cj1
-         uXittwJPHUi9PnsWVr3mJXtV85HzMGej791SUK0Aj5oUn+4/rOMIuJbZjccTW+o6hCTL
-         S0DBtSD92bO8S6LecHQoEaUcPd6xTS/fjN9CPYyeTIij5Dqtt5e1ZNv18aLt4+Kbqz7u
-         tvizIAa5cRDAXnZB9fA7r1yiPm4uUmXOi5lXO7DxBj2alRzDkPHZPCGAYwMqHR91zTQE
-         goIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKA/6gg/8FvVOp1jmKt4ARO5hbeIX6KwlYNl9hxq2CQNNqI9oAgp7zt0L8xyI+y/YSe8DpLZLmrbtraea+c1hzveIdAg==
-X-Gm-Message-State: AOJu0YxlcOdIZB/7dE6f/2Pi8YNc58mA6lsSlPOPNO7gy5Lch5pcepkB
-	O694Tn5o75VYNWOfsjivd+lWIWIhDaBBRT9WrJOo5RzKyZ15Hu0dtWkLGdVgmLWHtg8XW86Q6/w
-	jsqkSizBrg8wBc++S6WfoGPVyPzDV3DRSdxEYDFDZHJigG0VGEE/g9F0=
-X-Google-Smtp-Source: AGHT+IHP3zirBrdpmR87Ieqf/kCU11sHaFTXhByBqF1DIC5U6wixLWGetyvp0XpBzZg6W+D+cSFdv2yl1SN+mh8JUPbcqnKzWsq0
+	s=arc-20240116; t=1708185572; c=relaxed/simple;
+	bh=7dZw91IA9UkGUlxTQU6Q6OBgjnh8TxNDIuPOvGMyW+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BC1MrMeW0IRtOyFb/3fCaAnWeyyrcecfDFGQeM3U7FLZEac4MlQ1OJMzRfw07iT99w5dxZmP/IXCwTDEqz0gYvW5Nz72LmmI6DVr0Uf1+MOv+uIKQpNFOM3wgj4fmzIJp+fXnU2ubWeA7GHu62svneIazoaS8uIca4nC3eCa3qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KepOSB9h; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KepOSB9h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE532C433F1;
+	Sat, 17 Feb 2024 15:59:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708185571;
+	bh=7dZw91IA9UkGUlxTQU6Q6OBgjnh8TxNDIuPOvGMyW+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KepOSB9hcnZ18sO/rJ+FcR2yhbl+WVXSspcGEoMD1mv8cLnqYI7QlddgpN112h3T5
+	 Y27MQsCpWDeeAXl/WVjwlI2fLYdf6PBWgHO0B21LoWBkLaNC7LVxRTCjIhAr5TLpko
+	 p39BJRVqtq1XMqlBeI0oxXJalJfS4y8g6CEmwAFE=
+Date: Sat, 17 Feb 2024 16:59:28 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jonathan Corbet <corbet@lwn.net>, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v2 3/4] usb: gadget: legacy: add 9pfs multi gadget
+Message-ID: <2024021757-geography-hacksaw-3022@gregkh>
+References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
+ <20240116-ml-topic-u9p-v2-3-b46cbf592962@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:154f:b0:363:9d58:8052 with SMTP id
- j15-20020a056e02154f00b003639d588052mr368389ilu.2.1708089800292; Fri, 16 Feb
- 2024 05:23:20 -0800 (PST)
-Date: Fri, 16 Feb 2024 05:23:20 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ca829f06117fa50c@google.com>
-Subject: [syzbot] Monthly v9fs report (Feb 2024)
-From: syzbot <syzbot+listc76971b2e26402bae4ab@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240116-ml-topic-u9p-v2-3-b46cbf592962@pengutronix.de>
 
-Hello v9fs maintainers/developers,
+On Fri, Feb 02, 2024 at 01:05:12AM +0100, Michael Grzeschik wrote:
+> Add the newly introduced 9pfs transport gadget interface with an new
+> multi composed gadget together with acm and eem.
+> 
+> When using this legacy module, it is also possible to
+> mount the 9PFS usb dir as root filesystem. Just follow the
+> instrucitons from Documentation/filesystems/9p.rst
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+Why are we adding new "legacy" gadgets?  What's wrong with the "correct"
+api instead?  You need a lot of justification here to add something to
+an api we want to one day just delete.
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 26 have been fixed so far.
+And can you wrap your changelog at 72 columns?
 
-Some of the still happening issues:
 
-Ref Crashes Repro Title
-<1> 1611    Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 265     Yes   BUG: corrupted list in p9_fd_cancelled (2)
-                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
-<3> 9       Yes   KASAN: slab-use-after-free Read in v9fs_stat2inode_dotl
-                  https://syzkaller.appspot.com/bug?extid=7a3d75905ea1a830dbe5
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> 
+> ---
+> v1 -> v2:
+>   - deleted the usbg 9pfs detailed instruction from commit message
+>   - added depends on net for NET_9P dependency
+> ---
+>  drivers/usb/gadget/legacy/9pfs.c   | 268 +++++++++++++++++++++++++++++++++++++
+>  drivers/usb/gadget/legacy/Kconfig  |  16 +++
+>  drivers/usb/gadget/legacy/Makefile |   2 +
+>  3 files changed, 286 insertions(+)
+> 
+> diff --git a/drivers/usb/gadget/legacy/9pfs.c b/drivers/usb/gadget/legacy/9pfs.c
+> new file mode 100644
+> index 0000000000000..3ac7f2e92c5a3
+> --- /dev/null
+> +++ b/drivers/usb/gadget/legacy/9pfs.c
+> @@ -0,0 +1,268 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * usb9pfs.c -- Gadget usb9pfs
+> + *
+> + * Copyright (C) 2023 Michael Grzeschik
+> + */
+> +
+> +/*
+> + * Gadget usb9pfs only needs two bulk endpoints, and will use the usb9pfs usb
+> + * transport to mount host filesystem via usb gadget. This driver will
+> + * also add one ACM and NCM interface.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Why "also"?  What are those interfaces going to be used for and what do
+they have to do with 9pfs?
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/slab.h>
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/err.h>
+> +#include <linux/usb/composite.h>
+> +#include <linux/netdevice.h>
+> +
+> +#include "u_eem.h"
+> +#include "u_ether.h"
+> +
+> +/*-------------------------------------------------------------------------*/
+> +USB_GADGET_COMPOSITE_OPTIONS();
+> +
+> +USB_ETHERNET_MODULE_PARAMETERS();
+> +
+> +/* Defines */
+> +
+> +#define DRIVER_VERSION_STR "v1.0"
+> +#define DRIVER_VERSION_NUM 0x1000
+> +
+> +#define DRIVER_DESC	"Composite Gadget (9P + ACM + NCM)"
+> +
+> +/*-------------------------------------------------------------------------*/
+> +
+> +#define DRIVER_VENDOR_NUM	0x1d6b		/* Linux Foundation */
+> +#define DRIVER_PRODUCT_NUM	0x0109		/* Linux-USB 9PFS Gadget */
+> +
+> +/*-------------------------------------------------------------------------*/
+> +
+> +static struct usb_device_descriptor device_desc = {
+> +	.bLength =		sizeof(device_desc),
+> +	.bDescriptorType =	USB_DT_DEVICE,
+> +
+> +	/* .bcdUSB = DYNAMIC */
+> +
+> +	.bDeviceClass =		USB_CLASS_MISC,
+> +	.bDeviceSubClass =	2,
+> +	.bDeviceProtocol =	1,
+> +
+> +	/* .bMaxPacketSize0 = f(hardware) */
+> +
+> +	/* Vendor and product id can be overridden by module parameters.  */
+> +	.idVendor =		cpu_to_le16(DRIVER_VENDOR_NUM),
+> +	.idProduct =		cpu_to_le16(DRIVER_PRODUCT_NUM),
+> +	/* .bcdDevice = f(hardware) */
+> +	/* .iManufacturer = DYNAMIC */
+> +	/* .iProduct = DYNAMIC */
+> +	/* NO SERIAL NUMBER */
+> +	/*.bNumConfigurations =	DYNAMIC*/
+> +};
+> +
+> +static const struct usb_descriptor_header *otg_desc[2];
+> +
+> +static struct usb_string strings_dev[] = {
+> +	[USB_GADGET_MANUFACTURER_IDX].s = "",
+> +	[USB_GADGET_PRODUCT_IDX].s = DRIVER_DESC,
+> +	[USB_GADGET_SERIAL_IDX].s = "",
+> +	{  }			/* end of list */
+> +};
+> +
+> +static struct usb_gadget_strings stringtab_dev = {
+> +	.language	= 0x0409,	/* en-us */
+> +	.strings	= strings_dev,
+> +};
+> +
+> +static struct usb_gadget_strings *dev_strings[] = {
+> +	&stringtab_dev,
+> +	NULL,
+> +};
+> +
+> +static struct usb_configuration cdc_driver_conf = {
+> +	.label          = DRIVER_DESC,
+> +	.bConfigurationValue = 1,
+> +	/* .iConfiguration = DYNAMIC */
+> +	.bmAttributes   = USB_CONFIG_ATT_SELFPOWER,
+> +};
+> +
+> +static struct usb_function *f_9pfs;
+> +static struct usb_function_instance *fi_9pfs;
+> +
+> +static struct usb_function *f_acm;
+> +static struct usb_function_instance *fi_acm;
+> +
+> +static struct usb_function *f_eem;
+> +static struct usb_function_instance *fi_eem;
+> +
+> +static int cdc_do_config(struct usb_configuration *c)
+> +{
+> +	int ret;
+> +
+> +	if (gadget_is_otg(c->cdev->gadget)) {
+> +		c->descriptors = otg_desc;
+> +		c->bmAttributes |= USB_CONFIG_ATT_WAKEUP;
+> +	}
+> +
+> +	f_9pfs = usb_get_function(fi_9pfs);
+> +	if (IS_ERR(f_9pfs))
+> +		return PTR_ERR(f_9pfs);
+> +
+> +	ret = usb_add_function(c, f_9pfs);
+> +	if (ret < 0)
+> +		goto err_func_9pfs;
+> +
+> +	f_acm = usb_get_function(fi_acm);
+> +	if (IS_ERR(f_acm)) {
+> +		ret = PTR_ERR(f_acm);
+> +		goto err_func_acm;
+> +	}
+> +
+> +	ret = usb_add_function(c, f_acm);
+> +	if (ret)
+> +		goto err_conf;
+> +
+> +	f_eem = usb_get_function(fi_eem);
+> +	if (IS_ERR(f_eem)) {
+> +		ret = PTR_ERR(f_eem);
+> +		goto err_eem;
+> +	}
+> +
+> +	ret = usb_add_function(c, f_eem);
+> +	if (ret)
+> +		goto err_run;
+> +
+> +	return 0;
+> +err_run:
+> +	usb_put_function(f_eem);
+> +err_eem:
+> +	usb_remove_function(c, f_acm);
+> +err_conf:
+> +	usb_put_function(f_acm);
+> +err_func_acm:
+> +	usb_remove_function(c, f_9pfs);
+> +err_func_9pfs:
+> +	usb_put_function(f_9pfs);
+> +	return ret;
+> +}
+> +
+> +static int usb9pfs_bind(struct usb_composite_dev *cdev)
+> +{
+> +	struct f_eem_opts	*eem_opts = NULL;
+> +	int status;
+> +
+> +	fi_9pfs = usb_get_function_instance("usb9pfs");
+> +	if (IS_ERR(fi_9pfs)) {
+> +		if (PTR_ERR(fi_9pfs) == -ENOENT)
+> +			return -EPROBE_DEFER;
+> +		return PTR_ERR(fi_9pfs);
+> +	}
+> +
+> +	/* set up serial link layer */
+> +	fi_acm = usb_get_function_instance("acm");
+> +	if (IS_ERR(fi_acm)) {
+> +		if (PTR_ERR(fi_9pfs) == -ENOENT)
+> +			return -EPROBE_DEFER;
+> +		status = PTR_ERR(fi_acm);
+> +		goto err_conf_acm;
+> +	}
+> +
+> +	fi_eem = usb_get_function_instance("eem");
+> +	if (IS_ERR(fi_eem)) {
+> +		if (PTR_ERR(fi_9pfs) == -ENOENT)
+> +			return -EPROBE_DEFER;
+> +		status = PTR_ERR(fi_eem);
+> +		goto err_conf_eem;
+> +	}
+> +
+> +	eem_opts = container_of(fi_eem, struct f_eem_opts, func_inst);
+> +
+> +	gether_set_qmult(eem_opts->net, qmult);
+> +	if (!gether_set_host_addr(eem_opts->net, host_addr))
+> +		pr_info("using host ethernet address: %s", host_addr);
+> +	if (!gether_set_dev_addr(eem_opts->net, dev_addr))
+> +		pr_info("using self ethernet address: %s", dev_addr);
+> +
+> +	/* Allocate string descriptor numbers ... note that string
+> +	 * contents can be overridden by the composite_dev glue.
+> +	 */
+> +	status = usb_string_ids_tab(cdev, strings_dev);
+> +	if (status < 0)
+> +		return status;
+> +
+> +	device_desc.iManufacturer = strings_dev[USB_GADGET_MANUFACTURER_IDX].id;
+> +	device_desc.iProduct = strings_dev[USB_GADGET_PRODUCT_IDX].id;
+> +	device_desc.iSerialNumber = strings_dev[USB_GADGET_SERIAL_IDX].id;
+> +
+> +	/* support OTG systems */
+> +	if (gadget_is_otg(cdev->gadget)) {
+> +		if (!otg_desc[0]) {
+> +			struct usb_descriptor_header *usb_desc;
+> +
+> +			usb_desc = usb_otg_descriptor_alloc(cdev->gadget);
+> +			if (!usb_desc) {
+> +				status = -ENOMEM;
+> +				goto err_conf_otg;
+> +			}
+> +			usb_otg_descriptor_init(cdev->gadget, usb_desc);
+> +			otg_desc[0] = usb_desc;
+> +			otg_desc[1] = NULL;
+> +		}
+> +	}
+> +
+> +	status = usb_add_config(cdev, &cdc_driver_conf, cdc_do_config);
+> +	if (status)
+> +		goto err_free_otg_desc;
+> +
+> +	usb_ep_autoconfig_reset(cdev->gadget);
+> +	usb_composite_overwrite_options(cdev, &coverwrite);
+> +
+> +	dev_info(&cdev->gadget->dev, DRIVER_DESC " version: " DRIVER_VERSION_STR "\n");
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+When drivers are working properly, they are quiet.
 
-You may send multiple commands in a single email message.
+thanks,
+
+greg k-h
