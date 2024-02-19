@@ -1,91 +1,167 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B05E208B9;
-	Mon, 19 Feb 2024 08:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50D441C77
+	for <v9fs@lists.linux.dev>; Mon, 19 Feb 2024 20:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708331921; cv=none; b=Af50z4cL+RdoRQr4a5t79aWrgVjRKWLdqXu8Yd4z2+Mhh4AaxCLs2tJgX0ifYkXhWV7/+NWsxccVoOLMR4nXmSuDrWl1bQHbhCpad6WSpT/Xo/bEfETMAitYMHTIP0OboSglxgFpc+TGpK0E4lvi5gvTCblSD+K9GDJJ3AUIQq4=
+	t=1708372986; cv=none; b=ue494APAs5ezntnRgSugJUE3LO1VObFi8/gNDlMzSs6fIUJV/Fol4Wp914qmq84SaRR/99OLOnhcc4sYPxjGAdugVtL3ldMZ/cc6BV4Ck5PkPZsExBvtg85xWrwQfvLO97dVlF/eMOqo4FXvyXRs97oo4wyiQ5HiI08k9BhBjMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708331921; c=relaxed/simple;
-	bh=dAs2OALmkNudBmi4/5a+XrcRC0uaaEkJeqpRp/lL8ZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qZT1BpEGH/bKGTW51pnWYOkYoNYE7zS0VJ/RVRtiD4h/RboYyv76O0uxOMpHZQpMGfwbifulXMPDKfbcn7rOySnBTqZea+LsKc3/M/VDsQPfE3nWkpFJntknPNUFPsuDxFg/OteZOodVvk2zpkwFZsAn6b6XcKaPhIFWKmBvF/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rbzAY-0007jO-Uv; Mon, 19 Feb 2024 09:38:35 +0100
-Message-ID: <960e015a-ec2e-42c2-bd9e-4aa47ab4ef2a@leemhuis.info>
-Date: Mon, 19 Feb 2024 09:38:33 +0100
+	s=arc-20240116; t=1708372986; c=relaxed/simple;
+	bh=lo4R7EukS8hXVzNzj60xudhkXfSigbb/6jiL+esCxTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNyEWacyA9PbzjfSGt/PNbUbujgRK0efRcW7lKdyQXkhzc6tUv3OhHSBJEVzlSGH0YVCmRn6HkGC+ciVfva9B8dRJLlaYUFWxkC0yYMmzNODMXSMCeCAMTUnoWV0fbslm9FahTK3YlEcCZpIfy4D32ztLyRZ+CufoGRHz/1ineY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1rc9qp-0008JX-5k; Mon, 19 Feb 2024 21:02:55 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1rc9qo-001i2i-4m; Mon, 19 Feb 2024 21:02:54 +0100
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1rc9qo-00Fysi-0A;
+	Mon, 19 Feb 2024 21:02:54 +0100
+Date: Mon, 19 Feb 2024 21:02:54 +0100
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jonathan Corbet <corbet@lwn.net>, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v2 3/4] usb: gadget: legacy: add 9pfs multi gadget
+Message-ID: <ZdOz7mc-NbiEe2Ei@pengutronix.de>
+References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
+ <20240116-ml-topic-u9p-v2-3-b46cbf592962@pengutronix.de>
+ <2024021757-geography-hacksaw-3022@gregkh>
+ <ZdKze80oFj0PRkkZ@pengutronix.de>
+ <2024021911-facelift-graveyard-0760@gregkh>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
- write
-Content-Language: en-US, de-DE
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Dominique Martinet <asmadeus@codewreck.org>, Jeff Layton
- <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20240129094924.1221977-1-dhowells@redhat.com>
- <20240129094924.1221977-3-dhowells@redhat.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-In-Reply-To: <20240129094924.1221977-3-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708331919;be4d50cb;
-X-HE-SMSGID: 1rbzAY-0007jO-Uv
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+zGieLIMQqtXbity"
+Content-Disposition: inline
+In-Reply-To: <2024021911-facelift-graveyard-0760@gregkh>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-On 29.01.24 10:49, David Howells wrote:
-> Fix netfs_unbuffered_write_iter() to return immediately if
-> generic_write_checks() returns 0, indicating there's nothing to write.
-> Note that netfs_file_write_iter() already does this.
-> 
-> Also, whilst we're at it, put in checks for the size being zero before we
-> even take the locks.  Note that generic_write_checks() can still reduce the
-> size to zero, so we still need that check.
-> 
-> Without this, a warning similar to the following is logged to dmesg:
-> 
-> 	netfs: Zero-sized write [R=1b6da]
-> 
-> and the syscall fails with EIO, e.g.:
-> 
-> 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
-> 
-> This can be reproduced on 9p by:
-> 
-> 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
-> 
-> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-> Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
-> Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
 
-David, thx for fixing Eric's regression, which I'm tracking.
+--+zGieLIMQqtXbity
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Christian, just wondering: that patch afaics is sitting in vfs.netfs for
-about three weeks now -- is that intentional or did it maybe fell
-through the cracks somehow?
+On Mon, Feb 19, 2024 at 09:13:03AM +0100, Greg Kroah-Hartman wrote:
+>On Mon, Feb 19, 2024 at 02:48:43AM +0100, Michael Grzeschik wrote:
+>> On Sat, Feb 17, 2024 at 04:59:28PM +0100, Greg Kroah-Hartman wrote:
+>> > On Fri, Feb 02, 2024 at 01:05:12AM +0100, Michael Grzeschik wrote:
+>> > > Add the newly introduced 9pfs transport gadget interface with an new
+>> > > multi composed gadget together with acm and eem.
+>> > >
+>> > > When using this legacy module, it is also possible to
+>> > > mount the 9PFS usb dir as root filesystem. Just follow the
+>> > > instrucitons from Documentation/filesystems/9p.rst
+>> >
+>> > Why are we adding new "legacy" gadgets?  What's wrong with the "correc=
+t"
+>> > api instead?  You need a lot of justification here to add something to
+>> > an api we want to one day just delete.
+>>
+>> Without the legacy gadget there is no real solution to mount
+>> the 9pfs via the gadget as rootfs. The "correct" api is configfs
+>> which will need the user to have some filesystem to mount it to.
+>
+>That's what your initramfs is for.  Why can't you just use that?
 
-> [...]
+Because out of convenience and to make it just work as simple as
+nfsrootfs. With this we now need to maintain an full initramfs,
+that has to come from somewhere.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+>> There is the relatively new concept of bootconfig which sounds
+>> promising to describe an complete configfs tree from system boot.
+>
+>Great, but until that happens, again, just use initramfs.
+
+Hmm, okay.
+
+>> However this is some future talk for now, so we would like to
+>> stick with the legacy setup to be able to mount the 9pfs rootfs.
+>
+>I'd prefer to NOT add new legacy gadget drivers, and do everything
+>possible to delete them all from the tree "soon".
+
+When you mean this "soon" is in the near future, you are probably right
+then.
+
+>> > > +/*
+>> > > + * Gadget usb9pfs only needs two bulk endpoints, and will use the u=
+sb9pfs usb
+>> > > + * transport to mount host filesystem via usb gadget. This driver w=
+ill
+>> > > + * also add one ACM and NCM interface.
+>> >
+>> > Why "also"?  What are those interfaces going to be used for and what do
+>> > they have to do with 9pfs?
+>>
+>> They are not necessary to be used with 9pfs. But since we introduce an
+>> new legacy module which is fully claiming the UDC, it would make sense
+>> to leave the other endpoints unavailable but instead add some common
+>> interfaces like ecm and acm.
+>
+>But if no one needs/wants them, why make this complex?  Again, configfs
+>can handle the composition of this if you need it, which is why that
+>"new" interface was created.
+
+
+Okay, What about the rest of the series? Can you just skip this patch
+then for? Or do you want me to send the series again without this
+legacy driver. There are no dependencies to this in that series.
+
+Michael
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--+zGieLIMQqtXbity
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmXTs+oACgkQC+njFXoe
+LGRwLA/+LrNLPbGGYFlAzMGpno4wxMgOLzvDHPdnuBGsFQ0aAzm7SWtjv92xdbJs
+iv+j4zQNjpshdqmWXLtwGO6thupVI5zT7A1Upqt3K5SVe0LGnwlfeqYWqa9aHIwS
+uwmiBXMR6DtPutwduaFHCJeEMC9j1+MtSe2M6UxMDzQaXujOtQ4K9yHU6/XOyn/H
+1L+7IHrW2z40WvbtfHRxjAiySUaoIkHyn1x0q7ui4QD/UTssbrg+2smB0uMtHxZX
+bWNyrFbh0iTEeCXPVfd5LcVUSPCFcqtqag8dOwGPqevmCTkOSFiL4RhS4pZKrCrh
+kFOdfPW5tfh+dLvfIV5RkMqzKKvlg1wh2mzqh5gyGiJsQsipurTAvo5cnJFujbRc
+Gy5wztK56jnnXehPyVDGYmxt4ORJf51PHBi5+adp975RRP2yPq82nSDMAoEN6hkh
+IcS9po3h5N59UuA38WcPO1qCBg00QYnJJto0S9nyYicrVwzZnvz6/HScdfVKv+U1
+YQ0ChpBj5ijfelb3HHb5jchLvQ449C+/7iZijn5m4g7zE7Jz5VyYiXmLrGOETisQ
+4iW6d156+OH18SaWODWRQQZnioVdEmPSv84SMSxgLawqKfLlkziCi7ozqXZE79pO
+ZBvK+LDllbO8mZfAOsQSmLy/LXTrjZNaz1Ew3nW4Kd3bd/Ut1pE=
+=n31+
+-----END PGP SIGNATURE-----
+
+--+zGieLIMQqtXbity--
