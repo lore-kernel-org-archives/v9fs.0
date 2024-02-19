@@ -1,102 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459A52135C;
-	Mon, 19 Feb 2024 08:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B05E208B9;
+	Mon, 19 Feb 2024 08:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708330387; cv=none; b=ZVO0Vh8ACLTsOSgcqDsgtRDIo21pK060sDfQdLksZ4IemqS/sGxhSn9fKIoemeNKDXIejnT2Av/lScyHL1bcvk/Q0WN3+eIwk+iRvT+5mz1jjycr14nzL7eRRp51kfs1y2FZH15D5UjwVSH1OsJAKHVNa+clIk2ETsK0BxHF8L8=
+	t=1708331921; cv=none; b=Af50z4cL+RdoRQr4a5t79aWrgVjRKWLdqXu8Yd4z2+Mhh4AaxCLs2tJgX0ifYkXhWV7/+NWsxccVoOLMR4nXmSuDrWl1bQHbhCpad6WSpT/Xo/bEfETMAitYMHTIP0OboSglxgFpc+TGpK0E4lvi5gvTCblSD+K9GDJJ3AUIQq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708330387; c=relaxed/simple;
-	bh=1w3J45VRLDLeMHSNQ1LNWwVGXu9vFKXbgM2hR+lw2cU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K+6q6uEs7CqInmV+xi6GVVX0wCB/k8RDgzZiq51uTI9J1XDXbsH4i+HxFvY8sAI3pcSdTMuTcrQc/2Qg1vrefjzRBOj6FZFXrNgVOTTVSHjgsyAAo4oWoCjSXIhbPcLiS1KKXOkL8e71Jnm/W0tKWj87ab+syIO/l9zFKH0ZSHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhfZg1UW; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhfZg1UW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59439C433C7;
-	Mon, 19 Feb 2024 08:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708330386;
-	bh=1w3J45VRLDLeMHSNQ1LNWwVGXu9vFKXbgM2hR+lw2cU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jhfZg1UWk/gIXkIAdbPlphVgddgqd1ksAhGXvha+wO8pNKb1DMovmkeVam5cOXg4V
-	 ZjobisTZkClepNOBnY4pK1TvUg5MRJ46gK7Jb8S9Dh+4mNUj2diDLWUzWREqyw4PD8
-	 PzqZuInLMj6WOi48A3lXFEc8a0b7BDAuxcmKG4ao=
-Date: Mon, 19 Feb 2024 09:13:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Jonathan Corbet <corbet@lwn.net>, v9fs@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v2 3/4] usb: gadget: legacy: add 9pfs multi gadget
-Message-ID: <2024021911-facelift-graveyard-0760@gregkh>
-References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
- <20240116-ml-topic-u9p-v2-3-b46cbf592962@pengutronix.de>
- <2024021757-geography-hacksaw-3022@gregkh>
- <ZdKze80oFj0PRkkZ@pengutronix.de>
+	s=arc-20240116; t=1708331921; c=relaxed/simple;
+	bh=dAs2OALmkNudBmi4/5a+XrcRC0uaaEkJeqpRp/lL8ZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qZT1BpEGH/bKGTW51pnWYOkYoNYE7zS0VJ/RVRtiD4h/RboYyv76O0uxOMpHZQpMGfwbifulXMPDKfbcn7rOySnBTqZea+LsKc3/M/VDsQPfE3nWkpFJntknPNUFPsuDxFg/OteZOodVvk2zpkwFZsAn6b6XcKaPhIFWKmBvF/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rbzAY-0007jO-Uv; Mon, 19 Feb 2024 09:38:35 +0100
+Message-ID: <960e015a-ec2e-42c2-bd9e-4aa47ab4ef2a@leemhuis.info>
+Date: Mon, 19 Feb 2024 09:38:33 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZdKze80oFj0PRkkZ@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
+ write
+Content-Language: en-US, de-DE
+To: David Howells <dhowells@redhat.com>,
+ Christian Brauner <christian@brauner.io>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Dominique Martinet <asmadeus@codewreck.org>, Jeff Layton
+ <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ netfs@lists.linux.dev, linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20240129094924.1221977-1-dhowells@redhat.com>
+ <20240129094924.1221977-3-dhowells@redhat.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+In-Reply-To: <20240129094924.1221977-3-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708331919;be4d50cb;
+X-HE-SMSGID: 1rbzAY-0007jO-Uv
 
-On Mon, Feb 19, 2024 at 02:48:43AM +0100, Michael Grzeschik wrote:
-> On Sat, Feb 17, 2024 at 04:59:28PM +0100, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 02, 2024 at 01:05:12AM +0100, Michael Grzeschik wrote:
-> > > Add the newly introduced 9pfs transport gadget interface with an new
-> > > multi composed gadget together with acm and eem.
-> > > 
-> > > When using this legacy module, it is also possible to
-> > > mount the 9PFS usb dir as root filesystem. Just follow the
-> > > instrucitons from Documentation/filesystems/9p.rst
-> > 
-> > Why are we adding new "legacy" gadgets?  What's wrong with the "correct"
-> > api instead?  You need a lot of justification here to add something to
-> > an api we want to one day just delete.
+On 29.01.24 10:49, David Howells wrote:
+> Fix netfs_unbuffered_write_iter() to return immediately if
+> generic_write_checks() returns 0, indicating there's nothing to write.
+> Note that netfs_file_write_iter() already does this.
 > 
-> Without the legacy gadget there is no real solution to mount
-> the 9pfs via the gadget as rootfs. The "correct" api is configfs
-> which will need the user to have some filesystem to mount it to.
-
-That's what your initramfs is for.  Why can't you just use that?
-
-> There is the relatively new concept of bootconfig which sounds
-> promising to describe an complete configfs tree from system boot.
-
-Great, but until that happens, again, just use initramfs.
-
-> However this is some future talk for now, so we would like to
-> stick with the legacy setup to be able to mount the 9pfs rootfs.
-
-I'd prefer to NOT add new legacy gadget drivers, and do everything
-possible to delete them all from the tree "soon".
-
-> > > +/*
-> > > + * Gadget usb9pfs only needs two bulk endpoints, and will use the usb9pfs usb
-> > > + * transport to mount host filesystem via usb gadget. This driver will
-> > > + * also add one ACM and NCM interface.
-> > 
-> > Why "also"?  What are those interfaces going to be used for and what do
-> > they have to do with 9pfs?
+> Also, whilst we're at it, put in checks for the size being zero before we
+> even take the locks.  Note that generic_write_checks() can still reduce the
+> size to zero, so we still need that check.
 > 
-> They are not necessary to be used with 9pfs. But since we introduce an
-> new legacy module which is fully claiming the UDC, it would make sense
-> to leave the other endpoints unavailable but instead add some common
-> interfaces like ecm and acm.
+> Without this, a warning similar to the following is logged to dmesg:
+> 
+> 	netfs: Zero-sized write [R=1b6da]
+> 
+> and the syscall fails with EIO, e.g.:
+> 
+> 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+> 
+> This can be reproduced on 9p by:
+> 
+> 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
+> 
+> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+> Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
+> Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
 
-But if no one needs/wants them, why make this complex?  Again, configfs
-can handle the composition of this if you need it, which is why that
-"new" interface was created.
+David, thx for fixing Eric's regression, which I'm tracking.
 
-thanks,
+Christian, just wondering: that patch afaics is sitting in vfs.netfs for
+about three weeks now -- is that intentional or did it maybe fell
+through the cracks somehow?
 
-greg k-h
+> [...]
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
