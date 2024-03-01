@@ -1,40 +1,40 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B7D79F1
-	for <v9fs@lists.linux.dev>; Fri,  1 Mar 2024 12:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD436EB66
+	for <v9fs@lists.linux.dev>; Fri,  1 Mar 2024 14:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709294768; cv=none; b=jzmO+b0XEX0nBW6QDx4viQBPygoaGmLmtb8wdszpmKRoed2rsPdBxiCvzpz+F4Y2RETqvMxU8vp1kCLga85IZl3i0J3+4tR5qQJyZkypu6A7c8wK6gSiBxliinucqkMVc6LsKo4IEkrGt0DV8XI7RxcNlSsIuKMVR3pgGEYeSTs=
+	t=1709303190; cv=none; b=AmHT4h69XJ+/Llg4WRwFsn5xFkuJd90i6m3+IyaFu66nMDO7QSP8zemPF8GPkS1Hx2HQzyCCh8kTKKULG7Xm6nMvGcbtd8wkachK94Kr5HQ7ZGMDMeePRj99of55SR4er6XXaqDulaVSPD2xc7CE4oLR+LG5A0/Q1/vmQZyMX7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709294768; c=relaxed/simple;
-	bh=VfJLA+apQ2y27CyTOnJ6ONaS3IDWYlPAkRiDGThMQtE=;
+	s=arc-20240116; t=1709303190; c=relaxed/simple;
+	bh=xLLbFCitdEhU1RvTDI817HAwsCfV863rjSvWqc1GrrE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aVKrSbrAKGDOPUxOz/aFpOQpmTbmv+XzcQNY1r/uQri/RJDvU3a7cUDJllQge3AF72k5NBrgAoOSuFBQzHX1jzUlv+4zUHsDwNhqnGgZ+riaF/18+zGOZ2/a1ZqD0fXgJNcfKVDyRHkt9vALwp17/FLqkXOL7eZXXVWtfqOOydc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=JIgnldDX; arc=none smtp.client-ip=46.235.227.194
+	 In-Reply-To:Content-Type; b=UOUmBirTUoTgrvcLxwmZoUwC4BBp1/sQ+9Ro9JyFGF038WNOAg76iZo+BDHPCmcOK07pvMByYNcOcyQ9rw0j0dwetHleiuBUnxjG6lvO2CroYU0z5KxdJlK1WmOSb63J6fXcA/XtUeiIKblX4emkrAFXkmn6LowH612xA1BfQaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=uAXwPk0s; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="JIgnldDX"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="uAXwPk0s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709294764;
-	bh=VfJLA+apQ2y27CyTOnJ6ONaS3IDWYlPAkRiDGThMQtE=;
+	s=mail; t=1709303186;
+	bh=xLLbFCitdEhU1RvTDI817HAwsCfV863rjSvWqc1GrrE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JIgnldDXK8GgmRbTZW0t8M8yH3HcNouSz/z+AgCcAlJ6WH2eCNhX8pdb8NWeIOI6k
-	 G+0yhyFtYrPCMoTIuM4nfU/ltgK6fkXODsaCVArpsxqZfYHw9z7SFQc/3oXL21Abf9
-	 06Ghc2KAfDIIZwJcreZjySyr7HlrM2L3qq10fS5mJlSHt++IRAwLoQq4zCfGeiMLXI
-	 qd3NHReHyscDhqtrDjT+ZO3kQ4GcsWIpYLyGudUF+AwpnM0KNkR4R/NDDLdrIex6+T
-	 vzQVJuEuMNR+e4uGi+/7HmgQhxe1BtY+J0P3TkPBZe0OdB4Kd1ynjUcfHavlXZB4MC
-	 /Tr0Dmkchc2YQ==
+	b=uAXwPk0saTLazKJAQuPEkQzPgl1s3PhwwVTT5ddGZAev8koH47hMrAPhPdSxuaqig
+	 MNgfj54ywMgabYr+bxWA82k8m+YZiegNgvbOXmEA7LyEg4wpzAtlmSV4HXPhfPL9ur
+	 UovwRsOV8WEBSBzTn5W7dhl5hOc0xsUktzPLVI5nh7NBx8+b7D+dgte4CdZdvh3H3B
+	 b3zCpcVaOnqUEgqdLS6qa77R9BdsZKbx9g73i0xmjpOQq/ljsmkmBwdVQjiXItog9p
+	 90KfHsbPe+v4kS4GEeE0EosemQNZHA16178Vlr73hg27RJ7EIN5gtp59X7ndChTjrw
+	 dbXmiVrAJWGoA==
 Received: from [100.95.196.182] (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: andrzej.p)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id EBC623780EC6;
-	Fri,  1 Mar 2024 12:06:03 +0000 (UTC)
-Message-ID: <9581f66e-dc3a-495b-bacb-30908a78a773@collabora.com>
-Date: Fri, 1 Mar 2024 13:06:03 +0100
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 094ED37803EE;
+	Fri,  1 Mar 2024 14:26:25 +0000 (UTC)
+Message-ID: <0d2fc837-a7b4-4d6f-9359-f2b64fe16f92@collabora.com>
+Date: Fri, 1 Mar 2024 15:26:24 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -42,7 +42,9 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] usb: gadget: 9pfs transport
+Subject: Re: [PATCH v2 4/4] tools: usb: p9_fwd: add usb gadget packet
+ forwarder script
+Content-Language: en-US
 To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
  Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
  <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
@@ -52,104 +54,284 @@ To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
 Cc: v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  kernel@pengutronix.de
-References: <20240116-ml-topic-u9p-v3-0-c62a36eccda1@pengutronix.de>
-Content-Language: en-US
+References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
+ <20240116-ml-topic-u9p-v2-4-b46cbf592962@pengutronix.de>
 From: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-In-Reply-To: <20240116-ml-topic-u9p-v3-0-c62a36eccda1@pengutronix.de>
+In-Reply-To: <20240116-ml-topic-u9p-v2-4-b46cbf592962@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 Hi Michael,
 
-W dniu 26.02.2024 o 14:56, Michael Grzeschik pisze:
-> This series is adding support to mount usb hostside exported 9pfs
-> filesystems via the usb gadget interface. It also includes a simple tool
-> (p9_fwd.py) to translate an tcp 9pfs transport and reuse it via the usb
-> interface.
+W dniu 2.02.2024 o 01:05, Michael Grzeschik pisze:
+> This patch is adding an small python tool to forward 9pfs requests
+> from the USB gadget to an existing 9pfs TCP server. Since currently all
+> 9pfs servers lack support for the usb transport this tool is an useful
+> helper to get started.
 > 
->      +--------------------------+    |    +--------------------------+
->      |  9PFS mounting client    |    |    |  9PFS exporting server   |
->   SW |                          |    |    |                          |
->      |   (this:trans_usbg)      |    |    |(e.g. diod or nfs-ganesha)|
->      +-------------^------------+    |    +-------------^------------+
->                    |                 |                  |
->                    |                 |           +------v------+
->                    |                 |           |  p9_fwd.py  |
->                    |                 |           +------^------+
->                    |                 |                  |
-> ------------------|------------------------------------|-------------
->                    |                 |                  |
->      +-------------v------------+    |    +-------------v------------+
->      |                          |    |    |                          |
->   HW |   USB Device Controller  <--------->   USB Host Controller    |
->      |                          |    |    |                          |
->      +--------------------------+    |    +--------------------------+
-> 
-> The USB host exports a filesystem, while the gadget on the USB device
-> side makes it mountable.
-> 
-> Diod (9pfs server) and the forwarder are on the development host, where
-> the root filesystem is actually stored. The gadget is initialized during
-> boot (or later) on the embedded board. Then the forwarder will find it
-> on the USB bus and start forwarding requests.
-> 
-> In this case the 9p requests come from the device and are handled by the
-> host. The reason is that USB device ports are normally not available on
-> PCs, so a connection in the other direction would not work.
-> 
-> One use-case is to use it as an alternative to NFS root booting during
-> the development of embedded Linux devices.
+> Refer the Documentation section "USBG Example" in
+> Documentation/filesystems/9p.rst on how to use it.
 > 
 > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> 
 > ---
-> Changes in v3:
-> - dropped patch "usb: gadget: legacy: add 9pfs multi gadget" as discussed with gregkh
+> v1 -> v2:
+>    - added usbg 9pfs detailed instructions to 9p.rst doc
+> ---
+>   Documentation/filesystems/9p.rst |  32 +++++++
+>   tools/usb/p9_fwd.py              | 194 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 226 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+> index 64439068a8fc5..264265c72ba67 100644
+> --- a/Documentation/filesystems/9p.rst
+> +++ b/Documentation/filesystems/9p.rst
+> @@ -67,6 +67,38 @@ To mount a 9p FS on a USB Host accessible via the gadget as root filesystem::
+>   where mount_tag is the tag associated by the usb gadget transport. The
+>   pattern is usb9pfs0, usb9pfs1, ...
+>   
+> +USBG Example
+> +============
+> +
+> +The USB host exports a filesystem, while the gadget on the USB device
+> +side makes it mountable.
+> +
+> +Diod (9pfs server) and the forwarder are on the development host, where
+> +the root filesystem is actually stored. The gadget is initialized during
+> +boot (or later) on the embedded board. Then the forwarder will find it
+> +on the USB bus and start forwarding requests.
+> +
+> +In this case the 9p requests come from the device and are handled by the
+> +host. The reason is that USB device ports are normally not available on
+> +PCs, so a connection in the other direction would not work.
+> +
+> +When using the usbg transport, for now there is no native usb host
+> +service capable to handle the requests from the gadget driver. For
+> +this we have to use the extra python tool p9_fwd.py from tools/usb.
+> +
+> +Just start the 9pfs capable network server like diod/nfs-ganesha e.g.:
+> +
+> +	$ diod -f -n -d 0 -S -l 0.0.0.0:9999 -e $PWD
+> +
+> +Then start the python transport:
+> +
+> +	$ python $kernel_dir/tools/usb/p9_fwd.py -p 9999
+> +
+> +After that the gadget driver can be used as described above.
 
-I will give the dropped patch a try to see how it works, as it should work the
-same way regardless of how the gadget is composed, legacy or configfs.
-
-Speaking of the latter, IMO there _are_ valid usecases other than having 9pfs
-rootfs, so configfs support should be there. If you intend to send the patches
-adding configfs support then kindly Cc me and I will test and review it for you.
+Hmm... The "described above" portion refers to <mount_tag>. How do I get my
+<mount_tag> if I run diod combined with p9_fwd.py?
 
 Regards,
 
 Andrzej
 
-> - Link to v2: https://lore.kernel.org/r/20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de
+> +
+> +One use-case is to use it as an alternative to NFS root booting during
+> +the development of embedded Linux devices.
+> +
+>   Options
+>   =======
+>   
+> diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
+> new file mode 100755
+> index 0000000000000..95208df11abef
+> --- /dev/null
+> +++ b/tools/usb/p9_fwd.py
+> @@ -0,0 +1,194 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +import argparse
+> +import errno
+> +import logging
+> +import socket
+> +import struct
+> +import sys
+> +import time
+> +
+> +import usb.core
+> +import usb.util
+> +
+> +
+> +class Forwarder:
+> +    HEXDUMP_FILTER = (
+> +        "".join(chr(x).isprintable() and chr(x) or "." for x in range(128)) + "." * 128
+> +    )
+> +
+> +    @staticmethod
+> +    def _log_hexdump(data):
+> +        if not logging.root.isEnabledFor(logging.TRACE):
+> +            return
+> +        L = 16
+> +        for c in range(0, len(data), L):
+> +            chars = data[c : c + L]
+> +            dump = " ".join(f"{x:02x}" for x in chars)
+> +            printable = "".join(HEXDUMP_FILTER[x] for x in chars)
+> +            line = f"{c:08x}  {dump:{L*3}s} |{printable:{L}s}|"
+> +            logging.root.log(logging.TRACE, "%s", line)
+> +
+> +    def __init__(self, server):
+> +        self.stats = {
+> +            "c2s packets": 0,
+> +            "c2s bytes": 0,
+> +            "s2c packets": 0,
+> +            "s2c bytes": 0,
+> +        }
+> +        self.stats_logged = time.monotonic()
+> +
+> +        dev = usb.core.find(idVendor=0x1D6B, idProduct=0x0109)
+> +        if dev is None:
+> +            raise ValueError("Device not found")
+> +
+> +        logging.info(f"found device: {dev.bus}/{dev.address}")
+> +
+> +        # dev.set_configuration() is not necessary since g_multi has only one
+> +        usb9pfs = None
+> +        # g_multi adds 9pfs as last interface
+> +        cfg = dev.get_active_configuration()
+> +        for intf in cfg:
+> +            # we have to detach the usb-storage driver from multi gadget since
+> +            # stall option could be set, which will lead to spontaneous port
+> +            # resets and our transfers will run dead
+> +            if intf.bInterfaceClass == 0x08:
+> +                if dev.is_kernel_driver_active(intf.bInterfaceNumber):
+> +                    dev.detach_kernel_driver(intf.bInterfaceNumber)
+> +
+> +            if (
+> +                intf.bInterfaceClass == 0xFF
+> +                and intf.bInterfaceSubClass == 0xFF
+> +                and intf.bInterfaceProtocol == 0x09
+> +            ):
+> +                usb9pfs = intf
+> +        if usb9pfs is None:
+> +            raise ValueError("Interface not found")
+> +
+> +        logging.info(f"claiming interface:\n{usb9pfs}")
+> +        usb.util.claim_interface(dev, usb9pfs.bInterfaceNumber)
+> +        ep_out = usb.util.find_descriptor(
+> +            usb9pfs,
+> +            custom_match=lambda e: usb.util.endpoint_direction(e.bEndpointAddress)
+> +            == usb.util.ENDPOINT_OUT,
+> +        )
+> +        assert ep_out is not None
+> +        ep_in = usb.util.find_descriptor(
+> +            usb9pfs,
+> +            custom_match=lambda e: usb.util.endpoint_direction(e.bEndpointAddress)
+> +            == usb.util.ENDPOINT_IN,
+> +        )
+> +        assert ep_in is not None
+> +        logging.info(f"interface claimed")
+> +
+> +        self.ep_out = ep_out
+> +        self.ep_in = ep_in
+> +        self.dev = dev
+> +
+> +        # create and connect socket
+> +        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+> +        self.s.connect(server)
+> +
+> +        logging.info(f"connected to server")
+> +
+> +    def c2s(self):
+> +        """forward a request from the USB client to the TCP server"""
+> +        data = None
+> +        while data is None:
+> +            try:
+> +                logging.log(logging.TRACE, "c2s: reading")
+> +                data = self.ep_in.read(self.ep_in.wMaxPacketSize)
+> +            except usb.core.USBTimeoutError:
+> +                logging.log(logging.TRACE, "c2s: reading timed out")
+> +                continue
+> +            except usb.core.USBError as e:
+> +                if e.errno == errno.EIO:
+> +                    logging.debug("c2s: reading failed with %s, retrying", repr(e))
+> +                    time.sleep(0.5)
+> +                    continue
+> +                else:
+> +                    logging.error("c2s: reading failed with %s, aborting", repr(e))
+> +                    raise
+> +        size = struct.unpack("<I", data[:4])[0]
+> +        while len(data) < size:
+> +            data += self.ep_in.read(size - len(data))
+> +        logging.log(logging.TRACE, "c2s: writing")
+> +        self._log_hexdump(data)
+> +        self.s.send(data)
+> +        logging.debug("c2s: forwarded %i bytes", size)
+> +        self.stats["c2s packets"] += 1
+> +        self.stats["c2s bytes"] += size
+> +
+> +    def s2c(self):
+> +        """forward a response from the TCP server to the USB client"""
+> +        logging.log(logging.TRACE, "s2c: reading")
+> +        data = self.s.recv(4)
+> +        size = struct.unpack("<I", data[:4])[0]
+> +        while len(data) < size:
+> +            data += self.s.recv(size - len(data))
+> +        logging.log(logging.TRACE, "s2c: writing")
+> +        self._log_hexdump(data)
+> +        while data:
+> +            written = self.ep_out.write(data)
+> +            assert written > 0
+> +            data = data[written:]
+> +        if size % self.ep_out.wMaxPacketSize == 0:
+> +            logging.log(logging.TRACE, "sending zero length packet")
+> +            self.ep_out.write(b"")
+> +        logging.debug("s2c: forwarded %i bytes", size)
+> +        self.stats["s2c packets"] += 1
+> +        self.stats["s2c bytes"] += size
+> +
+> +    def log_stats(self):
+> +        logging.info("statistics:")
+> +        for k, v in self.stats.items():
+> +            logging.info(f"  {k+':':14s} {v}")
+> +
+> +    def log_stats_interval(self, interval=5):
+> +        if (time.monotonic() - self.stats_logged) < interval:
+> +            return
+> +
+> +        self.log_stats()
+> +        self.stats_logged = time.monotonic()
+> +
+> +
+> +def main():
+> +    parser = argparse.ArgumentParser(
+> +        description="Forward 9PFS requests from USB to TCP",
+> +    )
+> +
+> +    parser.add_argument(
+> +        "-s", "--server", type=str, default="127.0.0.1", help="server hostname"
+> +    )
+> +    parser.add_argument("-p", "--port", type=int, default=564, help="server port")
+> +    parser.add_argument("-v", "--verbose", action="count", default=0)
+> +
+> +    args = parser.parse_args()
+> +
+> +    logging.TRACE = logging.DEBUG - 5
+> +    logging.addLevelName(logging.TRACE, "TRACE")
+> +
+> +    if args.verbose >= 2:
+> +        level = logging.TRACE
+> +    elif args.verbose:
+> +        level = logging.DEBUG
+> +    else:
+> +        level = logging.INFO
+> +    logging.basicConfig(
+> +        level=level, format="%(asctime)-15s %(levelname)-8s %(message)s"
+> +    )
+> +
+> +    f = Forwarder(server=(args.server, args.port))
+> +
+> +    try:
+> +        while True:
+> +            f.c2s()
+> +            f.s2c()
+> +            f.log_stats_interval()
+> +    finally:
+> +        f.log_stats()
+> +
+> +
+> +if __name__ == "__main__":
+> +    main()
 > 
-> Changes in v2:
-> - improved the commit messages
-> - introduced an patch to move the header u_f.h to include/linux/usb to compile usb gadget functions treewide
-> - moved usbg gadget function to net/9p/
-> - adderessed several comments in function driver, like the cleanup path and kbuild errors
-> - improved the documentation in Documentation/filesystems/9p.rst
-> - Link to v1: https://lore.kernel.org/r/20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de
-> 
-> ---
-> Michael Grzeschik (3):
->        usb: gadget: function: move u_f.h to include/linux/usb/
->        net/9p/usbg: Add new usb gadget function transport
->        tools: usb: p9_fwd: add usb gadget packet forwarder script
-> 
->   Documentation/filesystems/9p.rst                |  47 ++
->   drivers/usb/gadget/configfs.c                   |   2 +-
->   drivers/usb/gadget/function/f_fs.c              |   2 +-
->   drivers/usb/gadget/function/f_hid.c             |   2 +-
->   drivers/usb/gadget/function/f_loopback.c        |   2 +-
->   drivers/usb/gadget/function/f_midi.c            |   2 +-
->   drivers/usb/gadget/function/f_midi2.c           |   2 +-
->   drivers/usb/gadget/function/f_sourcesink.c      |   2 +-
->   drivers/usb/gadget/u_f.c                        |   2 +-
->   {drivers/usb/gadget => include/linux/usb}/u_f.h |   0
->   net/9p/Kconfig                                  |   6 +
->   net/9p/Makefile                                 |   4 +
->   net/9p/trans_usbg.c                             | 871 ++++++++++++++++++++++++
->   tools/usb/p9_fwd.py                             | 194 ++++++
->   14 files changed, 1130 insertions(+), 8 deletions(-)
-> ---
-> base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
-> change-id: 20240116-ml-topic-u9p-895274530eb1
-> 
-> Best regards,
 
