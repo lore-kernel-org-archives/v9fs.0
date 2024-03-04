@@ -1,90 +1,68 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC223D540
-	for <v9fs@lists.linux.dev>; Mon,  4 Mar 2024 13:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE07E573;
+	Mon,  4 Mar 2024 14:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709557870; cv=none; b=u/+r6u9tQN3fggF59rhRB4YMmvWLRf2b/JcL7rctQo4s/XHUysGvCOS8AwAKLnPD/pzCcpZpx93yFJLUQR1h/0TNHdNPfXDv8a3P/hh+ENndm4kMecsLmIRw6vCxYbvsNa6W0zQCi3lgGXqFecBF9QgeTgW3KmGbKYk+KB8qZFo=
+	t=1709561051; cv=none; b=R5S8KXXsUq/q9vyR0sFaVYHo2Rkc4AwRUXlRzmXfPYk7wxJOTnkoY/o8+8BY4p/lqkQiAU/crTDuUfaDUUsHUBWT3mwKh+D+DeXwk2EWj47qrFbNo77GFdCPre+/ipt/lu8x1819CDf2tIoI9kS6Np+/hXo030MiFKYK0yhBYow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709557870; c=relaxed/simple;
-	bh=nooUNjf/FBwMwIpB0WjYml/LaIESHAu1Ci4s4v41dew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KgH17naHck4d5AOqLseopEkSP5/6Lpy46N60VHdCFo9pp+l4WFNYtc9FAbxlcYTvN2PiRuvnP3D3UV+cVKsAd/bxtKsJgGGKMpWow2fHRoU+M87r/q27HU5APanUvFNQ4Fk2tQd4rh90Evqsl6qK2fbrzJxPbsaxoUUSEiLSBkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=1t2N5Uhd; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=dLqHKolL; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1709561051; c=relaxed/simple;
+	bh=BN1qJJlQBEneDE5OhSeQi8WrX1WlkPPOaXCeqBKB/Mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OQGTo23gYaSGroxm7Gxp79ttZg9qfppXKeR7jetQXB7Zv16F+MZt3sm53obFf+Vp38/gk4kIF7Yw6ssorO9u8rG1hNDLC4bg1KecEvNstIjZShItwhXCazvdrS0kPqm8c5yR4e4U6XqPGHTOtpHkI8G515B4gZFdJyD96nARjTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=JeEeUmW6; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="1t2N5Uhd";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="dLqHKolL"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 59CB9C021; Mon,  4 Mar 2024 14:11:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1709557865; bh=r80fpE+N5xKfTcdTiGFnYd+7aOXoX0H9BY+QrwtefC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1t2N5UhdSJtkmCilLGLMEA2r+jzWWSifV1IlsO9gP0oPJMon7P2l5Rc+8vlf5VSlC
-	 PcH6c8TW3ROYl7y5uPaTdDDJOD+1iaboabBGOaECK3qMfcxzzlbfmEbq30pbSsJ91x
-	 ALPYfY/hDvT/e3duK4y9gSLVFDOj8X8ZrgYrSXv3SjqeUI1KzMhNsOM8R/Wo634ZIe
-	 HWiZKDJgkxts3g6QQoRAnOXdmuaWmVjMiuUKbwJ1TuWqH8odJQyGTdR6myK9/kNMdy
-	 L3Jvd9utU01QqRn3cpDyMHCVlaCjjrJ8xub9Spabpj+HkLQ+2DA6B0xsV/LxaOffpT
-	 d6WjLXOP57urA==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 9FFA6C01A;
-	Mon,  4 Mar 2024 14:11:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1709557864; bh=r80fpE+N5xKfTcdTiGFnYd+7aOXoX0H9BY+QrwtefC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dLqHKolLX5f+oq/CGD2+0Wpsg4QXmxIR6kNcS+EFf0B+4Awbwa9m6mVQO9AwJ8Rsh
-	 Wu5SiDJ66VwCjpTPhBZgyy1SsNHxaOIy1LctYWylD9qv4lUhiZktonJGJ8GuPem+MT
-	 hFdWT+5uzKQZ7litAv9eCFdr3L4dorwzFrJDXmMb6/sqJLUZ8guzYaJRUwlPqmeYvH
-	 lgTP1VUezOgbJKsA8wKjIMSmqxVejoeFTGUr57nJJjk4bPedhRaL5Gbgs68sxYsF2P
-	 veCQrarYufi93WhlOmA9ocNdzl7mXTj+BQFIjiuSoKgEdjvZ1my3FdDUUR6vfXU0LS
-	 TfPAtSJLctlYw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3354139c;
-	Mon, 4 Mar 2024 13:10:57 +0000 (UTC)
-Date: Mon, 4 Mar 2024 22:10:42 +0900
-From: asmadeus@codewreck.org
-To: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, vbabka@suse.cz,
-	roman.gushchin@linux.dev, Xiongwei.Song@windriver.com
-Subject: Re: [PATCH] 9p: remove SLAB_MEM_SPREAD flag usage
-Message-ID: <ZeXIUlqnp23qTxo2@codewreck.org>
-References: <20240224134617.829016-1-chengming.zhou@linux.dev>
- <2de0d872-0e05-4fbb-8291-0c60487ccd8d@linux.dev>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="JeEeUmW6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=BN1qJJlQBEneDE5OhSeQi8WrX1WlkPPOaXCeqBKB/Mw=; b=JeEeUmW6yS3b0M2jxbz5eX0Ptb
+	/S3Bg8Xr5m8qJrPNyfXb2/+bpar5mjnygP7r+7qfZuJZLSKr1Hat7PFq2yzTKYte/g5hvlHXgOCe1
+	dN63joAHhU0kvRcQchlR33vYaCQqOYinw+LFzrVo7O3jRo9c7x5YufTXSPs5mtWDtyquVwt0KcQmc
+	4bZWhn1CumKwZZBJnhp9XLikC4lU3k/uVwP/f5CpFD3tKhU/dGNnfkJ1OHT4dhdRY9VfwlCH93qfO
+	wYKYy+sRgG0/cyu+RAT/PCkdqN0yYKh9+pvwSC/Duity1vzTZ3IMZz0jgVm2CicOqtS71F9N9qLMQ
+	lWb8QQynwYE0Rin/fS5Q+1ocjvmAL7wPUX4KLjT9sb3p+BGXM3mthinULXMK8s66Kkid8+i5dBpxT
+	0TrytdotK0m6WwFo9wAUa2bsHHHJg6jfgkCiHIk71aJouwkVPGfjMhEzzMC4MWD/R5dsOj79e9JHq
+	hB63+kz5lJOPRWW0hCX3ZVaoQeYBcnuFG4bmrPt8CqxcvhnI7juKmKepRoUK7VtbVOeI8ey+39+Rr
+	/50anNLpIxMo5Q3vMOAS4fsiug4SCeAbuo2fVoSJbLlN663x7jEWdTOaeXF/yJQMjlvmnMeC7yC7M
+	UAfRpxgPQDYpa4rzZ2ObGYZrfIcy/72Y2dPTmvq0U=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Christian Brauner <brauner@kernel.org>, xingwei lee <xrivendell7@gmail.com>,
+ sam sun <samsun1006219@gmail.com>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH] 9p: cap xattr max size to XATTR_SIZE_MAX
+Date: Mon, 04 Mar 2024 14:35:07 +0100
+Message-ID: <4091309.WcpKHNDlqE@silver>
+In-Reply-To: <20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org>
+References: <20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2de0d872-0e05-4fbb-8291-0c60487ccd8d@linux.dev>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Chengming Zhou wrote on Mon, Feb 26, 2024 at 10:51:00AM +0800:
-> On 2024/2/24 21:46, chengming.zhou@linux.dev wrote:
-> > From: Chengming Zhou <zhouchengming@bytedance.com>
-> > 
-> > The SLAB_MEM_SPREAD flag is already a no-op as of 6.8-rc1, remove
-> > its usage so we can delete it from slab. No functional change.
-> 
-> Update changelog to make it clearer:
-> 
-> The SLAB_MEM_SPREAD flag used to be implemented in SLAB, which was
-> removed as of v6.8-rc1, so it became a dead flag since the commit
-> 16a1d968358a ("mm/slab: remove mm/slab.c and slab_def.h"). And the
-> series[1] went on to mark it obsolete to avoid confusion for users.
-> Here we can just remove all its users, which has no functional change.
-> 
-> [1] https://lore.kernel.org/all/20240223-slab-cleanup-flags-v2-1-02f1753e8303@suse.cz/
+On Monday, March 4, 2024 1:42:43 PM CET Dominique Martinet wrote:
+> We probably shouldn't ever get an xattr bigger than that, and the current check
+> of SSIZE_MAX is a bit too large.
 
-Thanks for the updated text, this is a bit better.
-I've updated your commit message with this and will push to Linus next
-merge window in a couple of weeks, as you said there's no change so no
-reason to submit a patch this late in the cycle.
+Maybe, OTOH e.g. ACLs (dynamic size) are implemented by storing them as xattrs
+on 9p server as well, and this change somewhat expects server to run Linux as
+well. So maybe s/XATTR_SIZE_MAX/KMALLOC_MAX_SIZE/ might be more appropriate,
+considering that this patch is about fixing a potential kmalloc() warning?
 
--- 
-Dominique Martinet | Asmadeus
+Worth to mention in the commit log BTW what the issue was.
+
+/Christian
+
+
