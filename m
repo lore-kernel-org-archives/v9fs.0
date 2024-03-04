@@ -1,397 +1,222 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2731B2575F
-	for <v9fs@lists.linux.dev>; Fri,  1 Mar 2024 18:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A873BB3C;
+	Mon,  4 Mar 2024 11:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709318359; cv=none; b=UVU2JSMA9s6vcDNl3NKslgxvTLMsUwuObDkkpYwSofSt4fcfcjWqnV1LvfFq778T5q8lZr7mi+5smeZ0PLqsdX05F/K2H/hWKSAVk44YR9SKx9n+rToJFgr7pUg7CdqugeMZR+ZzwbhcaGCHO4RmXDHevXatfwefvtfNu2m68a8=
+	t=1709553018; cv=none; b=Qn3bddGKlZ/0tKIqf7PyFTGOLEwkEVnliqYLyOVBuyfnzg+P35mFTnrhry77DFiqh2E2DioS3wcuXA1plA98kCT6lgmY/DyLsY01lwfyAeDWbp3mU9WbS82csfLXg8VcyFk98Q06PKWhurkIQcVg4oDs6D/urn8gA/icFcL1bF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709318359; c=relaxed/simple;
-	bh=GU6lA2nzJYY9HvqDqtP25BcdwxKHs1g+gkhdeyPZN8U=;
+	s=arc-20240116; t=1709553018; c=relaxed/simple;
+	bh=XkbCUCRqV3KcB+2Bv3a7cUeUG2SDUrYB6chZBEC1yjk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dkRwIKadET30J5bI1nsKkMa/SqdLQdaLVqK9U/InOH2SS9lHs59tdAUh8KUdLsoXnQ5oeWYiFgLAXZ317pC7Bc4Fys+DslOkKSRnNp0AS8Z8w9M6Yqef8t49UNCHWJKRmAvDuIgcsxI1SRYr/JYFHS3NsN66qHCKuPm9I12gCvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rg7mj-0004aH-Pl; Fri, 01 Mar 2024 19:39:05 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rg7mf-003pdp-0u; Fri, 01 Mar 2024 19:39:01 +0100
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rg7me-00FAeD-31;
-	Fri, 01 Mar 2024 19:39:00 +0100
-Date: Fri, 1 Mar 2024 19:39:00 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH v2 4/4] tools: usb: p9_fwd: add usb gadget packet
- forwarder script
-Message-ID: <ZeIgxGn34RHdy4qS@pengutronix.de>
-References: <20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de>
- <20240116-ml-topic-u9p-v2-4-b46cbf592962@pengutronix.de>
- <0d2fc837-a7b4-4d6f-9359-f2b64fe16f92@collabora.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=s9ALZIGh97SD8RTKhXxSpwobO9IBS1ufNPJcC9L6lkY1RH8ghfboz5xlU/AL1hyS/NS5Sl9dWVAy/K2PQ/SxQF7fKXbmnDZLNtASHl3DdgEkeFrA6Zn8bIuL07AZg9OuO3wTz8oCT1bNMZxIgcmwfmWfVzKN00aSietOyMbtt8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzGHvWxx; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzGHvWxx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9813C433C7;
+	Mon,  4 Mar 2024 11:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709553017;
+	bh=XkbCUCRqV3KcB+2Bv3a7cUeUG2SDUrYB6chZBEC1yjk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mzGHvWxx2STz1OSpL4oukwIHBTpA7atjg1ik8wGT/Eo8mlj46lEmhQWUReIAAvQTz
+	 Sq3wPedD8pzyFPszgghEklCVdXJgqjGMzqDdrHI4rFbBAdllJvHVr4TRtTKp+nlDh5
+	 hFGLo6euaQfxAf+4eygNjzRvp8TVnzYQXNGkS/+vr1UQXVG8jw4T2f9zk8Ld77cvX2
+	 Jzs+BhxDUHrOnCB4YEj/dSASMsOGtdQ/wiezLOdr58SpatVNHcu7/U4+rjMAxWpM2k
+	 rorPKdpHEpsRZXRBfMig/JC1bFdTpBpLDBLFV3hDi1ZMfoWdN95joEd/PhOgZoIWzT
+	 MvQnvMtiBdOLw==
+Date: Mon, 4 Mar 2024 12:50:12 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: xingwei lee <xrivendell7@gmail.com>
+Cc: linux-kernel@vger.kernel.org, samsun1006219@gmail.com, 
+	linux-fsdevel@vger.kernel.org, syzkaller@googlegroups.com, jack@suse.cz, 
+	viro@zeniv.linux.org.uk, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
+Subject: Re: WARNING in vfs_getxattr_alloc
+Message-ID: <20240304-stuhl-appetit-656a443d78a5@brauner>
+References: <CABOYnLwY5Y499j=JgWtk9ksRneOzLoH_G9dYZTwXi=UvLbUsSg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IRMdcDxqLjOcUVPK"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <0d2fc837-a7b4-4d6f-9359-f2b64fe16f92@collabora.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
+In-Reply-To: <CABOYnLwY5Y499j=JgWtk9ksRneOzLoH_G9dYZTwXi=UvLbUsSg@mail.gmail.com>
+
+On Mon, Mar 04, 2024 at 04:51:13PM +0800, xingwei lee wrote:
+> Hello I found a issue in latest linux 6.7.rc8 titled "WARNING in
+> vfs_getxattr_alloc".
+> 
+> If you fix this issue, please add the following tag to the commit:
+> Reported-by: xingwei lee <xrivendell7@gmail.com>
+> Reported-by: sam sun <samsun1006219@gmail.com>
+> 
+> kernel: lastest linux 6.7.rc8 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
+> kernel config: https://syzkaller.appspot.com/text?tag=KernelConfig&x=4a65fa9f077ead01
+> with KASAN enabled
+> compiler: gcc (GCC) 12.2.0
+> 
+> TITLE: WARNING in vfs_getxattr_alloc------------[ cut here ]------------
+
+Very likely a bug in 9p. Report it on that mailing list. It seems that
+p9_client_xattrwalk() returns questionable values for attr_size:
+748310584784038656
+That's obviously a rather problematic allocation request.
 
 
---IRMdcDxqLjOcUVPK
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Mar 01, 2024 at 03:26:24PM +0100, Andrzej Pietrasiewicz wrote:
->Hi Michael,
->
->W dniu 2.02.2024 o=A001:05, Michael Grzeschik pisze:
->>This patch is adding an small python tool to forward 9pfs requests
->>from the USB gadget to an existing 9pfs TCP server. Since currently all
->>9pfs servers lack support for the usb transport this tool is an useful
->>helper to get started.
->>
->>Refer the Documentation section "USBG Example" in
->>Documentation/filesystems/9p.rst on how to use it.
->>
->>Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
->>
->>---
->>v1 -> v2:
->>   - added usbg 9pfs detailed instructions to 9p.rst doc
->>---
->>  Documentation/filesystems/9p.rst |  32 +++++++
->>  tools/usb/p9_fwd.py              | 194 ++++++++++++++++++++++++++++++++=
-+++++++
->>  2 files changed, 226 insertions(+)
->>
->>diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems=
-/9p.rst
->>index 64439068a8fc5..264265c72ba67 100644
->>--- a/Documentation/filesystems/9p.rst
->>+++ b/Documentation/filesystems/9p.rst
->>@@ -67,6 +67,38 @@ To mount a 9p FS on a USB Host accessible via the gadg=
-et as root filesystem::
->>  where mount_tag is the tag associated by the usb gadget transport. The
->>  pattern is usb9pfs0, usb9pfs1, ...
->>+USBG Example
->>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>+
->>+The USB host exports a filesystem, while the gadget on the USB device
->>+side makes it mountable.
->>+
->>+Diod (9pfs server) and the forwarder are on the development host, where
->>+the root filesystem is actually stored. The gadget is initialized during
->>+boot (or later) on the embedded board. Then the forwarder will find it
->>+on the USB bus and start forwarding requests.
->>+
->>+In this case the 9p requests come from the device and are handled by the
->>+host. The reason is that USB device ports are normally not available on
->>+PCs, so a connection in the other direction would not work.
->>+
->>+When using the usbg transport, for now there is no native usb host
->>+service capable to handle the requests from the gadget driver. For
->>+this we have to use the extra python tool p9_fwd.py from tools/usb.
->>+
->>+Just start the 9pfs capable network server like diod/nfs-ganesha e.g.:
->>+
->>+	$ diod -f -n -d 0 -S -l 0.0.0.0:9999 -e $PWD
->>+
->>+Then start the python transport:
->>+
->>+	$ python $kernel_dir/tools/usb/p9_fwd.py -p 9999
->>+
->>+After that the gadget driver can be used as described above.
->
->Hmm... The "described above" portion refers to <mount_tag>. How do I get my
-><mount_tag> if I run diod combined with p9_fwd.py?
-
-The mount_tag is decribing the instance of the usb gadget. So, when you
-are describing only one gadget this will always be usb9pfs0.
-
-The tools diod and p9_fwd.py don't need any mount_tag information.
-
-9PFS can be sometimes a bit confusing, in regards of what shall be
-mounted where. The filesystem path that should be shared by 9pfs
-is always represented with the "aname" property.
-
-Regards,
-Michael
-
->>+
->>+One use-case is to use it as an alternative to NFS root booting during
->>+the development of embedded Linux devices.
->>+
->>  Options
->>  =3D=3D=3D=3D=3D=3D=3D
->>diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
->>new file mode 100755
->>index 0000000000000..95208df11abef
->>--- /dev/null
->>+++ b/tools/usb/p9_fwd.py
->>@@ -0,0 +1,194 @@
->>+#!/usr/bin/env python3
->>+# SPDX-License-Identifier: GPL-2.0
->>+
->>+import argparse
->>+import errno
->>+import logging
->>+import socket
->>+import struct
->>+import sys
->>+import time
->>+
->>+import usb.core
->>+import usb.util
->>+
->>+
->>+class Forwarder:
->>+    HEXDUMP_FILTER =3D (
->>+        "".join(chr(x).isprintable() and chr(x) or "." for x in range(12=
-8)) + "." * 128
->>+    )
->>+
->>+    @staticmethod
->>+    def _log_hexdump(data):
->>+        if not logging.root.isEnabledFor(logging.TRACE):
->>+            return
->>+        L =3D 16
->>+        for c in range(0, len(data), L):
->>+            chars =3D data[c : c + L]
->>+            dump =3D " ".join(f"{x:02x}" for x in chars)
->>+            printable =3D "".join(HEXDUMP_FILTER[x] for x in chars)
->>+            line =3D f"{c:08x}  {dump:{L*3}s} |{printable:{L}s}|"
->>+            logging.root.log(logging.TRACE, "%s", line)
->>+
->>+    def __init__(self, server):
->>+        self.stats =3D {
->>+            "c2s packets": 0,
->>+            "c2s bytes": 0,
->>+            "s2c packets": 0,
->>+            "s2c bytes": 0,
->>+        }
->>+        self.stats_logged =3D time.monotonic()
->>+
->>+        dev =3D usb.core.find(idVendor=3D0x1D6B, idProduct=3D0x0109)
->>+        if dev is None:
->>+            raise ValueError("Device not found")
->>+
->>+        logging.info(f"found device: {dev.bus}/{dev.address}")
->>+
->>+        # dev.set_configuration() is not necessary since g_multi has onl=
-y one
->>+        usb9pfs =3D None
->>+        # g_multi adds 9pfs as last interface
->>+        cfg =3D dev.get_active_configuration()
->>+        for intf in cfg:
->>+            # we have to detach the usb-storage driver from multi gadget=
- since
->>+            # stall option could be set, which will lead to spontaneous =
-port
->>+            # resets and our transfers will run dead
->>+            if intf.bInterfaceClass =3D=3D 0x08:
->>+                if dev.is_kernel_driver_active(intf.bInterfaceNumber):
->>+                    dev.detach_kernel_driver(intf.bInterfaceNumber)
->>+
->>+            if (
->>+                intf.bInterfaceClass =3D=3D 0xFF
->>+                and intf.bInterfaceSubClass =3D=3D 0xFF
->>+                and intf.bInterfaceProtocol =3D=3D 0x09
->>+            ):
->>+                usb9pfs =3D intf
->>+        if usb9pfs is None:
->>+            raise ValueError("Interface not found")
->>+
->>+        logging.info(f"claiming interface:\n{usb9pfs}")
->>+        usb.util.claim_interface(dev, usb9pfs.bInterfaceNumber)
->>+        ep_out =3D usb.util.find_descriptor(
->>+            usb9pfs,
->>+            custom_match=3Dlambda e: usb.util.endpoint_direction(e.bEndp=
-ointAddress)
->>+            =3D=3D usb.util.ENDPOINT_OUT,
->>+        )
->>+        assert ep_out is not None
->>+        ep_in =3D usb.util.find_descriptor(
->>+            usb9pfs,
->>+            custom_match=3Dlambda e: usb.util.endpoint_direction(e.bEndp=
-ointAddress)
->>+            =3D=3D usb.util.ENDPOINT_IN,
->>+        )
->>+        assert ep_in is not None
->>+        logging.info(f"interface claimed")
->>+
->>+        self.ep_out =3D ep_out
->>+        self.ep_in =3D ep_in
->>+        self.dev =3D dev
->>+
->>+        # create and connect socket
->>+        self.s =3D socket.socket(socket.AF_INET, socket.SOCK_STREAM)
->>+        self.s.connect(server)
->>+
->>+        logging.info(f"connected to server")
->>+
->>+    def c2s(self):
->>+        """forward a request from the USB client to the TCP server"""
->>+        data =3D None
->>+        while data is None:
->>+            try:
->>+                logging.log(logging.TRACE, "c2s: reading")
->>+                data =3D self.ep_in.read(self.ep_in.wMaxPacketSize)
->>+            except usb.core.USBTimeoutError:
->>+                logging.log(logging.TRACE, "c2s: reading timed out")
->>+                continue
->>+            except usb.core.USBError as e:
->>+                if e.errno =3D=3D errno.EIO:
->>+                    logging.debug("c2s: reading failed with %s, retrying=
-", repr(e))
->>+                    time.sleep(0.5)
->>+                    continue
->>+                else:
->>+                    logging.error("c2s: reading failed with %s, aborting=
-", repr(e))
->>+                    raise
->>+        size =3D struct.unpack("<I", data[:4])[0]
->>+        while len(data) < size:
->>+            data +=3D self.ep_in.read(size - len(data))
->>+        logging.log(logging.TRACE, "c2s: writing")
->>+        self._log_hexdump(data)
->>+        self.s.send(data)
->>+        logging.debug("c2s: forwarded %i bytes", size)
->>+        self.stats["c2s packets"] +=3D 1
->>+        self.stats["c2s bytes"] +=3D size
->>+
->>+    def s2c(self):
->>+        """forward a response from the TCP server to the USB client"""
->>+        logging.log(logging.TRACE, "s2c: reading")
->>+        data =3D self.s.recv(4)
->>+        size =3D struct.unpack("<I", data[:4])[0]
->>+        while len(data) < size:
->>+            data +=3D self.s.recv(size - len(data))
->>+        logging.log(logging.TRACE, "s2c: writing")
->>+        self._log_hexdump(data)
->>+        while data:
->>+            written =3D self.ep_out.write(data)
->>+            assert written > 0
->>+            data =3D data[written:]
->>+        if size % self.ep_out.wMaxPacketSize =3D=3D 0:
->>+            logging.log(logging.TRACE, "sending zero length packet")
->>+            self.ep_out.write(b"")
->>+        logging.debug("s2c: forwarded %i bytes", size)
->>+        self.stats["s2c packets"] +=3D 1
->>+        self.stats["s2c bytes"] +=3D size
->>+
->>+    def log_stats(self):
->>+        logging.info("statistics:")
->>+        for k, v in self.stats.items():
->>+            logging.info(f"  {k+':':14s} {v}")
->>+
->>+    def log_stats_interval(self, interval=3D5):
->>+        if (time.monotonic() - self.stats_logged) < interval:
->>+            return
->>+
->>+        self.log_stats()
->>+        self.stats_logged =3D time.monotonic()
->>+
->>+
->>+def main():
->>+    parser =3D argparse.ArgumentParser(
->>+        description=3D"Forward 9PFS requests from USB to TCP",
->>+    )
->>+
->>+    parser.add_argument(
->>+        "-s", "--server", type=3Dstr, default=3D"127.0.0.1", help=3D"ser=
-ver hostname"
->>+    )
->>+    parser.add_argument("-p", "--port", type=3Dint, default=3D564, help=
-=3D"server port")
->>+    parser.add_argument("-v", "--verbose", action=3D"count", default=3D0)
->>+
->>+    args =3D parser.parse_args()
->>+
->>+    logging.TRACE =3D logging.DEBUG - 5
->>+    logging.addLevelName(logging.TRACE, "TRACE")
->>+
->>+    if args.verbose >=3D 2:
->>+        level =3D logging.TRACE
->>+    elif args.verbose:
->>+        level =3D logging.DEBUG
->>+    else:
->>+        level =3D logging.INFO
->>+    logging.basicConfig(
->>+        level=3Dlevel, format=3D"%(asctime)-15s %(levelname)-8s %(messag=
-e)s"
->>+    )
->>+
->>+    f =3D Forwarder(server=3D(args.server, args.port))
->>+
->>+    try:
->>+        while True:
->>+            f.c2s()
->>+            f.s2c()
->>+            f.log_stats_interval()
->>+    finally:
->>+        f.log_stats()
->>+
->>+
->>+if __name__ =3D=3D "__main__":
->>+    main()
->>
->
->
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---IRMdcDxqLjOcUVPK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmXiIL8ACgkQC+njFXoe
-LGRC4hAAjm/5XF6e7oT7EzDpOeuW1EedWRXJz+sCGoR9dlptBsoPSXH0D4JCLg5a
-/AJDWQmT3kW+WiaK8dtEDFXkAm6iBqRj1FfTD7DZoyOIQAEqpn+3KDETcjjngl79
-rgEPvkict3KO8hTkrtY5nLI7W6nkUnQ3VhAKt1glIi+yh36QY4dYbvtpdjYkeu5A
-pQCfJK3yiyYlPeofShKFKCaHIUs7KZoN36UyiuRAGVCJNcjghmlSSZC96el5uGVM
-xjihMrZSO9pjduMULSTfTZfsNx2kUaNJxpGsFD8OMlQwJzQohD5p+xToHqS8l7gB
-QfHtEy4maB+qLbgkF8ZXXOC0+CcfuNlbYuTzeyGcQVeJ1iB0fSsnQ1+elT6azUGd
-Ac1OVL5Ay85zmFkUluz1R+H/2o+kU56aF/7aLQ3ygkZ4FiSyqRWtvl/OOoc8koVX
-3kMzTz+4kLGP+U1ai/T7okQVAw7tM4F+3BW88FdegngSvqGkXmGUaEDPiIOBdz4H
-pFoXOlKMtSz+bsA+mdHPOA+rgznXP+IHOuCUFjdO4Wy3RUmK+xiIWXvpRcha0dsg
-pBoDzM7DLWZwy+i/O20kxCVEmr3LkppSNCUP20F46EGUVggvC2QQvwycrgrsO+Bj
-sUzGxe08KqCap3/W4iVBcRp+Og6xCbDQNv+JpcD/0EQeXbj+UtY=
-=Auy1
------END PGP SIGNATURE-----
-
---IRMdcDxqLjOcUVPK--
+> WARNING: CPU: 1 PID: 8212 at mm/page_alloc.c:4543
+> __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4543
+> Modules linked in:
+> CPU: 1 PID: 8212 Comm: 586 Not tainted 6.8.0-rc7 #18
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+> 1.16.2-1.fc38 04/01/2014
+> RIP: 0010:__alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4543
+> Code: ff ff 00 0f 84 2f fe ff ff 80 ce 01 e9 27 fe ff ff 83 fe 0a 0f
+> 86 3a fd ff ff 80 3d 66 9d 73 0c 00 75 09 cf
+> RSP: 0018:ffffc90010f7f7f0 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: 0000000000040c40 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: 0000000000000011 RDI: 0000000000040c40
+> RBP: 1ffff920021efeff R08: 0000000000000001 R09: ffffed100376f8a4
+> R10: ffffc90010f7f9b0 R11: 0000000000000000 R12: 0000000000000011
+> R13: 0000000000000000 R14: 0000000000000c40 R15: 00000000ffffffff
+> FS: 0000000000cbc380(0000) GS:ffff88823bc00000(0000) knlGS:0000000000000000
+> CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000200012c0 CR3: 0000000016f84000 CR4: 0000000000750ef0
+> PKRU: 55555554
+> Call Trace:
+> <TASK>
+> __alloc_pages_node include/linux/gfp.h:238 [inline]
+> alloc_pages_node include/linux/gfp.h:261 [inline]
+> __kmalloc_large_node+0x7f/0x1a0 mm/slub.c:3926
+> __do_kmalloc_node mm/slub.c:3969 [inline]
+> __kmalloc_node_track_caller.cold+0x5/0xe2 mm/slub.c:4001
+> __do_krealloc mm/slab_common.c:1187 [inline]
+> krealloc+0x5d/0x100 mm/slab_common.c:1220
+> vfs_getxattr_alloc+0x1d1/0x300 fs/xattr.c:399
+> cap_inode_getsecurity+0xc8/0x700 security/commoncap.c:402
+> security_inode_getsecurity+0xaa/0x100 security/security.c:2502
+> xattr_getsecurity fs/xattr.c:346 [inline]
+> vfs_getxattr+0x170/0x1b0 fs/xattr.c:446
+> do_getxattr+0x1a7/0x330 fs/xattr.c:739
+> getxattr+0xeb/0x150 fs/xattr.c:772
+> path_getxattr+0xd2/0x150 fs/xattr.c:788
+> do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+> do_syscall_64+0x78/0x1c0 arch/x86/entry/common.c:83
+> entry_SYSCALL_64_after_hwframe+0x63/0x6b
+> RIP: 0033:0x431869
+> Code: 48 83 c4 28 c3 e8 37 17 00 00 0f 1f 80 00 00 00 00 48 89 f8 48
+> 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 48
+> RSP: 002b:00007fff81cc9318 EFLAGS: 00000246 ORIG_RAX: 00000000000000c0
+> RAX: ffffffffffffffda RBX: 00007fff81cc9508 RCX: 0000000000431869
+> RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000020000000
+> RBP: 00007fff81cc9330 R08: 0000000000003928 R09: 0000000000003928
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+> R13: 00007fff81cc94f8 R14: 0000000000000001 R15: 0000000000000001
+> </TASK>
+> 
+> 
+> =* repro.c =*
+> #define _GNU_SOURCE
+> 
+> #include <endian.h>
+> #include <stdint.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <sys/syscall.h>
+> #include <sys/types.h>
+> #include <unistd.h>
+> 
+> uint64_t r[4] = {0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff,
+>                  0xffffffffffffffff};
+> 
+> int main(void) {
+>   syscall(__NR_mmap, /*addr=*/0x1ffff000ul, /*len=*/0x1000ul, /*prot=*/0ul,
+>           /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
+>   syscall(__NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x1000000ul, /*prot=*/7ul,
+>           /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
+>   syscall(__NR_mmap, /*addr=*/0x21000000ul, /*len=*/0x1000ul, /*prot=*/0ul,
+>           /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
+>   intptr_t res = 0;
+>   memcpy((void*)0x200002c0, "./file0\000", 8);
+>   syscall(__NR_mkdir, /*path=*/0x200002c0ul, /*mode=*/0ul);
+>   memcpy((void*)0x20000280, "security.capability\000", 20);
+>   syscall(__NR_setxattr, /*path=*/0ul, /*name=*/0x20000280ul, /*val=*/0ul,
+>           /*size=*/0ul, /*flags=*/0ul);
+>   res = syscall(__NR_pipe2, /*pipefd=*/0x20000240ul, /*flags=*/0ul);
+>   if (res != -1) {
+>     r[0] = *(uint32_t*)0x20000240;
+>     r[1] = *(uint32_t*)0x20000244;
+>   }
+>   memcpy((void*)0x20000080,
+>          "\x15\x00\x00\x00\x65\xff\xff\x09\x7b\x00\x00\x08\x00\x39\x50\x32\x30"
+>          "\x30\x30\x2e\x4c",
+>          21);
+>   syscall(__NR_write, /*fd=*/r[1], /*data=*/0x20000080ul, /*size=*/0x15ul);
+>   res = syscall(__NR_dup, /*oldfd=*/r[1]);
+>   if (res != -1)
+>     r[2] = res;
+>   *(uint32_t*)0x20000100 = 0x18;
+>   *(uint32_t*)0x20000104 = 0;
+>   *(uint64_t*)0x20000108 = 0;
+>   *(uint64_t*)0x20000110 = 0;
+>   syscall(__NR_write, /*fd=*/r[2], /*arg=*/0x20000100ul, /*len=*/0x18ul);
+>   memset((void*)0x200012c0, 176, 1);
+>   syscall(__NR_write, /*fd=*/r[2], /*arg=*/0x200012c0ul, /*len=*/0xb0ul);
+>   res = syscall(__NR_getresuid, /*ruid=*/0x20000440ul, /*euid=*/0x20000480ul,
+>                 /*suid=*/0x200004c0ul);
+>   if (res != -1)
+>     r[3] = *(uint32_t*)0x200004c0;
+>   memcpy((void*)0x200000c0,
+>          "\x10\x00\x00\x00\x00\x00\x00\x00\xab\xb7\x1b\x83\x88\x62\x0a\xa1\x53"
+>          "\xa4\xcb\x6d\x9e\x9e\xb0\x4d\x13\x52\xf4\x1b\xf1\x2c\x22\x04\x9a\xd4"
+>          "\x34\xcb\x2d\xb6\x63\x7e\x0c\x13",
+>          42);
+>   *(uint64_t*)0x200000ea = 0;
+>   syscall(__NR_write, /*fd=*/r[2], /*arg=*/0x200000c0ul, /*len=*/0x10ul);
+>   memcpy((void*)0x20000040, "./file0\000", 8);
+>   memcpy((void*)0x20000b80, "9p\000", 3);
+>   memcpy((void*)0x20000580, "trans=fd,rfdno=", 15);
+>   sprintf((char*)0x2000058f, "0x%016llx", (long long)r[0]);
+>   memcpy((void*)0x200005a1, ",wfdno=", 7);
+>   sprintf((char*)0x200005a8, "0x%016llx", (long long)r[2]);
+>   memcpy((void*)0x200005ba, ",privport,access=", 17);
+>   sprintf((char*)0x200005cb, "%020llu", (long long)r[3]);
+>   syscall(__NR_mount, /*src=*/0ul, /*dst=*/0x20000040ul, /*type=*/0x20000b80ul,
+>           /*flags=*/0ul, /*opts=*/0x20000580ul);
+>   memcpy((void*)0x20000000, "./file0\000", 8);
+>   syscall(__NR_lgetxattr, /*path=*/0x20000000ul, /*name=*/0x20000280ul,
+>           /*val=*/0ul, /*size=*/0ul);
+>   return 0;
+> }
+> 
+> 
+> =* repro.txt =*
+> mkdir(&(0x7f00000002c0)='./file0\x00', 0x0)
+> setxattr$security_capability(0x0, &(0x7f0000000280), 0x0, 0x0, 0x0)
+> pipe2$9p(&(0x7f0000000240)={<r0=>0xffffffffffffffff,
+> <r1=>0xffffffffffffffff}, 0x0)
+> write$P9_RVERSION(r1,
+> &(0x7f0000000080)=ANY=[@ANYBLOB="1500000065ffff097b000008003950323030302e4c"],
+> 0x15)
+> r2 = dup(r1)
+> write$FUSE_BMAP(r2, &(0x7f0000000100)={0x18}, 0x18)
+> write$FUSE_DIRENTPLUS(r2, &(0x7f00000012c0)=ANY=[@ANYBLOB="b0"], 0xb0)
+> getresuid(&(0x7f0000000440), &(0x7f0000000480), &(0x7f00000004c0)=<r3=>0x0)
+> write$FUSE_DIRENTPLUS(r2,
+> &(0x7f00000000c0)=ANY=[@ANYBLOB="1000000000000000abb71b8388620aa153a4cb6d9e9eb04d1352f41bf12c22049ad434cb2db6637e0c13",
+> @ANYRES64=0x0], 0x10)
+> mount$9p_fd(0x0, &(0x7f0000000040)='./file0\x00', &(0x7f0000000b80),
+> 0x0, &(0x7f0000000580)=ANY=[@ANYBLOB='trans=fd,rfdno=', @ANYRESHEX=r0,
+> @ANYBLOB=',wfdno=', @ANYRESHEX=r2, @ANYBLOB=',privport,access=',
+> @ANYRESDEC=r3])
+> lgetxattr(&(0x7f0000000000)='./file0\x00', &(0x7f0000000280)=ANY=[], 0x0, 0x0)
+> 
+> Aslo see https://gist.github.com/xrivendell7/1487d0ffb0bc3836c9202da1dd7cff06.
+> 
+> I hope it helps.
+> Best regards.
+> xingwei Lee
