@@ -1,46 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BACA3FB02;
-	Mon,  4 Mar 2024 14:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B38D10A3E
+	for <v9fs@lists.linux.dev>; Mon,  4 Mar 2024 21:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709563465; cv=none; b=UBI23rgCvJachXhrsrgcyNyfMP0sYqoDNrp8kuibOidHsGXId2WATxd+ssXIG8TkiYsXCrXghQDNRCdwfdwBIOo30UuoxFEVbIv2LoSUyoyvJDR0hG7vuONpAUKaLmFY56LFpzvK8p93/p3xI4QY337g5AN63yEUttal6pGsO34=
+	t=1709587192; cv=none; b=bNeCqo4cG+gwxdgv5RujeHvj3ibYwMlm/KOZl788J8QxbJ1EFVdCtlMDOQQkORTIr6HlACPe+NYmh1VHoqhB5FQT/q6Zd2r7We/zYT3GLwoN7RCoP+y/mJLtwWlVNG+dDqf5gH1X7IgR/vFMQ1EI4twhAr9ZWdxtobfVPEnkA1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709563465; c=relaxed/simple;
-	bh=CIWlzzc56P2a2Q8cEBY3mQwiAhICjTm2fIKGkNrlf+4=;
+	s=arc-20240116; t=1709587192; c=relaxed/simple;
+	bh=EyCnhyZx8y61GIK+e1cgky+PPZbRfpMMnKuKuP3ADVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p9TpbKFWqWKIBZeLnvqg7MYIscG8md4hD+u3ob9gsoaFzWXaA8t9zZ1NrHTGLYIUYEdU1Iy0JbtMkCCp0FlzcJIhl0cTX7WiPJxZL5FW7Kl7PFBA3i+estS1/pkA7eQx+dFmX4QNFQAeI4xHfyYrgEzr9w7nmbFoSdvwnqR82FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaYX0rd2; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=P+6D/l1mW+4ObN6rzoUyG3YJx5/kWtc8FLP8n200gtRjg+2OfnN1ypcrrkz3KDCCFNCK2f3AXU36CKafxYCyFU2eWR5tBRXbwrqlzTMgDmLMst1m/VoF2qeMBZ576zbD0pP2Q3/ipWIOXtXd4A+ApyCIBBxXq1mblryDYjejNdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=g/ArLPpg; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaYX0rd2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD834C433C7;
-	Mon,  4 Mar 2024 14:44:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709563464;
-	bh=CIWlzzc56P2a2Q8cEBY3mQwiAhICjTm2fIKGkNrlf+4=;
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="g/ArLPpg"
+Received: from localhost (unknown [10.10.165.17])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 7864E40F1DDF;
+	Mon,  4 Mar 2024 21:19:46 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 7864E40F1DDF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1709587186;
+	bh=nvSvmkdYAiWxaqGPMtppRIO/kU85atmGqBYFjnB7fj4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oaYX0rd2KQHS+m+uJGLZDqBX9AA781YzMFOBRtB2WMhbKdZumhhNjk3W40fZKclBK
-	 tKW7W8HIDG3Hn5h3wJqxUqhl63BoV1E637nsx3iYars/M+6XxCHUXjBP0fiVGAgciW
-	 GlZk1YWNzX96kEVtFWUwP7+nHMvBSWbCLlMueGnM4cN/UNdMLcEVg5NHkHZRxIxgf5
-	 ynJVBl+YXjn7OZDj64V2aGz288m8ZHx+PkfIMPRhUE+az/mwFwO2LDNaLDjRx+tZDd
-	 Dv8+BIClKI6d40BrhiTo0x+BuNigSTEPziH8k6ETdnQFJV3ZsJQiT8q/hO7gjqxDO1
-	 fjgoRJVpI8NUw==
-Date: Mon, 4 Mar 2024 08:44:23 -0600
-From: Seth Forshee <sforshee@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, xingwei lee <xrivendell7@gmail.com>,
-	sam sun <samsun1006219@gmail.com>
-Subject: Re: [PATCH] 9p: cap xattr max size to XATTR_SIZE_MAX
-Message-ID: <ZeXeR+2f/ozdamWL@do-x1extreme>
-References: <20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org>
- <4091309.WcpKHNDlqE@silver>
- <20240304-zeitschrift-tagung-6f2a28e781bc@brauner>
- <ZeXcQmHWcYvfCR93@do-x1extreme>
+	b=g/ArLPpgS24z1ofyCdO3tL69gg5RqObbiWy0rskesljj7t7SNN/fjJR6j25jYaZUm
+	 od9ktWV0aE1olE7EFv6RH/qYZnwNZqvW824QFeP5ieO51nvO9wiO9Aiap7FBGyqykQ
+	 NAHs3jdXyZk4tXt0qOLxSLEAH6DmM5mEmOmdNofg=
+Date: Tue, 5 Mar 2024 00:19:45 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Venkateswararao Jujjuri <jvrao@linux.vnet.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>, 
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org, 
+	syzbot+56fdf7f6291d819b9b19@syzkaller.appspotmail.com, syzbot+a83dc51a78f0f4cf20da@syzkaller.appspotmail.com, 
+	Pavel Skripkin <paskripkin@gmail.com>
+Subject: Re: Re: [PATCH] fs: 9p: avoid warning during xattr allocation
+Message-ID: <7096c0ab-e2ee-4aa9-bb05-0667efa85fd1-pchelkin@ispras.ru>
+References: <20240202121319.21743-1-pchelkin@ispras.ru>
+ <ZeXIAmbZmENoKr2f@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -49,43 +49,29 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZeXcQmHWcYvfCR93@do-x1extreme>
+In-Reply-To: <ZeXIAmbZmENoKr2f@codewreck.org>
 
-On Mon, Mar 04, 2024 at 08:35:46AM -0600, Seth Forshee wrote:
-> On Mon, Mar 04, 2024 at 03:19:58PM +0100, Christian Brauner wrote:
-> > On Mon, Mar 04, 2024 at 02:35:07PM +0100, Christian Schoenebeck wrote:
-> > > On Monday, March 4, 2024 1:42:43 PM CET Dominique Martinet wrote:
-> > > > We probably shouldn't ever get an xattr bigger than that, and the current check
-> > > > of SSIZE_MAX is a bit too large.
-> > > 
-> > > Maybe, OTOH e.g. ACLs (dynamic size) are implemented by storing them as xattrs
-> > > on 9p server as well, and this change somewhat expects server to run Linux as
-> > > well. So maybe s/XATTR_SIZE_MAX/KMALLOC_MAX_SIZE/ might be more appropriate,
-> > > considering that this patch is about fixing a potential kmalloc() warning?
-> > > 
-> > > Worth to mention in the commit log BTW what the issue was.
-> > > 
-> > > /Christian
-> > 
-> > So the error is somewhat specific to filesystem capabilities which also
-> > live in the xattr apis but Seth is working to get rid of them in there.
-> > 
-> > They currently use a special api vfs_getxattr_alloc() which is an
-> > in-kernel api that does a racy query-size+allocate-buffer+retrieve-data
-> > dance.
+On 24/03/04 10:09PM, Dominique Martinet wrote:
+> Fedor Pchelkin wrote on Fri, Feb 02, 2024 at 03:13:17PM +0300:
+> > An invalid server may reply with an xattr size which still fits into
+> > ssize_t but is large enough to cause splat during kzalloc().
 > 
-> Yes, the patches I've sent does use vfs_getxattr_alloc() for fscaps
-> anymore.
+> 
+> Ah, sorry for not replying to this earlier.. and I had forgotten about
+> it when something similar came up just now.
+> 
+> I've submitted a patch to limit such allocations to 64k:
+> https://lkml.kernel.org/r/20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org
+> 
+> Would you agree this makes this patch obsolete?
 
-Sorry, typo above. My patches do _not_ use vfs_getxattr_alloc() for
-fscaps anymore.
+Yes, thanks! Checking against the VFS limits is more appropriate.
 
 > 
-> > That api is used for fscaps, security labels, and other xattrs. And that
-> > api doesn't do any size checks which probably should also be fixed now
-> > that I write this.
-> > 
-> > @Seth?
-> 
-> I agree. I don't see any reason that vfs_getxattr_alloc() shouldn't just
-> bail out with an error if the size of the xattr is >= XATTR_SIZE_MAX.
+> I'll go ahead and add the reported-by/closes you cited in this mail to
+> my commit.
+
+Okay.
+
+--
+Fedor
