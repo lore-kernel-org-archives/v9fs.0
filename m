@@ -1,66 +1,59 @@
 Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F143C6BF
-	for <v9fs@lists.linux.dev>; Mon,  4 Mar 2024 13:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC223D540
+	for <v9fs@lists.linux.dev>; Mon,  4 Mar 2024 13:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709557789; cv=none; b=SvmIsx3U0svzA+onNn0VtMh1q+VUKt6a18Zdv6xIOatP+Gia3RjWnzP3c0lrUqb8Lnq3JPQX2w5VUE5xx5DRmSfcyiiU26f0GJjJvnTxhok8gOd/DZIlC32qLPZXEzC2Tmd5qgRxIYrCZ4t/M8PAIEqBdmMbikz52qzuSLgJ/Fw=
+	t=1709557870; cv=none; b=u/+r6u9tQN3fggF59rhRB4YMmvWLRf2b/JcL7rctQo4s/XHUysGvCOS8AwAKLnPD/pzCcpZpx93yFJLUQR1h/0TNHdNPfXDv8a3P/hh+ENndm4kMecsLmIRw6vCxYbvsNa6W0zQCi3lgGXqFecBF9QgeTgW3KmGbKYk+KB8qZFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709557789; c=relaxed/simple;
-	bh=RR2NSLWwbVW4/3Rvbk2rFQ2Ov8AclpNWaKYE0SK02wE=;
+	s=arc-20240116; t=1709557870; c=relaxed/simple;
+	bh=nooUNjf/FBwMwIpB0WjYml/LaIESHAu1Ci4s4v41dew=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTe8h/qWeP1NH06FNqQD6d7Q0V2dyxc6WmX39DWmebYYz5q/717tMYZWh0i9iXWpBheGAdDidblyp+YFtiYluENJMQUPjB9c96xvIpGGYq6s+ZhUm6px+WSptCW3811mnOQ3ZlOsyZphshTwUGFXcXjOAwZy6fyDlPQoI15SGOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=KS8rKyFk; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=DnWsJ5MP; arc=none smtp.client-ip=91.121.71.147
+	 Content-Type:Content-Disposition:In-Reply-To; b=KgH17naHck4d5AOqLseopEkSP5/6Lpy46N60VHdCFo9pp+l4WFNYtc9FAbxlcYTvN2PiRuvnP3D3UV+cVKsAd/bxtKsJgGGKMpWow2fHRoU+M87r/q27HU5APanUvFNQ4Fk2tQd4rh90Evqsl6qK2fbrzJxPbsaxoUUSEiLSBkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=1t2N5Uhd; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=dLqHKolL; arc=none smtp.client-ip=91.121.71.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="KS8rKyFk";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="DnWsJ5MP"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="1t2N5Uhd";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="dLqHKolL"
 Received: by nautica.notk.org (Postfix, from userid 108)
-	id A01A9C01B; Mon,  4 Mar 2024 14:09:46 +0100 (CET)
+	id 59CB9C021; Mon,  4 Mar 2024 14:11:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1709557786; bh=s0PGTHwpKytd1sDB5eULtOYAf6TaSfVYWh98iQ/exoU=;
+	t=1709557865; bh=r80fpE+N5xKfTcdTiGFnYd+7aOXoX0H9BY+QrwtefC0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KS8rKyFks8qka7PDdM4gKUeuoX/J15GeZC6j86CDoVYo319zNvyv4zJMi99gXneZI
-	 rQ4VhyVKNDfpSk9ADuxjDO3tTyE5O1dBnSz/y3d1Md0H4aVMUyQsGiiIrebyOwE7P/
-	 xnMxaNMjFJmzRcTtgqrG/drO2CZITGmrbXfD8XhxPWDQOXRNH29zSNGaU4bIVqggCr
-	 pkb2wygNlPq0Ey0e8CcVwpaxVebStpt+h1X2r3hUmE5Khxkm5fyAS7L4sQV/mIXjZ3
-	 E+qrAml0Pp2h17ZIZ7t9qLDEvOVDMFBL0d/Uuh2VZzu+Mmk1xGL1CAX9zlgKzRf166
-	 XbrlAQzBOm19A==
+	b=1t2N5UhdSJtkmCilLGLMEA2r+jzWWSifV1IlsO9gP0oPJMon7P2l5Rc+8vlf5VSlC
+	 PcH6c8TW3ROYl7y5uPaTdDDJOD+1iaboabBGOaECK3qMfcxzzlbfmEbq30pbSsJ91x
+	 ALPYfY/hDvT/e3duK4y9gSLVFDOj8X8ZrgYrSXv3SjqeUI1KzMhNsOM8R/Wo634ZIe
+	 HWiZKDJgkxts3g6QQoRAnOXdmuaWmVjMiuUKbwJ1TuWqH8odJQyGTdR6myK9/kNMdy
+	 L3Jvd9utU01QqRn3cpDyMHCVlaCjjrJ8xub9Spabpj+HkLQ+2DA6B0xsV/LxaOffpT
+	 d6WjLXOP57urA==
 X-Spam-Level: 
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 3F2A9C009;
-	Mon,  4 Mar 2024 14:09:42 +0100 (CET)
+	by nautica.notk.org (Postfix) with ESMTPS id 9FFA6C01A;
+	Mon,  4 Mar 2024 14:11:01 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1709557785; bh=s0PGTHwpKytd1sDB5eULtOYAf6TaSfVYWh98iQ/exoU=;
+	t=1709557864; bh=r80fpE+N5xKfTcdTiGFnYd+7aOXoX0H9BY+QrwtefC0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DnWsJ5MP/7YQwdz2XJKyblT78LnUgcyimuioPR7RDmw93HExCrRM8PySPELnvxrdt
-	 CYuPioAOyAFZnzUCnIgrMopnIwsfbdTSHxeYqR9g5pYBIr0GHB1um2aJ8zaTmTvqxe
-	 MT8RqRmOMnyTMCkQQ4e5F4HOT1DcvbyX3ugSn998ugqIHy0VSDDTQJUnUpvLFeqLrG
-	 DPkWFJFbwdEQNVICUghXbswq3fehLxDLy+v4Z8mRxHCGJbEvw5cIAsUUPkzI5om0wf
-	 ltl8wkIQ99AdAe2UThj0C2ycDYkbwZtzrNaDqAbuZeGz45fdNDER6bIPSM4A9aFaDG
-	 dJw7ZB62oRLHw==
+	b=dLqHKolLX5f+oq/CGD2+0Wpsg4QXmxIR6kNcS+EFf0B+4Awbwa9m6mVQO9AwJ8Rsh
+	 Wu5SiDJ66VwCjpTPhBZgyy1SsNHxaOIy1LctYWylD9qv4lUhiZktonJGJ8GuPem+MT
+	 hFdWT+5uzKQZ7litAv9eCFdr3L4dorwzFrJDXmMb6/sqJLUZ8guzYaJRUwlPqmeYvH
+	 lgTP1VUezOgbJKsA8wKjIMSmqxVejoeFTGUr57nJJjk4bPedhRaL5Gbgs68sxYsF2P
+	 veCQrarYufi93WhlOmA9ocNdzl7mXTj+BQFIjiuSoKgEdjvZ1my3FdDUUR6vfXU0LS
+	 TfPAtSJLctlYw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id de9c5528;
-	Mon, 4 Mar 2024 13:09:37 +0000 (UTC)
-Date: Mon, 4 Mar 2024 22:09:22 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Venkateswararao Jujjuri <jvrao@linux.vnet.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org,
-	syzbot+56fdf7f6291d819b9b19@syzkaller.appspotmail.com,
-	syzbot+a83dc51a78f0f4cf20da@syzkaller.appspotmail.com,
-	Pavel Skripkin <paskripkin@gmail.com>
-Subject: Re: [PATCH] fs: 9p: avoid warning during xattr allocation
-Message-ID: <ZeXIAmbZmENoKr2f@codewreck.org>
-References: <20240202121319.21743-1-pchelkin@ispras.ru>
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3354139c;
+	Mon, 4 Mar 2024 13:10:57 +0000 (UTC)
+Date: Mon, 4 Mar 2024 22:10:42 +0900
+From: asmadeus@codewreck.org
+To: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, vbabka@suse.cz,
+	roman.gushchin@linux.dev, Xiongwei.Song@windriver.com
+Subject: Re: [PATCH] 9p: remove SLAB_MEM_SPREAD flag usage
+Message-ID: <ZeXIUlqnp23qTxo2@codewreck.org>
+References: <20240224134617.829016-1-chengming.zhou@linux.dev>
+ <2de0d872-0e05-4fbb-8291-0c60487ccd8d@linux.dev>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -69,22 +62,29 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240202121319.21743-1-pchelkin@ispras.ru>
+In-Reply-To: <2de0d872-0e05-4fbb-8291-0c60487ccd8d@linux.dev>
 
-Fedor Pchelkin wrote on Fri, Feb 02, 2024 at 03:13:17PM +0300:
-> An invalid server may reply with an xattr size which still fits into
-> ssize_t but is large enough to cause splat during kzalloc().
+Chengming Zhou wrote on Mon, Feb 26, 2024 at 10:51:00AM +0800:
+> On 2024/2/24 21:46, chengming.zhou@linux.dev wrote:
+> > From: Chengming Zhou <zhouchengming@bytedance.com>
+> > 
+> > The SLAB_MEM_SPREAD flag is already a no-op as of 6.8-rc1, remove
+> > its usage so we can delete it from slab. No functional change.
+> 
+> Update changelog to make it clearer:
+> 
+> The SLAB_MEM_SPREAD flag used to be implemented in SLAB, which was
+> removed as of v6.8-rc1, so it became a dead flag since the commit
+> 16a1d968358a ("mm/slab: remove mm/slab.c and slab_def.h"). And the
+> series[1] went on to mark it obsolete to avoid confusion for users.
+> Here we can just remove all its users, which has no functional change.
+> 
+> [1] https://lore.kernel.org/all/20240223-slab-cleanup-flags-v2-1-02f1753e8303@suse.cz/
 
+Thanks for the updated text, this is a bit better.
+I've updated your commit message with this and will push to Linus next
+merge window in a couple of weeks, as you said there's no change so no
+reason to submit a patch this late in the cycle.
 
-Ah, sorry for not replying to this earlier.. and I had forgotten about
-it when something similar came up just now.
-
-I've submitted a patch to limit such allocations to 64k:
-https://lkml.kernel.org/r/20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org
-
-Would you agree this makes this patch obsolete?
-
-I'll go ahead and add the reported-by/closes you cited in this mail to
-my commit.
 -- 
 Dominique Martinet | Asmadeus
