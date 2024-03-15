@@ -1,85 +1,63 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047FD3DBBC
-	for <v9fs@lists.linux.dev>; Fri, 15 Mar 2024 17:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959E951C30;
+	Fri, 15 Mar 2024 17:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710523090; cv=none; b=KLhPgOTrw3RRq7Bkxbur4kWMtYHOZoHlwQcrzDrR9Yhq1k9DamGOi2vU92Tp0m1ljfSqTp2QRmX5l/OUQGpZBt/8/gE7mqeiDlbpTtPFxdW9DXJ/Dc5iwkHsIDwEWCADgMdFqP2NOSSkrzVyPHEgZEuNyl8hEcU+0j6YBF5YIUE=
+	t=1710523219; cv=none; b=HHmB6/RWzi6Lp4UjfZaSqlRhPUoQBO3AF4mQsbfwZ/W68x1oEbi3zp7h9T3Yi0pwXxnn7q9tWBhJ6IpT4jlFlIJuTYi10jGb+X4793T4vrVrxwud1NoLc8d6As4RMdmE334RYYph55HgNU6pP97/GqzvBZ03/Tmr/3zCDnw7F60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710523090; c=relaxed/simple;
-	bh=3vWfh0H5SxVCroF08gpjZrm2nJHf5wITsVROD33t7GA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vjl6dkeQYt99AVkuCrhuIooul/ozoNV7K5gmparrnSOghdnmhyKWKXV6rO5bqOZzu+ARWNG3Cl/UNl3wzE8h+Pn/GluEgl0D7VqDyBYIQfBkgWtJTgHCdCFckViJ6Mf/khO1IkGYrOekcFHH2SjBDdrEZsVJqX2EkUu2staj2xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KjHUA57K; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1710523219; c=relaxed/simple;
+	bh=e9xwoAtmUAJnKF1AMCjf6lzNiRqrdeFSB0YNtCK3VU8=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=S7oB8gFk042az4VPOsEf4vp4fe9rHBZfZHtE7VERumO2R+CxxClFUmJ8dYXaXHWAH/xwxZu5zlpgxUCmt42arznBB5kDHVN2SN2+Lrg84NwdZFnfLRoM7vPZRMjTbVOeWf+i1TJY3zPYJ+g0Js9A6+i1+7zg8/StpypcFVr3OL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIRP6H+6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KjHUA57K"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d29aad15a5so28410411fa.3
-        for <v9fs@lists.linux.dev>; Fri, 15 Mar 2024 10:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1710523087; x=1711127887; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YXJYJHH6Vt4w4K0aX4imlYYQDBwG04/7jCU5kd/9Afg=;
-        b=KjHUA57KdMZaam7FAQXEW1QLYOVOxuUmf4dIe6w5nRGJ5jet0Y5CSYUBY+epJU+a6e
-         clY3od0hRvbTWTlBZv8sleyaCOWKcpK9SbNvW53oPKuVF0rPm1KwvUpb7xOOYzu8P5tY
-         fJOJgI2ZJ7e0POUdrvrte5U3u63aZVLM8hb3Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710523087; x=1711127887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YXJYJHH6Vt4w4K0aX4imlYYQDBwG04/7jCU5kd/9Afg=;
-        b=t4EvzDN4G7FAVGHuEJ1/wepU6q5UT173GkttrXkr52RVqMt+9Kdvm60y9qTHZrNWZd
-         loVU4cy7PFUeBKv8irPFUxgbOGuj8Fp641Ed9yIYq/YmWLu+Cx7yBqT1knlyeucekOTo
-         CQpIz0IYrb5GwwKk9ZLUYbhfiyn394mSCTK1JLvaO0iYTcPzLO8he80KQ/I25kNxgWtA
-         scBPDOEBUoZbhU0/lA9YTDyTmo0SfAtIzFqip/pvRv3mPUwmTkISw4Rk4nvEbqvwzH7Q
-         NIyqmdUyC0oSxTohrp1wItqf0L2J3Sj/K8CrbrOmlpXJtkRF2YVujs2537r41l4/akfc
-         ThWQ==
-X-Gm-Message-State: AOJu0Yws+xwbCcN20mzLCXPpIDjlHtkDG+4mti/8McefNxcnpuZIpK+v
-	Tufpv5LLTzi7dWk5ZUPMJp5hrQ9NB12j6UY2gJQii4oxrhSEuzOUQd3BdQ/urubdvQeff58gVBm
-	PfGY=
-X-Google-Smtp-Source: AGHT+IExk5xj+R6zJHWRJFsDdwf2FYJ0R8I5DfVEnl+7d5jJ9016i2aNKNdfFkNXO/g48tFWkev5fw==
-X-Received: by 2002:a05:651c:11c7:b0:2d3:f3fe:48ac with SMTP id z7-20020a05651c11c700b002d3f3fe48acmr2140493ljo.27.1710523086955;
-        Fri, 15 Mar 2024 10:18:06 -0700 (PDT)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
-        by smtp.gmail.com with ESMTPSA id a3-20020a2eb163000000b002d45f5c5b7dsm563424ljm.13.2024.03.15.10.18.06
-        for <v9fs@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Mar 2024 10:18:06 -0700 (PDT)
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513cf9bacf1so2957591e87.0
-        for <v9fs@lists.linux.dev>; Fri, 15 Mar 2024 10:18:06 -0700 (PDT)
-X-Received: by 2002:a05:6512:61c:b0:513:cff9:46b0 with SMTP id
- b28-20020a056512061c00b00513cff946b0mr2642514lfe.16.1710523085726; Fri, 15
- Mar 2024 10:18:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIRP6H+6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79AB0C433A6;
+	Fri, 15 Mar 2024 17:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710523219;
+	bh=e9xwoAtmUAJnKF1AMCjf6lzNiRqrdeFSB0YNtCK3VU8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=dIRP6H+6Nnxs0pXEOqyV3un6FPSF/l8sN3Gks1scJS8NOPcs9MWZBvoTEZNX1Gis6
+	 36lkj7AC3oUSvi9HzPbITzRlZQw3og9+F2xBx90NPX4jEByNhDcU83/EfmMejnKDrj
+	 BRnN/IOA21xzmnFDhu5y9081xL/zdDQaO/P5hgtjgTVGjxgikjfUGsI866yoebt3KN
+	 F+WKeGkfVY7KIcUA46wp6sky4AYqnCWYK9R4OuUjQv6AuIJjuevwGO2Hw2mpXDEdE8
+	 np1FstQi6fK1i9WSaiFdslaiCEMGkaGjIZRBhgPbtR6Fb12ssKU9SMMJiSUWDKVIK7
+	 /m0fXtgisKE9A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5D9A9D95060;
+	Fri, 15 Mar 2024 17:20:19 +0000 (UTC)
+Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ZfRkyxUf8TIgsYjA@1149290c588b>
+References: <ZfRkyxUf8TIgsYjA@1149290c588b>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZfRkyxUf8TIgsYjA@1149290c588b>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-for-6.9
+X-PR-Tracked-Commit-Id: be57855f505003c5cafff40338d5d0f23b00ba4d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c442a42363b2ce5c3eb2b0ff1e052ee956f0a29f
+Message-Id: <171052321937.31681.10047137342837877893.pr-tracker-bot@kernel.org>
+Date: Fri, 15 Mar 2024 17:20:19 +0000
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <ZfRkyxUf8TIgsYjA@1149290c588b>
-In-Reply-To: <ZfRkyxUf8TIgsYjA@1149290c588b>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 15 Mar 2024 10:17:49 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj+=Bb8XYAexzaKWuf_6k93Xqi1OxqPw+SPf6JGTGCqdg@mail.gmail.com>
-Message-ID: <CAHk-=wj+=Bb8XYAexzaKWuf_6k93Xqi1OxqPw+SPf6JGTGCqdg@mail.gmail.com>
-Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 15 Mar 2024 at 08:10, Eric Van Hensbergen <ericvh@kernel.org> wrote:
->
-> fs/9p changes for the 6.9 merge window
+The pull request you sent on Fri, 15 Mar 2024 15:10:03 +0000:
 
-Entirely tangential, but your pgp key drives me insane, and it finally
-drove me over the edge.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-for-6.9
 
-One of your uid's has your own name mis-spelled. This is not new.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c442a42363b2ce5c3eb2b0ff1e052ee956f0a29f
 
-Please tell me there's a reason for it.
+Thank you!
 
-          Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
