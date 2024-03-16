@@ -1,74 +1,141 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9996E55E41
-	for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 21:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE83564CE1
+	for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 02:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710798555; cv=none; b=msleRYxRijJBnyhtNFFnHPedRYcB5qqCQn4U5+iIJsiyWaesyA4HfYMLZ7mQYenyDa5DFzmZ/T8q+KD2Og6wvknCInErCIfJiidrk79UhaazU3m4ZEljTdLTF8tq7xYrN77gQP7zldtaPmugFVJTcf53t66GIGoLsKxAfFbxmFw=
+	t=1710815154; cv=none; b=jQppWtgY3MNqemk9mt40X9K3LJlKHnEXNejhVFz8t6lu5oZM0MZLSQpyAxupTVFgNIUsn7ivNzySTtUg0Bmp1fbN0+eEccPRXWR4/g1rWPXmr+MrEdn8fALMstGbbrv5IVJ3oyzL8TZK9BFdScTsPpkJKg0ILezfXuOaUc9pIpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710798555; c=relaxed/simple;
-	bh=6P3rFkrW9HnhkfagqhtOgoRhL4elj2LsX7y/ud/bmu0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=iC2oXQ5IyEeyelpFgB0HPtHxxIEciawPBUtUvHQOgqaTK9NiubkjacQ3VAyfGsTfE2Fqtb6RbgrvyTXwt2Dwk3f5pyq4Y59caghiCfRRp0YLwWFUfe7I1mKoN65bx65mYCXWUx6L73+q1Tv2LFlDw4G1HxvscMWRRLLHdkfEsUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=kSKE6E0q; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1710815154; c=relaxed/simple;
+	bh=zk5ADMDiWoJG8vsnyjAajnkwl7Ab6LbdkYxqrTYI0As=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uMK0DVvBpThFzHblMygLi1CrY4oqdI2IFa2QwSXkt+6YAaO3F1lSSpWVyv7hdbaZJ2RL+5SZMVj3JzMEZb2EhZJq1kesVdBsaHELp/qCyoxOsvn5GEqpPe+2nS0YyYSzneuc+p5yle14zcSWBQKDczM0PEtBqR9VKgak2lB8DYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hysO+Jp+; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="kSKE6E0q"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 0C50F240101
-	for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 22:49:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1710798547; bh=6P3rFkrW9HnhkfagqhtOgoRhL4elj2LsX7y/ud/bmu0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=kSKE6E0qPCkaTlCXA/wiBBzScwBereuFojP25NmQ+TAGvmFv5MQfzZHJ6dQ3toFCn
-	 sC9l1PM7s0LgM4E0mhlwHKHdCm0iTcizxuSUH2J5dkHwwyD0NoIEyrnrR9nWOKBUGn
-	 eGdns7ohxr3JdPSC5SLQd+5uhLlsAEpPkN++hdwj/jOqtuGqe0Yt4lp18PQYswhI4n
-	 pk4jete9+GdXN+byBIZAMtLkJIDa0kt8SJtGpy1KsS5DXI1QJiRBRzijzS5Hm/06Wv
-	 t4SQWzALLqyUgCHD23r5OZ8OQ9LN0m4CB+GO/Fidha+iT5XlroQdc8o2kD3XTGD7+d
-	 KX8dC883Y3IAw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Tz7ly5gmvz6trs;
-	Mon, 18 Mar 2024 22:49:02 +0100 (CET)
-Message-ID: <ec51cc1d-beaa-4aa1-a54d-e503223dd365@posteo.net>
-Date: Mon, 18 Mar 2024 21:49:00 +0000
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hysO+Jp+"
+Date: Sun, 17 Mar 2024 00:15:07 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710815149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=C4YTsEnNlEkNMc6lW10FM9wiYUvYWWxdAtQ7QSCiU84=;
+	b=hysO+Jp+aTwIVEtugPb6iA81qPe22zUK40MqqYah/q004PVJ7bF3SDb7mpeTtOHNJq9dwp
+	1YvfI4iLG8tBUcU7v4qxGU+2C6CTRZLaAuUgWmrVAd3K6Y/wo/bJs9Z0XCnrNDsyJrBC6P
+	hwiJvUle8F+hVxY7eszXG80u2rIriGE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+To: v9fs@lists.linux.dev
+Subject: 9P2000 bug in mainline
+Message-ID: <ZfW3eyENMB1P5jLS@vm3>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [syzbot] [v9fs?] KMSAN: uninit-value in v9fs_evict_inode
-To: syzbot <syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com>
-References: <0000000000002750950613c53e72@google.com>
-Content-Language: en-US
-Cc: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net,
- syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-In-Reply-To: <0000000000002750950613c53e72@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Migadu-Flow: FLOW_OUT
 
-please test uv in v9fs_evict_inode
+Hi,
 
-#syz test 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+I bisected down to this commit in Linus's tree:
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 360a5304ec03..5d046f63e5fa 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -353,7 +353,8 @@ void v9fs_evict_inode(struct inode *inode)
-      filemap_fdatawrite(&inode->i_data);
+[724a08450f74b02bd89078a596fd24857827c012] fs/9p: simplify iget to remove unnecessary paths
 
-  #ifdef CONFIG_9P_FSCACHE
--    fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-+    if (v9fs_inode_cookie(v9inode))
-+        fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-  #endif
-  }
+9P2000 stopped working on FVP with the arm64 kernel.
 
-
+# mount -t 9p FM /mnt
+[   99.367520] ==================================================================
+[   99.367817] BUG: KASAN: slab-use-after-free in v9fs_stat2inode_dotl+0x818/0x9a0
+[   99.368266] Read of size 8 at addr ffff0008068a99a8 by task mount/165
+[   99.368608]
+[   99.368787] CPU: 1 PID: 165 Comm: mount Not tainted 6.8.0-rc1-00008-gbe57855f5050 #99
+[   99.369190] Hardware name: FVP Base RevC (DT)
+[   99.369442] Call trace:
+[   99.369637]  dump_backtrace+0x94/0xf0
+[   99.369960]  show_stack+0x1c/0x2c
+[   99.370265]  dump_stack_lvl+0xb0/0x14c
+[   99.370644]  print_report+0xdc/0x578
+[   99.371010]  kasan_report+0xb4/0x100
+[   99.371378]  __asan_report_load8_noabort+0x24/0x34
+[   99.371807]  v9fs_stat2inode_dotl+0x818/0x9a0
+[   99.372193]  v9fs_fid_iget_dotl+0x174/0x208
+[   99.372576]  v9fs_mount+0x37c/0x740
+[   99.372921]  legacy_get_tree+0xd4/0x198
+[   99.373301]  vfs_get_tree+0x78/0x284
+[   99.373637]  path_mount+0x738/0x1500
+[   99.373958]  __arm64_sys_mount+0x48c/0x5c4
+[   99.374297]  invoke_syscall+0xd4/0x24c
+[   99.374690]  el0_svc_common.constprop.0+0xb0/0x23c
+[   99.375128]  do_el0_svc+0x44/0x60
+[   99.375514]  el0_svc+0x3c/0x7c
+[   99.375893]  el0t_64_sync_handler+0x128/0x134
+[   99.376232]  el0t_64_sync+0x1b0/0x1b4
+[   99.376552]
+[   99.376724] Allocated by task 165 on cpu 1 at 99.359984s:
+[   99.377046]  kasan_save_stack+0x40/0x6c
+[   99.377402]  kasan_save_track+0x24/0x44
+[   99.377760]  kasan_save_alloc_info+0x6c/0x80
+[   99.378164]  __kasan_kmalloc+0xe0/0xe4
+[   99.378517]  kmalloc_trace+0x164/0x300
+[   99.378874]  p9_client_getattr_dotl+0x50/0x19c
+[   99.379269]  v9fs_fid_iget_dotl+0xb4/0x208
+[   99.379641]  v9fs_mount+0x37c/0x740
+[   99.379978]  legacy_get_tree+0xd4/0x198
+[   99.380356]  vfs_get_tree+0x78/0x284
+[   99.380678]  path_mount+0x738/0x1500
+[   99.380992]  __arm64_sys_mount+0x48c/0x5c4
+[   99.381322]  invoke_syscall+0xd4/0x24c
+[   99.381713]  el0_svc_common.constprop.0+0xb0/0x23c
+[   99.382137]  do_el0_svc+0x44/0x60
+[   99.382516]  el0_svc+0x3c/0x7c
+[   99.382892]  el0t_64_sync_handler+0x128/0x134
+[   99.383217]  el0t_64_sync+0x1b0/0x1b4
+[   99.383527]
+[   99.383699] Freed by task 165 on cpu 1 at 99.367506s:
+[   99.384014]  kasan_save_stack+0x40/0x6c
+[   99.384371]  kasan_save_track+0x24/0x44
+[   99.384729]  kasan_save_free_info+0x54/0x90
+[   99.385130]  poison_slab_object+0x118/0x16c
+[   99.385498]  __kasan_slab_free+0x40/0x98
+[   99.385863]  kfree+0xec/0x290
+[   99.386190]  v9fs_fid_iget_dotl+0x138/0x208
+[   99.386564]  v9fs_mount+0x37c/0x740
+[   99.386902]  legacy_get_tree+0xd4/0x198
+[   99.387279]  vfs_get_tree+0x78/0x284
+[   99.387602]  path_mount+0x738/0x1500
+[   99.387915]  __arm64_sys_mount+0x48c/0x5c4
+[   99.388246]  invoke_syscall+0xd4/0x24c
+[   99.388637]  el0_svc_common.constprop.0+0xb0/0x23c
+[   99.389061]  do_el0_svc+0x44/0x60
+[   99.389439]  el0_svc+0x3c/0x7c
+[   99.389815]  el0t_64_sync_handler+0x128/0x134
+[   99.390135]  el0t_64_sync+0x1b0/0x1b4
+[   99.390451]
+[   99.390622] The buggy address belongs to the object at ffff0008068a99a8
+[   99.390622]  which belongs to the cache kmalloc-192 of size 192
+[   99.391063] The buggy address is located 0 bytes inside of
+[   99.391063]  freed 192-byte region [ffff0008068a99a8, ffff0008068a9a68)
+[   99.391530]
+[   99.391703] The buggy address belongs to the physical page:
+[   99.391960] page:fffffc00201a2a00 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff0008068a9af0 pfn:0x8868a8
+[   99.392411] head:fffffc00201a2a00 order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[   99.392784] flags: 0x5fffe0000000a40(workingset|slab|head|node=0|zone=2|lastcpupid=0xffff)
+[   99.393178] page_type: 0xffffffff()
+[   99.393490] raw: 05fffe0000000a40 ffff00080000ce40 ffff000800000850 ffff000800000850
+[   99.393884] raw: ffff0008068a9af0 0000000000180015 00000001ffffffff 0000000000000000
+[   99.394211] page dumped because: kasan: bad access detected
+[   99.394479]
+[   99.394650] Memory state around the buggy address:
+[   99.394921]  ffff0008068a9880: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   99.395270]  ffff0008068a9900: 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   99.395619] >ffff0008068a9980: fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb
+[   99.395935]                                   ^
+[   99.396210]  ffff0008068a9a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
+[   99.396558]  ffff0008068a9a80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   99.396874] ==================================================================
+[   99.397370] Disabling lock debugging due to kernel taint
