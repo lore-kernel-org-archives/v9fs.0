@@ -1,79 +1,75 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95255524CE
-	for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 15:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9035A791
+	for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 21:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710776938; cv=none; b=LR9QjtKquVn8TLGRFQ1YOtbs1jirydj2AY51T0NKTln5Sn5E10aBTb1ajBSjxF8fEbXIw1+AlBAoPDUuLA82MNbQibgXES5Y38RfE12/fM+lPMpFt+khigGcbpRo2XaLkwEiaV6ZVO/LcI9AURrQ6GHN+cHBANTPHyvKVPZdYxw=
+	t=1710797884; cv=none; b=kCmen9K0OXdNWXWhf93h8/37nbGX6vI62ODboHY5utEuuSmUVNWsbIRa57bCLKW0lASLgTKFacBvBYHA9ROOVjbsrOBlizTW/beeI8h5gFS4YDHcEjzc63i7vheGMdQwSD5ReqTRkhb8ye9hG3NR5XE5h+mOiC8XfNd//Np2IRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710776938; c=relaxed/simple;
-	bh=P2mrvSmlzie7vQSmXFC32spGcjtp7fqRoyCIPryRSRs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Duw67FfhcNRUEJzR1ilsydTCjZTBACS59HimdxxmI2yJ/dJMRz/R5xC09Lv8GbBCKKZJFVRBUkgigWAvrA995V+QQuB5jcmulSXuNCkHv6y4PNslEqFIpkEKB4esX+0aM4Ml8t/EwPe2gs9oBQOityQNpue+gvMgSWP0c3T1hpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=cnmFKxKn; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="cnmFKxKn"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 47265240028
-	for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 16:48:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1710776928; bh=P2mrvSmlzie7vQSmXFC32spGcjtp7fqRoyCIPryRSRs=;
-	h=Content-Type:Mime-Version:Subject:From:Date:Cc:
-	 Content-Transfer-Encoding:Message-Id:To:From;
-	b=cnmFKxKn0+APiCmv+eTDjs1YIjZIlKWbTZGXwgTagExa64Mhli4fMPXr0gnetBNEE
-	 1PmCuYANO3Z2waQvNfuC4vSRhFJRkIj7lxsW7UCxKzjLrWMfTArP0GiMZ5T7LPnc0G
-	 tab6HG4Hdu8DvlWZpw4fXzT5Mev3PjDpz9XhE4vLn9FN8mS9JVyvh8MJ0Hx590SBJy
-	 gCa5yIJSVml3mRFzchAbFO32u7R1sTN+vfX3b+Ey2oS7jbgzAKvR5ZOMQNXgMvo0uh
-	 r374aMUqrPHsBQJbBjpPlR9sRAbgpyjkoK1ZLJsSlXkFK0Dce9YsrRR7SYRVtKKQjN
-	 /9KS3YrhMM5eQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4TyzmD52ZWz9rxN;
-	Mon, 18 Mar 2024 16:48:44 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1710797884; c=relaxed/simple;
+	bh=O4umbVjFHYUDfEMizAn5kUkkWDtKLtGnkvI7A/r4rMg=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=RMBxrN34flvvXrb/iQXz8uO3Y1Fg53YxWdnWQ+xul2T6Z9fnpPAMj90MXrW0+0bEndMxCDbF7tggf5shz+filLWaj2s8QhQzQPlkkRJ6sswYc8ZR7p4GgTX2kriBt2wWRSyH8b8Me0wjtYpP2Ww0hE1lWLWQA1kYKKijGEETlmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7cbfd4781fcso319775339f.3
+        for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 14:38:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710797882; x=1711402682;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GJmAzOZTchuP4uA1qhK5Bek7hETqC3bRqV9ZUNXqqkg=;
+        b=bDTwwdi4GAUL4h+zokCEG/pZv8oX0N1p96VUEnv3BN+Wh6jTYFAVhes/MMgrl28Ehp
+         gGRtzBiSPXKOphcjQuW/Em69MNGgeZsHPksZXuvG54rSvjq/PtHq+QXMgTUnDGYftTiW
+         b6jt/7JX5smYtqzBGElgD+kqSZngnU8QpNGv+yAWQW9mAI/6O/bOFFVThGttTZaXdfuz
+         MNWXDfkWPo4HF2UqQbEbuVvUQgGHe0oP6LGkSJeagmPraKhuO6bbijsEe79XxwpHhu8k
+         aye5y5nzkpkOFPrtbk+yO9DA/lNowcZfHXxdOyD2bb/mNPOrZ15lC9mSoC1+ZeHo0mwk
+         OzVA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKtxB+9Q6h5+Wa0FDcsuJDOUggb/fJLya8w0AZEE01rplDodYgg9FhCLX1rEWJ0Q58bU97LvcZyCALSxNL/A5BnEgb9g==
+X-Gm-Message-State: AOJu0YxSMWQX9ja3p0+VnLYa7BerDh0P7D64neVEGhyDDrXep9aYCSVD
+	djq7qfzahrlwcCvnQBCuAa/CgdOLr8bxZpb/bhd+ighYGZ1tBlar5fbYfsA120ZtlDE91ht399S
+	Jy/2JgpEq+Xkni7FgCKSOITp+/u6Gu+j6tO3Ycex5lBvjnZtmEoHA7Vo=
+X-Google-Smtp-Source: AGHT+IEE0bl1tT2EzGs5vApz2wZu53dx4QAXfi7kjhMEVBTjBAHVikJmo68tYp6WxIDBl91ZI6pdnd0yhhgF/4otTEnc3TJgJEZQ
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+MIME-Version: 1.0
+X-Received: by 2002:a05:6602:1656:b0:7cc:76d0:cc1f with SMTP id
+ y22-20020a056602165600b007cc76d0cc1fmr25629iow.4.1710797882097; Mon, 18 Mar
+ 2024 14:38:02 -0700 (PDT)
+Date: Mon, 18 Mar 2024 14:38:02 -0700
+In-Reply-To: <B6E22992-FF45-44E3-8FBE-D157BED7B922@posteo.net>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000b942f0613f62cdf@google.com>
 Subject: Re: [syzbot] [v9fs?] KMSAN: uninit-value in v9fs_evict_inode
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-In-Reply-To: <0000000000002750950613c53e72@google.com>
-Date: Mon, 18 Mar 2024 15:48:11 +0000
-Cc: asmadeus@codewreck.org,
- ericvh@kernel.org,
- linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux_oss@crudebyte.com,
- lucho@ionkov.net,
- syzkaller-bugs@googlegroups.com,
- v9fs@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B6E22992-FF45-44E3-8FBE-D157BED7B922@posteo.net>
-References: <0000000000002750950613c53e72@google.com>
-To: syzbot <syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com>
+From: syzbot <syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, charmitro@posteo.net, ericvh@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-please test uv in v9fs_evict_inode
+Hello,
 
-#syz test =
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git =
-master
+syzbot tried to test the proposed patch but the build/boot failed:
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 360a5304ec03..5d046f63e5fa 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -353,7 +353,8 @@ void v9fs_evict_inode(struct inode *inode)
- 	filemap_fdatawrite(&inode->i_data);
+failed to apply patch:
+checking file fs/9p/vfs_inode.c
+patch: **** unexpected end of file in patch
 
- #ifdef CONFIG_9P_FSCACHE
--	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-+	if (v9fs_inode_cookie(v9inode))
-+		fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), =
-false);
- #endif
- }=
+
+
+Tested on:
+
+commit:         bf3a69c6 Merge tag 'for-linus-6.9-ofs1' of git://git.k..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+kernel config:  https://syzkaller.appspot.com/x/.config?x=48bb382b96e7eda7
+dashboard link: https://syzkaller.appspot.com/bug?extid=eb83fe1cce5833cd66a0
+compiler:       
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=160cdef1180000
+
