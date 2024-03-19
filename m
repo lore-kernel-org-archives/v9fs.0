@@ -1,92 +1,103 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D8F8565F
-	for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 16:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B729313ACC;
+	Tue, 19 Mar 2024 16:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710864843; cv=none; b=nLQWy3yM7/o1p3DEzLq11WNTKgDVYePAlp69wTTMsw186PvokuEjifHKje6MRSC3u8w/I+dHk4MjMStqmxiNxaVu290etKoOeKJ5rapI6vTsU4m1AXXUEKFPIV8iAsPbf1Aj32SByIdAaq4NEj0AOofHNhYnDN34hg4H39QqEHM=
+	t=1710866088; cv=none; b=Bd81Pu7CEdJVHVZRCNghocgV0byb3/hBtfwpu9JZ9geO5ATxt9L5skkDqB6JZPGAWJlNdDwCi9hIkyPpCg6arJ3/pkYAs8MIR08h/S5xR13rsXDEeL/8LHV3CwNuBBHfTrfzOIfXcbMCVChSU3oJNNaSc2Nngtb/Xjs1ylJiOVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710864843; c=relaxed/simple;
-	bh=xK6oFtMSPOO/+MFMrzgdRfpeW/yJYOp63dnRub6XKM4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ciQ7VJdgbwgRdQx+D6ysbPnNO/XJyczAfUMUNLhWOgE0+fsA0tMODuunLMjSl5aCUVqaEXmbDOl4Kqc/xaUuHqjKkeoFvqH3wn7um1V47Rv/Kid/t3SarwA9r03kkkLvzPVpahCQOGDU7KhKl8vba50dQJ/ZIqmRyg7YiWeicJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=f0Az0xTq; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+	s=arc-20240116; t=1710866088; c=relaxed/simple;
+	bh=sWcrpcQ7SA215oarYW2cTrDgksU/Injyvl3jW9oqqF0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lbrCkkV+3LCPTZQSODep+SpWdUmVF8SwrF7YhSgh2co5jABgF/7RjWpP6FWeQXxPgj64emP5rWN+BC7NYsnzl8+8Bsc0Qs0WBkffLdbacId7Up8+EN8Py6I5ZwF9JTaK4UvT370o9qEVMki2r60COqoQMzZ0gWl2UyFH3kn75Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3VV3E+E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="f0Az0xTq"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-56899d9bf52so7438705a12.2
-        for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 09:14:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1710864839; x=1711469639; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qssoFyi0EHVSMQZ8tvcNSLF8ll1cyBFfjAUL3WkFTKQ=;
-        b=f0Az0xTq6PYukZYhEX+9zwuh4HDQRJqFNasBkPDcWFtm9a1V3OgvlDbmU4HfkhA2MP
-         5F/i72l5606RNTvclHQc2Z9siJXV0p5b76dq7PdQqoniZBIam/glElf3KSmGIqHpVzAn
-         HMveNLLVsVdCklo9L6jx4NY5VqNib5I6xl5AQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710864839; x=1711469639;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qssoFyi0EHVSMQZ8tvcNSLF8ll1cyBFfjAUL3WkFTKQ=;
-        b=k571bIFfWwISsCJpUfRQyfsAGc+C0ivbq1pY7AWMTlNWFVM6pIiUgPcszCszKgAO8I
-         8oPdBYd1aWy4PPcH8vzlYV338/kWmaV8jBlB+L7IsYQ9Mmpl2Wj63ARWQdwoArQOD/55
-         Rvp35lBvWcm6daSs1dR5N0mvP5wvCnmmVWHlmXnTH0FA1vevVQEaMylj1cWwx5fR4l3n
-         JqpPhnYmXOYmmXHV1DF665EirFqGGBO0B29ZAS2eSZwi+fh2Zjwhg4dZevi27fnMExnV
-         pWfhg2gVo+SriH4SP9eDNFYCIXJIglrgENqAxw1jKBxY484XzeLNeuW/Kmd1VKgwKm1f
-         LAsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpPsbUkjhpSoiHaehFyZmFiiDBnSW9Cx7IeeiUeRDe9g7IonlMAV8DHyBu3blNW7Rrw42k+LwYgGQomFIjdmkKd2qSIg==
-X-Gm-Message-State: AOJu0YxcZbu66n/yc600FPP0QtbYL/TuMWpfCYs6vvELxLTdWpTahQAL
-	i0r9Fbb1xmChW/ySi6CIHNhUyKgBVIQdKVriBIfVY8r8qv3UeUEdKMZkATXSbAz2dgVET4qFFS+
-	WtA0mfzYvEcth4rlTb5T9w/1BFlu8GFnRwlk9ow==
-X-Google-Smtp-Source: AGHT+IG80idJ/eoHfs/tS8xY4ItmYTZEjrCulMFp8PsOW5O33PBCGW/QH9XqH6EWMgC+d4lP/zrFK1SKGKNE4vf/7pM=
-X-Received: by 2002:a17:906:af07:b0:a46:47bc:580b with SMTP id
- lx7-20020a170906af0700b00a4647bc580bmr2203920ejb.56.1710864838625; Tue, 19
- Mar 2024 09:13:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3VV3E+E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEB3C433F1;
+	Tue, 19 Mar 2024 16:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710866088;
+	bh=sWcrpcQ7SA215oarYW2cTrDgksU/Injyvl3jW9oqqF0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=B3VV3E+E6rCPFhQr++KfCfRo/HbfUXQUEe05clvlMeoH3yJDRhSM+lJmtDAFOSwh/
+	 OgbWM5px5egmIZb6whE/3aO+HFflY8Oqecy7VgvBNGZEtZNNsvoNiZDYsv97Chweu7
+	 nZZkpMi0VrLuG+/ZvyaM3/tBj3b6I5vFjY5Ts97sKZ10Azu6vMvyorOUeSng8I5F4o
+	 Ndzq/o6DbfYrIbOkprxWcFCMOIuJNNLuyw0Fhtzq/PI70daie79wsLPkHkTW5XLHKy
+	 AZl1yQs3tGAkq8ziok0IpW3JB9itZd02Rin5iVh5h5zYqUhJ8A0qtAlivVAqT2OehQ
+	 wABmUmUbCWlrw==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Tue, 19 Mar 2024 12:34:45 -0400
+Subject: [PATCH] 9p: explicitly deny setlease attempts
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1668172.1709764777@warthog.procyon.org.uk> <ZelGX3vVlGfEZm8H@casper.infradead.org>
- <1831809.1709807788@warthog.procyon.org.uk> <CAJfpegv8X0PY7PvxEF=zEwRbdZ7yZZcwB80iDO+XLverognx+g@mail.gmail.com>
- <651179.1710857687@warthog.procyon.org.uk>
-In-Reply-To: <651179.1710857687@warthog.procyon.org.uk>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 19 Mar 2024 17:13:47 +0100
-Message-ID: <CAJfpegsUYUwp2YNnCE3ZP+JtL0whgQ=3+wcsBABGXH9MjXC0zA@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: Replace ->launder_folio() with flush and wait
-To: David Howells <dhowells@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, 
-	Christoph Hellwig <hch@lst.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	netfs@lists.linux.dev, v9fs@lists.linux.dev, linux-afs@lists.infradead.org, 
-	ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, devel@lists.orangefs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240319-setlease-v1-1-8532bdd2b74a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKS++WUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDY0NL3eLUkpzUxOJU3eRUY8O0JAtzc/MkAyWg8oKi1LTMCrBR0bG1tQA
+ swUHSWgAAAA==
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=sWcrpcQ7SA215oarYW2cTrDgksU/Injyvl3jW9oqqF0=;
+ b=owEBbQKS/ZANAwAIAQAOaEEZVoIVAcsmYgBl+b6nqBqEx9lnOPjWB/2aQcCJxobhEnUDWaCQR
+ wzZHtSfQZuJAjMEAAEIAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCZfm+pwAKCRAADmhBGVaC
+ FaJqEAC9PNA8wJ0oiNV1JvvkQYYnoDcC8XMd5mxTHnh7uIfiXtH5ZwGDuZDlKkkeqkb3o+25Yhb
+ 7ZiICO3zhHg+l/uiXKGpQH4cr3f/W50lMxe/qHGW9qKCE+BoXKpdl07FLYGxr6k6UlDKjhsq9hh
+ STultKHcg3elPBdG07knAoDDZROLb/2gayvaKYk6uUypR+4aGbgsN+CsXDUUARJ/bdvhMouTN9f
+ L+bKRu4hEbDToxNE/kh36921HT6Jw8yTvA9FMwH6kOYiJCfjMeiSYWribW9K00+fn9XtqlMZpRT
+ Bt5KwAJvYWl2TJN0BjICxQjC9Ydygt77doc567ZrJ6PRsCs2xoa4VNxw9RTg0ffbZQFMeK3hO8d
+ 4G0cHVY5aP4LztoZLJCjL+ul+B9D2Yy4Eq3UnFZFsEMdusjZsH6Fqb+cNTxq4yefMRD98zhgzDM
+ V8WwUNFgFMtwglw+DNeMgtoyHttlTy2CooYyqFqCgMWnyW17cpaPajKzF/ILCNex7jC6c/6cMDR
+ Xzzy75Eq2E04zK4g3TR0Rvng/re9SbC9yERqtQK5y4b2+XtArJBpm4Xccwe5L/LmWktUJb+bo0r
+ nGuMFqWiM1uH2GIjCaLw1GKwramMF0jxqZ+b4mbWYZ4f4GsRpR7kjYPTqude2D1N7n4XjFPv4bE
+ lNb0Q5QUxjZKUzA==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On Tue, 19 Mar 2024 at 15:15, David Howells <dhowells@redhat.com> wrote:
+9p is a remote network protocol, and it doesn't support asynchronous
+notifications from the server. Ensure that we don't hand out any leases
+since we can't guarantee they'll be broken when a file's contents
+change.
 
-> What particular usage case of invalidate_inode_pages2() are you thinking of?
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ fs/9p/vfs_file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-FUSE_NOTIFY_INVAL_INODE will trigger invalidate_inode_pages2_range()
-to clean up the cache.
+diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
+index abdbbaee5184..348cc90bf9c5 100644
+--- a/fs/9p/vfs_file.c
++++ b/fs/9p/vfs_file.c
+@@ -520,6 +520,7 @@ const struct file_operations v9fs_file_operations = {
+ 	.splice_read = v9fs_file_splice_read,
+ 	.splice_write = iter_file_splice_write,
+ 	.fsync = v9fs_file_fsync,
++	.setlease = simple_nosetlease,
+ };
+ 
+ const struct file_operations v9fs_file_operations_dotl = {
+@@ -534,4 +535,5 @@ const struct file_operations v9fs_file_operations_dotl = {
+ 	.splice_read = v9fs_file_splice_read,
+ 	.splice_write = iter_file_splice_write,
+ 	.fsync = v9fs_file_fsync_dotl,
++	.setlease = simple_nosetlease,
+ };
 
-The server is free to discard writes resulting from this invalidation
-and delay reads in the region until the invalidation finishes.  This
-would no longer work with your change, since the mapping could
-silently be reinstated between the writeback and the removal from the
-cache due to the page being unlocked/relocked.
+---
+base-commit: 0a7b0acecea273c8816f4f5b0e189989470404cf
+change-id: 20240319-setlease-ce31fb8777b0
 
-I'm not saying such a filesystem actually exists, but it's a
-theoretical possibility.  And maybe there are cases which I haven't
-thought of.
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
-Thanks,
-Miklos
