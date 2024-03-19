@@ -1,75 +1,84 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBE54EB5D
-	for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 06:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E1953E01
+	for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 07:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710829564; cv=none; b=upG3DOM6HhkgjK6p0HWbhhSONPUcKQDrYMeNeF4SIc5ubLQjPqp0QDZMveO2R+9j3yN1F0PU2Y1GTYnM3AaCtigLw5/ECtb3CXSkqg2iPGWOvjNchompibO/424h7hWnnE5qUtW2t8w458vs2no7eGBpsCB2o2ml+A90/Ta1evY=
+	t=1710833188; cv=none; b=hmeWzZeVkkUe6EVPB3J1auCkjVN6fxDVx3nV/x1aSNGJY4VnYjGHzGjVhBpWQ7mq6MvlZgV1GkLsnzlUzYVb0d7jKX6k+HZ7tN1iiUnC3ECPNKvHFErie828srDK9GlXJEakGCzTYQr9kVCjcyMPISxpuMwN8EF92y058YM6+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710829564; c=relaxed/simple;
-	bh=Vdnf5nY/czOnJuaGBtdc0SPAtrzeEIXDsmcxSs4q/hk=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=qR36gZrHF4Ft4QCNu6pTxhtc0jRDmgU3/M5qMlKyhhRLWUkqBNQ+BkL+8ff0vc/AnQAs0NPiRk3h3FYtjikebDiW+Fs3zqEykDpdIY/fYONzKR7SShveVb2W+K2lpVS6nvK1VtBn71gJ7WulM2AuXn2gQ/+pr2gkNdGdyJjydAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+	s=arc-20240116; t=1710833188; c=relaxed/simple;
+	bh=wI1T0EzdWk+Ahj6218/EOyE9S19iLjzHRDYJ+5toT40=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C3RfqZ9OgHUYq2ApOvjYhhUc/2+7TGCZj6CHph13ylZCb0w2McGha6qNsJNV5x4ytN1EFcQZN0HWqEYRPENXpxX8p6UiJVwozxG8iimUdm56mkTv9DJtqE/gQCNn/VNVMK6OqfsDxnJZiBjdx5oFWg1gG0Nz3qB/Ae+i+Kf11cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7c9aa481ce4so462693639f.3
-        for <v9fs@lists.linux.dev>; Mon, 18 Mar 2024 23:26:02 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-36696c9cb23so26682485ab.2
+        for <v9fs@lists.linux.dev>; Tue, 19 Mar 2024 00:26:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710829562; x=1711434362;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SGyIYPow4NlrefKnKPQPE6bAcLRxnsVwIJ5cTlLJan8=;
-        b=WXqHn8JEtA2d+ESpNvGOjvVlXAOq/qoOJBzRl0nqKfa7OpO86S/nqmgnrg1izOvUfT
-         2YN/4WLVcVN71zH2B2KSI1Xf9bjlD070x+nn1+owMLikgZdZloDUI90fhbQtAKb72izx
-         MkaOvz6lQ7+Qzx8nx6QsCKqiybW4z5YwA3qiKzZ+lPNGudhAsKvSCbBufftAjjZIZq3l
-         a3FcOHyCefKYqZ6TYVYtlsrBqv4lmXOn2ohMG3rQwuLrt5SNTn5DOs3B9nKjaTXqGh0q
-         FTTAtqW/4ylLv4+d4gsy6LvwCAZ7xbhgMyKjWm/mu/3wZnSnRBOiBGromqaoZudyTJzx
-         MiDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2jIvWmyPQw3A+ilnilf4bGwGnVYsdvJF3E2nQEsriFJXhTvd9fFVzuB2jhZ6gARZ1qWWjXOh1+IRT/Xt17cJYTawoQA==
-X-Gm-Message-State: AOJu0YyJ1H1G467vlPhX962mCrhNsySYD3MBfNYAxSJySZuyV0fwRIj0
-	IHxentMxFn/zX2tSHUhpMTjfglpvFxqqB9xPUsRN6wlN2ppQfNZUjD6OV4269EF+KvUzDEBh8BB
-	+YmQnRUZ4SdiXayMzvemMu7tsIpsVNEG9yhahRxTdEPbmPlYoSb7VkSk=
-X-Google-Smtp-Source: AGHT+IE2QD0gDlbEx3Hy3y/Bkl9ZHnqqTTwLra5wel1Aa+fBhvD4Qk670jJxAR1r48q58RoFOTHF+8ak7zpqJ97cuZoc/2yby5Dw
+        d=1e100.net; s=20230601; t=1710833186; x=1711437986;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EWwA4gt2QV2ljMc7dh01T3FMCTXDPFNrXBsk1q+DFxU=;
+        b=fvOE3uK7aVeX/MysBvwGdc05W++bBAFTx2oRwVRRX1L1HOAtlhg77m6z8CCUwY6h3A
+         MFkg6VnLL+gB+lfF9UE3WLkPNPw8TCjfcPtHayv7cwXLni6xX9x0zGn9hc6nMiiqlECF
+         qpi99ft7Gv5Oe4zP8CH/0PLfIca7LIlUcNGEBZ4tsdFyJgB9PNiugazDWQsxN6wwVlBr
+         rgkPMtX74v4AlDqHLarg9i0JksCpk1IcS+0iQx/oe42zVk1BrCDVWLZL2AVr02eUcrQW
+         bgxcNI9ZniQu1vm6fIlHG9GfC7mCBpfLI8q+VHRx+LwUiO2Izg125X8280zmxRfWaU5h
+         0KnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVgIHGTvWlpagBirg4MLPHpwDfXp520yaDQbM2xUfMdLK2xZYIsiKRplc+ljywY3mXSf+vuaRmPXRNRkcBauxiZUbEwg==
+X-Gm-Message-State: AOJu0YxNU1A8i7jp4hK9pF++3AuqjjeMiUQxdIXgBtpib6nujqw1vQJg
+	f5h+2nANQl4ZVEgtmawqHD9vGva0fS6QF06fYTaZC5n9oqX+pcuAMk3HkRYZwZuJOoUrXp9RuE/
+	jUIu3gzrdCqq3LzEqGmOMLFhEt0qdo/ylVihbsmQiCastaeqclBVz6Ck=
+X-Google-Smtp-Source: AGHT+IFtYdMhgryWzdomQCSC8tYxXzyfdXIUYNX82HD8z/KnQcHKQ+ghCeUabP4SxoSefeK7v0plabTaWXIqe1UgCvUuMsNeDBno
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:19c7:b0:366:b696:e943 with SMTP id
- r7-20020a056e0219c700b00366b696e943mr559353ill.5.1710829562024; Mon, 18 Mar
- 2024 23:26:02 -0700 (PDT)
-Date: Mon, 18 Mar 2024 23:26:02 -0700
-In-Reply-To: <ec51cc1d-beaa-4aa1-a54d-e503223dd365@posteo.net>
+X-Received: by 2002:a05:6e02:164f:b0:366:b4c8:2150 with SMTP id
+ v15-20020a056e02164f00b00366b4c82150mr59828ilu.6.1710833185908; Tue, 19 Mar
+ 2024 00:26:25 -0700 (PDT)
+Date: Tue, 19 Mar 2024 00:26:25 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000050e6310613fd8ccd@google.com>
-Subject: Re: [syzbot] [v9fs?] KMSAN: uninit-value in v9fs_evict_inode
-From: syzbot <syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, charmitro@posteo.net, ericvh@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
+Message-ID: <00000000000050fb620613fe6483@google.com>
+Subject: [syzbot] Monthly v9fs report (Mar 2024)
+From: syzbot <syzbot+list27b848ebc739cbe61649@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Hello v9fs maintainers/developers,
 
-syzbot tried to test the proposed patch but the build/boot failed:
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-failed to apply patch:
-checking file fs/9p/vfs_inode.c
-patch: **** unexpected end of file in patch
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 7 issues are still open and 26 have been fixed so far.
 
+Some of the still happening issues:
 
+Ref Crashes Repro Title
+<1> 1814    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 273     Yes   BUG: corrupted list in p9_fd_cancelled (2)
+                  https://syzkaller.appspot.com/bug?extid=1d26c4ed77bc6c5ed5e6
+<3> 119     Yes   KASAN: slab-use-after-free Read in v9fs_stat2inode_dotl
+                  https://syzkaller.appspot.com/bug?extid=7a3d75905ea1a830dbe5
 
-Tested on:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-commit:         b3603fcb Merge tag 'dlm-6.9' of git://git.kernel.org/p..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=48bb382b96e7eda7
-dashboard link: https://syzkaller.appspot.com/bug?extid=eb83fe1cce5833cd66a0
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=13a5fe81180000
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
