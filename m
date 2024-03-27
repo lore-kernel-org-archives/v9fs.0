@@ -1,157 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09C913E3E8;
-	Wed, 27 Mar 2024 13:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61A31411D1
+	for <v9fs@lists.linux.dev>; Wed, 27 Mar 2024 15:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711546858; cv=none; b=VAt1LxQ/FNkDKls+8aSxBQMO+NRYZ7ZT9y+O8XmpBKzdyES49hNRSGYhVsGArR/SDxw3BUCblMRp3m3gEdl9DiBTKSGV0QnJmg4kM5INIZwiAyVWd47K23OVSlrT7qDsIFpSKWRPm1pJuQ3TyjYo9pM0XDqWDJIaxNtGj5dz5Es=
+	t=1711551859; cv=none; b=oiAZDzEufPmh3mMMsRHoaoqq7XVFMb7EQht8zIhjHS6bvslnKc4JFSskG4DVFCektWvs3reNIR7/0E6CozTppi2zAvACzxXMtQCjFVuuEIbO6uHfzqmj4tGh5XN/wVNj6yLcgkjjX39Bssf6UGXplgBVGF9wY/+E7ylwoCVwqA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711546858; c=relaxed/simple;
-	bh=C2xZuYuE0bMiGZGvxAUBs6jO3wA1ouACC5SZ95LnNFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H2rrBb1C5d9l0npNiT4AJ/7e1mlhdm7eGFQVfaRiAxc3xftIBKSEuEmS7auvPstY5+v6kR464R+ur6BapcFzqbt2Ue4+1qC6SkKspBXsQn+LHpLFOT5mlg+JX/cc/GNWQPwGGaQOgNuOUkGt1TTQDBci8sWYE2aiT5dmf+HleBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPiIZP5u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711551859; c=relaxed/simple;
+	bh=lKYcHiXaapYY9EDdipb2qGnG72rc4km3T4CzGt+fgpQ=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=ECyZLNpOZ2nOqLmc0+2RewfclgTi52I985VCmix5AlDo1/D1Z4lK91WQD1NJr5ARzNof+JcnsjUv/LrljaUGznvplU9QjFG+MD5RuaQ03fTLw+aRBkHITAJHOtPePutRZCIHCFilR2ozkvx00E5hWZdZphe7Xp1iXjcwa2ardl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g6fM3g9X; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPiIZP5u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75359C433F1;
-	Wed, 27 Mar 2024 13:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711546858;
-	bh=C2xZuYuE0bMiGZGvxAUBs6jO3wA1ouACC5SZ95LnNFI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oPiIZP5uFcf+EPPe0Khf+td7enUVTphKFH5O8Sjh5QbDTvvzxp4AusoSouDyd+Qty
-	 uNykdMuMQa/3MK9HnwK2YnaNpcAkwziUq3reFV1RYyomG0PJxIZXbdnBqsRsQE9wiW
-	 wLj47B9Lgf9HG3GyHbTyRd/K5ZRm0z/GNEI3Qdrq6LztHDzJTooMaR+NhVqj52gD0M
-	 xPi7oVVfb+oKYpuBiBykgSVcS4Id3gpKilRn/2SvMis2yzYd4XdG+svbKALT31FoRB
-	 xxZViWevf40SnxPCloRb8CPdyibhYtQ48bc87rBCAC3LEnn5pSTNManFgzx2MRjCoV
-	 EzPw7kha0wNtQ==
-Message-ID: <94590f14-f17f-4d07-a2d7-6dfc5f1e171e@kernel.org>
-Date: Wed, 27 Mar 2024 14:40:33 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g6fM3g9X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711551855;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bWNSBg8at2ybCmMWCY4Y8Gsbxal/bw2ZagDjU70FTzA=;
+	b=g6fM3g9X3JnKG7ENbqN6LAkz+26yF6s31eyLqPo5Vo5bwe+e4V0uc5RpIr2hIAFxxJhxxw
+	bHr+Zo9VhnrPovSGggRrfaoReyqxWZXjagrUctf3rUZcDjw5sP4CUWUvCvZPKd+Rs2dI6P
+	ggqc4iFdwnkMSccsvgNWmxpCAxYpl/Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-hpxMHw0oNR6KhiHzPfvrXw-1; Wed, 27 Mar 2024 11:04:12 -0400
+X-MC-Unique: hpxMHw0oNR6KhiHzPfvrXw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87AEC801900;
+	Wed, 27 Mar 2024 15:04:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B0A18492BC9;
+	Wed, 27 Mar 2024 15:04:08 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>,
+    Miklos Szeredi <miklos@szeredi.hu>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Christoph Hellwig <hch@lst.de>
+cc: dhowells@redhat.com, Andrew Morton <akpm@linux-foundation.org>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>,
+    Jeff Layton <jlayton@kernel.org>, linux-mm@kvack.org,
+    linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
+    linux-kernel@vger.kernel.org
+Subject: [RFC PATCH] mm, netfs: Provide a means of invalidation without using launder_folio
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/22] um: virt-pci: drop owner assignment
-To: Johannes Berg <johannes@sipsolutions.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Jens Axboe <axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Olivia Mackall <olivia@selenic.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Gonglei <arei.gonglei@huawei.com>, "David S. Miller" <davem@davemloft.net>,
- Viresh Kumar <vireshk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
- <olvaffe@gmail.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Pankaj Gupta
- <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
- Anton Yakovlev <anton.yakovlev@opensynergy.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
- iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
- kvm@vger.kernel.org, linux-wireless@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org
-References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
- <20240327-module-owner-virtio-v1-2-0feffab77d99@linaro.org>
- <46e9539f59c82762e3468a9519fa4123566910d5.camel@sipsolutions.net>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <46e9539f59c82762e3468a9519fa4123566910d5.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2318297.1711551844.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 Mar 2024 15:04:04 +0000
+Message-ID: <2318298.1711551844@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On 27/03/2024 14:34, Johannes Berg wrote:
-> On Wed, 2024-03-27 at 13:40 +0100, Krzysztof Kozlowski wrote:
->> virtio core already sets the .owner, so driver does not need to.
-> 
->> All further patches depend on the first virtio patch, therefore please ack
->> and this should go via one tree: virtio?
-> 
-> Sure. Though it's not really actually necessary, you can set it in the
-> core and merge the other patches in the next cycle; those drivers that
-> _have_ an .owner aren't broken after all.
-> 
-> Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Implement a replacement for launder_folio[1].  The key feature of
+invalidate_inode_pages2() is that it locks each folio individually, unmaps
+it to prevent mmap'd accesses interfering and calls the ->launder_folio()
+address_space op to flush it.  This has problems: firstly, each folio is
+written individually as one or more small writes; secondly, adjacent folio=
+s
+cannot be added so easily into the laundry; thirdly, it's yet another op t=
+o
+implement.
 
-True, this can be spread over two cycles. What I wanted to express, is
-that maintainers should not pick individual patches.
+Here's a bit of a hacked together solution which should probably be moved
+to mm/:
 
-Thanks for the Ack and apologies for a bit too big CC-list. I need to
-learn how to ask b4 to make Cc-per-patch for such case.
+Use the mmap lock to cause future faulting to wait, then unmap all the
+folios if we have mmaps, then, conditionally, use ->writepages() to flush
+any dirty data back and then discard all pages.  The caller needs to hold =
+a
+lock to prevent ->write_iter() getting underfoot.
 
+Note that this does not prevent ->read_iter() from accessing the file
+whilst we do this since that may operate without locking.
 
+We also have the writeback_control available and so have the opportunity t=
+o
+set a flag in it to tell the filesystem that we're doing an invalidation.
 
-Best regards,
-Krzysztof
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: Miklos Szeredi <miklos@szeredi.hu>
+cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+cc: Christoph Hellwig <hch@lst.de>
+cc: Andrew Morton <akpm@linux-foundation.org>
+cc: Alexander Viro <viro@zeniv.linux.org.uk>
+cc: Christian Brauner <brauner@kernel.org>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: ceph-devel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-nfs@vger.kernel.org
+cc: devel@lists.orangefs.org
+Link: https://lore.kernel.org/r/1668172.1709764777@warthog.procyon.org.uk/=
+ [1]
+---
+ fs/netfs/misc.c       |   56 ++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+ include/linux/netfs.h |    3 ++
+ mm/memory.c           |    3 +-
+ 3 files changed, 61 insertions(+), 1 deletion(-)
+
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index bc1fc54fb724..774ce825fbec 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -250,3 +250,59 @@ bool netfs_release_folio(struct folio *folio, gfp_t g=
+fp)
+ 	return true;
+ }
+ EXPORT_SYMBOL(netfs_release_folio);
++
++extern void unmap_mapping_range_tree(struct rb_root_cached *root,
++				     pgoff_t first_index,
++				     pgoff_t last_index,
++				     struct zap_details *details);
++
++/**
++ * netfs_invalidate_inode - Invalidate/forcibly write back an inode's pag=
+ecache
++ * @inode: The inode to flush
++ * @flush: Set to write back rather than simply invalidate.
++ *
++ * Invalidate all the folios on an inode, possibly writing them back firs=
+t.
++ * Whilst the operation is undertaken, the mmap lock is held to prevent
++ * ->fault() from reinstalling the folios.  The caller must hold a lock o=
+n the
++ * inode sufficient to prevent ->write_iter() from dirtying more folios.
++ */
++int netfs_invalidate_inode(struct inode *inode, bool flush)
++{
++	struct address_space *mapping =3D inode->i_mapping;
++
++	if (!mapping || !mapping->nrpages)
++		goto out;
++
++	/* Prevent folios from being faulted in. */
++	i_mmap_lock_write(mapping);
++
++	if (!mapping->nrpages)
++		goto unlock;
++
++	/* Assume there are probably PTEs only if there are mmaps. */
++	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root))) {
++		struct zap_details details =3D { };
++
++		unmap_mapping_range_tree(&mapping->i_mmap, 0, LLONG_MAX, &details);
++	}
++
++	/* Write back the data if we're asked to. */
++	if (flush) {
++		struct writeback_control wbc =3D {
++			.sync_mode	=3D WB_SYNC_ALL,
++			.nr_to_write	=3D LONG_MAX,
++			.range_start	=3D 0,
++			.range_end	=3D LLONG_MAX,
++		};
++
++		filemap_fdatawrite_wbc(mapping, &wbc);
++	}
++
++	/* Wait for writeback to complete on all folios and discard. */
++	truncate_inode_pages_range(mapping, 0, LLONG_MAX);
++
++unlock:
++	i_mmap_unlock_write(mapping);
++out:
++	return filemap_check_errors(mapping);
++}
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 298552f5122c..40dc34ee291d 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -400,6 +400,9 @@ ssize_t netfs_buffered_write_iter_locked(struct kiocb =
+*iocb, struct iov_iter *fr
+ ssize_t netfs_unbuffered_write_iter(struct kiocb *iocb, struct iov_iter *=
+from);
+ ssize_t netfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from);
+ =
+
++/* High-level invalidation API */
++int netfs_invalidate_inode(struct inode *inode, bool flush);
++
+ /* Address operations API */
+ struct readahead_control;
+ void netfs_readahead(struct readahead_control *);
+diff --git a/mm/memory.c b/mm/memory.c
+index f2bc6dd15eb8..106f32c7d7fb 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3665,7 +3665,7 @@ static void unmap_mapping_range_vma(struct vm_area_s=
+truct *vma,
+ 	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
+ }
+ =
+
+-static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
++inline void unmap_mapping_range_tree(struct rb_root_cached *root,
+ 					    pgoff_t first_index,
+ 					    pgoff_t last_index,
+ 					    struct zap_details *details)
+@@ -3685,6 +3685,7 @@ static inline void unmap_mapping_range_tree(struct r=
+b_root_cached *root,
+ 				details);
+ 	}
+ }
++EXPORT_SYMBOL_GPL(unmap_mapping_range_tree);
+ =
+
+ /**
+  * unmap_mapping_folio() - Unmap single folio from processes.
 
