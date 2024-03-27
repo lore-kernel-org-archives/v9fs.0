@@ -1,98 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DF4150995
-	for <v9fs@lists.linux.dev>; Wed, 27 Mar 2024 20:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34FD153506;
+	Wed, 27 Mar 2024 21:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711571880; cv=none; b=M6CmU8DHk038scCWfF9dLClGIVLqlgvuf5pjUyinVT5qAWf564Jsj3mp3iUUUOE8ICeokq/weYqkECoEpNMuK9IUcTvIEnahqbzJjrNX01ilT3A2E1/Gwx2/RHkfLui+20jzPj6K/9t6w0/BFtg+zWyGwr7WXjLos/ulVC0iDlc=
+	t=1711575276; cv=none; b=o4xnKmmlCW9d86svYmDlPXMjxPL7/jypjz1IGjI0gNqBK9exixfpaL3WBx5MqnOZih1D+YBNunz9377mUJV000Hy30M4dQVmTS+dla8fU3+1YsCJVTigXEnUIxAdIUXc3gqDyA3JSfJEZFdOk3B8yQEmuWVuSZ6W+b8BGghwXRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711571880; c=relaxed/simple;
-	bh=+q1X6OO5OjLhXHnuIwVLwdI8semz6sAtm2DvDrQfzL0=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=m4c6tBHlI8N1HSh/Rc/f6n2HhZhi+MJNtTaosynjrlI7gcWnkWoVecBMwmowuyaEEoyIlzAKXfNcoTDbQbGuu6SIZQYoZ30itgT1w+5Aldfr7wfUNvShJajM/3pZ53W/Wo86EbPh2KOc1d1ItQ4yq9FbM5gyL4jKrfgghMFGf7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+U6GzdP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711575276; c=relaxed/simple;
+	bh=1PQshf9oLNWymLSf6XO3y7JgS+i8nEM66r2+FQV9ULo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fA93II9XYB4Q6gcjhLdRw098ECwZ956TnPyb1Fsor3nemKBxXqyFxi+wGjZEPbJUQA1RvpgV9055hkSc54yrP+lSDbye/vSpkrO7VfCInSPMOkq0RSrLiXlqRnq7SUyGr1v+ypdA9rrGcXfM6WaATzgj6G26el1jnyldEOGalEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jvegs6pu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+U6GzdP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711571877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6qoPQD+VTVHHhRyd75iNpboVK+lvHVLazCUjHaMH4s4=;
-	b=f+U6GzdPQ6k3TZnosPenf577kXxgtVBqVQpguxMe5LRqmFT0KXpPdFH8wy+n8w/FXktqOH
-	YARFbF+Wb3g//yjADz5Qvcf1sa1lJ/LZAaMw1KbOy494hRT+9p9+lxZ2gk0Q87kNYS3+aY
-	a12pgQrKU9WPKDeXo1M8L4UkO6XKp4g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-9x-QYYaoNBy5Yt-5m2eKqg-1; Wed, 27 Mar 2024 16:37:55 -0400
-X-MC-Unique: 9x-QYYaoNBy5Yt-5m2eKqg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DAB0101A552;
-	Wed, 27 Mar 2024 20:37:54 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 9A6CBC53360;
-	Wed, 27 Mar 2024 20:37:51 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ZgRpPd1Ado-0_iYx@casper.infradead.org>
-References: <ZgRpPd1Ado-0_iYx@casper.infradead.org> <2318298.1711551844@warthog.procyon.org.uk> <2506007.1711562145@warthog.procyon.org.uk>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: dhowells@redhat.com, Miklos Szeredi <miklos@szeredi.hu>,
-    Trond Myklebust <trond.myklebust@hammerspace.com>,
-    Christoph Hellwig <hch@lst.de>,
-    Andrew Morton <akpm@linux-foundation.org>,
-    Alexander Viro <viro@zeniv.linux.org.uk>,
-    Christian Brauner <brauner@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>, linux-mm@kvack.org,
-    linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-    ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2] mm, netfs: Provide a means of invalidation without using launder_folio
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jvegs6pu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E9CC433F1;
+	Wed, 27 Mar 2024 21:34:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711575275;
+	bh=1PQshf9oLNWymLSf6XO3y7JgS+i8nEM66r2+FQV9ULo=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Jvegs6puaU3ogoSLYQKoKNWCNQ6kIUZDdOMAaBshLPxcwoXmWcJrPAuYR1j6jLMMu
+	 HJplGER0DDwE3JKIdBeZ0Y8E0r50M9Zy1moMJ7iQWcs7HovPY4OkM9OZdtKb1jgj41
+	 i8AY1s7e1WzJgvVL/2lq26bPEU62nRYiIUAx1tv1F6roxUmXbBqjzz7ZPLIqv1zC68
+	 dgaf4wJlKOvSTTqeEet4hxrrXgF758Nn7Ijp+W092obLIsm3pTnSY2yeYg/XtgPUsg
+	 4ujBtNP9gOOkBhhgfcw9/OBEJOt0EGgh9cEJDIW6ErnT0v/tzccje4KtFx7Zi5afZB
+	 6YYgIaMuGGnxQ==
+Date: Wed, 27 Mar 2024 21:34:14 +0000
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] fs/9p: fixes for 6.9-rc1
+Message-ID: <ZgSQ1nvIyOGm4oCD@3f3e8491d9e9>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2541307.1711571866.1@warthog.procyon.org.uk>
-Date: Wed, 27 Mar 2024 20:37:46 +0000
-Message-ID: <2541308.1711571866@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fsdheo31eKupSjQ5"
+Content-Disposition: inline
 
-Matthew Wilcox <willy@infradead.org> wrote:
 
-> > +	/* Prevent new folios from being added to the inode. */
-> > +	filemap_invalidate_lock(mapping);
-> 
-> I'm kind of surprised that the callers wouldn't want to hold that lock
-> over a call to this function.  I guess you're working on the callers,
-> so you'd know better than I would, but I would have used lockdep to
-> assert that invalidate_lock was held.
+--fsdheo31eKupSjQ5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'm not sure.  None of the places that look like they'd be calling this
-currently take that lock (though possibly they should).
+The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
-Also, should I provide it with explicit range, I wonder?
+  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
 
-> > +	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-> > +		unmap_mapping_pages(mapping, 0, ULONG_MAX, false);
-> 
-> Is this optimisation worth it?
+are available in the Git repository at:
 
-Perhaps not.
+  git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc1
 
-David
+for you to fetch changes up to 6630036b7c228f57c7893ee0403e92c2db2cd21d:
 
+  fs/9p: fix uninitialized values during inode evict (2024-03-25 14:16:06 +0000)
+
+----------------------------------------------------------------
+fs/9p: fix errors found in 6.9-rc1
+
+Two of these fix syzbot reported issues, and
+the other fixes a unused variable in some configurations.
+
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+
+----------------------------------------------------------------
+Colin Ian King (1):
+      fs/9p: remove redundant pointer v9ses
+
+Eric Van Hensbergen (1):
+      fs/9p: fix uninitialized values during inode evict
+
+Lizhi Xu (1):
+      fs/9p: fix uaf in in v9fs_stat2inode_dotl
+
+ fs/9p/vfs_inode.c      | 16 ++++++++++------
+ fs/9p/vfs_inode_dotl.c |  6 +-----
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+--fsdheo31eKupSjQ5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElpbw0ZalkJikytFRiP/V+0pf/5gFAmYEkNYACgkQiP/V+0pf
+/5iD8w/9Fvsajqg3iejO/THhQrSpkhkVZ0avnkJaiBwXSyFTxausYRx6VBV51JyV
+kWN52e16kXsJk8wiCfPIwZgPScgXBTzF/OOQYCvY50d9EsMJPI40hvTg5Xnb2fbA
+GIxcmacPY2szUIRYYW4pH8URYPk5yvEkUbgx/9DK+pmRLoH++7Feb82xcVO/zLob
+lA/wCA6qNSHpfLfC/ISt5kI2w5xbcLn87XCq3+14CViFTXhemp+zRLmzQ4PRGzxy
+0Jl3d+txsOkt0QQorEtXacuWQiaBK54x6LtwLXLiZ/nZ34t5Iwk+vfsAbzp0L8Zu
+w5JgZ4zGKJffTXTRBH9f61zMh6iJbsFmBGPVOFwH6Aoz9lWWVOH5Qm1OcHdePNqE
+2NwiLpTpVh3h+6NCkTy6OaMrTjpt2IMotVJE+9+lr0SOe6G5ewYF0xlVeVEwXxAc
+8ukjGE2e7DxpPVA+CApHp+ZpKBbrYfkO6oTH1xrpgrOfZc9K8l0WnS76tIln3pli
+KaZ7KvqQ2OjI4W2ZGhfDg+8yEATflov671jnVf8fmqQJcxOQojunxlkMmLIrijuI
+FWEoodFNSc1noJnRAhsoYAXuRqDqX+HkizmUVrVQMWLgSUlR4t14gP+AJYnvkQW/
+Ym1qmuTQfrgSQqDbhHXUR0bCVQS5sW5fVFH51yW9mB9P8Fn4PZc=
+=6gdx
+-----END PGP SIGNATURE-----
+
+--fsdheo31eKupSjQ5--
