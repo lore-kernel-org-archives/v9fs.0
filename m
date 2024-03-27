@@ -1,89 +1,76 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D0912E1ED;
-	Wed, 27 Mar 2024 18:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2105C1DDC5;
+	Wed, 27 Mar 2024 18:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711565125; cv=none; b=j1JqJ59WNN1JN4fwibY656KwoFoNkq5zD0yq1xI8+oUugjkyVUly0YNyV+ObP4IwrsmVDNx6RpX08HO401lL5Z1JTY2K/meaFEeyA0KLIJbMJSOKw34JA82fFpxGTojTeOklMUltZ0TiliyEldbgGm7dRABWqMVADLh8bqQ9dnk=
+	t=1711565610; cv=none; b=NAONeEpZIBgh6V2UK+HdHrUrHCB6JIlKT2BHAst09GiU7MEwhMavo4Lr6ljiec8mnMQI8E/3Muar5Iwd+9q3RhmmQxh/R5w3m/nZjy/b7DNILmIVdzvLG8dKwbuPDxnHUpaP5OyNUpcDbOMbQ76zG7JWkX7NEbk9st4HonUOrDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711565125; c=relaxed/simple;
-	bh=biJi2IrgVq30FOqS2hK3EobFrX84OW9MAMNbFsaV0RQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6MPiqohL4Ot5PvHL+7ri36OVtcTGkngh5Ex1Y4WXh/r0ENH+SP3jKAgEM7V0VVolhY9g9ztzqfVxCOHqmd3KubM0OPFDQ2PN+jHq7hPYGAKFIeaxXxa6OU/ZOzqkHwj0FBiFwXwwEGcDXLWejxpOQUJ4cYJX5RWjK0qC4EBszQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FsHkB3Ok; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1711565610; c=relaxed/simple;
+	bh=+O32pSKiKxZOrZ1z6j0vD3Kyh3AW1ZjH2V9CfSPZsUo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mn296hZUAJeMEJozO9p3I4FRhB9KDG+hQ0BKCo/UKTfUs8KmgnlHFVvHFX9vTK+luBKE8/8PbWIcJ4NhTZ61guVV7zRAk//mkXg4J4mN7xrI3PyzSX/0L2gb9JE20IURKzJsgt/VpNiv4XdiHEorj/oMZAlJAUkz7v2PcjefQfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hspFMTyK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FsHkB3Ok"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Jto/UBY8qFeuax+A/OGqBK80cikOQZ4LUK0jo01qdKA=; b=FsHkB3OkZbvW2lIRluP+DvQYvf
-	oZF2Vx+216ffdZcTX7SPEY+DrhaoR16macUM0BQ9ipEBL7pt2KI1KrDuisYWoBe5+QdXSBIAguCug
-	jVETiIojDCW3h2JAaMqm9Y7WcU4tjfJyqKwJGQkgZsXj6Ghb75RwIUPk2RFlvDniY3cq8OHmLrCVC
-	GMMrX1c9UOcPqnUPrdbPwAXAMN/N2Km8/39X7qiw/oYgZNm1r082v4A+l5Hkeb22X300tTDg2k+x+
-	pimn0w+kw7PQkid5OR1tbpViET52ntLiFHV1DtYAbvRjBgOyLa6kcSmbplUC/xm73JgT75/JVJxrh
-	Y9cTQbag==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rpYGz-00000004UtR-2mcl;
-	Wed, 27 Mar 2024 18:45:17 +0000
-Date: Wed, 27 Mar 2024 18:45:17 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-	ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2] mm, netfs: Provide a means of invalidation
- without using launder_folio
-Message-ID: <ZgRpPd1Ado-0_iYx@casper.infradead.org>
-References: <2318298.1711551844@warthog.procyon.org.uk>
- <2506007.1711562145@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hspFMTyK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3484CC433F1;
+	Wed, 27 Mar 2024 18:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711565609;
+	bh=+O32pSKiKxZOrZ1z6j0vD3Kyh3AW1ZjH2V9CfSPZsUo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hspFMTyK2qH06drosYNkCR8bPwEwK6OeRHek3DQFlGPDm+QyFobZ0Gxn0kJX7KKBw
+	 4K7bFQUrvTH4tV4hPok/fHV9LbLkiEWJbdBRb1oXpMNwLSZpOPuoZtLsHbYPslgrUq
+	 kcEdkzMvpvOD3MXgKCX1mAw9JXfSzDc95kiFv9WkEuk8Sl5Hi1Ow+UBqcCuURDOehE
+	 3gi6iBdGjBpUQl47w+A78Ec3YgmJKW709PqFvTO8wx8Dgf9wYurl2hVW0GWSDS6jxi
+	 w5IBH+uRMqIUn5YhRocoddfTsbs5eIDFHPm4D7VNouXCgCy7hcaTw9J9qa6JibSsX8
+	 YDERBj6zgvjhg==
+Date: Wed, 27 Mar 2024 11:53:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
+Cc: asmadeus@codewreck.org, "Lizhi Xu" <lizhi.xu@windriver.com>,
+ syzbot+7a3d75905ea1a830dbe5@syzkaller.appspotmail.com,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com,
+ v9fs@lists.linux.dev, regressions@lists.linux.dev, netdev@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org
+Subject: Re: [PATCH next] fs/9p: fix uaf in in v9fs_stat2inode_dotl
+Message-ID: <20240327115328.22c5b5a3@kernel.org>
+In-Reply-To: <20240322081312.2a8a4908@kernel.org>
+References: <00000000000055ecb906105ed669@google.com>
+	<20240202121531.2550018-1-lizhi.xu@windriver.com>
+	<ZeXGZS1-X8_CYCUz@codewreck.org>
+	<20240321182824.6f303e38@kernel.org>
+	<ada13e85bf2ceed91052fa20adb02c4815953e26@linux.dev>
+	<20240322081312.2a8a4908@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2506007.1711562145@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 27, 2024 at 05:55:45PM +0000, David Howells wrote:
-> +int filemap_invalidate_inode(struct inode *inode, bool flush)
-> +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +
-> +	if (!mapping || !mapping->nrpages)
-> +		goto out;
-> +
-> +	/* Prevent new folios from being added to the inode. */
-> +	filemap_invalidate_lock(mapping);
+On Fri, 22 Mar 2024 08:13:12 -0700 Jakub Kicinski wrote:
+> On Fri, 22 Mar 2024 14:26:07 +0000 Eric Van Hensbergen wrote:
+> > Patch is in the unapplied portion of my for-next tree along with
+> > another one.  I was hoping to hear some feedback on the other one
+> > before i did a pull request and was torn on whether or not I wait on
+> > -rc1 to send since we are so close.  
+> 
+> My guess would be that quite a few folks use 9p for in-VM kernel
+> testing. Real question is how many actually update their work tree
+> before -rc1 or even -rc2, given the anticipated merge window code
+> instability.. so maybe there's no extreme urgency?
+> 
+> From netdev's perspective, FWIW, it'd be great if the fix reached
+> Linux before Thursday, which is when we will forward our tree again.
 
-I'm kind of surprised that the callers wouldn't want to hold that lock
-over a call to this function.  I guess you're working on the callers,
-so you'd know better than I would, but I would have used lockdep to
-assert that invalidate_lock was held.
+Any progress on getting the fix to Linus? I didn't spot it getting
+merged.
 
-> +	if (!mapping->nrpages)
-> +		goto unlock;
-> +
-> +	/* Assume there are probably PTEs only if there are mmaps. */
-> +	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-> +		unmap_mapping_pages(mapping, 0, ULONG_MAX, false);
-
-Is this optimisation worth it?  We're already doing some expensive
-operations here, does saving cycling the i_mmap_lock really help
-anything?  You'll note that unmap_mapping_pages() already does this
-check inside the lock.
-
+I'm a bit surprised there aren't more people complaining TBH
+I'd have thought any CI setup with KASAN enabled has a good 
+chance of hitting this..
