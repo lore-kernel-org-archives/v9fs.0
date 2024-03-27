@@ -1,167 +1,210 @@
-Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A133CA
-	for <v9fs@lists.linux.dev>; Sun, 24 Mar 2024 02:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A11D144D36
+	for <v9fs@lists.linux.dev>; Wed, 27 Mar 2024 12:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711246327; cv=none; b=pbnhUZ3ykjXsAzAkxxPUF4G8M3u+my9R4rRqFWMmTYacA3qLFM9iIYLGbng7YQO2mAgUORiI27R60zP0F3TmEP7AqgdauQ62TuFn9MT51NXZHxYzdNb/6Zi92QxGLig8BP1Y105HIHtx+4589zTA82YL7AII5lcUODMfRX7BjEY=
+	t=1711543303; cv=none; b=khmqTNY1Sa39QFI8xN2pK9AawOKuZcWkrtY6XT/YYdBmwNWALXlTg0WEpbymNrP2PtC+8ZuZ88GP9O42jEGsppXf6vB6DCOXNkKs4Gz/dER1YGQmcEmArkayAO0B74bgwv353eocws+FrpNg0CLqrln5YWkum25Hbk+FwxI/EpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711246327; c=relaxed/simple;
-	bh=RmySQCLqF8qfUzjXWXFsnI6Lze/4J36XZmPRALV0Fyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LhnGLel0fvQ7f1/rhqBrxK3U7UrGhfPGwCXUtLVXwQHPHmfiMRrlT2pqRpmZrGdTvCg6Cz3XpwiD60d7H5YQoS9RvVKwVfFg1APUEjGqvEqqpio1hTWAmsCPVMv3uBKvFL2UWXAeEYnnlBunySZsdpT7WQCqjus3Mx4DjItvmSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o6p6uOLv; arc=none smtp.client-ip=91.218.175.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1711543303; c=relaxed/simple;
+	bh=ZqxqBePx9O0aSeYwWfac5JC18N8WH4wazKZPUDWtyb4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q4dWkbC/+RBkmBC+qnTRkmbEmEmGCgvQuOJvqOLBLII2M1szX4IAXYQHv9skE2oEc9IZRAurVwv/cDt+q01LZGecsXyZHYnuqmOdYv5SorebHiLGV4TQsIb5AUhqzOJqbBisDpMz2xelqtSI/m1ippmmBJ106nvhvHO+YkuQFQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WmTj86bT; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o6p6uOLv"
-Date: Tue, 19 Mar 2024 19:49:31 +0900
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711246321;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y2Yt6VUjbkkXcpGFtAZ1uSAkeG3kbYVU93knkBa9axU=;
-	b=o6p6uOLvuk+t0l3fhttU458b15wCoMThprJN+e0woiGlgKMpw1PwMqCClLt2odQssOx1lC
-	cEpJqu7FW+wSnG58uKETiUVbiLyCHRxzZ0y6GGFZ8/Nz9uafB4xZ7pUrPGgkjH9nsEz/6S
-	8sNLlqigExfO04fu3M46gHhaJ1zGzAo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: v9fs@lists.linux.dev
-Subject: Re: 9P2000 bug in mainline
-Message-ID: <ZfltuzRK7uM5TKvv@vm3>
-References: <ZfW3eyENMB1P5jLS@vm3>
- <CAFkjPTnOcmgr8iPjBR+4+sd5LqOd3nfKZ9DecSYvZfxzzNg3WA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WmTj86bT"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d700beb60bso1586211fa.1
+        for <v9fs@lists.linux.dev>; Wed, 27 Mar 2024 05:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711543298; x=1712148098; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AFaFw1OZuXizkw4uNoNpzMqxfCxSvA28jWrn6rdqU5M=;
+        b=WmTj86bTLfl1Tzlh25M1ZmXMUUAQ73EnhTPDLSNzucQyISVfrIG/RXNbgbiCIeFtcD
+         DHr8r6RCHt6VDNKDv+47isF19/FRYji17WTzUs0lotXN2Y/3Cdc3ViU3bnAWICKwnYgn
+         YmZgoVpz7GnXq9Rl6fHYmHrMMWj/Kt1GIFfn3mcxxJslgz00CBIi4AgwxmnwBWnOKjCk
+         6YoYcYGtBycrlxWoQQk/xuGikXyKLFhy4EasJkMPeOwkPtqHyrQJqJxl4tve2MaRN6BH
+         izniqhEXK8rbAJgnYk/IKSsS1/KfZrjhWFDIuBs6KNf5gc8J8C4TGlpkNMFDTVzDWUOz
+         gxZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711543298; x=1712148098;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AFaFw1OZuXizkw4uNoNpzMqxfCxSvA28jWrn6rdqU5M=;
+        b=MEXVbo6sW4PzgLgpo2kxTQKNpJnmcKf9eotBRMJaEnzW7RBdagjm57iWWZBBuL961n
+         RBP6kxg+HyieQKJ5OiI9jqK1Blzkv0E4Z1uE/Z/cLAFHQqJR+qE5w6It5B/YVIiZzzqO
+         Tgrtd+/foiVT4NkCt4v9fJVYVGSqTvh0Eoa1TSMYKbLpW02wAwp6KbKR2rflURTLmAIC
+         KiSJtNZmF3oPCHNSX2f9EH1aY1WoPh/sD/Y83O9u9JpOMWjbzz8X0WwguRdg4rlBiKAF
+         PB0oX/Yt4cvcfhZYjUxE2C6BSf4TB4wdEzadFNOYsK1/ZMOaq9WDegHBpftcRVXarWr5
+         GBhw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4ILJ6GlrDx+W6We54UsiVNr2mawTr7KR5RgQsl9lkS0VTQ4UUlCOzMSUOOV1rhgvl/nKfzPujHkxuwBjAE9yw5AqvVw==
+X-Gm-Message-State: AOJu0YyXSvAL6D/AicLKiTPhoO4oHOIAAlX8lDkVzXA+eVrmfdBKW9Ma
+	Xgng5GILYXz5lTeYw2s5pvRORqcx96Fj7I1TYqZ6MTd4NtHiS38xr4XKSh4zHwg=
+X-Google-Smtp-Source: AGHT+IFS1x7gpjA7jUKSh2w40PflGxs4LWIU8D0QvTuDe3IphcKfLGKJ6nGMGd9SaTSRJh693GFsRg==
+X-Received: by 2002:a2e:3a1a:0:b0:2d6:e148:2463 with SMTP id h26-20020a2e3a1a000000b002d6e1482463mr2074785lja.24.1711543298562;
+        Wed, 27 Mar 2024 05:41:38 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.206.205])
+        by smtp.gmail.com with ESMTPSA id gx16-20020a170906f1d000b00a4707ec7c34sm5379175ejb.166.2024.03.27.05.41.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 05:41:38 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 00/22] virtio: store owner from modules with
+ register_virtio_driver()
+Date: Wed, 27 Mar 2024 13:40:53 +0100
+Message-Id: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFkjPTnOcmgr8iPjBR+4+sd5LqOd3nfKZ9DecSYvZfxzzNg3WA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANUTBGYC/x3MSQqAMAxA0atI1gY0dQCvIi4coga0ldQJxLtbX
+ L7F/w94VmEPVfSA8ilenA1I4wj6ubUTowzBQAlliaESVzccC6O7LCueors4zLOiLExn+pYIQrk
+ pj3L/17p53w9578lCZQAAAA==
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Jens Axboe <axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Olivia Mackall <olivia@selenic.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Gonglei <arei.gonglei@huawei.com>, "David S. Miller" <davem@davemloft.net>, 
+ Viresh Kumar <vireshk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, 
+ Chia-I Wu <olvaffe@gmail.com>, 
+ Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+ Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>, 
+ Dan Williams <dan.j.williams@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+ Ira Weiny <ira.weiny@intel.com>, 
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+ Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, 
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-wireless@vger.kernel.org, nvdimm@lists.linux.dev, 
+ linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org, 
+ linux-sound@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3506;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=ZqxqBePx9O0aSeYwWfac5JC18N8WH4wazKZPUDWtyb4=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmBBPZS5yGoH1UVP3T0Npm8blJRoVKIHSae5kBq
+ HxYGiIbwMaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZgQT2QAKCRDBN2bmhouD
+ 12zhD/9C6ukv+8iXJ63iu65KAxWO0209no/Zk8V5PPOIg8YWF23fhUh5Tg2IbxFs1SDSIqOKCGf
+ 078xrARdl7OLN91lsOjjrbjnZZrO+3UXwHxBg6rRfwtkp+kgAzLzR84hoSWqyqlq+JpiqE73Ex1
+ fNyOEu1Il2sVbtLvNN9ZvBBGDNN/h7JC9ywVxJ0Fa0LD8kwtsV8pUIgsVva8ILQKkMQBTP09QPM
+ 7DW97OEmYao/IN0z9JQ8xmwCXf08ciDibfQZ884ZF4dVW/paLFkgw4OyR+22WTqneeBTsJKdlH1
+ Os9//BH9zlvxyZG6vpAg3g6NvH7MxigyNbztqSw7Uqw1jx1u1032qs/yjWHbs7c4pNm32w5Sc2U
+ BWMIQlsiyt2Gg33SxWybhDqMfp72LBlT04SmQHYDlMTlPA4vvgeUK/H/oYmg/uzy5MM/kx9WGtR
+ pNCFFDPI2B6EAqAvrzZWEGv2PVNujF5tHSLKVqxYwXHWIDIqg8LnCgQeizyqp/tqjoQFY7vGlzI
+ B3wE5riIQuaCN41Id+3PH7pVc6tEQlepaRhz7jRIFh+JEA53CORhQ62m1PpLMq7z8zNhn+Igsh+
+ AB69huA3C3eKILpuFw33OXJybFczTX0Vd0F95nDwyWCahIwaUlrRfoO1JQlJFdOgChtyx0ws9Uf
+ xOnSxyBfnZ9hbow==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Mon, Mar 18, 2024 at 10:00:33PM -0500, Eric Van Hensbergen wrote:
-> fix for this already in my for-next tree, will be sending a pull
-> request shortly along with a fix for another kasan reported bug.
-> 
-> thanks,
-> 
->     -eric
+Merging
+=======
+All further patches depend on the first virtio patch, therefore please ack
+and this should go via one tree: virtio?
 
-I don't see the regression in linux-20240322.
+Description
+===========
+Modules registering driver with register_virtio_driver() often forget to
+set .owner field.
 
-Tested-by: itaru.kitayama@fujitsu.com
+Solve the problem by moving this task away from the drivers to the core
+amba bus code, just like we did for platform_driver in commit
+9447057eaff8 ("platform_device: use a macro instead of
+platform_driver_register").
 
-Thanks,
-Itaru.
+Best regards,
+Krzysztof
 
-> 
-> On Mon, Mar 18, 2024 at 9:25 PM Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
-> >
-> > Hi,
-> >
-> > I bisected down to this commit in Linus's tree:
-> >
-> > [724a08450f74b02bd89078a596fd24857827c012] fs/9p: simplify iget to remove unnecessary paths
-> >
-> > 9P2000 stopped working on FVP with the arm64 kernel.
-> >
-> > # mount -t 9p FM /mnt
-> > [   99.367520] ==================================================================
-> > [   99.367817] BUG: KASAN: slab-use-after-free in v9fs_stat2inode_dotl+0x818/0x9a0
-> > [   99.368266] Read of size 8 at addr ffff0008068a99a8 by task mount/165
-> > [   99.368608]
-> > [   99.368787] CPU: 1 PID: 165 Comm: mount Not tainted 6.8.0-rc1-00008-gbe57855f5050 #99
-> > [   99.369190] Hardware name: FVP Base RevC (DT)
-> > [   99.369442] Call trace:
-> > [   99.369637]  dump_backtrace+0x94/0xf0
-> > [   99.369960]  show_stack+0x1c/0x2c
-> > [   99.370265]  dump_stack_lvl+0xb0/0x14c
-> > [   99.370644]  print_report+0xdc/0x578
-> > [   99.371010]  kasan_report+0xb4/0x100
-> > [   99.371378]  __asan_report_load8_noabort+0x24/0x34
-> > [   99.371807]  v9fs_stat2inode_dotl+0x818/0x9a0
-> > [   99.372193]  v9fs_fid_iget_dotl+0x174/0x208
-> > [   99.372576]  v9fs_mount+0x37c/0x740
-> > [   99.372921]  legacy_get_tree+0xd4/0x198
-> > [   99.373301]  vfs_get_tree+0x78/0x284
-> > [   99.373637]  path_mount+0x738/0x1500
-> > [   99.373958]  __arm64_sys_mount+0x48c/0x5c4
-> > [   99.374297]  invoke_syscall+0xd4/0x24c
-> > [   99.374690]  el0_svc_common.constprop.0+0xb0/0x23c
-> > [   99.375128]  do_el0_svc+0x44/0x60
-> > [   99.375514]  el0_svc+0x3c/0x7c
-> > [   99.375893]  el0t_64_sync_handler+0x128/0x134
-> > [   99.376232]  el0t_64_sync+0x1b0/0x1b4
-> > [   99.376552]
-> > [   99.376724] Allocated by task 165 on cpu 1 at 99.359984s:
-> > [   99.377046]  kasan_save_stack+0x40/0x6c
-> > [   99.377402]  kasan_save_track+0x24/0x44
-> > [   99.377760]  kasan_save_alloc_info+0x6c/0x80
-> > [   99.378164]  __kasan_kmalloc+0xe0/0xe4
-> > [   99.378517]  kmalloc_trace+0x164/0x300
-> > [   99.378874]  p9_client_getattr_dotl+0x50/0x19c
-> > [   99.379269]  v9fs_fid_iget_dotl+0xb4/0x208
-> > [   99.379641]  v9fs_mount+0x37c/0x740
-> > [   99.379978]  legacy_get_tree+0xd4/0x198
-> > [   99.380356]  vfs_get_tree+0x78/0x284
-> > [   99.380678]  path_mount+0x738/0x1500
-> > [   99.380992]  __arm64_sys_mount+0x48c/0x5c4
-> > [   99.381322]  invoke_syscall+0xd4/0x24c
-> > [   99.381713]  el0_svc_common.constprop.0+0xb0/0x23c
-> > [   99.382137]  do_el0_svc+0x44/0x60
-> > [   99.382516]  el0_svc+0x3c/0x7c
-> > [   99.382892]  el0t_64_sync_handler+0x128/0x134
-> > [   99.383217]  el0t_64_sync+0x1b0/0x1b4
-> > [   99.383527]
-> > [   99.383699] Freed by task 165 on cpu 1 at 99.367506s:
-> > [   99.384014]  kasan_save_stack+0x40/0x6c
-> > [   99.384371]  kasan_save_track+0x24/0x44
-> > [   99.384729]  kasan_save_free_info+0x54/0x90
-> > [   99.385130]  poison_slab_object+0x118/0x16c
-> > [   99.385498]  __kasan_slab_free+0x40/0x98
-> > [   99.385863]  kfree+0xec/0x290
-> > [   99.386190]  v9fs_fid_iget_dotl+0x138/0x208
-> > [   99.386564]  v9fs_mount+0x37c/0x740
-> > [   99.386902]  legacy_get_tree+0xd4/0x198
-> > [   99.387279]  vfs_get_tree+0x78/0x284
-> > [   99.387602]  path_mount+0x738/0x1500
-> > [   99.387915]  __arm64_sys_mount+0x48c/0x5c4
-> > [   99.388246]  invoke_syscall+0xd4/0x24c
-> > [   99.388637]  el0_svc_common.constprop.0+0xb0/0x23c
-> > [   99.389061]  do_el0_svc+0x44/0x60
-> > [   99.389439]  el0_svc+0x3c/0x7c
-> > [   99.389815]  el0t_64_sync_handler+0x128/0x134
-> > [   99.390135]  el0t_64_sync+0x1b0/0x1b4
-> > [   99.390451]
-> > [   99.390622] The buggy address belongs to the object at ffff0008068a99a8
-> > [   99.390622]  which belongs to the cache kmalloc-192 of size 192
-> > [   99.391063] The buggy address is located 0 bytes inside of
-> > [   99.391063]  freed 192-byte region [ffff0008068a99a8, ffff0008068a9a68)
-> > [   99.391530]
-> > [   99.391703] The buggy address belongs to the physical page:
-> > [   99.391960] page:fffffc00201a2a00 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff0008068a9af0 pfn:0x8868a8
-> > [   99.392411] head:fffffc00201a2a00 order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> > [   99.392784] flags: 0x5fffe0000000a40(workingset|slab|head|node=0|zone=2|lastcpupid=0xffff)
-> > [   99.393178] page_type: 0xffffffff()
-> > [   99.393490] raw: 05fffe0000000a40 ffff00080000ce40 ffff000800000850 ffff000800000850
-> > [   99.393884] raw: ffff0008068a9af0 0000000000180015 00000001ffffffff 0000000000000000
-> > [   99.394211] page dumped because: kasan: bad access detected
-> > [   99.394479]
-> > [   99.394650] Memory state around the buggy address:
-> > [   99.394921]  ffff0008068a9880: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > [   99.395270]  ffff0008068a9900: 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> > [   99.395619] >ffff0008068a9980: fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb
-> > [   99.395935]                                   ^
-> > [   99.396210]  ffff0008068a9a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
-> > [   99.396558]  ffff0008068a9a80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> > [   99.396874] ==================================================================
-> > [   99.397370] Disabling lock debugging due to kernel taint
-> >
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Krzysztof Kozlowski (22):
+      virtio: store owner from modules with register_virtio_driver()
+      um: virt-pci: drop owner assignment
+      virtio_blk: drop owner assignment
+      bluetooth: virtio: drop owner assignment
+      hwrng: virtio: drop owner assignment
+      virtio_console: drop owner assignment
+      crypto: virtio - drop owner assignment
+      firmware: arm_scmi: virtio: drop owner assignment
+      gpio: virtio: drop owner assignment
+      drm/virtio: drop owner assignment
+      iommu: virtio: drop owner assignment
+      misc: nsm: drop owner assignment
+      net: caif: virtio: drop owner assignment
+      net: virtio: drop owner assignment
+      net: 9p: virtio: drop owner assignment
+      net: vmw_vsock: virtio: drop owner assignment
+      wireless: mac80211_hwsim: drop owner assignment
+      nvdimm: virtio_pmem: drop owner assignment
+      rpmsg: virtio: drop owner assignment
+      scsi: virtio: drop owner assignment
+      fuse: virtio: drop owner assignment
+      sound: virtio: drop owner assignment
+
+ Documentation/driver-api/virtio/writing_virtio_drivers.rst | 1 -
+ arch/um/drivers/virt-pci.c                                 | 1 -
+ drivers/block/virtio_blk.c                                 | 1 -
+ drivers/bluetooth/virtio_bt.c                              | 1 -
+ drivers/char/hw_random/virtio-rng.c                        | 1 -
+ drivers/char/virtio_console.c                              | 2 --
+ drivers/crypto/virtio/virtio_crypto_core.c                 | 1 -
+ drivers/firmware/arm_scmi/virtio.c                         | 1 -
+ drivers/gpio/gpio-virtio.c                                 | 1 -
+ drivers/gpu/drm/virtio/virtgpu_drv.c                       | 1 -
+ drivers/iommu/virtio-iommu.c                               | 1 -
+ drivers/misc/nsm.c                                         | 1 -
+ drivers/net/caif/caif_virtio.c                             | 1 -
+ drivers/net/virtio_net.c                                   | 1 -
+ drivers/net/wireless/virtual/mac80211_hwsim.c              | 1 -
+ drivers/nvdimm/virtio_pmem.c                               | 1 -
+ drivers/rpmsg/virtio_rpmsg_bus.c                           | 1 -
+ drivers/scsi/virtio_scsi.c                                 | 1 -
+ drivers/virtio/virtio.c                                    | 6 ++++--
+ fs/fuse/virtio_fs.c                                        | 1 -
+ include/linux/virtio.h                                     | 7 +++++--
+ net/9p/trans_virtio.c                                      | 1 -
+ net/vmw_vsock/virtio_transport.c                           | 1 -
+ sound/virtio/virtio_card.c                                 | 1 -
+ 24 files changed, 9 insertions(+), 27 deletions(-)
+---
+base-commit: 7fdcff3312e16ba8d1419f8a18f465c5cc235ecf
+change-id: 20240327-module-owner-virtio-546763b3ca22
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
