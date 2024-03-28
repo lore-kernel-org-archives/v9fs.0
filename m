@@ -1,152 +1,116 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wirbelwind.zhasha.com (wirbelwind.zhasha.com [78.109.210.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F89412FB35
-	for <v9fs@lists.linux.dev>; Thu, 28 Mar 2024 15:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385BE39FCF
+	for <v9fs@lists.linux.dev>; Thu, 28 Mar 2024 15:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.109.210.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711640360; cv=none; b=NLI/iZTKf3AbWkbDNnJK6M8iFilIc5jZ/j8e4T/qUs6c2zXKEHaUeVdg0kVbp8H02XvtIjuGp+saZb0UPSuYR3hbZdU2gqDCHtKG93BjDmtRI1VpZ+SFzbAbi8DhCH8tlAeibzEhrhARAUO/dlvfuwgofNdsFdYjiVB/6cLjpY8=
+	t=1711640651; cv=none; b=MsurxcvMEOEoRHPpV2m0I2fSxM7+5jXsgfODf/puAj0NQJJ2E+BFO3Du1XES8jU2w1q/KMjUz/P+NsMFa2p6AOxcokIs+e7DQfHR6a9NEGFiCopoTu1/RSLnkIEOKcOZsWGkRwkxP2unUSdpUh8h/yS+dUAiiVW28bMHnQsuxoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711640360; c=relaxed/simple;
-	bh=G1iRW2zHIY2/EiULrJ1nqfVUKDfTimjQj7b8q3dHoFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ehUdm2EVAy8pf3AnZH4ojXsm7ZujF8jxu07RIjtX9fmLUfHegAy4pf9dAW/bLldCEac80p5LYxSF2PpaIE7oWyYM6FQHXcWdbuIyzTrlbiKY7AfrULT7VlfKNipdLTRHqLQ2GWtsKYj8cShN7phaKiwYIiz+ESlh3H4x5+ZOHBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mMd0u48U; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711640651; c=relaxed/simple;
+	bh=uoyAIf/qEu61Wyvx0Q/klA+RxVVfAK/6K/hGD+TN4FQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=SUjJbwTlniFWK/1DMxiCx4AZvebDBL1oxhO9zEXAviS1/PiRABydMFurd7RsdkflkjZnKB+VOh4kMQiP8NNYZ+bnxvTxpR+msN2bFXYq7NBsNm+6J6/cBt2JkgwBlM0y3I2YD7mhspkrCSVO9wL5AA//wQCumU2iBj5+WFkKJRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zhasha.com; spf=pass smtp.mailfrom=zhasha.com; dkim=pass (1024-bit key) header.d=zhasha.com header.i=@zhasha.com header.b=e6dDf5Oi; arc=none smtp.client-ip=78.109.210.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zhasha.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhasha.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mMd0u48U"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e782e955adso1042454b3a.3
-        for <v9fs@lists.linux.dev>; Thu, 28 Mar 2024 08:39:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711640358; x=1712245158; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mPjQD/vT8EW8FIsS5EhEUvjw7Yq2DPw74odbleQjQC0=;
-        b=mMd0u48UQvF2VIv2uh7L1OQcL2FZtSreRdhgUtjv4P9FxDPk8tDx4uten3xzZH38CK
-         ClOsaEoqxM5/80ppGz++FSnrntKLw8BirlSgik/veMTXkC0Ose6YHPmP7S0zU7IPAYX4
-         HX/w3xJBg2lzRNnpc4t5NT2zasn/XpAxQ1K9kNwm535Zzislom+Uz4YYJREjQbxqeQlA
-         1409dR+S/kZ+hzZczS1yYWjsJXjdau+pBvLtuaCJdBxid9yt84ogyKBQhirYbx1Dio2Z
-         KVYEzXyB4C/+yCRYDcApfPf34ERZBcsoG8f5TLKBZPLmR++wLJAWSOBFKywqaaB9KI4k
-         mGPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711640358; x=1712245158;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mPjQD/vT8EW8FIsS5EhEUvjw7Yq2DPw74odbleQjQC0=;
-        b=GEa4bF6lwwHa0F7e1Gq0sX2//ewQ0+5Ox0NCb0+ycKYote2SITtXCHj0fmkzfKM1Pn
-         U1BUjd8G+o7F+qClt31Q26AjIEJj2L9XY13dgWxMkOmisiZr7VXK6TxAMY6VUN716Ssp
-         Ipla3IKNEtdibO+fH9lRCb3zTTHQK69H1b1TvnHRuEDOAZA93yBQIRgexLmsrZETtEJf
-         QC121TQklzEw11IBrs05Qapk3NXZIMmE6H4OKzsA/VzkPqAWSfm0OvUP9xTQrWq/tR5U
-         oPFP0U2v98oupsBI6J4xKYv/4KZOWJ7qAsxFL1sxytCpcDpxk5NwTwUcL5DSQp9PMa1t
-         fBdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQnnShAez4maOT4qJgnRguBgQSnhqd6fTrJIso28MRlByvOdM3TYrRYP2f98liYPYskNENRGP75xPHmT+53qPsMU/4Cg==
-X-Gm-Message-State: AOJu0YwEd2+uvdapEI6tzL2385LSvh/eGSjtAGjsKMOGR78+JCu38s/h
-	RnDe1jjrEeVB4NcSn58Z+CiUWi57o2eaa4Dt45nn+kCjPaySeSEYtG/Q9jn0D7o=
-X-Google-Smtp-Source: AGHT+IGhUQYINGDQ7hWfiGCoXweY10vLCz/e/x+HjJ8dVvYs43ivIcKXZCgoqnZGIv+19J3DIwIpug==
-X-Received: by 2002:a05:6a00:a12:b0:6ea:92a7:fb82 with SMTP id p18-20020a056a000a1200b006ea92a7fb82mr3800870pfh.27.1711640357806;
-        Thu, 28 Mar 2024 08:39:17 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:ff63:c57b:4625:b68c])
-        by smtp.gmail.com with ESMTPSA id e2-20020aa798c2000000b006ea923678a6sm1505830pfm.137.2024.03.28.08.39.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 08:39:17 -0700 (PDT)
-Date: Thu, 28 Mar 2024 09:39:10 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Gonglei <arei.gonglei@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	David Airlie <airlied@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
-	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 19/22] rpmsg: virtio: drop owner assignment
-Message-ID: <ZgWPHntosUk+5qac@p14s>
-References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
- <20240327-module-owner-virtio-v1-19-0feffab77d99@linaro.org>
+	dkim=pass (1024-bit key) header.d=zhasha.com header.i=@zhasha.com header.b="e6dDf5Oi"
+Received: from donnerschlag.zhasha.com (unknown [192.168.0.230])
+	by wirbelwind.zhasha.com (Postfix) with ESMTPSA id 27B20325653;
+	Thu, 28 Mar 2024 16:37:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zhasha.com;
+	s=wirbelwind; t=1711640274;
+	bh=O7ljGWIT+F01FQd35I/xaP12h6pu/KQOlziQz7EFT/E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=e6dDf5Oih4xvoW/jbZYoXdFJwOkchyyKEUYPMwS0ev3bnvHrnLc0vpDx8JQ2qc3DI
+	 wag5y3nMqJxmu+6SyWw8szK30hZVjXGCCTAdoSm+a4ysc8eJzZZM+l+lVKu8fId/6G
+	 1Y5r6Rf19xivCEItBDKo6fthgVX2StX1/D+51wA4=
+Date: Thu, 28 Mar 2024 16:37:53 +0100
+From: Joakim Sindholt <opensource@zhasha.com>
+To: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
+Cc: v9fs@lists.linux.dev
+Subject: Re: [PATCH v2 2/4] fs/9p: drop inodes immediately on non-.L too
+Message-Id: <20240328163753.eb3541f4c8595de40f5e3c82@zhasha.com>
+In-Reply-To: <145fc52b2452095c44260825670141d0d3b42c7d@linux.dev>
+References: <20240318112542.18863-1-opensource@zhasha.com>
+	<20240318112542.18863-3-opensource@zhasha.com>
+	<145fc52b2452095c44260825670141d0d3b42c7d@linux.dev>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327-module-owner-virtio-v1-19-0feffab77d99@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 27, 2024 at 01:41:12PM +0100, Krzysztof Kozlowski wrote:
-> virtio core already sets the .owner, so driver does not need to.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Depends on the first patch.
-> ---
->  drivers/rpmsg/virtio_rpmsg_bus.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
-> index 1062939c3264..e9e8c1f7829f 100644
-> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
-> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-> @@ -1053,7 +1053,6 @@ static struct virtio_driver virtio_ipc_driver = {
->  	.feature_table	= features,
->  	.feature_table_size = ARRAY_SIZE(features),
->  	.driver.name	= KBUILD_MODNAME,
-> -	.driver.owner	= THIS_MODULE,
->  	.id_table	= id_table,
->  	.probe		= rpmsg_probe,
->  	.remove		= rpmsg_remove,
+On Thu, 28 Mar 2024 15:08:59 +0000, "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev> wrote:
+> Slowly parsing through these, thanks for the fixes.
+> This one has a bit of a problem in that we don't have a v9fs specific
+> drop_inode anymore (either in legacy or .L). The release of the fid should 
+> be handled by v9fs_dir_release in both versions of the protocol. 
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+My apologies. I didn't realize that it had been changed in the next
+branch until after sending it and I haven't had the time to check how
+it's supposed to work now.
 
-> 
-> -- 
-> 2.34.1
-> 
+> I had convinced myself we could just use generic_drop_inode because we 
+> decoupled clunking fids from the dentry/inode structures and just handled
+> them directly in v9fs_dir_release -- so really by recovering the inode 
+> structure every time we were just forcing churn in the inode alloc/dealloc
+> routines that seemed unnecessary (even in the uncached mode).
+
+I agree that the alloc followed by immediately dropping it from the
+cache is a waste of cycles. This was just the most reliable way I knew
+of fixing it without impacting anything else.
+
+> Was your concern the performance of the client side lookup of the inode
+> based on qid or the server side based on fid and can you give me a bit
+> more information on what you are seeing?  Are you not seeing fid clunks
+> for certain conditions (ie. transient fids, etc.)?
+
+This is what I'm seeing in slabtop on a system with no caching enabled
+on a 6.1 kernel. I never tested if it persisted on the 6.6 kernel but I
+assume it would.
+
+ Active / Total Objects (% used)    : 2738808 / 2788118 (98.2%)
+ Active / Total Slabs (% used)      : 89853 / 89853 (100.0%)
+ Active / Total Caches (% used)     : 164 / 261 (62.8%)
+ Active / Total Size (% used)       : 1071558.97K / 1084648.27K (98.8%)
+ Minimum / Average / Maximum Object : 0.02K / 0.39K / 16.01K
+
+  OBJS ACTIVE  USE OBJ SIZE  SLABS OBJ/SLAB CACHE SIZE NAME
+1235968 1235915  99%    0.06K  19312       64     77248K lsm_inode_cache
+1200339 1200339 100%    0.75K  57159       21    914544K v9fs_inode_cache
+ 62136  54815  88%    0.11K   1726       36      6904K buffer_head
+ 49400  45639  92%    0.20K   2600       19     10400K dentry
+ 26368  26364  99%    0.03K    206      128       824K avtab_node
+ 26222  15713  59%    0.57K   1873       14     14984K radix_tree_node
+ 19162  18337  95%    1.20K   1474       13     23584K ext4_inode_cache
+ ...
+
+What this is not showing, and it's really rather difficult to show, is
+that it also causes a large amount of CPU usage on any file operations.
+I'm not sure if it's simply because the table is enormous or if it's
+because most of the qids v9fs gets to contend with are identical ones
+from a whole host of synthetic file systems that it then has to iterate
+over linearly.
+The v9fs_inode_cache grows until it takes up all available RAM.
+
+And snatching this one from your second mail:
+
+> Which server are you testing against?  I'm wondering if the underlying problem
+> might actually be i_nlink being maintained incorrectly by the server which would
+> lead to inodes lingering since that is the primary way the generic_inode_drop
+> differentiates.  It is possible that we could could add an v9fs_inode_always_drop
+> in for legacy if the servers weren't reporting i_nlink a compatible fashion
+> although that might result in never caching legacy 9p2000 (which is probably
+> what most legacy folks want anyways).
+
+I'm running against a regular old 9P2000 server that I wrote myself. No
+extensions of any kind, so there are no links. I don't really have any
+objection to the kind of qid.version contextual you implemented in 6.6
+and would actually quite like to use it in the near future, but I
+wouldn't be terribly sad if you removed it either.
