@@ -1,423 +1,216 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6555213F447
-	for <v9fs@lists.linux.dev>; Thu, 28 Mar 2024 16:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BAE1849
+	for <v9fs@lists.linux.dev>; Thu, 28 Mar 2024 19:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711643959; cv=none; b=cRsgg30j/485YQvWKFyFCRikZqPmB/QTmBFHVMN4gD2BHEHToNype1z5onYux+Hcbt/76erIbx4iS4OyXxnCWeCBH/3OQkeG6kTOwCCbmCO9Jy8cnb5Bvm9lGedyFcGch+MEzYYcVyz/6XBXC22BN/dKvvROkg5syg4+XgBM9Mc=
+	t=1711655273; cv=none; b=OTZAFNOD6s9nCbI7Hw9byxX3GoAFslvFH+lqUSOEPearEV+MTgxaJbICM5glCNX6BlvUTKF52LzSG2b9DPWI275fsSYw/Rwhv5Rc8xvzjwva8hgQoqu61TFNMWUKJE5OfCFE6Q00YFtlDb3nFKECpRa0j9me03zAz5+vLGP8t8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711643959; c=relaxed/simple;
-	bh=/05oRYXuuD62BOWpkiLmjztCrdnWPcumQgd+9QYa1e4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcH40HnR+9CIaK9e0W9/5fk2GrvqESxaJHXz6TajAcLtL8vX4D9w4BBjKjj2fcx+BDXwMU1/6x6v/k30JoBt+B/LpClcCjJrTPfULP3db6J7xceosNBOzkJev7Nr3fk88+1EXPzS0tEpzUlIddE2qFBvgW22vSVf/AZ5LO+kVUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XnJQU9N6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711655273; c=relaxed/simple;
+	bh=bmnjjUpkUrJBin61m5aOLMeQ4hYTozWGnO7lMMUITpw=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=gQ58FafZ0IVLy9h5Yi9IiWnDAoR3niDp/JD3lscmkovHqOq/KGVSs0WMfJQByMthL+iw7B2NADtIEoF/W7d4svmZOdc9UsYcBfbv1+rZ/ItvTP1lj/1SQciwpJJYqztWo9Tc4+GTLYVhbgKjDzv7TiYHOmMYl+3v+DuAJT+k31c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lvDvggoj; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XnJQU9N6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711643956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=clNmVAkUKGd8Z01ZlWkYBIz9mR2bmkgLzFIGVS5d4sY=;
-	b=XnJQU9N6MVmBREF6YBgtsFslmpc1wdcziyrtjoApy47gvHB67VPOOVuynmF/OcJcZlEd/A
-	nRk4VLQZey7QjaL/Dg2oq8HRfv+cnY9Mdq5MX2rH3aL8bstJU7cV4tUPFDEb7nwu+uqz5O
-	mIXxF/s6rTg5xr7Rkienxb5oaQMK7Ro=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-ZlAnjQNcP7WbHuSb6f6JGQ-1; Thu, 28 Mar 2024 12:39:09 -0400
-X-MC-Unique: ZlAnjQNcP7WbHuSb6f6JGQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A36488007A2;
-	Thu, 28 Mar 2024 16:39:07 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 98F80C423E0;
-	Thu, 28 Mar 2024 16:39:04 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-cachefs@redhat.com,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 26/26] netfs, afs: Use writeback retry to deal with alternate keys
-Date: Thu, 28 Mar 2024 16:34:18 +0000
-Message-ID: <20240328163424.2781320-27-dhowells@redhat.com>
-In-Reply-To: <20240328163424.2781320-1-dhowells@redhat.com>
-References: <20240328163424.2781320-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lvDvggoj"
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1711655269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GGKGgYoFR5qDTtDsOHdMqzQlmsMye/JUlY+kEiBUg60=;
+	b=lvDvggojFddNVtvJMq8noc6ubRiV+ISvya1uT3Yo6jsacL2PsdImX5Cy8JZHtXLTbG3ryd
+	E1Jmiuw/Ar8BvA/RBuX7lZql0zeOnWs7/5t9jAVn6/K/DLNs21S5XC7rtVhDQBPi0IVCrC
+	YuVK1/VVqnS+M9ECQv8F55REVw03udw=
+Date: Thu, 28 Mar 2024 19:47:46 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
+Message-ID: <6a4f3bed800f9f5021e17311e6d7288f9a2b56c6@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v2 2/4] fs/9p: drop inodes immediately on non-.L too
+To: "Joakim Sindholt" <opensource@zhasha.com>
+Cc: v9fs@lists.linux.dev
+In-Reply-To: <20240328163753.eb3541f4c8595de40f5e3c82@zhasha.com>
+References: <20240318112542.18863-1-opensource@zhasha.com>
+ <20240318112542.18863-3-opensource@zhasha.com>
+ <145fc52b2452095c44260825670141d0d3b42c7d@linux.dev>
+ <20240328163753.eb3541f4c8595de40f5e3c82@zhasha.com>
+X-Migadu-Flow: FLOW_OUT
 
-Use a hook in the new writeback code's retry algorithm to rotate the keys
-once all the outstanding subreqs have failed rather than doing it
-separately on each subreq.
+Not sure if your sever source is public or not, but it would be useful to=
+ test against it and see what I see.  It's possible a mismatch with the n=
+link stat information could indeed cause inodes to stick around even unde=
+r memory pressure and that'd cause all sorts of problems.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/afs/file.c            |   1 +
- fs/afs/internal.h        |   1 +
- fs/afs/write.c           | 175 +++++++++++++++++++--------------------
- fs/netfs/write_collect.c |   9 +-
- include/linux/netfs.h    |   2 +
- 5 files changed, 96 insertions(+), 92 deletions(-)
+The newer kernel versions have much better qid->inode mapping stuff that =
+should provent some of the weirdness in the implementation before (there =
+were lots of inodes with duplicate ino_num because the way we crushed the=
+ allocated inode number with the qid.path) so its definitely worth testin=
+g against the latest and greatest if you can.  I will try and allocate so=
+me time to revive my regressions against 9p2000 and 9p2000.u servers so w=
+e catch some of this earlier in the future, but I'm not sure I would have=
+ caught any degredation.
 
-diff --git a/fs/afs/file.c b/fs/afs/file.c
-index 8f983e3ecae7..c3f0c45ae9a9 100644
---- a/fs/afs/file.c
-+++ b/fs/afs/file.c
-@@ -368,6 +368,7 @@ static int afs_check_write_begin(struct file *file, loff_t pos, unsigned len,
- static void afs_free_request(struct netfs_io_request *rreq)
- {
- 	key_put(rreq->netfs_priv);
-+	afs_put_wb_key(rreq->netfs_priv2);
- }
- 
- static void afs_update_i_size(struct inode *inode, loff_t new_i_size)
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 887245f9336d..6e1d3c4daf72 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -1601,6 +1601,7 @@ extern int afs_check_volume_status(struct afs_volume *, struct afs_operation *);
- void afs_prepare_write(struct netfs_io_subrequest *subreq);
- void afs_issue_write(struct netfs_io_subrequest *subreq);
- void afs_begin_writeback(struct netfs_io_request *wreq);
-+void afs_retry_request(struct netfs_io_request *wreq, struct netfs_io_stream *stream);
- extern int afs_writepages(struct address_space *, struct writeback_control *);
- extern int afs_fsync(struct file *, loff_t, loff_t, int);
- extern vm_fault_t afs_page_mkwrite(struct vm_fault *vmf);
-diff --git a/fs/afs/write.c b/fs/afs/write.c
-index 6ef7d4cbc008..838db2e94388 100644
---- a/fs/afs/write.c
-+++ b/fs/afs/write.c
-@@ -29,43 +29,39 @@ static void afs_pages_written_back(struct afs_vnode *vnode, loff_t start, unsign
- 
- /*
-  * Find a key to use for the writeback.  We cached the keys used to author the
-- * writes on the vnode.  *_wbk will contain the last writeback key used or NULL
-- * and we need to start from there if it's set.
-+ * writes on the vnode.  wreq->netfs_priv2 will contain the last writeback key
-+ * record used or NULL and we need to start from there if it's set.
-+ * wreq->netfs_priv will be set to the key itself or NULL.
-  */
--static int afs_get_writeback_key(struct afs_vnode *vnode,
--				 struct afs_wb_key **_wbk)
-+static void afs_get_writeback_key(struct netfs_io_request *wreq)
- {
--	struct afs_wb_key *wbk = NULL;
--	struct list_head *p;
--	int ret = -ENOKEY, ret2;
-+	struct afs_wb_key *wbk, *old = wreq->netfs_priv2;
-+	struct afs_vnode *vnode = AFS_FS_I(wreq->inode);
-+
-+	key_put(wreq->netfs_priv);
-+	wreq->netfs_priv = NULL;
-+	wreq->netfs_priv2 = NULL;
- 
- 	spin_lock(&vnode->wb_lock);
--	if (*_wbk)
--		p = (*_wbk)->vnode_link.next;
-+	if (old)
-+		wbk = list_next_entry(old, vnode_link);
- 	else
--		p = vnode->wb_keys.next;
-+		wbk = list_first_entry(&vnode->wb_keys, struct afs_wb_key, vnode_link);
- 
--	while (p != &vnode->wb_keys) {
--		wbk = list_entry(p, struct afs_wb_key, vnode_link);
-+	list_for_each_entry_from(wbk, &vnode->wb_keys, vnode_link) {
- 		_debug("wbk %u", key_serial(wbk->key));
--		ret2 = key_validate(wbk->key);
--		if (ret2 == 0) {
-+		if (key_validate(wbk->key) == 0) {
- 			refcount_inc(&wbk->usage);
-+			wreq->netfs_priv = key_get(wbk->key);
-+			wreq->netfs_priv2 = wbk;
- 			_debug("USE WB KEY %u", key_serial(wbk->key));
- 			break;
- 		}
--
--		wbk = NULL;
--		if (ret == -ENOKEY)
--			ret = ret2;
--		p = p->next;
- 	}
- 
- 	spin_unlock(&vnode->wb_lock);
--	if (*_wbk)
--		afs_put_wb_key(*_wbk);
--	*_wbk = wbk;
--	return 0;
-+
-+	afs_put_wb_key(old);
- }
- 
- static void afs_store_data_success(struct afs_operation *op)
-@@ -88,72 +84,83 @@ static const struct afs_operation_ops afs_store_data_operation = {
- };
- 
- /*
-- * write to a file
-+ * Prepare a subrequest to write to the server.  This sets the max_len
-+ * parameter.
-  */
--static int afs_store_data(struct afs_vnode *vnode, struct iov_iter *iter, loff_t pos)
-+void afs_prepare_write(struct netfs_io_subrequest *subreq)
-+{
-+	//if (test_bit(NETFS_SREQ_RETRYING, &subreq->flags))
-+	//	subreq->max_len = 512 * 1024;
-+	//else
-+	subreq->max_len = 256 * 1024 * 1024;
-+}
-+
-+/*
-+ * Issue a subrequest to write to the server.
-+ */
-+void afs_issue_write(struct netfs_io_subrequest *subreq)
- {
-+	struct netfs_io_request *wreq = subreq->rreq;
- 	struct afs_operation *op;
--	struct afs_wb_key *wbk = NULL;
--	loff_t size = iov_iter_count(iter);
-+	struct afs_vnode *vnode = AFS_FS_I(wreq->inode);
-+	unsigned long long pos = subreq->start + subreq->transferred;
-+	size_t len = subreq->len - subreq->transferred;
- 	int ret = -ENOKEY;
- 
--	_enter("%s{%llx:%llu.%u},%llx,%llx",
-+	_enter("R=%x[%x],%s{%llx:%llu.%u},%llx,%zx",
-+	       wreq->debug_id, subreq->debug_index,
- 	       vnode->volume->name,
- 	       vnode->fid.vid,
- 	       vnode->fid.vnode,
- 	       vnode->fid.unique,
--	       size, pos);
-+	       pos, len);
- 
--	ret = afs_get_writeback_key(vnode, &wbk);
--	if (ret) {
--		_leave(" = %d [no keys]", ret);
--		return ret;
--	}
-+#if 0 // Error injection
-+	if (subreq->debug_index == 3)
-+		return netfs_write_subrequest_terminated(subreq, -ENOANO, false);
- 
--	op = afs_alloc_operation(wbk->key, vnode->volume);
--	if (IS_ERR(op)) {
--		afs_put_wb_key(wbk);
--		return -ENOMEM;
-+	if (!test_bit(NETFS_SREQ_RETRYING, &subreq->flags)) {
-+		set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-+		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
- 	}
-+#endif
-+
-+	op = afs_alloc_operation(wreq->netfs_priv, vnode->volume);
-+	if (IS_ERR(op))
-+		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
- 
- 	afs_op_set_vnode(op, 0, vnode);
--	op->file[0].dv_delta = 1;
-+	op->file[0].dv_delta	= 1;
- 	op->file[0].modification = true;
--	op->store.pos = pos;
--	op->store.size = size;
--	op->flags |= AFS_OPERATION_UNINTR;
--	op->ops = &afs_store_data_operation;
-+	op->store.pos		= pos;
-+	op->store.size		= len,
-+	op->flags		|= AFS_OPERATION_UNINTR;
-+	op->ops			= &afs_store_data_operation;
- 
--try_next_key:
- 	afs_begin_vnode_operation(op);
- 
--	op->store.write_iter = iter;
--	op->store.i_size = max(pos + size, vnode->netfs.remote_i_size);
--	op->mtime = inode_get_mtime(&vnode->netfs.inode);
-+	op->store.write_iter	= &subreq->io_iter;
-+	op->store.i_size	= umax(pos + len, vnode->netfs.remote_i_size);
-+	op->mtime		= inode_get_mtime(&vnode->netfs.inode);
- 
- 	afs_wait_for_operation(op);
--
--	switch (afs_op_error(op)) {
-+	ret = afs_put_operation(op);
-+	switch (ret) {
- 	case -EACCES:
- 	case -EPERM:
- 	case -ENOKEY:
- 	case -EKEYEXPIRED:
- 	case -EKEYREJECTED:
- 	case -EKEYREVOKED:
--		_debug("next");
--
--		ret = afs_get_writeback_key(vnode, &wbk);
--		if (ret == 0) {
--			key_put(op->key);
--			op->key = key_get(wbk->key);
--			goto try_next_key;
--		}
-+		/* If there are more keys we can try, use the retry algorithm
-+		 * to rotate the keys.
-+		 */
-+		if (wreq->netfs_priv2)
-+			set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
- 		break;
- 	}
- 
--	afs_put_wb_key(wbk);
--	_leave(" = %d", afs_op_error(op));
--	return afs_put_operation(op);
-+	netfs_write_subrequest_terminated(subreq, ret < 0 ? ret : subreq->len, false);
- }
- 
- /*
-@@ -162,44 +169,32 @@ static int afs_store_data(struct afs_vnode *vnode, struct iov_iter *iter, loff_t
-  */
- void afs_begin_writeback(struct netfs_io_request *wreq)
- {
-+	afs_get_writeback_key(wreq);
- 	wreq->io_streams[0].avail = true;
- }
- 
- /*
-- * Prepare a subrequest to write to the server.  This sets the max_len
-- * parameter.
-- */
--void afs_prepare_write(struct netfs_io_subrequest *subreq)
--{
--	//if (test_bit(NETFS_SREQ_RETRYING, &subreq->flags))
--	//	subreq->max_len = 512 * 1024;
--	//else
--	subreq->max_len = 256 * 1024 * 1024;
--}
--
--/*
-- * Issue a subrequest to write to the server.
-+ * Prepare to retry the writes in request.  Use this to try rotating the
-+ * available writeback keys.
-  */
--void afs_issue_write(struct netfs_io_subrequest *subreq)
-+void afs_retry_request(struct netfs_io_request *wreq, struct netfs_io_stream *stream)
- {
--	struct afs_vnode *vnode = AFS_FS_I(subreq->rreq->inode);
--	ssize_t ret;
--
--	_enter("%x[%x],%zx",
--	       subreq->rreq->debug_id, subreq->debug_index, subreq->io_iter.count);
--
--#if 0 // Error injection
--	if (subreq->debug_index == 3)
--		return netfs_write_subrequest_terminated(subreq, -ENOANO, false);
-+	struct netfs_io_subrequest *subreq =
-+		list_first_entry(&stream->subrequests,
-+				 struct netfs_io_subrequest, rreq_link);
- 
--	if (!test_bit(NETFS_SREQ_RETRYING, &subreq->flags)) {
--		set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
--		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
-+	switch (subreq->error) {
-+	case -EACCES:
-+	case -EPERM:
-+	case -ENOKEY:
-+	case -EKEYEXPIRED:
-+	case -EKEYREJECTED:
-+	case -EKEYREVOKED:
-+		afs_get_writeback_key(wreq);
-+		if (!wreq->netfs_priv)
-+			stream->failed = true;
-+		break;
- 	}
--#endif
--
--	ret = afs_store_data(vnode, &subreq->io_iter, subreq->start);
--	netfs_write_subrequest_terminated(subreq, ret < 0 ? ret : subreq->len, false);
- }
- 
- /*
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index bea939ab0830..7ff15e2d7270 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -168,6 +168,13 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 
- 	_enter("R=%x[%x:]", wreq->debug_id, stream->stream_nr);
- 
-+	if (list_empty(&stream->subrequests))
-+		return;
-+
-+	if (stream->source == NETFS_UPLOAD_TO_SERVER &&
-+	    wreq->netfs_ops->retry_request)
-+		wreq->netfs_ops->retry_request(wreq, stream);
-+
- 	if (unlikely(stream->failed))
- 		return;
- 
-@@ -187,8 +194,6 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		return;
- 	}
- 
--	if (list_empty(&stream->subrequests))
--		return;
- 	next = stream->subrequests.next;
- 
- 	do {
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index c2ba364041b0..298552f5122c 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -235,6 +235,7 @@ struct netfs_io_request {
- 	struct iov_iter		iter;		/* Unencrypted-side iterator */
- 	struct iov_iter		io_iter;	/* I/O (Encrypted-side) iterator */
- 	void			*netfs_priv;	/* Private data for the netfs */
-+	void			*netfs_priv2;	/* Private data for the netfs */
- 	struct bio_vec		*direct_bv;	/* DIO buffer list (when handling iovec-iter) */
- 	unsigned int		direct_bv_count; /* Number of elements in direct_bv[] */
- 	unsigned int		debug_id;
-@@ -306,6 +307,7 @@ struct netfs_request_ops {
- 	void (*begin_writeback)(struct netfs_io_request *wreq);
- 	void (*prepare_write)(struct netfs_io_subrequest *subreq);
- 	void (*issue_write)(struct netfs_io_subrequest *subreq);
-+	void (*retry_request)(struct netfs_io_request *wreq, struct netfs_io_stream *stream);
- 	void (*invalidate_cache)(struct netfs_io_request *wreq);
- };
- 
+      -eric
 
+
+March 28, 2024 at 10:37 AM, "Joakim Sindholt" <opensource@zhasha.com> wro=
+te:
+>=20
+>=20On Thu, 28 Mar 2024 15:08:59 +0000, "Eric Van Hensbergen" <eric.vanhe=
+nsbergen@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> Slowly parsing through these, thanks for the fixes.
+> >=20
+>=20>  This one has a bit of a problem in that we don't have a v9fs speci=
+fic
+> >=20
+>=20>  drop_inode anymore (either in legacy or .L). The release of the fi=
+d should=20
+>=20>=20
+>=20>  be handled by v9fs_dir_release in both versions of the protocol.
+> >=20
+>=20
+> My apologies. I didn't realize that it had been changed in the next
+>=20
+>=20branch until after sending it and I haven't had the time to check how
+>=20
+>=20it's supposed to work now.
+>=20
+>=20>=20
+>=20> I had convinced myself we could just use generic_drop_inode because=
+ we=20
+>=20>=20
+>=20>  decoupled clunking fids from the dentry/inode structures and just =
+handled
+> >=20
+>=20>  them directly in v9fs_dir_release -- so really by recovering the i=
+node=20
+>=20>=20
+>=20>  structure every time we were just forcing churn in the inode alloc=
+/dealloc
+> >=20
+>=20>  routines that seemed unnecessary (even in the uncached mode).
+> >=20
+>=20
+> I agree that the alloc followed by immediately dropping it from the
+>=20
+>=20cache is a waste of cycles. This was just the most reliable way I kne=
+w
+>=20
+>=20of fixing it without impacting anything else.
+>=20
+>=20>=20
+>=20> Was your concern the performance of the client side lookup of the i=
+node
+> >=20
+>=20>  based on qid or the server side based on fid and can you give me a=
+ bit
+> >=20
+>=20>  more information on what you are seeing? Are you not seeing fid cl=
+unks
+> >=20
+>=20>  for certain conditions (ie. transient fids, etc.)?
+> >=20
+>=20
+> This is what I'm seeing in slabtop on a system with no caching enabled
+>=20
+>=20on a 6.1 kernel. I never tested if it persisted on the 6.6 kernel but=
+ I
+>=20
+>=20assume it would.
+>=20
+>=20 Active / Total Objects (% used) : 2738808 / 2788118 (98.2%)
+>=20
+>=20 Active / Total Slabs (% used) : 89853 / 89853 (100.0%)
+>=20
+>=20 Active / Total Caches (% used) : 164 / 261 (62.8%)
+>=20
+>=20 Active / Total Size (% used) : 1071558.97K / 1084648.27K (98.8%)
+>=20
+>=20 Minimum / Average / Maximum Object : 0.02K / 0.39K / 16.01K
+>=20
+>=20 OBJS ACTIVE USE OBJ SIZE SLABS OBJ/SLAB CACHE SIZE NAME
+>=20
+>=201235968 1235915 99% 0.06K 19312 64 77248K lsm_inode_cache
+>=20
+>=201200339 1200339 100% 0.75K 57159 21 914544K v9fs_inode_cache
+>=20
+>=20 62136 54815 88% 0.11K 1726 36 6904K buffer_head
+>=20
+>=20 49400 45639 92% 0.20K 2600 19 10400K dentry
+>=20
+>=20 26368 26364 99% 0.03K 206 128 824K avtab_node
+>=20
+>=20 26222 15713 59% 0.57K 1873 14 14984K radix_tree_node
+>=20
+>=20 19162 18337 95% 1.20K 1474 13 23584K ext4_inode_cache
+>=20
+>=20 ...
+>=20
+>=20What this is not showing, and it's really rather difficult to show, i=
+s
+>=20
+>=20that it also causes a large amount of CPU usage on any file operation=
+s.
+>=20
+>=20I'm not sure if it's simply because the table is enormous or if it's
+>=20
+>=20because most of the qids v9fs gets to contend with are identical ones
+>=20
+>=20from a whole host of synthetic file systems that it then has to itera=
+te
+>=20
+>=20over linearly.
+>=20
+>=20The v9fs_inode_cache grows until it takes up all available RAM.
+>=20
+>=20And snatching this one from your second mail:
+>=20
+>=20>=20
+>=20> Which server are you testing against? I'm wondering if the underlyi=
+ng problem
+> >=20
+>=20>  might actually be i_nlink being maintained incorrectly by the serv=
+er which would
+> >=20
+>=20>  lead to inodes lingering since that is the primary way the generic=
+_inode_drop
+> >=20
+>=20>  differentiates. It is possible that we could could add an v9fs_ino=
+de_always_drop
+> >=20
+>=20>  in for legacy if the servers weren't reporting i_nlink a compatibl=
+e fashion
+> >=20
+>=20>  although that might result in never caching legacy 9p2000 (which i=
+s probably
+> >=20
+>=20>  what most legacy folks want anyways).
+> >=20
+>=20
+> I'm running against a regular old 9P2000 server that I wrote myself. No
+>=20
+>=20extensions of any kind, so there are no links. I don't really have an=
+y
+>=20
+>=20objection to the kind of qid.version contextual you implemented in 6.=
+6
+>=20
+>=20and would actually quite like to use it in the near future, but I
+>=20
+>=20wouldn't be terribly sad if you removed it either.
+>
