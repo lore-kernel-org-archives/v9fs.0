@@ -1,151 +1,122 @@
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271712BB14
-	for <v9fs@lists.linux.dev>; Sat, 30 Mar 2024 11:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CFE6FA7
+	for <v9fs@lists.linux.dev>; Sun, 31 Mar 2024 05:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711797212; cv=none; b=qWQlR9gysm58JyCvyYXEVQA+LxT0RGhrhF4VYeCt0ImmibhGPnL3HEv1Wlh/ip1t47+xcDZ5B0aD6ZBcVRo/AcBduUwRPWCx9vgFXdGOK7CxagqnHnHY6x/UjZaIa4Q8vDaBoSytgMZHII6poIUjpA0GJA6bsBAy281ntLMDLMw=
+	t=1711863231; cv=none; b=kJcwOPx3q9s7LfAi42SHLLrIt/bbcAYR/8b00Zc8BkcDkuJhsIpTdLfDVnNkMPXRjE0ashNdn01IhnhUIyquZl0Gz94qXAVU5ORLafpsXbjOD4jyLfgKUTnr13aJbPp2TcFR88b58iVdg+Z8pakwScbU89Eztg1TuTIF2tj913Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711797212; c=relaxed/simple;
-	bh=esAXML7DHdxiwyFJ3iRZS4Izea43hxblUD9ErMVwPiI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HUWqtkgtmmFnyKGzJx9c69xGdSOGxWHxTeGotjFZhiHzrMCxMSGz9olJi+CsDLjFLGTlKL/o3rSRCJwtomCwEuDNRoVe+KL3k/O65CQhDyhKe+Cga14cCH2XMCwgt9bqzxCsCe8sBFEp+wS2pQp2RNSNLZ/AIlEfvdat5/gqX3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7cbfd9f04e3so201848839f.0
-        for <v9fs@lists.linux.dev>; Sat, 30 Mar 2024 04:13:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711797210; x=1712402010;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Th/ktqkvCCzUDJYZJAFFpoB/hGLm/LGgGFQxtdAl6RU=;
-        b=lVZgpYn7RAVnfTDYg9iw1r+tVDwRjnEN+rbRarSnyFNXICqSSzIpan6pmbDQMFiCPQ
-         41X0HtX6rkQ7/dG1/TcPfaZhdsqwNw12Ks0i6dwLwlOfcmkOUq+8HCQyDjMR/vxxIeFq
-         kLamB9g5lrugzkYztUn4bxYIos0GOxrVDib7/IoL3HMweXWMkGTV/ZaswYQzliEe3/Pp
-         Mh4l8+KhKeJNtNq1OX1N7weI6nCSaIl3OIzw1IOWIFfFablMoGnXI+8qmhBsCGbg0+nv
-         yzBmpnM5UuYNNpPSOgORzuL/ZRrCDzPqFSnCQjacK8qlUum6koGLqqOGP8po8WTdv2Sv
-         E4jQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCz76IPMPSFUCyx221dNwDUx+6VbcsSg4mpk2z9p6keuy+1bovsK7vVSP8mQ14ogZziwOyXWrgvCKVs/WeYRQ99YR+FQ==
-X-Gm-Message-State: AOJu0YxJHPhjEqtkvwtRGDCJTl7b991Sj6cPV7KmFF36oASwIhTvsztW
-	HIALmLbia3qO3jc1lWLj/gR78XfuR0bxIhjBXLf1hJAsBvZF0cYpy6nFE/OyG45xAG6WiYngOVk
-	dMdgzPjzy7juxs8XBdM40VbK8ncYkN/+62CZEEuSjIIBiBwVq1vVIIQk=
-X-Google-Smtp-Source: AGHT+IGxal1IK5WXsozmNjYHSWk6UQm4arNSNM0+XE34coPxtoa/VQPoyRHCC6IT846ZPApk7qV62yTI6SCgeH/pNAly4hRnVze8
+	s=arc-20240116; t=1711863231; c=relaxed/simple;
+	bh=3jfilzt/0f9+GTsk+WmZkpD3G6FRHcuN6HxD3SqY18I=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=eqEl/XLEn1akLoVQXyONkTGcydrSjrTFeg4KMUzjqm+kS+MWeZFcTz3rKI1yiIdBS0N9k2OqI09Lj1fEkT8a2a0sGQlXqX5gFMTDuR8vqAYuI36CvG4gOGZ63fx+JeUST5+mhP9iToWpCF5T28QCMxAWQunO0U+ZhU1L7fozcbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PXpxgwq9; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PXpxgwq9"
+Date: Sun, 31 Mar 2024 01:33:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1711863225;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=jUnk5kh1m4H8MOsikY0d/g/mRAYq0waGaXn41UlKb+g=;
+	b=PXpxgwq9VgL+FbRUhmar4YUm3PlQuRPmWISLNv9DgDXYtNUqGCMZJbCALDbkM+q+GIdfD6
+	CCkmC1jIlufV+9G5+pw4HtK4ZKgfKtY3UNcq/CIIkZ0rP3BSiTyKfOf5r38ZyM+3BA8Zs6
+	jVaQEHtvZElbEDGDph7EHsak0u9s2W0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: v9fs@lists.linux.dev
+Subject: new 9p kasan splat in 6.9
+Message-ID: <f6upxoxa6d2c6cbh4ka775msggvuduigiu7xgvfx7qsufg2lo6@2ellaad6b2on>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:858f:b0:475:2758:9f20 with SMTP id
- it15-20020a056638858f00b0047527589f20mr184172jab.1.1711797210408; Sat, 30 Mar
- 2024 04:13:30 -0700 (PDT)
-Date: Sat, 30 Mar 2024 04:13:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a77e580614ded85a@google.com>
-Subject: [syzbot] [v9fs?] KMSAN: uninit-value in p9_client_rpc (2)
-From: syzbot <syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Migadu-Flow: FLOW_OUT
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    928a87efa423 Merge tag 'gfs2-v6.8-fix' of git://git.kernel..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=106cc57e180000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e2599baf258ef795
-dashboard link: https://syzkaller.appspot.com/bug?extid=ff14db38f56329ef68df
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a39546180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17b4aa7e180000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/7d66fa7ed5c7/disk-928a87ef.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8b511d64cde0/vmlinux-928a87ef.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/8810588440a2/bzImage-928a87ef.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-
-=====================================================
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 1 PID: 5017 Comm: syz-executor353 Not tainted 6.9.0-rc1-syzkaller-00005-g928a87efa423 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-=====================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+00000 Running test kasan-ec.ktest on farm2 at /home/testdashboard/linux-5
+00164 building kernel... done
+00169 systemd[1]: Failed to find module 'autofs4'
+00170 ==================================================================
+00170 BUG: KASAN: slab-use-after-free in v9fs_stat2inode_dotl+0x7f8/0x988
+00170 Read of size 8 at addr ffff0000c12f9000 by task mount/217
+00170 
+00170 CPU: 3 PID: 217 Comm: mount Not tainted 6.9.0-rc1-ktest-ga097468ffe82 #10998
+00170 Hardware name: linux,dummy-virt (DT)
+00170 Call trace:
+00170  dump_backtrace+0xa4/0xe0
+00170  show_stack+0x1c/0x30
+00170  dump_stack_lvl+0x70/0x88
+00170  print_report+0x110/0x5b8
+00170  kasan_report+0x80/0xc0
+00170  __asan_report_load8_noabort+0x1c/0x28
+00170  v9fs_stat2inode_dotl+0x7f8/0x988
+00170  v9fs_fid_iget_dotl+0x164/0x1f0
+00170  v9fs_mount+0x380/0x718
+00170  legacy_get_tree+0xd4/0x198
+00170  vfs_get_tree+0x78/0x240
+00170  path_mount+0xc6c/0x15f0
+00170  do_mount+0xc4/0x100
+00170  __arm64_sys_mount+0x228/0x330
+00170  invoke_syscall.constprop.0+0x74/0x1e8
+00170  do_el0_svc+0xc8/0x200
+00170  el0_svc+0x20/0x60
+00170  el0t_64_sync_handler+0xb8/0xc0
+00170  el0t_64_sync+0x14c/0x150
+00170 
+00170 Allocated by task 217:
+00170 
+00170 Freed by task 217:
+00170 
+00170 The buggy address belongs to the object at ffff0000c12f9000
+00170  which belongs to the cache kmalloc-192 of size 192
+00170 The buggy address is located 0 bytes inside of
+00170  freed 192-byte region [ffff0000c12f9000, ffff0000c12f90c0)
+00170 
+00170 The buggy address belongs to the physical page:
+00170 
+00170 Memory state around the buggy address:
+00170  ffff0000c12f8f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00170  ffff0000c12f8f80: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
+00170 >ffff0000c12f9000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+00170                    ^
+00170  ffff0000c12f9080: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+00170  ffff0000c12f9100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+00170 ==================================================================
+00170 Kernel panic - not syncing: kasan.fault=panic set ...
+00170 CPU: 3 PID: 217 Comm: mount Not tainted 6.9.0-rc1-ktest-ga097468ffe82 #10998
+00170 Hardware name: linux,dummy-virt (DT)
+00170 Call trace:
+00170  dump_backtrace+0xa4/0xe0
+00170  show_stack+0x1c/0x30
+00170  dump_stack_lvl+0x34/0x88
+00170  dump_stack+0x18/0x20
+00170  panic+0x4dc/0x520
+00170  end_report+0xec/0xf0
+00170  kasan_report+0x90/0xc0
+00170  __asan_report_load8_noabort+0x1c/0x28
+00170  v9fs_stat2inode_dotl+0x7f8/0x988
+00170  v9fs_fid_iget_dotl+0x164/0x1f0
+00170  v9fs_mount+0x380/0x718
+00170  legacy_get_tree+0xd4/0x198
+00170  vfs_get_tree+0x78/0x240
+00170  path_mount+0xc6c/0x15f0
+00170  do_mount+0xc4/0x100
+00170  __arm64_sys_mount+0x228/0x330
+00170  invoke_syscall.constprop.0+0x74/0x1e8
+00170  do_el0_svc+0xc8/0x200
+00170  el0_svc+0x20/0x60
+00170  el0t_64_sync_handler+0xb8/0xc0
+00170  el0t_64_sync+0x14c/0x150
+00170 SMP: stopping secondary CPUs
+00170 Kernel Offset: disabled
+00170 CPU features: 0x0,00000003,80000008,4240500b
+00170 Memory Limit: none
+00170 ---[ end Kernel panic - not syncing: kasan.fault=panic set ... ]---
+00175 ========= FAILED TIMEOUT (no test) in 1200s
