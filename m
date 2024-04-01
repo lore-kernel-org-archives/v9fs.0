@@ -1,173 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5AC3F8F1;
-	Mon,  1 Apr 2024 13:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E347A76
+	for <v9fs@lists.linux.dev>; Mon,  1 Apr 2024 16:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711979639; cv=none; b=tQWzCsmlMbfa4nu4nMmBeNLBSw/Wa18pE4srCoW/WALjyTW3Xk/AcipeATv+JqWKfAbNJw9lYl7wvp/GNd4e3YGHmtto4f0VbP4C/WIlCB84O2qSiN/RlrL2PO2gQjA3Adxh30lRR96/7qnIp0TceatzAxC3urqzGxj7im+MjUo=
+	t=1711987770; cv=none; b=izMF/Xa2HVBCH555CA9eK0dtx45kntk/SKx04nEO7HW4uuZnO0bETYuXd6M0CoOAgkq81sb2gEJ6IVFaeJQ3+1fnQvLL8TiU/xj5FDIvjsYGaaFZJThFLvOxZj21+qpIFq01NmXGF/rRuU9WAeiuaIoC/l32nCgmSUgTR4WyrTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711979639; c=relaxed/simple;
-	bh=dmYCendNfZLK2ZYRN4P3XHXSgHmLS9K4qfGr3Ifd3v0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u6zYjs94S03IZeCtmtIlyX/0RK17WPiPjQkkDmYDdljlVx5Ikj7KZ0xlYzZkJBOfdBVG1MpITp77wpluPmQpDILA0kJhTsyLJuHYzRXhvMhIcA7cyKxg5+Zg8gi+oK1VsYYFRNPRyFN8P2/SZACqIjf4YrJy966YDreftmU1DIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c29yWJov; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c29yWJov"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA0CC433C7;
-	Mon,  1 Apr 2024 13:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711979638;
-	bh=dmYCendNfZLK2ZYRN4P3XHXSgHmLS9K4qfGr3Ifd3v0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c29yWJov1MPD3KNJnAc3J10X31RIJx5rJ8pZ9aMASTtRIDHTlXt3YBkMhR/2MmTeW
-	 zKg7sKvzusvvzXvEpqIv8nO9JilxGOlGDD9rpErvCQJiT/+cOIdnykZR54Pb5hp73A
-	 n3db2XvRlrrFuw27hXNlQVFklZF/bwBt1Tvksi8eyn/LaeBo2QoMfURHysv0Ra+tcm
-	 5GNCZFCSDd/aMOWF7fV3ver/b2jE5QU8+WhPmhCzIjV1dmrOHawVXzxIdY9jTI6kkp
-	 3RzhX7bCaKGHmMTJC3G9ZTma+EDhOVW6r/AdWBj3gvJJLSd3U3a0S7GGRMCCfrXnpN
-	 BcEw/0JlvpOew==
-Date: Mon, 1 Apr 2024 14:53:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-	linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 26/26] netfs, afs: Use writeback retry to deal with
- alternate keys
-Message-ID: <20240401135351.GD26556@kernel.org>
-References: <20240328163424.2781320-1-dhowells@redhat.com>
- <20240328163424.2781320-27-dhowells@redhat.com>
+	s=arc-20240116; t=1711987770; c=relaxed/simple;
+	bh=9MJQaaNhjZxg8cTjUe//Brvwr9I7kgQyflReATtuETk=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=RKnNZRAqCkid2duWY3au6NU8i2d2HLeipN2fjMY8gvZHRTJa/6xrkKRfFQlqSBYwF9aHLTHBgM8wGbKn16Qq2AZwJzZn7b7rpNCAigIJNcTxkPXJoE4dd7eXP2S1R06LwXiCWT+MCpt9xfKi2JtOtzh2mmIEo3rdF83BN0Y04b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-368c8628504so30579695ab.2
+        for <v9fs@lists.linux.dev>; Mon, 01 Apr 2024 09:09:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711987768; x=1712592568;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v8ltHQaZ4qCuEtVlYYBAXZvP0KfucEV94mRShkDJKW8=;
+        b=MVWXT1xutN2cAKcYXSyLox03aQ6oTUquJNhXpGq/lL+sulqcid1bq9Gsu3mcPwTgSI
+         cuWktV+2IpWEoQw21Vla1HBY5DP8cGBha5BstCYJNItIjzs9ines2VIVtlmr+aPm5lQI
+         Tw5AAivcKzFOw3XlZt1VxDBXZhwOoKDaAVglZp7tQl/2hnVs09Xr/OT0hMnynJ6+2aYU
+         TfHx9XO/cRrmhTXHR4+9Ph0Nz6XMoaCFLFcPys53zRlELDBAZHZCLCIOixOLKif490IE
+         PVXwCl6nD8h8/eOnhb98BWJ83SnvSbnG/No1RVu5uu7fvBnTORed0bZRy9x7GwZS4PRV
+         nCfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKgKEcDFIuOt0CoJgtyNPA7YEy882U6JCqSr8W53OKwCuXJnjnk56dKXqXdI82lkgbIL4W7k08BvBsIZM1igHwlREy2w==
+X-Gm-Message-State: AOJu0Yy2psMzsnHr0RFFQcozav4iPOymGfXRLsnOCycrhz2htquGJwV9
+	+DyYIL38I1uoRYdWmAscGxv8zISoiSVEYDx/8sL7HugtPq5dHzZiUFcpUAYRkjfwrcFxlCn1C4D
+	6dzn9IKEODleE3fnUHXZN+f809pBrUwKMsf44Zm13DMTwRlWhpCAzO9Y=
+X-Google-Smtp-Source: AGHT+IG5j4u78ZNjb/Jw67+iM4et54jH7d48y5fTefaiTFr2aCnztjUBHPyzxghJLrWbFnQq+DceoHsnDB5Fr3f+SkbuiyO/zPa6
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328163424.2781320-27-dhowells@redhat.com>
+X-Received: by 2002:a05:6e02:1a69:b0:369:8ea5:f650 with SMTP id
+ w9-20020a056e021a6900b003698ea5f650mr408782ilv.3.1711987768088; Mon, 01 Apr
+ 2024 09:09:28 -0700 (PDT)
+Date: Mon, 01 Apr 2024 09:09:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000c6ea9b06150b361c@google.com>
+Subject: [syzbot] [v9fs?] WARNING in v9fs_init_request
+From: syzbot <syzbot+0354394655e838206fba@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Mar 28, 2024 at 04:34:18PM +0000, David Howells wrote:
+Hello,
 
-...
+syzbot found the following issue on:
 
-> +void afs_issue_write(struct netfs_io_subrequest *subreq)
->  {
-> +	struct netfs_io_request *wreq = subreq->rreq;
->  	struct afs_operation *op;
-> -	struct afs_wb_key *wbk = NULL;
-> -	loff_t size = iov_iter_count(iter);
-> +	struct afs_vnode *vnode = AFS_FS_I(wreq->inode);
-> +	unsigned long long pos = subreq->start + subreq->transferred;
-> +	size_t len = subreq->len - subreq->transferred;
->  	int ret = -ENOKEY;
->  
-> -	_enter("%s{%llx:%llu.%u},%llx,%llx",
-> +	_enter("R=%x[%x],%s{%llx:%llu.%u},%llx,%zx",
-> +	       wreq->debug_id, subreq->debug_index,
->  	       vnode->volume->name,
->  	       vnode->fid.vid,
->  	       vnode->fid.vnode,
->  	       vnode->fid.unique,
-> -	       size, pos);
-> +	       pos, len);
->  
-> -	ret = afs_get_writeback_key(vnode, &wbk);
-> -	if (ret) {
-> -		_leave(" = %d [no keys]", ret);
-> -		return ret;
-> -	}
-> +#if 0 // Error injection
-> +	if (subreq->debug_index == 3)
-> +		return netfs_write_subrequest_terminated(subreq, -ENOANO, false);
->  
-> -	op = afs_alloc_operation(wbk->key, vnode->volume);
-> -	if (IS_ERR(op)) {
-> -		afs_put_wb_key(wbk);
-> -		return -ENOMEM;
-> +	if (!test_bit(NETFS_SREQ_RETRYING, &subreq->flags)) {
-> +		set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-> +		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
->  	}
-> +#endif
-> +
-> +	op = afs_alloc_operation(wreq->netfs_priv, vnode->volume);
-> +	if (IS_ERR(op))
-> +		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
->  
->  	afs_op_set_vnode(op, 0, vnode);
-> -	op->file[0].dv_delta = 1;
-> +	op->file[0].dv_delta	= 1;
->  	op->file[0].modification = true;
-> -	op->store.pos = pos;
-> -	op->store.size = size;
-> -	op->flags |= AFS_OPERATION_UNINTR;
-> -	op->ops = &afs_store_data_operation;
-> +	op->store.pos		= pos;
-> +	op->store.size		= len,
+HEAD commit:    8d025e2092e2 Merge tag 'erofs-for-6.9-rc2-fixes' of git://..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17cb6d7e180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a2fbd4c518bbb6b3
+dashboard link: https://syzkaller.appspot.com/bug?extid=0354394655e838206fba
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
 
-nit: this is probably more intuitively written using len;
+Unfortunately, I don't have any reproducer for this issue yet.
 
-> +	op->flags		|= AFS_OPERATION_UNINTR;
-> +	op->ops			= &afs_store_data_operation;
->  
-> -try_next_key:
->  	afs_begin_vnode_operation(op);
->  
-> -	op->store.write_iter = iter;
-> -	op->store.i_size = max(pos + size, vnode->netfs.remote_i_size);
-> -	op->mtime = inode_get_mtime(&vnode->netfs.inode);
-> +	op->store.write_iter	= &subreq->io_iter;
-> +	op->store.i_size	= umax(pos + len, vnode->netfs.remote_i_size);
-> +	op->mtime		= inode_get_mtime(&vnode->netfs.inode);
->  
->  	afs_wait_for_operation(op);
-> -
-> -	switch (afs_op_error(op)) {
-> +	ret = afs_put_operation(op);
-> +	switch (ret) {
->  	case -EACCES:
->  	case -EPERM:
->  	case -ENOKEY:
->  	case -EKEYEXPIRED:
->  	case -EKEYREJECTED:
->  	case -EKEYREVOKED:
-> -		_debug("next");
-> -
-> -		ret = afs_get_writeback_key(vnode, &wbk);
-> -		if (ret == 0) {
-> -			key_put(op->key);
-> -			op->key = key_get(wbk->key);
-> -			goto try_next_key;
-> -		}
-> +		/* If there are more keys we can try, use the retry algorithm
-> +		 * to rotate the keys.
-> +		 */
-> +		if (wreq->netfs_priv2)
-> +			set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
->  		break;
->  	}
->  
-> -	afs_put_wb_key(wbk);
-> -	_leave(" = %d", afs_op_error(op));
-> -	return afs_put_operation(op);
-> +	netfs_write_subrequest_terminated(subreq, ret < 0 ? ret : subreq->len, false);
->  }
->  
->  /*
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-8d025e20.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8028eb34add3/vmlinux-8d025e20.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1edea22db964/bzImage-8d025e20.xz
 
-...
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0354394655e838206fba@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+folio expected an open fid inode->i_ino=2
+WARNING: CPU: 2 PID: 1121 at fs/9p/vfs_addr.c:115 v9fs_init_request+0x346/0x380 fs/9p/vfs_addr.c:115
+Modules linked in:
+CPU: 2 PID: 1121 Comm: kworker/u32:9 Not tainted 6.9.0-rc1-syzkaller-00061-g8d025e2092e2 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: writeback wb_workfn (flush-9p-36)
+RIP: 0010:v9fs_init_request+0x346/0x380 fs/9p/vfs_addr.c:115
+Code: ff ff 37 00 48 c1 e0 2a 48 8d 7b 40 48 89 fa 48 c1 ea 03 80 3c 02 00 75 35 48 8b 73 40 48 c7 c7 60 03 4e 8b e8 cb 20 12 fe 90 <0f> 0b 90 90 eb 9a e8 1f d0 ab fe e9 51 fe ff ff e8 25 cf ab fe e9
+RSP: 0018:ffffc90006ebf2e8 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff888029e72920 RCX: ffffffff8150eb39
+RDX: ffff888018f42440 RSI: ffffffff8150eb46 RDI: 0000000000000001
+RBP: ffff88805d9bfc00 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000002 R12: 0000000000000000
+R13: ffff88805d9bfd42 R14: 0000000000000001 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff88802c400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000058389000 CR3: 0000000043388000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ netfs_alloc_request+0x54c/0x9a0 fs/netfs/objects.c:53
+ netfs_write_back_from_locked_folio fs/netfs/buffered_write.c:910 [inline]
+ netfs_writepages_begin fs/netfs/buffered_write.c:1100 [inline]
+ netfs_writepages_region.constprop.0+0xffe/0x1bc0 fs/netfs/buffered_write.c:1123
+ netfs_writepages+0x2fa/0x420 fs/netfs/buffered_write.c:1169
+ do_writepages+0x1a3/0x7f0 mm/page-writeback.c:2612
+ __writeback_single_inode+0x163/0xf90 fs/fs-writeback.c:1650
+ writeback_sb_inodes+0x5a6/0x10d0 fs/fs-writeback.c:1941
+ wb_writeback+0x28a/0xb30 fs/fs-writeback.c:2117
+ wb_do_writeback fs/fs-writeback.c:2264 [inline]
+ wb_workfn+0x28d/0xf40 fs/fs-writeback.c:2304
+ process_one_work+0x902/0x1a30 kernel/workqueue.c:3254
+ process_scheduled_works kernel/workqueue.c:3335 [inline]
+ worker_thread+0x6c8/0xf70 kernel/workqueue.c:3416
+ kthread+0x2c1/0x3a0 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
