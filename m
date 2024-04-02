@@ -1,99 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C337B4776F;
-	Tue,  2 Apr 2024 10:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C5A15E5B9
+	for <v9fs@lists.linux.dev>; Tue,  2 Apr 2024 20:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712054938; cv=none; b=eeh0HHKLZZQ17dPoeQpQszzUucChVaAMK4aHUj1WtnlbI/V6n9bxLD5s5bEOS5fCjuXkse7+jW79YbDArYe2xq+hSJFmRiKkQdL4tzWU9cfR8hIr5ib+wcDkmQjWfx9ItRINQ2B+2Io+kGFh/imMa3fdgyXq57xOYffIqQ1kGAY=
+	t=1712090022; cv=none; b=ERzKaxDKIs01f1fFb6lv1C5N1FpannpRcQ/AU9YpOw/hrWva9+rQ+MoAXtqaina5a1CgRLJD3hVDOO1XJ93V0J/0xYKHpEnASvusgy9nMZ0dAzgrMbmFz/wm0XnbfI+lYXtf8S+jjrCpkcEd8B81qxAv4V4ri0t0jI3ON9RRBPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712054938; c=relaxed/simple;
-	bh=0o849oaUCS/1to/11XOBsrrHkZ6HnWiwjHhXX1XawsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GDwHJ7XqCP8SICjGWIrNkHKwcgYY8likZYkKfgvTtsD6y9dBFOW0/r+ZmavJnj+muzbMcIM32zhkHSsnM8kiy20Yq4v78EncUpGOFz4gUfj4XHqA8nKON5pj+KCdRBlddNKlC1pE9hTmT3NQnArXv4vMNftcjaxHgyIM4r0CdPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3pKIoou; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712090022; c=relaxed/simple;
+	bh=ROySLNzi2sYnSa/JtIXRjIYuaaAEqJzMqCJdYS2UTqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KqaseBuzbhZDQ867UElePVIbknXOrzWjTy2d8IArehsPn5vLmKYBeQ9Ael4JdOca52IvVBU4c9JMriDkB1Pfe9Oi111+Z6xD5X6XRLsMbgeiherx+DkgTrEb5btil6R3sQJzowbiSEutR98ggEeHnwKKQVfrKAQpusV84v9Kgkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R1nmzfQE; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3pKIoou"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1F0C433C7;
-	Tue,  2 Apr 2024 10:48:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712054937;
-	bh=0o849oaUCS/1to/11XOBsrrHkZ6HnWiwjHhXX1XawsY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3pKIoouIXwXD4lmoPfSlZSDJZnmmtOa1RUJNiFaCXHRyfUJWBCybV99rJXm7gV8y
-	 T7Fjk4lyWWWjVz2Gcq+2fNAoTMJnNX/2F2ImxDn9loGZaAaUiIrrOGUofL9i7svfdk
-	 XAdlme0aallBdCc4GUuODtk5GZtLEzaPI3vng58HDE2HBNIlc4c6Bq3f6hazpMeaEx
-	 Xgj2CoKMoSLbndyirg0YejiKL0ZEAGFUReEzmqbp1wYq+3/s1f3ZCIqrcblHvsWe1U
-	 u/Fu8N++N778FF1N0TJzW8msw8oIsVzOMv/4cCc32kKXWGv+qqR4NqN76QQvHhbwO4
-	 xB4Ir5cVjt1jw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R1nmzfQE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712090020;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XkVVzn7sUlZgXUm5P4BgsrM9gYYoxT1YIoFUz7D2uhU=;
+	b=R1nmzfQE6WhiteP4u53AjMmiL6UUYnjEmnif0KFv+g/3i+KlUl93Ky/ZC5g7vt17q0gsu3
+	10S4hxo82HBGOzujTpZ/e3Ayvy3O52fOkDjuZtv3UQqIqrzr54JkNkj+tKs+oVCMb1SnZO
+	XXWFrxYm11u8EEgUsdC1OPmK+567Obk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-jOxgHkElN6C86aO7WEzYtw-1; Tue, 02 Apr 2024 16:33:33 -0400
+X-MC-Unique: jOxgHkElN6C86aO7WEzYtw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16F5010B0702;
+	Tue,  2 Apr 2024 20:33:31 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id EF28B17AA0;
+	Tue,  2 Apr 2024 20:33:26 +0000 (UTC)
+Date: Tue, 2 Apr 2024 16:33:21 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	David Hildenbrand <david@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gonglei <arei.gonglei@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	David Airlie <airlied@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Graf <graf@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-cachefs@redhat.com,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH 00/26] netfs, afs, 9p, cifs: Rework netfs to use ->writepages() to copy to cache
-Date: Tue,  2 Apr 2024 12:48:39 +0200
-Message-ID: <20240402-angezapft-geltung-eedf20c747b6@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240328163424.2781320-1-dhowells@redhat.com>
-References: <20240328163424.2781320-1-dhowells@redhat.com>
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
+	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 06/25] virtio_blk: drop owner assignment
+Message-ID: <20240402203321.GD2507314@fedora>
+References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
+ <20240331-module-owner-virtio-v2-6-98f04bfaf46a@linaro.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1071; i=brauner@kernel.org; h=from:subject:message-id; bh=0o849oaUCS/1to/11XOBsrrHkZ6HnWiwjHhXX1XawsY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRxP+pcP3O9duihh7ft/O8vis97k3zynpVeQfGsW8E7b q56dXSyVUcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEuNwYGTasXTr9sKjU3hPX Ei5oGyxbtVov5EPVyh7dA8dse88LRt5l+M2u8X9Xtd2ZVVnejNGvL9xPN9z30XT+j+sXvgWrTvz jocYCAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="n4/kSvCMF0M05hCx"
+Content-Disposition: inline
+In-Reply-To: <20240331-module-owner-virtio-v2-6-98f04bfaf46a@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-On Thu, 28 Mar 2024 16:33:52 +0000, David Howells wrote:
-> The primary purpose of these patches is to rework the netfslib writeback
-> implementation such that pages read from the cache are written to the cache
-> through ->writepages(), thereby allowing the fscache page flag to be
-> retired.
-> 
-> The reworking also:
-> 
-> [...]
 
-Pulled from netfs-writeback which contains the minor fixes pointed out.
+--n4/kSvCMF0M05hCx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
----
+On Sun, Mar 31, 2024 at 10:43:53AM +0200, Krzysztof Kozlowski wrote:
+> virtio core already sets the .owner, so driver does not need to.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>=20
+> ---
+>=20
+> Depends on the first patch.
+> ---
+>  drivers/block/virtio_blk.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Applied to the vfs.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs.netfs branch should appear in linux-next soon.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+--n4/kSvCMF0M05hCx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+-----BEGIN PGP SIGNATURE-----
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmYMa5EACgkQnKSrs4Gr
+c8j8dggAqO8KJXvt+0JqXmgxsfDAxN196OA9Q6Rm7VF0fuMhGpVUUh/iuOtkH59k
+ho0oB9szUvz/1tXZEJPtShx/omt2iENmq22unjzWE7ZmNimALVjtXPaZNTCkYxJn
+Z9//Ks9v/lHCNFzLjSiKC94ktRVJLDXSmG7uEpbeutDrzN9TWRJ8DNnylKmm+qWR
+VDiL3/2+03gC5B/LovTli4ozZuS4JlG37Tnh2Z8ACNrcFC74nv45KtNuQLR+hNy8
+12jEUGkhADWps+fQH7bZebswT9ePfwTfA1xh0pXeeWKCkaiKcgFhZH+JcNQLkwkx
+fC80yZK4qnvU1SmzK2tpfzAk7jUMtQ==
+=5tJl
+-----END PGP SIGNATURE-----
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.netfs
+--n4/kSvCMF0M05hCx--
+
