@@ -1,133 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C25D73A
-	for <v9fs@lists.linux.dev>; Thu,  4 Apr 2024 08:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9D683A15
+	for <v9fs@lists.linux.dev>; Thu,  4 Apr 2024 11:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712217720; cv=none; b=pZEtc3RXw77oGZG1oaHz1al0Jhka2WIOEKRXtaWdrdcMviYXiW8QjLqkdELUd4K4tW9EhQQP7HlcXn/tD14YU8Jzq/TxUdgt3/lOCFON0fvAhL+AN+4gr6Kvrlvrg5n9V0gC7T+RXC2OqG2UixM5Yo3tGPjBsjaGF8//cwfzyMU=
+	t=1712230893; cv=none; b=uOnqENlw5ANcqaBifRvfvvMDU25PKFp8dHRA8GxfZq00MOCXJ6Zj3I7V4Fw9jZEIv7DG6g7BOJtsI+njD8f3NZlFgryPGf6lUUVZ+FvdoK6JdekuNcVqOKhM0d+qAIEsSXnWLfzBOeNf1/HSF0/MuN0164god7Er1tPQuI7EfKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712217720; c=relaxed/simple;
-	bh=nn75BfzRjv6UXMTe1POmsOm6uuisJffR5hjMsK9B4pM=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=qevLWWGyCs3t1zxtFuZrupROFicH5+JX5To80HnVQAIcGaWminPh/TXkGDLy0vPMB0v6PdRPjRoHtLDxuRIL0nXRlcsvyRG6prmQKBc+JmE3/HsaloSCaQC+ALlzCPPOws9ivOQk+kR3okmTa+R+nGs0IArXjxjAf0rQSB0GAF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AtAfNGWp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1712230893; c=relaxed/simple;
+	bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CbnfdACCpKM7Uc4gFzSIuRFwmKigKjPc5Isqa3rKxlnO63rflNgyWp4oa0Igwxjgy2oh4JUrhAaah0aW3A+CPVh9rXkfOvXd7DPrtRkicJR4IW2sgEQ52w1orcJR64JjxayzrJEsSVFNY9/+GTeLqwau8Gxc92lTxEoXyw1GGzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j/l193E/; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AtAfNGWp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712217718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IE/xA/cazcP+HXhdhjRdwQDAS2gMvpTgfIxHPPrU41I=;
-	b=AtAfNGWpfWvXtWv2xyojYsBWjt97qcqzyhgP2H6Ar0mC9o4Kj1HX8ISudNj6sVHmPyTyjh
-	zoAiUg2UFagj8sO29teLrp5wqQfQI+rviCoRdSn2c1YVu8ex605WlbVUEmkLNXRh516DDC
-	Qt6gjDz/TGLz3TpPfXs2QGQwdYqjPO4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-c0jY6rVYNYiCi_bmX-evYA-1; Thu,
- 04 Apr 2024 04:01:52 -0400
-X-MC-Unique: c0jY6rVYNYiCi_bmX-evYA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BF723C02748;
-	Thu,  4 Apr 2024 08:01:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DD1EAC1576F;
-	Thu,  4 Apr 2024 08:01:47 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <3655511.1712217111@warthog.procyon.org.uk>
-References: <3655511.1712217111@warthog.procyon.org.uk> <20240328163424.2781320-22-dhowells@redhat.com> <20240328163424.2781320-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Steve French <smfrench@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Latchesar Ionkov <lucho@ionkov.net>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH 21/26] netfs, 9p: Implement helpers for new write code
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j/l193E/"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcc80d6004bso1019448276.0
+        for <v9fs@lists.linux.dev>; Thu, 04 Apr 2024 04:41:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712230889; x=1712835689; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
+        b=j/l193E/44huoJ04oBkRB2ZnTXE6+p/NUCx8c35Myr8DR1iqSOtfR2Fz16hDbeJ1OH
+         tUExXpGQ28dkceUDdMpyO8EbZRjSCrex+1svJMWBUgMGjtORV2tIu1aUU7tRrlTqseAW
+         3xBtk7B1sZWDxq6CBSHE23og4y4Uf0xWMmAPTgeKpXcaQUESIoqY/A0oYtntVtq9wzjm
+         lJOxkU+B0t80gJwZe9OA2Oo42MF8k5j1NhzpyvqPDfPA7+hO00Q1BN72ZWALO04aNEn/
+         BY01VUCN7ueDh8EfydFPuyA/LoG6wR5CeAWHszNIXog+FGeMZVY6ZzFMUx6QC5hmrLKo
+         Veng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712230889; x=1712835689;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
+        b=HS605yeZIooZl1bioLusl/KwV2n+rmfpz7ZFcPNH+/5W0XtVifU6tCLYcULAK3mZyP
+         7U9lyEWp8+SnAEW7IeZ9d8AvnHdl0RnzTiw1Rui4tZjjj4nrm26kT6WzJSu85Te8GuqS
+         39dpGRXfAPYjqtIUCyNAQPbvo6o//Ez+A1o4M1FIpUO+DKNam/wfCiM+idC9WFxU34i4
+         gWsf8jrLJJTWHWGKDmsqAtj8KKmoKLPX93rwa5wHpamLZpKRUiBtjHsLgNOxrnEEu3uc
+         kX4yDdZELS+PSY739L3XHbtNajz+8NrtTKqfnQ4EKueNNvIcq2bcRHq/b3N8FeUpxyST
+         cmRA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/kV9zILCq0fDdV2ycu9k6+ehcm0dt5u3/MYf4gWQUGi572yYlWYtMjsRqP1UVZkdFrWLsDqsriEm0xfFgA6diEgajrw==
+X-Gm-Message-State: AOJu0YzSCXP6C59otnyfbnZPJ5KwjfFgk6mlFPHZYKLcTxc66KNV3DRk
+	5bVN/cc6qLJBu/1htBuW7BBinZyjj9lrro4QMSNiF/z8uLjxRAqbruGHjPvpVAbOkvcsh6N4cf5
+	DRrDikRM5JVBSH3crvPUrioASxh/vIH9/exmnfA==
+X-Google-Smtp-Source: AGHT+IEhL+O4bSIOCRsSy+Vdywn61xtrVBJ3li47sHwN1FOt8H7g9W+tj2/Or7rao9/9euGeRsXbtXq4vPMz7+GnZRc=
+X-Received: by 2002:a25:ba86:0:b0:dd1:6fab:81e4 with SMTP id
+ s6-20020a25ba86000000b00dd16fab81e4mr2034373ybg.37.1712230889318; Thu, 04 Apr
+ 2024 04:41:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3666290.1712217703.1@warthog.procyon.org.uk>
+References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org> <20240331-module-owner-virtio-v2-12-98f04bfaf46a@linaro.org>
+In-Reply-To: <20240331-module-owner-virtio-v2-12-98f04bfaf46a@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 4 Apr 2024 13:41:18 +0200
+Message-ID: <CACRpkdYpVUq1SgxnPVfRdTiNg3o8dcBePxoxu9GRYy6LdzUE5A@mail.gmail.com>
+Subject: Re: [PATCH v2 12/25] gpio: virtio: drop owner assignment
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>, 
+	David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei <arei.gonglei@huawei.com>, 
+	"David S. Miller" <davem@davemloft.net>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Cristian Marussi <cristian.marussi@arm.com>, Viresh Kumar <vireshk@kernel.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>, 
+	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter <daniel@ffwll.ch>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Alexander Graf <graf@amazon.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, "James E.J. Bottomley" <jejb@linux.ibm.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Vivek Goyal <vgoyal@redhat.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, virtualization@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
+	netdev@vger.kernel.org, v9fs@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org, 
+	linux-sound@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Viresh Kumar <viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Apr 2024 09:01:43 +0100
-Message-ID: <3666291.1712217703@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-David Howells <dhowells@redhat.com> wrote:
+On Sun, Mar 31, 2024 at 10:45=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-> > +	size_t len =3D subreq->len - subreq->transferred;
-> =
+> virtio core already sets the .owner, so driver does not need to.
+>
+> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> This actually needs to be 'int len' because of the varargs packet format=
-ter.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-I think the attached change is what's required.
-
-David
----
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 844aca4fe4d8..04af2a7bf54b 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1670,10 +1670,10 @@ p9_client_write_subreq(struct netfs_io_subrequest =
-*subreq)
- 	struct p9_client *clnt =3D fid->clnt;
- 	struct p9_req_t *req;
- 	unsigned long long start =3D subreq->start + subreq->transferred;
--	size_t len =3D subreq->len - subreq->transferred;
--	int written, err;
-+	int written, len =3D subreq->len - subreq->transferred;
-+	int err;
- =
-
--	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu len %zd\n",
-+	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu len %d\n",
- 		 fid->fid, start, len);
- =
-
- 	/* Don't bother zerocopy for small IO (< 1024) */
-@@ -1699,11 +1699,11 @@ p9_client_write_subreq(struct netfs_io_subrequest =
-*subreq)
- 	}
- =
-
- 	if (written > len) {
--		pr_err("bogus RWRITE count (%d > %lu)\n", written, len);
-+		pr_err("bogus RWRITE count (%d > %u)\n", written, len);
- 		written =3D len;
- 	}
- =
-
--	p9_debug(P9_DEBUG_9P, "<<< RWRITE count %zd\n", len);
-+	p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", len);
- =
-
- 	p9_req_put(clnt, req);
- 	netfs_write_subrequest_terminated(subreq, written, false);
-
+Yours,
+Linus Walleij
