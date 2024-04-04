@@ -1,53 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9CF5A4C6
-	for <v9fs@lists.linux.dev>; Thu,  4 Apr 2024 07:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C25D73A
+	for <v9fs@lists.linux.dev>; Thu,  4 Apr 2024 08:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712217127; cv=none; b=tkJ9X3IxRH8cKEsb/PhYwheceBtPPBNaSN4O0dME8nCNDdlxW4YPrMQEPg8Ydc0jlYvGyxQwiiKxUrhNXlBBV9Gq0ATf0Pe13iUcY+657N5IBbiZ/DA/2nX+2kA/oHFLI5Y07bW6WWH/HXAo6fFUE0xxF2WEsgACz1ufbSsZJdo=
+	t=1712217720; cv=none; b=pZEtc3RXw77oGZG1oaHz1al0Jhka2WIOEKRXtaWdrdcMviYXiW8QjLqkdELUd4K4tW9EhQQP7HlcXn/tD14YU8Jzq/TxUdgt3/lOCFON0fvAhL+AN+4gr6Kvrlvrg5n9V0gC7T+RXC2OqG2UixM5Yo3tGPjBsjaGF8//cwfzyMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712217127; c=relaxed/simple;
-	bh=xuyJ4Vq6zUtNBwqm/4jt8kNEn56EDs4LkP7OBIGqEmE=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=P4JYslgXMSTJ/DYH5/1/Ju+oJSJv0pXlAA5UXEAVPimvVlvLhRGDyqU60t+4a5OAknAS22YBaWMKSQPWCb7FJK81kSSt+IKzPODPZ9AaA0+cSDBjGhwQlBwk6a5ufwS5fs8RgycxprCY3ilXRxC0IFpoS1hVW+Z2d/fWP3Olq7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gMGRYab0; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1712217720; c=relaxed/simple;
+	bh=nn75BfzRjv6UXMTe1POmsOm6uuisJffR5hjMsK9B4pM=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=qevLWWGyCs3t1zxtFuZrupROFicH5+JX5To80HnVQAIcGaWminPh/TXkGDLy0vPMB0v6PdRPjRoHtLDxuRIL0nXRlcsvyRG6prmQKBc+JmE3/HsaloSCaQC+ALlzCPPOws9ivOQk+kR3okmTa+R+nGs0IArXjxjAf0rQSB0GAF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AtAfNGWp; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gMGRYab0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AtAfNGWp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712217125;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
+	s=mimecast20190719; t=1712217718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C9vFcjZDN/Fxaa0QMjaZwgnMDGjE5U9a9cC8FQf1Wik=;
-	b=gMGRYab0eErUsdd3zXrJKwLgQgisIvqXXVKn+AZod/TwJq2/LOgQXS7SCydyvMzoocRkR9
-	c2Azw37K98VSOpua7fTunmYuiIBzrARHksM2GgxcKQZ0DI1o+3MiIpvljQyOZ2OieIzv5i
-	QWpfQmTh37uQsB4FJRfJscdtBx7M6MU=
+	bh=IE/xA/cazcP+HXhdhjRdwQDAS2gMvpTgfIxHPPrU41I=;
+	b=AtAfNGWpfWvXtWv2xyojYsBWjt97qcqzyhgP2H6Ar0mC9o4Kj1HX8ISudNj6sVHmPyTyjh
+	zoAiUg2UFagj8sO29teLrp5wqQfQI+rviCoRdSn2c1YVu8ex605WlbVUEmkLNXRh516DDC
+	Qt6gjDz/TGLz3TpPfXs2QGQwdYqjPO4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-4vRV2FK2MnqAak7lNxvr5w-1; Thu,
- 04 Apr 2024 03:52:01 -0400
-X-MC-Unique: 4vRV2FK2MnqAak7lNxvr5w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-c0jY6rVYNYiCi_bmX-evYA-1; Thu,
+ 04 Apr 2024 04:01:52 -0400
+X-MC-Unique: c0jY6rVYNYiCi_bmX-evYA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8E333806736;
-	Thu,  4 Apr 2024 07:52:00 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BF723C02748;
+	Thu,  4 Apr 2024 08:01:51 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 739012166B33;
-	Thu,  4 Apr 2024 07:51:56 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DD1EAC1576F;
+	Thu,  4 Apr 2024 08:01:47 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240328163424.2781320-22-dhowells@redhat.com>
-References: <20240328163424.2781320-22-dhowells@redhat.com> <20240328163424.2781320-1-dhowells@redhat.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Jeff Layton <jlayton@kernel.org>,
+In-Reply-To: <3655511.1712217111@warthog.procyon.org.uk>
+References: <3655511.1712217111@warthog.procyon.org.uk> <20240328163424.2781320-22-dhowells@redhat.com> <20240328163424.2781320-1-dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
     Gao Xiang <hsiangkao@linux.alibaba.com>,
     Dominique Martinet <asmadeus@codewreck.org>,
     Matthew Wilcox <willy@infradead.org>,
@@ -72,16 +73,61 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3655510.1712217111.1@warthog.procyon.org.uk>
-Date: Thu, 04 Apr 2024 08:51:51 +0100
-Message-ID: <3655511.1712217111@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-ID: <3666290.1712217703.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Apr 2024 09:01:43 +0100
+Message-ID: <3666291.1712217703@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
 David Howells <dhowells@redhat.com> wrote:
 
-> +	size_t len = subreq->len - subreq->transferred;
+> > +	size_t len =3D subreq->len - subreq->transferred;
+> =
 
-This actually needs to be 'int len' because of the varargs packet formatter.
+> This actually needs to be 'int len' because of the varargs packet format=
+ter.
+
+I think the attached change is what's required.
 
 David
+---
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 844aca4fe4d8..04af2a7bf54b 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1670,10 +1670,10 @@ p9_client_write_subreq(struct netfs_io_subrequest =
+*subreq)
+ 	struct p9_client *clnt =3D fid->clnt;
+ 	struct p9_req_t *req;
+ 	unsigned long long start =3D subreq->start + subreq->transferred;
+-	size_t len =3D subreq->len - subreq->transferred;
+-	int written, err;
++	int written, len =3D subreq->len - subreq->transferred;
++	int err;
+ =
+
+-	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu len %zd\n",
++	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu len %d\n",
+ 		 fid->fid, start, len);
+ =
+
+ 	/* Don't bother zerocopy for small IO (< 1024) */
+@@ -1699,11 +1699,11 @@ p9_client_write_subreq(struct netfs_io_subrequest =
+*subreq)
+ 	}
+ =
+
+ 	if (written > len) {
+-		pr_err("bogus RWRITE count (%d > %lu)\n", written, len);
++		pr_err("bogus RWRITE count (%d > %u)\n", written, len);
+ 		written =3D len;
+ 	}
+ =
+
+-	p9_debug(P9_DEBUG_9P, "<<< RWRITE count %zd\n", len);
++	p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", len);
+ =
+
+ 	p9_req_put(clnt, req);
+ 	netfs_write_subrequest_terminated(subreq, written, false);
 
