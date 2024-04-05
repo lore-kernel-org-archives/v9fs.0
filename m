@@ -1,110 +1,124 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB801649D9
-	for <v9fs@lists.linux.dev>; Fri,  5 Apr 2024 11:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C716C69D
+	for <v9fs@lists.linux.dev>; Fri,  5 Apr 2024 11:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712316649; cv=none; b=gad2h9R9C0rqlvXytYzXdktP1KqDWUoLAAI/fnVRLRS64DgC/VMVfE3edGqRMnrk9QnFea1o50inDtlNNjGuXeD1vNmrzkN9xnr2t6B00g24bcQt81QEH61902s8x9Gu4rtlDffn0+RXnFSi5HCbfDIaM9Qwv6AEyDsoj1bH1is=
+	t=1712316957; cv=none; b=X7MJfhntDZ2MTP0DRiR+FV2pMemlY9645COvQNDWaGGzKPcEtZtmRlegtI0zowvwbYtcOzyKgmMdyqYrVuw5Y+sT/wZUdzg+RoUprj15sSv0BqpaclEw1klyqLwgkK19sThd+C7Pg+pYScIrp6Vwjt17sxU6E6RwV/fNVu3pr8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712316649; c=relaxed/simple;
-	bh=wLhTNgOUiN7N0RylDeS2vmMKqNBh9y3uJy/BJN47Ok4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=G4u1m0mJymv5fzYE+zwHoyTGxT8T6svMvgw34PQLDD3kLOLOKVI73KYDMCnabArhQzf9m8c9hlzjFCetlDV6DsyNsKr/45QwYFpEb5tS/AmtcOUCvLIfMYXjBd7drrhGsJCxHUSuW/AZubuxtCV8SYrEHpsevEBjIMXLP8rNbFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l/U8l5VY; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l/U8l5VY; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l/U8l5VY";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l/U8l5VY"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id AFFBEC01B; Fri,  5 Apr 2024 13:30:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1712316637; bh=JwFGQtuIx9nBtXhUEYCcPHTriiYWg5V9szkMeALJdlE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=l/U8l5VYoVAm8pdneMe1XFYNdC7XBDLqTy0sIzKcOs33wm4aDRCRpdvzAl6FK1M2k
-	 +rm5XVemlziKY+of4YDuN2/vy3oKPrXOXq83XrLIgebwsjx1RzJcP5KKJ8pKh/lwcs
-	 01Wow0Mp0kEKqybOFxG2ltk4DWjrfS5TEW/Xlke+fzMIMEfBQpaEiK06voIzo520IR
-	 cd6szDg35/bVrMIQ2DAgdoUTmGZ/OIeSS7gkRzULQDAte04v29RFjVxPrLIT6i+rk4
-	 v6MEV5yb2eOHrBlLLxc6ow6ciymcCu4NW8Sod56agRiICGpouueVtsIg62BaqNV0bL
-	 4TukFGeQbBhdg==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 31831C009;
-	Fri,  5 Apr 2024 13:30:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1712316637; bh=JwFGQtuIx9nBtXhUEYCcPHTriiYWg5V9szkMeALJdlE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=l/U8l5VYoVAm8pdneMe1XFYNdC7XBDLqTy0sIzKcOs33wm4aDRCRpdvzAl6FK1M2k
-	 +rm5XVemlziKY+of4YDuN2/vy3oKPrXOXq83XrLIgebwsjx1RzJcP5KKJ8pKh/lwcs
-	 01Wow0Mp0kEKqybOFxG2ltk4DWjrfS5TEW/Xlke+fzMIMEfBQpaEiK06voIzo520IR
-	 cd6szDg35/bVrMIQ2DAgdoUTmGZ/OIeSS7gkRzULQDAte04v29RFjVxPrLIT6i+rk4
-	 v6MEV5yb2eOHrBlLLxc6ow6ciymcCu4NW8Sod56agRiICGpouueVtsIg62BaqNV0bL
-	 4TukFGeQbBhdg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1ac11b80;
-	Fri, 5 Apr 2024 11:30:31 +0000 (UTC)
-Date: Fri, 5 Apr 2024 20:30:16 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: torvalds@linux-foundation.org
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] fs/9p: cleanups for 6.9-rc3
-Message-ID: <Zg_gyHsrkjDiz7lR@codewreck.org>
+	s=arc-20240116; t=1712316957; c=relaxed/simple;
+	bh=sftWoBpbGJaOE1LHFFMMJI4nyXjYFzulW/XD3IxjPYE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nhj4EX0fqCLAc9kNCphcbMrxYTkjwIYrwr3QsLo88Vd2/NClpCv4mUkAURT86zGrs6t+mtzHgngRQxGisC7KuMQRnV8P8hJNgRRC3fSRE9I4gKLudnk7RfkutC/cEk3ZkewHvqffUpR7voYF/Mc5drQoM97mW0MQ1H9fS7DbX9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 5 Apr
+ 2024 14:35:51 +0300
+Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 5 Apr 2024
+ 14:35:50 +0300
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+To: Eric Van Hensbergen <ericvh@kernel.org>
+CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Latchesar Ionkov
+	<lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, "Christian
+ Schoenebeck" <linux_oss@crudebyte.com>, <v9fs@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+	<syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com>
+Subject: [PATCH net] net/9p: fix uninit-value in p9_client_rpc()
+Date: Fri, 5 Apr 2024 04:35:40 -0700
+Message-ID: <20240405113540.20456-1-n.zhandarovich@fintech.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
+ (10.0.10.18)
 
-Sorry, I should have sent these back for rc1. There's nothing that could
-break in there and the kdoc cleanup patch caused some trouble with -next
-and another identical commit, merging something should help a bit...
+Syzbot with the help of KMSAN reported the following error:
 
-FYI there's some regression with the cache rework that came in rc1, if
-we don't figure something out by next week it might make sense to revert
-some of these; I unfortunately couldn't reproduce Kent's report but will
-try a bit harder this weekend.
-These commits have nothing to do with that and won't conflict.
+BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ trace_9p_client_res include/trace/events/9p.h:146 [inline]
+ p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
---------
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+ p9_tag_alloc net/9p/client.c:278 [inline]
+ p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+ p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+ p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+ v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+ v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+ vfs_get_tree+0xa7/0x570 fs/super.c:1797
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-The following changes since commit 841c35169323cd833294798e58b9bf63fa4fa1de:
+If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+will not be properly initialized. However, trace_9p_client_res()
+ends up trying to print it out anyway before p9_client_rpc()
+finishes.
 
-  Linux 6.8-rc4 (2024-02-11 12:18:13 -0800)
+Fix this issue by assigning default values to p9_fcall fields
+such as 'tag' and (just in case KMSAN unearths something new) 'id'
+during the tag allocation stage.
 
-are available in the Git repository at:
+Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+---
+P.S. Not entirely sure that 'Fixes' tag is fully correct here.
 
-  https://github.com/martinetd/linux tags/9p-for-6.9-rc3
+ net/9p/client.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-for you to fetch changes up to 2a0505cdd8c8b12670f4b5a6eb5c996c0861c2d5:
-
-  9p: remove SLAB_MEM_SPREAD flag usage (2024-03-04 22:04:32 +0900)
-
-----------------------------------------------------------------
-minor 9p cleanups:
-
-- kernel doc fix & removal of unused flag
-- some bogus debug statement for read/write
-
-----------------------------------------------------------------
-Chengming Zhou (1):
-      9p: remove SLAB_MEM_SPREAD flag usage
-
-Dominique Martinet (1):
-      9p: Fix read/write debug statements to report server reply
-
-Randy Dunlap (1):
-      9p/trans_fd: remove Excess kernel-doc comment
-
- fs/9p/v9fs.c      |  2 +-
- net/9p/client.c   | 10 +++++-----
- net/9p/trans_fd.c |  1 -
- 3 files changed, 6 insertions(+), 7 deletions(-)
-
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+diff --git a/net/9p/client.c b/net/9p/client.c
+index e265a0ca6bdd..a9d613af7455 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_client *c, struct p9_fcall *fc,
+ 	if (!fc->sdata)
+ 		return -ENOMEM;
+ 	fc->capacity = alloc_msize;
++	fc->id = 0;
++	fc->tag = 0;
+ 	return 0;
+ }
+ 
