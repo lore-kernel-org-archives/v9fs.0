@@ -1,55 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF48F27447;
-	Fri,  5 Apr 2024 10:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB801649D9
+	for <v9fs@lists.linux.dev>; Fri,  5 Apr 2024 11:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712312145; cv=none; b=FRf/9LI8EZtwQDI3NFDfVmKkFyomRACUHaHFr7JwEbEVbAcgfjekdqoKBd5qxyhfZ+yWy8Vge/CEdv/gvbvFdkqzdL05Ynol/1XBQ2ZZyYmbWgtBCIO7eVKfBDSh25Avi5Q94PP9Nqzhr/900qd7VeqthUDPeqYql1t1KqjqxEc=
+	t=1712316649; cv=none; b=gad2h9R9C0rqlvXytYzXdktP1KqDWUoLAAI/fnVRLRS64DgC/VMVfE3edGqRMnrk9QnFea1o50inDtlNNjGuXeD1vNmrzkN9xnr2t6B00g24bcQt81QEH61902s8x9Gu4rtlDffn0+RXnFSi5HCbfDIaM9Qwv6AEyDsoj1bH1is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712312145; c=relaxed/simple;
-	bh=yIHeOwT1Z+4CwFKwe4RcKGCjnk0s2xBp+R1BOpUfFsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TOoOkt2YAldLu2yTTJ5AyWwxcI4eJ851JbGwibmJNmAN9EJcvcEeRJainUrKwDhOvcF3MnozlI1MnfoRqOlrDGMiOdlriWn3WQJATMdaHEnCRIrl7NCcDNR2TjCMvn4bgtfRRTN1yyMs5gj2FOuySaLLthK7e/PgfIFjMvIquL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caMJ71mm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712316649; c=relaxed/simple;
+	bh=wLhTNgOUiN7N0RylDeS2vmMKqNBh9y3uJy/BJN47Ok4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=G4u1m0mJymv5fzYE+zwHoyTGxT8T6svMvgw34PQLDD3kLOLOKVI73KYDMCnabArhQzf9m8c9hlzjFCetlDV6DsyNsKr/45QwYFpEb5tS/AmtcOUCvLIfMYXjBd7drrhGsJCxHUSuW/AZubuxtCV8SYrEHpsevEBjIMXLP8rNbFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l/U8l5VY; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l/U8l5VY; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caMJ71mm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F21BC433F1;
-	Fri,  5 Apr 2024 10:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712312144;
-	bh=yIHeOwT1Z+4CwFKwe4RcKGCjnk0s2xBp+R1BOpUfFsg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=caMJ71mmy73c69ZyZyNX4wS/2d8Gtly6EtzykUIE0yXHbrAMwv7eMWt2apQEno6io
-	 8Ny3HtFvTnC9Gaz97HDodO14jUPgFC3leggZFXx05N0QdQvMLPMYwokSZFQfHYbZxp
-	 O/nEAmSn8QWyea3nkipZVjXjYGJ9KgFkOeQnWOkMeRzcnwCDzqKGT2YLEgcy1zW6DW
-	 epW118aIRpl+hKttSW1y64jhg1CcH5IhVBH6IsGyDznq/8k7bxLKOAjx7fl1UZW+BT
-	 erfELlSyjrxr9gChb3R7X47yIZZ6/lr6monLIC+TD0k2YntQu2xsEIQ2MH1kiRPpGw
-	 NigJI7ozoCNng==
-Date: Fri, 5 Apr 2024 12:15:34 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>, 
-	Christian Brauner <christian@brauner.io>, Jeff Layton <jlayton@kernel.org>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Matthew Wilcox <willy@infradead.org>, Steve French <smfrench@gmail.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Paulo Alcantara <pc@manguebit.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
-	linux-cachefs@redhat.com, linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 15/26] mm: Export writeback_iter()
-Message-ID: <20240405-kanarienvogel-besuchen-63c433180767@brauner>
-References: <20240403124124.GA19085@lst.de>
- <20240403101422.GA7285@lst.de>
- <20240403085918.GA1178@lst.de>
- <20240328163424.2781320-1-dhowells@redhat.com>
- <20240328163424.2781320-16-dhowells@redhat.com>
- <3235934.1712139047@warthog.procyon.org.uk>
- <3300438.1712141700@warthog.procyon.org.uk>
- <3326107.1712149095@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l/U8l5VY";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l/U8l5VY"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id AFFBEC01B; Fri,  5 Apr 2024 13:30:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712316637; bh=JwFGQtuIx9nBtXhUEYCcPHTriiYWg5V9szkMeALJdlE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=l/U8l5VYoVAm8pdneMe1XFYNdC7XBDLqTy0sIzKcOs33wm4aDRCRpdvzAl6FK1M2k
+	 +rm5XVemlziKY+of4YDuN2/vy3oKPrXOXq83XrLIgebwsjx1RzJcP5KKJ8pKh/lwcs
+	 01Wow0Mp0kEKqybOFxG2ltk4DWjrfS5TEW/Xlke+fzMIMEfBQpaEiK06voIzo520IR
+	 cd6szDg35/bVrMIQ2DAgdoUTmGZ/OIeSS7gkRzULQDAte04v29RFjVxPrLIT6i+rk4
+	 v6MEV5yb2eOHrBlLLxc6ow6ciymcCu4NW8Sod56agRiICGpouueVtsIg62BaqNV0bL
+	 4TukFGeQbBhdg==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 31831C009;
+	Fri,  5 Apr 2024 13:30:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712316637; bh=JwFGQtuIx9nBtXhUEYCcPHTriiYWg5V9szkMeALJdlE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=l/U8l5VYoVAm8pdneMe1XFYNdC7XBDLqTy0sIzKcOs33wm4aDRCRpdvzAl6FK1M2k
+	 +rm5XVemlziKY+of4YDuN2/vy3oKPrXOXq83XrLIgebwsjx1RzJcP5KKJ8pKh/lwcs
+	 01Wow0Mp0kEKqybOFxG2ltk4DWjrfS5TEW/Xlke+fzMIMEfBQpaEiK06voIzo520IR
+	 cd6szDg35/bVrMIQ2DAgdoUTmGZ/OIeSS7gkRzULQDAte04v29RFjVxPrLIT6i+rk4
+	 v6MEV5yb2eOHrBlLLxc6ow6ciymcCu4NW8Sod56agRiICGpouueVtsIg62BaqNV0bL
+	 4TukFGeQbBhdg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1ac11b80;
+	Fri, 5 Apr 2024 11:30:31 +0000 (UTC)
+Date: Fri, 5 Apr 2024 20:30:16 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: torvalds@linux-foundation.org
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] fs/9p: cleanups for 6.9-rc3
+Message-ID: <Zg_gyHsrkjDiz7lR@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -58,23 +58,53 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3326107.1712149095@warthog.procyon.org.uk>
 
-On Wed, Apr 03, 2024 at 01:58:15PM +0100, David Howells wrote:
-> Christoph Hellwig <hch@lst.de> wrote:
-> 
-> > > So why are we bothering with EXPORT_SYMBOL at all?  Why don't you just
-> > > send a patch replace all of them with EXPORT_SYMBOL_GPL()?
-> > 
-> > No my business.
-> 
-> Clearly it is as you're gradually replacing APIs with stuff that is GPL'd.
-> 
-> > But if you want to side track this let me just put this in here:
-> > 
-> > NAK to the non-GPL EXPORT of writeback_iter().
-> 
-> Very well, I'll switch that export to GPL.  Christian, if you can amend that
-> patch in your tree?
+Sorry, I should have sent these back for rc1. There's nothing that could
+break in there and the kdoc cleanup patch caused some trouble with -next
+and another identical commit, merging something should help a bit...
 
-Sorted yesterday night!
+FYI there's some regression with the cache rework that came in rc1, if
+we don't figure something out by next week it might make sense to revert
+some of these; I unfortunately couldn't reproduce Kent's report but will
+try a bit harder this weekend.
+These commits have nothing to do with that and won't conflict.
+
+--------
+
+The following changes since commit 841c35169323cd833294798e58b9bf63fa4fa1de:
+
+  Linux 6.8-rc4 (2024-02-11 12:18:13 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/martinetd/linux tags/9p-for-6.9-rc3
+
+for you to fetch changes up to 2a0505cdd8c8b12670f4b5a6eb5c996c0861c2d5:
+
+  9p: remove SLAB_MEM_SPREAD flag usage (2024-03-04 22:04:32 +0900)
+
+----------------------------------------------------------------
+minor 9p cleanups:
+
+- kernel doc fix & removal of unused flag
+- some bogus debug statement for read/write
+
+----------------------------------------------------------------
+Chengming Zhou (1):
+      9p: remove SLAB_MEM_SPREAD flag usage
+
+Dominique Martinet (1):
+      9p: Fix read/write debug statements to report server reply
+
+Randy Dunlap (1):
+      9p/trans_fd: remove Excess kernel-doc comment
+
+ fs/9p/v9fs.c      |  2 +-
+ net/9p/client.c   | 10 +++++-----
+ net/9p/trans_fd.c |  1 -
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+
+Thanks,
+-- 
+Dominique Martinet | Asmadeus
