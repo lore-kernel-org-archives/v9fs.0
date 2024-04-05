@@ -1,124 +1,63 @@
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C716C69D
-	for <v9fs@lists.linux.dev>; Fri,  5 Apr 2024 11:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB98172766;
+	Fri,  5 Apr 2024 17:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712316957; cv=none; b=X7MJfhntDZ2MTP0DRiR+FV2pMemlY9645COvQNDWaGGzKPcEtZtmRlegtI0zowvwbYtcOzyKgmMdyqYrVuw5Y+sT/wZUdzg+RoUprj15sSv0BqpaclEw1klyqLwgkK19sThd+C7Pg+pYScIrp6Vwjt17sxU6E6RwV/fNVu3pr8I=
+	t=1712336991; cv=none; b=UkaF3mG7qdkgmG3hMd3vzVR10+KEnVmRnRU0OnyIjQMV8XfmXfdkE3FEBDoy92EKokpMVYqdT3HGm1W4Jul5c7gG/IncczzAL0eAPh7yNdahzTqi/E82lCtlOZ+YR9Fd7Jhf0abcGBiXxmx+C07++DdioL6RXMUpcSL80juXDKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712316957; c=relaxed/simple;
-	bh=sftWoBpbGJaOE1LHFFMMJI4nyXjYFzulW/XD3IxjPYE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nhj4EX0fqCLAc9kNCphcbMrxYTkjwIYrwr3QsLo88Vd2/NClpCv4mUkAURT86zGrs6t+mtzHgngRQxGisC7KuMQRnV8P8hJNgRRC3fSRE9I4gKLudnk7RfkutC/cEk3ZkewHvqffUpR7voYF/Mc5drQoM97mW0MQ1H9fS7DbX9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 5 Apr
- 2024 14:35:51 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 5 Apr 2024
- 14:35:50 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: Eric Van Hensbergen <ericvh@kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Latchesar Ionkov
-	<lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, "Christian
- Schoenebeck" <linux_oss@crudebyte.com>, <v9fs@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com>
-Subject: [PATCH net] net/9p: fix uninit-value in p9_client_rpc()
-Date: Fri, 5 Apr 2024 04:35:40 -0700
-Message-ID: <20240405113540.20456-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1712336991; c=relaxed/simple;
+	bh=bQahf2Q216hSsDm2fEe0IlXWcWjMX0bEyYarNGWgbE8=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=mnzAubsMjiCYV5Je/cQwh685PneJcdQ4+6ASb+e2V3PGSu2JTq34RhoN8SQoH4WOcRaPTxvRRx9EP2qc9QgnU+EhJe/d9FsaAMn6b7JyPPIWF62xGyGsOA1Wv0C/I8cUFRZXd65T+TKQrSkk1zurnXbiUSpFvTu+/m/oA0lvEkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/Pxq75J; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/Pxq75J"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AB0B0C4166A;
+	Fri,  5 Apr 2024 17:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712336990;
+	bh=bQahf2Q216hSsDm2fEe0IlXWcWjMX0bEyYarNGWgbE8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=t/Pxq75Jq8Jq99UfiUKq0+LF6n6tLemQ02CA7iDn8iXUk0kG4tqRrECoJ4HN+ZPHU
+	 KJC7vPmlVSWl1x8uuSCDx1ni2x79Ics6bIroaqa87IT+cE09KCqRoGoU6k373403i5
+	 1WnpKZq2V2Od6ZuEWiOTazikn6ytQXBsOcml7tSKMYPnrhNcAiI8HAJkq7r46cl1qk
+	 +MsRxgV8GTxZMmBv/LxPpwUUjLT4T/gk8+B3doegO5pSOGQJb4RvJsrTM2wJzAkYFP
+	 FzYHeLHY1KUNXli9no1IPr8W8GW/kOLV/4/FPMAXHQ8dTnxL39P4zvBtDmeSbcTN/5
+	 akoLm7KGDV9GA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9C5C9C395F6;
+	Fri,  5 Apr 2024 17:09:50 +0000 (UTC)
+Subject: Re: [GIT PULL] fs/9p: cleanups for 6.9-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <Zg_gyHsrkjDiz7lR@codewreck.org>
+References: <Zg_gyHsrkjDiz7lR@codewreck.org>
+X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
+X-PR-Tracked-Message-Id: <Zg_gyHsrkjDiz7lR@codewreck.org>
+X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.9-rc3
+X-PR-Tracked-Commit-Id: 2a0505cdd8c8b12670f4b5a6eb5c996c0861c2d5
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: e8b0ccb2a787fb43f8091a1eaef9c28a79b00002
+Message-Id: <171233699063.9463.8312156596694177711.pr-tracker-bot@kernel.org>
+Date: Fri, 05 Apr 2024 17:09:50 +0000
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
 
-Syzbot with the help of KMSAN reported the following error:
+The pull request you sent on Fri, 5 Apr 2024 20:30:16 +0900:
 
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> https://github.com/martinetd/linux tags/9p-for-6.9-rc3
 
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/e8b0ccb2a787fb43f8091a1eaef9c28a79b00002
 
-If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-will not be properly initialized. However, trace_9p_client_res()
-ends up trying to print it out anyway before p9_client_rpc()
-finishes.
+Thank you!
 
-Fix this issue by assigning default values to p9_fcall fields
-such as 'tag' and (just in case KMSAN unearths something new) 'id'
-during the tag allocation stage.
-
-Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
-P.S. Not entirely sure that 'Fixes' tag is fully correct here.
-
- net/9p/client.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/9p/client.c b/net/9p/client.c
-index e265a0ca6bdd..a9d613af7455 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_client *c, struct p9_fcall *fc,
- 	if (!fc->sdata)
- 		return -ENOMEM;
- 	fc->capacity = alloc_msize;
-+	fc->id = 0;
-+	fc->tag = 0;
- 	return 0;
- }
- 
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
