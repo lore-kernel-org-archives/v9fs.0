@@ -1,104 +1,161 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D27F79C2
-	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 02:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30315C3
+	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 02:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712542996; cv=none; b=ZXzLNOIXmN4KBiI5MfdlMNbQh2+cTbc/R0ED6SaQzSa+A8AJ+oixDyKvSfCw9A1YI6L00l/gbZMsYJoRkqQ0J3/LiyXR5Nn7MVHiyQckHYvWpa48nQXOsoYkrKwP/2DlP14X6IzgoWHTaGggnLJ6EibAev54C+zVp66FltRABIU=
+	t=1712543053; cv=none; b=cQFu/gBErYYYqIjwfxTVoLDGDYp1FZGySkSDrxqj4TF11BKWd2jC96DLpx7PVJRAcna2D3TmRCCPT0kdV8d78ubStxKwNwzAbncWk3kLjQbfsyZ+MWumINp9WHtRQRnnTBG6C8vnu6pV3etIS4+O+R7N2/v8R3DUgCPY1W7JJh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712542996; c=relaxed/simple;
-	bh=0wqGYpHM+QRRQ+LTIiNbGK8l4cyNAeD0tXLxx0gF8pc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=pYzJtiYYJoGW/WUWiGe/Lb8SqEfdDGT41FUnXXUj8he8PC0Fat92hPB1BU6YjD/cpgTmU+4HMp7ahsnHo4Af3DSl1ry1nrtigIxt1ZMeBKpwT2wiBmtnol1U6ntNndAMS0q3UcvFDz+IFu1kyxg767WmAKoOJhv3Au+mrt4WbNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EjwFZwM0; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1712543053; c=relaxed/simple;
+	bh=Uhe7xxY/EqJ1uhSxNwXgRLgvAtBQsAk+dSMLtVlxeEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JusoX6VcvJyNY4WUfhRUtqmlZKWLZ8aiqVcQN2dKUNWDZkhIMvvtV8zesvs5uIjAJSvaIIl3AU9INpN0EpQ4MfiHMqmmP4NUzJu/UzSN6QtrvyB/GyqWo2pIFKvvzDMj8Gdxws22HKOXS8wsyFqX0/sbBH6jYvxnkFnNxRIaaIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ZnuT4RHA; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l79Tm+jv; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EjwFZwM0"
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712542992;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0wqGYpHM+QRRQ+LTIiNbGK8l4cyNAeD0tXLxx0gF8pc=;
-	b=EjwFZwM0Dv284/ILO3YtcLMy94JxXvNZ62Z91FzIpbBn4hLIWqsLNbV60b6R0OkREW5l4p
-	553B39dNn2PpR0+CnAubqXVdtbRHg5+LTtsU8FSbbKMQ7H+U8JlIh9DPr/zdwPGBWedt19
-	T0nz/4IIztacawvouSWFZqLnLACPsPU=
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ZnuT4RHA";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l79Tm+jv"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id CEB74C01F; Mon,  8 Apr 2024 04:24:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712543049; bh=k9KOHVhmmHb/n/rH2DpqF4maaKDgCrhTDdUKq2DH+cI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZnuT4RHAo3CmxhSPjxNUh1kvPFYRs9Tx3cUpUZQ8cvPZ8NA9rNhiTxA/bmm/0PKuD
+	 8wp5ESKEQJXafCs02bQuGagirsf/Uwskzd4cDbKj8un4RYkLMgSqIIG+muZuC9Vwxy
+	 zhDIZR29+G5b3G+k3Gl3RIcxFp3lM6msrj3UtMA4X96+QQuV8b1mZxhpRGVqWrxf0Z
+	 frNS9aCWBeLN8aV9UxKH0yiaxLonuyn0/lrp1hsNK25fg1d4BeUiTyQBIxPOfzHw9w
+	 FAK8mSApXINH30XGyHrzlTaHIBafACsmibdoh97T5EgT5n9tQAlW8SvhJ9Nf0Jecef
+	 IcXEez3Qw3Pog==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 5EA30C009;
+	Mon,  8 Apr 2024 04:24:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712543048; bh=k9KOHVhmmHb/n/rH2DpqF4maaKDgCrhTDdUKq2DH+cI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l79Tm+jvDYzHB8li/VrMsXohZk8H7rrFBOkj7xXpHbNxZzHPrEopddFR5cQPFDQsy
+	 +AcTARC3B76tSuWe6yN9XMurLLh3PDo8w5DvUzlvFxJM6k69rqV5k3KPOHyj/ac939
+	 uu+0IXTjf/xD4SpOv3nXr9aVSjAawaM+4UXdDCkhBNprKwZ3+N8Xjx3sxShCUCjxie
+	 QttyzHKq2aVwfPNzn48i69Wj5hOnzAHEEmrNkqOSwoPKLEnHKLm6XusqdWMpvYLVr+
+	 pOf79kVXEUT4FHikAPAJ95/T8MbK45sYYz/EQMit29xYlwcc/H86lZP5fOIwgkIix7
+	 9/iO+TWX8eTNg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 34fff3ff;
+	Mon, 8 Apr 2024 02:24:01 +0000 (UTC)
+Date: Mon, 8 Apr 2024 11:23:46 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] net/9p: fix uninit-value in p9_client_rpc()
+Message-ID: <ZhNVMivKCCq6wir0@codewreck.org>
+References: <20240405113540.20456-1-n.zhandarovich@fintech.ru>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: ftruncate fails
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-In-Reply-To: <A9C784B0-3B04-4EBF-8AFF-DD5088B5EF67@linux.dev>
-Date: Mon, 8 Apr 2024 11:22:56 +0900
-Cc: v9fs@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <74C91BF3-4BC7-46A7-9BB2-1360E07B6FE5@linux.dev>
-References: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
- <ZhNP4SISzZOGwy4A@codewreck.org>
- <A9C784B0-3B04-4EBF-8AFF-DD5088B5EF67@linux.dev>
-To: Dominique Martinet <asmadeus@codewreck.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240405113540.20456-1-n.zhandarovich@fintech.ru>
 
+Nikita Zhandarovich wrote on Fri, Apr 05, 2024 at 04:35:40AM -0700:
+> Syzbot with the help of KMSAN reported the following error:
+> 
+> BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
+> BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+>  trace_9p_client_res include/trace/events/9p.h:146 [inline]
+>  p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
+>  p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+>  v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+>  v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+>  legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+>  vfs_get_tree+0xa7/0x570 fs/super.c:1797
+>  do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+>  path_mount+0x742/0x1f20 fs/namespace.c:3679
+>  do_mount fs/namespace.c:3692 [inline]
+>  __do_sys_mount fs/namespace.c:3898 [inline]
+>  __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+>  __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+>  do_syscall_64+0xd5/0x1f0
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> 
+> Uninit was created at:
+>  __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+>  __alloc_pages_node include/linux/gfp.h:238 [inline]
+>  alloc_pages_node include/linux/gfp.h:261 [inline]
+>  alloc_slab_page mm/slub.c:2175 [inline]
+>  allocate_slab mm/slub.c:2338 [inline]
+>  new_slab+0x2de/0x1400 mm/slub.c:2391
+>  ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+>  __slab_alloc mm/slub.c:3610 [inline]
+>  __slab_alloc_node mm/slub.c:3663 [inline]
+>  slab_alloc_node mm/slub.c:3835 [inline]
+>  kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
+>  p9_tag_alloc net/9p/client.c:278 [inline]
+>  p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
+>  p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
+>  p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
+>  v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
+>  v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
+>  legacy_get_tree+0x114/0x290 fs/fs_context.c:662
+>  vfs_get_tree+0xa7/0x570 fs/super.c:1797
+>  do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+>  path_mount+0x742/0x1f20 fs/namespace.c:3679
+>  do_mount fs/namespace.c:3692 [inline]
+>  __do_sys_mount fs/namespace.c:3898 [inline]
+>  __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+>  __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
+>  do_syscall_64+0xd5/0x1f0
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> 
+> If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
+> will not be properly initialized. However, trace_9p_client_res()
+> ends up trying to print it out anyway before p9_client_rpc()
+> finishes.
 
+Good find.
+Indeed, tc side is setup properly in p9_tag_alloc() but the rc side can
+be left uninit.
 
-> On Apr 8, 2024, at 11:08, Itaru Kitayama <itaru.kitayama@linux.dev> =
-wrote:
->=20
-> Hi,
->=20
->> On Apr 8, 2024, at 11:01, Dominique Martinet <asmadeus@codewreck.org> =
-wrote:
->>=20
->> Itaru Kitayama wrote on Mon, Apr 08, 2024 at 10:44:51AM +0900:
->>> With a recent kernel I see below program fails (Bus error) if =
-executed
->>> from 9p mounted directory, not with the local filesystem (Ext4).
->>=20
->> I cannot reproduce on 6.8/6.9-rc2 with qemu and a couple of options.
->> Bus error would be some problem with the mmap of the executable given
->> this code? so probably doesn't have anything to do with the content =
-of
->> the program itself...
->>=20
->> A few questions:
->> - What exact kernel are you running? (or closest approximation)
->=20
-> v6.9-rc3
->=20
->> - What server? (assuming qemu) what mount option? (tried default
->> cacheless and cache=3Dloose)
->=20
-> FVP and just mount -t 9p FM /mnt
->=20
->> - Does this reproduce right after boot/mounting the 9p filesystem?
->=20
-> Not immediately after the boot/mounting.
+Given we do initialize tc side perhaps it's best to initialize rc
+similarly in p9_tag_alloc() (eh, there's also some initialization done
+in p9pdu_reset that's not used anywhere else... this code could use some
+cleanup too), but that's probably overoptimizing it, happy to roll with
+that.
 
-My reproducer wasn=E2=80=99t explaining what a kselftests was showing.
+I'd appreciate if we could make these initial values something invalid
+though -- there is no '0' value for id in the protocol so that one is
+fine, but tag=0 is going to be very common so let's initialize it as
+P9_NOTAG instead.
 
-If you build the =E2=80=9Cmm=E2=80=9D subsystem and execute one of the =
-programs, gup_longterm from the 9p mounted directory, you=E2=80=99ll =
-notice the ftruncate error.
+I'll move p9pdu_reset code to p9_fcall_init in a later non-fix commit
+after you send v2.
+
+> 
+> Fix this issue by assigning default values to p9_fcall fields
+> such as 'tag' and (just in case KMSAN unearths something new) 'id'
+> during the tag allocation stage.
+> 
+> Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+> Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+> ---
+> P.S. Not entirely sure that 'Fixes' tag is fully correct here.
+
+Right there's been quite some rework there, the probe has been added at
+this point and I believe the bug has always been present from a quick
+look at the code so it's proably correct, but it might not be easy to
+backport.
+Let's leave it as is.
 
 Thanks,
-Itaru.
-
->=20
-> Thanks,
-> Itaru.
->=20
->>=20
->> Thanks
->> --=20
->> Dominique Martinet | Asmadeus
-
-
+-- 
+Dominique Martinet | Asmadeus
