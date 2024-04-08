@@ -1,126 +1,164 @@
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B470F7D09D
-	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 14:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE068594E
+	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 14:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585492; cv=none; b=tHB4si23tnSzVwNj4mkb4qZIb1W4pgLf67ooZwiBinbYgF/hBGqNHDyt6GO8T8ylOdXOUbZiatX2DdBPENB0deuMvBXOzLyuZRbzGDZcHAwM8uRFP3gftsz6KSdF0VgHlMcvYyfYYLL6RZ3yJBSmm7wA6HgUJebzLf/kizYbIaA=
+	t=1712585774; cv=none; b=K0lcv8s3php5I3P3xmmWzK7Sw9qLM2kiWgfoZJBh22kXhaGtJckb511jdjhXwJ1NtPOiF5cd/X3/DMUug0z6gbkWV1DKikZmSV9pgLmy5nYg6k1++za3ft7DHfawVBi4uti8KI5qcTFNro3zIOKf9Q1QyYfYzLK8T9+lQS8i/K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585492; c=relaxed/simple;
-	bh=eLXvdEPZ7Cv9E/VbzgBBf1ggcn+8mLUZyZt/b335WQ0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FYytoOeclCrQIaELw+WJCWRFzM/rZ3HXy5nz2HltrYauopsAMSI3hWS//B3Wb6nIWmCacXXgX9+ZIJC52krqxRpcTT9Yz3jRsB3J4ZqI228+aYJ9CG1cVrtbr2unEnXIU5ip+n/8rWxNjs2MUIbgbPRO22G96+8tje5Im2sKd34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Mon, 8 Apr
- 2024 17:11:19 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 8 Apr 2024
- 17:11:19 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+	s=arc-20240116; t=1712585774; c=relaxed/simple;
+	bh=yE9IqkLYteQKNkzA2HhdoHss7PriQykcItE9+d3aVvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l1KG0Fh+yHov5ILBsuU9d+knfj5QF0SLyX/qSgBE9fVBQHi8w7FJJx4BEOoxvPUfwQj8aHgPBUas2tXcfeuT/aJTnLKsFMarAIhf3y37Ma8+LoA8yhkMaSZLaqp5bQkUts3C8URjIEtS+7ynZc5GbxDPbIxcm3JW7uP29msuJIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JGQs4WCY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JGQs4WCY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712585771;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KxQpQ0JV3Kh0ccjtCEfCfei5HklU4KnXtidfDbxOXYE=;
+	b=JGQs4WCYLLCdFfxkbvCpSFaLJdTKP17aDgiIndvyiSQMUwQAs1+iWiPFzI3MLcuso15Xhz
+	VCqAn93xivCecll9fp+gNy4l8d3fnQCGDhH64GZfFXMSV90QOZEEqjcQ0gFBULP0ONfFgX
+	ur7zk/uwRWP+FbNzzb4SUsaeAnqFpQc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-pGle7iBYM76sGtRzn5ldzw-1; Mon,
+ 08 Apr 2024 10:16:09 -0400
+X-MC-Unique: pGle7iBYM76sGtRzn5ldzw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06E703810D53;
+	Mon,  8 Apr 2024 14:16:08 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.180])
+	by smtp.corp.redhat.com (Postfix) with SMTP id D1F3C17ABB;
+	Mon,  8 Apr 2024 14:16:06 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  8 Apr 2024 16:14:42 +0200 (CEST)
+Date: Mon, 8 Apr 2024 16:14:36 +0200
+From: Oleg Nesterov <oleg@redhat.com>
 To: Eric Van Hensbergen <ericvh@kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Latchesar Ionkov
-	<lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, "Christian
- Schoenebeck" <linux_oss@crudebyte.com>, <v9fs@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com>
-Subject: [PATCH net v2] net/9p: fix uninit-value in p9_client_rpc()
-Date: Mon, 8 Apr 2024 07:10:39 -0700
-Message-ID: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
+Message-ID: <20240408141436.GA17022@redhat.com>
+References: <ZfRkyxUf8TIgsYjA@1149290c588b>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZfRkyxUf8TIgsYjA@1149290c588b>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Syzbot with the help of KMSAN reported the following error:
+Hello,
 
-BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- trace_9p_client_res include/trace/events/9p.h:146 [inline]
- p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+the commit 724a08450f74 ("fs/9p: simplify iget to remove unnecessary paths")
+from this PR breaks my setup.
 
-Uninit was created at:
- __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page mm/slub.c:2175 [inline]
- allocate_slab mm/slub.c:2338 [inline]
- new_slab+0x2de/0x1400 mm/slub.c:2391
- ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
- __slab_alloc mm/slub.c:3610 [inline]
- __slab_alloc_node mm/slub.c:3663 [inline]
- slab_alloc_node mm/slub.c:3835 [inline]
- kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
- p9_tag_alloc net/9p/client.c:278 [inline]
- p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
- p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
- p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
- v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
- v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
- legacy_get_tree+0x114/0x290 fs/fs_context.c:662
- vfs_get_tree+0xa7/0x570 fs/super.c:1797
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
- path_mount+0x742/0x1f20 fs/namespace.c:3679
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x725/0x810 fs/namespace.c:3875
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+On the host:
 
-If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-will not be properly initialized. However, trace_9p_client_res()
-ends up trying to print it out anyway before p9_client_rpc()
-finishes.
+	$ cat /etc/fstab
+	/dev/mapper/volgrp-root /                       ext4    defaults        1 1
+	/dev/mapper/volgrp-home /home                   ext4    defaults        1 2
 
-Fix this issue by assigning default values to p9_fcall fields
-such as 'tag' and (just in case KMSAN unearths something new) 'id'
-during the tag allocation stage.
+	$ qemu-system-x86_64 -kernel ./arch/x86/boot/bzImage \
+		-append 'rw rootfstype=9p rootflags=version=9p2000.L,trans=virtio' \
+		-fsdev local,id=FSID_1,path=/home/oleg/TEST_GUEST/,security_model=none \
+		-device virtio-9p-pci,fsdev=FSID_1,mount_tag=/dev/root \
+		-fsdev local,id=FSID_2,path=/,security_model=none,readonly \
+		-device virtio-9p-pci,fsdev=FSID_2,mount_tag=hostfs \
+		-nographic -serial mon:stdio
 
-Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
-v2: change fc->tag init value from 0 to P9_NOTAG per Dominique
-Martinet's <asmadeus@codewreck.org> helpful suggestion.
-Link: https://lore.kernel.org/all/ZhNVMivKCCq6wir0@codewreck.org/
+In the guest:
 
- net/9p/client.c | 2 ++
- 1 file changed, 2 insertions(+)
+	# mount -t 9p hostfs /host -o version=9p2000.L,trans=virtio,access=any
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index f7e90b4769bb..b05f73c291b4 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_client *c, struct p9_fcall *fc,
- 	if (!fc->sdata)
- 		return -ENOMEM;
- 	fc->capacity = alloc_msize;
-+	fc->id = 0;
-+	fc->tag = P9_NOTAG;
- 	return 0;
- }
- 
+Now, before this patch:
+
+	/# cd /host
+	/host# strace -e stat perl -e '-d "home"'
+	...
+	stat("home", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+	+++ exited with 0 +++
+	/host# cd home
+	/host/home#
+
+After this patch:
+
+	# cd /host
+	/host# strace -e stat perl -e '-d "home"'
+	...
+	stat("home", 0x1397298)                 = -1 ELOOP (Too many levels of symbolic links)
+	+++ exited with 0 +++
+	/host# cd home
+	-bash: cd: home: Too many levels of symbolic links
+	/host# dmesg
+	...
+	[   54.255756] VFS: Lookup of 'home' in 9p 9p would have caused loop
+	[   72.190399] VFS: Lookup of 'home' in 9p 9p would have caused loop
+	[   72.191535] VFS: Lookup of 'home' in 9p 9p would have caused loop
+	[   72.192488] VFS: Lookup of 'home' in 9p 9p would have caused loop
+
+Oleg.
+
+
+On 03/15, Eric Van Hensbergen wrote:
+>
+> The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
+>
+>   Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-for-6.9
+>
+> for you to fetch changes up to be57855f505003c5cafff40338d5d0f23b00ba4d:
+>
+>   fs/9p: fix dups even in uncached mode (2024-01-26 16:46:56 +0000)
+>
+> ----------------------------------------------------------------
+> fs/9p changes for the 6.9 merge window
+>
+> This pull request includes a number of patches
+> addressing improvements in the cache portions of the 9p
+> client.
+>
+> The biggest improvements have to do with fixing handling
+> of inodes and eliminating duplicate structures and unnecessary
+> allocation/release of inode structures and many associated
+> unnecessary protocol traffic.  This also dramatically
+> reduced code complexity across the code and sets us up to add
+> proper temporal cache capabilities.
+>
+> Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+>
+> ----------------------------------------------------------------
+> Eric Van Hensbergen (8):
+>       fs/9p: switch vfsmount to use v9fs_get_new_inode
+>       fs/9p: convert mkdir to use get_new_inode
+>       fs/9p: remove walk and inode allocation from symlink
+>       fs/9p: Eliminate redundant non-cache path in mknod
+>       fs/9p: Eliminate now unused v9fs_get_inode
+>       fs/9p: rework qid2ino logic
+>       fs/9p: simplify iget to remove unnecessary paths
+>       fs/9p: fix dups even in uncached mode
+>
+>  fs/9p/v9fs.h           |  31 +++++-----------------------
+>  fs/9p/v9fs_vfs.h       |  11 ++++++----
+>  fs/9p/vfs_dir.c        |   4 ++--
+>  fs/9p/vfs_inode.c      | 150 +++++++++++++++++++--------------------------------------------------------------------------------------------------------------------
+>  fs/9p/vfs_inode_dotl.c | 194 ++++++++++++++++++++++++++++++++-----------------------------------------------------------------------------------------------------------------------------------------------
+>  fs/9p/vfs_super.c      |  45 +----------------------------------------
+>  6 files changed, 71 insertions(+), 364 deletions(-)
+
