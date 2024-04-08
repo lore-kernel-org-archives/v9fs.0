@@ -1,66 +1,81 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2146141C65
-	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 01:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4305517CD
+	for <v9fs@lists.linux.dev>; Mon,  8 Apr 2024 02:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712540713; cv=none; b=lmhqaCv1Kj8BOAxdg+hz9qPG5hm0WpldpO6c0oA1jvEMwjx1A8FmayVbGqKyW2RDYrriwpiNHPnUhPL+f1oB3H72+Hsi6mHJdY8M09FsUictkZegaDiEJ5EvDTI5+1+G5Btgg2+dBEGg1JyR4ij400MS1h0GTssW1EZGMEQFzbs=
+	t=1712541693; cv=none; b=Mn+E6FPtaGTC+iDsN34lNys0S68bh3U13QbMHdALMuveZ5sTvGyPFBwdxLx4gJwqWXSAQhTRxH9JryfxuxuLG2fOL4MuW2IapzMfXmgkrZjTzhp5uGAN13VgR0qdTuw6ppRRCigalhBb968euAYWDeV3hFPr1d20t34rjOm+0yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712540713; c=relaxed/simple;
-	bh=wFs54NwU7NWQaQLlmjlYoIKoww7BFhi7yPF1W80wjo8=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To; b=IrvR+MBYa+kNVpl1ZwtUPZFGXOCiUqmlvPoLMNmNJqPr9WablXbbRLun3mw1PXF5O/GfPMg7ppYTVVT6GnoEETzCOB7809x9rRGrKuSK9eoW+ho/vuc70AwVgyVh68RO2pqgw+6FbPlnQ7aabBbFAoLzUUeayNzQak86yEvmRsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cjHhK74H; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1712541693; c=relaxed/simple;
+	bh=FcJkamrfhIYpDM8Uv78oJ38VPypHZJRny909RF+iVp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d8fO3rHYUMikOIIEMx+uryMCGr35fVwea2hKd6WWfU7PLaKWnwR1iXpJJsl+oTFPT5V1cFIBRHrTfmHfo7zCdaOoE3fT8aeni1Es6LtHhQISdCtbDi1MFiXj0jR0ugpoaachC2mona5ULzsTSyLBxXHa6NpbN85xIYibnJj2jCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ArjDQyae; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ArjDQyae; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cjHhK74H"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712540708;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yGdDj8T1//1rHhHTmDullgHnlP4c6BWCMXRFnQ2nqTs=;
-	b=cjHhK74HmyH6cvKY3QISxY5W++Rzf1LJxDnhYu83UkJLv7//4M7P9EHTWdUcxyAkMbWtSU
-	/akP4cNkqYMW+PDITRqrIRtXn2CpT9eic7feux3/OR8WUtDF124jSzQ935ECraxfw7Avel
-	1jIy7OUMA9gNv+2TaU4a7/Um8TdDVIo=
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ArjDQyae";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ArjDQyae"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id E8C8CC01A; Mon,  8 Apr 2024 04:01:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712541686; bh=cmDIwoH8ZQ+xb1GLzByQiZ9fXj98z2vLRL2WMrLzXu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ArjDQyaeb3NZwjVF9dM4uBW1toUijDtihVQgf2gqLBQY2aaLm8jZKGqc9P3uSgu8L
+	 Bx6CKHXa6JiJ2AnKG4dxj/3luLr8o3EX9Qo5Fx/SNuWdbZbMziXMHaFkzJ7jFowMnv
+	 OiSH0eAahGdGGz4fgiUXEdJ3wShA7892FX4VoRFlzRzJlbUxkfgsIO99vJFZgqCg4J
+	 IPpokq2LFnT/3WMupq97fqwaTwv+en2aiWTAL/fpIvFkahPk2bBDWbHAIQJqjs6Rrq
+	 lzkbWF2DqwS/RHolK5IdSREoc6/4ZtS7R5mHRJ8AWnhi0WjyDnBmroWc4cDftPXGWv
+	 d99ok/SO4ux7A==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id DED3DC009;
+	Mon,  8 Apr 2024 04:01:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712541686; bh=cmDIwoH8ZQ+xb1GLzByQiZ9fXj98z2vLRL2WMrLzXu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ArjDQyaeb3NZwjVF9dM4uBW1toUijDtihVQgf2gqLBQY2aaLm8jZKGqc9P3uSgu8L
+	 Bx6CKHXa6JiJ2AnKG4dxj/3luLr8o3EX9Qo5Fx/SNuWdbZbMziXMHaFkzJ7jFowMnv
+	 OiSH0eAahGdGGz4fgiUXEdJ3wShA7892FX4VoRFlzRzJlbUxkfgsIO99vJFZgqCg4J
+	 IPpokq2LFnT/3WMupq97fqwaTwv+en2aiWTAL/fpIvFkahPk2bBDWbHAIQJqjs6Rrq
+	 lzkbWF2DqwS/RHolK5IdSREoc6/4ZtS7R5mHRJ8AWnhi0WjyDnBmroWc4cDftPXGWv
+	 d99ok/SO4ux7A==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d1688979;
+	Mon, 8 Apr 2024 02:01:20 +0000 (UTC)
+Date: Mon, 8 Apr 2024 11:01:05 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+Cc: v9fs@lists.linux.dev
+Subject: Re: ftruncate fails
+Message-ID: <ZhNP4SISzZOGwy4A@codewreck.org>
+References: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: ftruncate fails
-Message-Id: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
-Date: Mon, 8 Apr 2024 10:44:51 +0900
-To: v9fs@lists.linux.dev
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
 
-Hi,
-With a recent kernel I see below program fails (Bus error) if executed =
-from 9p mounted directory, not with the local filesystem (Ext4).
+Itaru Kitayama wrote on Mon, Apr 08, 2024 at 10:44:51AM +0900:
+> With a recent kernel I see below program fails (Bus error) if executed
+> from 9p mounted directory, not with the local filesystem (Ext4).
 
+I cannot reproduce on 6.8/6.9-rc2 with qemu and a couple of options.
+Bus error would be some problem with the mmap of the executable given
+this code? so probably doesn't have anything to do with the content of
+the program itself...
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <linux/memfd.h>
+A few questions:
+- What exact kernel are you running? (or closest approximation)
+- What server? (assuming qemu) what mount option? (tried default
+cacheless and cache=loose)
+- Does this reproduce right after boot/mounting the 9p filesystem?
 
-int main() {
-        char filename[] =3D __FILE__"_tmpfile_XXXXXX";
-        int fd, size;
-        size =3D getpagesize();
-        fd =3D mkstemp(filename);
-        if (ftruncate(fd, size)) {
-                printf("error");
-        }
-
-
-}=
+Thanks
+-- 
+Dominique Martinet | Asmadeus
