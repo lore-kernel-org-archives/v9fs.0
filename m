@@ -1,118 +1,113 @@
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3281586AF4;
-	Tue,  9 Apr 2024 11:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135DA12A160
+	for <v9fs@lists.linux.dev>; Tue,  9 Apr 2024 12:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712663152; cv=none; b=fh1NBwGqho9YbKjaQLz/bYK/+6uH75ubXRKqL2aUOtZ9M7S1xP0poKVGhry7fVxtSMUmhcd79Gma0Dz74egnPtpaeKNoSmoHNFHgPDkIJJtgmuE5pTtp9rOMVaepKcdwDiM0mhPW5bJdD8vaACmo5LG4wg9LyAXXeN1iEmsjXyQ=
+	t=1712665199; cv=none; b=MeROdtn6OJEkyNa6u9MgksLXithurmNq6dm1sk5M9n29G+JdbE3LSMjBJOKzFaVTrO4izvVIocDbX9+Sm2BiIEr9cMcxh/vI7Tm6N566yAOt2mezoN7RfgG3pXS8cK0UQO3TdA9bfjICvRC79m4oJld6Q/KOgHn9CfrrKy80mQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712663152; c=relaxed/simple;
-	bh=GFjr+qUI/xJlRfC49pDYbbQ+5mOHCUk/2gN5wZX0VPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hh55wpvHymdkrSEv2OdJtyWBeuRe9tpC3+b8hqL/f7AiN09ygLnhCRKoilSvVBRff2X5nDwCzU1mfpJ0bhjOxzdYhR9PqcC1kovil7n+lmvGNCBA+jFuxlM56/cH7FYnWAEMo4ZtkK6ATcjELv/T6PEoFqGZkoCovvWX9qOFShU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Re2MZHX5; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1712665199; c=relaxed/simple;
+	bh=8txGig02p3dYQPbvCXxiUyZnAOFbmF5y2JKedJ7p9uE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y7VF/DDl9J/b7BDSMWeOS+0WM4ycD+hKUYYG/B3V0uS37enci498qxcMQnvUOyGeIZoi1Dsyp9TirmXFWPR3aUzikbVOZ8vr00O/YhPjvGncL0RFDO3AhscQH5hSnOZvbWLyRScY8E0q72YvwlkkC0DqMnFJIixBf39Rk9EPry0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H1aKSrry; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Re2MZHX5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1712663151; x=1744199151;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GFjr+qUI/xJlRfC49pDYbbQ+5mOHCUk/2gN5wZX0VPA=;
-  b=Re2MZHX5GydCM8B6KilkbcXlSGPSLv0DHVNAFcmqvWsd0IZ1NH+wl46p
-   jp+rvzqYg9VvAX9wn3JpJghaHuXQWE2yPEhE8P08rq+2tVNxto7uD3tbV
-   QrLFtsNiMvuJGKG0kOuG7Rz2NIhkvDaaqqVhKqvF/2RhKVIbglEWBhS4x
-   g=;
-X-IronPort-AV: E=Sophos;i="6.07,189,1708387200"; 
-   d="scan'208";a="650727234"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 11:45:43 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:49900]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.169:2525] with esmtp (Farcaster)
- id 3f52ccb2-10c8-4639-a2de-4651f9e21034; Tue, 9 Apr 2024 11:45:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 3f52ccb2-10c8-4639-a2de-4651f9e21034
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 9 Apr 2024 11:45:38 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Tue, 9 Apr
- 2024 11:45:22 +0000
-Message-ID: <7c82670e-6063-4b0f-9bbf-805a0d949d84@amazon.com>
-Date: Tue, 9 Apr 2024 13:45:18 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H1aKSrry"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712665196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=38ANcwOzb+SJPN9KWn5q/+NYLzX+W+zXEwG2dC5+jdI=;
+	b=H1aKSrrySKvedlkpMsm6n+P0WSwvFmuvtikuzLmn30hCRDnF9yJxl0j6DqN3xhdeavlhfY
+	/FP9dfYDRBGF3jUvQTYUGe9l4rhglbsVEW5/KTyD2CuuU6wjEnbjqVtUi9OQTy+9LkHMbG
+	XmRtlpC0bhToaULG4t9MDfz4ZOy0WPA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-NqVkThPwOQaX1QuLJ2zygQ-1; Tue, 09 Apr 2024 08:19:53 -0400
+X-MC-Unique: NqVkThPwOQaX1QuLJ2zygQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 30B0580171E;
+	Tue,  9 Apr 2024 12:19:53 +0000 (UTC)
+Received: from bfoster (unknown [10.22.16.57])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id F3C6F47E;
+	Tue,  9 Apr 2024 12:19:52 +0000 (UTC)
+Date: Tue, 9 Apr 2024 08:21:51 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: linux-bcachefs@vger.kernel.org,
+	Eric Van Hensbergen <eric.vanhensbergen@linux.dev>,
+	v9fs@lists.linux.dev
+Subject: Re: [PATCH v3 0/4] bcachefs: fiemap delalloc support and cleanup
+Message-ID: <ZhUy3805KxOYbkQz@bfoster>
+References: <20240408144846.1001243-1-bfoster@redhat.com>
+ <bytl4gftjro45osrlzqeokzci2imtdidne5a7pkn3xtr6fdbhf@mxjefwpljsto>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/25] misc: nsm: drop owner assignment
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, "Michael S. Tsirkin"
-	<mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>, "David
- Hildenbrand" <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Richard
- Weinberger" <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>, Paolo Bonzini
-	<pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe
-	<axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>, "Luiz Augusto von
- Dentz" <luiz.dentz@gmail.com>, Olivia Mackall <olivia@selenic.com>, Herbert
- Xu <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>, Arnd Bergmann
-	<arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei
-	<arei.gonglei@huawei.com>, "David S. Miller" <davem@davemloft.net>, "Sudeep
- Holla" <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>,
-	Viresh Kumar <vireshk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter
-	<daniel@ffwll.ch>, Jean-Philippe Brucker <jean-philippe@linaro.org>, "Joerg
- Roedel" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
-	<robin.murphy@arm.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen
-	<ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
-	<asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>, "Dan
- Williams" <dan.j.williams@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
-	<ira.weiny@intel.com>, "Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, Bjorn
- Andersson <andersson@kernel.org>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Vivek Goyal
-	<vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, "Anton Yakovlev"
-	<anton.yakovlev@opensynergy.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>
-CC: <virtualization@lists.linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
-	<linux-block@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-gpio@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<iommu@lists.linux.dev>, <netdev@vger.kernel.org>, <v9fs@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<nvdimm@lists.linux.dev>, <linux-remoteproc@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>
-References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
- <20240331-module-owner-virtio-v2-15-98f04bfaf46a@linaro.org>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <20240331-module-owner-virtio-v2-15-98f04bfaf46a@linaro.org>
-X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bytl4gftjro45osrlzqeokzci2imtdidne5a7pkn3xtr6fdbhf@mxjefwpljsto>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-Ck9uIDMxLjAzLjI0IDEwOjQ0LCBLcnp5c3p0b2YgS296bG93c2tpIHdyb3RlOgo+IHZpcnRpbyBj
-b3JlIGFscmVhZHkgc2V0cyB0aGUgLm93bmVyLCBzbyBkcml2ZXIgZG9lcyBub3QgbmVlZCB0by4K
-Pgo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBLb3psb3dza2kgPGtyenlzenRvZi5rb3psb3dz
-a2lAbGluYXJvLm9yZz4KCgpSZXZpZXdlZC1ieTogQWxleGFuZGVyIEdyYWYgPGdyYWZAYW1hem9u
-LmNvbT4KCgpBbGV4CgoKCgpBbWF6b24gRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApL
-cmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2VzY2hhZWZ0c2Z1ZWhydW5nOiBDaHJpc3RpYW4g
-U2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5nZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFy
-bG90dGVuYnVyZyB1bnRlciBIUkIgMTQ5MTczIEIKU2l0ejogQmVybGluClVzdC1JRDogREUgMjg5
-IDIzNyA4NzkKCgo=
+On Mon, Apr 08, 2024 at 11:33:05PM -0400, Kent Overstreet wrote:
+> On Mon, Apr 08, 2024 at 10:48:42AM -0400, Brian Foster wrote:
+> > Hi all,
+> > 
+> > Here's v3 of the fiemap delalloc support patches for bcachefs. The main
+> > difference from v2 is that the pagecache seek calls are now using
+> > nonblocking mode to avoid deadlocks between fiemap and the write path.
+> > The write path locks in folio -> extent btree order while fiemap walks
+> > the extent btree and scans for folios in transaction context. Therefore,
+> > the latter must restart the iterating transaction in the event of folio
+> > trylock failure and restart the scan from where it left off.
+> > 
+> > The series is pushed to CI via my test branch, as usual:
+> > 
+> > https://evilpiepirate.org/~testdashboard/ci?branch=bfoster
+> 
+> So our testing is currently busted because of a bug in 9pfs - I need you
+> to rebase onto my 9p-revert branch so we can get test results we can
+> look at:
+> https://evilpiepirate.org/git/bcachefs.git/log/?h=9p-revert
+> 
+
+Huh, Ok. I also noticed an issue recently related to some sysfs
+directory structure changes. That required me to rebase on
+bcachefs-testing, though it appears that has since been resolved in
+master (and 9p-revert).
+
+I just rebased my test branch on 9p-revert and pushed. What failures are
+being caused by 9p, anyways?
+
+> Eric, is this getting fixed? If it's not, and _soon_, we need to send
+> this revert to Linus - then put it through more testing, more asserts,
+> whatever you need and send it again next cycle, _after_ you've figured
+> out what wwent wrong.
+> 
+> Patch series looks good, though - if there's nothing you think needs
+> special attention I'll go ahead and merge it.
+> 
+
+Not really, mainly just making sure the new locking and transaction
+restart parts looked sane.
+
+> I wonder if at some point we could clean up the indirect extent lookup,
+> that's common between this code and the read paths, but that's low
+> priority.
+> 
+
+I'll make a note to read more into that area. Thanks.
+
+Brian
 
