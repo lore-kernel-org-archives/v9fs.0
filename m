@@ -1,98 +1,103 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358081E878
-	for <v9fs@lists.linux.dev>; Wed, 10 Apr 2024 15:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB0017B514
+	for <v9fs@lists.linux.dev>; Wed, 10 Apr 2024 17:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712763520; cv=none; b=sxZBMgf1drP2qmHUDTSQZ2ZyDPpCN8SXyiMbzTRcWk5ohM3yXrGV0kKCcjeGAgJRmpEeycKy0pFiRWJ0ekh2sm28m6qr6yaTxWxb2wDYVsVMmoDml6TP4Y/m2CY6M1Jl/MdQk+JKlcNcxj9hpzVb5XUfkQAsbB2tM8fpXK6Gwek=
+	t=1712768577; cv=none; b=i6xtUS4eowO1ffAoEzeVIQXYQoZcedNiDTWd+dpL39Rdru/sVIC1SJjdIFUur6P2Y/ITecWkRwScVc9xqPhP95HFGGDEz92naS5lXkatRoFdPbPYnvgx1KCdQcSWsEy6qsuh4/u+MkZCx7aoGIkhGzBKZzj4pfndbuMF157ocHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712763520; c=relaxed/simple;
-	bh=J4H8z0JjDPb7tPYdSpb9mqFA+CdACWQqEY9/4YMPKlE=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To; b=TCV4YTeya6CW+eT35n+j/HMGsIMOvihM4vWFNchDKkG9614qY7H1/E3gYPIdrSqhNFLJZ64bHc4bNBAGkwMqXX2k2Oi7sst+Fs4VUssuGfDlKfWbgWzexhkz+56M8HI1nDU2DAA7V+gBvxamyqC/xPtq3x0HiS99roNB1A5/AsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=E/TeyOxT; arc=none smtp.client-ip=95.215.58.174
+	s=arc-20240116; t=1712768577; c=relaxed/simple;
+	bh=L5sRSwaoNOYVFYcTF+DBEJAtyUiOW+Z5SSK04Ej/TvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XJlCV/VdbaSwdztewK76NNtvLKKaO5XK0TkhC43en9hlhODsRV6g05ydb4TJ6VP0b1Cl4YuE7i8DUGDfSiVMw/ggrfsL21xiFNjD1lV95YJwz7wYAM4Ljbsv37fGUlYp59+bTl5KRpADBZslvpyRw6PxsXGzwp6rbu2epEC6UjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Vld1MxHM; arc=none smtp.client-ip=95.215.58.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="E/TeyOxT"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Vld1MxHM"
+Date: Wed, 10 Apr 2024 13:02:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1712768573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C1GxujnLogSAuvDq3fFnDwaWMXQeAw1XJDA3ZKc+JPk=;
+	b=Vld1MxHMhWMrJRAu2Atg1r3tVT5S5VZFviyMVPp4GVGEtX9XDGKAlLDQVuGkGGn8zmQAhE
+	EF8LigB0olpsf+RDt3trtomYi0DCMrXYczWW7HBs3AlGXtxaSmoj+zFkI6TRJ5P37276Un
+	f008+LcrIpCF034uZJUlUEjRIbQIksQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Eric Van Hensbergen <eric.vanhensbergen@linux.dev>
+Cc: v9fs@lists.linux.dev
+Subject: Re: new 9p kasan splat in 6.9
+Message-ID: <ahtzctuhy25ptcztbbzmbjhkrh3sjpsjz4ixvrtmpl64iq4hej@vox2llmlv5im>
+References: <f6upxoxa6d2c6cbh4ka775msggvuduigiu7xgvfx7qsufg2lo6@2ellaad6b2on>
+ <0ac82d20c88c8d227064737fdc62b3195548c5ea@linux.dev>
+ <ikookkidwzvjwuexmsco437lusgk24rffec7pyxwnquhydsk4p@evfumg2ygpsq>
+ <CAFkjPTk1WE_LuuiJ-fz3v_BHKZUaNSA2LUPD+KAULeH4R9rgCA@mail.gmail.com>
+ <oyo4rhetu752bdnh3vlojiq5apgndnvsg3g2qcftvoho5vqr34@n6li2x5jwpml>
+ <1f79a506bdf50cfd456acfa876df8a502d64b976@linux.dev>
+ <29d9bb670a489a38dc9112e21dcf73d44b67d2f6@linux.dev>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712763516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rUywcMPSPc/3imLJt4m3tl6R+6x+WpFIGjGYmG6ZH4c=;
-	b=E/TeyOxTWkWkmD/7eW3cFS7QMH2BMKpQ2Wbg9JUHOwgDeqyXm2+NKZfUu1iRA3TZSp7uB0
-	i3LE1xp+vj6qwb+4/wyPSMPib+AX5Mcy19hxU3u+cXpm+daJ22nIlfmkZV8rj27sidX5wt
-	lXYv9rDg9qCYFa19+x+jJkWJU/vJd3U=
-Date: Wed, 10 Apr 2024 15:38:34 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
-Message-ID: <1296bceb87d9da7c58f7677260592683b3abdb3e@linux.dev>
-TLS-Required: No
-Subject: Anomolies
-To: asmadeus@codewreck.org, v9fs@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29d9bb670a489a38dc9112e21dcf73d44b67d2f6@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 
-Dominique - check my line of thought on this...
+On Wed, Apr 10, 2024 at 11:43:44AM +0000, Eric Van Hensbergen wrote:
+> I'm having a hard time reproducing the 
+> 
+> April 1, 2024 at 8:27 PM, "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev> wrote:
+> > 
+> > April 1, 2024 at 8:12 PM, "Kent Overstreet" <kent.overstreet@linux.dev> wrote:
+> > > 
+> > > Any other details you can give me from your environment (how is
+> > >  9p mounted, is this qemu?, etc.)?
+> > >  It's qemu, standard mount options:
+> > > 
+> > >  host /host 9p rw,relatime,access=client,trans=virtio 0 0
+> > > 
+> > 
+> 
+> I'm continuing to have a hard time reproducing on my test system -
+> I've added a bunch of BUG_ON to the code to catch where I thought
+> potential problems might be and have not tripped across any of them.
+> Can I get two pieces of data:
+>   a) which 9P CONFIG options are enabled in your kernel?
 
-Okay, I'm going down lots of ratholes in my search for where the bug migh=
-t be since I can't reproduce it.
-One bit that I picked up that I think might be wrong is there is v9fs_fid=
-_add(dentry, &fid) at the end of v9fs_vfs_mknod_dotl (which ends up being=
- the proxy for all non-atomic create events).  This was there only for ca=
-ched modes previously, but when I "cleaned up" the code I propagated it. =
- I think its wrong in both cases because we v9fs_fid_put at the end of fu=
-nction which should clunk and invalidate the fid, but it never gets remov=
-ed from the dentry.  Of course, if I want parity with the old code, I cou=
-ld only add it when we are cached, but I'm concerned its just a latent bu=
-g.=20
+$ grep 9P ktest-out/kernel_build.x86_64/.config
+CONFIG_NET_9P=y
+CONFIG_NET_9P_FD=y
+CONFIG_NET_9P_VIRTIO=y
+# CONFIG_NET_9P_DEBUG is not set
+CONFIG_9P_FS=y
+# CONFIG_9P_FS_POSIX_ACL is not set
+# CONFIG_9P_FS_SECURITY is not set
 
-The=20other element here that is concerning is why the entire code block =
-is even necessary -- if ACLs are enabled, I guess it makes sense because =
-if the host file system isn't using ACLs this lets us stash our ACLs in t=
-he appropraite xattrs.  But that says it should be bounded by CONFIG_9P_F=
-S_POSIX_ACL and its not clear why we deinstantiate(dentry,inode) since in=
- non-cached mode we are just gonna clean those up immediately.
+>   b) what is the underlying file system on the server
 
-----
+ext4
 
-While I haven't been able to reproduce, I'm concerned that the race condi=
-tion we are chasing is based on the assumption that we can keep inode num=
-bers and hence qid.paths unique and synchronized between server and clien=
-t.  If the underlying file system (or server) is reusing qid.paths we'll =
-get collisions and if it does it quickly we'll see lots of problems.  So =
-maybe we have to just break that assumption and keep our own inode number=
-s on the client -- from what I can tell there are two places we need to l=
-ookup inode by qid.path/inode_number:
+>   c) what version of qemu are you running
 
-a) in vfs_lookup to find existing inodes so we don't duplicate the struct=
-ure unnecessarily -- in uncached mode before we were always creating new =
-inodes which hid any underlying problems.
-b) in create routines (like mknod) where we have to walk to get a fid in =
-order to set acls.  Better protocol design (by me) would have been to hav=
-e the dotL creation all work like atomic create/open so we get a fid back=
- and don't take the extra protocol steps -- but that ship has sailed for =
-now.
+QEMU emulator version 8.2.1 (Debian 1:8.2.1+ds-1)
 
-For (b) we don't have to really intantiate the inode if we are going to d=
-iscard it, we just need the fid to set the acl -- the current v9fs_set_cr=
-eate_acl takes inode as an argument so it can cache the acls in it, but i=
-n non-cached mode that inode should be discarded anyways so it feels like=
- wasted effort.
+> I'm going to try to spend all day today chasing this down, I may
+> revert anyways if I can't reproduce since there's clearly degraded
+> behavior -- I'd just feel better about it if I understood what the
+> problem was.  In your reverted version that doesn't experience the
+> problem, was it just the last two patches that you reverted or the
+> whole series?
 
-For (a) I'm less certain of what to do -- we could go back to the deeper =
-iget5 comparison which checks a number of other variables other than inod=
-e number (like i_generation if available or qid.vers) to match - but I fe=
-el like this is still maybe gambling with the inode number uniqueness unl=
-ess i_generation is covering us, but I thought I remember something about=
- it not being universally used by underlying file systems.
+Whole series. I've tested each revert individually, but unfortunately
+the bug is so sporadic that none of them jumped out as the culprit (and
+I'm running 1600 tests on each commit).
 
-      -eric
+I don't have a way to tell my CI "run this test x number of times" or
+I'd try to give you better information.
