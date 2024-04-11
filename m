@@ -1,104 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A18B13F455
-	for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 07:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAFC1448EB
+	for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 09:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712819406; cv=none; b=GFNnTl5vTlR01WnwT8IA1c6SDpiVDmqtOm+OQWrPkWHSJaJZSxy9ekau2dhfTDJbhHXsdVgC7BvNJj4rEap+HJFIbQ/m+1uiX3DdQCubOQYTdX/gc6CQJOMQXzSYjXHwZjcQfWQVa9mP8YciLHojCHt6YnBLMh60V7fResEOBSg=
+	t=1712827845; cv=none; b=Er0D6vH0XmMHRxrIwYKn9001thOjyggeQrYWxOq86nxqQ7FZLiWYF3POtkXOMc2ShTMu5ZETPE3B1P5sqLPWNQ7SU3NenCQ3Jdqi1/ihpApQV/AiHD9j7Ciek+BrNkfEVc9UfRLRrzzGemNId8ZhVBMS1a0WUdhlwBGvm/qcpVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712819406; c=relaxed/simple;
-	bh=wH6i3JfODjwBAUH9Z8++yMSzU4HiqQg5BInTQ+RTfj8=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=BzFDCBFMll03iGdI5kvDpEodEL+pIsvlpXMfYwp6Cvk2WAmnmZvoz0/n3jZAYus71FoVimvMGXQ8XnwPxf2UQcmo33wXZHemIWuWtkSrFGWgBgH0ZSjVl15Erh3APPIvRoCrNlcyTQKVfYzfgX2qU3DHUxhSTrXqTJ0nGsyNmok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HRvczCJq; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1712827845; c=relaxed/simple;
+	bh=nPlDhjLJl8vVK2JOE4C46tNSSM/DHidQf1aYKFUdmy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c1ph17effxq8jv4te1IZgi+2EogqQyZXYBk1l0LNNlWb696TIZexUFQIuH7pVQ0mq/DAhbY8GBnSspW7xVelFO+qGyafZyj5f2hY0Xiyvxp1qU9Okl44iJitwBeW1Ii6gHbjRqfZ5riUgY6MQJ8HALuj0SRwIllAU/s69j43Vak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c/lMY7Df; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HRvczCJq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c/lMY7Df"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712819404;
+	s=mimecast20190719; t=1712827842;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5NgjUa+lwKskPLBb4G2miG3MSH6bZPhgAN2v8MXqMrQ=;
-	b=HRvczCJq+2eF+r/6FM5lvCzSycq/NQDROApX2Wb6xXSubJskMiAbaWqYjWYF4QJIDRv0to
-	L8djtH/p/Pe/34K250H1mXjUSR+XhsWzbtbn0CtnGJsqJeAv0GyxaTlfnpHdu2kYpaJyst
-	9w5CB026/PvqdPC5K+sM/liJnz/K7Ho=
+	bh=p72eUFR+DE8NOypI2Opz7gp0RzPrglSluMB3fxFXBQY=;
+	b=c/lMY7DfhrmNgelPkwZRLyv2TyxwsxAeC2DFIRHUJFS02eeUUVXsJFzevSDZWCjsLglKVm
+	vIlsd5ph6LrHynuiA1EQOg8SI4KtqBOemNyf61+ZSqVEqNAEJ6++TSEYgexmdIBfKN2fzb
+	QZERDUKMDlZ/NPouch4R7kpWTn7wqPo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-Lr1cEV93NVGDpSocSvNLIw-1; Thu, 11 Apr 2024 03:09:56 -0400
-X-MC-Unique: Lr1cEV93NVGDpSocSvNLIw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+ us-mta-294-WQs05tYPPn2c55yqXt7QKA-1; Thu, 11 Apr 2024 05:30:39 -0400
+X-MC-Unique: WQs05tYPPn2c55yqXt7QKA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA3F310499A0;
-	Thu, 11 Apr 2024 07:09:54 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3F2182166B34;
-	Thu, 11 Apr 2024 07:09:51 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240410173815.GA514426@kernel.org>
-References: <20240410173815.GA514426@kernel.org> <20240401135351.GD26556@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-27-dhowells@redhat.com> <3002686.1712046757@warthog.procyon.org.uk>
-To: Simon Horman <horms@kernel.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Jeff Layton <jlayton@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Steve French <smfrench@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 26/26] netfs, afs: Use writeback retry to deal with alternate keys
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7556A802CB0;
+	Thu, 11 Apr 2024 09:30:39 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.235])
+	by smtp.corp.redhat.com (Postfix) with SMTP id 41A50492BC6;
+	Thu, 11 Apr 2024 09:30:38 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Thu, 11 Apr 2024 11:29:13 +0200 (CEST)
+Date: Thu, 11 Apr 2024 11:29:07 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Eric Van Hensbergen <eric.vanhensbergen@linux.dev>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kent.overstreet@linux.dev
+Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
+Message-ID: <20240411092907.GA5494@redhat.com>
+References: <ZfRkyxUf8TIgsYjA@1149290c588b>
+ <20240408141436.GA17022@redhat.com>
+ <74f117635037a82dc2fb2923993cf329b6939b7e@linux.dev>
+ <e73a1e0c90ebce33c23f8f7746c23c1199f62a78@linux.dev>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1780363.1712819386.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Apr 2024 08:09:46 +0100
-Message-ID: <1780364.1712819386@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e73a1e0c90ebce33c23f8f7746c23c1199f62a78@linux.dev>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Simon Horman <horms@kernel.org> wrote:
+On 04/10, Eric Van Hensbergen wrote:
+>
+> April 10, 2024 at 12:20 PM, "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev> wrote:
+> > April 8, 2024 at 9:14 AM, "Oleg Nesterov" <oleg@redhat.com> wrote:
+> > > Hello,
+> > >  the commit 724a08450f74 ("fs/9p: simplify iget to remove unnecessary paths")
+> > >  from this PR breaks my setup.
+> >
 
-> On Tue, Apr 02, 2024 at 09:32:37AM +0100, David Howells wrote:
-> > Simon Horman <horms@kernel.org> wrote:
-> > =
+> I think
+> I've reproduced the problem, fundamentally, since you have two mount
+> points you are exporting together. I believe we are getting an inode
+> number collision which was being hidden by the "always create a new inode
+> on lookup" inefficiency in v9fs_vfs_lookup.  You could probably verify
+> that for me by stating the /home directory and the / directory on the
+> server side of your setup.
 
-> > > > +	op->store.size		=3D len,
-> > > =
+Yes, yes,
 
-> > > nit: this is probably more intuitively written using len;
-> > =
+	$ ls -ldi / /home
+	2 dr-xr-xr-x. 18 root root 4096 Jan  4  2016 /
+	2 drwxr-xr-x.  7 root root 4096 Dec 20  2022 /home
 
-> > I'm not sure it makes a difference, but switching 'size' to 'len' in k=
-afs is a
-> > separate thing that doesn't need to be part of this patchset.
-> =
+that is why I showed you the relevant parts of my /etc/fstab
 
-> Sorry, I meant, using ';' rather than ',' at the end of the line.
+> If qemu detects that this is a possibility it usually
+> prints something: qemu-system-aarch64: warning: 9p: Multiple devices
+> detected in same VirtFS export,
 
-Ah, yes.  That makes a lot more sense!
+My qemu is quite old, it doesn't. But I tested this on another machine
+and yes, the newer qemu does warn.
 
-David
+(annoyingly, I had to redirect stderr to the file to see this warning,
+ it is cleared by the booting kernel otherwise).
+
+> I can confirm that multidevs=remap in qemu does appear to avoid the
+> problem,
+
+Confirm!
+
+I didn't know about this option (and again, my old qemu doesn't support
+it), but everything seems to work just fine with the newer qemu and
+multidevs=remap. Thanks!
+
+So I think this regression is minor.
+
+> now that i can
+> reproduce the problem, I'm fairly certain I can get a patch together
+> this week to test to see if it solves the regressions.
+
+Thanks ;)
+
+Oleg.
 
