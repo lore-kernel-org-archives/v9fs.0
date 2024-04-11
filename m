@@ -1,120 +1,95 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAFC1448EB
-	for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 09:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2EE14E2F3
+	for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 13:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712827845; cv=none; b=Er0D6vH0XmMHRxrIwYKn9001thOjyggeQrYWxOq86nxqQ7FZLiWYF3POtkXOMc2ShTMu5ZETPE3B1P5sqLPWNQ7SU3NenCQ3Jdqi1/ihpApQV/AiHD9j7Ciek+BrNkfEVc9UfRLRrzzGemNId8ZhVBMS1a0WUdhlwBGvm/qcpVM=
+	t=1712843555; cv=none; b=qLA4KP71B4wHxKP6WAmDWSJR+slM6drDhKsbhQ0PL5zcVWkWkTisNaU4/tuALz6C4hirIuJyeg4m5GitCz/0IZTlLSRCKZJ0nv+kubnEs01fYfIpLPNIH0HvRPIAcdRGMMDFrbOGLA/flDcFp5cLPGsLF4RuXQUK9aZbd4FTeas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712827845; c=relaxed/simple;
-	bh=nPlDhjLJl8vVK2JOE4C46tNSSM/DHidQf1aYKFUdmy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c1ph17effxq8jv4te1IZgi+2EogqQyZXYBk1l0LNNlWb696TIZexUFQIuH7pVQ0mq/DAhbY8GBnSspW7xVelFO+qGyafZyj5f2hY0Xiyvxp1qU9Okl44iJitwBeW1Ii6gHbjRqfZ5riUgY6MQJ8HALuj0SRwIllAU/s69j43Vak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c/lMY7Df; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1712843555; c=relaxed/simple;
+	bh=gX+V/rAyNYBt1HTuJNTsPikDXoD4GZeFcx8GczlF3XA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=XW9xaOHN6muYvAfrwCewR5cnBF/2AGt242Q6ECCqfblNh6DiNU5FtwccN/GiDLc2Hc1o4R/KnqJV0oH9Nhm1lAP9cGUK6kX/R4bjVaoMYvf11dV5US2GHKJQtAfutRDyVEVXCKLTCFtEX1WE9X2jF5jkrY+W5SZvl6pFc3cclU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUNl26dE; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c/lMY7Df"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712827842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p72eUFR+DE8NOypI2Opz7gp0RzPrglSluMB3fxFXBQY=;
-	b=c/lMY7DfhrmNgelPkwZRLyv2TyxwsxAeC2DFIRHUJFS02eeUUVXsJFzevSDZWCjsLglKVm
-	vIlsd5ph6LrHynuiA1EQOg8SI4KtqBOemNyf61+ZSqVEqNAEJ6++TSEYgexmdIBfKN2fzb
-	QZERDUKMDlZ/NPouch4R7kpWTn7wqPo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-WQs05tYPPn2c55yqXt7QKA-1; Thu, 11 Apr 2024 05:30:39 -0400
-X-MC-Unique: WQs05tYPPn2c55yqXt7QKA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7556A802CB0;
-	Thu, 11 Apr 2024 09:30:39 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.235])
-	by smtp.corp.redhat.com (Postfix) with SMTP id 41A50492BC6;
-	Thu, 11 Apr 2024 09:30:38 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Thu, 11 Apr 2024 11:29:13 +0200 (CEST)
-Date: Thu, 11 Apr 2024 11:29:07 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Eric Van Hensbergen <eric.vanhensbergen@linux.dev>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kent.overstreet@linux.dev
-Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
-Message-ID: <20240411092907.GA5494@redhat.com>
-References: <ZfRkyxUf8TIgsYjA@1149290c588b>
- <20240408141436.GA17022@redhat.com>
- <74f117635037a82dc2fb2923993cf329b6939b7e@linux.dev>
- <e73a1e0c90ebce33c23f8f7746c23c1199f62a78@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUNl26dE"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6114c9b4d83so68234977b3.3
+        for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 06:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712843553; x=1713448353; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vyF6pPtvtzUxauZeIWWisS/B6GyYAQ4u7iu8BDcabjw=;
+        b=fUNl26dElje5dlEmFARVZDB3jY7Ye1l7nWNfk2O3MBQgLAFaGLClJe4nRE4PgHJnOL
+         qioZFPTunH8BcGOPxhlKBJHuy1t2etX0CH4zrffdYKevZ9Wp+9uba5BLHO8GBDygUkns
+         T6iMH65magsljDGxiTBjSFMRf5ijbuz27eYfNqfvlvf7FwIqQ4SF9QMbVF2pphGUxuXr
+         9AK6ntscOa9LNbkaHzaZ5fJRJi0KFviTjn8kQzTV3ii8Ihn8HK5Ov/+yNZyrFRDGYstg
+         0SzQsWZVU30zkQST/NCp0uoPmr4Wq9ZyQKBTh7fiSIzYqlUznMLTUzfrVC05RcQ8iZ9L
+         WoWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712843553; x=1713448353;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vyF6pPtvtzUxauZeIWWisS/B6GyYAQ4u7iu8BDcabjw=;
+        b=TxVZlZs/p9E3/bfhXQBrL3+KZs+hfY+eeahh6gbxW/osU2kzrpArAR+ICok9RexSeS
+         0tgATjexxyuCLt/y5IHK0j2bSjpv0Bf4J0cD6L9NNR5ZemRAv1E3nj/FiuZ3Kbm+0QEY
+         X/qjDiZwst0pB/wC7YEC3HlHfRa3DYvtFVr1872r02Zzoc+7/lbZcSgOEHQacOkf2M8U
+         RSCjjQLfxqJF7JildvpziAN4yKJJ8zvWeEVudRpebgE9dBCyNo58TiLCxwAed8xuSLpC
+         xTg9SlZJ39PJdgAIxW7chk4zjzaJm2zvvA51T2PDDw/mlisQMONu74Yen8QK5YrlQFBD
+         3i4w==
+X-Gm-Message-State: AOJu0YxjbIa0OGBHrcfAqL3BU17QAYQGMBqIR1r8esGAQBEFz+N20szX
+	ZNNZqoUsHlhg2VfYFjB8pn4x2vbbfzq0CK08oE87T4lASf0Bk1ejJ43A6nXdC8rd09WQyM30pQj
+	6OlVF7jFe3R52mrQTZE7m5RQbzBVfcjAl
+X-Google-Smtp-Source: AGHT+IED0LmNXUx+Hp5W58eZ08gBCEVboGgqcGgqhF8X0FMEukv6+M0IY0/Ok2MeFf1aDt3vyvugH8XGTzsyWiVrS+0=
+X-Received: by 2002:a05:690c:92:b0:618:4a3f:2752 with SMTP id
+ be18-20020a05690c009200b006184a3f2752mr5678378ywb.11.1712843552925; Thu, 11
+ Apr 2024 06:52:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e73a1e0c90ebce33c23f8f7746c23c1199f62a78@linux.dev>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+From: Eric Van Hensbergen <ericvh@gmail.com>
+Date: Thu, 11 Apr 2024 08:52:21 -0500
+Message-ID: <CAFkjPTnn+Oc55hNg3B_aDE7=0bm2AHJRW5wpksA4N-QiutPGpw@mail.gmail.com>
+Subject: Update on inode number collisions bugs in v6.9
+To: v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 04/10, Eric Van Hensbergen wrote:
->
-> April 10, 2024 at 12:20 PM, "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev> wrote:
-> > April 8, 2024 at 9:14 AM, "Oleg Nesterov" <oleg@redhat.com> wrote:
-> > > Hello,
-> > >  the commit 724a08450f74 ("fs/9p: simplify iget to remove unnecessary paths")
-> > >  from this PR breaks my setup.
-> >
+Just a quick update on this to keep everyone in the loop.  I did a
+number of experiments last night -- it does seem that reverting just
+the drop_inode removal deals with the collision scenarios (at least
+the ones where the loose cache isn't being used) that aren't
+overlapping mounts (like Oleg's case).
 
-> I think
-> I've reproduced the problem, fundamentally, since you have two mount
-> points you are exporting together. I believe we are getting an inode
-> number collision which was being hidden by the "always create a new inode
-> on lookup" inefficiency in v9fs_vfs_lookup.  You could probably verify
-> that for me by stating the /home directory and the / directory on the
-> server side of your setup.
+The likelihood of these collisions seems to be heavily related to the
+underlying file system (and its use of inodes).  As part of this I
+diagnosed that my dev regression environment was actually using a
+mount of the an underlying OSX volume (via Docker) for the regression
+file system target -- this both slowed down my regressions (which may
+indicate a timing related issue) and likely has very different
+policies for how inodes are allocated that most linux file systems.
 
-Yes, yes,
+I switched my regressions to a ext4 volume mount and immediately
+started hitting my asserts I put in to find inode collisions when
+running dbench.  Almost all of these seem to be happening when we are
+expecting a new inode but finding an existing one.  As I said, these
+go away if we are aggressively dropping inodes (old non-cache
+behavior), but seems to indicate we have issues in some of our
+accounting which was also indicated by by the inode bloat in legacy
+mode (https://lore.kernel.org/v9fs/20240315155732.77dabf51@eclair/T/#u).
 
-	$ ls -ldi / /home
-	2 dr-xr-xr-x. 18 root root 4096 Jan  4  2016 /
-	2 drwxr-xr-x.  7 root root 4096 Dec 20  2022 /home
+In any case, I'll likely send a revert to the drop inode today so that
+other testing is unblocked, but I'm going to try and drill down on the
+inode accounting problems before I revert the iget simplification to
+see if that addresses the regressions in cache mode.  We still need a
+client side mitigation for the multidev problem, but I feel like if I
+can unblock Kent and others who have been struggling with their test
+environments, maybe I can buy myself another -rc or two to try and
+find a better fix that keeping around duplicate inodes to hide
+underlying problems -- which seems brittle at best.
 
-that is why I showed you the relevant parts of my /etc/fstab
-
-> If qemu detects that this is a possibility it usually
-> prints something: qemu-system-aarch64: warning: 9p: Multiple devices
-> detected in same VirtFS export,
-
-My qemu is quite old, it doesn't. But I tested this on another machine
-and yes, the newer qemu does warn.
-
-(annoyingly, I had to redirect stderr to the file to see this warning,
- it is cleared by the booting kernel otherwise).
-
-> I can confirm that multidevs=remap in qemu does appear to avoid the
-> problem,
-
-Confirm!
-
-I didn't know about this option (and again, my old qemu doesn't support
-it), but everything seems to work just fine with the newer qemu and
-multidevs=remap. Thanks!
-
-So I think this regression is minor.
-
-> now that i can
-> reproduce the problem, I'm fairly certain I can get a patch together
-> this week to test to see if it solves the regressions.
-
-Thanks ;)
-
-Oleg.
-
+      -eric
