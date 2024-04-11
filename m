@@ -1,116 +1,104 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9F175A4
-	for <v9fs@lists.linux.dev>; Wed, 10 Apr 2024 18:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A18B13F455
+	for <v9fs@lists.linux.dev>; Thu, 11 Apr 2024 07:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712775463; cv=none; b=S7fUv/y/oZrmpzXDIRN3vaAloxMsdxOv4ejX5a1OXmvZQLovKg0CRI3FzgNx5IdXrFRbLWjbJDfGk6+g688PN9SMmt5rYDD30tR/RTdFymNgNDcYPW2lokfW1acUoCuSXCGR+hrxaQFfRUk8qUresbmK/SjmnXaA+w/IhkKaEn0=
+	t=1712819406; cv=none; b=GFNnTl5vTlR01WnwT8IA1c6SDpiVDmqtOm+OQWrPkWHSJaJZSxy9ekau2dhfTDJbhHXsdVgC7BvNJj4rEap+HJFIbQ/m+1uiX3DdQCubOQYTdX/gc6CQJOMQXzSYjXHwZjcQfWQVa9mP8YciLHojCHt6YnBLMh60V7fResEOBSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712775463; c=relaxed/simple;
-	bh=T63WWSNwemtE5FUWed+rwjc2++XzqVd45sS/kU5+0WQ=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=qgAtop2RYzW898BIVdlUbuqWRbhnUQnRPcfWGf2M9idG/cUhx5fWtkOprcFJBF4lrPdj8+Zc09npujt6MbshBUh0qnd/NKVQZKf+NcOwlaAwABb+k3WfBpykBkk3a+5ekNcZTEZ1QOuzzPORE+Telhw8cqB2rrz8CKPPX1UCz1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vNFlB0+y; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1712819406; c=relaxed/simple;
+	bh=wH6i3JfODjwBAUH9Z8++yMSzU4HiqQg5BInTQ+RTfj8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=BzFDCBFMll03iGdI5kvDpEodEL+pIsvlpXMfYwp6Cvk2WAmnmZvoz0/n3jZAYus71FoVimvMGXQ8XnwPxf2UQcmo33wXZHemIWuWtkSrFGWgBgH0ZSjVl15Erh3APPIvRoCrNlcyTQKVfYzfgX2qU3DHUxhSTrXqTJ0nGsyNmok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HRvczCJq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vNFlB0+y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HRvczCJq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712819404;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5NgjUa+lwKskPLBb4G2miG3MSH6bZPhgAN2v8MXqMrQ=;
+	b=HRvczCJq+2eF+r/6FM5lvCzSycq/NQDROApX2Wb6xXSubJskMiAbaWqYjWYF4QJIDRv0to
+	L8djtH/p/Pe/34K250H1mXjUSR+XhsWzbtbn0CtnGJsqJeAv0GyxaTlfnpHdu2kYpaJyst
+	9w5CB026/PvqdPC5K+sM/liJnz/K7Ho=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-Lr1cEV93NVGDpSocSvNLIw-1; Thu, 11 Apr 2024 03:09:56 -0400
+X-MC-Unique: Lr1cEV93NVGDpSocSvNLIw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA3F310499A0;
+	Thu, 11 Apr 2024 07:09:54 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3F2182166B34;
+	Thu, 11 Apr 2024 07:09:51 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240410173815.GA514426@kernel.org>
+References: <20240410173815.GA514426@kernel.org> <20240401135351.GD26556@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-27-dhowells@redhat.com> <3002686.1712046757@warthog.procyon.org.uk>
+To: Simon Horman <horms@kernel.org>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <smfrench@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 26/26] netfs, afs: Use writeback retry to deal with alternate keys
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712775459;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ADESv9RkZIcja5wW8o1aMTUgcCG5wDttV7TT2gQQZ3w=;
-	b=vNFlB0+y6Jsa9DH9o85ONcbM0LRX3VMjU81brB9OcJ0GhOjgM2Zrx3tQ60zNGCZ4Y/EsF5
-	0UUJT+zItjlbmz7mG2sFIY4rU1RIXAH9U8Ra+Jf3tOKsAbkzhHD/CKomUafh+a4/y9AeZn
-	8KUZjcPDt4I8b94mMZ2sOL9nHMuog5Y=
-Date: Wed, 10 Apr 2024 18:57:36 +0000
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1780363.1712819386.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
-Message-ID: <e73a1e0c90ebce33c23f8f7746c23c1199f62a78@linux.dev>
-TLS-Required: No
-Subject: Re: [GIT PULL] fs/9p patches for 6.9 merge window
-To: "Oleg Nesterov" <oleg@redhat.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- kent.overstreet@linux.dev
-In-Reply-To: <74f117635037a82dc2fb2923993cf329b6939b7e@linux.dev>
-References: <ZfRkyxUf8TIgsYjA@1149290c588b>
- <20240408141436.GA17022@redhat.com>
- <74f117635037a82dc2fb2923993cf329b6939b7e@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Date: Thu, 11 Apr 2024 08:09:46 +0100
+Message-ID: <1780364.1712819386@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-April 10, 2024 at 12:20 PM, "Eric Van Hensbergen" <eric.vanhensbergen@lin=
-ux.dev> wrote:
-> April 8, 2024 at 9:14 AM, "Oleg Nesterov" <oleg@redhat.com> wrote:
-> > Hello,
-> >  the commit 724a08450f74 ("fs/9p: simplify iget to remove unnecessary=
- paths")
-> >  from this PR breaks my setup.
-> >=20
->=20
-> Thanks for the bisect and detailed reproduction instructions. I am look=
-ing at this now and it seems to be related to another problem reported by=
- Kent Overstreet where he was seeing symlink loop reports that were disru=
-pting his testing environment. Once I'm able to reproduce, I'll try and g=
-et a patch out later today, if not I may revert the commit to keep from d=
-isrupting folks' testing environments.
->=20
+Simon Horman <horms@kernel.org> wrote:
 
-Okay,=20I think I understand this one, unfortunately it doesn't appear ob=
-viously related to Kent's report if what I believe is correct.  I think I=
-'ve reproduced the problem, fundamentally, since you have two mount point=
-s you are exporting together. I believe we are getting an inode number co=
-llision which was being hidden by the "always create a new inode on looku=
-p" inefficiency in v9fs_vfs_lookup.  You could probably verify that for m=
-e by stating the /home directory and the / directory on the server side o=
-f your setup.  When I created two partitions and mounted one inside the o=
-ther the "home" and the "root" both had inode 2 and I got -ELOOP when try=
-ing to access.
+> On Tue, Apr 02, 2024 at 09:32:37AM +0100, David Howells wrote:
+> > Simon Horman <horms@kernel.org> wrote:
+> > =
 
-The underlying cause in the patch series is that I was trying to maintain=
- inodes versus constantly creating and deleting them -- and I simplified =
-the inode lookup to be based purely on inode number (versus checking agai=
-nst times, type, i_generation, etc.) -- so collisions are much more likel=
-y to happen.  If qemu detects that this is a possibility it usually print=
-s something:=20
-qemu-system-aarch64:=20warning: 9p: Multiple devices detected in same Vir=
-tFS export, which might lead to file ID collisions and severe misbehaviou=
-rs on guest! You should either use a separate export for each device shar=
-ed from host or use virtfs option 'multidevs=3Dremap'!
+> > > > +	op->store.size		=3D len,
+> > > =
 
-I can confirm that multidevs=3Dremap in qemu does appear to avoid the pro=
-blem, but this doesn't help the fact that we have a broader regression on=
- our hand that used to work.  It'd be useful to see if mutlidevs=3Dremap =
-also deals with your problem @Kent, but while I think its the same underl=
-ying problem, I don't think it may be the same solution.
+> > > nit: this is probably more intuitively written using len;
+> > =
 
-I think I have to give up on relying on qid.path/inode-number as unique a=
-nd maintain our own client view of those -- but this will cause problems =
-with the way several parts of the code currently operate where we need to=
- lookup inode by a unique identifier from the server (which is currently =
-conveyed by qids).
+> > I'm not sure it makes a difference, but switching 'size' to 'len' in k=
+afs is a
+> > separate thing that doesn't need to be part of this patchset.
+> =
 
-Now that I understand the problem, I think I can work thorugh a partial r=
-evert which will go back to a more complex match in vfs_lookup (which exa=
-mines several other fields from the server beyond qid.path) -- but maybe =
-I can do it in such a way which will still avoid keeping duplicate inode =
-structs around in memory.
+> Sorry, I meant, using ';' rather than ',' at the end of the line.
 
-This didn't show up in my regressions because I always export a single fi=
-le system where the inodes are always unique.
+Ah, yes.  That makes a lot more sense!
 
-Thanks for your patience while I work through this - now that i can repro=
-duce the problem, I'm fairly certain I can get a patch together this week=
- to test to see if it solves the regressions.
+David
 
-     -eric
