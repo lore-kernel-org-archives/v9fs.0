@@ -1,100 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A001292D8
-	for <v9fs@lists.linux.dev>; Mon, 15 Apr 2024 13:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B0A71B45
+	for <v9fs@lists.linux.dev>; Mon, 15 Apr 2024 13:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713186250; cv=none; b=djyQs5iXf4CA3FH0OAKwCmF7HeKJOmr6DCrtgi6VsOHbU1XVqiAOPxgq9zW/wvnoMVZvsfASZhHsrXmuk3M68WJVgPBI6H/n1kNJE0OGmBM+Wz9+rJiMaG7OkhBl5Du2YsEYTH1hL9Bz05qIcvkA7i4zuYSIHdQ/H4Z3El/E8eU=
+	t=1713188905; cv=none; b=Rmv0Qc5ozKK6K3OhC/aEXUlWaoEvuO7GGz4Itgfwa+4yPwTfgV8RSGCnMtHiph06nWC4IdxYkqwABS1a1A8x6FTGHK6R4zn8fM9ubDfZZNwqoe25/PzNhBD3BNkzKjjv1Qlhl5MkgAnjE/kJ6XeqVaE//qX11E0tdyxTfEcNq1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713186250; c=relaxed/simple;
-	bh=9+bMhlfMhCt5MDDi+GnzheGMjkv5c6dD/+ouIDPqjHE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=gohkBL2SbQvwZ7nDjKWzUFIBYKN7iKe9NbjyYfj131BrIHK1n2GzBW7tJyTYJJFyywLbnUhJ8pabsUck9X3/5I4KYk7L11KbkUKPVoN0z1mGnEnEg0m0I4wpmBuJEU14HjXmGZyraNYse4scmvGjxoZnJ/p2fE5pp0dujUX1UDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BGo6Vqh/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1713188905; c=relaxed/simple;
+	bh=AXaWMPmKRYLrHAQ/xoxKaj9w5wLY5CbIDW57NyIt45c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=er07OMuHE8zQnjO1xXeZMzt6PFZ0I/ANXh4wkACTGZWEqz95lgCm/szaKREnbr7I0UuHJCSP1Q2wZVgPa549rf/Faod1POfrHuImEEJqFPowpebARAPbIUxWG64+hDLo4fuwyXwnGcVIKbaMmOYk1rTmlBep+MnrRlYTANbkfYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUJoY+UL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BGo6Vqh/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713186248;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Ptvnzk1WkI8ph1+6mQtrYI+ziVGUn1LcaZGMSp9/x0=;
-	b=BGo6Vqh/EPBz2MVjEwjHMTiPOm4mSa73rUjP4P5pFSbfc4g3mSfgcfNlkcPrUgltfmHO56
-	Y7FWmKanjNJugd1o3FZTddM3G1UpVAp94X995TzHCJncpEZsz1fdaRHwyTk4wupRFqNuQ5
-	WXLegkImII9qFBTgfsah24aAtLAnB5Y=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-A9VRT3_LO8mlZjn-t-8k9g-1; Mon,
- 15 Apr 2024 09:04:04 -0400
-X-MC-Unique: A9VRT3_LO8mlZjn-t-8k9g-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE6CA2999B20;
-	Mon, 15 Apr 2024 13:04:02 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.10])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 367FB492BC7;
-	Mon, 15 Apr 2024 13:03:59 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <39de1e2ac2ae6a535e23faccd304d7c5459054a2.camel@kernel.org>
-References: <39de1e2ac2ae6a535e23faccd304d7c5459054a2.camel@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-2-dhowells@redhat.com>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Steve French <smfrench@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
-    Shyam Prasad N <nspmangalore@gmail.com>,
-    Rohith Surabattula <rohiths.msft@gmail.com>
-Subject: Re: [PATCH 01/26] cifs: Fix duplicate fscache cookie warnings
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUJoY+UL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A99C2BD10
+	for <v9fs@lists.linux.dev>; Mon, 15 Apr 2024 13:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713188904;
+	bh=AXaWMPmKRYLrHAQ/xoxKaj9w5wLY5CbIDW57NyIt45c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fUJoY+ULX8Q4dOLCytL3tDT7IHFRaUvABriRWJBx008XvFeb/53KU/22wN8wRwCM9
+	 9J9pZH3kAZgIJ21PZr1kGBtPi+Y34XuajYfkWv38hRbdJ02mKnPl6FwL88WGmR7xmz
+	 T9YkYQmlioWH7DFmsAgrumuiUnEFJfB0QmvfbXzLFpBav2193+dNZgTZICv8uIgDoi
+	 BgxEto/HGOJE/IE9SCmXN1VT3yS5LZFQx7zCiTaz6sP6k5CSWTdD7OkbJWLYNCWqOt
+	 nbpqIu4KTOaM+rboqKIUS13ymPCwL/YHdHDfXDgOpx/tQFmueiBevpX1VTRIUy58Sy
+	 T5bPFZ8wtjcZg==
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-61ae6c615aaso2091657b3.0
+        for <v9fs@lists.linux.dev>; Mon, 15 Apr 2024 06:48:23 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyECVZ4Ur8fVMNJigHTcKh3cbOwgHwvJ9IsK47n07SqHIkDVGv/
+	62C2p1qWH+scrLbzQgrwhvBcWHJkVYclDW0f8Arf3t3DuHIZW6krEbi9GfeZKtwx2hVj7QMHyqQ
+	IVGEtjbCgDPmg/Xv+u69N40xVs9I=
+X-Google-Smtp-Source: AGHT+IHLWAfXV+yhU0X7/ZkvLtrM3+sdonheTHALG9QaagzdzVN82R3gg1NmGsxoGJ5JXwVqv2efxqJKe2cRaxyDd5w=
+X-Received: by 2002:a81:b387:0:b0:614:cd12:d55d with SMTP id
+ r129-20020a81b387000000b00614cd12d55dmr9903997ywh.10.1713188903258; Mon, 15
+ Apr 2024 06:48:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2345943.1713186234.1@warthog.procyon.org.uk>
-Date: Mon, 15 Apr 2024 14:03:54 +0100
-Message-ID: <2345944.1713186234@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+References: <f6upxoxa6d2c6cbh4ka775msggvuduigiu7xgvfx7qsufg2lo6@2ellaad6b2on>
+ <0ac82d20c88c8d227064737fdc62b3195548c5ea@linux.dev> <ikookkidwzvjwuexmsco437lusgk24rffec7pyxwnquhydsk4p@evfumg2ygpsq>
+In-Reply-To: <ikookkidwzvjwuexmsco437lusgk24rffec7pyxwnquhydsk4p@evfumg2ygpsq>
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Mon, 15 Apr 2024 08:48:11 -0500
+X-Gmail-Original-Message-ID: <CAFkjPTkibDH+NVW2ZDOH-0rPLQ+NshEtX_794g49coeO8bd77w@mail.gmail.com>
+Message-ID: <CAFkjPTkibDH+NVW2ZDOH-0rPLQ+NshEtX_794g49coeO8bd77w@mail.gmail.com>
+Subject: Re: new 9p kasan splat in 6.9
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jeff Layton <jlayton@kernel.org> wrote:
+Kent - can you do me a favor and see if the current pending-fixes next
+tree (https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/l=
+og/?h=3Dpending-fixes)
+solves your issues?  I'm still chasing some bugs when caches are
+enabled, but your config is without caches and I think the single
+patch revert should solve the problem for you.  If not, I'll revert
+the other major patch from this series until I can track down whatever
+race condition is causing the instability.  It would also be useful to
+know the underlying file system configuration on your setup (is it
+single device, which filesystem, etc.)
 
-> > +struct cifs_fscache_inode_key {
-> > +
-> > +	__le64  uniqueid;	/* server inode number */
-> > +	__le64  createtime;	/* creation time on server */
-> > +	u8	type;		/* S_IFMT file type */
-> > +} __packed;
-> > +
-> 
-> Interesting. So the uniqueid of the inode is not unique within the fs?
-> Or are the clients are mounting shares that span multiple filesystems?
-> Or, are we looking at a situation where the uniqueid is being quickly
-> reused for new inodes after the original inode is unlinked?
+      -eric
 
-The problem is that it's not unique over time.  creat(); unlink(); creat();
-may yield a repeat of the uniqueid.  It's like i_ino in that respect.
-
-David
-
+On Mon, Apr 1, 2024 at 7:07=E2=80=AFPM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
+>
+> On Tue, Apr 02, 2024 at 12:02:43AM +0000, Eric Van Hensbergen wrote:
+> > This should be fixed in -rc2.
+>
+> I'm still seeing sporadic weird fstests failures on rc2 though - note
+> that I'm not testing 9p specifically, but using it for copying results
+> to the host.
+>
+> Example:
+> https://evilpiepirate.org/~testdashboard/c/cecfed9b446da5fba9d73e6448c9f0=
+d1ff5d95ff/xfstests-nocow.generic.035/log.br
+>
+> I see runs where this causes the number of test failures to jump from
+> the typical ~30 all the way up to 50; IOW, these happen all in a row
+> when they happen.
+>
+> https://evilpiepirate.org/~testdashboard/ci?branch=3Dbcachefs-testing&com=
+mit=3Dcecfed9b446da5fba9d73e6448c9f0d1ff5d95ff
+>
+> What's going on with 9p testing? It seems we've got multiple bugs that
+> made it to rc1 that would have been caught with only moderate testing.
+>
