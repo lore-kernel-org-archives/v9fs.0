@@ -1,167 +1,89 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74FB12F5B1
-	for <v9fs@lists.linux.dev>; Tue, 16 Apr 2024 14:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741A5136E09
+	for <v9fs@lists.linux.dev>; Tue, 16 Apr 2024 22:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713276999; cv=none; b=BVMW09jSL3ZrbxMnAEgMueHsIzxdpaNA40LfzSjcb1+xJC7d/zQ+gEXOGQKVxX8QqfKXpbxa19102NS5CZ16VFZp3SaD2DLnq7h74nF43Q8V/GdVWjKH42mlMAR1JrF/e5fvM05nyL7f9Mdn9nWRT4F2pzjGNMvrVXurir6j0O0=
+	t=1713307257; cv=none; b=rv2c319u2uPABp4f094r6Wq7GFbBlbwFZvmsMBDFSuP5yeUjgFyLf+YrbwFzP85bpQtklelcQaFaCJfDwyKSU3Bwq9JzugOeUinnm5SsHX3nognOKrQ2482Z9WRaIersU+Q2YMK0VQAXfHLRX0xdzoMR0TZIk528wV3WBoZhTHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713276999; c=relaxed/simple;
-	bh=a/inbAZaZkyOKJgBNR+5znTznFm7ELdzO93P8ffhB0Y=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=koh/gfx0CMIE9YgO+tB5muLbFFDYYAVmvogA7jguY08yByeLOnlQI/irSB1b2K6pM9oE+aSOti9O1a4peyMx/ifkcGaQv6hsuVfWUEdKfEfTrjXYB01EML2waYrlRDxRDWL2Sagi2PqjYjkOL/W+Yzwe1i711DSYxdnZoNRFtKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XgB9BdEs; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1713307257; c=relaxed/simple;
+	bh=N5nwDmbhe++pDB3bapq0vGCRdzBr3y4GS9c/nfTtZFY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=DwyIhFF43q3VNRM7LEChPi28B2nhcHyhTpXmV1Lvjq3/mMdupW2WRJ3QnnWs4IRKTpxefJd2H5A9hqJJNMt72gmsnloTYIARwZmnYxX7g7MLlHwy9k0tLyljSOa9DVhsbdXJuiuwBP5LPKPi4QYKeQxR1S98LvWDfMqAbk10BvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImYbG4Wt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XgB9BdEs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImYbG4Wt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713307255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5nwDmbhe++pDB3bapq0vGCRdzBr3y4GS9c/nfTtZFY=;
+	b=ImYbG4Wt3CD6ggC5KSaIVB2Z4D4n3pzniYt8rqFm7+VKoMc8gyE+3UipM5LRJOUFiBs5KD
+	Q368sFt4SZfKgnmz0now5TvJCq4VrlF04rRHC5pvYSo1uhcb4wiCYPRc255NaSj1RJQcgW
+	KNhOAXL9xljsRosSM4zGFE12pKWiKKI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-Ck5vkIIGNTuza5woUV3wRQ-1; Tue,
+ 16 Apr 2024 18:40:49 -0400
+X-MC-Unique: Ck5vkIIGNTuza5woUV3wRQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F39E21C05149;
+	Tue, 16 Apr 2024 22:40:47 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.10])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6583339DCA;
+	Tue, 16 Apr 2024 22:40:44 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAH2r5msFoGAE79pS5bEt5T8a60LU82mdjNdpfe0bG4YpvY8t-g@mail.gmail.com>
+References: <CAH2r5msFoGAE79pS5bEt5T8a60LU82mdjNdpfe0bG4YpvY8t-g@mail.gmail.com> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-2-dhowells@redhat.com> <39de1e2ac2ae6a535e23faccd304d7c5459054a2.camel@kernel.org> <2345944.1713186234@warthog.procyon.org.uk>
+To: Steve French <smfrench@gmail.com>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <christian@brauner.io>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
+    Shyam Prasad N <nspmangalore@gmail.com>,
+    Rohith Surabattula <rohiths.msft@gmail.com>
+Subject: Re: [PATCH 01/26] cifs: Fix duplicate fscache cookie warnings
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713276991;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9250ocBfIiBtt4WHAPqFNPSj2DLRzg8mHSvw/GSmH54=;
-	b=XgB9BdEsSamtnkhi+CiQUxax6E4RNgvjuOXgmmih9BHw9w8rrIOMXlC1e+lMs4VPh6svKy
-	H+rhc4hZr5WRtZxKtY/9/yBZo7k1iBkM64ffPAAbIjR9VeDf15oP5XOS1acbim/4JPpTUo
-	tA0xwqSLZ8kEPz4KJuMQbXHy5L8fJaQ=
-Date: Tue, 16 Apr 2024 14:16:29 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Eric Van Hensbergen" <eric.vanhensbergen@linux.dev>
-Message-ID: <d7164a3abce2d194041d9179a9ef153d75edb099@linux.dev>
-TLS-Required: No
-Subject: Re: ftruncate fails
-To: "Itaru Kitayama" <itaru.kitayama@linux.dev>, "Dominique Martinet"
- <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev
-In-Reply-To: <74C91BF3-4BC7-46A7-9BB2-1360E07B6FE5@linux.dev>
-References: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
- <ZhNP4SISzZOGwy4A@codewreck.org>
- <A9C784B0-3B04-4EBF-8AFF-DD5088B5EF67@linux.dev>
- <74C91BF3-4BC7-46A7-9BB2-1360E07B6FE5@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2754965.1713307239.1@warthog.procyon.org.uk>
+Date: Tue, 16 Apr 2024 23:40:39 +0100
+Message-ID: <2754966.1713307239@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Itaru,
+Steve French <smfrench@gmail.com> wrote:
 
-If you can, could confirm that your issues go away with the pending-fixes=
- branch of the next tree?
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?=
-h=3Dpending-fixes
+> Should this be merged independently (and sooner? in rc5?)
 
-I work for Arm as well, so if you could point me at the revision of FVP y=
-ou are seeing the problems on I could also have a look at the server side=
- of it and see if its breaking any assumptions we've been operating under=
- using Qemu as our primary server.
+It's already upstream through the cifs tree and I've dropped it from my
+branch.
 
-     -eric
+David
 
-
-April 7, 2024 at 9:22 PM, "Itaru Kitayama" <itaru.kitayama@linux.dev> wro=
-te:
->=20
->=20>=20
->=20> On Apr 8, 2024, at 11:08, Itaru Kitayama <itaru.kitayama@linux.dev>=
- wrote:
-> >=20
->=20>=20=20
->=20>=20
->=20>  Hi,
-> >=20
->=20>=20=20
->=20>=20
->=20> >=20
->=20> > On Apr 8, 2024, at 11:01, Dominique Martinet <asmadeus@codewreck.=
-org> wrote:
-> > >=20
->=20> >=20=20
->=20> >=20
->=20> >  Itaru Kitayama wrote on Mon, Apr 08, 2024 at 10:44:51AM +0900:
-> > >=20
->=20>=20
->=20>  With a recent kernel I see below program fails (Bus error) if exec=
-uted
-> >=20
->=20>  from 9p mounted directory, not with the local filesystem (Ext4).
-> >=20
->=20> >=20
->=20> > I cannot reproduce on 6.8/6.9-rc2 with qemu and a couple of optio=
-ns.
-> > >=20
->=20> >  Bus error would be some problem with the mmap of the executable =
-given
-> > >=20
->=20> >  this code? so probably doesn't have anything to do with the cont=
-ent of
-> > >=20
->=20> >  the program itself...
-> > >=20
->=20> >=20=20
->=20> >=20
->=20> >  A few questions:
-> > >=20
->=20> >  - What exact kernel are you running? (or closest approximation)
-> > >=20
->=20>=20
->=20>=20=20
->=20>=20
->=20>  v6.9-rc3
-> >=20
->=20>=20=20
->=20>=20
->=20> >=20
->=20> > - What server? (assuming qemu) what mount option? (tried default
-> > >=20
->=20> >  cacheless and cache=3Dloose)
-> > >=20
->=20>=20
->=20>=20=20
->=20>=20
->=20>  FVP and just mount -t 9p FM /mnt
-> >=20
->=20>=20=20
->=20>=20
->=20> >=20
->=20> > - Does this reproduce right after boot/mounting the 9p filesystem=
-?
-> > >=20
->=20>=20
->=20>=20=20
->=20>=20
->=20>  Not immediately after the boot/mounting.
-> >=20
->=20
-> My reproducer wasn=E2=80=99t explaining what a kselftests was showing.
->=20
->=20If you build the =E2=80=9Cmm=E2=80=9D subsystem and execute one of th=
-e programs, gup_longterm from the 9p mounted directory, you=E2=80=99ll no=
-tice the ftruncate error.
->=20
->=20Thanks,
->=20
->=20Itaru.
->=20
->=20>=20
->=20> Thanks,
-> >=20
->=20>  Itaru.
-> >=20
->=20>=20=20
->=20>=20
->=20> >=20
->=20> > Thanks
-> > >=20
->=20> >  --=20
->=20> >=20
->=20> >  Dominique Martinet | Asmadeus
-> > >
-> >
->
