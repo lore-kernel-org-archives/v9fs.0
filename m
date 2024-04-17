@@ -1,81 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD94364
-	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 00:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB47012BF11
+	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 08:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713314527; cv=none; b=M/eBMbfA0msh7Hsz4gmlsrRRfGRXqjZV5cbr0LFPwtPQY0EMIeW+b+vXmnK5WUi7VR6gI8G6M2Pv22f3M+HqLKuF0EQydjxR0kXZb361//TW49QF8jNFtfbcMT97aWHuam/kXf8xhS8HqU+srokKRxuXd2mYRo30xT88UuPpV9A=
+	t=1713343655; cv=none; b=UWS9y/Dj/KFHqDMezR0IGQn9i0HUtgcRAh0Xw9hsXaRhpB8EPag3PCH3Rkpr+e8sYAnGH2YRK58GEa0oacM/zhGOl+Lwq0yAxE26Cd7sh1Ud4KiHX7QPklUSek5B9iQ5O9Kc/0NzqXdDuNuni4AOKUbxChwJrOrFg7AJWcB8qww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713314527; c=relaxed/simple;
-	bh=ywKttlaKNA4oI6byxZZvaG6cjUF8Ri/eWGqbqu14V18=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ThTjtArUVBvixvc9nMzb44eEvDd28c2UU/JsBO/PPGIbqSB5N2iQjCyztdns2OtDoNEJwhf1vtv623MV+wifwlBjpa/fUa7Ad6jG294ryr4fmKI2x3gc7WjQlFbfknZ1MME6CTF1RaiilnAZ9vHjs6U0Pv1tMJi8UTmqjZzT1qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJxhFRko; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713343655; c=relaxed/simple;
+	bh=FzkSsyVA3DqH+Qb0YG94ZILKeOZaj7ifhswsxDiiqfk=;
+	h=To:cc:Subject:MIME-Version:Content-Type:From:Date:Message-ID; b=nVrQ1FrGsV+MYc1ZBO5KWAJGmEJfX3wrQWqBa/P8kvQ6y9MDJxppH4BHDktnGn83XaDrFP5aqMre+CIgPCBNT/oLw5uzABpHX/CRuk/K/oV80yIN54dnFjt9wSTEVavwYbgrMNhzPISOX8P1YL8TBFtahbe04ngfVG0JIAW8Jnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GDPcrEwt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJxhFRko"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDD8C4AF07
-	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 00:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713314526;
-	bh=ywKttlaKNA4oI6byxZZvaG6cjUF8Ri/eWGqbqu14V18=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jJxhFRkoxQOJtmT9Wa7DMmeBrgej4hioAwp09nlpYyEd4SG3xoj0LkwVx1YXF4xI7
-	 6MJekEYsG/nXfGMt0plMzrnnCHGZDHk21WQMbGHal4gs19KTJNofOp91N1sQ7d2qJj
-	 pUEbe0qkqjgXzJ9DU7OtlfZUsfivaMPSheV2MPF+/NuQ6Xr5coJXC2t0EuD7pDzfTM
-	 ma7nJFJA/2V/AlflnvQjJYbIK7KH24mZEQPhJRckrnzePmkLBr4q0a06uu/+xi3jkW
-	 4CCHM8Pt9uE1Bp14g/DuC464URHGIh+zF03+cQLRc0h4xJvzgJLDSiWkusi0uMU7l/
-	 gI+St1ETyIiOw==
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-479c9c2d2b0so1535616137.0
-        for <v9fs@lists.linux.dev>; Tue, 16 Apr 2024 17:42:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVpiQek9q8bziKgB1iiikrN6eDOaeZeMgbBstRyESAVRA5qwh6hviXuaaYKQAom/MezIDOuER+USDs9wCmcH00wFFrkoA==
-X-Gm-Message-State: AOJu0YzAcT39DhvC6fYeHtopNC3k7ZS7uKB5qWl7sSGXG5V3h83qRt5Y
-	Ct2jwOBFmikzpJTOSuXKG0X3meC48NwygQV/zBQf8N4Jt1WPgDligABKSFF/0Gnba+mxOld5s67
-	L+6l5GTsKOaTgatqHcNVNXIl5nWM=
-X-Google-Smtp-Source: AGHT+IF9pXoq9bHs5KRnJrXrPoieXjMbpsaKxf/UrG7M1R/gVTfVYknXOvnvcm+Sa7BZ1R93YkXdAdsIbYZbXI1Ocu8=
-X-Received: by 2002:a05:6102:38d2:b0:47a:40f9:5bb5 with SMTP id
- k18-20020a05610238d200b0047a40f95bb5mr16204596vst.22.1713314526044; Tue, 16
- Apr 2024 17:42:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GDPcrEwt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713343652;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=S/MMEzxbl19W2vLclxih4GIBuPLFZ2AxlUuzHcCQFgU=;
+	b=GDPcrEwtz8z7KApnJP8VVbemsDDZGmiDwcdZl3c4NNytfuJRbbvzf7BFfTuWVbweNKblMz
+	r7zupNyJtuiQPn3KHV8hDGHM2Jozt4HqHzEtssRJOtZtzHXB2pB7M8hbiQRn4n0wwj6kJo
+	6310ZMr6QVqvnhaUBGgkvVmCacXH0E0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-sNk2jFwvMP2Y4fvxfa_78w-1; Wed,
+ 17 Apr 2024 04:47:26 -0400
+X-MC-Unique: sNk2jFwvMP2Y4fvxfa_78w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB6C51C3F101;
+	Wed, 17 Apr 2024 08:47:25 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 16CC12026D06;
+	Wed, 17 Apr 2024 08:47:23 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Marc Dionne <marc.dionne@auristor.com>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix writethrough-mode error handling
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <E7D462A2-EE93-4A57-9F15-8565EE1567F3@linux.dev>
- <ZhNP4SISzZOGwy4A@codewreck.org> <A9C784B0-3B04-4EBF-8AFF-DD5088B5EF67@linux.dev>
- <74C91BF3-4BC7-46A7-9BB2-1360E07B6FE5@linux.dev> <d7164a3abce2d194041d9179a9ef153d75edb099@linux.dev>
- <ZhmbZp827i8coxit@vm3> <CAFkjPTmowPL3vSKSEveEEn9jE46Bo5wM5PXcTX98MkXzcc-zyw@mail.gmail.com>
- <0B23BE9F-87A1-4434-9191-E5FC71031892@linux.dev>
-In-Reply-To: <0B23BE9F-87A1-4434-9191-E5FC71031892@linux.dev>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Tue, 16 Apr 2024 19:41:55 -0500
-X-Gmail-Original-Message-ID: <CAFkjPT=E8fn+W82c+_mf8V4Ok0bJ5JxZ9S=8We3CgXW64qafaw@mail.gmail.com>
-Message-ID: <CAFkjPT=E8fn+W82c+_mf8V4Ok0bJ5JxZ9S=8We3CgXW64qafaw@mail.gmail.com>
-Subject: Re: ftruncate fails
-To: Itaru Kitayama <itaru.kitayama@linux.dev>
-Cc: Eric Van Hensbergen <eric.vanhensbergen@linux.dev>, 
-	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev, 
-	Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6634.1713343604.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 17 Apr 2024 09:47:19 +0100
+Message-ID: <6736.1713343639@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-It's fine as a bug, I'm just making sure it wasn't part of the
-regressions of some recent patches.  (those were my first priority).
-I'll take a look at reproducing and see if there is something we can
-do here, I haven't looked at ftruncate/fstatfs and what path they
-typically take through the kernel - but we should be able to figure
-out how to accommodate the open/unlink idiom but I really need to look
-at the in-kernel trace and server trace to understand why you are
-getting the EOPNOTSUPP which doesn't make sense to me because we
-implement statfs in the client (there is no seperate path that I see
-for fstatfs) (so maybe worth double checking FVP actually implemented
-that in their server) -- but also need to make sure the fid it grabs
-is the open fid and not try for a transient fid (although I think that
-would be ENOENT, not EOPNOTSUPP).   Similar probably for
-v9fs_vfs_setattr_dotl -- both of these are used to grabbing the
-transient fids, not open fids -- so I may need a catch for fstatfs and
-ftruncate to find an open fid on that file.
+Fix the error return in netfs_perform_write() acting in writethrough-mode
+to return any cached error in the case that netfs_end_writethrough()
+returns 0.
 
-Will let you know what I find tomorrow.
+This can affect the use of O_SYNC/O_DSYNC/RWF_SYNC/RWF_DSYNC in 9p and afs=
+.
 
-        -eric
+Fixes: 41d8e7673a77 ("netfs: Implement a write-through caching option")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+---
+ fs/netfs/buffered_write.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 9a0d32e4b422..8f13ca8fbc74 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -164,7 +164,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct=
+ iov_iter *iter,
+ 	enum netfs_how_to_modify howto;
+ 	enum netfs_folio_trace trace;
+ 	unsigned int bdp_flags =3D (iocb->ki_flags & IOCB_SYNC) ? 0: BDP_ASYNC;
+-	ssize_t written =3D 0, ret;
++	ssize_t written =3D 0, ret, ret2;
+ 	loff_t i_size, pos =3D iocb->ki_pos, from, to;
+ 	size_t max_chunk =3D PAGE_SIZE << MAX_PAGECACHE_ORDER;
+ 	bool maybe_trouble =3D false;
+@@ -395,10 +395,12 @@ ssize_t netfs_perform_write(struct kiocb *iocb, stru=
+ct iov_iter *iter,
+ =
+
+ out:
+ 	if (unlikely(wreq)) {
+-		ret =3D netfs_end_writethrough(wreq, iocb);
++		ret2 =3D netfs_end_writethrough(wreq, iocb);
+ 		wbc_detach_inode(&wbc);
+-		if (ret =3D=3D -EIOCBQUEUED)
+-			return ret;
++		if (ret2 =3D=3D -EIOCBQUEUED)
++			return ret2;
++		if (ret =3D=3D 0)
++			ret =3D ret2;
+ 	}
+ =
+
+ 	iocb->ki_pos +=3D written;
+
