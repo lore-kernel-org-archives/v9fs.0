@@ -1,142 +1,73 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE4E146D7F
-	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 18:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1840DBE55
+	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 18:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713377521; cv=none; b=Us3KYyn4RCXNhjjzvupNdkeb+ccn19mnynS9ueOW3bUVK4GBvw9AUuMSR7IR8C5P2ptoUad9jGZgKi/3aQ74zUOWRKyCHEi7EoT2JiAF1ISho+h+823hnyJxdqf13HIXmxY9V7dqAoofgK2tUqnPHV/6AkloxFr0U+bP+lwDvHM=
+	t=1713379849; cv=none; b=fDHFH7nAX8nfr7e69reL7mN7429gvNaG6pUA7pJi5gPFnGlFBwixCODpjHiSB4EFfcSj3UOsMZJsa8XD0YhYHLlwIlonWhp792tGcGZzZu4SyzdWruaN0Hc+05IeEJj7iE02KlkNAruaZ6rJi5Kp7prAXzrREy2g7KW9PEYHZ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713377521; c=relaxed/simple;
-	bh=xJHEHWHhJmoUVG/Pdw+vyjuBG/tVovhjwXcJAdSJS/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ZwKpu4fYlHHw2+WLFir7PZiAlKe+MzVYB9ZI2Y23kOCLVOtkLtyVO/ShBdva0RcQ9ZEfYAvXtp6jqlneIKh2cGQ+xZqPk1JgoLDqN75+hPQxjfvlWUvWDgLxztwAi9hWhFc8EaZYemV07Uha9K1emOC9f/16JvH4azsrGlvY8oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uaw0ed1o; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713379849; c=relaxed/simple;
+	bh=wQ4xk+vYL9gvZQsHSLqHG1L6ZA0lwXNkIGJADiDeGPw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MQDYpXhEl9NgmiU6KPhjQLZBFeUbdWMK+Tcj0jIp4BK2wCgOQKsJZLanfwm7ezBvYSw8T35y6EKkSp7TG/jNbML3BexeABWqI6c4bRbZEBYzdiGuZ1uWFM6O3zb09AHBfqb8+y3hId3Qbkc+sFQ4y8EbFOuPzln/FPi8iPQVoVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCDP1Frz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uaw0ed1o"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-518a56cdc03so5500658e87.1
-        for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 11:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713377518; x=1713982318; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sIJtYnUQ5AAtgS9HaT2/DLco/xdNOScHx18B777UjDs=;
-        b=uaw0ed1oKyvU7SqDwEkf11gy1Hb2pvMPdjN2nUz12Uh5vhgmitYtD76u6T1LvI8rDi
-         8AzDF+7nZRoFxIzU3GZRon5p+hSZKdLN+1jygUHadnn3dx0EWHYFKts2xCeepWNn5Eyo
-         xEuqCqoGggg0i1Hfwjr/pMp0Fwv2wb9wFbkp6b1emor+HzA9t8irotj9fq1dqyC+U30i
-         WJPb/mqBE5DMUx/q9tKHsIzu6HVKUIfAxACqwLp4M4k459PQNZhKu1NgiWi2sCqx/YUN
-         6f/ZXAY0lRsmxkfdkHg3Dcov5QhwgxF/N9obB/uFt7LGPimp8Ka7V/RsXVI8PmAr95Sk
-         a9cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713377518; x=1713982318;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIJtYnUQ5AAtgS9HaT2/DLco/xdNOScHx18B777UjDs=;
-        b=dydzvPiGioNMuVyTcxTyRvJCIOA2zg/k+v/YIXOk0A5loC3CFRPsNn2ZRcgLc8voqE
-         FO8qv7uiwjirr+TpXL+gw7uDxewkO/D7fNgiW8ve6iT9y83ztUNHtb7RTq9hdso24+jd
-         UFPUiqY2VBaeoBgVcSjPrsAaYIkfEXKpcFxx9zlVcw0jDIQLqDVWIOSbvbPeqjHmec8c
-         09vgzLMGiyEP2WDJ7vBDE/ElcVMaudVnqIxe+B8MdNvsm2GStGqGoGNtNeQTQn/z/7R/
-         dP2LfMuaaoveFSw6utZ73Xhv+8FQbBUO2JHRY48wGxnhmn24XOpab9oTDqnJY93MZsBk
-         8I2Q==
-X-Gm-Message-State: AOJu0YzKV27wYlOXhAAeR+aF2eIrzgvs6Xg/f4ry/C2j40GrLqzMMHZR
-	QHSB1tYVhsu+RpTnoL9+4VA9VhCjTYFrgnk3NeLkZbCap1FBl1ir3NtIS0XY6aY=
-X-Google-Smtp-Source: AGHT+IG3+kCnCzkWv/785MvGldeo2hBwvfPxFjpQEnWsob/rkwmBImIAInFK98IT6QaSzR4VEc/M9g==
-X-Received: by 2002:ac2:4850:0:b0:518:f2f8:edc6 with SMTP id 16-20020ac24850000000b00518f2f8edc6mr30329lfy.63.1713377517539;
-        Wed, 17 Apr 2024 11:11:57 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id ji16-20020a170907981000b00a5244a80cfcsm6377626ejc.91.2024.04.17.11.11.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 11:11:56 -0700 (PDT)
-Date: Wed, 17 Apr 2024 21:11:53 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: ericvh@kernel.org
-Cc: v9fs@lists.linux.dev
-Subject: [bug report]  fs/9p: mitigate inode collisions
-Message-ID: <5d527d1e-95de-4e36-845a-897cabdcaccd@moroto.mountain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCDP1Frz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862CFC072AA
+	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 18:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713379848;
+	bh=wQ4xk+vYL9gvZQsHSLqHG1L6ZA0lwXNkIGJADiDeGPw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vCDP1FrzqvTHWmfYdHOaMx0OnPJeTERRV+LRasparMcauCjCjfQsQ9H3Suw1EmWhx
+	 TApgclEpIYTHD+nJoAg7E/hoSH2UzXxy0ptRdrCk3SenyDTmW0mZ2cQRR3SqqCBtU4
+	 OWw7rP3EVVmfcsnyx0UjqJKkhGZtkCrOHYL/d3ST6+R4t+7RnMW5OUZBsPTVPvDhkm
+	 7iKwMCxLYQlvCxoym7a59RhGip5Tmiyg83WrBGhSVHy41tky/pEoiS6R8yTq64Xvbe
+	 IXeG4RCAdla/+PgppI1jj127lpoKhWowdV1xa3TsIOe7y4rOqDMLDfPvbB4/3VmVms
+	 qP/4HuvSGPXqA==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-615019cd427so45182917b3.3
+        for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 11:50:48 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwNZLnu27WcE7Xc5peTZJygah6W5LC1RNbqAwvBPjC0WV4Wff43
+	W4R8FpDIMT05Phv6E7+vjmLN7jnO6OrNHHBCGHA9ARrr9qN7Q0n+iWooCumtirqlIS15jxUK9H7
+	lKlcZBXYwk71q5ZuxgdTm8w1VOR4=
+X-Google-Smtp-Source: AGHT+IF2ntNYghwCg7tLF2YeX1zbvBMgvt4sYKF3oEMHTbaUTaDopbD93n1Nxrq5wphwZ9JErDoTDlJBlpnee3RT5xI=
+X-Received: by 2002:a05:690c:6c8c:b0:615:e0e:d234 with SMTP id
+ is12-20020a05690c6c8c00b006150e0ed234mr139449ywb.16.1713379847883; Wed, 17
+ Apr 2024 11:50:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <5d527d1e-95de-4e36-845a-897cabdcaccd@moroto.mountain>
+In-Reply-To: <5d527d1e-95de-4e36-845a-897cabdcaccd@moroto.mountain>
+From: Eric Van Hensbergen <ericvh@kernel.org>
+Date: Wed, 17 Apr 2024 13:50:34 -0500
+X-Gmail-Original-Message-ID: <CAFkjPTkWEV6aBAzgcgOB_fX_6C7notJB55y-m0tkQOHCnPMe9A@mail.gmail.com>
+Message-ID: <CAFkjPTkWEV6aBAzgcgOB_fX_6C7notJB55y-m0tkQOHCnPMe9A@mail.gmail.com>
+Subject: Re: [bug report] fs/9p: mitigate inode collisions
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Eric Van Hensbergen,
+On Wed, Apr 17, 2024 at 1:12=E2=80=AFPM Dan Carpenter <dan.carpenter@linaro=
+.org> wrote:
+>
+> Hello Eric Van Hensbergen,
+>
+> Commit 6ae7784008d9 (" fs/9p: mitigate inode collisions") from Apr
+> 15, 2024 (linux-next), leads to the following Smatch static checker
+> warning:
+>
+>         fs/9p/vfs_inode.c:513 v9fs_remove()
+>         error: uninitialized symbol 'v9fid'.
+>
 
-Commit 6ae7784008d9 (" fs/9p: mitigate inode collisions") from Apr
-15, 2024 (linux-next), leads to the following Smatch static checker
-warning:
+Thanks for this, I've amended the patch to remove the print in
+question since it was actually vestigial telemetry while I was
+debugging and shouldn't have been in the patch in the first place.
 
-	fs/9p/vfs_inode.c:513 v9fs_remove()
-	error: uninitialized symbol 'v9fid'.
-
-fs/9p/vfs_inode.c
-    470 static int v9fs_remove(struct inode *dir, struct dentry *dentry, int flags)
-    471 {
-    472         struct inode *inode;
-    473         int retval = -EOPNOTSUPP;
-    474         struct p9_fid *v9fid, *dfid;
-    475         struct v9fs_session_info *v9ses;
-    476 
-    477         p9_debug(P9_DEBUG_VFS, "inode: %p dentry: %p rmdir: %x\n",
-    478                  dir, dentry, flags);
-    479 
-    480         v9ses = v9fs_inode2v9ses(dir);
-    481         inode = d_inode(dentry);
-    482         dfid = v9fs_parent_fid(dentry);
-    483         if (IS_ERR(dfid)) {
-    484                 retval = PTR_ERR(dfid);
-    485                 p9_debug(P9_DEBUG_VFS, "fid lookup failed %d\n", retval);
-    486                 return retval;
-    487         }
-    488         if (v9fs_proto_dotl(v9ses))
-    489                 retval = p9_client_unlinkat(dfid, dentry->d_name.name,
-    490                                             v9fs_at_to_dotl_flags(flags));
-    491         p9_fid_put(dfid);
-    492         if (retval == -EOPNOTSUPP) {
-    493                 /* Try the one based on path */
-    494                 v9fid = v9fs_fid_clone(dentry);
-    495                 if (IS_ERR(v9fid))
-    496                         return PTR_ERR(v9fid);
-    497                 retval = p9_client_remove(v9fid);
-    498         }
-
-v9fid is not initialized if retval != -EOPNOTSUPP.
-
-    499         if (!retval) {
-    500                 /*
-    501                  * directories on unlink should have zero
-    502                  * link count
-    503                  */
-    504                 if (flags & AT_REMOVEDIR) {
-    505                         clear_nlink(inode);
-    506                         v9fs_dec_count(dir);
-    507                 } else
-    508                         v9fs_dec_count(inode);
-    509 
-    510                 if (inode->i_nlink <= 0) { /* no more refs unhash it */
-    511                         remove_inode_hash(inode);
-    512                 } else {
---> 513                         p9_debug(P9_DEBUG_ERROR,
-    514                         "WARNING: unlink inode %lx %s qid->path=%llx w/i_nlink==%d\n",
-    515                         inode->i_ino, dentry->d_name.name, v9fid->qid.path, inode->i_nlink);
-                                                                   ^^^^^^^^^^^^^^^
-Uninitialized.
-
-    516                 }
-    517 
-    518                 v9fs_invalidate_inode_attr(inode);
-    519                 v9fs_invalidate_inode_attr(dir);
-    520 
-    521                 /* invalidate all fids associated with dentry */
-    522                 /* NOTE: This will not include open fids */
-    523                 dentry->d_op->d_release(dentry);
-    524         }
-    525         return retval;
-    526 }
-
-regards,
-dan carpenter
+     -eric
