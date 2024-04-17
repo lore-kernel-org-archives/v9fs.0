@@ -1,86 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6CC13C8EE;
-	Wed, 17 Apr 2024 11:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE4E146D7F
+	for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 18:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713353231; cv=none; b=AGrbDgn4oH1pW4ekQfj3uBPDDzBhcL/GMr6XPrN+7Q2KMVfG5LehYtohN0WXK0FqifwR0uIMNvnIqdZU4A0+GZcLqmBTqMuE21bLTwskQ0pn5GjM2itlg/BLuhfz8spjIJnQCY3Yn+QgNbzSar8qU4k+f7CgcXcVpdOntgSeYrY=
+	t=1713377521; cv=none; b=Us3KYyn4RCXNhjjzvupNdkeb+ccn19mnynS9ueOW3bUVK4GBvw9AUuMSR7IR8C5P2ptoUad9jGZgKi/3aQ74zUOWRKyCHEi7EoT2JiAF1ISho+h+823hnyJxdqf13HIXmxY9V7dqAoofgK2tUqnPHV/6AkloxFr0U+bP+lwDvHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713353231; c=relaxed/simple;
-	bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LrkJvss+Wa6t06zvBnRgGycFogVuSgbomWni8FDPvNHs/tKZ77ZV+PiAzn/Jd48tvxKAmvO3nNalCgZsI+eHjv/xftkBggDrP96JbbHErXcvjzk3MITUN5dku2DhI4PDbQi0aNvyx74Lifc2eFgbT3VR62yj4JnBA9fL8KJy4Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdGvaeIP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713377521; c=relaxed/simple;
+	bh=xJHEHWHhJmoUVG/Pdw+vyjuBG/tVovhjwXcJAdSJS/k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ZwKpu4fYlHHw2+WLFir7PZiAlKe+MzVYB9ZI2Y23kOCLVOtkLtyVO/ShBdva0RcQ9ZEfYAvXtp6jqlneIKh2cGQ+xZqPk1JgoLDqN75+hPQxjfvlWUvWDgLxztwAi9hWhFc8EaZYemV07Uha9K1emOC9f/16JvH4azsrGlvY8oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uaw0ed1o; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdGvaeIP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF582C072AA;
-	Wed, 17 Apr 2024 11:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713353231;
-	bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdGvaeIPo+rdvJuwCI/5ibLrCzCKrqHk/PUjNtwX3H7VRIKV72/AGcHywfiKAXbrq
-	 PCs3rlias7N0Qv+ltsfCgCvyqnvLHQifekEx3gvysBlc1Loi540AkvHCsABnJhRtax
-	 VdnRPK5Ww3/8Alj/EQn1bF3fDaKLIHkf4xSNB2smo8cluF+jeCskZkZqDnlPQ71F3s
-	 Z4I9DfICZiNSspeCbO1rXIta5/2E6z0k/KkGXpV5IjeoSGdH+AfKE2h8O0pYpf5+KZ
-	 yPHBwtLMoQmNoqDfZD8pqDF6c0Gg3oo63FmPqxqawxvttRk5tA27p9pWubtmXItbRZ
-	 fCcFASMUtTdWw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix writethrough-mode error handling
-Date: Wed, 17 Apr 2024 13:26:51 +0200
-Message-ID: <20240417-filmabend-matten-50d0cba545f5@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6736.1713343639@warthog.procyon.org.uk>
-References: <6736.1713343639@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uaw0ed1o"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-518a56cdc03so5500658e87.1
+        for <v9fs@lists.linux.dev>; Wed, 17 Apr 2024 11:11:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713377518; x=1713982318; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sIJtYnUQ5AAtgS9HaT2/DLco/xdNOScHx18B777UjDs=;
+        b=uaw0ed1oKyvU7SqDwEkf11gy1Hb2pvMPdjN2nUz12Uh5vhgmitYtD76u6T1LvI8rDi
+         8AzDF+7nZRoFxIzU3GZRon5p+hSZKdLN+1jygUHadnn3dx0EWHYFKts2xCeepWNn5Eyo
+         xEuqCqoGggg0i1Hfwjr/pMp0Fwv2wb9wFbkp6b1emor+HzA9t8irotj9fq1dqyC+U30i
+         WJPb/mqBE5DMUx/q9tKHsIzu6HVKUIfAxACqwLp4M4k459PQNZhKu1NgiWi2sCqx/YUN
+         6f/ZXAY0lRsmxkfdkHg3Dcov5QhwgxF/N9obB/uFt7LGPimp8Ka7V/RsXVI8PmAr95Sk
+         a9cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713377518; x=1713982318;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sIJtYnUQ5AAtgS9HaT2/DLco/xdNOScHx18B777UjDs=;
+        b=dydzvPiGioNMuVyTcxTyRvJCIOA2zg/k+v/YIXOk0A5loC3CFRPsNn2ZRcgLc8voqE
+         FO8qv7uiwjirr+TpXL+gw7uDxewkO/D7fNgiW8ve6iT9y83ztUNHtb7RTq9hdso24+jd
+         UFPUiqY2VBaeoBgVcSjPrsAaYIkfEXKpcFxx9zlVcw0jDIQLqDVWIOSbvbPeqjHmec8c
+         09vgzLMGiyEP2WDJ7vBDE/ElcVMaudVnqIxe+B8MdNvsm2GStGqGoGNtNeQTQn/z/7R/
+         dP2LfMuaaoveFSw6utZ73Xhv+8FQbBUO2JHRY48wGxnhmn24XOpab9oTDqnJY93MZsBk
+         8I2Q==
+X-Gm-Message-State: AOJu0YzKV27wYlOXhAAeR+aF2eIrzgvs6Xg/f4ry/C2j40GrLqzMMHZR
+	QHSB1tYVhsu+RpTnoL9+4VA9VhCjTYFrgnk3NeLkZbCap1FBl1ir3NtIS0XY6aY=
+X-Google-Smtp-Source: AGHT+IG3+kCnCzkWv/785MvGldeo2hBwvfPxFjpQEnWsob/rkwmBImIAInFK98IT6QaSzR4VEc/M9g==
+X-Received: by 2002:ac2:4850:0:b0:518:f2f8:edc6 with SMTP id 16-20020ac24850000000b00518f2f8edc6mr30329lfy.63.1713377517539;
+        Wed, 17 Apr 2024 11:11:57 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id ji16-20020a170907981000b00a5244a80cfcsm6377626ejc.91.2024.04.17.11.11.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 11:11:56 -0700 (PDT)
+Date: Wed, 17 Apr 2024 21:11:53 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: ericvh@kernel.org
+Cc: v9fs@lists.linux.dev
+Subject: [bug report]  fs/9p: mitigate inode collisions
+Message-ID: <5d527d1e-95de-4e36-845a-897cabdcaccd@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1079; i=brauner@kernel.org; h=from:subject:message-id; bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTJb/y38f3Nj+ytmktdNJX35xzYeHLFLj62taGfHqWFc cWdK2X26ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIZD1GhrO7umZK1fRuTcre Gnf7sN++9HVBSTU28vlsM33lDx1NK2f4w2tsOXNLqn/d5k8n766TifzjeCtQQSS8xcbPrY+r7/Z WTgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, 17 Apr 2024 09:47:19 +0100, David Howells wrote:
-> Fix the error return in netfs_perform_write() acting in writethrough-mode
-> to return any cached error in the case that netfs_end_writethrough()
-> returns 0.
-> 
-> This can affect the use of O_SYNC/O_DSYNC/RWF_SYNC/RWF_DSYNC in 9p and afs.
-> 
-> 
-> [...]
+Hello Eric Van Hensbergen,
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Commit 6ae7784008d9 (" fs/9p: mitigate inode collisions") from Apr
+15, 2024 (linux-next), leads to the following Smatch static checker
+warning:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+	fs/9p/vfs_inode.c:513 v9fs_remove()
+	error: uninitialized symbol 'v9fid'.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+fs/9p/vfs_inode.c
+    470 static int v9fs_remove(struct inode *dir, struct dentry *dentry, int flags)
+    471 {
+    472         struct inode *inode;
+    473         int retval = -EOPNOTSUPP;
+    474         struct p9_fid *v9fid, *dfid;
+    475         struct v9fs_session_info *v9ses;
+    476 
+    477         p9_debug(P9_DEBUG_VFS, "inode: %p dentry: %p rmdir: %x\n",
+    478                  dir, dentry, flags);
+    479 
+    480         v9ses = v9fs_inode2v9ses(dir);
+    481         inode = d_inode(dentry);
+    482         dfid = v9fs_parent_fid(dentry);
+    483         if (IS_ERR(dfid)) {
+    484                 retval = PTR_ERR(dfid);
+    485                 p9_debug(P9_DEBUG_VFS, "fid lookup failed %d\n", retval);
+    486                 return retval;
+    487         }
+    488         if (v9fs_proto_dotl(v9ses))
+    489                 retval = p9_client_unlinkat(dfid, dentry->d_name.name,
+    490                                             v9fs_at_to_dotl_flags(flags));
+    491         p9_fid_put(dfid);
+    492         if (retval == -EOPNOTSUPP) {
+    493                 /* Try the one based on path */
+    494                 v9fid = v9fs_fid_clone(dentry);
+    495                 if (IS_ERR(v9fid))
+    496                         return PTR_ERR(v9fid);
+    497                 retval = p9_client_remove(v9fid);
+    498         }
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+v9fid is not initialized if retval != -EOPNOTSUPP.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+    499         if (!retval) {
+    500                 /*
+    501                  * directories on unlink should have zero
+    502                  * link count
+    503                  */
+    504                 if (flags & AT_REMOVEDIR) {
+    505                         clear_nlink(inode);
+    506                         v9fs_dec_count(dir);
+    507                 } else
+    508                         v9fs_dec_count(inode);
+    509 
+    510                 if (inode->i_nlink <= 0) { /* no more refs unhash it */
+    511                         remove_inode_hash(inode);
+    512                 } else {
+--> 513                         p9_debug(P9_DEBUG_ERROR,
+    514                         "WARNING: unlink inode %lx %s qid->path=%llx w/i_nlink==%d\n",
+    515                         inode->i_ino, dentry->d_name.name, v9fid->qid.path, inode->i_nlink);
+                                                                   ^^^^^^^^^^^^^^^
+Uninitialized.
 
-[1/1] netfs: Fix writethrough-mode error handling
-      https://git.kernel.org/vfs/vfs/c/c70fd201bd29
+    516                 }
+    517 
+    518                 v9fs_invalidate_inode_attr(inode);
+    519                 v9fs_invalidate_inode_attr(dir);
+    520 
+    521                 /* invalidate all fids associated with dentry */
+    522                 /* NOTE: This will not include open fids */
+    523                 dentry->d_op->d_release(dentry);
+    524         }
+    525         return retval;
+    526 }
+
+regards,
+dan carpenter
