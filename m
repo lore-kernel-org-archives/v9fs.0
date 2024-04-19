@@ -1,116 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943A312FB18;
-	Fri, 19 Apr 2024 15:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720F2BAEC;
+	Fri, 19 Apr 2024 20:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713539544; cv=none; b=VyE8aKfhlsyzUA9+G9AVurptMlMmfQLd8ROnJvma24MdEDYOVCRrV+Xt0iqVXV1aUcmKXd7x+f5sw6sbDxwavoY51thOqxFUSP4o1cf0zPXQEhyYUeje8j0Lj7M7szp+zkldZsZQQuUTl7aG2PtfELYifHuyNAPlXK9PIf1of5Q=
+	t=1713559594; cv=none; b=kgf3N4TM5WD6q6GNCMCO9xTJ44Q1G2q1sfRezlKEAnuYLsGF8ZJrxGW/oBWOHl9AuJyfZFD2/HHXN0M8sEE6ECOq+HsuFAsPSecD78wonL9qB0DEf8iDzVfDWGpd3YJ5IuYE5+6QyHd/EN+2hKEUEN25X33QYCLQRg1UYkFSAnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713539544; c=relaxed/simple;
-	bh=xQEphaQblCfW5AQQOS56beHxi0XAQWru7AWiLautQ2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pPseVRRH9c8335KbhDdsChUFJDPdTf3qVqK48KkamU+S1kgsm9iUje1HaQFIR6GLz0kTLipE6KArUROl5axj9DixD1OFR9F0gYm/3MwL6FGmT8vcFA7LbPHJeqclqPXmJrgNhGqEsvVw+1e6sMcQb/fkfzgBQ05ZRrwxF/2XvQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILOpVh9K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713559594; c=relaxed/simple;
+	bh=KW9pVORQQdMNwNkKxWS8z1ix+MRs61AM6g6QKZYwprM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=aXSogdiXrXiGzlBymLGKQpERWSVIzeCJTi6eVTwtV472YC/LcnKCOQZBIwzs7QjvFpP5M3ZJtmjOWSjwskgnvhGEQN2WtA7HNFUOcaq5ShSJf3fdrKPohX4EXArUFwgNtdUoUGDLWUPqpzulg1ZwTgB2V0ikkYWGD+tafJ4zEp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxMzkoy8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILOpVh9K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9682C072AA;
-	Fri, 19 Apr 2024 15:12:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxMzkoy8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E01DAC116B1;
+	Fri, 19 Apr 2024 20:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713539544;
-	bh=xQEphaQblCfW5AQQOS56beHxi0XAQWru7AWiLautQ2A=;
-	h=Date:From:To:Cc:Subject:From;
-	b=ILOpVh9KWtBQTPY7rnovDMii6R5GX3+uYENBstpvsUGgP1Tq2ZmQCQljbXL2ljt20
-	 pEY7rmFms58EMS4ihwmrZ154fY5iQGPljG1DLTRSjAiQuc4AYlwW2YqpHM0akxHGKy
-	 BF5xpvfrjQ2B8Y3rLED1wUOfCc0Z3XFlfzFLigL9v5a6NGPHX2xK37kb/tWaUnrBEe
-	 n69KoVAWvS/7Fbo9RXPd4UALkHYQInjVOdpS0M/5owr80QzKJyAs3FdahHL3va4/nb
-	 fnvT7x/40q9H7DUoz1Hk10yl7Df0mVjrlWkWLOf9oiSGFUJvpVvkFQq0wY2PS6W1Qa
-	 ztimxvi+ERv6w==
-Date: Fri, 19 Apr 2024 15:12:21 +0000
-From: Eric Van Hensbergen <ericvh@kernel.org>
-To: torvalds@linux-foundation.org
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] fs/9p fixes for 6.9-rc5
-Message-ID: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
+	s=k20201202; t=1713559593;
+	bh=KW9pVORQQdMNwNkKxWS8z1ix+MRs61AM6g6QKZYwprM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=SxMzkoy8QRsrUrZ6/QTTD/Gix0Ult/xG5yK4rGgEXRQ6ktKQxyIto9yGQ9KiJCQK+
+	 JCL9SXEhwInGOJUyumVtRPVwBnlZtXlEdeofzTtQRNait2opvaEM2ucwKjJUz9WsbQ
+	 uRiNS/TRxn6EfQrMe58DhzNgWpmpwI6fZFpAXJOrV/Vem8V/tCmjwetkqoabw2I3Qk
+	 LVFmG1P/SQRjLkjolatFFhm+c/w7uRZfjub/OMjZkfu/qwK35kpBMzWxbaOvFP13zX
+	 QW8uVEqsPtquCCEbiPodgoXOrL0u4aAcriPG+h4KIzzblowfTHIV/lUTPDDL/RTTLL
+	 zBNkj+lMXwQng==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CD8F5C433E9;
+	Fri, 19 Apr 2024 20:46:33 +0000 (UTC)
+Subject: Re: [GIT PULL] fs/9p fixes for 6.9-rc5
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
+References: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc5
+X-PR-Tracked-Commit-Id: 7fd524b9bd1be210fe79035800f4bd78a41b349f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 46b28503cdf35e1c34d9d135d91da91d3649ebaf
+Message-Id: <171355959383.22865.2989568451590709170.pr-tracker-bot@kernel.org>
+Date: Fri, 19 Apr 2024 20:46:33 +0000
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="O+hS8P7x9X5RAHSB"
-Content-Disposition: inline
 
+The pull request you sent on Fri, 19 Apr 2024 15:12:21 +0000:
 
---O+hS8P7x9X5RAHSB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc5
 
-The following changes since commit 8d025e2092e29bfd13e56c78e22af25fac83c8ec:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/46b28503cdf35e1c34d9d135d91da91d3649ebaf
 
-  Merge tag 'erofs-for-6.9-rc2-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs (2024-03-27 20:24:09 -0700)
+Thank you!
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc5
-
-for you to fetch changes up to 7fd524b9bd1be210fe79035800f4bd78a41b349f:
-
-  fs/9p: drop inodes immediately on non-.L too (2024-04-11 23:40:55 +0000)
-
-----------------------------------------------------------------
-fs/9p: fixes regressions in 6.9
-
-This series contains a reversion of one of the original 6.9
-patches which seems to have been the cause of most of the
-instability.  It also incorporates several fixes to legacy
-support and cache fixes.
-
-There are few additional changes to improve stability,
-but I want another week of testing before sending them
-upstream.
-
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-
-----------------------------------------------------------------
-Eric Van Hensbergen (2):
-      fs/9p: remove erroneous nlink init from legacy stat2inode
-      fs/9p: Revert "fs/9p: fix dups even in uncached mode"
-
-Jeff Layton (1):
-      9p: explicitly deny setlease attempts
-
-Joakim Sindholt (4):
-      fs/9p: only translate RWX permissions for plain 9P2000
-      fs/9p: translate O_TRUNC into OTRUNC
-      fs/9p: fix the cache always being enabled on files with qid flags
-      fs/9p: drop inodes immediately on non-.L too
-
- fs/9p/fid.h       |  3 ---
- fs/9p/vfs_file.c  |  2 ++
- fs/9p/vfs_inode.c |  7 ++++---
- fs/9p/vfs_super.c | 17 +++++++++++++++++
- 4 files changed, 23 insertions(+), 6 deletions(-)
-
---O+hS8P7x9X5RAHSB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElpbw0ZalkJikytFRiP/V+0pf/5gFAmYiidUACgkQiP/V+0pf
-/5jo3w//Tp8RQDwtPFXyeSa2SEEAUyNXE5UhaqlSfKnNdDn+QaiTmjxGFq7tLVh/
-e40eBdRVnuoucBXW5POdmv/7wuG9dYPwE8N1Ic6U2l+Gmz2poNr3Afly4BskudPz
-XRbdnir4Iefw1CpWdwZrkZLPDCB5LZGCMhIsV9Zdokve5QNpKenJ+OKiG+hNoSdb
-5iyQHSIvWOYP9jlalRMtEPoV2kqUy4Xzuu7/h6rvfMNoKBDY8brsD0wol95XuJAA
-TPslEvdn2nZ3CFYtGC1+vozlvaqnIC1TMJ4p4beQgODe5bfsSZxDnQGIHBvbdlRz
-hjjrEWCz2rOdl4LpdywTEWSXBKqpg71WuKub6Emxrs8q3ylw92urE2DLw2LovVIx
-rUCEFXDVF/DorQ9aQbNe01AdsCkY/bCV6S91lyTiud2Tcrqoto7fTQNA00L1r263
-smpYiwnv7kvqEb2teLbQ0gDfzVNZz1RMQ100eTftoYUvHu6089G4eGp2DZZKbvJv
-2TFgRFacknf5672Lm2yXfSCd8sIIvCL9LROM2kUGGgzewbY30PgOZxF09dtP3HdP
-jdpcoBTOHjUog22LRLOHyLooP82b1kjRQtOaI/SfGGGMZbIeYfNtKYFlvLhmYpns
-WaUMfh8PRHlOoZ11QanbbqLB2kqXUKA5YQhltXliKC7pF/ECthY=
-=Yiod
------END PGP SIGNATURE-----
-
---O+hS8P7x9X5RAHSB--
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
