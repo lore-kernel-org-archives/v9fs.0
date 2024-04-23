@@ -1,31 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4B1332B2;
-	Tue, 23 Apr 2024 11:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8BA137743;
+	Tue, 23 Apr 2024 11:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872417; cv=none; b=tMCr1q9noaSq4Cug25/o8mM7oW5tJLmMl26PwZcr4Q4IURZsCk1UAPbXF8hMw1VSf5VIeonpOcXQzI/6UxUy+v3gH++dMdK5Ka4+zZLykAGUZA6ruO9EF47Kq5uFbbnpg2ZZoLt2vLnUQDLECfTzh961Zyw3uVucw67Ufl1whqw=
+	t=1713872435; cv=none; b=a8KZ24Qye97kuBhUt4zQcSvf7myMUoIdtqDboYGqe5jKA5UChYXYYXFLZ66cTLEtyJpeMg/IKSf2KtQTaQUmkZZ4GVDTveW799fgtaQCuVnXbQgImEVjRAtTV/+9Q/7orzzuvdZeObMrEgjcVwfBIyNDtSzrIdJmbksmQ3HriRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872417; c=relaxed/simple;
-	bh=ZV19rWlq0rMYP1iGul5iwqjLFaaRMHQBvl4e/eP0L5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=st0NORnlBasfDjPp/sTvdCTq1iueqN30Ig5X00oK5xcbGiqCQGkzMuWYsdfKklUgg+nUdOfCtoYuTMpmZ8AxK8qFeSelhxsoSww2MAduBGuJykuG/oI2CnHKXus0YnvCPl+JawE32H03zsrpninx1u7syVoDVUZ0yda4MU+h8mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aAhAIKkA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713872435; c=relaxed/simple;
+	bh=qRVQSE/RK9K6R1EUJcZUf3XOwJJdJoMBMEgAaDBSqx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tylsgsM4O93xPz7ZsxHGCxCgq7fGD7Wo5Do1+5hpTc82o0e1I+i7XdCDlP/vBwgCu1zGn9jYPX6v9tK4UYAP+xPuuW8sRLBMZ+F0ZcJ61apjBH7gJSb/6XgsbvraMBd21t6tPgkA4qrMWpFau2X9ePAshIsQ1uJgcxsT4P1MgYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UAc1a6xf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aAhAIKkA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F76BC32786;
-	Tue, 23 Apr 2024 11:40:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UAc1a6xf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6E8C116B1;
+	Tue, 23 Apr 2024 11:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872417;
-	bh=ZV19rWlq0rMYP1iGul5iwqjLFaaRMHQBvl4e/eP0L5Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAhAIKkAgDPLXbe6Oq1zqeHsacbuk2yEQKDaMXWkXB6+Ct/74rXw6yMoeVyHrY4Dc
-	 EF9fy0qyTJPhZqz3xx4C1qhF6Gk8lADwasAfRzvvIjRhI+pzVd6j1ggtkp4Ggjf/Vq
-	 H5jdLvDAJpUAvHF0QvS8baSIzGyzmNqvCFcjQxWWvol1oo+Cb5q7lPR/9PbPha8tuT
-	 eTgAol4woXIJEafloDTltEK4+sT4HoF10Jwk6OoUPMKoPnWkMoYFv7SKeI4llacwq5
-	 R/oqM+m6xI6K7BWmiB+DV5f9ZGCldiLesXO/EOaeEeH/BvA8okbwEcD993Vx3wo8zc
-	 F+WfBvq4X5jbg==
+	s=k20201202; t=1713872435;
+	bh=qRVQSE/RK9K6R1EUJcZUf3XOwJJdJoMBMEgAaDBSqx8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UAc1a6xf2le3VSKXm433AuLIH3mxX6+XK9mznSiXuyHTTBDFLPBBDakI90VeU2/7q
+	 8J1VZaGFdxBbVsYHqglWXT38gbdy4pdOiUfzwVyr6vuDdBcyHGEh97DUC/OnpVy4c9
+	 kYRXw/yh7D0clHEnuRMx6f7BrI9OuZdiGsgHOmGwt38UwZ5b8gvZPspS03LZ29Nadb
+	 jWy+6e6MuocnawQZgd6KQMy3u7Sm8+9MHHZKU5DgsEm0gGJKXsXTROR8LpF9dzigad
+	 oaEqvb4CpH16uigRYOl1iMF0cT7JPUsVwTG+uTgHhQ0/k2WVhplRjQ2y5xHh8hEKuU
+	 iFBCPFwDhOPqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -35,12 +34,10 @@ Cc: Joakim Sindholt <opensource@zhasha.com>,
 	lucho@ionkov.net,
 	asmadeus@codewreck.org,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.8 10/18] fs/9p: drop inodes immediately on non-.L too
-Date: Tue, 23 Apr 2024 07:01:06 -0400
-Message-ID: <20240423110118.1652940-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 01/16] fs/9p: only translate RWX permissions for plain 9P2000
+Date: Tue, 23 Apr 2024 07:01:34 -0400
+Message-ID: <20240423110151.1658546-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240423110118.1652940-1-sashal@kernel.org>
-References: <20240423110118.1652940-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -49,32 +46,38 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.7
+X-stable-base: Linux 6.6.28
 Content-Transfer-Encoding: 8bit
 
 From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
+[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
+
+Garbage in plain 9P2000's perm bits is allowed through, which causes it
+to be able to set (among others) the suid bit. This was presumably not
+the intent since the unix extended bits are handled explicitly and
+conditionally on .u.
 
 Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_super.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/9p/vfs_inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 941f7d0e0bfa2..23cc67f29af20 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -310,6 +310,7 @@ static const struct super_operations v9fs_super_ops = {
- 	.alloc_inode = v9fs_alloc_inode,
- 	.free_inode = v9fs_free_inode,
- 	.statfs = simple_statfs,
-+	.drop_inode = v9fs_drop_inode,
- 	.evict_inode = v9fs_evict_inode,
- 	.show_options = v9fs_show_options,
- 	.umount_begin = v9fs_umount_begin,
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index ea695c4a7a3fb..3bdf6df4b553e 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
+ 	int res;
+ 	int mode = stat->mode;
+ 
+-	res = mode & S_IALLUGO;
++	res = mode & 0777; /* S_IRWXUGO */
+ 	if (v9fs_proto_dotu(v9ses)) {
+ 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
+ 			res |= S_ISUID;
 -- 
 2.43.0
 
