@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4291494B1;
-	Tue, 23 Apr 2024 11:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F28C149DE9;
+	Tue, 23 Apr 2024 11:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872511; cv=none; b=PmtJgFih2C8pVgH9gpS4cWKsQ50htJRU9I2K55aS4xI33Bhtzwe9C67yFgFSBrPxjDx9oIyba9bSSs79FGQKxc9zVH8qcuQcIApAU/XHKU5TJ4S+4KgyN21vnltE1aUS/4Gli1Swd7hmpFQCknF/o7/7UI4Q5desTwKyHZJM46U=
+	t=1713872516; cv=none; b=l552xAmAGjQivHllqN1Iu+KBQs8MUCwNn/JsZRk5V+46QMjTw4tKRqWvW/UAxnq6nVsAg/bu/Kd8FRkGxqvFyz1x3UIQAZYHSn1qqmsWX/aon6g92zsyS5uK0fqJx43l82IbDIAm6oLP2fdUGHdDIvc1GLhmbkGSnkZsOO36Idc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872511; c=relaxed/simple;
-	bh=s3bgpOqEVPgxz+WTua/CVDLsS7TiwNKqMPEHlzHIwek=;
+	s=arc-20240116; t=1713872516; c=relaxed/simple;
+	bh=fg6jESquKhYYZR8V7mh3F9Gr4KLTbMAN5AvyOmROtPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tr/aQJkg3tT2CiKnqWB990yR7cE45m3EHdn61XP+Q03rV29LM8VGIjfIy7DnUPDQXoKI3mo7TPpPqJgpPfueAJTlIHk4pAZkAdn43v7sq6adhSRxbpStlXaDrNpVzJAIWUSLsEqgePqBGyTkcMfuwL9EY2zIY5S/ZH5NHNoNtL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cw1Vu0a+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=hb47pPkDB+5rOOC15OOUcwyUm7T2yNkTS453kh+L/1Nq+52nL1FIQIsYEM/ndZtcGNgJ4edqgWYSCiQpfeYBsTsx3k/UEHZc47DWJu9O6zhw1yvxWNQDUpZwtKynKCmzAgZ0JKSdCIVfrurOo7Zv9wajMhSz3Rn0TMT0C5lz2Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWnzDF63; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cw1Vu0a+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86D1C3277B;
-	Tue, 23 Apr 2024 11:41:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWnzDF63"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4027AC2BD11;
+	Tue, 23 Apr 2024 11:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872510;
-	bh=s3bgpOqEVPgxz+WTua/CVDLsS7TiwNKqMPEHlzHIwek=;
+	s=k20201202; t=1713872516;
+	bh=fg6jESquKhYYZR8V7mh3F9Gr4KLTbMAN5AvyOmROtPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cw1Vu0a+dPKHObhlUx0UpEMDbFysjsvE+zmQweeQmhmuTiTjIgXxdZTNK9cKg5169
-	 Sd5d/E/tJ1FFxwB5tyqay3af7hHuTy6aojBGzvaYSs47XS/R/R1qIHwxJZ44WNS8Y3
-	 vWXWa7LzlZolArX+FDXTOqMERPxSLVQOJWr6wufRPPrORi6N8wdEZ5IrPmNukcdzZo
-	 NjTzaaYX+zNm3YgBA+lqE45fB2HfAHFNwTD4AXoVgXl4UKJ1otOGkNnFXLXFcKtGew
-	 02JtxK726wj/7eUZZ+8cmyrNw/Dsmw0hxZKShxaj1cU5atAMEvOwJFrdvq6cjqUya7
-	 qrslJp6EFIQHw==
+	b=kWnzDF638J0T/oL0ecr6mPVvcYsEGxeYVOaNsv3BweB55RLRlvHs2IbdI0j4ovdqG
+	 YdnukPAO5XqKnNhu52vZW9Y7TClC1GQMe1Cb+lj4zS8/ZvxUnoeVsR5HbH2tFsLdeD
+	 XW54scjF687pqEnezbmx5/zp6dEuYeMbVpRq7O2Akl17uOUAm5A4iNBVFkwypepf4C
+	 Z8MkymMn80XXqdUastqLVXyh90I2KuZDITBc/UubWiQkB31VQCzh8RPyYwetTiU2Kf
+	 fFiYcy3YSrKkK1lQLiyEW6clrc0SMjJkoNDmYZwcgfmpgT/EVtOXzrLbB7Ro/oNwEq
+	 h+ck660KhwRqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeff Layton <jlayton@kernel.org>,
+Cc: Joakim Sindholt <opensource@zhasha.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lucho@ionkov.net,
 	asmadeus@codewreck.org,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 3/8] 9p: explicitly deny setlease attempts
-Date: Tue, 23 Apr 2024 07:02:58 -0400
-Message-ID: <20240423110304.1659456-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 7/8] fs/9p: drop inodes immediately on non-.L too
+Date: Tue, 23 Apr 2024 07:03:02 -0400
+Message-ID: <20240423110304.1659456-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240423110304.1659456-1-sashal@kernel.org>
 References: <20240423110304.1659456-1-sashal@kernel.org>
@@ -52,40 +52,29 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.274
 Content-Transfer-Encoding: 8bit
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
+[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
 
-9p is a remote network protocol, and it doesn't support asynchronous
-notifications from the server. Ensure that we don't hand out any leases
-since we can't guarantee they'll be broken when a file's contents
-change.
-
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/9p/vfs_super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index ee9cabac12041..14d6cb0316212 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -676,6 +676,7 @@ const struct file_operations v9fs_file_operations = {
- 	.lock = v9fs_file_lock,
- 	.mmap = generic_file_readonly_mmap,
- 	.fsync = v9fs_file_fsync,
-+	.setlease = simple_nosetlease,
- };
- 
- const struct file_operations v9fs_file_operations_dotl = {
-@@ -711,4 +712,5 @@ const struct file_operations v9fs_mmap_file_operations_dotl = {
- 	.flock = v9fs_file_flock_dotl,
- 	.mmap = v9fs_mmap_file_mmap,
- 	.fsync = v9fs_file_fsync_dotl,
-+	.setlease = simple_nosetlease,
- };
+diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
+index 74df32be4c6a5..46e58fdf9ba54 100644
+--- a/fs/9p/vfs_super.c
++++ b/fs/9p/vfs_super.c
+@@ -335,6 +335,7 @@ static const struct super_operations v9fs_super_ops = {
+ 	.alloc_inode = v9fs_alloc_inode,
+ 	.free_inode = v9fs_free_inode,
+ 	.statfs = simple_statfs,
++	.drop_inode = v9fs_drop_inode,
+ 	.evict_inode = v9fs_evict_inode,
+ 	.show_options = v9fs_show_options,
+ 	.umount_begin = v9fs_umount_begin,
 -- 
 2.43.0
 
