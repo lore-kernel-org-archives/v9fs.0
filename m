@@ -1,63 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720F2BAEC;
-	Fri, 19 Apr 2024 20:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A6E824B1;
+	Tue, 23 Apr 2024 11:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713559594; cv=none; b=kgf3N4TM5WD6q6GNCMCO9xTJ44Q1G2q1sfRezlKEAnuYLsGF8ZJrxGW/oBWOHl9AuJyfZFD2/HHXN0M8sEE6ECOq+HsuFAsPSecD78wonL9qB0DEf8iDzVfDWGpd3YJ5IuYE5+6QyHd/EN+2hKEUEN25X33QYCLQRg1UYkFSAnk=
+	t=1713872402; cv=none; b=h+cXGDkJwgbhnDjti9hHfnsC09L1umIrctN0kq5F+ChwkLKz0v6Awcc8/y4NdopeKF9oM0PQ/LUmGPREwuxiDD5E0o/VRTiJLnjY+87nZp51UJq/HvR43TWrHl/pJT2+Bvk9Vcs0YUXVhbrbitCRf5MuRRZiGUftDWnTRVHdLYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713559594; c=relaxed/simple;
-	bh=KW9pVORQQdMNwNkKxWS8z1ix+MRs61AM6g6QKZYwprM=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=aXSogdiXrXiGzlBymLGKQpERWSVIzeCJTi6eVTwtV472YC/LcnKCOQZBIwzs7QjvFpP5M3ZJtmjOWSjwskgnvhGEQN2WtA7HNFUOcaq5ShSJf3fdrKPohX4EXArUFwgNtdUoUGDLWUPqpzulg1ZwTgB2V0ikkYWGD+tafJ4zEp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxMzkoy8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713872402; c=relaxed/simple;
+	bh=uxG/CkClSDymNnYyfIlf2Wp9gxXub3W6bIqP+YwWKvE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jY9bcRSBLnXeVt2kMocsgI8kiqNdUm8Sp8+ktgEUWwu+fUhXFvsQJmJ/FoWQP43DrSUuv8esBQIwAP83Ozct0zWjljciSG0YCK0BTvHFbfSuwYkSYoNHIlYC3Ve++3BaRqoFFBHpnMteJrk3gDpzVV1olDz/l0QcEBKYEBJ6sG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLWFKZLV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxMzkoy8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E01DAC116B1;
-	Fri, 19 Apr 2024 20:46:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLWFKZLV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8557AC116B1;
+	Tue, 23 Apr 2024 11:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713559593;
-	bh=KW9pVORQQdMNwNkKxWS8z1ix+MRs61AM6g6QKZYwprM=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=SxMzkoy8QRsrUrZ6/QTTD/Gix0Ult/xG5yK4rGgEXRQ6ktKQxyIto9yGQ9KiJCQK+
-	 JCL9SXEhwInGOJUyumVtRPVwBnlZtXlEdeofzTtQRNait2opvaEM2ucwKjJUz9WsbQ
-	 uRiNS/TRxn6EfQrMe58DhzNgWpmpwI6fZFpAXJOrV/Vem8V/tCmjwetkqoabw2I3Qk
-	 LVFmG1P/SQRjLkjolatFFhm+c/w7uRZfjub/OMjZkfu/qwK35kpBMzWxbaOvFP13zX
-	 QW8uVEqsPtquCCEbiPodgoXOrL0u4aAcriPG+h4KIzzblowfTHIV/lUTPDDL/RTTLL
-	 zBNkj+lMXwQng==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CD8F5C433E9;
-	Fri, 19 Apr 2024 20:46:33 +0000 (UTC)
-Subject: Re: [GIT PULL] fs/9p fixes for 6.9-rc5
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
-References: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZiKJ1Q7Ib6Fj6I9S@3f3e8491d9e9>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc5
-X-PR-Tracked-Commit-Id: 7fd524b9bd1be210fe79035800f4bd78a41b349f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 46b28503cdf35e1c34d9d135d91da91d3649ebaf
-Message-Id: <171355959383.22865.2989568451590709170.pr-tracker-bot@kernel.org>
-Date: Fri, 19 Apr 2024 20:46:33 +0000
-To: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: torvalds@linux-foundation.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=k20201202; t=1713872401;
+	bh=uxG/CkClSDymNnYyfIlf2Wp9gxXub3W6bIqP+YwWKvE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lLWFKZLVRhTGthnayGFse3ryC6sBCPPRKAPeVAtE0J+LrWdhmSeSzj/Bj/aWn4271
+	 e6rBSCP6iHgdx+C29TUh/OAgGP87pxNDXuyi2ao45Iv5qgYkkOghCsW8msIDGKDv0w
+	 j+c3Xe7puLGMn0lvY370CLlOeLknf8c50Ftnkd4r7RTQ+Zmb4NfziDi7enElSxPups
+	 gpHe6ybE74sw/d3dwcI5EpKlvqEV43JATLyH9Fm8yBdaz5UfL5j0uM8/xvUT9++koa
+	 GwZn1DHXIRR5vPsZ4wV/1FlVJRG4jxhiy8i3sY9SVbYyQT4bSZg/mypLZi4YuSHs+o
+	 IVb90y/x2HZqA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	v9fs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.8 01/18] fs/9p: only translate RWX permissions for plain 9P2000
+Date: Tue, 23 Apr 2024 07:00:57 -0400
+Message-ID: <20240423110118.1652940-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.7
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Fri, 19 Apr 2024 15:12:21 +0000:
+From: Joakim Sindholt <opensource@zhasha.com>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-fixes-for-6.9-rc5
+[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/46b28503cdf35e1c34d9d135d91da91d3649ebaf
+Garbage in plain 9P2000's perm bits is allowed through, which causes it
+to be able to set (among others) the suid bit. This was presumably not
+the intent since the unix extended bits are handled explicitly and
+conditionally on .u.
 
-Thank you!
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/9p/vfs_inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 32572982f72e6..e337fec9b18e1 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
+ 	int res;
+ 	int mode = stat->mode;
+ 
+-	res = mode & S_IALLUGO;
++	res = mode & 0777; /* S_IRWXUGO */
+ 	if (v9fs_proto_dotu(v9ses)) {
+ 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
+ 			res |= S_ISUID;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.43.0
+
