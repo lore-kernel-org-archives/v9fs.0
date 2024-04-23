@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF58564C;
-	Tue, 23 Apr 2024 11:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04DF130E3C;
+	Tue, 23 Apr 2024 11:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872408; cv=none; b=c6NlMBXiSLFDuF0qduFKNV4wWRr2tq+A/lerUa3UMGWZFC4k/CZTZZw/dLH2NLVmBja1xOMviJ3kZWvMMduKl7eRihWBPqon0XJwrng9E4MtcZlP+wLQY979kGdT8CW8bnAGMXm2t5S6zPoVyvhqag5vtfpCle783WxjQLIF5oQ=
+	t=1713872415; cv=none; b=pitPbR3HBNZIsDbMBVC9uN55LSip/JGbJJ/twu/3/HxEUhv2gmEGu3Qwe+AzL9maTphMC6vxoGA0kRoNwa8yn/SNLiX6Vk9WpKdiICPuP5wK0paZCYCja7H9mq2FALn/S+s+qzi2H7bLUf1tOVYFzca3zrF4zNbMymzdZtvzYlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872408; c=relaxed/simple;
-	bh=UDaPVYxqUw/Q45OpXoGSqA3JFjqw/Mtk8GrIqSNtwPw=;
+	s=arc-20240116; t=1713872415; c=relaxed/simple;
+	bh=BvNLKMcCWGHoQCy1k1rj+7vqHXefuyqu/ekLhxggMCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKSqF00yeH0X/ZpSYilEHSzOMjb4U5dsfMoQT1D179bg54SmjvrMWQ+6aGEqiyIi4D/sxfejjgVcASIdhw79woLD9RBkYnGSvnfvII/Yj6OnUbeQazI0ql4dnYgCtivEovQuAsl4VRrX/ahcw8JDrtJ97HPp5+0P5nYjUQnX+NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csC/30zU; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=guvvlcI03wuHErx++UfIgOEnZC+NxtxG4DKQapTcYEm9VXCXR3wP2cyfM27fUIQsa97B/5a7SEvombBGaQRADmWa8aASf0pthu4Lnkm57DVUIEZDPcagb1kv6NyGYqhbCXq9Ds15L4NLuSuomysdE6FgogtYGyytuCe7O+bbcJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJJyCS8q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csC/30zU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88EAC32783;
-	Tue, 23 Apr 2024 11:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJJyCS8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA017C116B1;
+	Tue, 23 Apr 2024 11:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872407;
-	bh=UDaPVYxqUw/Q45OpXoGSqA3JFjqw/Mtk8GrIqSNtwPw=;
+	s=k20201202; t=1713872415;
+	bh=BvNLKMcCWGHoQCy1k1rj+7vqHXefuyqu/ekLhxggMCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csC/30zUj3Wl6U/wxBzwqJSGnFwiEO5KYW14e/JcbNaS/zgm6RT+aT2Z8gQEm/izc
-	 Hn3xcGW/J+xh6WmxZHZPq96nrpA9IOLDXI77cnzOcs58fztOZUf1d/AudnVFoDxjnf
-	 S4nahdlqq+rs29bW/tAxZGy5m5q0fi1t5Jvqd7/z9J3Sn/+/DmcvBW2SLKnqFhj+W/
-	 9vdGHAn+gxxzx+Fc/SMQdgv4tsH5LYq1XqCXPQNKBgHm04Db3fBL9Ylh/PimT6aJir
-	 jNgVTXmZ7rDfwQFg+wUuq92u2gSQFhkT5xzL+blbiJApVWmE4n+p+vlR7pLbrPsjos
-	 k8ljleiID8ZZw==
+	b=JJJyCS8qRGbbHW+XXVRXVSzqPB5EKIewCpkDK0e8RbG4AUElCu/xo8TpqE6LF2Y/+
+	 07JK0r9JlFqVEKN0eQMl3JbaWqoZJYnGJn3ohHWiTNDmjGVCQ2YdKwZEt83zda2FxK
+	 Ck62/5x8wnAN3B42z5k7rh7KUsgpARxdgt8G5jBiE6BHF4pQcCCW/GezdFjligItij
+	 ZcJlEUJnGCbeFiIt8O2FYtoE4lx8nAPxHDBD67bPkyGzZztSybvIOw06NzDqhJLUX6
+	 XVTysYgROkwNeyfHhrTheDDnXwlKbqRS/VnvSotzYfYCqPAkk94GtcQf8TI1tBXPT6
+	 zQ41THI+h7xYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeff Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lucho@ionkov.net,
 	asmadeus@codewreck.org,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.8 04/18] 9p: explicitly deny setlease attempts
-Date: Tue, 23 Apr 2024 07:01:00 -0400
-Message-ID: <20240423110118.1652940-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 09/18] fs/9p: remove erroneous nlink init from legacy stat2inode
+Date: Tue, 23 Apr 2024 07:01:05 -0400
+Message-ID: <20240423110118.1652940-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240423110118.1652940-1-sashal@kernel.org>
 References: <20240423110118.1652940-1-sashal@kernel.org>
@@ -52,40 +51,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.7
 Content-Transfer-Encoding: 8bit
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Eric Van Hensbergen <ericvh@kernel.org>
 
-[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
+[ Upstream commit 6e45a30fe5e7cf5d42ac07262a3d97644f23dc68 ]
 
-9p is a remote network protocol, and it doesn't support asynchronous
-notifications from the server. Ensure that we don't hand out any leases
-since we can't guarantee they'll be broken when a file's contents
-change.
+In 9p2000 legacy mode, stat2inode initializes nlink to 1,
+which is redundant with what alloc_inode should have already set.
+9p2000.u overrides this with extensions if present in the stat
+structure, and 9p2000.L incorporates nlink into its stat structure.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+At the very least this probably messes with directory nlink
+accounting in legacy mode.
+
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/9p/vfs_inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index bae330c2f0cf0..a504240c818c8 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -520,6 +520,7 @@ const struct file_operations v9fs_file_operations = {
- 	.splice_read = v9fs_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync,
-+	.setlease = simple_nosetlease,
- };
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index ffb76ec3cd9b3..fa185e50d0fd3 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -1148,8 +1148,6 @@ v9fs_stat2inode(struct p9_wstat *stat, struct inode *inode,
+ 	struct v9fs_session_info *v9ses = sb->s_fs_info;
+ 	struct v9fs_inode *v9inode = V9FS_I(inode);
  
- const struct file_operations v9fs_file_operations_dotl = {
-@@ -534,4 +535,5 @@ const struct file_operations v9fs_file_operations_dotl = {
- 	.splice_read = v9fs_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync_dotl,
-+	.setlease = simple_nosetlease,
- };
+-	set_nlink(inode, 1);
+-
+ 	inode_set_atime(inode, stat->atime, 0);
+ 	inode_set_mtime(inode, stat->mtime, 0);
+ 	inode_set_ctime(inode, stat->mtime, 0);
 -- 
 2.43.0
 
