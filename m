@@ -1,80 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB537130A6C;
-	Tue, 23 Apr 2024 11:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A61153BD0;
+	Thu, 25 Apr 2024 20:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872528; cv=none; b=NiploOnDzW5WGhjkZhF6pRpqqdvd2Qk5Q0kVTzv+Dmbzqey8eqSTUM2DzEd1fRHUUPjnb19a3PRPQNhykKHS3A3PZwqNcFjVP1AhVM5peKTd/RUhZCmQs+d6ROlaLei/DUYCBhrszn8DHsG91+ay27s1lQ1KUPIjTAYuq2ft04s=
+	t=1714076772; cv=none; b=WpQkG8qSySL0LEDrJt2+WAbmcU1GXsC+H/JPu26mkrsWNkAyY/jyh1YHMh+5bsWUJrsjevfWGcdz9NshfB2qLY4He8S+cGUo97QZ3Hn0gZmO4wxcdf0CtM4Bb87ZYBYNXxPOT51w6ivfCAKKf+K7F6VvfbAdItFciUOgJIU5yD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872528; c=relaxed/simple;
-	bh=Kvm46gz7dc5HjTw0rsOrBcTJgY5BTDwR9R5K2p+PS/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WA184WCZxPAHGp4cXXizpia9E+6OxBt29ZyT/Dof/++uC0rwep+0JLaVEzneSFeH647TCNQp1bEsXIRMeqegdRDNk5MRFb5BIS7+hwoe5xlGUZacIzogCX5raGBXcKJJnOlLnjjjWFCaY1ZTJb9Q3JbJy5QpiKHHHH6lDhPH62g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6WL/1ks; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714076772; c=relaxed/simple;
+	bh=PLMeaxqZnXGaE83WfAZG3zNxwApXjTs0zbWw4UZmoUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PQmEUdIRkfPLGAC8zh93BDx7GK8aa2OOy5V2G+EQP4/A4ah/W8DXxV9yKrHwQ0euAX6SDbrTTNHhEwO63ha9NPkP+pIRrWAguFrhbig3vmhG08l+Wl+Cqr0DRdoGrxFpj9FW1gYQYyRJsDE+mal9EssDBkMvU3NQA1WUFf1+sjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VW7gNDP9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6WL/1ks"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AA7C4AF07;
-	Tue, 23 Apr 2024 11:42:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VW7gNDP9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA76C113CC;
+	Thu, 25 Apr 2024 20:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872528;
-	bh=Kvm46gz7dc5HjTw0rsOrBcTJgY5BTDwR9R5K2p+PS/Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6WL/1ksXUSYHs7TvP/sKoM14u9aCeoSFvpF6HuT6fEBK6N7BveiKESvZKBcN2hcx
-	 5zBwAbenNM+lO/Sgf6tnE2QR7FOASeqPSSJP40CTV7FeghK/q6tBYBUhm1CUfD5fNU
-	 6vnplexRB1/E/Bv9RbKdo0cwQY1qo9sCRvQYZu6wymgGja+TdhfhU/PPq8WaCUZokD
-	 aBh+97KSFYnLPioh0kYD88kVwN8qYdIXqJOssUSsdhcpkuloLiuNl8X4J/ct713jYp
-	 gFp4Yqov0jsQmhtMuzPTbjPbhUtKcG22SR3odgUVEXhCoRumV7cl+vylSHYP+yPgTR
-	 d4tqtBafFeFFg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	lucho@ionkov.net,
-	asmadeus@codewreck.org,
-	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 4.19 6/7] fs/9p: drop inodes immediately on non-.L too
-Date: Tue, 23 Apr 2024 07:03:16 -0400
-Message-ID: <20240423110318.1659628-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240423110318.1659628-1-sashal@kernel.org>
-References: <20240423110318.1659628-1-sashal@kernel.org>
+	s=k20201202; t=1714076772;
+	bh=PLMeaxqZnXGaE83WfAZG3zNxwApXjTs0zbWw4UZmoUE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=VW7gNDP9vOqWq9cksmCzMVacHjCCT0quq6Zas0rk7VESAmupkTvrAi9inIM1C08Tr
+	 nFzF7JWaCdIEDiIiDAc/rsQjhmYDdo12DdhyT8aVEIUn1aVJRNLnxns5YdYvOu1wLl
+	 adI89GnSFCM005U08gK6z08G8PAYF2J1DVXk2FMLbKp05DZ2IN1kSTtnXbdF1vbbly
+	 7HpqlDsweMzL3K1ZIyGbEe2OheFcyOK/s1hYDmfdm8qZb2aRX0mniqI5XOhqY3hk4Q
+	 C9fHoTXAo7PYJemzEv+/LKYLFEY6NqepK5flUBBLRMBUprtN01a11aGMB5JrlbeyhH
+	 YDtvt93cbp8Zg==
+Date: Thu, 25 Apr 2024 20:26:10 +0000
+From: Eric Van Hensbergen <ericvh@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] fs/9p: fixes for 6.9-rc6
+Message-ID: <Ziq8YlBcw4qj4K1O@3f3e8491d9e9>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.312
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="upXBWr4EQuAUIzK/"
+Content-Disposition: inline
 
-From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
+--upXBWr4EQuAUIzK/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+The following changes since commit ed30a4a51bb196781c8058073ea720133a65596f:
+
+  Linux 6.9-rc5 (2024-04-21 12:35:54 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git tags/9p-for-6.9-rc6
+
+for you to fetch changes up to d05dcfdf5e1659b2949d13060284eff3888b644e:
+
+   fs/9p: mitigate inode collisions (2024-04-22 15:34:27 +0000)
+
+----------------------------------------------------------------
+fs/9p: fixes for 6.9-rc6
+
+Contains a single mitigation to help deal with an apparent
+race condition between client and server having to deal with
+inode number collisions.
+
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/9p/vfs_super.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index eeab9953af896..b47c5dea23424 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -346,6 +346,7 @@ static const struct super_operations v9fs_super_ops = {
- 	.alloc_inode = v9fs_alloc_inode,
- 	.destroy_inode = v9fs_destroy_inode,
- 	.statfs = simple_statfs,
-+	.drop_inode = v9fs_drop_inode,
- 	.evict_inode = v9fs_evict_inode,
- 	.show_options = v9fs_show_options,
- 	.umount_begin = v9fs_umount_begin,
--- 
-2.43.0
+----------------------------------------------------------------
+Eric Van Hensbergen (1):
+      fs/9p: mitigate inode collisions
 
+ fs/9p/v9fs.h           | 11 ++++++-----
+ fs/9p/vfs_inode.c      | 37 +++++++++++++++++++++++++++++--------
+ fs/9p/vfs_inode_dotl.c | 28 ++++++++++++++++++++--------
+ fs/9p/vfs_super.c      |  2 +-
+ 4 files changed, 56 insertions(+), 22 deletions(-)
+
+--upXBWr4EQuAUIzK/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElpbw0ZalkJikytFRiP/V+0pf/5gFAmYqvGEACgkQiP/V+0pf
+/5i7JBAArl4Mx9CEYQji918PaDOQCnY+U7LVfBNGz9uOwJtLmlpyLbfZF73OCsse
+BbaHlwkoPlJJ6n9G+Ik1o2soYgLc8tO3Ap40gheJuhld+RE6lxROIltepL/mBehF
+cAgj+XbN5YykglxhiqCuDVni+vuMy0rMlCBoA1JWy2m3GmXMXUSRKA+RQiPV83IB
+orUvdRi9rtZzDKqsysoAilRfHDvEYqquRLL00rejUnxGYjoqK0qvowHby+uIcmjo
+iROCS899UMSg4bIe0Y11g7F2aJNw2LtPFqujDwfTJeflIgN9E4oyUL1Pt4pdpvPh
+vE150w5nIHgazRDxlP/hgLVenMhmnZPIhpfcUf/8JHEVvZ/GLjpjft0lj5NO0hnH
+g89eiTMaTwppRN+b7CYNBq81zf261U37OzDMpw5mDez6ROQoP/0lgLUI+SV1kuAR
+GQUx6KV7oovosPr5oMES+vyvn/v26sWZYnPwT0FfckzkKlKGRdor9tMMWzlSpUC7
+fYK9JTPQGFsls/DZLE8jYRFN+aUZhBBHs8nfH35thtlnV4V2KvJdypNWkM4W9yQm
+b107FVqEbyaoAThuiq9WHJFtyLCUNsJvSUjnhd1OXYGkOedTprKQRxSn/orFnOKb
+kUiQnuEc0sRJLM/L1PLQKHUDO9DGLnDaRlnoR6WU6sBz4n092js=
+=Nzc0
+-----END PGP SIGNATURE-----
+
+--upXBWr4EQuAUIzK/--
