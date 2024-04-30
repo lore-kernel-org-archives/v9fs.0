@@ -1,53 +1,84 @@
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id D268E53A7
-	for <v9fs@lists.linux.dev>; Tue, 30 Apr 2024 01:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98FE2556F
+	for <v9fs@lists.linux.dev>; Tue, 30 Apr 2024 07:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714441883; cv=none; b=mfPBWskjYt4j9+U8LWcz2ffM5+01LN4cmN7/0vqwaH2y40N3YLGswM5/y+piaKvtPIeNdMy+PdhDjzhMnSUFFY4Vnc2eHRcjon661pg5oCYGkK00aJ1QIfVDDoyuYkZfFdA6Pno0qq2EjkvqcKsHHVixUPG2lW4dn6IT0wYURxc=
+	t=1714461150; cv=none; b=JaJkuKwQnobkvmjMskRlv/s7DaF5ebhQTyZDBlO5pNHL23D8FnzGv2VIVI9iX/iqSD9Fza9CXwpVIeLfb6uxxVKYCgyazTHnvE2I6HIdWckzBUfSmhE7PZnMdFa2EcWC895EIn+pL0BmgHGjXlfFe54HInkcnJKj2ACN0/e+MFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714441883; c=relaxed/simple;
-	bh=1dZFllmSUYIU5Tu60QYWUdcFtWjeeWfLdtbeuvwZiCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MTgSUaoyxHpmV5tiMC5Dc1oBsXWeIVkjFP0XaxwPqinkDqdlxNxRVDf4MoxqCBBUPzpflkLpwKlcF0Tt8xV1qkiJDJx+1regztbAeFHVdksff0YMItrSOOPLp+lAp+vYDEAEssFI6utjZsffZymHYHaaFWQxpKyZGapND4hUIgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 640741 invoked by uid 1000); 29 Apr 2024 21:51:20 -0400
-Date: Mon, 29 Apr 2024 21:51:20 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-  Latchesar Ionkov <lucho@ionkov.net>,
-  Dominique Martinet <asmadeus@codewreck.org>,
-  Christian Schoenebeck <linux_oss@crudebyte.com>,
-  Jonathan Corbet <corbet@lwn.net>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, v9fs@lists.linux.dev,
-  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-  linux-usb@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v4 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/
-Message-ID: <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
-References: <20240116-ml-topic-u9p-v4-0-722ed28b0ade@pengutronix.de>
- <20240116-ml-topic-u9p-v4-1-722ed28b0ade@pengutronix.de>
+	s=arc-20240116; t=1714461150; c=relaxed/simple;
+	bh=8kOIIkTnsdnSonUhLv9/UaA+zad7K0ZVq0aEzCL8TUQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=T26HjBqx/IOIOq5oBuqOGvBkgNB/6PYH68h2N/TNKPtwfDHtkAgPZ618miqHKphcbjprf3yHrEsO4riCvK7gI7LdptTdovJmtE5D0o3r4OmLYEvyE3CogTCChsvIYef/KTosp3GCEe5EH92DzI6ReTvYOpMnqWfjII8usMN1CCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7da41da873bso685466039f.3
+        for <v9fs@lists.linux.dev>; Tue, 30 Apr 2024 00:12:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714461148; x=1715065948;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4bIJ2+4VC6gGGh8bBw9yymu72oC7PpvLlQwyhTnjnXY=;
+        b=o57B6svM8LmogtEeFN7Aee4rpr83ogfFFiOIp2U45hmw6Zt7CJRBxlk4bKEMSfnWVQ
+         LQDt0VPQ98Z/zL8cU7C9+KCAPObUpAhzAVnZOT2CaMQ5PssqxNQ4NOEtVkmwB2wv1uMk
+         EdFNhGZ+r8vtMWB9lzrgmUj6r052pDbBuRBsXn/EjMFm7+aLLG3Tg0INcx7RzluoqW/r
+         x2JUeBFludE/5e9M8JS6+oK3/5IvvE4WZPDxvh1RdmwEBRF0+K3DEqss1scVylgFhlRP
+         Q7ZYWneUHE/jwlfsa+dUiyHBj2JGANDVDlHEE1ugTe01N7tdjG2VJZkkZBh0muyxWHcQ
+         k7mA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPOiOzdOo/UPnwqudQCp8EXlYVeg1Uuiv5RIVQ+ebkt0TqTEgG3N7E0upy9/KUk6ySOdwfBIUYvQpo3Ze9WM/eZePq9Q==
+X-Gm-Message-State: AOJu0YzxxjCIbHftg/nsRKIxBp53iCsU0xq6umpDxlGKH8Cfda366dOJ
+	KDFL/f7g1JQ+cHiEpFby7MTvnuBGb1WFU8lLr8Xs0fRczU31RF8YfLdhsaZIQ3rPSXh9JdfjvKb
+	aW3fXUUEdeQckE5Yx0DaGVGGFlvS6/mOfw/Pry8Xc+mzvxOhWR+0vH2Y=
+X-Google-Smtp-Source: AGHT+IFC19oIKhGX1rlYJgjVBL1OU7Ig1NdVc43Vgmk4vIZTiGKO3wuegWsILLqMgXIqc+uAApbL2U1YHW0jZrTQd6w8v46UpXIY
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240116-ml-topic-u9p-v4-1-722ed28b0ade@pengutronix.de>
+X-Received: by 2002:a05:6638:450b:b0:487:4afc:b6b with SMTP id
+ bs11-20020a056638450b00b004874afc0b6bmr647191jab.4.1714461148035; Tue, 30 Apr
+ 2024 00:12:28 -0700 (PDT)
+Date: Tue, 30 Apr 2024 00:12:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000b5c82b06174b1793@google.com>
+Subject: [syzbot] Monthly v9fs report (Apr 2024)
+From: syzbot <syzbot+liste18b65911e42aaaf2e63@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 30, 2024 at 01:33:26AM +0200, Michael Grzeschik wrote:
-> We move the u_f.h header to include/linux/usb to be
-> able to compile function drivers outside of the
-> drivers/usb/gadget/function directory.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Hello v9fs maintainers/developers,
 
-Given that you're moving a private header file to a public location,
-don't you think it should now have a name that's more meaningful to
-general kernel developers than "u_f.h"?
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-Alan Stern
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 7 issues are still open and 28 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 2768    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 6       No    WARNING: refcount bug in p9_req_put (3)
+                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
+<3> 5       Yes   KMSAN: uninit-value in p9_client_rpc (2)
+                  https://syzkaller.appspot.com/bug?extid=ff14db38f56329ef68df
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
