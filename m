@@ -1,118 +1,126 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B0D1E4A1
-	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 08:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C88824AB
+	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 11:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714552712; cv=none; b=DWgt4ntCFoyKIHl0FDL9d6ewOtsGtgTUoE2mH7b7/QTJsSzxRmwdqOk0JTNLoQCd8CvPOdFjpcJTi4Erks6nPGDazDEupdyR2ssUhZ3NiLP6qNY2vrwBy5qc06SwX7hwdZkoWgt72wxh0+grgfOi40GXrUBnyjbPJdy1kSFOgtI=
+	t=1714564287; cv=none; b=nJfm2zQDqgKmtPW1SLJDwt+ljH8GS5kd9PbekvEvjGvTsUjAcNaB5K/riTWXkQdvrBtwU7pM+Et+s0Q0l9SlzeDZAIK2msvrNl5b89I5h3A/b4Ew/70ytVc01GAiJjnI0vK9rDQp6ACChUWPgF3yaN1ky72hcR+HlWBQOaVNJAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714552712; c=relaxed/simple;
-	bh=S8xB0pu0UGjmJsXA1KVHJVZn/NFuMYiIw0FFzRR2NYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbwgAtUFr92oh06akuOhCZ4oY1kMi+Cr2Gu05V76DjkP5JfP7dU2QRPx0/UCy1XVst1I09LDtHW8wElQLlAxaVTJuPQDdgYyDHIUH+iTutbmbx1p2vqVhCbe5tooTss7tv0p0yRbnJtEvJSB56qy/DAhr+uYLsfgtnHkQxVWoYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1s25Tj-0002df-Cp; Wed, 01 May 2024 10:38:15 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1s25Tf-00FJG0-QC; Wed, 01 May 2024 10:38:11 +0200
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1s25Tf-005psV-2I;
-	Wed, 01 May 2024 10:38:11 +0200
-Date: Wed, 1 May 2024 10:38:11 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH v4 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/
-Message-ID: <ZjH_cx_0uBLc6M6L@pengutronix.de>
-References: <20240116-ml-topic-u9p-v4-0-722ed28b0ade@pengutronix.de>
- <20240116-ml-topic-u9p-v4-1-722ed28b0ade@pengutronix.de>
- <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
+	s=arc-20240116; t=1714564287; c=relaxed/simple;
+	bh=oVTq80pkXwyoy7TcJqALMpS8YpNVIddBTvSgvA6rBi8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=QLxiRGwV+W7Cs1Mp+MOTpvC17TjNHzragJooMmD4u9XaPrjzz38/O55r7LxWy74N5v/6CqcTey7yvsibxxBumNp3SGSt/VLwLdtHVOi2WwEU8UPfn/mHkd+Jmc0WqM2vvpqyAV3yHeHm610SLV/JoRDPZyxhJU0mTE5J1RXlm9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FOO/2evu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FOO/2evu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714564284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nnkmVhq2S0BNaQkleOd6XJ3VpQjTfweOjGM/NIr2sKM=;
+	b=FOO/2evuGTkRgjMUgu7fK14I9eOJEJ72YF0jUKTq+QrU9GPpb1Xvhp/ng6R7vlScbWZnVU
+	z6tTLabtc6Byn8qBiVGeM5bkcKsbHvhTEbH9aZgB4tyizwVQWjmAHpG+JIZa7uSmqkM8CX
+	d/xh7zbZaCpVN5Yo3cnurAGeWFkPKo0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-U1b9OOAKMZWq_gl7OFzGfQ-1; Wed, 01 May 2024 07:51:19 -0400
+X-MC-Unique: U1b9OOAKMZWq_gl7OFzGfQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 67ED7812C52;
+	Wed,  1 May 2024 11:51:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.22])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E08F740C6CC0;
+	Wed,  1 May 2024 11:51:13 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240430140056.261997-8-dhowells@redhat.com>
+References: <20240430140056.261997-8-dhowells@redhat.com> <20240430140056.261997-1-dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+    Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>
+Cc: David Howells <dhowells@redhat.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <smfrench@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Christoph Hellwig <hch@lst.de>,
+    Andrew Morton <akpm@linux-foundation.org>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>, devel@lists.orangefs.org
+Subject: Re: [PATCH v2 07/22] mm: Provide a means of invalidation without using launder_folio
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iCgt8I7LXby3Cgzv"
-Content-Disposition: inline
-In-Reply-To: <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
-
-
---iCgt8I7LXby3Cgzv
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <438907.1714564273.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Wed, 01 May 2024 12:51:13 +0100
+Message-ID: <438908.1714564273@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-On Mon, Apr 29, 2024 at 09:51:20PM -0400, Alan Stern wrote:
->On Tue, Apr 30, 2024 at 01:33:26AM +0200, Michael Grzeschik wrote:
->> We move the u_f.h header to include/linux/usb to be
->> able to compile function drivers outside of the
->> drivers/usb/gadget/function directory.
->>
->> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
->
->Given that you're moving a private header file to a public location,
->don't you think it should now have a name that's more meaningful to
->general kernel developers than "u_f.h"?
+David Howells <dhowells@redhat.com> wrote:
 
-Fair point.
+> +			.range_start	=3D first,
+> +			.range_end	=3D last,
+> ...
+> +	truncate_inode_pages_range(mapping, first, last);
 
-How about func_utils.h instead?
+These actually take file offsets and not page ranges and so the attached
+change is needed.  Without this, the generic/412 xfstest fails.
 
-Michael Grzeschik
+David
+---
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 53516305b4b4..3916fc8b10e6 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4171,15 +4171,15 @@ int filemap_invalidate_inode(struct inode *inode, =
+bool flush,
+ 		struct writeback_control wbc =3D {
+ 			.sync_mode	=3D WB_SYNC_ALL,
+ 			.nr_to_write	=3D LONG_MAX,
+-			.range_start	=3D first,
+-			.range_end	=3D last,
++			.range_start	=3D start,
++			.range_end	=3D end,
+ 		};
+ =
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ 		filemap_fdatawrite_wbc(mapping, &wbc);
+ 	}
+ =
 
---iCgt8I7LXby3Cgzv
-Content-Type: application/pgp-signature; name="signature.asc"
+ 	/* Wait for writeback to complete on all folios and discard. */
+-	truncate_inode_pages_range(mapping, first, last);
++	truncate_inode_pages_range(mapping, start, end);
+ =
 
------BEGIN PGP SIGNATURE-----
+ unlock:
+ 	filemap_invalidate_unlock(mapping);
 
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmYx/3AACgkQC+njFXoe
-LGR1TRAAzV4XmkkHXoTc9OOaNH4Ke92oyaSauNaj4rSJG1ry3Or8RcnFdVFJv+H1
-P5BgIy+DKSje3YRiW5hNJLkQabuR+U/UvI4UKS580aFX3KtEMIqZf6GQgFswjYkC
-KZElxmIYcGAzPfDEGR4ij5H2izz145zll9KJhjArZYvkoR5OjewiNqfZkIS5t0br
-xFfjs5olYEP6VGI5HONEJEd9VzIz70x7GbHAOxrQSCrBzffUcI2d57KAOXYlMAw9
-xZf4Y+BidBFkmUOxAooZoZRtU0gey9KW/qR8JwO88s9OiX0YHC8obM6AsFLmYHzj
-yDMq4hqakZT2YqWy71t2q+hDI47mRv8XX8WwpIcnBIBdOiRJo59fr6HZRjE/3scM
-JAQM5IY8Kj/wOEElCGje4JJX0T8+hAE3cIR/K8of3UgVVb8qZ+T09Wz19B+Ym7K4
-ruLQYJo+PW50sHQezNl07tFcVta25j3dGROr5FDwuR1BGFq4SqErIHutWDBs4se0
-YTMdqhXMoZ5vbSdv5krECuVLFGO1AQ14yBIUsWvFNScNJS9jeFgaA/bzroO4qL/H
-u/NTb87GVKoOn5EjvRcLGG2lhuIaoj9yc8WhWQJ+CDyafhifQMJb7lDSQJO6VXdi
-co/MNGglLUvFyxf33lddJpUc3DqGcOcDKCzaowVyNlambgrWCpc=
-=Pv8D
------END PGP SIGNATURE-----
-
---iCgt8I7LXby3Cgzv--
