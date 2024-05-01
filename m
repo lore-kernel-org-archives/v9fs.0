@@ -1,66 +1,118 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26F129428;
-	Wed,  1 May 2024 04:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B0D1E4A1
+	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 08:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714538512; cv=none; b=By7FYAnEkauLE7HtRqjtCGS+OLhPbTBmCn9H0NOGyagfDS1cTEPaCt5waoJRBXoXlOHP+7fm2pLRFxBKirEP2RlBRUvt7ityxlIgTKBUT9OuKGudUYp9/vEeZ0q+Ixk7nUqXmCEekTrSE8z7T2T7t9b6p799yoGcAx3VPQPJWn8=
+	t=1714552712; cv=none; b=DWgt4ntCFoyKIHl0FDL9d6ewOtsGtgTUoE2mH7b7/QTJsSzxRmwdqOk0JTNLoQCd8CvPOdFjpcJTi4Erks6nPGDazDEupdyR2ssUhZ3NiLP6qNY2vrwBy5qc06SwX7hwdZkoWgt72wxh0+grgfOi40GXrUBnyjbPJdy1kSFOgtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714538512; c=relaxed/simple;
-	bh=dwZMNq9ToAOW2bLhqXYoUF8XXhEWiQ5Qu+gn4r+E/fM=;
+	s=arc-20240116; t=1714552712; c=relaxed/simple;
+	bh=S8xB0pu0UGjmJsXA1KVHJVZn/NFuMYiIw0FFzRR2NYo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phTFQAy10CJK5X/M0F+xjlxUXsxsPoDNfl27q7l5ttUnsUFZY+/f4DXUGKY1TFl2bAS7Mwi4X22Q/iDbvKcorC5AImkyh1KcJIchBvKmP5POxB9ObjyTnDw76SMESigTsrNXjpMXoo2ovmOz3pLj7COw/6JfcOoQ8HEpgDujbgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 3EEFF67373; Wed,  1 May 2024 06:41:46 +0200 (CEST)
-Date: Wed, 1 May 2024 06:41:45 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=FbwgAtUFr92oh06akuOhCZ4oY1kMi+Cr2Gu05V76DjkP5JfP7dU2QRPx0/UCy1XVst1I09LDtHW8wElQLlAxaVTJuPQDdgYyDHIUH+iTutbmbx1p2vqVhCbe5tooTss7tv0p0yRbnJtEvJSB56qy/DAhr+uYLsfgtnHkQxVWoYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1s25Tj-0002df-Cp; Wed, 01 May 2024 10:38:15 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1s25Tf-00FJG0-QC; Wed, 01 May 2024 10:38:11 +0200
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1s25Tf-005psV-2I;
+	Wed, 01 May 2024 10:38:11 +0200
+Date: Wed, 1 May 2024 10:38:11 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-	linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, devel@lists.orangefs.org
-Subject: Re: [PATCH v2 07/22] mm: Provide a means of invalidation without
- using launder_folio
-Message-ID: <20240501044145.GC31252@lst.de>
-References: <20240430140056.261997-1-dhowells@redhat.com> <20240430140056.261997-8-dhowells@redhat.com>
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: Re: [PATCH v4 1/3] usb: gadget: function: move u_f.h to
+ include/linux/usb/
+Message-ID: <ZjH_cx_0uBLc6M6L@pengutronix.de>
+References: <20240116-ml-topic-u9p-v4-0-722ed28b0ade@pengutronix.de>
+ <20240116-ml-topic-u9p-v4-1-722ed28b0ade@pengutronix.de>
+ <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iCgt8I7LXby3Cgzv"
 Content-Disposition: inline
-In-Reply-To: <20240430140056.261997-8-dhowells@redhat.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-> +	unmap_mapping_pages(mapping, first, nr, false);
 
-> +}
-> +EXPORT_SYMBOL(filemap_invalidate_inode);
+--iCgt8I7LXby3Cgzv
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-unmap_mapping_pages is an EXPORT_SYMBOL_GPL, pleas keep that in
-this in thin wrapper.
+On Mon, Apr 29, 2024 at 09:51:20PM -0400, Alan Stern wrote:
+>On Tue, Apr 30, 2024 at 01:33:26AM +0200, Michael Grzeschik wrote:
+>> We move the u_f.h header to include/linux/usb to be
+>> able to compile function drivers outside of the
+>> drivers/usb/gadget/function directory.
+>>
+>> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+>
+>Given that you're moving a private header file to a public location,
+>don't you think it should now have a name that's more meaningful to
+>general kernel developers than "u_f.h"?
 
+Fair point.
+
+How about func_utils.h instead?
+
+Michael Grzeschik
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--iCgt8I7LXby3Cgzv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmYx/3AACgkQC+njFXoe
+LGR1TRAAzV4XmkkHXoTc9OOaNH4Ke92oyaSauNaj4rSJG1ry3Or8RcnFdVFJv+H1
+P5BgIy+DKSje3YRiW5hNJLkQabuR+U/UvI4UKS580aFX3KtEMIqZf6GQgFswjYkC
+KZElxmIYcGAzPfDEGR4ij5H2izz145zll9KJhjArZYvkoR5OjewiNqfZkIS5t0br
+xFfjs5olYEP6VGI5HONEJEd9VzIz70x7GbHAOxrQSCrBzffUcI2d57KAOXYlMAw9
+xZf4Y+BidBFkmUOxAooZoZRtU0gey9KW/qR8JwO88s9OiX0YHC8obM6AsFLmYHzj
+yDMq4hqakZT2YqWy71t2q+hDI47mRv8XX8WwpIcnBIBdOiRJo59fr6HZRjE/3scM
+JAQM5IY8Kj/wOEElCGje4JJX0T8+hAE3cIR/K8of3UgVVb8qZ+T09Wz19B+Ym7K4
+ruLQYJo+PW50sHQezNl07tFcVta25j3dGROr5FDwuR1BGFq4SqErIHutWDBs4se0
+YTMdqhXMoZ5vbSdv5krECuVLFGO1AQ14yBIUsWvFNScNJS9jeFgaA/bzroO4qL/H
+u/NTb87GVKoOn5EjvRcLGG2lhuIaoj9yc8WhWQJ+CDyafhifQMJb7lDSQJO6VXdi
+co/MNGglLUvFyxf33lddJpUc3DqGcOcDKCzaowVyNlambgrWCpc=
+=Pv8D
+-----END PGP SIGNATURE-----
+
+--iCgt8I7LXby3Cgzv--
