@@ -1,66 +1,163 @@
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 2566612EBCC
-	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 14:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2426DDAB
+	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 17:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714573160; cv=none; b=f4F5A8cAmP0bBpX6oZzVG5otAdRA333p1+BFfiRLNximJwnUQI8yRQ9LVn5qXgi093dI4csMfw9ONZoNDxmuD3ys4ntshiMZuqB/kc1wlxipOBhs6cDw8EGyzfPKAZJPyigA6CmhVX0gM/WwWiAUCGrPQuBAG7u5+/9UHfh8kaE=
+	t=1714582872; cv=none; b=mCKeHVhqUsnmhY84LGpUfxb8KEJjNiW+60tGIuZPwNYOcsmr8G3n9+49blxgp9PeWtNXb0nnKsQjmlaGeiDQtFVIe/4Wmoktidt7yBXb7tD/EYrp7uvkeZ9/TQNSsP7+SaHY50UFlWG8AeBsAG7f5/rmhghgorSM8nByU3HNDfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714573160; c=relaxed/simple;
-	bh=0fX7DMTnyqd2OctZ1Pn8GWeMAq5i4D6ET5kIT05SFxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=udFf4cQHt1GnIliLj7KyvXiSIAk1ZyYQN1JI+fG1VizV/RsJ/Khek2eUP99UK/dFbDHvd+FIwjLk2Se1p2W1FLu/jKa5u/HSbs1Mm6XbFuMDveLBb9j4LnckAP3XFBBNioxwVOm9/6rhkyDx2/eCeuYl7UIJL/9GkM8gCmOr6qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 693310 invoked by uid 1000); 1 May 2024 10:19:18 -0400
-Date: Wed, 1 May 2024 10:19:18 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-  Latchesar Ionkov <lucho@ionkov.net>,
-  Dominique Martinet <asmadeus@codewreck.org>,
-  Christian Schoenebeck <linux_oss@crudebyte.com>,
-  Jonathan Corbet <corbet@lwn.net>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, v9fs@lists.linux.dev,
-  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-  linux-usb@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v4 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/
-Message-ID: <96fe85f7-eaf1-4231-985b-14514cf53f3d@rowland.harvard.edu>
-References: <20240116-ml-topic-u9p-v4-0-722ed28b0ade@pengutronix.de>
- <20240116-ml-topic-u9p-v4-1-722ed28b0ade@pengutronix.de>
- <1fb801bf-3bef-4f95-8036-fc8634679141@rowland.harvard.edu>
- <ZjH_cx_0uBLc6M6L@pengutronix.de>
+	s=arc-20240116; t=1714582872; c=relaxed/simple;
+	bh=5x+R/tulRuIaS8VcnMqYfEwZKfLlmJE83wErUp3TIJI=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=MVcrr9yntdUnEvy6ZhosskAk0xhypjJFmaXR+dlvpUj4vImK6nTU+oaqHTwT5a79lVrrw6hjlLGClix13ypAYUSF92VflRX+C63lkOCAHxAMp6YT4vkGlpPRtUI7q4qOC30ZX94ApLMVemj1Bso/bmOQQdZfPdkXRC45SPpHSSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MSRxgjH8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MSRxgjH8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714582869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pbBAwD6JC5VL1ukHU3KFqlt1QekHLcO5vtkGzyQGBMM=;
+	b=MSRxgjH8KQNJt6sQg2HXSn/6qaVMrp4UTkCQsEZ66b7kd1lmeiKL+uH0Z71Q6hDiBaJzCH
+	aGt7t68XSylcdsr8TvCfIBT9szDAZ4msy4RGS22FOvpRPSI4AcKJwBeUc+is388te6XMdC
+	wP2aCuyyF7RuGXkFFggKymffsIGqceI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-209-jValeIcOO1Sva0kNIIWiZg-1; Wed, 01 May 2024 13:01:07 -0400
+X-MC-Unique: jValeIcOO1Sva0kNIIWiZg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 014948948A6;
+	Wed,  1 May 2024 17:01:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.22])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 512842166B31;
+	Wed,  1 May 2024 17:01:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240430140056.261997-15-dhowells@redhat.com>
+References: <20240430140056.261997-15-dhowells@redhat.com> <20240430140056.261997-1-dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <smfrench@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Latchesar Ionkov <lucho@ionkov.net>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: Re: [PATCH v2 14/22] netfs: New writeback implementation
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZjH_cx_0uBLc6M6L@pengutronix.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <458059.1714582859.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 01 May 2024 18:00:59 +0100
+Message-ID: <458060.1714582859@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-On Wed, May 01, 2024 at 10:38:11AM +0200, Michael Grzeschik wrote:
-> On Mon, Apr 29, 2024 at 09:51:20PM -0400, Alan Stern wrote:
-> > On Tue, Apr 30, 2024 at 01:33:26AM +0200, Michael Grzeschik wrote:
-> > > We move the u_f.h header to include/linux/usb to be
-> > > able to compile function drivers outside of the
-> > > drivers/usb/gadget/function directory.
-> > > 
-> > > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> > 
-> > Given that you're moving a private header file to a public location,
-> > don't you think it should now have a name that's more meaningful to
-> > general kernel developers than "u_f.h"?
-> 
-> Fair point.
-> 
-> How about func_utils.h instead?
+This needs the attached change.  It needs to allow for netfs_perform_write=
+()
+changing i_size whilst we're doing writeback.  The issue is that i_size is
+cached in the netfs_io_request struct (as that's what we're going to tell =
+the
+server the new i_size should be), but we're not updating this properly if
+i_size moves between us creating the request and us deciding to write out =
+the
+folio in which i_size was when we created the request.
 
-Yes, that would be a lot better.  Especially if you put it in 
-include/linux/usb/gadget rather than include/linux/usb.
+This can lead to the folio_zero_segment() that can be seen in the patch be=
+low
+clearing the wrong amount of the final page - assuming it's still the fina=
+l
+page.
 
-Thanks.
+David
+---
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 69c50f4cbf41..e190043bc0da 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -315,13 +315,19 @@ static int netfs_write_folio(struct netfs_io_request=
+ *wreq,
+ 	struct netfs_group *fgroup; /* TODO: Use this with ceph */
+ 	struct netfs_folio *finfo;
+ 	size_t fsize =3D folio_size(folio), flen =3D fsize, foff =3D 0;
+-	loff_t fpos =3D folio_pos(folio);
++	loff_t fpos =3D folio_pos(folio), i_size;
+ 	bool to_eof =3D false, streamw =3D false;
+ 	bool debug =3D false;
+ =
 
-Alan Stern
+ 	_enter("");
+ =
+
+-	if (fpos >=3D wreq->i_size) {
++	/* netfs_perform_write() may shift i_size around the page or from out
++	 * of the page to beyond it, but cannot move i_size into or through the
++	 * page since we have it locked.
++	 */
++	i_size =3D i_size_read(wreq->inode);
++
++	if (fpos >=3D i_size) {
+ 		/* mmap beyond eof. */
+ 		_debug("beyond eof");
+ 		folio_start_writeback(folio);
+@@ -332,6 +338,9 @@ static int netfs_write_folio(struct netfs_io_request *=
+wreq,
+ 		return 0;
+ 	}
+ =
+
++	if (fpos + fsize > wreq->i_size)
++		wreq->i_size =3D i_size;
++
+ 	fgroup =3D netfs_folio_group(folio);
+ 	finfo =3D netfs_folio_info(folio);
+ 	if (finfo) {
+@@ -342,14 +351,14 @@ static int netfs_write_folio(struct netfs_io_request=
+ *wreq,
+ =
+
+ 	if (wreq->origin =3D=3D NETFS_WRITETHROUGH) {
+ 		to_eof =3D false;
+-		if (flen > wreq->i_size - fpos)
+-			flen =3D wreq->i_size - fpos;
+-	} else if (flen > wreq->i_size - fpos) {
+-		flen =3D wreq->i_size - fpos;
++		if (flen > i_size - fpos)
++			flen =3D i_size - fpos;
++	} else if (flen > i_size - fpos) {
++		flen =3D i_size - fpos;
+ 		if (!streamw)
+ 			folio_zero_segment(folio, flen, fsize);
+ 		to_eof =3D true;
+-	} else if (flen =3D=3D wreq->i_size - fpos) {
++	} else if (flen =3D=3D i_size - fpos) {
+ 		to_eof =3D true;
+ 	}
+ 	flen -=3D foff;
+
