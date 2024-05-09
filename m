@@ -1,163 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2426DDAB
-	for <v9fs@lists.linux.dev>; Wed,  1 May 2024 17:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46DDDA9
+	for <v9fs@lists.linux.dev>; Thu,  9 May 2024 17:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714582872; cv=none; b=mCKeHVhqUsnmhY84LGpUfxb8KEJjNiW+60tGIuZPwNYOcsmr8G3n9+49blxgp9PeWtNXb0nnKsQjmlaGeiDQtFVIe/4Wmoktidt7yBXb7tD/EYrp7uvkeZ9/TQNSsP7+SaHY50UFlWG8AeBsAG7f5/rmhghgorSM8nByU3HNDfg=
+	t=1715274939; cv=none; b=aV1eJVUMj3ODLCoM5TgS82VYpxVdxPufebMwwWxsuU4En27otgGf/T61dCqcjVF5iZ/vLWPEwK9rshW5z/3FNddJDMpK0l7DhiuxaPOo/xTG4/Whl/rIYfPJNsGP/NFfAWnrmAj3W5obuPCxlMxruj4XA5S3uvx1Dlg5fbQQccc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714582872; c=relaxed/simple;
-	bh=5x+R/tulRuIaS8VcnMqYfEwZKfLlmJE83wErUp3TIJI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=MVcrr9yntdUnEvy6ZhosskAk0xhypjJFmaXR+dlvpUj4vImK6nTU+oaqHTwT5a79lVrrw6hjlLGClix13ypAYUSF92VflRX+C63lkOCAHxAMp6YT4vkGlpPRtUI7q4qOC30ZX94ApLMVemj1Bso/bmOQQdZfPdkXRC45SPpHSSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MSRxgjH8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1715274939; c=relaxed/simple;
+	bh=I2b3mZDphqAOw1CzA9XXn8owOPYBXLxuDEHOZbykNDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdTUbNNMnCfmP6yzKKWaJxHVGl/Zr99KNePqNbrK1bBuvgbn235ZpGSftFMJtcXwAXkwI6p+DqHgxK/VKN+h5LsA0s6kWyLdnNVXpAyMNX1yPfTFJbfdrJu17AN9R6oOtXIhmmC8m9kT/YhKqhG2jyTE6EWP4vm+U/jbslZ62E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=HIE23ZeU; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MSRxgjH8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714582869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pbBAwD6JC5VL1ukHU3KFqlt1QekHLcO5vtkGzyQGBMM=;
-	b=MSRxgjH8KQNJt6sQg2HXSn/6qaVMrp4UTkCQsEZ66b7kd1lmeiKL+uH0Z71Q6hDiBaJzCH
-	aGt7t68XSylcdsr8TvCfIBT9szDAZ4msy4RGS22FOvpRPSI4AcKJwBeUc+is388te6XMdC
-	wP2aCuyyF7RuGXkFFggKymffsIGqceI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-209-jValeIcOO1Sva0kNIIWiZg-1; Wed, 01 May 2024 13:01:07 -0400
-X-MC-Unique: jValeIcOO1Sva0kNIIWiZg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="HIE23ZeU"
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 014948948A6;
-	Wed,  1 May 2024 17:01:04 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.22])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 512842166B31;
-	Wed,  1 May 2024 17:01:00 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240430140056.261997-15-dhowells@redhat.com>
-References: <20240430140056.261997-15-dhowells@redhat.com> <20240430140056.261997-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Steve French <smfrench@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Latchesar Ionkov <lucho@ionkov.net>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH v2 14/22] netfs: New writeback implementation
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 368533F5E9
+	for <v9fs@lists.linux.dev>; Thu,  9 May 2024 17:15:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1715274934;
+	bh=R13CNUyH1MbzjMY2CalRPAAS/uvh6wjQHgeABBOaJzE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=HIE23ZeUFGpNub4mkJjolnmcnjKRiYIZCcxlle7qzx0QxPHfaQSaalKI6TzYaWHJi
+	 bLy2UvHNP5D7B3R4aW3+t/KG8h59aUSqA4sPFiaH7lvjNC3gzhv51blx0XD+bI0L/A
+	 tX+msuNNXItnYmoBpCRrGkFQJIxCZbw5kQMPRrWJ1OlrwOLptZepvDtHw0T9EPRg9S
+	 qnSS1wBFZB//Cu6J1M6PCBa8OtAz+16pQ5d1G5zF0WmqDHbVBAjniJWshKu6Q8m+ku
+	 6QRzxKzQUTpg3I36rLwEU4KHB2eyEt0YvDTY30FUAp2A7NO+4mOBXSL1NF75qAB+wp
+	 7gCLpXmZF7L7w==
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a51fdbd06c8so76393066b.3
+        for <v9fs@lists.linux.dev>; Thu, 09 May 2024 10:15:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715274931; x=1715879731;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R13CNUyH1MbzjMY2CalRPAAS/uvh6wjQHgeABBOaJzE=;
+        b=YXVYcz9zFdcg8dUGn8eQRD7CF2xRY65B3WKvE4hwrYQuAzlU+05Bp9LM2WBcIytosQ
+         nOMeZFkIfdi9Y9xxAf1sskGCK68oT+QKkeO4PZDWA+8ASEIY6C4uyJdvtZco0fKTRETE
+         Ctpur+dQSrZcKnAJelR2Ki/065GXqb1mSv7EvjZNkEdlQSmRzu5sQxT5jqzTW24LEtCw
+         QqSaJh9Iy/WNaIqTZm4V66QRaKZkVhZkPZjfid67SOSCyIWJUOXdb2XKFxbZSbbyRCco
+         n9xFUCSMB5soFM1aWc3f76oH6tFaDmyUITqYzc1LgBv5C+dXAweVFtc0MpK4Xhc3aWXo
+         886g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRPH49KVZiY6NSqmRAcntmjS144oBdCIg/8R1Pkr774lLxP2JN4Jx01X/IPh40Qn9qjj02hqSSMNHbPEpmIy6uJDQTIw==
+X-Gm-Message-State: AOJu0Yz2lktlvggIIJiGetpT9n3CxqdwO6Asxo4NCZTipyNdEn+yRWuY
+	n1Xl8i7Ga99wLt33ei7xL+RYhjXYHIR3EwOnt6r+3vbnWA0tx/5q200b6EZIYKatCF0AoKc3AWc
+	J3iQC5YlRqyxAeGu9yCp5XTSvLnpK0icLsmk5LBrxIEbG6D87f6uCiZRrVAyysZTmDjY=
+X-Received: by 2002:a17:906:3849:b0:a59:b02a:90dc with SMTP id a640c23a62f3a-a5a2d66ac03mr15004966b.54.1715274930678;
+        Thu, 09 May 2024 10:15:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRId3ZK7jZnEUqxnKrbYMBDrOXsoSZ6C8TgHiChCG3zHZRXUk/mhnLLXZdmjv+NVtyVoseaw==
+X-Received: by 2002:a17:906:3849:b0:a59:b02a:90dc with SMTP id a640c23a62f3a-a5a2d66ac03mr15001366b.54.1715274929765;
+        Thu, 09 May 2024 10:15:29 -0700 (PDT)
+Received: from localhost (host-82-49-69-7.retail.telecomitalia.it. [82.49.69.7])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a179c81bfsm93194566b.129.2024.05.09.10.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 May 2024 10:15:29 -0700 (PDT)
+Date: Thu, 9 May 2024 19:15:27 +0200
+From: Andrea Righi <andrea.righi@canonical.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: Re: [PATCH v5 40/40] 9p: Use netfslib read/write_iter
+Message-ID: <Zj0ErxVBE3DYT2Ea@gpd>
+References: <20231221132400.1601991-1-dhowells@redhat.com>
+ <20231221132400.1601991-41-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <458059.1714582859.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 May 2024 18:00:59 +0100
-Message-ID: <458060.1714582859@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221132400.1601991-41-dhowells@redhat.com>
 
-This needs the attached change.  It needs to allow for netfs_perform_write=
-()
-changing i_size whilst we're doing writeback.  The issue is that i_size is
-cached in the netfs_io_request struct (as that's what we're going to tell =
-the
-server the new i_size should be), but we're not updating this properly if
-i_size moves between us creating the request and us deciding to write out =
-the
-folio in which i_size was when we created the request.
+On Thu, Dec 21, 2023 at 01:23:35PM +0000, David Howells wrote:
+> Use netfslib's read and write iteration helpers, allowing netfslib to take
+> over the management of the page cache for 9p files and to manage local disk
+> caching.  In particular, this eliminates write_begin, write_end, writepage
+> and all mentions of struct page and struct folio from 9p.
+> 
+> Note that netfslib now offers the possibility of write-through caching if
+> that is desirable for 9p: just set the NETFS_ICTX_WRITETHROUGH flag in
+> v9inode->netfs.flags in v9fs_set_netfs_context().
+> 
+> Note also this is untested as I can't get ganesha.nfsd to correctly parse
+> the config to turn on 9p support.
 
-This can lead to the folio_zero_segment() that can be seen in the patch be=
-low
-clearing the wrong amount of the final page - assuming it's still the fina=
-l
-page.
+It looks like this patch has introduced a regression with autopkgtest,
+see: https://bugs.launchpad.net/bugs/2056461
 
-David
----
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 69c50f4cbf41..e190043bc0da 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -315,13 +315,19 @@ static int netfs_write_folio(struct netfs_io_request=
- *wreq,
- 	struct netfs_group *fgroup; /* TODO: Use this with ceph */
- 	struct netfs_folio *finfo;
- 	size_t fsize =3D folio_size(folio), flen =3D fsize, foff =3D 0;
--	loff_t fpos =3D folio_pos(folio);
-+	loff_t fpos =3D folio_pos(folio), i_size;
- 	bool to_eof =3D false, streamw =3D false;
- 	bool debug =3D false;
- =
+I haven't looked at the details yet, I just did some bisecting and
+apparently reverting this one seems to fix the problem.
 
- 	_enter("");
- =
+Let me know if you want me to test something in particular or if you
+already have a potential fix. Otherwise I'll take a look.
 
--	if (fpos >=3D wreq->i_size) {
-+	/* netfs_perform_write() may shift i_size around the page or from out
-+	 * of the page to beyond it, but cannot move i_size into or through the
-+	 * page since we have it locked.
-+	 */
-+	i_size =3D i_size_read(wreq->inode);
-+
-+	if (fpos >=3D i_size) {
- 		/* mmap beyond eof. */
- 		_debug("beyond eof");
- 		folio_start_writeback(folio);
-@@ -332,6 +338,9 @@ static int netfs_write_folio(struct netfs_io_request *=
-wreq,
- 		return 0;
- 	}
- =
-
-+	if (fpos + fsize > wreq->i_size)
-+		wreq->i_size =3D i_size;
-+
- 	fgroup =3D netfs_folio_group(folio);
- 	finfo =3D netfs_folio_info(folio);
- 	if (finfo) {
-@@ -342,14 +351,14 @@ static int netfs_write_folio(struct netfs_io_request=
- *wreq,
- =
-
- 	if (wreq->origin =3D=3D NETFS_WRITETHROUGH) {
- 		to_eof =3D false;
--		if (flen > wreq->i_size - fpos)
--			flen =3D wreq->i_size - fpos;
--	} else if (flen > wreq->i_size - fpos) {
--		flen =3D wreq->i_size - fpos;
-+		if (flen > i_size - fpos)
-+			flen =3D i_size - fpos;
-+	} else if (flen > i_size - fpos) {
-+		flen =3D i_size - fpos;
- 		if (!streamw)
- 			folio_zero_segment(folio, flen, fsize);
- 		to_eof =3D true;
--	} else if (flen =3D=3D wreq->i_size - fpos) {
-+	} else if (flen =3D=3D i_size - fpos) {
- 		to_eof =3D true;
- 	}
- 	flen -=3D foff;
-
+Thanks,
+-Andrea
