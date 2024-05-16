@@ -1,141 +1,71 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E1C143754;
-	Thu, 16 May 2024 10:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C013145B00
+	for <v9fs@lists.linux.dev>; Thu, 16 May 2024 12:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715853654; cv=none; b=Ai/VUEeWgW/jFXrBX0nlij+1tMERbCJZgobuVc5ja/IcPbr+S2RvDHHMslZMoRA7aZh/skP0p8Va0OHNfS+EiJRi1ETiAjr4bAvfir+symEoQtt8fEPf2Yb3qOeTMeqD5gqFCJN8D24oBqOED1C6JKqYQPCMOYBSBpT+lDKo6a0=
+	t=1715861195; cv=none; b=JSQe4V5qwtiABP2DUZrFCWWaSmQGPTgVKyyNeWg6HaL4ox79E1bczV4czOLHf7vfKnSUYSY+SsCyDk2szb3QZKGl7O++hnKMkkN7ltDbZog6IFtiyHCnHZomsbLg2oHELZAsVbTEj6Stx+J+zmpExEX/os0HH7HlQScGuOSdSNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715853654; c=relaxed/simple;
-	bh=8HXogCTpnJ/n4MmOkUeaDBlbudv84EkCG4VMtstjvmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M8S20Fn9c1gf09D4mGQQdH6egXhJW7TbtLxq8sXABnZ7YNyr5KFfnvZ9Sh1W4C/3LRLKCxVhgNZgmzM5UTIT3XGq3Nwn1p/WafRwYJFhQZ2XW4a4TnP1Gd85gtKi1IMlhmTvmSsTPN7x4rus7RFrBgxo86y9OH2isoKbTRQ3ZP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=jf2ezs57; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1715861195; c=relaxed/simple;
+	bh=4NjjwSr4Ahv0C5KPcCIAl9LPHi84Ps/jY77lOeIowL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=icNSDpjAI0I6YDVnJcdNlI4i5tZMyLmNCnMEes/goBLbt//S0rmi8yp9ygyY6kaDxd1me2gBo/cX0p6kodSA1qwV8xFrRovTTa1V9VO+eANTbC+03o+xZj3fzrh4fLStYq6KpLmIFE63DUqsbCeFfpq5pbIxZ1KGDElD7thXp1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=SmX3PKSl; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="jf2ezs57"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=ZOdg+UxEX0UYoNsiLotMQ5sr/A6Ve75FAxdqq6STPCI=; b=jf2ezs57UCUKXx/sircGT0LdPB
-	xPAGh1Cdn6buWBed/Gmq53llWqOrzXwr6YpwqUJmZe8piJKAsd83YaiLwYX3Kk0onUrRGPqAqi/PC
-	RemYT6EInkg2heGsesVl2IYqK4++yNSRn1tDlq4PWnH8gjU2oxxOfkJx8cOetphZquu7H9anMmmRN
-	S3hpMj1iO3OTNJO7rr1VEFT7UOVo2C00Ww/K+gUe4tm5I3dfUaYSJkwg1YzUpaDcgvy6Kuxi7j1gF
-	erYjMVTKXn0T2+4pyYUW7gux2ILIinifaVkkOlz0Hwb79AECJfcKXmWBvg2W9Lq29bxmQpSZJ5Nrd
-	waUVEVDI2EC+jGF8N4vqqGLt5eWYJwOCacPF0uoG75HDzqY+uSOIFsJHS333CKGIOCpyz2EzbCGpU
-	oFdTjg4g2TSFsqda74wgDgF+DoYStG9b27WokFpXNKRgnjwKwf3XAfmSOEj6eQ0vhD48GCwSJNuXP
-	jZA04DmieDSfXMoYf5uLxoyVJ3LTOzW+vqta1qQCiVuUU+s7riCBxF4mzZBo/ShuMmX3oGFi46RqZ
-	ewzVO7F4Hui3Lq7iEDlDEZIbmO03oP92bnjPNVclpqryqdOANJpwiLmfOgwJ8HdpK/xR/ETXdt+dN
-	MNNh0XWEh6Dv4UTUzKQSjZOX4V2T96hP557JuU2FI=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
- Latchesar Ionkov <lucho@ionkov.net>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="SmX3PKSl"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 8F5C514C2DC;
+	Thu, 16 May 2024 14:06:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1715861186;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ibK20Oi6M32rpg7TSWRqlsDzrOFnl8LL6s8Vh9NS0vk=;
+	b=SmX3PKSl+Z11NjrYS3W5QFj8msIUV1tXW2MkYAlJ+Eg6quIn71l11Vy25IiI/dxpQuokII
+	WlM+coLUHPrQbp6mIANJmbEuwPsv0/wkKfpMKqKlyOZEhq0zl1u8uPrkRASNPMFlNBqwoR
+	FIiGCEs+bA39ZsBRv9CMRkDUe4GRHGTyODQ8cUul/jhNOzTyXLOnC+juYfaO5e8vZe1B+k
+	iKed2t1Si/oWJZrIs/i/f0uQBESSSq3q+PcyUWTCVI58eDGSz00r9uYGuwDDTai1/a28Ul
+	q6T/yixfxYpVthUC0y0C6oyQmMkZpyeAh9w1sE3PgtMp3BLZtjXYlGu5YkowlA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3a491bde;
+	Thu, 16 May 2024 12:06:19 +0000 (UTC)
+Date: Thu, 16 May 2024 21:06:04 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
 Subject: Re: [PATCH net v2] net/9p: fix uninit-value in p9_client_rpc()
-Date: Thu, 16 May 2024 11:27:21 +0200
-Message-ID: <1731146.XZuUqIVtO3@silver>
-In-Reply-To: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+Message-ID: <ZkX2rG5D2dnit9dB@codewreck.org>
 References: <20240408141039.30428-1-n.zhandarovich@fintech.ru>
+ <ac84eefc-e024-40fb-a92d-3109f686d122@fintech.ru>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ac84eefc-e024-40fb-a92d-3109f686d122@fintech.ru>
 
-On Monday, April 8, 2024 4:10:39 PM CEST Nikita Zhandarovich wrote:
-> Syzbot with the help of KMSAN reported the following error:
-> 
-> BUG: KMSAN: uninit-value in trace_9p_client_res include/trace/events/9p.h:146 [inline]
-> BUG: KMSAN: uninit-value in p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
->  trace_9p_client_res include/trace/events/9p.h:146 [inline]
->  p9_client_rpc+0x1314/0x1340 net/9p/client.c:754
->  p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
->  v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
->  v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
->  legacy_get_tree+0x114/0x290 fs/fs_context.c:662
->  vfs_get_tree+0xa7/0x570 fs/super.c:1797
->  do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
->  path_mount+0x742/0x1f20 fs/namespace.c:3679
->  do_mount fs/namespace.c:3692 [inline]
->  __do_sys_mount fs/namespace.c:3898 [inline]
->  __se_sys_mount+0x725/0x810 fs/namespace.c:3875
->  __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
->  do_syscall_64+0xd5/0x1f0
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> Uninit was created at:
->  __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
->  __alloc_pages_node include/linux/gfp.h:238 [inline]
->  alloc_pages_node include/linux/gfp.h:261 [inline]
->  alloc_slab_page mm/slub.c:2175 [inline]
->  allocate_slab mm/slub.c:2338 [inline]
->  new_slab+0x2de/0x1400 mm/slub.c:2391
->  ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
->  __slab_alloc mm/slub.c:3610 [inline]
->  __slab_alloc_node mm/slub.c:3663 [inline]
->  slab_alloc_node mm/slub.c:3835 [inline]
->  kmem_cache_alloc+0x6d3/0xbe0 mm/slub.c:3852
->  p9_tag_alloc net/9p/client.c:278 [inline]
->  p9_client_prepare_req+0x20a/0x1770 net/9p/client.c:641
->  p9_client_rpc+0x27e/0x1340 net/9p/client.c:688
->  p9_client_create+0x1551/0x1ff0 net/9p/client.c:1031
->  v9fs_session_init+0x1b9/0x28e0 fs/9p/v9fs.c:410
->  v9fs_mount+0xe2/0x12b0 fs/9p/vfs_super.c:122
->  legacy_get_tree+0x114/0x290 fs/fs_context.c:662
->  vfs_get_tree+0xa7/0x570 fs/super.c:1797
->  do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
->  path_mount+0x742/0x1f20 fs/namespace.c:3679
->  do_mount fs/namespace.c:3692 [inline]
->  __do_sys_mount fs/namespace.c:3898 [inline]
->  __se_sys_mount+0x725/0x810 fs/namespace.c:3875
->  __x64_sys_mount+0xe4/0x150 fs/namespace.c:3875
->  do_syscall_64+0xd5/0x1f0
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> If p9_check_errors() fails early in p9_client_rpc(), req->rc.tag
-> will not be properly initialized. However, trace_9p_client_res()
-> ends up trying to print it out anyway before p9_client_rpc()
-> finishes.
-> 
-> Fix this issue by assigning default values to p9_fcall fields
-> such as 'tag' and (just in case KMSAN unearths something new) 'id'
-> during the tag allocation stage.
-> 
-> Reported-and-tested-by: syzbot+ff14db38f56329ef68df@syzkaller.appspotmail.com
-> Fixes: 348b59012e5c ("net/9p: Convert net/9p protocol dumps to tracepoints")
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-> ---
-> v2: change fc->tag init value from 0 to P9_NOTAG per Dominique
-> Martinet's <asmadeus@codewreck.org> helpful suggestion.
-> Link: https://lore.kernel.org/all/ZhNVMivKCCq6wir0@codewreck.org/
-> 
->  net/9p/client.c | 2 ++
->  1 file changed, 2 insertions(+)
+Nikita Zhandarovich wrote on Wed, May 15, 2024 at 08:18:19AM -0700:
+> Gentle ping on this issue as it is still open. Thanks in advance :)
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Thanks for the ping and sorry for the inactivity -- your patch came in
+the middle of a rough patch (ha, ha..) with a couple of regressions that
+drained me and we didn't get any other outside patch this cycle, so I
+didn't prepare a pull request for Linus.
 
-> diff --git a/net/9p/client.c b/net/9p/client.c
-> index f7e90b4769bb..b05f73c291b4 100644
-> --- a/net/9p/client.c
-> +++ b/net/9p/client.c
-> @@ -235,6 +235,8 @@ static int p9_fcall_init(struct p9_client *c, struct p9_fcall *fc,
->  	if (!fc->sdata)
->  		return -ENOMEM;
->  	fc->capacity = alloc_msize;
-> +	fc->id = 0;
-> +	fc->tag = P9_NOTAG;
->  	return 0;
->  }
->  
-> 
+(In theory, it should have made it in one of Eric's pull for 6.9-rc5/6,
+but I guess it slipped through his mailer as well)
 
-
+I'll queue the patch to -next now and send it next week if nothing else
+pops up.
+-- 
+Dominique Martinet | Asmadeus
