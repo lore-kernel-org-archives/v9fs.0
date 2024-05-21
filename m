@@ -1,117 +1,112 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4954575811
-	for <v9fs@lists.linux.dev>; Tue, 21 May 2024 12:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6EF76049
+	for <v9fs@lists.linux.dev>; Tue, 21 May 2024 13:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716294645; cv=none; b=B2Xv1uIlVu2foDTc4m/CZTKitnm8kKJxjbDt/KIhTLYFdmG31/qZKfLD2MvIjtfei4IXJjx7NKNtDfy6Y3Yb4PYY7Ri1IR+sQgITF5spjK4MSpRLBp0NPoVUbkZ/VpnGSc8Cahl/kMVx+Bir3TOFVHZd9bWvk4cwEkG4yNjL5oE=
+	t=1716298596; cv=none; b=KV7oTW5OoNe2HW1l8sAFeSMts8A1t/3snKg5nlGBBEQvxZuuKBIyhZOefPYQFxmHIOg2Ad33loL6SHSOFmUIUNo2jFbRoTdFMGx83CE6WTIUkFfAMh2gQDhuEs/dqdGX/PlKOibNpJH71T0E4em2nqBrA3JnlsUQi2oXSyc+exw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716294645; c=relaxed/simple;
-	bh=Li4W/+yXNqvCUJAgYsUZZdfWI0AWWai5MEvNGUE7iS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pcj5rJXOiXcVZM6uL7xkPzxID707Bywuq5T9z+rMeWv4NKV2nu2+F2kcnqr+jXmWzFfGuHFwbK9h4C600gH2JDzZMq3cCo8SgywyhKyDJv2dfoOP9L6dhGahFUZq4YVvjcyoexA6QQcRQmu2H/OL2LT4e+FEMJCMExELvpbsp+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=R+pT4Fys; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1716298596; c=relaxed/simple;
+	bh=wooh8rG/Ageclm++Zoo32v4gpqwOYEvywXeGxlbSL1c=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=LlmEgdMXfQrpW1On8xI+A1fHtmo0LHWpilgEnm9TbeazajXPZS9b4kwV9yrloU1/iWPPrfW6XNKKIxvf4eP27Qsi6aYInm/OVrTwwtOf1gpCWM9xS+rPd5C0PwE2ahJJOY9A/GpSC2RSYKAjekfseWltMPe5RhccW3EdHsWwyn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U1/1cCNh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="R+pT4Fys"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id B758C14C2DB;
-	Tue, 21 May 2024 14:30:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1716294635;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U1/1cCNh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716298594;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=DVp6YCfajHs+yNWdfKMUPIPzz9c0Xk93q1PicjfZ4vY=;
-	b=R+pT4FysZdDlHaYGG7L5deFEpB/UlAFZCZeqyRZyQvei+WEf8azLbh6hgfkKUkvfrhIHCh
-	Kjt0MJiV2OsO+glAXRuT7dtk/C5TsVVPZXsruYwpu94CZTDOM1OCfnhW9QlHCBzI7l4fMk
-	ngnklRnV6phwGh9is3T9T8/wFmjYm+rg+dbk4zEHNRxF6KuqNP9gzrQ9ivHrUOtY+Ck4QU
-	swtgkh6y7Q4o49ZnuVtVQ1+nsWefkIdVMoqV5EG+I2iQXny2NtGfcxhg+T4Gzz0x/BRzZU
-	814E+mjFJI8epx1o+R9jeTzrFEImBBxCQKAA2Mi7ipeuFURY9I92SntV0gyllw==
-Received: from gaia.codewreck.org (localhost.lan [::1])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 9ee2cc6c;
-	Tue, 21 May 2024 12:30:28 +0000 (UTC)
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Greg Kurz <groug@kaod.org>,
-	Jianyong Wu <jianyong.wu@arm.com>
-Cc: stable@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@gmail.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] 9p: add missing locking around taking dentry fid list
-Date: Tue, 21 May 2024 21:29:46 +0900
-Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
-X-Mailer: git-send-email 2.44.0
+	bh=tQ93YOLA+ZarT84k8WHzLRGgN4pa3R9T2oT8BE3LSw4=;
+	b=U1/1cCNhueMTsclJTn9V+sm3pyiBrO+XRhsFKk7Ow8GF+euzA88wbCviPfIulfasawm3BM
+	V7xxNSPLwpDv2U8L5CNXBOr6/F4AScARiHRQHaY0TPJB4auuI1Yi0tkcZtsWx5Kga6x35A
+	YmJVqVB0LtkXtsZfuIB8XzlFA0TyPkw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-85-IRM4g2I6Pu-_TFIqfGEhVw-1; Tue, 21 May 2024 09:36:30 -0400
+X-MC-Unique: IRM4g2I6Pu-_TFIqfGEhVw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D422818188A1;
+	Tue, 21 May 2024 13:36:29 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6CA4E200A35C;
+	Tue, 21 May 2024 13:36:28 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <stfrench@microsoft.com>
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Enzo Matsumiya <ematsumiya@suse.de>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix AIO error handling when doing write-through
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <295051.1716298587.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 21 May 2024 14:36:27 +0100
+Message-ID: <295052.1716298587@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Fix a use-after-free on dentry's d_fsdata fid list when a thread
-lookups a fid through dentry while another thread unlinks it:
+If an error occurs whilst we're doing an AIO write in write-through mode,
+we may end up calling ->ki_complete() *and* returning an error from
+->write_iter().  This can result in either a UAF (the ->ki_complete() func
+pointer may get overwritten, for example) or a refcount underflow in
+io_submit() as ->ki_complete is called twice.
 
-UAF thread:
-refcount_t: addition on 0; use-after-free.
- p9_fid_get linux/./include/net/9p/client.h:262
- v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
- v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
- v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
- v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
- vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
+Fix this by making netfs_end_writethrough() - and thus
+netfs_perform_write() - unconditionally return -EIOCBQUEUED if we're doing
+an AIO write and wait for completion if we're not.
 
-Freed by:
- p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
- p9_fid_put linux/./include/net/9p/client.h:278
- v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
- v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
- vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
-
-The problem is that d_fsdata was not accessed under d_lock, because
-d_release() normally is only called once the dentry is otherwise no
-longer accessible but since we also call it explicitly in v9fs_remove
-that lock is required:
-move the hlist out of the dentry under lock then unref its fids once
-they are no longer accessible.
-
-Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
-Cc: stable@vger.kernel.org
-Reported-by: Meysam Firouzi
-Reported-by: Amirmohammad Eftekhar
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Enzo Matsumiya <ematsumiya@suse.de>
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
 ---
- fs/9p/vfs_dentry.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/netfs/write_issue.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-index f16f73581634..01338d4c2d9e 100644
---- a/fs/9p/vfs_dentry.c
-+++ b/fs/9p/vfs_dentry.c
-@@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
- static void v9fs_dentry_release(struct dentry *dentry)
- {
- 	struct hlist_node *p, *n;
-+	struct hlist_head head;
- 
- 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
- 		 dentry, dentry);
--	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
-+
-+	spin_lock(&dentry->d_lock);
-+	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
-+	spin_unlock(&dentry->d_lock);
-+
-+	hlist_for_each_safe(p, n, &head)
- 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
--	dentry->d_fsdata = NULL;
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index e190043bc0da..acbfd1f5ee9d 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -636,7 +636,12 @@ int netfs_end_writethrough(struct netfs_io_request *w=
+req, struct writeback_contr
+ =
+
+ 	mutex_unlock(&ictx->wb_lock);
+ =
+
+-	ret =3D wreq->error;
++	if (wreq->iocb) {
++		ret =3D -EIOCBQUEUED;
++	} else {
++		wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS, TASK_UNINTERRUPTIBLE)=
+;
++		ret =3D wreq->error;
++	}
+ 	netfs_put_request(wreq, false, netfs_rreq_trace_put_return);
+ 	return ret;
  }
- 
- static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
--- 
-2.44.0
 
