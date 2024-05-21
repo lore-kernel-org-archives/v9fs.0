@@ -1,109 +1,117 @@
 Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD37B1BDC3
-	for <v9fs@lists.linux.dev>; Mon, 20 May 2024 07:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4954575811
+	for <v9fs@lists.linux.dev>; Tue, 21 May 2024 12:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716190376; cv=none; b=n5/Y9YlZjB4A0qewFENcrPegdBd+/5dZtCIoTv6qQM+AzOo2RGBVJnlhN4anSbtC09xD55jpbATxGRQb2cN0rs8/Sa7KXzMl1uJ48nHMlGr/d++5QSEAJrZk3BHe1blzRnyEUogcUWxbLE/aE1+VS4G8+g0LF08mVQH0yWcfpKs=
+	t=1716294645; cv=none; b=B2Xv1uIlVu2foDTc4m/CZTKitnm8kKJxjbDt/KIhTLYFdmG31/qZKfLD2MvIjtfei4IXJjx7NKNtDfy6Y3Yb4PYY7Ri1IR+sQgITF5spjK4MSpRLBp0NPoVUbkZ/VpnGSc8Cahl/kMVx+Bir3TOFVHZd9bWvk4cwEkG4yNjL5oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716190376; c=relaxed/simple;
-	bh=FFamMafNUgPmRC2roNs5YTBIj9RyU3l/0sZQ9xCXCLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G0fsanVV69YREHpGODlcy6FVC+1ZKGXsuCbRXO18HoE4HpYHAlohmj+ngiyYcXatV/yCs5D8hAfZmEj87AyJ/VsKc/GKKQkdVUi3+GnxGFu/VTduut5eL1uYj8VS0CeOgVKYd//+L9im4f6TEoBP1bqCQAHBehXpSug2i9L8ac0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=c4J1a2ke; arc=none smtp.client-ip=62.210.214.84
+	s=arc-20240116; t=1716294645; c=relaxed/simple;
+	bh=Li4W/+yXNqvCUJAgYsUZZdfWI0AWWai5MEvNGUE7iS8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pcj5rJXOiXcVZM6uL7xkPzxID707Bywuq5T9z+rMeWv4NKV2nu2+F2kcnqr+jXmWzFfGuHFwbK9h4C600gH2JDzZMq3cCo8SgywyhKyDJv2dfoOP9L6dhGahFUZq4YVvjcyoexA6QQcRQmu2H/OL2LT4e+FEMJCMExELvpbsp+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=R+pT4Fys; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="c4J1a2ke"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="R+pT4Fys"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id F276814C2DB;
-	Mon, 20 May 2024 09:32:45 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id B758C14C2DB;
+	Tue, 21 May 2024 14:30:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1716190368;
+	s=2; t=1716294635;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8vbBcX66RghTnkz2dmYVbCbRBKn2ffe8qZ0JA8PcrWg=;
-	b=c4J1a2keNzTDzZHGaRFZjMhWSoqA9vmA+S6H/IEyHyB/aNWouO9ao4pzJ1cfy0VQQqLQUJ
-	1uy+90nuQC5qYy82ZgUdyORwXbc+W5zcHQ79s/zm1fLr6uF6SpKCB6sT1DYeX4tvJw/lGI
-	/d9LnXoHHNyWuWoKmTxKO9WA+ZpvGInL2Li8c7xTLB1gK8WPQL5iVWECLuok8e5A1slGq5
-	nDpdf9sIhgYE3UEKXM9WxfPg15J1yRd13X6vx0qXzC2cfHIf77Ik5VnNYDaHzWynCwwsiy
-	E0NOTKXdRMSrb6HyyuozvKKUlTVpsNplv1gMeVBcWMtdqZVGmUwS2JV78fsY9A==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 88b285a3;
-	Mon, 20 May 2024 07:32:42 +0000 (UTC)
-Date: Mon, 20 May 2024 16:32:27 +0900
-From: asmadeus@codewreck.org
-To: David Howells <dhowells@redhat.com>
-Cc: syzbot <syzbot+df038d463cca332e8414@syzkaller.appspotmail.com>,
-	ericvh@kernel.org, linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net,
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Write in
- v9fs_free_request
-Message-ID: <Zkr8i9XxpkJ9AABZ@codewreck.org>
-References: <0000000000005be0aa061846f8d6@google.com>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DVp6YCfajHs+yNWdfKMUPIPzz9c0Xk93q1PicjfZ4vY=;
+	b=R+pT4FysZdDlHaYGG7L5deFEpB/UlAFZCZeqyRZyQvei+WEf8azLbh6hgfkKUkvfrhIHCh
+	Kjt0MJiV2OsO+glAXRuT7dtk/C5TsVVPZXsruYwpu94CZTDOM1OCfnhW9QlHCBzI7l4fMk
+	ngnklRnV6phwGh9is3T9T8/wFmjYm+rg+dbk4zEHNRxF6KuqNP9gzrQ9ivHrUOtY+Ck4QU
+	swtgkh6y7Q4o49ZnuVtVQ1+nsWefkIdVMoqV5EG+I2iQXny2NtGfcxhg+T4Gzz0x/BRzZU
+	814E+mjFJI8epx1o+R9jeTzrFEImBBxCQKAA2Mi7ipeuFURY9I92SntV0gyllw==
+Received: from gaia.codewreck.org (localhost.lan [::1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 9ee2cc6c;
+	Tue, 21 May 2024 12:30:28 +0000 (UTC)
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Greg Kurz <groug@kaod.org>,
+	Jianyong Wu <jianyong.wu@arm.com>
+Cc: stable@vger.kernel.org,
+	Eric Van Hensbergen <ericvh@gmail.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] 9p: add missing locking around taking dentry fid list
+Date: Tue, 21 May 2024 21:29:46 +0900
+Message-ID: <20240521122947.1080227-1-asmadeus@codewreck.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0000000000005be0aa061846f8d6@google.com>
+Content-Transfer-Encoding: 8bit
 
-+To David as I need help with netfs
+Fix a use-after-free on dentry's d_fsdata fid list when a thread
+lookups a fid through dentry while another thread unlinks it:
 
-syzbot wrote on Sun, May 12, 2024 at 12:42:33PM -0700:
-> UAF in
-> Workqueue: events_unbound v9fs_upload_to_server_worker
->  refcount_dec_and_test include/linux/refcount.h:325 [inline]
->  p9_fid_put include/net/9p/client.h:275 [inline]
->  v9fs_free_request+0x5f/0xe0 fs/9p/vfs_addr.c:128
->  netfs_free_request+0x246/0x600 fs/netfs/objects.c:97
->  v9fs_upload_to_server fs/9p/vfs_addr.c:36 [inline]
->  v9fs_upload_to_server_worker+0x200/0x3e0 fs/9p/vfs_addr.c:44
->  process_one_work kernel/workqueue.c:3267 [inline]
+UAF thread:
+refcount_t: addition on 0; use-after-free.
+ p9_fid_get linux/./include/net/9p/client.h:262
+ v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
+ v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
+ v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
+ v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
+ vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
 
-> Freed by task 32641:
->  p9_fid_destroy net/9p/client.c:889 [inline]
->  p9_client_destroy+0x1fb/0x660 net/9p/client.c:1070
->  v9fs_session_close+0x51/0x210 fs/9p/v9fs.c:506
->  v9fs_kill_super+0x5c/0x90 fs/9p/vfs_super.c:196
->  deactivate_locked_super+0xc6/0x130 fs/super.c:472
->  cleanup_mnt+0x426/0x4c0 fs/namespace.c:1267
+Freed by:
+ p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
+ p9_fid_put linux/./include/net/9p/client.h:278
+ v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
+ v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
+ vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
 
-That's a tough one: netfs took a ref in v9fs_init_request (netfs op's
-init_request) and expects to be able to use it until v9fs_free_request
-(net op's free_request()), but the fs was dismounted first and we kill
-the kmem cache at this point so we aggressively drop any dangling ref
-there as there's no way of waiting.
-(this is corroborated by "9pnet: Found fid 1 not clunked" in dmesg in
-the syzcaller logs)
+The problem is that d_fsdata was not accessed under d_lock, because
+d_release() normally is only called once the dentry is otherwise no
+longer accessible but since we also call it explicitly in v9fs_remove
+that lock is required:
+move the hlist out of the dentry under lock then unref its fids once
+they are no longer accessible.
 
-The other two recent kasan errors are similar:
-https://lkml.kernel.org/r/000000000000b86c5e06130da9c6@google.com
-is pretty much the same (it's just that the decrement here hit 0 as
-umount was in the middle of doing it?), and
-https://lkml.kernel.org/r/000000000000041f960618206d7e@google.com
-is yet another step faster (netfs freed the last ref while the cache
-was being emptied and destroyed the fid first; which is possible because
-we're not taking the client lock at this point as we weren't expecting
-any other access after umount)
+Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
+Cc: stable@vger.kernel.org
+Reported-by: Meysam Firouzi
+Reported-by: Amirmohammad Eftekhar
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+---
+ fs/9p/vfs_dentry.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-David, got an idea on how we could wait for these async writebacks?
-
-
-Notes:
- - David removed v9fs_upload_to_server in 2df86547b23d ("netfs: Cut
-over to using new writeback code") (and c245868524cc ("netfs: Remove the
-old writeback code")) in master, but the problem is still present
-conceptually.
- - layering wise, 9p (fs) depends on 9pnet, so 9pnet cannot call into the
-fs code; the wait has to be in v9fs_session_close() before calling
-p9_client_destroy or earlier
-
-
-Thanks,
+diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+index f16f73581634..01338d4c2d9e 100644
+--- a/fs/9p/vfs_dentry.c
++++ b/fs/9p/vfs_dentry.c
+@@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
+ static void v9fs_dentry_release(struct dentry *dentry)
+ {
+ 	struct hlist_node *p, *n;
++	struct hlist_head head;
+ 
+ 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+ 		 dentry, dentry);
+-	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
++
++	spin_lock(&dentry->d_lock);
++	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
++	spin_unlock(&dentry->d_lock);
++
++	hlist_for_each_safe(p, n, &head)
+ 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
+-	dentry->d_fsdata = NULL;
+ }
+ 
+ static int v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
 -- 
-Dominique Martinet | Asmadeus
+2.44.0
+
