@@ -1,87 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611217FBA3;
-	Tue, 21 May 2024 14:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D089130A66
+	for <v9fs@lists.linux.dev>; Tue, 21 May 2024 14:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716301019; cv=none; b=gAvxK68xXzOnZ08IKcycQCqhyFI1iaHhee2lDSRHFKvlT5WIwU0JXmS4o81sqGWocH8CE713Bg7AQebSeRMThHo4oD6L4xWSbXDA8A8EEF0Ng/10LHdUwOSlwG4ZiLUlan7obbG75ewKXvwzwyjEXiRTTKBkYYR+fQAOGYpWISI=
+	t=1716301460; cv=none; b=tHY9bBz0YPuB+PAxjV6V5QTuJuKrIv3R8pmcCFaizCaL0jmnBBQEHmiFcNyiYbtOkUXtxPYywUP/WegcDm92TrZmV+BBIPtrCkX5T2mJHpWZwUnYe1viaiSqtncZk/Jl9gE4zCT8pO6KgUH8COZH9zXUZpXlCTVW4lZp6+IMxgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716301019; c=relaxed/simple;
-	bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cftBAMYj35InjfjXf8W+j+yy5i3JEfVrTzc8+UnmwANNql2Npf7KmHBKYtBMJxdf79xjy3l1/iOdHHE9Ej4IWwEAcxZ8Qq9BNEG2dYNsPaROelhD++X/gM5gR8lvpsImbNyXtYmIxWumMS82IL1a43ssf3tONRRuVqGf7ovVKl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Khodptqa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716301460; c=relaxed/simple;
+	bh=CTILGHjgaGkYQSxM0cSn6nRvwmlTHgeaKOp0IO0HWxw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=tJo7Ku0lctX/feUcf5vwFlGtBN4RwHJ2+P/JPmeKwlcfdqZMYWYqnwn21AUJlyT+GExaGS3vazBqy2hAHe7A+iqOz6QzvnMCuA5J0XVSAa33j0OflJBT3vcDasAn0jxhXFH/SGWfroczApEWtbAin17zbPllHqmPldHnsfS8FG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bElEqSr8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Khodptqa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D29C32789;
-	Tue, 21 May 2024 14:16:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716301018;
-	bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Khodptqap/WzDPfedXz/DwKuzyeN4v7AV1fI2Aa//uMXtUEGFr5QUU8A88tzXyI2s
-	 M0Sx00YkT70Tbmy7bIx8pIb+FBUplpjaz+VxhV3KZqzM4nB0slseiCL18aStpSd6/j
-	 rtG4A+JCKwTkVpTyTpdHtN3g7DolldIq43KA9Ou6xAU0Wzv4dvHox1Gr5sGCqYpW1k
-	 HYodR3O5QUuZDzJVlKv5hzrkLO8XFSgpmjdgKt7o8Va5pg1/Z5cFvbBp8eX1Riu8x5
-	 elXbEaL83L7qy2fh20lkataIdnGrav+9oLV88T236sPo9RKDTPY3zWu35nAwhONlL8
-	 9QPtiEIUjwnVQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Steve French <stfrench@microsoft.com>,
-	David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix AIO error handling when doing write-through
-Date: Tue, 21 May 2024 16:16:49 +0200
-Message-ID: <20240521-handel-landbrot-e013a2c4560d@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <295052.1716298587@warthog.procyon.org.uk>
-References: <295052.1716298587@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bElEqSr8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716301457;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rhtyKrz2w4HaVXBZrxE7MjJzIMil2OihfH05cUBp8po=;
+	b=bElEqSr8EIEPpgPb8O4n6PoiR/HTeucA7V/7eggF4kK9LLqvI1QKOjgC+Qgd1XskX+U3eJ
+	RxaoE7Q1HWA+J5k9CmYUnzVa5KbfYmnwcvsHal/f3JxRUQ5y5kf2SvU33OuUjVgYiJ5zOz
+	FRMlvcqq82cdf/NeF5vlk+wiUHgkKqA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-4qhM56d0MkiChBK8q-pIRQ-1; Tue,
+ 21 May 2024 10:24:11 -0400
+X-MC-Unique: 4qhM56d0MkiChBK8q-pIRQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 41F4E2802297;
+	Tue, 21 May 2024 14:24:08 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 890021C09480;
+	Tue, 21 May 2024 14:24:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <Zkr8i9XxpkJ9AABZ@codewreck.org>
+References: <Zkr8i9XxpkJ9AABZ@codewreck.org> <0000000000005be0aa061846f8d6@google.com>
+To: asmadeus@codewreck.org
+Cc: dhowells@redhat.com,
+    syzbot <syzbot+df038d463cca332e8414@syzkaller.appspotmail.com>,
+    ericvh@kernel.org, linux-kernel@vger.kernel.org,
+    linux_oss@crudebyte.com, lucho@ionkov.net,
+    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Write in v9fs_free_request
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1381; i=brauner@kernel.org; h=from:subject:message-id; bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT5rLn0rVQ1jjF39fu9z16/XlIhx1Nl41OR9F1K63uRF Gf+prW1HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNJiWP4Z3ksVLKaj8H8k5ON xg3nD/cuH2xcLGA/8b7FqwmP2Zl6JzP8j/jVEfFwJpvGt9dTb6wUXyBvMZnxo33KYx4buQ3K289 EMgEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <300530.1716301445.1@warthog.procyon.org.uk>
+Date: Tue, 21 May 2024 15:24:05 +0100
+Message-ID: <300531.1716301445@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-On Tue, 21 May 2024 14:36:27 +0100, David Howells wrote:
-> If an error occurs whilst we're doing an AIO write in write-through mode,
-> we may end up calling ->ki_complete() *and* returning an error from
-> ->write_iter().  This can result in either a UAF (the ->ki_complete() func
-> pointer may get overwritten, for example) or a refcount underflow in
-> io_submit() as ->ki_complete is called twice.
-> 
-> Fix this by making netfs_end_writethrough() - and thus
-> netfs_perform_write() - unconditionally return -EIOCBQUEUED if we're doing
-> an AIO write and wait for completion if we're not.
-> 
-> [...]
+asmadeus@codewreck.org wrote:
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+> +To David as I need help with netfs
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+I'll look at this in a bit, though it may be tomorrow.  Just fixing something
+in cifs at the moment.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+David
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix AIO error handling when doing write-through
-      https://git.kernel.org/vfs/vfs/c/eb5239732070
