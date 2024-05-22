@@ -1,168 +1,248 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834DF824BD
-	for <v9fs@lists.linux.dev>; Wed, 22 May 2024 17:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D146A57CA6
+	for <v9fs@lists.linux.dev>; Wed, 22 May 2024 21:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716398739; cv=none; b=P9SKMczA4iy7vDfo24/e4ixysyJm4q/E4KsKcWW8d/0Vq0qmt1Ubc0RQ2C2vHXqMEkyGdc54OT+Qq1cX4FJva6Op4u0YJVvPUTaJ0LEEmCA8ushSqbYpDafbrPoZmGkEsqb3kEt3EKpf5dNVZdEI7Vw7XXL+9UXlyoVq8zgfVGg=
+	t=1716412153; cv=none; b=XnobVl9kbOwx9D3Vl3jH55kBX36y4kX4LNFAiaN5TGm0/SYxL2EI6v4EXjuMyCBKuZQF8pxqS4L1xY2pXFXGSl2mDgzfoG2XQ+6e4inKDItdUZ7teyg15j/YHkflTAVI1mUnS4O/AC0yDDHrq0IEE2FOpz0fgnbTRmhic1tSDNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716398739; c=relaxed/simple;
-	bh=iMNRZ7+0rdrHnxvP4fjqemrREgUEcpP0yPTxazQ+uZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QFPoNhDjZeOnFP3x8cc6WNraHTUmz3FWqHnnOpv2H9YTUtHz78TrG3JofSeyOV2O55VSJ/nTvYKG3flb7wFY/Fn/vfn1spAIdJQMVzvfpMPXrY4coY3BSgo+cdP26YpjyHyLUJATygeuDbwRVHGDRhbah1OiUG+OWVtcQqooyR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=MD3YR4Ix; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1716412153; c=relaxed/simple;
+	bh=FL8TX/ZAVoB1PP91BvAGdWUewzyVdl+tkLkyIR/IPlA=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=B/iWH7O6BZiPjqzsXqK0rdpSnpG8PK4RzCObImKBLB+M/id9AhdF0f65cLTmypFESPs0d6YfN/8wN3O9Fko68jH9jraq509bQaYN7Y0l7Bbp5SV+Hz0p4cYILVATs6yPXuaHsn3v+qvEKUhgkRcfQ8LP2EvcU2QzLR63G75o4C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TZkrtf11; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="MD3YR4Ix"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 6E59714C2DB;
-	Wed, 22 May 2024 19:25:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1716398729;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TZkrtf11"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716412150;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MjYx+oNvZPdABC1fXs5E8e+EjlgfWp0VoNQKSmEu+fQ=;
-	b=MD3YR4Ixj7oVgewBNwgIsxglU5w4112AoNmfjYY1jtMl8C7k2cBzw4AbcIgQk7rh4jB1LG
-	Us+7l55fj/p3iepLENOckJxNGoa/GP37ZV2FGxExEZGI89/AHadkWdExALrgZQ5aGy8v72
-	zT0G0dMYmUNfuZue8NN+qdT0+gcL71KVq/Y8uGQXTENOCK/bqjjYjJcUqMPdbdPcGL83vZ
-	fsxJ3m09AFHJxHQxoFvVJOpiiNnqMD6BE9S2niC4YWDlmBWiXBNmqUA0ZObA3a2J0JdEZa
-	FyYMUUunbaKNKJAn3nGCFp7rqem7TEltF9YtISKD8oWkBGHDb4aB1K/KgyIItw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4bffc3c6;
-	Wed, 22 May 2024 17:25:21 +0000 (UTC)
-Date: Thu, 23 May 2024 02:25:06 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, Greg Kurz <groug@kaod.org>,
-	Jianyong Wu <jianyong.wu@arm.com>, stable@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@gmail.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: add missing locking around taking dentry fid list
-Message-ID: <Zk4qcmtot6WEC1Xx@codewreck.org>
-References: <20240521122947.1080227-1-asmadeus@codewreck.org>
- <1738699.kjPCCGL2iY@silver>
+	bh=16PqWbFEFWjkwJI4FUe2h6WfSs9KhKFVVUB3JvoJi30=;
+	b=TZkrtf11N1hqO6tsP0MVSct3TJsFMIg3nDK77ptEP3Ld5GjywKAs00awcemBWtWUkabVLN
+	Xyk7UsqHty6zfi/lLCTqgxW3SMjUrUF/SfOAZ55awxAlfXS8g63I6ikvvSWA8jqI5HwJkR
+	AilyzYUcRG2ZHuJf9aSNVBxhgxaqmd8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-191-yNBlmEh6PjCfKwIsNvsRQg-1; Wed, 22 May 2024 17:09:07 -0400
+X-MC-Unique: yNBlmEh6PjCfKwIsNvsRQg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7C40801190;
+	Wed, 22 May 2024 21:09:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 656161050178;
+	Wed, 22 May 2024 21:09:04 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <Zkr8i9XxpkJ9AABZ@codewreck.org>
+References: <Zkr8i9XxpkJ9AABZ@codewreck.org> <0000000000005be0aa061846f8d6@google.com>
+To: syzbot+df038d463cca332e8414@syzkaller.appspotmail.com
+Cc: dhowells@redhat.com, asmadeus@codewreck.org, ericvh@kernel.org,
+    linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
+    lucho@ionkov.net, syzkaller-bugs@googlegroups.com,
+    v9fs@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+    Steve French <sfrench@samba.org>,
+    Christian Brauner <brauner@kernel.org>,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev
+Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Write in v9fs_free_request
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1738699.kjPCCGL2iY@silver>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <463667.1716412143.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 May 2024 22:09:03 +0100
+Message-ID: <463668.1716412143@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Christian Schoenebeck wrote on Wed, May 22, 2024 at 04:35:19PM +0200:
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t master
 
-Thanks for the review!
+netfs, 9p: Fix race between umount and async request completion
 
-> On Tuesday, May 21, 2024 2:29:46 PM CEST Dominique Martinet wrote:
-> > Fix a use-after-free on dentry's d_fsdata fid list when a thread
-> > lookups a fid through dentry while another thread unlinks it:
-> 
-> I guess that's "looks up". :)
+There's a problem in 9p's interaction with netfslib whereby a crash occurs
+because the 9p_fid structs get forcibly destroyed during client teardown
+(without paying attention to their refcounts) before netfslib has finished
+with them.  However, it's not a simple case of deferring the clunking that
+p9_fid_put() does as that requires the client.
 
-Err, I guess.
+The problem is that netfslib has to unlock pages and clear the IN_PROGRESS
+flag before destroying the objects involved - including the pid - and, in
+any case, nothing checks to see if writeback completed barring looking at
+the page flags.
 
-> > UAF thread:
-> > refcount_t: addition on 0; use-after-free.
-> >  p9_fid_get linux/./include/net/9p/client.h:262
-> >  v9fs_fid_find+0x236/0x280 linux/fs/9p/fid.c:129
-> >  v9fs_fid_lookup_with_uid linux/fs/9p/fid.c:181
-> >  v9fs_fid_lookup+0xbf/0xc20 linux/fs/9p/fid.c:314
-> >  v9fs_vfs_getattr_dotl+0xf9/0x360 linux/fs/9p/vfs_inode_dotl.c:400
-> >  vfs_statx+0xdd/0x4d0 linux/fs/stat.c:248
-> > 
-> > Freed by:
-> >  p9_client_clunk+0xb0/0xe0 linux/net/9p/client.c:1456
-> 
-> That line number looks weird.
+Fix this by keeping a count of outstanding I/O requests (of any type) and
+waiting for it to quiesce during inode eviction.
 
-I have a p9_fid_destroy there (as of a v6.9-rc5 tree); might have moved
-a bit though.
-Unfortunately it's inlined so the stack trace only has kfree() next
-which is why I cut the trace there; I don't think it really matters?
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/9p/vfs_inode.c      |    5 ++++-
+ fs/afs/inode.c         |    1 +
+ fs/netfs/objects.c     |    5 +++++
+ fs/smb/client/cifsfs.c |    1 +
+ include/linux/netfs.h  |   18 ++++++++++++++++++
+ 5 files changed, 29 insertions(+), 1 deletion(-)
 
-> >  p9_fid_put linux/./include/net/9p/client.h:278
-> >  v9fs_dentry_release+0xb5/0x140 linux/fs/9p/vfs_dentry.c:55
-> >  v9fs_remove+0x38f/0x620 linux/fs/9p/vfs_inode.c:518
-> >  vfs_unlink+0x29a/0x810 linux/fs/namei.c:4335
-> > 
-> > The problem is that d_fsdata was not accessed under d_lock, because
-> > d_release() normally is only called once the dentry is otherwise no
-> > longer accessible but since we also call it explicitly in v9fs_remove
-> > that lock is required:
-> > move the hlist out of the dentry under lock then unref its fids once
-> > they are no longer accessible.
-> > 
-> > Fixes: 154372e67d40 ("fs/9p: fix create-unlink-getattr idiom")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Meysam Firouzi
-> > Reported-by: Amirmohammad Eftekhar
-> > Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-> > ---
-> >  fs/9p/vfs_dentry.c | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-> > index f16f73581634..01338d4c2d9e 100644
-> > --- a/fs/9p/vfs_dentry.c
-> > +++ b/fs/9p/vfs_dentry.c
-> > @@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
-> >  static void v9fs_dentry_release(struct dentry *dentry)
-> >  {
-> >  	struct hlist_node *p, *n;
-> > +	struct hlist_head head;
-> >  
-> >  	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
-> >  		 dentry, dentry);
-> > -	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
-> > +
-> > +	spin_lock(&dentry->d_lock);
-> > +	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
-> > +	spin_unlock(&dentry->d_lock);
-> > +
-> > +	hlist_for_each_safe(p, n, &head)
-> >  		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
-> > -	dentry->d_fsdata = NULL;
-> >  }
-> 
-> I'm not sure if that works out. So you are moving the list from dentry to a
-> local variable. But if you look at v9fs_fid_find() [fs/9p/fid.c#123] it reads
-> dentry->d_fsdata (twice) and holds it as local variable before taking a
-> lock. So the lock in v9fs_fid_find() should happen earlier, no?
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 8c9a896d691e..57cfa9f65046 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -354,6 +354,7 @@ void v9fs_evict_inode(struct inode *inode)
+ 		version =3D cpu_to_le32(v9inode->qid.version);
+ 		netfs_clear_inode_writeback(inode, &version);
+ =
 
-The comment still works -- if detry->d_fsdata is NULL then
-hlist_for_each_entry will stop short and not iterate over anything (it
-won't bug out), so that part is fine in my opinion.
++		netfs_wait_for_outstanding_io(inode);
+ 		clear_inode(inode);
+ 		filemap_fdatawrite(&inode->i_data);
+ =
 
-What should be improved though is that if dentry->d_inode we can still
-look by inode even if there was a d_fsdata as log as fid wasn't found,
-e.g.:
------
-diff --git a/fs/9p/fid.c b/fs/9p/fid.c
-index de009a33e0e2..c72825fb0ece 100644
---- a/fs/9p/fid.c
-+++ b/fs/9p/fid.c
-@@ -131,9 +131,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
- 			}
- 		}
- 		spin_unlock(&dentry->d_lock);
--	} else {
--		if (dentry->d_inode)
--			ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
+@@ -361,8 +362,10 @@ void v9fs_evict_inode(struct inode *inode)
+ 		if (v9fs_inode_cookie(v9inode))
+ 			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
+ #endif
+-	} else
++	} else {
++		netfs_wait_for_outstanding_io(inode);
+ 		clear_inode(inode);
 +	}
-+	if (!ret && dentry->d_inode)
-+		ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
+ }
+ =
+
+ struct inode *
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 94fc049aff58..c831e711a4ac 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -652,6 +652,7 @@ void afs_evict_inode(struct inode *inode)
+ =
+
+ 	afs_set_cache_aux(vnode, &aux);
+ 	netfs_clear_inode_writeback(inode, &aux);
++	netfs_wait_for_outstanding_io(inode);
+ 	clear_inode(inode);
+ =
+
+ 	while (!list_empty(&vnode->wb_keys)) {
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index c90d482b1650..f4a642727479 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
+ess_space *mapping,
+ 		}
  	}
- 
- 	return ret;
-----
+ =
 
-I don't think that has to be part of this commit though, the worst that
-can happen here is an extra lookup to server instead of a use after
-free; I'll send a separate patch for this.
++	atomic_inc(&ctx->io_count);
+ 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
+ 	netfs_proc_add_rreq(rreq);
+ 	netfs_stat(&netfs_n_rh_rreq);
+@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ {
+ 	struct netfs_io_request *rreq =3D
+ 		container_of(work, struct netfs_io_request, work);
++	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
+ 	unsigned int i;
+ =
 
--- 
-Dominique Martinet | Asmadeus
+ 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
+@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ 		}
+ 		kvfree(rreq->direct_bv);
+ 	}
++
++	if (atomic_dec_and_test(&ictx->io_count))
++		wake_up_var(&ictx->io_count);
+ 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
+ }
+ =
+
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index ec5b639f421a..21c9e173ea9a 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -435,6 +435,7 @@ cifs_evict_inode(struct inode *inode)
+ 	if (inode->i_state & I_PINNING_NETFS_WB)
+ 		cifs_fscache_unuse_inode_cookie(inode, true);
+ 	cifs_fscache_release_inode_cookie(inode);
++	netfs_wait_for_outstanding_io(inode);
+ 	clear_inode(inode);
+ }
+ =
+
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index d2d291a9cdad..3ca3906bb8da 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -68,6 +68,7 @@ struct netfs_inode {
+ 	loff_t			remote_i_size;	/* Size of the remote file */
+ 	loff_t			zero_point;	/* Size after which we assume there's no data
+ 						 * on the server */
++	atomic_t		io_count;	/* Number of outstanding reqs */
+ 	unsigned long		flags;
+ #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
+ #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
+@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
+ *ctx,
+ 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
+ 	ctx->zero_point =3D LLONG_MAX;
+ 	ctx->flags =3D 0;
++	atomic_set(&ctx->io_count, 0);
+ #if IS_ENABLED(CONFIG_FSCACHE)
+ 	ctx->cache =3D NULL;
+ #endif
+@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
+truct netfs_inode *ctx)
+ #endif
+ }
+ =
+
++/**
++ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
++ * @ctx: The netfs inode to wait on
++ *
++ * Wait for outstanding I/O requests of any type to complete.  This is in=
+tended
++ * to be called from inode eviction routines.  This makes sure that any
++ * resources held by those requests are cleaned up before we let the inod=
+e get
++ * cleaned up.
++ */
++static inline void netfs_wait_for_outstanding_io(struct inode *inode)
++{
++	struct netfs_inode *ictx =3D netfs_inode(inode);
++
++	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
++}
++
+ #endif /* _LINUX_NETFS_H */
+
