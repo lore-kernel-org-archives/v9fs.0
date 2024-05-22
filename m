@@ -1,88 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD47D7BAF7;
-	Wed, 22 May 2024 07:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFE779B9D
+	for <v9fs@lists.linux.dev>; Wed, 22 May 2024 10:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716362072; cv=none; b=OtynCIumofW9ft4nVC+2Zv8t+gBnAsSErWvhhP4Z1Wk39znpjNAhfYbMw0uJUFo8/tHvOSajaFzFde3Bp4qxJAdjquI1qK+2mHbL4TRXjSnbgYyd76jw+f9CXqKXiHWIyUCmXixjowAaLX/UjF/jWcmThd4TiB68BlCu9VjdU6c=
+	t=1716375422; cv=none; b=arArpHkAMNTvecbCDhOQK2AbTs+0/v94GC70Mb7RkGDE+H5tqqC1/evdu6Qp6sssNkVkBWtufB3VaAR84LgGoMih0giFEY2XaBvz+o8kOE+B2z8Bi87ZRCRGgCvT4IqaM64MjAEoxsUgxTTYiQJ0WvYkQfVb3NYBDx3WmqBOqfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716362072; c=relaxed/simple;
-	bh=o7FelwEYe06bUj5gigSKOWEN1hyHxbXUGTMgm7PhL9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h1O/f4ypO85NuEnv9Q6up9NtvMkJ1HkNgqo+WbDIBHyo7FoU1u6QnN9XGupjfsdi3UXw4537iE9SEn6LRxUfMIe4i1F5TDQlcNhHLU7jeHRJKMhsctgtyRYMfEUEVMrbWYoS7HQdA89hm3YT9OMPoiRK/jlDOAju4G8/WJyEf9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxUDh4A7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716375422; c=relaxed/simple;
+	bh=6Hksgokkl0HBv+oqPZJxKHQYHHUqeBHix5eB5WAxXYQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=pn2TlreSaSbM5sjkezrWUWjmnOv1SWmzUTAmyV3rsFJRg5mkqTAJJW2nep5rhDEmTuICLVDX1Lq/bM6sdkbTEqkjQACafMdnDHS1rOSPnSV3RuuRulzxeCZZbQVbx2Own2XNv62zH8h1Gz053d7XshAJsfErVD/xf/GiG4tdYd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J3KLRmCZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxUDh4A7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8693DC2BD11;
-	Wed, 22 May 2024 07:14:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716362071;
-	bh=o7FelwEYe06bUj5gigSKOWEN1hyHxbXUGTMgm7PhL9Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxUDh4A73NHTC6Uo8h5Ypzmu20FS3YX6acckvMWdiTXlPRBjHCRk0EBbJl9S64aw7
-	 fvi2zjqqoHjbD8jQyI1RMGX+yQx0yPJAEnWSLlpK9yTT0aatU/SRonCaKuyKmVGbNH
-	 3HqrddQuCxvyfWafJoMknIMWKMebVIPmr5pz3n4sa9urXda/xmbnk9J8jWy3L7ypdD
-	 V1UvaZyoATvDw+yBeJObfOx70Af9oi6mTC5NVQw+byDXa4FRe2gG5/Hu+oF/RQiMBr
-	 aYar/GPGVKNDfbmSkaX4NWa83bKOiAMWu4xVSJI4C1GotroqgvH+ILaWPJpAEHlyM1
-	 es738P4O+j5QQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Steve French <stfrench@microsoft.com>,
-	David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix setting of BDP_ASYNC from iocb flags
-Date: Wed, 22 May 2024 09:14:20 +0200
-Message-ID: <20240522-weltmeere-rammt-70f03e24b8b4@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <316306.1716306586@warthog.procyon.org.uk>
-References: <316306.1716306586@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J3KLRmCZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716375420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UeDpmePfXLmxKAjowHlsgo0j+sPs3iu7AV0EsR6geB4=;
+	b=J3KLRmCZRF/Xvkff3HQtZt+7nmnBSIOUnrxbeDTLF6/mX8tHfXf7QKOCdZFKXqKORXCPAj
+	u9j+ECnAGe2U+Vn/oENkInZbyOcGy8+Zan1EG+aCytlnH1pJKSjhpAXy04Y/Hn7trsgZ6b
+	AEq1K4BYYCTlFUiwK+SHsY3q4r3tGZM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-2dZ_UjK8Ol2vygMKCUcLKQ-1; Wed, 22 May 2024 06:56:56 -0400
+X-MC-Unique: 2dZ_UjK8Ol2vygMKCUcLKQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A2D585A58C;
+	Wed, 22 May 2024 10:56:56 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 19553200B4D2;
+	Wed, 22 May 2024 10:56:53 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <Zkr8i9XxpkJ9AABZ@codewreck.org>
+References: <Zkr8i9XxpkJ9AABZ@codewreck.org> <0000000000005be0aa061846f8d6@google.com>
+To: asmadeus@codewreck.org
+Cc: dhowells@redhat.com,
+    syzbot <syzbot+df038d463cca332e8414@syzkaller.appspotmail.com>,
+    ericvh@kernel.org, linux-kernel@vger.kernel.org,
+    linux_oss@crudebyte.com, lucho@ionkov.net,
+    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Write in v9fs_free_request
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1256; i=brauner@kernel.org; h=from:subject:message-id; bh=o7FelwEYe06bUj5gigSKOWEN1hyHxbXUGTMgm7PhL9Q=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT5zvZ/VJrSsYxv51y3TfmcQte5fa4UZafWckj9j9mw2 PJaYfO/jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlUrWD4n5pi88L397Z6Xbv2 O1r3t/Z9dXA+H9T4a6/78o9nxIPZgxkZWj89LFFMex2/tuIsx+tL+ZE/tl/mFI60cZxvEvT/lTY 7AwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <371418.1716375412.1@warthog.procyon.org.uk>
+Date: Wed, 22 May 2024 11:56:52 +0100
+Message-ID: <371419.1716375412@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-On Tue, 21 May 2024 16:49:46 +0100, David Howells wrote:
-> Fix netfs_perform_write() to set BDP_ASYNC if IOCB_NOWAIT is set rather
-> than if IOCB_SYNC is not set.  It reflects asynchronicity in the sense of
-> not waiting rather than synchronicity in the sense of not returning until
-> the op is complete.
-> 
-> Without this, generic/590 fails on cifs in strict caching mode with a
-> complaint that one of the writes fails with EAGAIN.  The test can be
-> distilled down to:
-> 
-> [...]
+asmadeus@codewreck.org wrote:
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+> That's a tough one: netfs took a ref in v9fs_init_request (netfs op's
+> init_request) and expects to be able to use it until v9fs_free_request
+> (net op's free_request()), but the fs was dismounted first and we kill
+> the kmem cache at this point so we aggressively drop any dangling ref
+> there as there's no way of waiting.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Which kmem cache are we talking about?  I can see two in net/9p/ and one in
+fs/9p/.  And took a ref on what?
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+David
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix setting of BDP_ASYNC from iocb flags
-      https://git.kernel.org/vfs/vfs/c/33c9d7477ef1
