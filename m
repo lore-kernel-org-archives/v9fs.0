@@ -1,95 +1,87 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F58654FA9;
-	Thu, 23 May 2024 10:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A708DBA2F
+	for <v9fs@lists.linux.dev>; Thu, 23 May 2024 11:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716458767; cv=none; b=lREXmyNzv/CJa378ZnBy3C1KPx414oy8V5BoG3oV9fX4dkWFiiWjCN46T2XP/rlFhkkivF7L5+qrOrQUD+cqlRbyKF3S3qxlaAw4GaApq4chLHC+Hn2rvF1WVOQUeD5VlvslFqGFEz3BqkhXxQNOC8Z4K0DjrnE6TjH2WP/Q7RA=
+	t=1716464215; cv=none; b=g7291j9LEMmjdIMTopI/V212z5x/CWljM6lN2yauoFOIZYbsF602+yXR0XZjVaJk+Dn5z1XZxGIIFJPr9024a8Y/KarR33GBCt4YoQBdC3Wz+b8JokZn9CspQm7T5w5SCpLawSuPloeS9/AhpydUZbGzAAdjPg/CANv3zPqqONo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716458767; c=relaxed/simple;
-	bh=6hZfU/vZlrz4/bVBw0R53ZF51GPkuNffAAaPgUYgJMM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dett5vARAR1lZPlSHBh8o9e60PRY+b2CKJr8DNhuk9/sUhwSgmlTfMf/j8D0HvaHK5avA0IGskPclNQlcIdP3a0IVove6yImYBb9qeP8ZPkStiBf/r2FiFHbxVikTrDBUAl9HMAIBRgNaEq5dqwcLsWMR5X74G1+exQFffwfJ1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=o8PXcoLF; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1716464215; c=relaxed/simple;
+	bh=DeCHEBXm84fTHEnuhvrdvxZpyAECRARMruHiATa02mY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I5RAqbCRT6AhhluXj1Wy27kjPa3fpCaU7Fk8RwLMUrOz9O7onUk+T8RoehGhw7xEKexWFfKwaDn1UGSG5GmGAeZBB5HHzzv/qrGSzCyvQyrkXJiOIJtZATwd1eYF8Fvne101el9wWA0oSn8sxks3m+SDDz4YUYu0/k9ri0bxUrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=PAmyg3Sy; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="o8PXcoLF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=f8jC17nCt232w/3lqbKjfEROHlbH51l5S8kUPNZoSNw=; b=o8PXcoLFtZFkuMCBmDWq+qpc+k
-	Z1muJ0pfMgOzZJ6+41nkyh0+fyRmX27rfctbCLX4Pe2SH7oVYsR6RUifgKykHr3prBkVOD8cVKWae
-	jOsAbsLdpKwjbHD/LCCk9eoVOF9avnwEk/9FyPaRfIVZEj+q1qjimPCJio7KYuCt4GcKCw0DIjOk5
-	Gf7sKHCppxAE+qQJ3ETeBcr4m+9v+klRmLiSOiNswLvzVjISMCnW+GDLRJATaHLp4QEB9KxLnkVGy
-	MLMgq+2YzSsBMMNJ7ipirr+zYb/5haXrY5XUO08JWTH40ldZJTsDrZU9JvbF1wjrynDQWNnrHQsvY
-	2gXfa7Z+xV6INwNd8bjats2GjC+ZCXKMBN4TWir1r9fkgEgfeaODFRmPe4wsjDdVR5/Kcw39zwjLn
-	ytAUyuVRlmJZsEi36i8/kNm1Po9NQHo8yqGu4I6BSRSdau9eYkQh5Z6dPxkanT8bf1XhFO16yW+WA
-	Q1FcCWKz9WL8p7DJm+sQeKHCjlT6dkw3B76soDP8JbrKP9o5xTBthhEIm2EtbCLBaxSf3O3YwDcPt
-	foSkcm9qYyOWwpeR+NAVjBfeMaTlD3n2SeUCQRLLKjdFxnhA0Fz8tHYq3OzVEvaEMjnExWGjwzPhz
-	u2+lq7c0KNPraDlCrd8qwBZw68g/RqLL6AeKfI+qs=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>, Greg Kurz <groug@kaod.org>,
- Jianyong Wu <jianyong.wu@arm.com>, stable@vger.kernel.org,
- Eric Van Hensbergen <ericvh@gmail.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: add missing locking around taking dentry fid list
-Date: Thu, 23 May 2024 12:05:44 +0200
-Message-ID: <2675095.dNBKFZOyUv@silver>
-In-Reply-To: <Zk8MAFAWIUPlhGFe@codewreck.org>
-References:
- <20240521122947.1080227-1-asmadeus@codewreck.org> <3116644.1xDzT5uuKM@silver>
- <Zk8MAFAWIUPlhGFe@codewreck.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="PAmyg3Sy"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 1B47614C2DB;
+	Thu, 23 May 2024 13:36:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1716464211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=60Vvdeh+op3+l9xDGUiU5JwA9pJlLDPkUP9yCEgZNBk=;
+	b=PAmyg3SyPRLIxnMZRiSX5HHM0yzmUdw+5SROQqW9yJX/FMb9qwIbyaZGcfGInZNgBTO85m
+	B0bLvomo6+Wr1pj7Nq9psXsrNcF65fqGy7up0MNeZk7i7Uomfz3qhgNQ3WKakHM/STCplM
+	nvJT8RIIvFOtrfTvCgphOl7No7fenPRHTR0RFVkXZ6BS8rZ4EfHXo4+OTlj3neJbci7eAa
+	y/epKXxdrH362ggKNotyOXKyP5C+s5kTjy7ltbVwwiXwXDMKmiSBG3Kl1VxWb/4RqmOKAz
+	lPcPmh7KG3reHgjoKR0/ur9m0vm+KTuvbjwBlcl84y3scjyJtSFMEOr6LhV1bg==
+Received: from gaia.codewreck.org (localhost.lan [::1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id b772ab8a;
+	Thu, 23 May 2024 11:36:44 +0000 (UTC)
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] 9p: v9fs_fid_find: also lookup by inode if not found dentry
+Date: Thu, 23 May 2024 20:36:38 +0900
+Message-ID: <20240523113638.1196299-1-asmadeus@codewreck.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On Thursday, May 23, 2024 11:27:28 AM CEST Dominique Martinet wrote:
-> Christian Schoenebeck wrote on Thu, May 23, 2024 at 10:34:14AM +0200:
-> > > The comment still works -- if detry->d_fsdata is NULL then
-> > > hlist_for_each_entry will stop short and not iterate over anything (it
-> > > won't bug out), so that part is fine in my opinion.
-> > 
-> > I meant the opposite: dentry->d_fsdata not being NULL.
-> 
-> I also meant that in the d_fsdata not being NULL branch, if d_fsdata
-> turns out to be NULL when it is read under lock later.
-> 
-> > In this case v9fs_fid_find() takes a local copy of the list head
-> > pointer as `h` without taking a lock before.
-> 
-> It doesn't, it takes &dentry->d_fsdata so the address of d_fsdata before
-> the lock, but that address cannot change here (another thread cannot
-> change the address of the dentry) ...(continuing below)
+It's possible for v9fs_fid_find "find by dentry" branch to not turn up
+anything despite having an entry set (because e.g. uid doesn't match),
+in which case the calling code will generally make an extra lookup
+to the server.
 
-Aaah right, I was missing the `&`, my bad!
+In this case we might have had better luck looking by inode, so fall
+back to look up by inode if we have one and the lookup by dentry failed.
 
-> > Then v9fs_fid_find() takes the lock to run hlist_for_each_entry(), but at this
-> > point `h` could already point at garbage.
-> 
-> ... so *h (in practice, head->first in hlist_for_each_entry()) will
-> properly contain the first node of the list under lock: either NULL if
-> we just cleared it (at which point the loop won't iterate anything), or
-> a new list if other items have been added meanwhile.
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+---
+There's no hurry with this patch, I'll just queue it up for next cycle
+in ~2 months, just sending before I forget.
 
-Yeah, looks fine to me.
+ fs/9p/fid.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> I really think it's safe, but I do agree that it's hard to read, happy
-> to move the `h = &dentry->d_fsdata` inside the lock if you prefer -- it
-> compiles to the same code for me (x86_64/gcc 13.2.0)
-
-No need, you can add my RB. Thanks for the clarification!
-
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-
+diff --git a/fs/9p/fid.c b/fs/9p/fid.c
+index de009a33e0e2..c72825fb0ece 100644
+--- a/fs/9p/fid.c
++++ b/fs/9p/fid.c
+@@ -131,9 +131,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
+ 			}
+ 		}
+ 		spin_unlock(&dentry->d_lock);
+-	} else {
+-		if (dentry->d_inode)
+-			ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
++	}
++	if (!ret && dentry->d_inode)
++		ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
+ 	}
+ 
+ 	return ret;
+-- 
+2.44.0
 
