@@ -1,278 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC113B580
-	for <v9fs@lists.linux.dev>; Thu, 23 May 2024 07:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DD546AF;
+	Thu, 23 May 2024 08:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716450266; cv=none; b=j6zc5i+wCr1YvrdHDdmIvr1ky341frue7qA29mVQ/E6CXuZdr6W7UqhpasTeflYupfxJvTONG/ELdibQdFHrfXS4LwJWqr7/b83EN9AQ4CxslJm/nYdIoS5A2ItLehV2yyWNeN2FlqLVCu7Fh9nISEBbB2pUMgodQiHhcIbLqHw=
+	t=1716453269; cv=none; b=pCGhR4FJmKEexTtqAKQBtriMqZapxSGmfVJjSODQgxy+kzQGK9fDDUaml6sdfFaZMm2NAcwmhdn3CfLSZ7FsuCN5Xz4a97vO1tgy257RACY4hAWxXbAURMXI3iTYzACfE2tkHTM9ha6ogLOSWR8s00DAYgV/4+5/AMYqlp0sgGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716450266; c=relaxed/simple;
-	bh=lnjUifyPSPVB7tejsJYdTy3kJITVOSvFjQFhkzP75y4=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Q8GTiXu67fKis9YKacrDV8u3pMg/BRLFX5C5L2ayNXOWM0MFC5xrtJNNzTGyffQSiRmuDQiVryiSiIXdYogQOAuOT+htWNdw9fMf3vv8/wre+daktkHpE+KmbYh4UjVBl9rQ2fTJQ2BXwFDi3Ir+9pmBBYa5Ue0R2glJ/5c16Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XlkBQCgp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1716453269; c=relaxed/simple;
+	bh=OT5GpYkvqi359dkHE/K6vDw27Z7JCQ5cw7qP+eM0VBU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EPsWT6FQwK78nqFLSwcMUIKq32RncR01MD+Br6vfzB/JH55HRJ2vSVmY+YBCfCb7kuSJ0xW0xPb6qnJXjKhTXv6RWlcCw4WU+ILZE3vQKTXGooMJESqCs2mK7WnDFY2wH5HFFztxTwJ9YdZA++u++uif+dfXy76nZ5tT4tBJYiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=BAiXQTea; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XlkBQCgp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716450263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kLhXmfF9Sj87o1Kh7Mk5PB3h8im3PzkGpLpb1UjE6M4=;
-	b=XlkBQCgpc03l09EeDhl7bAGRJWSz4+600pRFxJYFDnvd8q9Q8vpjFU8S0JdjUCVRhWZHqR
-	PeDZG6KdffUv6PbuXkBUsPagaJWKxVnGOQ19q5d6l7ZFs2EqEowl0VP89l97tE1nR14Jed
-	Llp/BnySa/BAnKmG54ejL3WnkT6CKms=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-xEhMxZGhNqmZTQdYoGCbdQ-1; Thu, 23 May 2024 03:44:21 -0400
-X-MC-Unique: xEhMxZGhNqmZTQdYoGCbdQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0EA881227E;
-	Thu, 23 May 2024 07:44:20 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6EA96C15BED;
-	Thu, 23 May 2024 07:44:18 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <Zj0ErxVBE3DYT2Ea@gpd>
-References: <Zj0ErxVBE3DYT2Ea@gpd> <20231221132400.1601991-1-dhowells@redhat.com> <20231221132400.1601991-41-dhowells@redhat.com>
-To: Andrea Righi <andrea.righi@canonical.com>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Steve French <smfrench@gmail.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Christian Brauner <christian@brauner.io>,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH v5 40/40] 9p: Use netfslib read/write_iter
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="BAiXQTea"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=HKvZu/1Th/zFJANW3u9Wq82PwjCTymeIwMTRRihlSXg=; b=BAiXQTeaAHv2tk7ig3BINtVaQD
+	XphEVhbeOAJ1ZuPEJVz8yqT1gw9LdsEeY1zBQmzicSAejqwAOXIzwi86Nt4i0GxOHsDECDROHbz3T
+	8qVgg2/tVtfbQGLYalCVe9umV+/b0gvd/L0VCKfTExbgD1hppCXCusuIdQwQTRh5c0FcK1yt70liw
+	zVnmsx6dDXMUEcBdyyAGfRDOf00E/kFa56rY8NjHzNa/CHjezDM1BV1zEUjlpc1szcdOnEKerBYC1
+	BH59yzuLk9Yeg0V5129f0rYfUBervxunNbmdKZBeVsIN8o44hI165x2n6pzA2iZOMZ1pmCrvRyNkH
+	h/HRLjX7UrFXtI59ZIFmVARZMJu5IW7gza5sul01u7vKpc00SkGRuh/apcosk5XkEYSmG9YmRX1Qg
+	oK91vhofiEP8Ne3a0GOooJRy94fAwMrLgx6qR9iCZmxrUEavnZ/7eBvBaYgp+TbnG53klFwwWcr44
+	giZONdxRT67iNgOZgRjbEJd+MgA2qsHi/+7oxU1I9wIwE7ILrI+fxQ4H912VOV3VZFgEMIPMnp2wf
+	jz2p+YUV/m3tivjNMKVmHpYHg+0hwbWFr1VRj9PHtlOsXQuK56lDiNweKWmkjznl44faZJyemwo48
+	hmu8+h7Ai5Unk6KuHYDHKzVLAmS/9p1OfY4cI6zxE=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, Greg Kurz <groug@kaod.org>,
+ Jianyong Wu <jianyong.wu@arm.com>, stable@vger.kernel.org,
+ Eric Van Hensbergen <ericvh@gmail.com>, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: add missing locking around taking dentry fid list
+Date: Thu, 23 May 2024 10:34:14 +0200
+Message-ID: <3116644.1xDzT5uuKM@silver>
+In-Reply-To: <Zk4qcmtot6WEC1Xx@codewreck.org>
+References:
+ <20240521122947.1080227-1-asmadeus@codewreck.org> <1738699.kjPCCGL2iY@silver>
+ <Zk4qcmtot6WEC1Xx@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <531993.1716450257.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 May 2024 08:44:17 +0100
-Message-ID: <531994.1716450257@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-Hi Andrea,
+On Wednesday, May 22, 2024 7:25:06 PM CEST Dominique Martinet wrote:
+> Christian Schoenebeck wrote on Wed, May 22, 2024 at 04:35:19PM +0200:
+[...]
+> > > diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+> > > index f16f73581634..01338d4c2d9e 100644
+> > > --- a/fs/9p/vfs_dentry.c
+> > > +++ b/fs/9p/vfs_dentry.c
+> > > @@ -48,12 +48,17 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
+> > >  static void v9fs_dentry_release(struct dentry *dentry)
+> > >  {
+> > >  	struct hlist_node *p, *n;
+> > > +	struct hlist_head head;
+> > >  
+> > >  	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+> > >  		 dentry, dentry);
+> > > -	hlist_for_each_safe(p, n, (struct hlist_head *)&dentry->d_fsdata)
+> > > +
+> > > +	spin_lock(&dentry->d_lock);
+> > > +	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
+> > > +	spin_unlock(&dentry->d_lock);
+> > > +
+> > > +	hlist_for_each_safe(p, n, &head)
+> > >  		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
+> > > -	dentry->d_fsdata = NULL;
+> > >  }
+> > 
+> > I'm not sure if that works out. So you are moving the list from dentry to a
+> > local variable. But if you look at v9fs_fid_find() [fs/9p/fid.c#123] it reads
+> > dentry->d_fsdata (twice) and holds it as local variable before taking a
+> > lock. So the lock in v9fs_fid_find() should happen earlier, no?
+> 
+> The comment still works -- if detry->d_fsdata is NULL then
+> hlist_for_each_entry will stop short and not iterate over anything (it
+> won't bug out), so that part is fine in my opinion.
 
-Note that there are changes to the netfslib write-side upstream and you mi=
-ght
-also want to apply the attached.
+I meant the opposite: dentry->d_fsdata not being NULL. In this case
+v9fs_fid_find() takes a local copy of the list head pointer as `h` without
+taking a lock before.
 
-In https://bugs.launchpad.net/ubuntu/+source/autopkgtest/+bug/2056461 you =
-say:
+Then v9fs_fid_find() takes the lock to run hlist_for_each_entry(), but at this
+point `h` could already point at garbage.
 
-| It seems that kernel 6.8 introduced a regression in the 9pfs related to
-| caching and netfslib, that can cause some user-space apps to read conten=
-t
-| from files that is not up-to-date (when they are used in a producer/cons=
-umer
-| fashion).
+/Christian
 
-Can you clarify how these files are being used?
-
-David
----
-commit 39302c160390441ed5b4f4f7ad480c44eddf0962
-Author: David Howells <dhowells@redhat.com>
-Date:   Wed May 22 17:30:22 2024 +0100
-
-    netfs, 9p: Fix race between umount and async request completion
-    =
-
-    There's a problem in 9p's interaction with netfslib whereby a crash oc=
-curs
-    because the 9p_fid structs get forcibly destroyed during client teardo=
-wn
-    (without paying attention to their refcounts) before netfslib has fini=
-shed
-    with them.  However, it's not a simple case of deferring the clunking =
-that
-    p9_fid_put() does as that requires the client.
-    =
-
-    The problem is that netfslib has to unlock pages and clear the IN_PROG=
-RESS
-    flag before destroying the objects involved - including the pid - and,=
- in
-    any case, nothing checks to see if writeback completed barring looking=
- at
-    the page flags.
-    =
-
-    Fix this by keeping a count of outstanding I/O requests (of any type) =
-and
-    waiting for it to quiesce during inode eviction.
-    =
-
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Eric Van Hensbergen <ericvh@kernel.org>
-    cc: Latchesar Ionkov <lucho@ionkov.net>
-    cc: Dominique Martinet <asmadeus@codewreck.org>
-    cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-    cc: Jeff Layton <jlayton@kernel.org>
-    cc: Steve French <sfrench@samba.org>
-    cc: v9fs@lists.linux.dev
-    cc: linux-afs@lists.infradead.org
-    cc: linux-cifs@vger.kernel.org
-    cc: netfs@lists.linux.dev
-    cc: linux-fsdevel@vger.kernel.org
-
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 8c9a896d691e..57cfa9f65046 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -354,6 +354,7 @@ void v9fs_evict_inode(struct inode *inode)
- 		version =3D cpu_to_le32(v9inode->qid.version);
- 		netfs_clear_inode_writeback(inode, &version);
- =
-
-+		netfs_wait_for_outstanding_io(inode);
- 		clear_inode(inode);
- 		filemap_fdatawrite(&inode->i_data);
- =
-
-@@ -361,8 +362,10 @@ void v9fs_evict_inode(struct inode *inode)
- 		if (v9fs_inode_cookie(v9inode))
- 			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
- #endif
--	} else
-+	} else {
-+		netfs_wait_for_outstanding_io(inode);
- 		clear_inode(inode);
-+	}
- }
- =
-
- struct inode *
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 94fc049aff58..c831e711a4ac 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -652,6 +652,7 @@ void afs_evict_inode(struct inode *inode)
- =
-
- 	afs_set_cache_aux(vnode, &aux);
- 	netfs_clear_inode_writeback(inode, &aux);
-+	netfs_wait_for_outstanding_io(inode);
- 	clear_inode(inode);
- =
-
- 	while (!list_empty(&vnode->wb_keys)) {
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index c90d482b1650..f4a642727479 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
-ess_space *mapping,
- 		}
- 	}
- =
-
-+	atomic_inc(&ctx->io_count);
- 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
- 	netfs_proc_add_rreq(rreq);
- 	netfs_stat(&netfs_n_rh_rreq);
-@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- {
- 	struct netfs_io_request *rreq =3D
- 		container_of(work, struct netfs_io_request, work);
-+	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
- 	unsigned int i;
- =
-
- 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
-@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- 		}
- 		kvfree(rreq->direct_bv);
- 	}
-+
-+	if (atomic_dec_and_test(&ictx->io_count))
-+		wake_up_var(&ictx->io_count);
- 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
- }
- =
-
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index ec5b639f421a..21c9e173ea9a 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -435,6 +435,7 @@ cifs_evict_inode(struct inode *inode)
- 	if (inode->i_state & I_PINNING_NETFS_WB)
- 		cifs_fscache_unuse_inode_cookie(inode, true);
- 	cifs_fscache_release_inode_cookie(inode);
-+	netfs_wait_for_outstanding_io(inode);
- 	clear_inode(inode);
- }
- =
-
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index d2d291a9cdad..3ca3906bb8da 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -68,6 +68,7 @@ struct netfs_inode {
- 	loff_t			remote_i_size;	/* Size of the remote file */
- 	loff_t			zero_point;	/* Size after which we assume there's no data
- 						 * on the server */
-+	atomic_t		io_count;	/* Number of outstanding reqs */
- 	unsigned long		flags;
- #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
- #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
-@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
- *ctx,
- 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
- 	ctx->zero_point =3D LLONG_MAX;
- 	ctx->flags =3D 0;
-+	atomic_set(&ctx->io_count, 0);
- #if IS_ENABLED(CONFIG_FSCACHE)
- 	ctx->cache =3D NULL;
- #endif
-@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
-truct netfs_inode *ctx)
- #endif
- }
- =
-
-+/**
-+ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
-+ * @ctx: The netfs inode to wait on
-+ *
-+ * Wait for outstanding I/O requests of any type to complete.  This is in=
-tended
-+ * to be called from inode eviction routines.  This makes sure that any
-+ * resources held by those requests are cleaned up before we let the inod=
-e get
-+ * cleaned up.
-+ */
-+static inline void netfs_wait_for_outstanding_io(struct inode *inode)
-+{
-+	struct netfs_inode *ictx =3D netfs_inode(inode);
-+
-+	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
-+}
-+
- #endif /* _LINUX_NETFS_H */
 
