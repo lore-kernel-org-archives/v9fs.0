@@ -1,63 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81189175A5;
-	Thu, 23 May 2024 20:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E79483CC8;
+	Thu, 23 May 2024 20:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716495948; cv=none; b=Ehi/R6Na2eogxSSKCokY/+TBVLZlHGTczVZuKHKqxAXhfkUZcdXmLTDEA1mfUA0ckKBbWem9w3t0pHLSxdBsvV6YPD30f7cR0BHTlvCvONUqZ7dBYxhsqSSmWYTgN6H4noDGHF7SnXPGiCY93EV8Yor0n2nfo6ZK20iAmp3Ofxo=
+	t=1716497220; cv=none; b=EmL9Lu9j25ZonNFRR+L+qZ+lIUk7MeEG3gieXHQQE4Eb8+1sR33gAChZIE1sBy0YCjx3+XbSZXBvTUyr1nv7a+DDDBrYEf/7epWy/3bzlvhPwDW9wGTBImcgNSMg8kR3BmUT/nXrvom3QKHjVko1uW2G1TzhMMbVqgcRn75Gj5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716495948; c=relaxed/simple;
-	bh=LKhQHsSrnnAo0BE32SPWbRof1Q809utUpT3FUynBKyM=;
+	s=arc-20240116; t=1716497220; c=relaxed/simple;
+	bh=xZkhsNby25scCAdWs5FhZQpcKQIj7bsSVEO615BqzQw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fu7JdchwNTmrZnjxsH7jkN9B6bkO7TEPKdsBjGC2TfrZiDtko5JVeYo4h82zD6xNREW2kMEbLHrbmE11IzE1GtmGGp6LJjkbN41B4ums7sV5UKJHOf6VeLGpGFgUyoY8xhNsLubyNKct8AI78TS1zFJesAbOlbjkwkerXmgl4XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=crYORmdp; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=pAsfDMVPiNTzRMIk9qvW4WKIRZW8EW9+B74JxKUyNp9WLgqf0r6VrdV+4Jy99nV4qybwMhwT/+X0SW8dBEZCuhOS6vPrpJKvfUvmYvIYw3cOIUh3dhna/OkQXCv1UyKu2GcbGOX5vk5IyVqdjNn5iCQ7n7VmejRDrRYWYlOEGTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iGZoICi1; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="crYORmdp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iGZoICi1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716495946; x=1748031946;
+  t=1716497218; x=1748033218;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=LKhQHsSrnnAo0BE32SPWbRof1Q809utUpT3FUynBKyM=;
-  b=crYORmdptGuspqlUb+ZbsstmtpNlfl6AnXUNOuw/NGk86dWUv0oEoL+7
-   5x1SNwKA32hJRW5HJOqtENIV3rd7U4/KMQjMdaPMqBGk6wrQZBePrE5YD
-   9toAmjAfSXQW5AE1FaVvpgyi5OZdSxbVagr808RPPKB29JTMQLAujfzwd
-   qzTuJIcqr4dDd4cJdggLQh1sUFQb39yoGP/tRkzyqNaKlaU/KjGA8oJ1M
-   6vA1fUpTfLrvwpaUMJjS2oImKJjxB7CfBLuFJ3wV2rpPh+1OjDJIyvC1U
-   pceml3vlTYSQBWAbMRyQ648xb3VIi2Dtw7c6o1p3soI0kkZmatt/P6Ymo
-   w==;
-X-CSE-ConnectionGUID: PBqeYMyzSDeUuuwL1LPWSQ==
-X-CSE-MsgGUID: Oxyi5u3aTkKnBud1fBcMKA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12694363"
+  bh=xZkhsNby25scCAdWs5FhZQpcKQIj7bsSVEO615BqzQw=;
+  b=iGZoICi1eNxuABlRQZyv9oqQesV3QktFcQWa0EMNWA1NM5hfigI3r1IN
+   svqqsC92Ij6VkPJ6Dhx0sXP7yE70tsJM4F+3gb6YCn2tMNoUpLb7vyX+I
+   JymHy/W+bo1OVDGUEMtdoXGHbjpmgays+JHqTLKY7Kt71DZNt/vDUSuAT
+   coVOuIuDxSje2jL+J3rFb00ivl69OtULm8DmNcoOt/ZOLU0s1VaTt6ovU
+   TCp0IQdQqZTYpR6zboD6gLDkoS+LuitI0u5WqK8xEKo0uWfH8d3G0Z37I
+   f2uqCKDPOgEQjFwCvx7bThaUGFQHEKavty2inD/M57VjDGuWo7OI3ImLK
+   A==;
+X-CSE-ConnectionGUID: ur7w/ttCR4+qzjfhGV7YqQ==
+X-CSE-MsgGUID: RGRsmYo8SOWe/j9RV+Edrw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12694237"
 X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="12694363"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 13:25:45 -0700
-X-CSE-ConnectionGUID: JQPjwt5uSHSfoDQrSuGEpg==
-X-CSE-MsgGUID: 6cnjPq47TqOCPn2NpU480Q==
+   d="scan'208";a="12694237"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 13:46:56 -0700
+X-CSE-ConnectionGUID: hnxjkh/iSUSoNhXxD4P/hA==
+X-CSE-MsgGUID: +OykMZGtR/e35b+SZUs5Mw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="38189693"
+   d="scan'208";a="71213569"
 Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 23 May 2024 13:25:43 -0700
+  by orviesa001.jf.intel.com with ESMTP; 23 May 2024 13:46:49 -0700
 Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sAF0P-0003KD-0R;
-	Thu, 23 May 2024 20:25:41 +0000
-Date: Fri, 24 May 2024 04:25:18 +0800
+	id 1sAFKo-0003WL-2B;
+	Thu, 23 May 2024 20:46:46 +0000
+Date: Fri, 24 May 2024 04:46:26 +0800
 From: kernel test robot <lkp@intel.com>
 To: Dominique Martinet <asmadeus@codewreck.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] 9p: v9fs_fid_find: also lookup by inode if not found
  dentry
-Message-ID: <202405240422.ZWrRj5Ck-lkp@intel.com>
+Message-ID: <202405240419.mUEPAfWQ-lkp@intel.com>
 References: <20240523113638.1196299-1-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -84,40 +84,28 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Dominique-Martinet/9p-v9f
 base:   v6.9
 patch link:    https://lore.kernel.org/r/20240523113638.1196299-1-asmadeus%40codewreck.org
 patch subject: [PATCH] 9p: v9fs_fid_find: also lookup by inode if not found dentry
-config: riscv-defconfig (https://download.01.org/0day-ci/archive/20240524/202405240422.ZWrRj5Ck-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 7aa382fd7257d9bd4f7fc50bb7078a3c26a1628c)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240524/202405240422.ZWrRj5Ck-lkp@intel.com/reproduce)
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20240524/202405240419.mUEPAfWQ-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240524/202405240419.mUEPAfWQ-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405240422.ZWrRj5Ck-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405240419.mUEPAfWQ-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   In file included from fs/9p/fid.c:17:
-   In file included from fs/9p/v9fs.h:11:
-   In file included from include/linux/backing-dev.h:16:
-   In file included from include/linux/writeback.h:13:
-   In file included from include/linux/blk_types.h:10:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:8:
-   In file included from include/linux/cacheflush.h:5:
-   In file included from arch/riscv/include/asm/cacheflush.h:9:
-   In file included from include/linux/mm.h:2210:
-   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> fs/9p/fid.c:137:2: warning: non-void function does not return a value [-Wreturn-type]
+   fs/9p/fid.c: In function 'v9fs_fid_find':
+>> fs/9p/fid.c:137:9: warning: no return statement in function returning non-void [-Wreturn-type]
      137 |         }
          |         ^
-   fs/9p/fid.c:139:2: error: expected identifier or '('
+   fs/9p/fid.c: At top level:
+   fs/9p/fid.c:139:9: error: expected identifier or '(' before 'return'
      139 |         return ret;
-         |         ^
-   fs/9p/fid.c:140:1: error: extraneous closing brace ('}')
+         |         ^~~~~~
+   fs/9p/fid.c:140:1: error: expected identifier or '(' before '}' token
      140 | }
          | ^
-   2 warnings and 2 errors generated.
 
 
 vim +137 fs/9p/fid.c
