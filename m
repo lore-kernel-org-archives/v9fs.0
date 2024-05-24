@@ -1,250 +1,236 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C686262
-	for <v9fs@lists.linux.dev>; Fri, 24 May 2024 14:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C8612C7FA;
+	Fri, 24 May 2024 15:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716560788; cv=none; b=j24S4uREduSVsV/rukDKLesBGsVv3vSBt3s3IjQ5t6qvSPPoTSgUHNWedQStHHrKQn2RF4DOs6OgL5TKFV0QfigS0uwtIeGpvCEHLbgR2XNK1Rh/mKxuDipDHMZ3LJKy9nhHm0vlpizbQgDiFp6lv7f1qz0LUwGtIpDfj/hJc2M=
+	t=1716564779; cv=none; b=r5EPFEOBBtX4YYhWnwWaxw9Cu5M9r5TQ/TNsG8U2HlZmQ9jB2McBQfAUFVe1HfauJmDEjrnPsNMh/cR2QLD7+Z9jqvYkcSDrLjZ13/GK8WfUvVkZ5v5GbcjxEPb6SfWsmy6r3Fe/Uc9LqmrY5rcY+KXG1kJT8NDol27GqUtBbwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716560788; c=relaxed/simple;
-	bh=/hO+Wdk51Ceeo7dHaf4yVaejFzzuVQkXGewi20m1Row=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=YMRN+JC9+C5nlep1Ek7fMaRuf/NDU74dBWP/YWfWATLfIPW+2E3aHJuaGhLLJX0yqql63qx0ZuR6Zi7uu6ivYJxGJTS3C6vzNma497GWPCzMWetR5qdlqeL3wQM1O+Zv1h5KqUQHh/2ZnLuppwSLbYOMPaQX3gr6qpU2/F8U4g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dPt8Lgqz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1716564779; c=relaxed/simple;
+	bh=ZFDKBdBTekCEENY+51EMzM9biBYe/pA7eJ3KiZKFGRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tb2NdInso/RRxf8dxWWaJUA7jLQcr3U8XPY+m8FA2Cj0d5NAupuO8i4FICyKN4QyLK6FePk4ps0vN0esrEjAqmE3V9nYBK3U77OAFj5fcrMQBFQfUZmiVykQm4b+y+ULC5SiXeM4WidDmYlT9r8UWymxXg9nnFKMUeOQV0hjFI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mSsNYkmn; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dPt8Lgqz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716560785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GLnGM17UL4b12TgJD1s/b9rU7JDsVx4PpoKaNTMgNmk=;
-	b=dPt8Lgqz/xyAIU9Srh/h+a2YJe+STz2A2Wu+1SB0KoKfZqIdgoRqp7PRWE/8Uky5Ck0H37
-	+g+Gn9Txvh9NidDxmWtY5UkpTPSYgKGw9q/aM0Eq0XMQISW2lutNMAvUZg+3ZnnQ7w6wEf
-	35IsAOVTd+SfXHdLCeQLI0sCWBeAfKs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-182-QUYKM_jeN5mRBk6fOMzu1g-1; Fri, 24 May 2024 10:26:23 -0400
-X-MC-Unique: QUYKM_jeN5mRBk6fOMzu1g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4613C800994;
-	Fri, 24 May 2024 14:26:22 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 63F432026D68;
-	Fri, 24 May 2024 14:26:12 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-cc: dhowells@redhat.com,
-    syzbot+df038d463cca332e8414@syzkaller.appspotmail.com,
-    syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com,
-    syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>,
-    Jeff Layton <jlayton@kernel.org>, Steve French <sfrench@samba.org>,
-    Hillf Danton <hdanton@sina.com>,
-    Christian Brauner <brauner@kernel.org>, v9fs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH v3] netfs, 9p: Fix race between umount and async request completion
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mSsNYkmn"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5295dadce7fso1373429e87.1;
+        Fri, 24 May 2024 08:32:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716564776; x=1717169576; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y6qOkh/PGC494+O1SNtX3YdK252w8wI7PTCcvr+/gao=;
+        b=mSsNYkmnlSJlph4SIVj7Ih2Vy2/Z+AUAXu34pTGbzw+drqRFwUSz3zESqGPHBlTTaV
+         oUZWwf3UO7LWwdFpSsTUyJPcPtSsuxuDqKog91DYNJSlM7fYGSBO6QOyIqBRKml29Z56
+         NUOlvkrp/oq6xit49yOGAM8UpKehb2aJiHwGp0Co6/WCF6Z4azWxuXUVEHQQjw33Rlxa
+         O8vkksTPOPUazdqJKiIMrze3ChRWaYpx022khNSEcqjJx6QyKU+hHTZJq6TzYkdm0ewU
+         QIQQOMGxYqJWRr6Y5mH5AYg/yTo26xK35LcvHHYQ5yChCB4YzJfDWs5QzSc6h4CXv5fp
+         BVFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716564776; x=1717169576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y6qOkh/PGC494+O1SNtX3YdK252w8wI7PTCcvr+/gao=;
+        b=MRv0e08FdFeonWaNTPapDkPBlqlqvsfXiu6npO5ycsmWsI/Bz49Sz0OhJyp2SAwRqb
+         tfQcRzu0A+8lYv7JfzewpqDE2az/qNPJgPMmMIpsILxCT+4vpdQY1MJ+H3FV7uKSDrrn
+         JWUklaBo0dgxLeGsxQ+7EC5Zyo9mXtLBbpEov0q6bnc5YiPzr7dzmsN2+oFrKAMRmZ5X
+         Qy5QrSfsQH2HKBqSokzrt9loMi7w0jYMXadnMNKtml/A0E9QnbYMsPO4LjirrrdecL2q
+         8tGhOCnpi1UTWSoZtlpdatfmErEyt7K6YSiiilezRQ+jazIT2NM9dTdegM2YeAEUvtzu
+         3GPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqbP31HstufIsSYoUHmZsHcv2/l2SmJ9CWBjXlWFxT+otBcNTPqvW3gA77qEFx7vPSHuKKdZJgia0umwLrnHYDHjThD3Jb1QFDsVZM3EzvU32hL3hEYrjENHqa
+X-Gm-Message-State: AOJu0YyKeG09ya7oZ2jI7dlSMdWYmXnu4obUTmOZdukPFqbrgyVOdrIs
+	4QJhhpgWjfe2p00yXphgAp7ATrgDI/55C4jmwwvJlRXphRsTyVdtQOWko/J2mKBdSnq+rxricCt
+	Yg47YkaSsV7JVLq2x0Mf36OIvUY0=
+X-Google-Smtp-Source: AGHT+IET+SxNQZJlDbNpqEa/XDACkqtNs4ecbaUXuz1eCuEcR3UXWzaoWJeTKa7TkU50/GrdokDPWydnBIjehjbcgJA=
+X-Received: by 2002:a05:651c:1058:b0:2e9:532f:9797 with SMTP id
+ 38308e7fff4ca-2e95b27ebdfmr17603971fa.43.1716564775482; Fri, 24 May 2024
+ 08:32:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <755890.1716560771.1@warthog.procyon.org.uk>
+References: <351482.1716336150@warthog.procyon.org.uk> <CAH2r5muWt2X55sVfk6Ngct-+c_SFepPzQdhUiZNQT+o_twiivw@mail.gmail.com>
+In-Reply-To: <CAH2r5muWt2X55sVfk6Ngct-+c_SFepPzQdhUiZNQT+o_twiivw@mail.gmail.com>
+From: Steve French <smfrench@gmail.com>
+Date: Fri, 24 May 2024 10:32:44 -0500
+Message-ID: <CAH2r5mvHZLLb_hJmXGvWbKDNKoLPwkXO5wFpOM0eTZkKvtV5Ug@mail.gmail.com>
+Subject: Re: [PATCH v2] netfs: Fix io_uring based write-through
+To: David Howells <dhowells@redhat.com>
+Cc: Steve French <stfrench@microsoft.com>, Jeff Layton <jlayton@kernel.org>, 
+	Enzo Matsumiya <ematsumiya@suse.de>, Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev, 
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 May 2024 15:26:11 +0100
-Message-ID: <755891.1716560771@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-netfs, 9p: Fix race between umount and async request completion
+Can add my Tested-by if you would like.  Hopefully this (and "netfs:
+Fix setting of BDP_ASYNC from iocb flags") can be in mainline
+relatively soon as they both fix some issues we hit with netfs testing
+cifs.ko.   There are still a few more netfs bugs to work through but
+this is progress.
 
-There's a problem in 9p's interaction with netfslib whereby a crash occurs
-because the 9p_fid structs get forcibly destroyed during client teardown
-(without paying attention to their refcounts) before netfslib has finished
-with them.  However, it's not a simple case of deferring the clunking that
-p9_fid_put() does as that requires the p9_client record to still be
-present.
+On Tue, May 21, 2024 at 9:06=E2=80=AFPM Steve French <smfrench@gmail.com> w=
+rote:
+>
+> fixed minor checpatch warning (updated patch attached)
+>
+> On Tue, May 21, 2024 at 7:02=E2=80=AFPM David Howells <dhowells@redhat.co=
+m> wrote:
+> >
+> > This can be triggered by mounting a cifs filesystem with a cache=3Dstri=
+ct
+> > mount option and then, using the fsx program from xfstests, doing:
+> >
+> >         ltp/fsx -A -d -N 1000 -S 11463 -P /tmp /cifs-mount/foo \
+> >           --replay-ops=3Dgen112-fsxops
+> >
+> > Where gen112-fsxops holds:
+> >
+> >         fallocate 0x6be7 0x8fc5 0x377d3
+> >         copy_range 0x9c71 0x77e8 0x2edaf 0x377d3
+> >         write 0x2776d 0x8f65 0x377d3
+> >
+> > The problem is that netfs_io_request::len is being used for two purpose=
+s
+> > and ends up getting set to the amount of data we transferred, not the
+> > amount of data the caller asked to be transferred (for various reasons,
+> > such as mmap'd writes, we might end up rounding out the data written to=
+ the
+> > server to include the entire folio at each end).
+> >
+> > Fix this by keeping the amount we were asked to write in ->len and usin=
+g
+> > ->submitted to track what we issued ops for.  Then, when we come to cal=
+ling
+> > ->ki_complete(), ->len is the right size.
+> >
+> > This also required netfs_cleanup_dio_write() to change since we're no
+> > longer advancing wreq->len.  Use wreq->transferred instead as we might =
+have
+> > done a short read and wreq->len must be set when setting up a direct wr=
+ite.
+> >
+> > With this, the generic/112 xfstest passes if cifs is forced to put all
+> > non-DIO opens into write-through mode.
+> >
+> > Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+> > Signed-off-by: David Howells <dhowells@redhat.com>
+> > cc: Jeff Layton <jlayton@kernel.org>
+> > cc: Steve French <stfrench@microsoft.com>
+> > cc: Enzo Matsumiya <ematsumiya@suse.de>
+> > cc: netfs@lists.linux.dev
+> > cc: v9fs@lists.linux.dev
+> > cc: linux-afs@lists.infradead.org
+> > cc: linux-cifs@vger.kernel.org
+> > cc: linux-fsdevel@vger.kernel.org
+> > Link: https://lore.kernel.org/r/295086.1716298663@warthog.procyon.org.u=
+k/ # v1
+> > ---
+> >  Changes
+> >  =3D=3D=3D=3D=3D=3D=3D
+> >  ver #2)
+> >   - Set wreq->len when doing direct writes.
+> >
+> >  fs/netfs/direct_write.c  |    5 +++--
+> >  fs/netfs/write_collect.c |    7 ++++---
+> >  fs/netfs/write_issue.c   |    2 +-
+> >  3 files changed, 8 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+> > index 608ba6416919..93b41e121042 100644
+> > --- a/fs/netfs/direct_write.c
+> > +++ b/fs/netfs/direct_write.c
+> > @@ -12,7 +12,7 @@
+> >  static void netfs_cleanup_dio_write(struct netfs_io_request *wreq)
+> >  {
+> >         struct inode *inode =3D wreq->inode;
+> > -       unsigned long long end =3D wreq->start + wreq->len;
+> > +       unsigned long long end =3D wreq->start + wreq->transferred;
+> >
+> >         if (!wreq->error &&
+> >             i_size_read(inode) < end) {
+> > @@ -92,8 +92,9 @@ static ssize_t netfs_unbuffered_write_iter_locked(str=
+uct kiocb *iocb, struct iov
+> >         __set_bit(NETFS_RREQ_UPLOAD_TO_SERVER, &wreq->flags);
+> >         if (async)
+> >                 wreq->iocb =3D iocb;
+> > +       wreq->len =3D iov_iter_count(&wreq->io_iter);
+> >         wreq->cleanup =3D netfs_cleanup_dio_write;
+> > -       ret =3D netfs_unbuffered_write(wreq, is_sync_kiocb(iocb), iov_i=
+ter_count(&wreq->io_iter));
+> > +       ret =3D netfs_unbuffered_write(wreq, is_sync_kiocb(iocb), wreq-=
+>len);
+> >         if (ret < 0) {
+> >                 _debug("begin =3D %zd", ret);
+> >                 goto out;
+> > diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+> > index 60112e4b2c5e..426cf87aaf2e 100644
+> > --- a/fs/netfs/write_collect.c
+> > +++ b/fs/netfs/write_collect.c
+> > @@ -510,7 +510,7 @@ static void netfs_collect_write_results(struct netf=
+s_io_request *wreq)
+> >          * stream has a gap that can be jumped.
+> >          */
+> >         if (notes & SOME_EMPTY) {
+> > -               unsigned long long jump_to =3D wreq->start + wreq->len;
+> > +               unsigned long long jump_to =3D wreq->start + READ_ONCE(=
+wreq->submitted);
+> >
+> >                 for (s =3D 0; s < NR_IO_STREAMS; s++) {
+> >                         stream =3D &wreq->io_streams[s];
+> > @@ -690,10 +690,11 @@ void netfs_write_collection_worker(struct work_st=
+ruct *work)
+> >         wake_up_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS);
+> >
+> >         if (wreq->iocb) {
+> > -               wreq->iocb->ki_pos +=3D wreq->transferred;
+> > +               size_t written =3D min(wreq->transferred, wreq->len);
+> > +               wreq->iocb->ki_pos +=3D written;
+> >                 if (wreq->iocb->ki_complete)
+> >                         wreq->iocb->ki_complete(
+> > -                               wreq->iocb, wreq->error ? wreq->error :=
+ wreq->transferred);
+> > +                               wreq->iocb, wreq->error ? wreq->error :=
+ written);
+> >                 wreq->iocb =3D VFS_PTR_POISON;
+> >         }
+> >
+> > diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+> > index acbfd1f5ee9d..3aa86e268f40 100644
+> > --- a/fs/netfs/write_issue.c
+> > +++ b/fs/netfs/write_issue.c
+> > @@ -254,7 +254,7 @@ static void netfs_issue_write(struct netfs_io_reque=
+st *wreq,
+> >         stream->construct =3D NULL;
+> >
+> >         if (subreq->start + subreq->len > wreq->start + wreq->submitted=
+)
+> > -               wreq->len =3D wreq->submitted =3D subreq->start + subre=
+q->len - wreq->start;
+> > +               WRITE_ONCE(wreq->submitted, subreq->start + subreq->len=
+ - wreq->start);
+> >         netfs_do_issue_write(stream, subreq);
+> >  }
+> >
+> >
+>
+>
+> --
+> Thanks,
+>
+> Steve
 
-The problem is that netfslib has to unlock pages and clear the IN_PROGRESS
-flag before destroying the objects involved - including the fid - and, in
-any case, nothing checks to see if writeback completed barring looking at
-the page flags.
 
-Fix this by keeping a count of outstanding I/O requests (of any type) and
-waiting for it to quiesce during inode eviction.
 
-Reported-by: syzbot+df038d463cca332e8414@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000005be0aa061846f8d6@google.com/
-Reported-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000b86c5e06130da9c6@google.com/
-Reported-by: syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000041f960618206d7e@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
-Tested-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Steve French <sfrench@samba.org>
-cc: Hillf Danton <hdanton@sina.com>
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
-Notes:
-    Changes
-    =3D=3D=3D=3D=3D=3D=3D
-    ver #3)
-     - Adjust commit message; no change to the diff.
-    ver #2)
-     - Wait for outstanding I/O before clobbering the pagecache.
+--=20
+Thanks,
 
- fs/9p/vfs_inode.c      |    1 +
- fs/afs/inode.c         |    1 +
- fs/netfs/objects.c     |    5 +++++
- fs/smb/client/cifsfs.c |    1 +
- include/linux/netfs.h  |   18 ++++++++++++++++++
- 5 files changed, 26 insertions(+)
-
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 8c9a896d691e..effb3aa1f3ed 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -349,6 +349,7 @@ void v9fs_evict_inode(struct inode *inode)
- 	__le32 __maybe_unused version;
- =
-
- 	if (!is_bad_inode(inode)) {
-+		netfs_wait_for_outstanding_io(inode);
- 		truncate_inode_pages_final(&inode->i_data);
- =
-
- 		version =3D cpu_to_le32(v9inode->qid.version);
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 94fc049aff58..15bb7989c387 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -648,6 +648,7 @@ void afs_evict_inode(struct inode *inode)
- =
-
- 	ASSERTCMP(inode->i_ino, =3D=3D, vnode->fid.vnode);
- =
-
-+	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- =
-
- 	afs_set_cache_aux(vnode, &aux);
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index c90d482b1650..f4a642727479 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
-ess_space *mapping,
- 		}
- 	}
- =
-
-+	atomic_inc(&ctx->io_count);
- 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
- 	netfs_proc_add_rreq(rreq);
- 	netfs_stat(&netfs_n_rh_rreq);
-@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- {
- 	struct netfs_io_request *rreq =3D
- 		container_of(work, struct netfs_io_request, work);
-+	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
- 	unsigned int i;
- =
-
- 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
-@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- 		}
- 		kvfree(rreq->direct_bv);
- 	}
-+
-+	if (atomic_dec_and_test(&ictx->io_count))
-+		wake_up_var(&ictx->io_count);
- 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
- }
- =
-
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index ec5b639f421a..14810ffd15c8 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -431,6 +431,7 @@ cifs_free_inode(struct inode *inode)
- static void
- cifs_evict_inode(struct inode *inode)
- {
-+	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- 	if (inode->i_state & I_PINNING_NETFS_WB)
- 		cifs_fscache_unuse_inode_cookie(inode, true);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index d2d291a9cdad..3ca3906bb8da 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -68,6 +68,7 @@ struct netfs_inode {
- 	loff_t			remote_i_size;	/* Size of the remote file */
- 	loff_t			zero_point;	/* Size after which we assume there's no data
- 						 * on the server */
-+	atomic_t		io_count;	/* Number of outstanding reqs */
- 	unsigned long		flags;
- #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
- #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
-@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
- *ctx,
- 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
- 	ctx->zero_point =3D LLONG_MAX;
- 	ctx->flags =3D 0;
-+	atomic_set(&ctx->io_count, 0);
- #if IS_ENABLED(CONFIG_FSCACHE)
- 	ctx->cache =3D NULL;
- #endif
-@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
-truct netfs_inode *ctx)
- #endif
- }
- =
-
-+/**
-+ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
-+ * @ctx: The netfs inode to wait on
-+ *
-+ * Wait for outstanding I/O requests of any type to complete.  This is in=
-tended
-+ * to be called from inode eviction routines.  This makes sure that any
-+ * resources held by those requests are cleaned up before we let the inod=
-e get
-+ * cleaned up.
-+ */
-+static inline void netfs_wait_for_outstanding_io(struct inode *inode)
-+{
-+	struct netfs_inode *ictx =3D netfs_inode(inode);
-+
-+	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
-+}
-+
- #endif /* _LINUX_NETFS_H */
-
+Steve
