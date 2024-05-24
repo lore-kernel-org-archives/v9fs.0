@@ -1,313 +1,250 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05EF84D04
-	for <v9fs@lists.linux.dev>; Thu, 23 May 2024 21:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C686262
+	for <v9fs@lists.linux.dev>; Fri, 24 May 2024 14:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716498433; cv=none; b=ZHKRqEKUDPYi/RkOd1UoMHSRWq5gVFJplDRLEPJAAwRJrdgD2hqvTT+QXBeRt2wPrxlViKO0SlICETtb5O1DBW1vgr5TNqzIunZlg1lpAx35m24Oeh6Neuw2P3GBaugoEBJj5IJfFLfiLWg3GvWjIFpm3gEzCVAc9OKWnTwPaYQ=
+	t=1716560788; cv=none; b=j24S4uREduSVsV/rukDKLesBGsVv3vSBt3s3IjQ5t6qvSPPoTSgUHNWedQStHHrKQn2RF4DOs6OgL5TKFV0QfigS0uwtIeGpvCEHLbgR2XNK1Rh/mKxuDipDHMZ3LJKy9nhHm0vlpizbQgDiFp6lv7f1qz0LUwGtIpDfj/hJc2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716498433; c=relaxed/simple;
-	bh=H+tXmNcAhZCbaunf+q9hDNC+6YJEJeVLs4fE/NM4B9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RlfWAEnA9h2C0DlA0DKfro+5uBW0G+P3kXKDolNZSBGP+/Ce7X/gAIrDDcYXBEsTsk8jhoPb5oKppPMuttOTArcmP3UM40/A7uKGzXh3izEE+nhXzlWhsXKyDCnFlS5ji25vfRG2wpiptRgyWDvXxaWg1cpH6Bk1drdIUf6hahc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=l2ErYLa3; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1716560788; c=relaxed/simple;
+	bh=/hO+Wdk51Ceeo7dHaf4yVaejFzzuVQkXGewi20m1Row=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=YMRN+JC9+C5nlep1Ek7fMaRuf/NDU74dBWP/YWfWATLfIPW+2E3aHJuaGhLLJX0yqql63qx0ZuR6Zi7uu6ivYJxGJTS3C6vzNma497GWPCzMWetR5qdlqeL3wQM1O+Zv1h5KqUQHh/2ZnLuppwSLbYOMPaQX3gr6qpU2/F8U4g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dPt8Lgqz; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="l2ErYLa3"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id BE1F814C2DD;
-	Thu, 23 May 2024 23:07:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1716498430;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dPt8Lgqz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716560785;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yqrl7gT/QrJWExYUn9SPbHv1Q/3kOtxE9vuanTdHAGg=;
-	b=l2ErYLa3VLyXjJ/Pnue62aacJzVIA0mgOYGCu0tXvHYSM4BMZ8rHwtzDqYVrgjORHw5YZ9
-	BWflDAJ3EdsFRyk/QSyEZbk4OerS7bvYrgyyGthejcri3vzN8pANf1W43tH/l/nQ/xpe2t
-	6nY5BKSZ9LaWPSxZ0injTgwOxjGm+TeRP9X8wo30ubW4m0PdFv8E1FPtYaf7l1K+ix39LA
-	82E+XL0mg0872R9Y7KKgpyr2Kn2mdUc+73W5S5QnPTxkhP3ydHbL50EXdekKsZ3gu6cDnE
-	ViAyX244L0GovcBVZdy1LDCEjUHuHrMvCbMpPHz3ePI96P6oufQokqendZxILw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d50f76f6;
-	Thu, 23 May 2024 21:07:04 +0000 (UTC)
-Date: Fri, 24 May 2024 06:06:49 +0900
-From: asmadeus@codewreck.org
-To: David Howells <dhowells@redhat.com>,
-	syzbot <syzbot+4e2269434184f95684d6@syzkaller.appspotmail.com>
-Cc: ericvh@kernel.org, linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net,
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Read in p9_fd_request
-Message-ID: <Zk-v6Tuy7KSSXjks@codewreck.org>
-References: <000000000000b03c66061923502f@google.com>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GLnGM17UL4b12TgJD1s/b9rU7JDsVx4PpoKaNTMgNmk=;
+	b=dPt8Lgqz/xyAIU9Srh/h+a2YJe+STz2A2Wu+1SB0KoKfZqIdgoRqp7PRWE/8Uky5Ck0H37
+	+g+Gn9Txvh9NidDxmWtY5UkpTPSYgKGw9q/aM0Eq0XMQISW2lutNMAvUZg+3ZnnQ7w6wEf
+	35IsAOVTd+SfXHdLCeQLI0sCWBeAfKs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-182-QUYKM_jeN5mRBk6fOMzu1g-1; Fri, 24 May 2024 10:26:23 -0400
+X-MC-Unique: QUYKM_jeN5mRBk6fOMzu1g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4613C800994;
+	Fri, 24 May 2024 14:26:22 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 63F432026D68;
+	Fri, 24 May 2024 14:26:12 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+cc: dhowells@redhat.com,
+    syzbot+df038d463cca332e8414@syzkaller.appspotmail.com,
+    syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com,
+    syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Jeff Layton <jlayton@kernel.org>, Steve French <sfrench@samba.org>,
+    Hillf Danton <hdanton@sina.com>,
+    Christian Brauner <brauner@kernel.org>, v9fs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH v3] netfs, 9p: Fix race between umount and async request completion
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <000000000000b03c66061923502f@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <755890.1716560771.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 May 2024 15:26:11 +0100
+Message-ID: <755891.1716560771@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-syzbot wrote on Thu, May 23, 2024 at 11:35:28AM -0700:
-> syzbot found the following issue on:
-> 
-> HEAD commit:    1b294a1f3561 Merge tag 'net-next-6.10' of git://git.kernel..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1507ead0980000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=bddb81daac38d475
-> dashboard link: https://syzkaller.appspot.com/bug?extid=4e2269434184f95684d6
-> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+netfs, 9p: Fix race between umount and async request completion
 
-Looks like another duplicate of the same destroy vs netfs issue, marking
-as dup (or trying to at least)
+There's a problem in 9p's interaction with netfslib whereby a crash occurs
+because the 9p_fid structs get forcibly destroyed during client teardown
+(without paying attention to their refcounts) before netfslib has finished
+with them.  However, it's not a simple case of deferring the clunking that
+p9_fid_put() does as that requires the p9_client record to still be
+present.
 
-#syz dup: [syzbot] [v9fs?] KASAN: slab-use-after-free Read in p9_client_destroy
+The problem is that netfslib has to unlock pages and clear the IN_PROGRESS
+flag before destroying the objects involved - including the fid - and, in
+any case, nothing checks to see if writeback completed barring looking at
+the page flags.
 
+Fix this by keeping a count of outstanding I/O requests (of any type) and
+waiting for it to quiesce during inode eviction.
 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/6cf1ddff37cc/disk-1b294a1f.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/85de01f27485/vmlinux-1b294a1f.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/cc17337dab81/bzImage-1b294a1f.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+4e2269434184f95684d6@syzkaller.appspotmail.com
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in __lock_acquire+0x78/0x1fd0 kernel/locking/lockdep.c:5005
-> Read of size 8 at addr ffff888079d8f848 by task kworker/u8:15/9021
-> 
-> CPU: 1 PID: 9021 Comm: kworker/u8:15 Not tainted 6.9.0-syzkaller-05151-g1b294a1f3561 #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-> Workqueue: events_unbound netfs_write_collection_worker
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:88 [inline]
->  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
->  print_address_description mm/kasan/report.c:377 [inline]
->  print_report+0x169/0x550 mm/kasan/report.c:488
->  kasan_report+0x143/0x180 mm/kasan/report.c:601
->  __lock_acquire+0x78/0x1fd0 kernel/locking/lockdep.c:5005
->  lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
->  __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
->  _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
->  spin_lock include/linux/spinlock.h:351 [inline]
->  p9_fd_request+0x53/0x520 net/9p/trans_fd.c:674
->  p9_client_rpc+0x305/0xac0 net/9p/client.c:704
->  p9_client_clunk+0x75/0x260 net/9p/client.c:1439
->  netfs_free_request+0x246/0x5e0 fs/netfs/objects.c:133
->  netfs_write_collection_worker+0x507c/0x5640 fs/netfs/write_collect.c:701
->  process_one_work kernel/workqueue.c:3267 [inline]
->  process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3348
->  worker_thread+0x86d/0xd70 kernel/workqueue.c:3429
->  kthread+0x2f2/0x390 kernel/kthread.c:389
->  ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
->  </TASK>
-> 
-> Allocated by task 14624:
->  kasan_save_stack mm/kasan/common.c:47 [inline]
->  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
->  poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
->  __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
->  kasan_kmalloc include/linux/kasan.h:211 [inline]
->  kmalloc_trace+0x1db/0x370 mm/slub.c:4070
->  kmalloc include/linux/slab.h:628 [inline]
->  kzalloc include/linux/slab.h:749 [inline]
->  p9_fd_open net/9p/trans_fd.c:828 [inline]
->  p9_fd_create+0x17b/0x530 net/9p/trans_fd.c:1102
->  p9_client_create+0x862/0x1040 net/9p/client.c:1013
->  v9fs_session_init+0x1e4/0x1b80 fs/9p/v9fs.c:410
->  v9fs_mount+0xce/0xa90 fs/9p/vfs_super.c:122
->  legacy_get_tree+0xf0/0x190 fs/fs_context.c:662
->  vfs_get_tree+0x92/0x2a0 fs/super.c:1779
->  do_new_mount+0x2be/0xb40 fs/namespace.c:3352
->  do_mount fs/namespace.c:3692 [inline]
->  __do_sys_mount fs/namespace.c:3898 [inline]
->  __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3875
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Freed by task 14191:
->  kasan_save_stack mm/kasan/common.c:47 [inline]
->  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
->  kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
->  poison_slab_object+0xa6/0xe0 mm/kasan/common.c:240
->  __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
->  kasan_slab_free include/linux/kasan.h:184 [inline]
->  slab_free_hook mm/slub.c:2121 [inline]
->  slab_free mm/slub.c:4353 [inline]
->  kfree+0x153/0x3b0 mm/slub.c:4463
->  p9_client_destroy+0xc9/0x660 net/9p/client.c:1065
->  v9fs_session_close+0x51/0x210 fs/9p/v9fs.c:506
->  v9fs_kill_super+0x5c/0x90 fs/9p/vfs_super.c:196
->  deactivate_locked_super+0xc6/0x130 fs/super.c:472
->  cleanup_mnt+0x426/0x4c0 fs/namespace.c:1267
->  task_work_run+0x251/0x310 kernel/task_work.c:180
->  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
->  exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
->  exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
->  __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
->  syscall_exit_to_user_mode+0x168/0x370 kernel/entry/common.c:218
->  do_syscall_64+0x102/0x240 arch/x86/entry/common.c:89
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Last potentially related work creation:
->  kasan_save_stack+0x3f/0x60 mm/kasan/common.c:47
->  __kasan_record_aux_stack+0xac/0xc0 mm/kasan/generic.c:541
->  insert_work+0x3e/0x330 kernel/workqueue.c:2261
->  __queue_work+0xc24/0xef0 kernel/workqueue.c:2413
->  queue_work_on+0x14f/0x250 kernel/workqueue.c:2448
->  queue_work include/linux/workqueue.h:605 [inline]
->  schedule_work include/linux/workqueue.h:666 [inline]
->  p9_poll_mux net/9p/trans_fd.c:639 [inline]
->  p9_poll_workfn+0x3b0/0x5e0 net/9p/trans_fd.c:1177
->  process_one_work kernel/workqueue.c:3267 [inline]
->  process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3348
->  worker_thread+0x86d/0xd70 kernel/workqueue.c:3429
->  kthread+0x2f2/0x390 kernel/kthread.c:389
->  ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-> 
-> Second to last potentially related work creation:
->  kasan_save_stack+0x3f/0x60 mm/kasan/common.c:47
->  __kasan_record_aux_stack+0xac/0xc0 mm/kasan/generic.c:541
->  insert_work+0x3e/0x330 kernel/workqueue.c:2261
->  __queue_work+0xc24/0xef0 kernel/workqueue.c:2413
->  queue_work_on+0x14f/0x250 kernel/workqueue.c:2448
->  queue_work include/linux/workqueue.h:605 [inline]
->  schedule_work include/linux/workqueue.h:666 [inline]
->  p9_fd_request+0x2e1/0x520 net/9p/trans_fd.c:691
->  p9_client_rpc+0x305/0xac0 net/9p/client.c:704
->  p9_client_write+0x328/0x7a0 net/9p/client.c:1633
->  v9fs_issue_write+0xfd/0x1c0 fs/9p/vfs_addr.c:59
->  netfs_issue_write fs/netfs/write_issue.c:258 [inline]
->  netfs_advance_write+0x776/0xe00 fs/netfs/write_issue.c:298
->  netfs_write_folio+0x1263/0x1f70 fs/netfs/write_issue.c:468
->  netfs_writepages+0x91f/0xf20 fs/netfs/write_issue.c:536
->  do_writepages+0x35b/0x870 mm/page-writeback.c:2613
->  filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
->  __filemap_fdatawrite_range mm/filemap.c:430 [inline]
->  __filemap_fdatawrite mm/filemap.c:436 [inline]
->  filemap_fdatawrite+0xfb/0x160 mm/filemap.c:441
->  v9fs_dir_release+0x154/0x560 fs/9p/vfs_dir.c:219
->  __fput+0x42b/0x8a0 fs/file_table.c:422
->  __do_sys_close fs/open.c:1556 [inline]
->  __se_sys_close fs/open.c:1541 [inline]
->  __x64_sys_close+0x7f/0x110 fs/open.c:1541
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> The buggy address belongs to the object at ffff888079d8f800
->  which belongs to the cache kmalloc-1k of size 1024
-> The buggy address is located 72 bytes inside of
->  freed 1024-byte region [ffff888079d8f800, ffff888079d8fc00)
-> 
-> The buggy address belongs to the physical page:
-> page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888079d8c800 pfn:0x79d88
-> head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> flags: 0xfff00000000a40(workingset|slab|head|node=0|zone=1|lastcpupid=0x7ff)
-> page_type: 0xffffffff()
-> raw: 00fff00000000a40 ffff888015041dc0 ffffea0000471810 ffffea0000aef810
-> raw: ffff888079d8c800 000000000010000f 00000001ffffffff 0000000000000000
-> head: 00fff00000000a40 ffff888015041dc0 ffffea0000471810 ffffea0000aef810
-> head: ffff888079d8c800 000000000010000f 00000001ffffffff 0000000000000000
-> head: 00fff00000000003 ffffea0001e76201 dead000000000122 00000000ffffffff
-> head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
-> page dumped because: kasan: bad access detected
-> page_owner tracks the page as allocated
-> page last allocated via order 3, migratetype Unmovable, gfp_mask 0x152820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_HARDWALL), pid 62, tgid 62 (kworker/u8:4), ts 255477095338, free_ts 255425419447
->  set_page_owner include/linux/page_owner.h:32 [inline]
->  post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1534
->  prep_new_page mm/page_alloc.c:1541 [inline]
->  get_page_from_freelist+0x3410/0x35b0 mm/page_alloc.c:3317
->  __alloc_pages+0x256/0x6c0 mm/page_alloc.c:4575
->  __alloc_pages_node include/linux/gfp.h:238 [inline]
->  alloc_pages_node include/linux/gfp.h:261 [inline]
->  alloc_slab_page+0x5f/0x160 mm/slub.c:2190
->  allocate_slab mm/slub.c:2353 [inline]
->  new_slab+0x84/0x2f0 mm/slub.c:2406
->  ___slab_alloc+0xb07/0x12e0 mm/slub.c:3592
->  __slab_alloc mm/slub.c:3682 [inline]
->  __slab_alloc_node mm/slub.c:3735 [inline]
->  slab_alloc_node mm/slub.c:3908 [inline]
->  __do_kmalloc_node mm/slub.c:4038 [inline]
->  __kmalloc+0x2e5/0x4a0 mm/slub.c:4052
->  kmalloc include/linux/slab.h:632 [inline]
->  kzalloc include/linux/slab.h:749 [inline]
->  ieee802_11_parse_elems_full+0xd5/0x2870 net/mac80211/parse.c:880
->  ieee802_11_parse_elems_crc net/mac80211/ieee80211_i.h:2330 [inline]
->  ieee802_11_parse_elems net/mac80211/ieee80211_i.h:2337 [inline]
->  ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1574 [inline]
->  ieee80211_ibss_rx_queued_mgmt+0x4c8/0x2d70 net/mac80211/ibss.c:1605
->  ieee80211_iface_process_skb net/mac80211/iface.c:1605 [inline]
->  ieee80211_iface_work+0x8a3/0xf10 net/mac80211/iface.c:1659
->  cfg80211_wiphy_work+0x223/0x260 net/wireless/core.c:437
->  process_one_work kernel/workqueue.c:3267 [inline]
->  process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3348
->  worker_thread+0x86d/0xd70 kernel/workqueue.c:3429
->  kthread+0x2f2/0x390 kernel/kthread.c:389
->  ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-> page last free pid 7787 tgid 7785 stack trace:
->  reset_page_owner include/linux/page_owner.h:25 [inline]
->  free_pages_prepare mm/page_alloc.c:1141 [inline]
->  free_unref_page_prepare+0x986/0xab0 mm/page_alloc.c:2347
->  free_unref_page+0x37/0x3f0 mm/page_alloc.c:2487
->  __folio_put_large+0x168/0x1d0 mm/swap.c:132
->  __folio_put+0x299/0x390 mm/swap.c:140
->  page_to_skb+0x3dd/0x9b0 drivers/net/virtio_net.c:810
->  receive_mergeable drivers/net/virtio_net.c:1834 [inline]
->  receive_buf+0x3bd/0x3830 drivers/net/virtio_net.c:1955
->  virtnet_receive drivers/net/virtio_net.c:2259 [inline]
->  virtnet_poll+0x7f8/0x18c0 drivers/net/virtio_net.c:2362
->  __napi_poll+0xcd/0x490 net/core/dev.c:6721
->  napi_poll net/core/dev.c:6790 [inline]
->  net_rx_action+0x7bb/0x10a0 net/core/dev.c:6906
->  handle_softirqs+0x2d8/0x990 kernel/softirq.c:554
->  __do_softirq kernel/softirq.c:588 [inline]
->  invoke_softirq kernel/softirq.c:428 [inline]
->  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
->  common_interrupt+0xaa/0xd0 arch/x86/kernel/irq.c:278
->  asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
-> 
-> Memory state around the buggy address:
->  ffff888079d8f700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->  ffff888079d8f780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> >ffff888079d8f800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                                               ^
->  ffff888079d8f880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->  ffff888079d8f900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ==================================================================
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
+Reported-by: syzbot+df038d463cca332e8414@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/0000000000005be0aa061846f8d6@google.com/
+Reported-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000b86c5e06130da9c6@google.com/
+Reported-by: syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000041f960618206d7e@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
+Tested-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: Hillf Danton <hdanton@sina.com>
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+Notes:
+    Changes
+    =3D=3D=3D=3D=3D=3D=3D
+    ver #3)
+     - Adjust commit message; no change to the diff.
+    ver #2)
+     - Wait for outstanding I/O before clobbering the pagecache.
 
--- 
-Dominique Martinet | Asmadeus
+ fs/9p/vfs_inode.c      |    1 +
+ fs/afs/inode.c         |    1 +
+ fs/netfs/objects.c     |    5 +++++
+ fs/smb/client/cifsfs.c |    1 +
+ include/linux/netfs.h  |   18 ++++++++++++++++++
+ 5 files changed, 26 insertions(+)
+
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 8c9a896d691e..effb3aa1f3ed 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -349,6 +349,7 @@ void v9fs_evict_inode(struct inode *inode)
+ 	__le32 __maybe_unused version;
+ =
+
+ 	if (!is_bad_inode(inode)) {
++		netfs_wait_for_outstanding_io(inode);
+ 		truncate_inode_pages_final(&inode->i_data);
+ =
+
+ 		version =3D cpu_to_le32(v9inode->qid.version);
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 94fc049aff58..15bb7989c387 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -648,6 +648,7 @@ void afs_evict_inode(struct inode *inode)
+ =
+
+ 	ASSERTCMP(inode->i_ino, =3D=3D, vnode->fid.vnode);
+ =
+
++	netfs_wait_for_outstanding_io(inode);
+ 	truncate_inode_pages_final(&inode->i_data);
+ =
+
+ 	afs_set_cache_aux(vnode, &aux);
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index c90d482b1650..f4a642727479 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
+ess_space *mapping,
+ 		}
+ 	}
+ =
+
++	atomic_inc(&ctx->io_count);
+ 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
+ 	netfs_proc_add_rreq(rreq);
+ 	netfs_stat(&netfs_n_rh_rreq);
+@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ {
+ 	struct netfs_io_request *rreq =3D
+ 		container_of(work, struct netfs_io_request, work);
++	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
+ 	unsigned int i;
+ =
+
+ 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
+@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ 		}
+ 		kvfree(rreq->direct_bv);
+ 	}
++
++	if (atomic_dec_and_test(&ictx->io_count))
++		wake_up_var(&ictx->io_count);
+ 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
+ }
+ =
+
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index ec5b639f421a..14810ffd15c8 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -431,6 +431,7 @@ cifs_free_inode(struct inode *inode)
+ static void
+ cifs_evict_inode(struct inode *inode)
+ {
++	netfs_wait_for_outstanding_io(inode);
+ 	truncate_inode_pages_final(&inode->i_data);
+ 	if (inode->i_state & I_PINNING_NETFS_WB)
+ 		cifs_fscache_unuse_inode_cookie(inode, true);
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index d2d291a9cdad..3ca3906bb8da 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -68,6 +68,7 @@ struct netfs_inode {
+ 	loff_t			remote_i_size;	/* Size of the remote file */
+ 	loff_t			zero_point;	/* Size after which we assume there's no data
+ 						 * on the server */
++	atomic_t		io_count;	/* Number of outstanding reqs */
+ 	unsigned long		flags;
+ #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
+ #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
+@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
+ *ctx,
+ 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
+ 	ctx->zero_point =3D LLONG_MAX;
+ 	ctx->flags =3D 0;
++	atomic_set(&ctx->io_count, 0);
+ #if IS_ENABLED(CONFIG_FSCACHE)
+ 	ctx->cache =3D NULL;
+ #endif
+@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
+truct netfs_inode *ctx)
+ #endif
+ }
+ =
+
++/**
++ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
++ * @ctx: The netfs inode to wait on
++ *
++ * Wait for outstanding I/O requests of any type to complete.  This is in=
+tended
++ * to be called from inode eviction routines.  This makes sure that any
++ * resources held by those requests are cleaned up before we let the inod=
+e get
++ * cleaned up.
++ */
++static inline void netfs_wait_for_outstanding_io(struct inode *inode)
++{
++	struct netfs_inode *ictx =3D netfs_inode(inode);
++
++	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
++}
++
+ #endif /* _LINUX_NETFS_H */
+
