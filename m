@@ -1,99 +1,93 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EAC2F55;
-	Sun, 26 May 2024 08:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F7C249FF;
+	Mon, 27 May 2024 11:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716713000; cv=none; b=hI0+KZqO1jcQNkuHqqrG1QsDwWtSUZSwFWG48MQ+0Q9FGenBKYQkshf9g34yFuAYIGujGkAttximA/je6fGlXifabsQwCLN9P1jrEUrr+SPvcfM508tEs08Ud4ZXkouKXmRT38nwUejPV2kV4XkDw7mEMqanZz0ZmxFck3YJ7Ko=
+	t=1716808153; cv=none; b=gVlWuUNlmXceAMZsa7lJX5JRFZpecp7ucvAjogpKkb11MLIHAYb4aoRG35tEWq7RlhsGnjPb7TX955n6PXXbRwxSOi9Rn85B0EgKRXGId5yMuPk0zJjjlEnAF143+ZPDK1uctcq8eNqYUzLxZcryEoAucaayqPFPdiEl5d2V0BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716713000; c=relaxed/simple;
-	bh=IC8cNWH9MI/jPTfOahj8hMmSz3WbSin55lxR9NVNYpI=;
+	s=arc-20240116; t=1716808153; c=relaxed/simple;
+	bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JD8u890iPIuOpKiltXRXmz6i8vEh1PsoE1G7ltKwzAJSLkJczdZL8Vy9kSCEnvDQxSbN33TU8gHDWC/GV7B1ZNTG1WbH+wUUQ3J5uxFjEw5ZXlSUwzVTlpcZlbxvibV59aTyXAX3lF1g13KoUTycCKnGgiLDP7Wgs7ooV2JoU9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=VJRvDsOv; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	 MIME-Version:Content-Type; b=p7DTZJw7GtVaSI9fmCX8+AMInk9QPN6dzvcjl7PEj+l+XzW8/W6OybGYnL0YY3pg2sEHXu9tgSiJsL/wP0c1s2yrbIEbuju+A1cGqT79gg+50TppjlUJOle+rl0HK4K/iZgPMSkLIMG9FJQaiLt9o9qIbFRnwyrK+WwXWXj+DUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJxRuRSy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="VJRvDsOv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=ZJfc1vFjtuw6zOYBPDNoLxzMoVqWP91R11+au6coP0c=; b=VJRvDsOvEknEP7i7MzWBmOXhPl
-	iwPmB/FqTWfJcrwAQkepgXs0qnloSVr7zZQD+01LCyjv3S/TMYVM5E++FFDn4dfPh9vyZlsK5oIB/
-	285Le1DxxT9khpXyWI7f78busZ5FukLtEJz3WEzrlavwbm3MpL41hN7SFQaTXsUt2YdhOJwD3HQvN
-	4INRYLiIH1sLBV8qutA8h330w1Mr84g893bRetTi0l7Y3ct++O4VtOfi0BquDA/lMKK7vm1NYSoB8
-	m+8znP/qESJFqR7soSg7ATt6s5kv725ZAhnHmsKX+xPE+BunFzsaIi8BZOPVfjpGDpfiMbcCGg6YY
-	kvZ9GZUFuStcXnnFNHralzAkc5vzWcmj39Ul/XcaQLw7RLwwXxMcQhDZoV1vg3rr6Ui2lOXE3ktlK
-	dtqKJ5DG+5mk/L7CrVU3WGmFxMC+pWtiui+Gbj7U7q1ibvZOpPhWEot6vzvh0ffJyDvGWUBjOr3xT
-	33B+ByzfewIeaaK8yrCwjt1ccICFKK5XA6KLVhsWpnN8M7oe4HqNcgWlEe78YhcmO56oICHGG/576
-	1FJ55bLJYGpS9IPpCAMrOZhWDtpFNkQUqTeMMW7dFU5hkHOv83GtmmTIo0V9NWsokepbttXFgQhC9
-	gQTt3LAGuYD1iLPaRf/tFgaXJVAP3IFNtqsTqum3g=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v2] 9p: v9fs_fid_find: also lookup by inode if not found dentry
-Date: Sun, 26 May 2024 10:43:04 +0200
-Message-ID: <4050342.HAUgm3mvAN@silver>
-In-Reply-To: <20240523210024.1214386-1-asmadeus@codewreck.org>
-References:
- <20240523113638.1196299-1-asmadeus@codewreck.org>
- <20240523210024.1214386-1-asmadeus@codewreck.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJxRuRSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F31AC2BBFC;
+	Mon, 27 May 2024 11:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716808152;
+	bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sJxRuRSyF8aZl6lcHv4GNNbUtVqSVlKp+Xe/+i+D6yW1/oO/ot6EalwOzSHtrCo4K
+	 s0dQbDVSkXR6WepDxxDij1Q54BKKBWWhdmNiSj8TTkMqt9MTvIiiPdh49TRPO6Pj86
+	 rWP0aK1OzS00I+zfo7KiYPoyReQVkRqVHKqOwaqlnSGP7f2HTBJ/5G1FScQj0Q9Dz8
+	 keqj6K/C1AuubkdWkfcykho2TfTj7Ukds7jbRtwZZjliN36IBWlvehAG7mXvXGjSMy
+	 UG9U+OMvUnqNU5ZqRlchB7sVZE4/zAiYA1s8HL5QllUGwa5ynmsu52/Nml3RMEB9vg
+	 dGhHN3oDTUPBA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	syzbot+df038d463cca332e8414@syzkaller.appspotmail.com,
+	syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com,
+	syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Hillf Danton <hdanton@sina.com>,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH v3] netfs, 9p: Fix race between umount and async request completion
+Date: Mon, 27 May 2024 13:09:00 +0200
+Message-ID: <20240527-losgefahren-albern-a9b1d8be3835@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <755891.1716560771@warthog.procyon.org.uk>
+References: <755891.1716560771@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=brauner@kernel.org; h=from:subject:message-id; bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSFZJ7zelnJM7U+5vs16+iDzU/eHak22+8zK2h3/Nxtx kt0hJJkO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbiZ8/wP5lhXd2tnn2lDrHe S064NiWHCmp8PyXfyLxJ4KB6Y7f0U0aGtffmxsec3rSGNywtN+FVmNpSSVFb/R/TPYJj8uSzQl6 wAwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Thursday, May 23, 2024 11:00:23 PM CEST Dominique Martinet wrote:
-> It's possible for v9fs_fid_find "find by dentry" branch to not turn up
-> anything despite having an entry set (because e.g. uid doesn't match),
-> in which case the calling code will generally make an extra lookup
-> to the server.
+On Fri, 24 May 2024 15:26:11 +0100, David Howells wrote:
+> netfs, 9p: Fix race between umount and async request completion
 > 
-> In this case we might have had better luck looking by inode, so fall
-> back to look up by inode if we have one and the lookup by dentry failed.
-
-I'm not sure how that's supposed to happen. Both lookups check for (uid, any),
-just on two separate fid lists (dentry vs. inode). But OTOH I don't see no
-harm either, so:
-
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-> ---
-> v1 -> v2: fix build error
+> There's a problem in 9p's interaction with netfslib whereby a crash occurs
+> because the 9p_fid structs get forcibly destroyed during client teardown
+> (without paying attention to their refcounts) before netfslib has finished
+> with them.  However, it's not a simple case of deferring the clunking that
+> p9_fid_put() does as that requires the p9_client record to still be
+> present.
 > 
-> Sorry, shouldn't send patches without testing even if I'm not planning
-> to apply them for a while...
-> 
->  fs/9p/fid.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/9p/fid.c b/fs/9p/fid.c
-> index de009a33e0e2..f84412290a30 100644
-> --- a/fs/9p/fid.c
-> +++ b/fs/9p/fid.c
-> @@ -131,10 +131,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
->  			}
->  		}
->  		spin_unlock(&dentry->d_lock);
-> -	} else {
-> -		if (dentry->d_inode)
-> -			ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
->  	}
-> +	if (!ret && dentry->d_inode)
-> +		ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
->  
->  	return ret;
->  }
-> 
+> [...]
 
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs, 9p: Fix race between umount and async request completion
+      https://git.kernel.org/vfs/vfs/c/e20fe12bfb0b
