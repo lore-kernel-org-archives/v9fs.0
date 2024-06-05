@@ -1,80 +1,243 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32B61848;
-	Fri, 31 May 2024 15:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF914E2F9
+	for <v9fs@lists.linux.dev>; Wed,  5 Jun 2024 13:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717168037; cv=none; b=Y+w+rep5+C+4FsWznutSJWnA+9IiitGaSdlIqOY6LEDI3H1LHT/2lnjXoqcVzmYzHg4Es+ckPzTwntf8XQkImm+d07cH9/ll4sId67a/aUn+7jYd0wf8FMOGqH4cDzUDqdzNe57xbt4Uv5kUfgEFt7WeQ9eMcLCw07ttkarnmso=
+	t=1717594398; cv=none; b=bGJfWn20fdybtOqzYW22/mi3uqf6BBaOUbavJA2nnbXkG+61xPJlsZ9mDftLgOEWWj6DvZx4Xpzai1FHAo4XCBkOJJ9sS1UT574TT30Djg+fGi+3wsVzqXrictXJdhj/6RZyXN+n059zrioUQ4zy7QfvJC2aIcb7aglvzFyaoSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717168037; c=relaxed/simple;
-	bh=LtImTQMzLCUIj4hcTXTNSS+JNJevJKuaZQIJroG3UQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U8adokrZfPTtf0WCJ1fAS18Tk3XDZpD6Aiqztl7aR7Eu4+enLnNuc7PBpn63f+j6WMTZk77Knx4G298YTRnvsfgb1oVNNnb6OvrloRYozO2xNGS0dYfYqfp+hT6MY2znaYg/0EKzlqda5pmBVtTqPGalCAP8Dn1wYdjGe70Ib9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=pmfaOblV; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="pmfaOblV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XOEKCyYff7smOUYYkJLuXoJt3Ho26Em9sCrJHHsHOGI=; b=pmfaOblVFosevlHaOQjdECRgdo
-	/PxkYUITbH8QzPAI5KvZBNT4lnhKLQtp+IqmJbZ710dSq75WQ4+yKuRam4wWWQbVXhwi1IO2uXu4j
-	1ZJzf4Cq7KfHOMml7/amMOkBQUfsrZQnyntXJv6HXK6qzWyYKd4ItDegohYzw9FWaHbb/RxeKnVQt
-	f2egHiKFTw5pn5r9XXN0ORLE8I9th3uILtihxCgdt7fNQUSxKH2tJlc19fHOX/fYengt03lY1dv2P
-	GFzkZLDKAetLquRHOTcANHF6WE2i0tzAviW+G4vYfX09eoyV/HaSyyYAeRt7GMLXQg/GNllOcNrqm
-	Ypb4mfEw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	s=arc-20240116; t=1717594398; c=relaxed/simple;
+	bh=nzwOUB/3TfUa5izLjCVVEoWwp/ZvfHPS0VQi2npBz0k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WyzJoDMpckYrothoz3SHbOX81kUS5i/a6ta1dh+HUeZxnx/3bpVIgU3PFRgAcngLqsCdmG9xettgHOq+nZ5FaRYCbaidp631oZKxR6uu+iSRUlTQKrePETkoR+aPCdDFe1W4FidYdqvWvt/VQL5s3HNOowD7Zua8jjrHUFS1AYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1sEql4-0006Vf-Br; Wed, 05 Jun 2024 15:32:54 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ema@debian.org>)
-	id 1sD3qP-0044Q3-SS; Fri, 31 May 2024 15:07:02 +0000
-Date: Fri, 31 May 2024 17:06:59 +0200
-From: Emanuele Rocca <ema@debian.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Andrea Righi <andrea.righi@canonical.com>,
-	Jeff Layton <jlayton@kernel.org>, Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Christian Brauner <christian@brauner.io>,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Luca Boccassi <bluca@debian.org>, TJ <linux@iam.tj>
-Subject: Re: [PATCH v5 40/40] 9p: Use netfslib read/write_iter
-Message-ID: <ZlnnkzXiPPuEK7EM@ariel.home>
-References: <Zj0ErxVBE3DYT2Ea@gpd>
- <20231221132400.1601991-1-dhowells@redhat.com>
- <20231221132400.1601991-41-dhowells@redhat.com>
- <531994.1716450257@warthog.procyon.org.uk>
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1sEql3-000LFf-78; Wed, 05 Jun 2024 15:32:53 +0200
+Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
+	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1sEql3-00FRCH-26;
+	Wed, 05 Jun 2024 15:32:53 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Wed, 05 Jun 2024 15:32:47 +0200
+Subject: [PATCH v6 1/3] usb: gadget: function: move u_f.h to
+ include/linux/usb/func_utils.h
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <531994.1716450257@warthog.procyon.org.uk>
-X-Debian-User: ema
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240116-ml-topic-u9p-v6-1-695977d76dff@pengutronix.de>
+References: <20240116-ml-topic-u9p-v6-0-695977d76dff@pengutronix.de>
+In-Reply-To: <20240116-ml-topic-u9p-v6-0-695977d76dff@pengutronix.de>
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: v9fs@lists.linux.dev, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+ kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5265;
+ i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
+ bh=nzwOUB/3TfUa5izLjCVVEoWwp/ZvfHPS0VQi2npBz0k=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmYGkES+Cnx1r/Z7uC2hBt8HbcZtItSw0pCWJOP
+ rWRliYB0aOJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZmBpBAAKCRC/aVhE+XH0
+ q9EwEAC93heI/w7IRqMFTQ2VNUq9zrD1/hL8xpRAJeg+0hK+OtNG55Nv8rAwuqh+EddOizqYSeG
+ Tn5i6b2FP1Ql9PaSDcuAXxCZyhfMUawcszPp56tIs+5JFtQuDgcAjfyO1svGIBCwmbeKkD/OO8V
+ 07oMQNnUM/qMhRm+7ZlrSFhyrEMabteLhU1QFD6dIfcCxCuIhyvlII9QYJx52QG7LJQFlVF/UaI
+ PXn2h49EJ1S0uLDqnEW/4KRlG49zKCV31JQTUMsyh/VoUnFdbPVv0HwYSXpf/Ek9UpxbRhiC5rt
+ SWBklp90WO3Z7sRYKdb1RLPV1kvo7Waws7m4cGofmigbCluX3JiinuRycKy6R4V4EZRUlr6v2rr
+ xYP4ZmqjMIgLDTygBy0ImQMymUpGY/KmHtVwICyF8rbHgs7ADwFKL3Q5W7hfyu8VdgRAVVY/6IF
+ P7vbUTOKoiKUKzuqkikCOAcrrmC2G2OfyKqIFEhEm/uiPh0K5z3WVftuA40/z9zgOB1pDWtSYg4
+ XCPWAdX/iEpgyn/iPG4K2KjZibAJraHA9cg2zURAVDGD4QPk3lC7G3oWYOoyF4GGn6cl6ouoq9C
+ sK+93gc/XPZQ9j0KUqGQwWEzuQTKAy7qGtdv6bpzekTVmyGQQQ/3ghFiNo3Q0deR5G5UOunVKxn
+ UZLHy92f7cQsjoQ==
+X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-Hi again,
+We move the func_utils.h header to include/linux/usb to be
+able to compile function drivers outside of the
+drivers/usb/gadget/function directory.
 
-On 2024-05-23 08:44, David Howells wrote:
-> commit 39302c160390441ed5b4f4f7ad480c44eddf0962
-> Author: David Howells <dhowells@redhat.com>
-> Date:   Wed May 22 17:30:22 2024 +0100
-> 
->     netfs, 9p: Fix race between umount and async request completion
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-I have tried this patch on top of 6.10-rc1 and unfortunately the problem
-persists.
+---
+v5 -> v6: -
+v4 -> v5:
+  - renamed to func_utils.h
+v3 -> v4: -
+v2 -> v3: -
+v1 -> v2:
+  - new introduced patch
+---
+ drivers/usb/gadget/configfs.c                              | 2 +-
+ drivers/usb/gadget/function/f_fs.c                         | 2 +-
+ drivers/usb/gadget/function/f_hid.c                        | 2 +-
+ drivers/usb/gadget/function/f_loopback.c                   | 2 +-
+ drivers/usb/gadget/function/f_midi.c                       | 2 +-
+ drivers/usb/gadget/function/f_midi2.c                      | 2 +-
+ drivers/usb/gadget/function/f_sourcesink.c                 | 2 +-
+ drivers/usb/gadget/u_f.c                                   | 2 +-
+ drivers/usb/gadget/u_f.h => include/linux/usb/func_utils.h | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-Meanwhile TJ (in CC) has been doing a lot of further investigation and
-opened https://bugzilla.kernel.org/show_bug.cgi?id=218916.
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index ce3cfa1f36f51..e3cda6e0cd0d2 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -8,8 +8,8 @@
+ #include <linux/usb/composite.h>
+ #include <linux/usb/gadget_configfs.h>
+ #include <linux/usb/webusb.h>
++#include <linux/usb/func_utils.h>
+ #include "configfs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
+ 
+ int check_user_usb_string(const char *name,
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 1f21459b1188c..f06e6c4974a6a 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -33,6 +33,7 @@
+ #include <linux/usb/ccid.h>
+ #include <linux/usb/composite.h>
+ #include <linux/usb/functionfs.h>
++#include <linux/usb/func_utils.h>
+ 
+ #include <linux/aio.h>
+ #include <linux/kthread.h>
+@@ -40,7 +41,6 @@
+ #include <linux/eventfd.h>
+ 
+ #include "u_fs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
+ #include "configfs.h"
+ 
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 2db01e03bfbf0..0b7684c4a5b8b 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -16,8 +16,8 @@
+ #include <linux/wait.h>
+ #include <linux/sched.h>
+ #include <linux/usb/g_hid.h>
++#include <linux/usb/func_utils.h>
+ 
+-#include "u_f.h"
+ #include "u_hid.h"
+ 
+ #define HIDG_MINORS	4
+diff --git a/drivers/usb/gadget/function/f_loopback.c b/drivers/usb/gadget/function/f_loopback.c
+index 17ac6ace0cffa..8fce2c2fd18f7 100644
+--- a/drivers/usb/gadget/function/f_loopback.c
++++ b/drivers/usb/gadget/function/f_loopback.c
+@@ -14,9 +14,9 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/func_utils.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * LOOPBACK FUNCTION ... a testing vehicle for USB peripherals,
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 20c6fbd94f32d..9f8f3a334b579 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -33,8 +33,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi.h>
++#include <linux/usb/func_utils.h>
+ 
+-#include "u_f.h"
+ #include "u_midi.h"
+ 
+ MODULE_AUTHOR("Ben Williamson");
+diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
+index ec8cd7c7bbfc1..830aa075c130f 100644
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -18,8 +18,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi-v2.h>
++#include <linux/usb/func_utils.h>
+ 
+-#include "u_f.h"
+ #include "u_midi2.h"
+ 
+ struct f_midi2;
+diff --git a/drivers/usb/gadget/function/f_sourcesink.c b/drivers/usb/gadget/function/f_sourcesink.c
+index 2edbd9b510d60..c9f38f24a92aa 100644
+--- a/drivers/usb/gadget/function/f_sourcesink.c
++++ b/drivers/usb/gadget/function/f_sourcesink.c
+@@ -13,10 +13,10 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/func_utils.h>
+ #include <linux/err.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * SOURCE/SINK FUNCTION ... a primary testing vehicle for USB peripheral
+diff --git a/drivers/usb/gadget/u_f.c b/drivers/usb/gadget/u_f.c
+index 6aea1ecb39999..9f90665827945 100644
+--- a/drivers/usb/gadget/u_f.c
++++ b/drivers/usb/gadget/u_f.c
+@@ -8,7 +8,7 @@
+  * Author: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
+  */
+ 
+-#include "u_f.h"
++#include <linux/usb/func_utils.h>
+ #include <linux/usb/ch9.h>
+ 
+ struct usb_request *alloc_ep_req(struct usb_ep *ep, size_t len)
+diff --git a/drivers/usb/gadget/u_f.h b/include/linux/usb/func_utils.h
+similarity index 99%
+rename from drivers/usb/gadget/u_f.h
+rename to include/linux/usb/func_utils.h
+index e313c3b8dcb19..9f2a32c765260 100644
+--- a/drivers/usb/gadget/u_f.h
++++ b/include/linux/usb/func_utils.h
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * u_f.h
++ * usbf_utils.h
+  *
+  * Utility definitions for USB functions
+  *
+
+-- 
+2.39.2
+
