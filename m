@@ -1,86 +1,151 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CDC6BB58;
-	Thu, 20 Jun 2024 20:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDF8137758
+	for <v9fs@lists.linux.dev>; Mon, 24 Jun 2024 11:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718916618; cv=none; b=OcLXR+gDKLZ1vwHCwveoZNxneJAsHnlHaZkoo2r8ERzTFcVeJH2Dmd7HjeVzS36YnAsMPk1I3kJpJsciMCprfYJRbw6xh5kc7mO7nK1D/lmeQ5tUgOXGVdbALe1bjivgImBeqMx8H4XCAT/K9tIKAlwknkROlGoAnT5S5SgUPeM=
+	t=1719228195; cv=none; b=Fh0CkRJQBd2jE3AYJ4Na5GjYQHjDQyqNdFnEde7o8l6ZNsBn9H8hiyr44QOVqUDBh5VOUR3Nm35HAPJOV0S8peTROYc2pLvzCRrHLo05wr1MDrRoLlhjpcNM402ryDZP/AqSR8SFzQ6OWqXJGOrSBxgU1dvA/FZfvRdTktMv3PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718916618; c=relaxed/simple;
-	bh=AvGVFTfgQ8CQv1Ova9G8llKmivCTuZfd3jl734L9bIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TggXoK4Q1dS4G3j/kMm6dHRd116TfXOEA7c3wU2lS8eT7kg3f2NhKJCr1RejTTc1SCpkExX2thyxAYWu/EK/lLsVIbDRI7dnXIONTA4ZHvgwTRbaOOyYGX6454Ge4ysiG3CSI5SENOQycLhjztzZqjiEOGysKknDz5R9nRNeyxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ALJdfkXV; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1719228195; c=relaxed/simple;
+	bh=pz7sF+ZNbJ8Bz1RRTeSeApuW5zYwcOlxnuYNSLjnGG8=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=WHp0xxFivQVO7u03oPxi/4UMNon1eaaOrRw3wXEdeS5GiNnWbc2DmPBnUDtpyaaO5IcX3MwFoLeqUgjPGjeOsrqU3fDAzo8A6fc/oB/Mq2r4iwuDIvSbWfoKuLRMRXg7VmysIrD5n6ko0H6Erf0JDGWIlnXEDEh8OqvjpDcllIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LU/yI1nw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ALJdfkXV"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8A5F214C2DD;
-	Thu, 20 Jun 2024 22:50:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1718916615;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LU/yI1nw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719228193;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VLVCmMswFYW/yptkreRA4q0clrbQSOEC9H3udI4LuGU=;
-	b=ALJdfkXV4jYbTnxVURz9T/eVwi75e+Jpzd/NnEdNtowVW0EPginJ+UR6WjORHnH38deSjd
-	uJwnIU9Cj7KamD9RuKu8/mGuiDvl4zepXXeiSbVTriN0efe9Ugz46seuDEdUL9p7r7KRLr
-	P7bpbNTjSYBxjIuPaVX1MWKzMKecMwktnyLawuNoID0Mbc/ddEMnIWkpd3XG+6pyYH418a
-	3W/N9t5Qfs/oTZaI9U3i3KvnPFWdkdWReTPrI5Iv2PcSTYiBLmAJf7px1y70cBjtciXJPK
-	i5woghwPVaymjTFrWRyF7a/0NAHSSLe6Bk1rVFeZVi+wKnfbRR0RGgGH6UokHw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 39921304;
-	Thu, 20 Jun 2024 20:50:04 +0000 (UTC)
-Date: Fri, 21 Jun 2024 05:49:49 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH 06/17] 9p: Enable multipage folios
-Message-ID: <ZnSV7TmLpmucb8el@codewreck.org>
-References: <20240620173137.610345-1-dhowells@redhat.com>
- <20240620173137.610345-7-dhowells@redhat.com>
- <ZnSSaeLo8dY7cu3W@codewreck.org>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LH3f+Un7sHJi2rr5Ob6HxSxGqRh20bSt/mtca6UvBrE=;
+	b=LU/yI1nwrzFnZuN/+OR950CKrUwwCW0QO+4TQKYGik/Vc3/9cZdEOzFVgUvxeoo6T/uvoR
+	OQ6YHh7LKejIrLeljnSSIiybmuLfHrK0OrnHH1dioM1zt+9fAOzfC8pihqwcNbWezTauPT
+	yKY9RCtrniQXT/SmheGVcaZoA2aAUM8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-sVUMWg9KOmO8r1WqE1-FXA-1; Mon,
+ 24 Jun 2024 07:23:08 -0400
+X-MC-Unique: sVUMWg9KOmO8r1WqE1-FXA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97142195608A;
+	Mon, 24 Jun 2024 11:23:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.111])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 240671955E75;
+	Mon, 24 Jun 2024 11:23:02 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+    Matthew Wilcox <willy@infradead.org>
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    netfs@lists.linux.dev, v9fs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix netfs_page_mkwrite() to check folio->mapping is valid
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZnSSaeLo8dY7cu3W@codewreck.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <614256.1719228181.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Jun 2024 12:23:01 +0100
+Message-ID: <614257.1719228181@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Dominique Martinet wrote on Fri, Jun 21, 2024 at 05:34:49AM +0900:
-> David Howells wrote on Thu, Jun 20, 2024 at 06:31:24PM +0100:
-> > Enable support for multipage folios on the 9P filesystem.  This is all
-> > handled through netfslib and is already enabled on AFS and CIFS also.
-> 
-> Since this is fairly unrelated to the other patches let's take this
-> through the 9p tree as well - I'll run some quick tests to verify writes
-> go from 4k to something larger
+Fix netfs_page_mkwrite() to check that folio->mapping is valid once it has
+taken the folio lock (as filemap_page_mkwrite() does).  Without this,
+generic/247 occasionally oopses with something like the following:
 
-(huh, my memory is rotten, we were already aggregating writes at some
-point without this. Oh, well, at least it doesn't seem to blow up)
+    BUG: kernel NULL pointer dereference, address: 0000000000000000
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
 
-> and it doesn't blow up immediately and push it out for 6.11
+    RIP: 0010:trace_event_raw_event_netfs_folio+0x61/0xc0
+    ...
+    Call Trace:
+     <TASK>
+     ? __die_body+0x1a/0x60
+     ? page_fault_oops+0x6e/0xa0
+     ? exc_page_fault+0xc2/0xe0
+     ? asm_exc_page_fault+0x22/0x30
+     ? trace_event_raw_event_netfs_folio+0x61/0xc0
+     trace_netfs_folio+0x39/0x40
+     netfs_page_mkwrite+0x14c/0x1d0
+     do_page_mkwrite+0x50/0x90
+     do_pte_missing+0x184/0x200
+     __handle_mm_fault+0x42d/0x500
+     handle_mm_fault+0x121/0x1f0
+     do_user_addr_fault+0x23e/0x3c0
+     exc_page_fault+0xc2/0xe0
+     asm_exc_page_fault+0x22/0x30
 
-Queued for -next.
+This is due to the invalidate_inode_pages2_range() issued at the end of th=
+e
+DIO write interfering with the mmap'd writes.
 
--- 
-Dominique Martinet | Asmadeus
+Fixes: 102a7e2c598c ("netfs: Allow buffered shared-writeable mmap through =
+netfs_page_mkwrite()")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/buffered_write.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index c36643c97cb5..6a6387b3aaff 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -497,6 +497,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, st=
+ruct netfs_group *netfs_gr
+ 	struct netfs_group *group;
+ 	struct folio *folio =3D page_folio(vmf->page);
+ 	struct file *file =3D vmf->vma->vm_file;
++	struct address_space *mapping =3D file->f_mapping;
+ 	struct inode *inode =3D file_inode(file);
+ 	struct netfs_inode *ictx =3D netfs_inode(inode);
+ 	vm_fault_t ret =3D VM_FAULT_RETRY;
+@@ -508,6 +509,10 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, s=
+truct netfs_group *netfs_gr
+ =
+
+ 	if (folio_lock_killable(folio) < 0)
+ 		goto out;
++	if (folio->mapping !=3D mapping) {
++		ret =3D VM_FAULT_NOPAGE | VM_FAULT_LOCKED;
++		goto out;
++	}
+ =
+
+ 	if (folio_wait_writeback_killable(folio)) {
+ 		ret =3D VM_FAULT_LOCKED;
+@@ -523,7 +528,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, st=
+ruct netfs_group *netfs_gr
+ 	group =3D netfs_folio_group(folio);
+ 	if (group !=3D netfs_group && group !=3D NETFS_FOLIO_COPY_TO_CACHE) {
+ 		folio_unlock(folio);
+-		err =3D filemap_fdatawait_range(inode->i_mapping,
++		err =3D filemap_fdatawait_range(mapping,
+ 					      folio_pos(folio),
+ 					      folio_pos(folio) + folio_size(folio));
+ 		switch (err) {
+
