@@ -1,100 +1,559 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81AE24205
-	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 20:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC1C1CD2B
+	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 21:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721249142; cv=none; b=cwHhHes5CLwlCTvDoXc44qZhufAu3bj13prWD5/Dt6yC66936qgh0nkmH0YQXZVvIrkBBHuFNPFeBqydVE9Upvuxh7yR1jzFGcoxDNgGjVuV//wavUPMfT6GCr0OwNZb5ufKBJskXlqXR8s2b/7PB0I/j1gWZ3f28ZA85wZGa+E=
+	t=1721250236; cv=none; b=BDkLtu0SRSLpraEjRu4JtHVNB6TPfkw36LE6mOyq0QKfLfVuWxLv1vjR3tPD8ujadJ+wngT55WYekktiXgC4J6WLucEGCI4VGpl9tZLSk0oja7OQ21CGWHSATiC3qXoN4+U+FleYTxiKOAf2FFGE/pS5noECC5R+iwAVq+tJdus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721249142; c=relaxed/simple;
-	bh=K2pixndlAt0g4SBukt7putx+lOUiXXfFepG348nJw7Q=;
+	s=arc-20240116; t=1721250236; c=relaxed/simple;
+	bh=RmobsUKMzVquGAATrJH3V4ORsycNVTX+eIMhQpV8Mjc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hec+fIwuy2hr9zWzf/aOfCw1z8U/ZbzjeFSomzpXZheqZsnwd8txPwXGvHR9Scyo71s0sboDq3iABNXjIUEsqZ95gcyUyInsmbgSBAqbGNI6ds+J/z++sZxI3BAa9O9p1NHLArOtFdKAyezx9rvJWFirMhhk31yHL76oIc+6cbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=sl7ipRfN; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="sl7ipRfN"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 2D3D514C2DD;
-	Wed, 17 Jul 2024 22:45:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1721249136;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=edQiV/OV4HNnkEERcTHu2WNm6EsvYcrYLHW7axpXgKc=;
-	b=sl7ipRfNBNiUPWUMSfsBbV10cKvjd/m2F+5FPsPhRbX6BbXAjiHx/xv9Zns5UX3N2JHQHI
-	a7VJ4csn6xKWly9GBZ0yJlESjUhajRD3HaW/HfTiLCfUzqWNSNv9ciJO9cEXDMH0zU4E1l
-	6ekrgFl0/b7LpgA2XtOGh1eHtQr1pIvmsatA0EzBBBuZs9Syw2sOuHeLA2VnQso2tIuZfw
-	lX/rglEJlm4BxPghcJWLrckQKQumKI19jsAbBbW3iIz9HBZ/jx7olJw+drnQ5T9ZT4ZZ25
-	tH5JlFmJwi/Hm0w7KwZmhRp2nU4d8hgiepX0kLh7I99Pd/ZNS/FYilW5fAfsYA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 33098d5c;
-	Wed, 17 Jul 2024 20:45:33 +0000 (UTC)
-Date: Thu, 18 Jul 2024 05:45:18 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=EB5tzURctdOUNo3Mh3DtRcZZq4K//0Q8eMG0AwvODhFSyAj5B4zaJI/Z5S0yw42gZUIQdi16Wh+f/X8UTgFFElMVaqWTH+UYL4TnLYHjsP6YzHFK5eLNq9fHm3iI5zTanxraK0XkOuVCPr+hMJmDrF2vwwhvNKOyjvdyutRorVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1sUBoA-00050z-D9; Wed, 17 Jul 2024 23:03:30 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1sUBo7-000IIE-4X; Wed, 17 Jul 2024 23:03:27 +0200
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1sUBo7-002Ebi-01;
+	Wed, 17 Jul 2024 23:03:27 +0200
+Date: Wed, 17 Jul 2024 23:03:26 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev
-Subject: Re: hangs after merge window changes
-Message-ID: <ZpgtXjz3pbJKUjL7@codewreck.org>
-References: <20240717102458.649b60be@kernel.org>
- <CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	kernel@pengutronix.de, Jan Luebbe <jlu@pengutronix.de>
+Subject: Re: [PATCH v6 3/3] tools: usb: p9_fwd: add usb gadget packet
+ forwarder script
+Message-ID: <Zpgxnszbsf8_uEzf@pengutronix.de>
+References: <20240116-ml-topic-u9p-v6-0-695977d76dff@pengutronix.de>
+ <20240116-ml-topic-u9p-v6-3-695977d76dff@pengutronix.de>
+ <e6a39148-332d-4bed-900f-f22d131e2b29@collabora.com>
+ <ZnAh-fIAnlFo_a7y@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="N+tWKLrbeVfnjHJc"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
-
-Eric Van Hensbergen wrote on Wed, Jul 17, 2024 at 01:01:26PM -0500:
-> I held way back on adding anything new over the past cycle, so this
-> sounds likely some external change maybe perturbing an older issue.
-> What guest side mount options, qemu options and qemu version are you
-> using?
-
-Mount option if any would be much appreciated, yes.
-Also, what version you upgraded from to limit the limit the search a
-bit; the previous 6.9 tree?
-
-Also couldn't find much infos about the CI in general, given the traces
-I don't think the workload matters all that much but it can give
-something to start with e.g. running from initrd and mounting 9p or
-using 9p as rootfs; that shouldn't make a difference but might as well
-try to reproduce from something close to the actual netdev CI given the
-low reproducibility.
-
-> Dominique, you aware of anything coming in that might have messed with
-> this?  Maybe the new common code refactoring underpinning
-> readahead/etc.?
-
-Given the trace it's probably stuck in __wait_on_freeing_inode (the only
-schedule() call in find_inode_fast), so we could be looking at
-fallbacks from the iget changes but that made it in 6.9 already so
-that's unlikely...
-
-I have a feeling that adding cache will make the error go away if you
-just want to fix tests for now, so would be great if you could try
-adding -o cache=loose to the 9p mount options; hopefully the inodes
-won't be freed as often and that'll make the race harder to hit.
+In-Reply-To: <ZnAh-fIAnlFo_a7y@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
 
-I had a quick look at other globals fs changes and nothing stood out,
-it's going to be fun to track down.
+--N+tWKLrbeVfnjHJc
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On Wed, Jul 17, 2024 at 12:24 PM Jakub Kicinski <kuba@kernel.org> wrote:
-> > Apologies for possible duplicate, I tried to search lore and haven't
-> > found anything, but also I can't find the exact 9p archive there :S
+Hi Andrzej,
 
-The new list is here: https://lore.kernel.org/v9fs/
-You probably didn't miss anything :)
+On Mon, Jun 17, 2024 at 01:46:01PM +0200, Michael Grzeschik wrote:
+>On Thu, Jun 06, 2024 at 10:19:33AM +0200, Andrzej Pietrasiewicz wrote:
+>>Hi,
+>>
+>>W dniu 5.06.2024 o=A015:32, Michael Grzeschik pisze:
+>>>This patch is adding an small python tool to forward 9pfs requests
+>>>from the USB gadget to an existing 9pfs TCP server. Since currently all
+>>>9pfs servers lack support for the usb transport this tool is an useful
+>>>helper to get started.
+>>>
+>>>Refer the Documentation section "USBG Example" in
+>>>Documentation/filesystems/9p.rst on how to use it.
+>>>
+>>>Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+>>>Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+>>>
+>>
+>>This time --id alone worked for me (as well as --id combined with --path)
+>>but --path alone did not:
+>
+>This is currently right and expected. Why is using path alone of any
+>more use? Since you could then grab any device with two bulk endpoints
+>without even ensuring that it is supposed to behave as expected with
+>this script.
 
--- 
-Dominique
+Ping!
+
+Can this series move on?
+
+Regards,
+Michael
+
+>>$ sudo python3 tools/usb/p9_fwd.py --id 0xabcd:0xef01 list
+>>Bus | Addr | Manufacturer     | Product          | ID        | Path
+>>--- | ---- | ---------------- | ---------------- | --------- | ----
+>> 3 |   39 | unknown          | unknown          | abcd:ef01 | 3-1.3.3.5.4
+>>
+>>$ sudo python3 tools/usb/p9_fwd.py --id 0xabcd:0xef01 connect -p 9999
+>>2024-06-06 10:14:45,368 INFO     found device: 3/39 located at 3-1.3.3.5.4
+>>2024-06-06 10:14:45,369 INFO     claiming interface:
+>>   INTERFACE 0: Vendor Specific =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>    bLength            :    0x9 (9 bytes)
+>>    bDescriptorType    :    0x4 Interface
+>>    bInterfaceNumber   :    0x0
+>>    bAlternateSetting  :    0x0
+>>    bNumEndpoints      :    0x2
+>>    bInterfaceClass    :   0xff Vendor Specific
+>>    bInterfaceSubClass :   0xff
+>>    bInterfaceProtocol :    0x9
+>>    iInterface         :    0x1 usb9pfs input to output
+>>     ENDPOINT 0x81: Bulk IN =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>      bLength          :    0x7 (7 bytes)
+>>      bDescriptorType  :    0x5 Endpoint
+>>      bEndpointAddress :   0x81 IN
+>>      bmAttributes     :    0x2 Bulk
+>>      wMaxPacketSize   :  0x200 (512 bytes)
+>>      bInterval        :    0x0
+>>     ENDPOINT 0x1: Bulk OUT =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>      bLength          :    0x7 (7 bytes)
+>>      bDescriptorType  :    0x5 Endpoint
+>>      bEndpointAddress :    0x1 OUT
+>>      bmAttributes     :    0x2 Bulk
+>>      wMaxPacketSize   :  0x200 (512 bytes)
+>>      bInterval        :    0x0
+>>2024-06-06 10:14:45,370 INFO     interface claimed
+>>2024-06-06 10:14:45,370 INFO     connected to server
+>>^C
+>>
+>>$ sudo python3 tools/usb/p9_fwd.py --path 3-1.3.3.5.4 connect -p 9999
+>>Traceback (most recent call last):
+>> File "/home/ap/Collabora/kernel-rk/tools/usb/p9_fwd.py", line 243, in <m=
+odule>
+>>   main()
+>> File "/home/ap/Collabora/kernel-rk/tools/usb/p9_fwd.py", line 239, in ma=
+in
+>>   args.func(args)
+>> File "/home/ap/Collabora/kernel-rk/tools/usb/p9_fwd.py", line 190, in co=
+nnect
+>>   f =3D Forwarder(server=3D(args.server, args.port), vid=3Dvid, pid=3Dpi=
+d, path=3Dargs.path)
+>> File "/home/ap/Collabora/kernel-rk/tools/usb/p9_fwd.py", line 60, in __i=
+nit__
+>>   raise ValueError("Device not found")
+>>ValueError: Device not found
+>>
+>>
+>>>---
+>>>v5 -> v6:
+>>>  - set path parameter to None when unused
+>>>v4 -> v5:
+>>>  - updated documentation for new subcommands list/connect
+>>>  - run ruff format
+>>>  - make vid and pid parameterized
+>>>  - add list as subcommand to scan for devices
+>>>  - move connect to extra subcommand
+>>>v3 -> v4: -
+>>>v2 -> v3: -
+>>>v1 -> v2:
+>>>  - added usbg 9pfs detailed instructions to 9p.rst doc
+>>>---
+>>> Documentation/filesystems/9p.rst |  41 +++++++
+>>> tools/usb/p9_fwd.py              | 243 ++++++++++++++++++++++++++++++++=
++++++++
+>>> 2 files changed, 284 insertions(+)
+>>>
+>>>diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystem=
+s/9p.rst
+>>>index 10cf79dc287f8..2cc85f3e8659f 100644
+>>>--- a/Documentation/filesystems/9p.rst
+>>>+++ b/Documentation/filesystems/9p.rst
+>>>@@ -67,6 +67,47 @@ To mount a 9p FS on a USB Host accessible via the gad=
+get as root filesystem::
+>>> where <device> is the tag associated by the usb gadget transport.
+>>> It is defined by the configfs instance name.
+>>>+USBG Example
+>>>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>+
+>>>+The USB host exports a filesystem, while the gadget on the USB device
+>>>+side makes it mountable.
+>>>+
+>>>+Diod (9pfs server) and the forwarder are on the development host, where
+>>>+the root filesystem is actually stored. The gadget is initialized during
+>>>+boot (or later) on the embedded board. Then the forwarder will find it
+>>>+on the USB bus and start forwarding requests.
+>>>+
+>>>+In this case the 9p requests come from the device and are handled by the
+>>>+host. The reason is that USB device ports are normally not available on
+>>>+PCs, so a connection in the other direction would not work.
+>>>+
+>>>+When using the usbg transport, for now there is no native usb host
+>>>+service capable to handle the requests from the gadget driver. For
+>>>+this we have to use the extra python tool p9_fwd.py from tools/usb.
+>>>+
+>>>+Just start the 9pfs capable network server like diod/nfs-ganesha e.g.:
+>>>+
+>>>+        $ diod -f -n -d 0 -S -l 0.0.0.0:9999 -e $PWD
+>>>+
+>>>+Optionaly scan your bus if there are more then one usbg gadgets to find=
+ their path:
+>>>+
+>>>+        $ python $kernel_dir/tools/usb/p9_fwd.py list
+>>>+
+>>>+        Bus | Addr | Manufacturer     | Product          | ID        | =
+Path
+>>>+        --- | ---- | ---------------- | ---------------- | --------- | =
+----
+>>>+          2 |   67 | unknown          | unknown          | 1d6b:0109 | =
+2-1.1.2
+>>>+          2 |   68 | unknown          | unknown          | 1d6b:0109 | =
+2-1.1.3
+>>>+
+>>>+Then start the python transport:
+>>>+
+>>>+        $ python $kernel_dir/tools/usb/p9_fwd.py --path 2-1.1.2 connect=
+ -p 9999
+>>>+
+>>>+After that the gadget driver can be used as described above.
+>>>+
+>>>+One use-case is to use it as an alternative to NFS root booting during
+>>>+the development of embedded Linux devices.
+>>>+
+>>> Options
+>>> =3D=3D=3D=3D=3D=3D=3D
+>>>diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
+>>>new file mode 100755
+>>>index 0000000000000..12c76cbb046b7
+>>>--- /dev/null
+>>>+++ b/tools/usb/p9_fwd.py
+>>>@@ -0,0 +1,243 @@
+>>>+#!/usr/bin/env python3
+>>>+# SPDX-License-Identifier: GPL-2.0
+>>>+
+>>>+import argparse
+>>>+import errno
+>>>+import logging
+>>>+import socket
+>>>+import struct
+>>>+import time
+>>>+
+>>>+import usb.core
+>>>+import usb.util
+>>>+
+>>>+
+>>>+def path_from_usb_dev(dev):
+>>>+    """Takes a pyUSB device as argument and returns a string.
+>>>+    The string is a Path representation of the position of the USB devi=
+ce on the USB bus tree.
+>>>+
+>>>+    This path is used to find a USB device on the bus or all devices co=
+nnected to a HUB.
+>>>+    The path is made up of the number of the USB controller followed be=
+ the ports of the HUB tree."""
+>>>+    if dev.port_numbers:
+>>>+        dev_path =3D ".".join(str(i) for i in dev.port_numbers)
+>>>+        return f"{dev.bus}-{dev_path}"
+>>>+    return ""
+>>>+
+>>>+
+>>>+HEXDUMP_FILTER =3D "".join(chr(x).isprintable() and chr(x) or "." for x=
+ in range(128)) + "." * 128
+>>>+
+>>>+
+>>>+class Forwarder:
+>>>+    @staticmethod
+>>>+    def _log_hexdump(data):
+>>>+        if not logging.root.isEnabledFor(logging.TRACE):
+>>>+            return
+>>>+        L =3D 16
+>>>+        for c in range(0, len(data), L):
+>>>+            chars =3D data[c : c + L]
+>>>+            dump =3D " ".join(f"{x:02x}" for x in chars)
+>>>+            printable =3D "".join(HEXDUMP_FILTER[x] for x in chars)
+>>>+            line =3D f"{c:08x}  {dump:{L*3}s} |{printable:{L}s}|"
+>>>+            logging.root.log(logging.TRACE, "%s", line)
+>>>+
+>>>+    def __init__(self, server, vid, pid, path):
+>>>+        self.stats =3D {
+>>>+            "c2s packets": 0,
+>>>+            "c2s bytes": 0,
+>>>+            "s2c packets": 0,
+>>>+            "s2c bytes": 0,
+>>>+        }
+>>>+        self.stats_logged =3D time.monotonic()
+>>>+
+>>>+        def find_filter(dev):
+>>>+            dev_path =3D path_from_usb_dev(dev)
+>>>+            if path is not None:
+>>>+                return dev_path =3D=3D path
+>>>+            return True
+>>>+
+>>>+        dev =3D usb.core.find(idVendor=3Dvid, idProduct=3Dpid, custom_m=
+atch=3Dfind_filter)
+>>>+        if dev is None:
+>>>+            raise ValueError("Device not found")
+>>>+
+>>>+        logging.info(f"found device: {dev.bus}/{dev.address} located at=
+ {path_from_usb_dev(dev)}")
+>>>+
+>>>+        # dev.set_configuration() is not necessary since g_multi has on=
+ly one
+>>>+        usb9pfs =3D None
+>>>+        # g_multi adds 9pfs as last interface
+>>>+        cfg =3D dev.get_active_configuration()
+>>>+        for intf in cfg:
+>>>+            # we have to detach the usb-storage driver from multi gadge=
+t since
+>>>+            # stall option could be set, which will lead to spontaneous=
+ port
+>>>+            # resets and our transfers will run dead
+>>>+            if intf.bInterfaceClass =3D=3D 0x08:
+>>>+                if dev.is_kernel_driver_active(intf.bInterfaceNumber):
+>>>+                    dev.detach_kernel_driver(intf.bInterfaceNumber)
+>>>+
+>>>+            if intf.bInterfaceClass =3D=3D 0xFF and intf.bInterfaceSubC=
+lass =3D=3D 0xFF and intf.bInterfaceProtocol =3D=3D 0x09:
+>>>+                usb9pfs =3D intf
+>>>+        if usb9pfs is None:
+>>>+            raise ValueError("Interface not found")
+>>>+
+>>>+        logging.info(f"claiming interface:\n{usb9pfs}")
+>>>+        usb.util.claim_interface(dev, usb9pfs.bInterfaceNumber)
+>>>+        ep_out =3D usb.util.find_descriptor(
+>>>+            usb9pfs,
+>>>+            custom_match=3Dlambda e: usb.util.endpoint_direction(e.bEnd=
+pointAddress) =3D=3D usb.util.ENDPOINT_OUT,
+>>>+        )
+>>>+        assert ep_out is not None
+>>>+        ep_in =3D usb.util.find_descriptor(
+>>>+            usb9pfs,
+>>>+            custom_match=3Dlambda e: usb.util.endpoint_direction(e.bEnd=
+pointAddress) =3D=3D usb.util.ENDPOINT_IN,
+>>>+        )
+>>>+        assert ep_in is not None
+>>>+        logging.info("interface claimed")
+>>>+
+>>>+        self.ep_out =3D ep_out
+>>>+        self.ep_in =3D ep_in
+>>>+        self.dev =3D dev
+>>>+
+>>>+        # create and connect socket
+>>>+        self.s =3D socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+>>>+        self.s.connect(server)
+>>>+
+>>>+        logging.info("connected to server")
+>>>+
+>>>+    def c2s(self):
+>>>+        """forward a request from the USB client to the TCP server"""
+>>>+        data =3D None
+>>>+        while data is None:
+>>>+            try:
+>>>+                logging.log(logging.TRACE, "c2s: reading")
+>>>+                data =3D self.ep_in.read(self.ep_in.wMaxPacketSize)
+>>>+            except usb.core.USBTimeoutError:
+>>>+                logging.log(logging.TRACE, "c2s: reading timed out")
+>>>+                continue
+>>>+            except usb.core.USBError as e:
+>>>+                if e.errno =3D=3D errno.EIO:
+>>>+                    logging.debug("c2s: reading failed with %s, retryin=
+g", repr(e))
+>>>+                    time.sleep(0.5)
+>>>+                    continue
+>>>+                logging.error("c2s: reading failed with %s, aborting", =
+repr(e))
+>>>+                raise
+>>>+        size =3D struct.unpack("<I", data[:4])[0]
+>>>+        while len(data) < size:
+>>>+            data +=3D self.ep_in.read(size - len(data))
+>>>+        logging.log(logging.TRACE, "c2s: writing")
+>>>+        self._log_hexdump(data)
+>>>+        self.s.send(data)
+>>>+        logging.debug("c2s: forwarded %i bytes", size)
+>>>+        self.stats["c2s packets"] +=3D 1
+>>>+        self.stats["c2s bytes"] +=3D size
+>>>+
+>>>+    def s2c(self):
+>>>+        """forward a response from the TCP server to the USB client"""
+>>>+        logging.log(logging.TRACE, "s2c: reading")
+>>>+        data =3D self.s.recv(4)
+>>>+        size =3D struct.unpack("<I", data[:4])[0]
+>>>+        while len(data) < size:
+>>>+            data +=3D self.s.recv(size - len(data))
+>>>+        logging.log(logging.TRACE, "s2c: writing")
+>>>+        self._log_hexdump(data)
+>>>+        while data:
+>>>+            written =3D self.ep_out.write(data)
+>>>+            assert written > 0
+>>>+            data =3D data[written:]
+>>>+        if size % self.ep_out.wMaxPacketSize =3D=3D 0:
+>>>+            logging.log(logging.TRACE, "sending zero length packet")
+>>>+            self.ep_out.write(b"")
+>>>+        logging.debug("s2c: forwarded %i bytes", size)
+>>>+        self.stats["s2c packets"] +=3D 1
+>>>+        self.stats["s2c bytes"] +=3D size
+>>>+
+>>>+    def log_stats(self):
+>>>+        logging.info("statistics:")
+>>>+        for k, v in self.stats.items():
+>>>+            logging.info(f"  {k+':':14s} {v}")
+>>>+
+>>>+    def log_stats_interval(self, interval=3D5):
+>>>+        if (time.monotonic() - self.stats_logged) < interval:
+>>>+            return
+>>>+
+>>>+        self.log_stats()
+>>>+        self.stats_logged =3D time.monotonic()
+>>>+
+>>>+
+>>>+def try_get_usb_str(dev, name):
+>>>+    try:
+>>>+        with open(f"/sys/bus/usb/devices/{dev.bus}-{dev.address}/{name}=
+") as f:
+>>>+            return f.read().strip()
+>>>+    except FileNotFoundError:
+>>>+        return None
+>>>+
+>>>+
+>>>+def list_usb(args):
+>>>+    vid, pid =3D [int(x, 16) for x in args.id.split(":", 1)]
+>>>+
+>>>+    print("Bus | Addr | Manufacturer     | Product          | ID       =
+ | Path")
+>>>+    print("--- | ---- | ---------------- | ---------------- | ---------=
+ | ----")
+>>>+    for dev in usb.core.find(find_all=3DTrue, idVendor=3Dvid, idProduct=
+=3Dpid):
+>>>+        path =3D path_from_usb_dev(dev) or ""
+>>>+        manufacturer =3D try_get_usb_str(dev, "manufacturer") or "unkno=
+wn"
+>>>+        product =3D try_get_usb_str(dev, "product") or "unknown"
+>>>+        print(
+>>>+            f"{dev.bus:3} | {dev.address:4} | {manufacturer:16} | {prod=
+uct:16} | {dev.idVendor:04x}:{dev.idProduct:04x} | {path:18}"
+>>>+        )
+>>>+
+>>>+
+>>>+def connect(args):
+>>>+    vid, pid =3D [int(x, 16) for x in args.id.split(":", 1)]
+>>>+
+>>>+    f =3D Forwarder(server=3D(args.server, args.port), vid=3Dvid, pid=
+=3Dpid, path=3Dargs.path)
+>>>+
+>>>+    try:
+>>>+        while True:
+>>>+            f.c2s()
+>>>+            f.s2c()
+>>>+            f.log_stats_interval()
+>>>+    finally:
+>>>+        f.log_stats()
+>>>+
+>>>+
+>>>+def main():
+>>>+    parser =3D argparse.ArgumentParser(
+>>>+        description=3D"Forward 9PFS requests from USB to TCP",
+>>>+    )
+>>>+
+>>>+    parser.add_argument("--id", type=3Dstr, default=3D"1d6b:0109", help=
+=3D"vid:pid of target device")
+>>>+    parser.add_argument("--path", type=3Dstr, required=3DFalse, help=3D=
+"path of target device")
+>>>+    parser.add_argument("-v", "--verbose", action=3D"count", default=3D=
+0)
+>>>+
+>>>+    subparsers =3D parser.add_subparsers()
+>>>+    subparsers.required =3D True
+>>>+    subparsers.dest =3D "command"
+>>>+
+>>>+    parser_list =3D subparsers.add_parser("list", help=3D"List all conn=
+ected 9p gadgets")
+>>>+    parser_list.set_defaults(func=3Dlist_usb)
+>>>+
+>>>+    parser_connect =3D subparsers.add_parser(
+>>>+        "connect", help=3D"Forward messages between the usb9pfs gadget =
+and the 9p server"
+>>>+    )
+>>>+    parser_connect.set_defaults(func=3Dconnect)
+>>>+    connect_group =3D parser_connect.add_argument_group()
+>>>+    connect_group.required =3D True
+>>>+    parser_connect.add_argument("-s", "--server", type=3Dstr, default=
+=3D"127.0.0.1", help=3D"server hostname")
+>>>+    parser_connect.add_argument("-p", "--port", type=3Dint, default=3D5=
+64, help=3D"server port")
+>>>+
+>>>+    args =3D parser.parse_args()
+>>>+
+>>>+    logging.TRACE =3D logging.DEBUG - 5
+>>>+    logging.addLevelName(logging.TRACE, "TRACE")
+>>>+
+>>>+    if args.verbose >=3D 2:
+>>>+        level =3D logging.TRACE
+>>>+    elif args.verbose:
+>>>+        level =3D logging.DEBUG
+>>>+    else:
+>>>+        level =3D logging.INFO
+>>>+    logging.basicConfig(level=3Dlevel, format=3D"%(asctime)-15s %(level=
+name)-8s %(message)s")
+>>>+
+>>>+    args.func(args)
+>>>+
+>>>+
+>>>+if __name__ =3D=3D "__main__":
+>>>+    main()
+>>>
+>>
+>>
+>
+>--=20
+>Pengutronix e.K.                           |                             |
+>Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--N+tWKLrbeVfnjHJc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmaYMZsACgkQC+njFXoe
+LGTg/g//WgJyNpYi4ZzWqVn2uK2hpzpMIldrW/dgI6qtzgmbyTbXWzBufQWJg733
+aarjpMjlPRFtfQRk3Ex1DjFO8WeEya8tqinDAFtzNQEvN93lOnOhuFRQUIklVw+i
+dHvjErdhnE9CeLWuIiMQNxqWCO2QsV/we8wRog5skR+ZzvkLj4mllW0mxG/5kG8G
+LYwcMR3i21723jv1+z+xjyN43tP1kVFSzpei38SzJWvH0SBKn0BdoH3VuoP7vhaI
+ybrTpbT/doPWm7O+eOXGX4hu/NHLGv6HcGgCkEgBY4+NlzkzAdCAr/5Ork7Gqsak
+8R3CGHmhbcgDCEpDQrp1qagU3EkyRljJ0mghU0pFkxLFAHK8M3lv74cpItMnZ2RG
+OWn8Fngh8BqVUIaE6pK5905q7fEf5MOxmvjgX39idQyKplqX0WCmk5nTdpYPrNyp
+jyKXVQ0Tj1yiz8BV+dmng63MxkhxwQDJm9nWhP/ZWrKQ5ylVm4IPfVWri0vjYDHf
++Xw6kbDqD+hMqGccjpjLyzbRVotq3DudDjQcGw2+8fKXCLYFsHuhYkEWzVy3q2si
+i5LgVXJsaSNXLHfAc/KEg4jo/7Yr5MJv8enee3DIjqd/myLjwzr+2bJuZRQkjobm
+DRDHRhh1AidyQk3FLs9EGISuV7Wos+wUsjgVlkLRfBv83w2IVY4=
+=FUPc
+-----END PGP SIGNATURE-----
+
+--N+tWKLrbeVfnjHJc--
