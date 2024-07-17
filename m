@@ -1,111 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81E3628
-	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 22:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3F18EBF
+	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 23:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721253627; cv=none; b=eOUKotXa6kZi1FSX8VonLVsyjTZRwfOZoHeojIcHNabv64QQ6EhEB+DYMA0VU7dcVu4j2sCeLg64XtfpXbspxAx8ejhWAusfq+kbBtkuGjIzNOyDLi+iYihO+dNp5Pbdgu0uZ3hARMc9k/UN3ufr+aFJ3U6JyYWA1q8bk0QRAVM=
+	t=1721259053; cv=none; b=ei8OGxW5TMN5fGp7+zfxUUsl7euqRuyT+NQ4hy+JxUz8ScdoVytD3T42P947fn8u8JswSAzNLRdc5i6LvAmFyTYNup8uS0TZ/vtiyzwiXU+1LFF0iKc6/swqj0npt4StvSh2vBQX6pGZjGAonTaTpivaJNIzmUFNnssQ9TqnOSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721253627; c=relaxed/simple;
-	bh=cWgIly/2P9ZJoZ6MP9sA7WZjxFM6bhp0XJhWv4QbnzY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HDF99LhG9KrE2Z5BGTcHb1GrCXCBm9VdBDBpzo12Rkd0CXwLqnN/T/+WOusF1+R8pVfA24EaWMR38AaAhxTwj5nsRcEvG4/SpjshS+siaZA2mrRafzvS2ngG5PeYcI/ERn8PtfDg68bTNcV44MoN2ehdZ1nDWKp8v9tCfJQrUCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ff9gfRih; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721259053; c=relaxed/simple;
+	bh=+zKMy1VTWyxmmziCnrHhdmD+UQ0UqOz72iTeM+Cz60Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jHyUkjnkT6ToIbToCy5EB1hlgQZ3Etj+e0XT4zE4HeS+1R/dxXemRxGRT5OtELoh2X/GzX7cuT7a2WmisNcXaPXSOKiOtT58Tjxzlk0VZAOTdbuDqn60DEFMobyvcrn4LEUedXzEv3S2HK6nW7pKRhv9mDBh7027u/Qj77tgihk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ov/00k3J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ff9gfRih"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50595C4AF0B
-	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 22:00:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ov/00k3J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F1FC4AF0B;
+	Wed, 17 Jul 2024 23:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721253627;
-	bh=cWgIly/2P9ZJoZ6MP9sA7WZjxFM6bhp0XJhWv4QbnzY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ff9gfRihuS6EyjqdJzlnJX4DuLvg9YeoZ9LCZ7GZIKlKmbu51VStBjZtf0F10qqge
-	 MX8Dwl44/qlTMmTLDrtap5jFhrjQCZYtuP0VCsrtjiHcW/zECPK3aBxycxWVb3KIuW
-	 BNNjD4XWZr7BKpj4j8b8OjPQ0TIWRpsZ1e13Z8gkF8qKQ21eWCnNuic/4Ftu7J2aIm
-	 c1SnTnhCoI7L9TvdY56lbhhvqSHMv7Klk3h/IGaFf+ycjGn8jbE8Zq/RKgseM+iSnQ
-	 Mx25XYCgjQwu+DhhtFx7HtC7krDEeMfoBu2MQ4H9VYT1P5M2cTRkos83tWgOGKiqLw
-	 7vZEY1Mq71CbA==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-65cd720cee2so1180817b3.1
-        for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 15:00:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV9PnQ+PhRvDk1fZaxtEb78Riuu9fs+3s7yK902NPEWD5N6/SxGB2qPdx2LBkGiYDPBDkby+o88dPhZWDEsNWbgqeMNSw==
-X-Gm-Message-State: AOJu0Yyj8LTh9BKodOwDmJeHNFgi4/YEzYZupuM9yCx1AcLEs1Apqt1e
-	FsBK+SyL7MIVazPg8bHBq40QED6ZIxxFKWjMyZnpJNdiYtKZzGsrFTWIF1PCYI74zE6exWWr5Qi
-	W604X2J8269JoFr+rLSFwVrJ7h+k=
-X-Google-Smtp-Source: AGHT+IHpM6MoCAWJ7ceR4EIZRYz4U6IyLmuLmqXEtz1oJGvVuDhKV3AIeu3duOIuLF33tkHM8D/63uLzeqUwGezqM6M=
-X-Received: by 2002:a05:6902:2305:b0:e03:3d38:fb26 with SMTP id
- 3f1490d57ef6-e05feb1188amr976119276.28.1721253626447; Wed, 17 Jul 2024
- 15:00:26 -0700 (PDT)
+	s=k20201202; t=1721259052;
+	bh=+zKMy1VTWyxmmziCnrHhdmD+UQ0UqOz72iTeM+Cz60Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ov/00k3JPVjq9UdIMU7/uZf3/4RBtvz4XzmVQHVPapdi7GU9uOoKfs9WgEyWdREGs
+	 ig/6+UvwxIFIR3dT8S+1dCLsb2kevNJ49UjM5TyFVBJcT8n5dAFF/ZUaQW2RlSDt1T
+	 R9jbd51KQbDHxvG2286l+qUQxNajmt35v6c6r5S+sD7isHyxKnvImrjCcSfL65UUPB
+	 SQb0e5tYpGc3HH9aor/retih2OQ+mWGkNRBVEl/myqTKB8fusMgNm0APEZ86cZhrWn
+	 Sw7hTeTAYQ/XKIsBWfOeGWF5+te8TEYsB4O1NVKcvn/283Zm2EaHQrxPmmEv0WJvEE
+	 /O372KMK4q1HQ==
+Date: Wed, 17 Jul 2024 16:30:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+ v9fs@lists.linux.dev
+Subject: Re: hangs after merge window changes
+Message-ID: <20240717163051.13e41526@kernel.org>
+In-Reply-To: <ZpgtXjz3pbJKUjL7@codewreck.org>
+References: <20240717102458.649b60be@kernel.org>
+	<CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
+	<ZpgtXjz3pbJKUjL7@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240717102458.649b60be@kernel.org> <CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
- <20240717144221.0c5afd01@kernel.org>
-In-Reply-To: <20240717144221.0c5afd01@kernel.org>
-From: Eric Van Hensbergen <ericvh@kernel.org>
-Date: Wed, 17 Jul 2024 17:00:14 -0500
-X-Gmail-Original-Message-ID: <CAFkjPTnTDWrfCSVzvtSszjoerOeWBn8Z6DC4qFMH70Aq7Pqr1Q@mail.gmail.com>
-Message-ID: <CAFkjPTnTDWrfCSVzvtSszjoerOeWBn8Z6DC4qFMH70Aq7Pqr1Q@mail.gmail.com>
-Subject: Re: hangs after merge window changes
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Thanks - I don't see anything suspicious in the mount options.  I'll
-try and get some time this week to stare at the inode management code
-and see if I can work out where we may have a corner case or race
-condition messing with us.  I agree with Dominique that turning on
-some levels of caching that might keep inodes around for longer
-probably will work around the issue for now, but I guess we really
-need a stress test of that path to see if can get the problem
-reproduced more reliably.
-
-Before turning on a caching mode, you could enable P9_DEBUG and turn
-on error messages from 9p to see if something off is happening that is
-hidden behind debug ifdefs (debug=3D1 in mount flags should be
-sufficient).
-
-On Wed, Jul 17, 2024 at 4:42=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 17 Jul 2024 13:01:26 -0500 Eric Van Hensbergen wrote:
+On Thu, 18 Jul 2024 05:45:18 +0900 Dominique Martinet wrote:
+> Eric Van Hensbergen wrote on Wed, Jul 17, 2024 at 01:01:26PM -0500:
 > > I held way back on adding anything new over the past cycle, so this
 > > sounds likely some external change maybe perturbing an older issue.
->
-> Ah :(
->
 > > What guest side mount options, qemu options and qemu version are you
-> > using?
->
-> I use virtme-ng, according to ps qemu gets called with:
->
-> /usr/local/bin/qemu-system-x86_64 -name virtme-ng -m 1G -fsdev local,id=
-=3Dvirtfs5,path=3D/,security_model=3Dnone,readonly=3Don,multidevs=3Dremap -=
-device virtio-9p-pci,fsdev=3Dvirtfs5,mount_tag=3D/dev/root -machine accel=
-=3Dkvm:tcg -device i6300esb,id=3Dwatchdog0 -cpu host -parallel none -net no=
-ne -echr 1 -chardev file,path=3D/proc/self/fd/2,id=3Ddmesg -device virtio-s=
-erial-pci -device virtconsole,chardev=3Ddmesg -chardev stdio,id=3Dconsole,s=
-ignal=3Doff,mux=3Don
->
-> -serial chardev:console -mon chardev=3Dconsole -vga none -display none -s=
-mp 4 -kernel ./arch/x86/boot/bzImage -append virtme_hostname=3Dvirtme-ng nr=
-_open=3D1073741816 virtme_link_mods=3D/home/virtme/testing-1/.virtme_mods/l=
-ib/modules/0.0.0 virtme_rw_overlay0=3D/etc virtme_rw_overlay1=3D/lib virtme=
-_rw_overlay2=3D/home virtme_rw_overlay3=3D/opt virtme_rw_overlay4=3D/srv vi=
-rtme_rw_overlay5=3D/usr virtme_rw_overlay6=3D/var virtme_rw_overlay7=3D/tmp=
- console=3Dhvc0 earlyprintk=3Dserial,ttyS0,115200 virtme_console=3DttyS0 ps=
-mouse.proto=3Dexps virtme_chdir=3Dhome/virtme/testing-1 rootfstype=3D9p roo=
-tflags=3Dversion=3D9p2000.L,trans=3Dvirtio,access=3Dany raid=3Dnoautodetect=
- ro init=3D/home/virtme/virtme-ng/virtme/guest/virtme-init
->
-> QEMU version is 8.2.1 (built from source)
->
+> > using? =20
+>=20
+> Mount option if any would be much appreciated, yes.
+> Also, what version you upgraded from to limit the limit the search a
+> bit; the previous 6.9 tree?
+
+Between networking pull requests. Basically
+528dd46d0fc35c0176257a13a27d41e44fcc6cb3 to=20
+51835949dda3783d4639cfa74ce13a3c9829de00
+
+> Also couldn't find much infos about the CI in general, given the traces
+> I don't think the workload matters all that much but it can give
+> something to start with e.g. running from initrd and mounting 9p or
+> using 9p as rootfs; that shouldn't make a difference but might as well
+> try to reproduce from something close to the actual netdev CI given the
+> low reproducibility.
+
+What CI does is described here:
+https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-st=
+yle
+it's fairly simple, virtme-ng just runs kselftests inside a VM with=20
+the host FS mounted via 9p-virtio.
+
+I'd offer running experiments on the exact systems, but this week=20
+I'm partially AFK (at a conference).
+
 > > Dominique, you aware of anything coming in that might have messed with
 > > this?  Maybe the new common code refactoring underpinning
-> > readahead/etc.?
->
+> > readahead/etc.? =20
+>=20
+> Given the trace it's probably stuck in __wait_on_freeing_inode (the only
+> schedule() call in find_inode_fast), so we could be looking at
+> fallbacks from the iget changes but that made it in 6.9 already so
+> that's unlikely...
+>=20
+> I have a feeling that adding cache will make the error go away if you
+> just want to fix tests for now, so would be great if you could try
+> adding -o cache=3Dloose to the 9p mount options; hopefully the inodes
+> won't be freed as often and that'll make the race harder to hit.
+
+Poked that into where I think virtme-ng does the mounting, let's see.
+
+> I had a quick look at other globals fs changes and nothing stood out,
+> it's going to be fun to track down.
+>=20
+> > On Wed, Jul 17, 2024 at 12:24=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
+g> wrote: =20
+> > > Apologies for possible duplicate, I tried to search lore and haven't
+> > > found anything, but also I can't find the exact 9p archive there :S =
+=20
+>=20
+> The new list is here: https://lore.kernel.org/v9fs/
+> You probably didn't miss anything :)
+>=20
+
