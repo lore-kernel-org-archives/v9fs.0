@@ -1,109 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3F18EBF
-	for <v9fs@lists.linux.dev>; Wed, 17 Jul 2024 23:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E232620
+	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 01:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721259053; cv=none; b=ei8OGxW5TMN5fGp7+zfxUUsl7euqRuyT+NQ4hy+JxUz8ScdoVytD3T42P947fn8u8JswSAzNLRdc5i6LvAmFyTYNup8uS0TZ/vtiyzwiXU+1LFF0iKc6/swqj0npt4StvSh2vBQX6pGZjGAonTaTpivaJNIzmUFNnssQ9TqnOSQ=
+	t=1721265321; cv=none; b=taRRXtiPAF+XEl/BrPW4optn0zSaAYQTcPh2uc/lSepnqgbfLcHCcVjJZDy+EOaqzzFhAO5YN617YsQ3GEbKy+WRsGHjsAPWiSZUYTeMIeyoAxPq1QlLIaTlCrcMuO2j6E2PeG8Gyl1SviMDrXxdNyqVt91QouM4Ps+z88l3wZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721259053; c=relaxed/simple;
-	bh=+zKMy1VTWyxmmziCnrHhdmD+UQ0UqOz72iTeM+Cz60Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jHyUkjnkT6ToIbToCy5EB1hlgQZ3Etj+e0XT4zE4HeS+1R/dxXemRxGRT5OtELoh2X/GzX7cuT7a2WmisNcXaPXSOKiOtT58Tjxzlk0VZAOTdbuDqn60DEFMobyvcrn4LEUedXzEv3S2HK6nW7pKRhv9mDBh7027u/Qj77tgihk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ov/00k3J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721265321; c=relaxed/simple;
+	bh=kyZHKNexqbaTvINDnSG7o+9qbFCU9/FBahRKSEpRBBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FgFIFoqy8NolLhoFHNZpJvx/4JsHltVVxDfJTtv1e7NYwEidPCGk45TslyVJKCxbgncuxgIZdO2u0VsnpnXrV9uoBIrU8OKmgUQAYxMUq7Yv2IrSUjQ134VgLUPqHs2Q4JnV6kLOIUkXYGpHEUBg4Yaa2yQnaFAxEbXSkywY0Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=IgIRylUt; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ov/00k3J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F1FC4AF0B;
-	Wed, 17 Jul 2024 23:30:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721259052;
-	bh=+zKMy1VTWyxmmziCnrHhdmD+UQ0UqOz72iTeM+Cz60Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ov/00k3JPVjq9UdIMU7/uZf3/4RBtvz4XzmVQHVPapdi7GU9uOoKfs9WgEyWdREGs
-	 ig/6+UvwxIFIR3dT8S+1dCLsb2kevNJ49UjM5TyFVBJcT8n5dAFF/ZUaQW2RlSDt1T
-	 R9jbd51KQbDHxvG2286l+qUQxNajmt35v6c6r5S+sD7isHyxKnvImrjCcSfL65UUPB
-	 SQb0e5tYpGc3HH9aor/retih2OQ+mWGkNRBVEl/myqTKB8fusMgNm0APEZ86cZhrWn
-	 Sw7hTeTAYQ/XKIsBWfOeGWF5+te8TEYsB4O1NVKcvn/283Zm2EaHQrxPmmEv0WJvEE
-	 /O372KMK4q1HQ==
-Date: Wed, 17 Jul 2024 16:30:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>,
- v9fs@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="IgIRylUt"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 2A9CB14C2DD;
+	Thu, 18 Jul 2024 03:15:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1721265316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v41elBeHbuG4fiYvQyONqpyY5ae1DXfmoMpkwePlI24=;
+	b=IgIRylUt/PScuSVrg9grTSAgwLlbQ4zfrxVrTJF0Mc/qpRPvcWrMFZwYUDZEKF7nN8RIa+
+	nLa+14VJoeWUK28vAusO8oYZqGkIiOVJ22PSLFGDsyOViQnpQAgPF8EcSrMqU5/HVNHxls
+	bObNY9CQyQ15vXziiysvWiBJbmxzngM5fEYz+JsS+ljzbQYairtizP9/x6bVH2XqsmsPXT
+	dTlEzVIG8ktosJjq2eMCdo+5XODKbpLq1V6zKwtwbaAgC0xA87koQqgqdSSpB7yoHC0HHw
+	iEIQEt5wd19sShnK6i7weIdP7sXRxTWOHE/zRYs55oRR2O6z5mTadXLxc/sTfg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8fb27d31;
+	Thu, 18 Jul 2024 01:15:12 +0000 (UTC)
+Date: Thu, 18 Jul 2024 10:14:57 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Jakub Kicinski <kuba@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>,
+	v9fs@lists.linux.dev
 Subject: Re: hangs after merge window changes
-Message-ID: <20240717163051.13e41526@kernel.org>
-In-Reply-To: <ZpgtXjz3pbJKUjL7@codewreck.org>
+Message-ID: <ZphskWZb_pkxMVvW@codewreck.org>
 References: <20240717102458.649b60be@kernel.org>
-	<CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
-	<ZpgtXjz3pbJKUjL7@codewreck.org>
+ <CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
+ <ZpgtXjz3pbJKUjL7@codewreck.org>
+ <20240717163051.13e41526@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240717163051.13e41526@kernel.org>
 
-On Thu, 18 Jul 2024 05:45:18 +0900 Dominique Martinet wrote:
-> Eric Van Hensbergen wrote on Wed, Jul 17, 2024 at 01:01:26PM -0500:
-> > I held way back on adding anything new over the past cycle, so this
-> > sounds likely some external change maybe perturbing an older issue.
-> > What guest side mount options, qemu options and qemu version are you
-> > using? =20
->=20
-> Mount option if any would be much appreciated, yes.
-> Also, what version you upgraded from to limit the limit the search a
-> bit; the previous 6.9 tree?
+Jakub Kicinski wrote on Wed, Jul 17, 2024 at 04:30:51PM -0700:
+> On Thu, 18 Jul 2024 05:45:18 +0900 Dominique Martinet wrote:
+> > Eric Van Hensbergen wrote on Wed, Jul 17, 2024 at 01:01:26PM -0500:
+> > > I held way back on adding anything new over the past cycle, so this
+> > > sounds likely some external change maybe perturbing an older issue.
+> > > What guest side mount options, qemu options and qemu version are you
+> > > using?  
+> > 
+> > Mount option if any would be much appreciated, yes.
+> > Also, what version you upgraded from to limit the limit the search a
+> > bit; the previous 6.9 tree?
+> 
+> Between networking pull requests. Basically
+> 528dd46d0fc35c0176257a13a27d41e44fcc6cb3 to 
+> 51835949dda3783d4639cfa74ce13a3c9829de00
 
-Between networking pull requests. Basically
-528dd46d0fc35c0176257a13a27d41e44fcc6cb3 to=20
-51835949dda3783d4639cfa74ce13a3c9829de00
+Thanks, this includes this commit:
+7180f8d91fcb ("vfs: add rcu-based find_inode variants for iget ops")
 
-> Also couldn't find much infos about the CI in general, given the traces
-> I don't think the workload matters all that much but it can give
-> something to start with e.g. running from initrd and mounting 9p or
-> using 9p as rootfs; that shouldn't make a difference but might as well
-> try to reproduce from something close to the actual netdev CI given the
-> low reproducibility.
+I think that's our most likely candidate at this point, adding Mateusz
+and others involved in Cc until I find more time to reproduce.
 
-What CI does is described here:
-https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-st=
-yle
-it's fairly simple, virtme-ng just runs kselftests inside a VM with=20
-the host FS mounted via 9p-virtio.
+@Mateusz, Jan, Christian - sorry if it wasn't the culprit.
+We're seeing new hangs in find_inode_fast between the above two commits,
+see the extact hang traces top of  the original mail:
+https://lore.kernel.org/v9fs/CAFkjPTnTDWrfCSVzvtSszjoerOeWBn8Z6DC4qFMH70Aq7Pqr1Q@mail.gmail.com/T/#t
 
-I'd offer running experiments on the exact systems, but this week=20
-I'm partially AFK (at a conference).
 
-> > Dominique, you aware of anything coming in that might have messed with
-> > this?  Maybe the new common code refactoring underpinning
-> > readahead/etc.? =20
->=20
-> Given the trace it's probably stuck in __wait_on_freeing_inode (the only
-> schedule() call in find_inode_fast), so we could be looking at
-> fallbacks from the iget changes but that made it in 6.9 already so
-> that's unlikely...
->=20
-> I have a feeling that adding cache will make the error go away if you
-> just want to fix tests for now, so would be great if you could try
-> adding -o cache=3Dloose to the 9p mount options; hopefully the inodes
-> won't be freed as often and that'll make the race harder to hit.
+> > Also couldn't find much infos about the CI in general, given the traces
+> > I don't think the workload matters all that much but it can give
+> > something to start with e.g. running from initrd and mounting 9p or
+> > using 9p as rootfs; that shouldn't make a difference but might as well
+> > try to reproduce from something close to the actual netdev CI given the
+> > low reproducibility.
+> 
+> What CI does is described here:
+> https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style
+> it's fairly simple, virtme-ng just runs kselftests inside a VM with 
+> the host FS mounted via 9p-virtio.
+> 
+> I'd offer running experiments on the exact systems, but this week 
+> I'm partially AFK (at a conference).
 
-Poked that into where I think virtme-ng does the mounting, let's see.
+Thanks.
+You're not doing anything specific, I'll hopefully be able to reproduce
+it running similar workloads at which point I'll try to improve the
+reproducer and get a closer look if Mateusz or others didn't beat me to
+it.
 
-> I had a quick look at other globals fs changes and nothing stood out,
-> it's going to be fun to track down.
->=20
-> > On Wed, Jul 17, 2024 at 12:24=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
-g> wrote: =20
-> > > Apologies for possible duplicate, I tried to search lore and haven't
-> > > found anything, but also I can't find the exact 9p archive there :S =
-=20
->=20
-> The new list is here: https://lore.kernel.org/v9fs/
-> You probably didn't miss anything :)
->=20
-
+-- 
+Dominique Martinet | Asmadeus
