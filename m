@@ -1,275 +1,167 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4D379B99
-	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 12:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A4B143C76
+	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 15:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721305786; cv=none; b=Upzk1pEatCdn7PPMBpWEe0OZo7FWhO1xyJ4ngeRPo1J4nnJLjUTJQA+EW+2sPKsELYUh8KvXhRZ71rlw+c8pBrY6hCIIWKue36qDYW0psYf4YHTP99E+P7ofKguaTtRewitkyrQOP15hGV02mU/c/GB7zWdc4sQb1nbpO0G15EU=
+	t=1721315937; cv=none; b=r/E+mMXpMzv0CqPqdeq8Lk0Y4ZQdUTD0dGzaEzG/e0cpjYBaT3Fh0yM8eP689SQXrTBaFCm58MdH5ZdCJguglWzkuxvA0YDtRgMoZTLx9ilGiFci/zB8ljKR84hVcFltMjCWKIwuOqmn14q/UOq99ap0WhBuHLfFarkyikMH674=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721305786; c=relaxed/simple;
-	bh=UQXjemTNmaab3+i5ndPMbJu304wMKH95yOGGaDkouNA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MTk+Ez5YiHediAjeTA+MiPgf0ZXP1Ey1ZCpt9UQ/Tn4MKBiFZ1pgqZE3npXasx514w5lmKxZYGl2fpD1Q2I/cpZ/G0dsRlQfayrwC3IIjYWHK+bEgO5EduZ9kyX4HPl+LESyFk1mhOot8BRIxrjqzLB/ElGA8AUUh5F4TVH0VQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DyzsC+G8; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1721315937; c=relaxed/simple;
+	bh=TfJwI1DxA0iQKpb1qdrSRO0yvas7Lmr0kvx/NkBIRtA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X4bJaeLwzsmN9rSfjlsgziIN0L4MVYSrGTkG2YKKCdZQPRw5F1WnCaE34xciPpIweLcoRgh1Mjvt5LL4z/W37HlGh8l5TuPrIFq9BPL/99EDmidaMR8alTsvTz3opeoyY6jKgrqk/qQIXt3isnFcqNCl2o/bVJoRK2T9WgvhU3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BO/qo60z; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DyzsC+G8"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a77e7420697so86380966b.1
-        for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 05:29:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BO/qo60z"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5a22f09d976so790064a12.1
+        for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 08:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721305783; x=1721910583; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X8PMQfnrSds7wSv9dhc3TICdPPkxwowHCT9LEcK5mvo=;
-        b=DyzsC+G8G+gwjmkQBnMbLimoOvphOryERVV1bcCVi0JRAfw2PQueP/7j+hrBq5RuGD
-         BfrUIN7JKzbZcIeK0L4vyX202QX6j84uvNAlMzofuCH84UgrpcY+y23sU6MaZGvC113+
-         /msaJqHmq+FAwbN3et8ECAdK2W4NDOnwzOHxF4bAGPCXD6CtDnFYwFLzAcoV98XP1KW6
-         L+Hx5JZx1+h4AZjIe0MMsL9I2j+ty6WHB3uq8QwFl+eKDpcJ3/0pDc7diApUNmzsZaN1
-         jY/g59xGgyjZi6XMG5x1eLiZRGVA++dnu0Zmp7HLHIXAmsk4jrgmYfTeqiOiUjm9FF9e
-         ZDjg==
+        d=gmail.com; s=20230601; t=1721315934; x=1721920734; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=66tOt3U7e+mliJJ0zIhh+HtH8ytlVxjCTIQsAfp/IiY=;
+        b=BO/qo60zSgdLBX+5FceNY6z1ehDCmR0bJbaak15tNOy9nco+S0TGglrv/UNUGTrzn4
+         deOHL1hTDMYgg5uH2FrRbUcCEw6V8kOld/VLy5ps9TX0oTjlueP+5Wm9ypZRdTpf4pkk
+         AD+EK56iZF87bPKBnbHGJ5MCVzFGHUpiPqz04HqdyPgZT+N8bMc7ZuQvxTG/TeQCmctE
+         209evm+/cF0QhHLsglJYHoU4CLI6Zj7SsldKsPB470tRZGd3TtYDZ6Vks5hrF+WUULte
+         cguLazneLgWdOmJrRiVDPDBSNGO1yaq+BCrAb3NpSLd+JOLMZhB6OytzO5JBfhJNqf7B
+         oKJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721305783; x=1721910583;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X8PMQfnrSds7wSv9dhc3TICdPPkxwowHCT9LEcK5mvo=;
-        b=iBk+gZLtateuS6giuBcAnoymteZZI3qBQeY3f3v3PAzs0ipchH2uuUuc2/vpdoCo0B
-         vHZsvYYMmVG149mb6oiLKFIPKuzoW8q3HEb39kVvsL+apRFffIR7IiQ1wyl4LodAyc/6
-         BBoD4m1oGvvMnnMhpj96GDkAjfkejIwXk8s0TytH+RkSzbiipQOG2ZL0Z5/GKaWghdho
-         GbBpyn/164YR193ekDjNHhWYrK6r1Rnt2UDAlygFfMGQIK5lmi2Ui7WveTjIpxOGcx8c
-         12mPkwv5KAS5svG996iEZJyAvFS6m+L+nkS7Z2l7lNrjdbVAVUclxs/RUJOFMkwSjYQ7
-         /lNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXUSpF0J3uyucd5wHYtHiChvQxBh/kVmnTjNvUkx5v4r92hLd+GK6jH05l0LzWFQEIrRt5yRULPYq3aOTfBdEAU+Mqdg==
-X-Gm-Message-State: AOJu0YyY199LurhE+l6BjMPwh6AFVykO+8KwqeFwrKuthAgmBMashx5f
-	CQEk4aITEcqK35ydAVbFkp38jvJl8NirUQtONbe5wt1qvEJJNensXuKYMOElUaH11bfVvABgmBC
-	1xB/ZEuVxaMpidzcJy7DM4iQStHTezQn8
-X-Google-Smtp-Source: AGHT+IFnICTJMBVFKwqNnsVbfQniX5/IDvNYZrVBXRY5s+DkkPNxA+OQ5mxDp+MWqXnGXU1Zrh8gKXhvoUPtkMnev1Y=
-X-Received: by 2002:a17:906:5612:b0:a77:b664:c078 with SMTP id
- a640c23a62f3a-a7a01192dd6mr323774366b.27.1721305782578; Thu, 18 Jul 2024
- 05:29:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721315934; x=1721920734;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=66tOt3U7e+mliJJ0zIhh+HtH8ytlVxjCTIQsAfp/IiY=;
+        b=uNdcyMHSS2KoSX8gFyugxCIbFqvHVMBk/PsMmRDaBQzXehTp7td6K5k0QU6W2stRb2
+         UfS9XoKipCePBi3oCbfnOzBwtB1xvNdnErTtkhK+VsB6VI90v0mLGomhVd38pjS/RhI2
+         MJThrJcpLgksdSgbHoq6tQcdiZR3WteqVmFhtUcCdK02vuxRF477MzpFigbAqrKjqh49
+         hwX34yQZLbvUXU5mkGUePWesPeJ0U+vgmWe720rm1jgJkroCiq/7NARHdPOEVlAACm9m
+         DEn/1TKWMIVEmkiaYkmI5QI7yzHSnM7L+QPGv16YWgovH9jj3vyINbF102VMZUp2P80z
+         mxyA==
+X-Forwarded-Encrypted: i=1; AJvYcCW4zLZApQBJlBwPZ87Mtv6iAZR8k/YrybO6ogCc7l0BdvwgS+NHPW/LBigCwFYJRkz7Pf1WhcPrdzePKH41wN6VkmooJA==
+X-Gm-Message-State: AOJu0Ywd9sd9Dr75qsZsdODf/mUthC93/Mw4Eig4ByWRW7Ol6Hx3o0kb
+	X+W+qWazqzMu6cgSeVEsbyPG4hCQ6fFUeNG/aWzj9vMS77pLOxIv
+X-Google-Smtp-Source: AGHT+IE5uwWjaNe+xWyJsYA3Q9W9tES3ir/K/R4AB7aMUxALfpcM+4hBfX86Yv6StyXC7bfdgiipqw==
+X-Received: by 2002:a05:6402:2110:b0:57d:3e48:165d with SMTP id 4fb4d7f45d1cf-5a1557cd01fmr4004540a12.4.1721315933804;
+        Thu, 18 Jul 2024 08:18:53 -0700 (PDT)
+Received: from f.. (cst-prg-77-238.cust.vodafone.cz. [46.135.77.238])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59f7464d40asm4218581a12.68.2024.07.18.08.18.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jul 2024 08:18:53 -0700 (PDT)
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: brauner@kernel.org
+Cc: viro@zeniv.linux.org.uk,
+	jack@suse.cz,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	v9fs@lists.linux.dev,
+	Mateusz Guzik <mjguzik@gmail.com>
+Subject: [PATCH] vfs: handle __wait_on_freeing_inode() and evict() race
+Date: Thu, 18 Jul 2024 17:18:37 +0200
+Message-ID: <20240718151838.611807-1-mjguzik@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240717102458.649b60be@kernel.org> <CAFkjPTnktf6puYAyg4pNh8RtQvSuQnSo5VCQvinv=Cw9m1s9xQ@mail.gmail.com>
- <ZpgtXjz3pbJKUjL7@codewreck.org> <20240717163051.13e41526@kernel.org>
- <ZphskWZb_pkxMVvW@codewreck.org> <CAGudoHFzCFP04a5XfjWVaTjuFJ+Fw8XA83TWWqj-AwRbJHoiMw@mail.gmail.com>
- <CAGudoHE43w_gNNiV9YCg-tkiaORHUPuWP-_Znm2uXQtA+oS+iQ@mail.gmail.com>
- <20240718104203.3auoqtj63345rapd@quack3> <CAGudoHEoqrCgQ8=N+ioFegA-toRjTE+XvLdbtAqsvqhLuTLmNA@mail.gmail.com>
- <CAGudoHE6qMb=+-a-DGHVB3CB=ZyjV7uj17uWYqEfnB9wbgNW2w@mail.gmail.com> <20240718121609.rtowlgt6ydmz44zf@quack3>
-In-Reply-To: <20240718121609.rtowlgt6ydmz44zf@quack3>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Thu, 18 Jul 2024 14:29:29 +0200
-Message-ID: <CAGudoHEX7dmJxaws9Sw4+cHZQ0jfmZno9=Y_XsVZgKSSDs4xhg@mail.gmail.com>
-Subject: Re: hangs after merge window changes
-To: Jan Kara <jack@suse.cz>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Christian Brauner <brauner@kernel.org>, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 18, 2024 at 2:16=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Thu 18-07-24 13:40:14, Mateusz Guzik wrote:
-> > On Thu, Jul 18, 2024 at 12:57=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.c=
-om> wrote:
-> > >
-> > > On Thu, Jul 18, 2024 at 12:42=E2=80=AFPM Jan Kara <jack@suse.cz> wrot=
-e:
-> > > >
-> > > > On Thu 18-07-24 06:08:45, Mateusz Guzik wrote:
-> > > > > > Previously it was interlocked with the inode_hash_lock.
-> > > >
-> > > > I agree.
-> > > >
-> > > > > > Easiest & safest way out is for the lockless lookup to never bl=
-ock and
-> > > > > > instead fallback to locked operation if it can't immediately ge=
-t the
-> > > > > > inode. Another options is to take advantage of the invariant on
-> > > > > > i_state:
-> > > > > >          BUG_ON(inode->i_state !=3D (I_FREEING | I_CLEAR));
-> > > > > >
-> > > > > > and not fail to find the inode considering this value.
-> > > > > >
-> > > > > > That said let me chew on it.
-> > > > >
-> > > > > I'm going to have to do dayjob stuff, will look into reproducing =
-it
-> > > > > later (if i'm correct about the bug it should be viable to add so=
-me
-> > > > > artificial delays to make it triggerable much easier).
-> > > > >
-> > > > > But should you repro in the meantime, the code below should do it=
- (i
-> > > > > don't know if that's specifically what I'm going to submit though=
-):
-> > > >
-> > > > Maybe it would be more elegant as:
-> > > >
-> > > > diff --git a/fs/inode.c b/fs/inode.c
-> > > > index f356fe2ec2b6..d0c39e71e403 100644
-> > > > --- a/fs/inode.c
-> > > > +++ b/fs/inode.c
-> > > > @@ -2291,6 +2291,16 @@ static void __wait_on_freeing_inode(struct i=
-node *inode, bool locked)
-> > > >  {
-> > > >         wait_queue_head_t *wq;
-> > > >         DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
-> > > > +
-> > > > +       /*
-> > > > +        * If the inode is already unhashed, evict() may be past th=
-e __I_NEW
-> > > > +        * wakeup. Return immediately to avoid sleeping indefinitel=
-y.
-> > > > +        */
-> > > > +       if (unlikely(inode_unhashed(inode))) {
-> > > > +               BUG_ON(locked);
-> > > > +               return;
-> > >
-> > > this is missing spin_unlock(&inode->i_lock);
-> > >
-> > > > +       }
-> > > > +
-> > > >         wq =3D bit_waitqueue(&inode->i_state, __I_NEW);
-> > > >         prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
-> > > >         spin_unlock(&inode->i_lock);
-> > > > --
-> > > > 2.35.3
-> > > >
-> > >
-> > > Putting the check here was my first variant, I don't have a strong
-> > > opinion on this front. Whatever immediate fixup can get massaged. For
-> > > something to actually commit I was thinking a little nicer, see below=
-.
-> > >
-> > > While the bug being here is on me, I do think the current state
-> > > avoidably facilitated it by implicitly depending on the hash state.
-> > >
-> > > In evict() you can find:
-> > >         spin_lock(&inode->i_lock);
-> > >         wake_up_bit(&inode->i_state, __I_NEW);
-> > >         BUG_ON(inode->i_state !=3D (I_FREEING | I_CLEAR));
-> > >         spin_unlock(&inode->i_lock);
-> > >
-> > > This should probably move to a dedicated routine to pair up with
-> > > __wait_on_freeing_inode (and yes, I know there are other spots which
-> > > wake up based i_state) -- this much could be done in the fixup. It
-> > > would also asserts on the unhashed condition so it would be apparent
-> > > this is the invariant for (dis)allowing sleep.
-> > >
-> > > Longer term imo it should have something which provides the definite
-> > > "no wakeups past this point" indicator not dependent on the above,
-> > > maybe a dedicated i_state flag combination.
-> > >
-> > > This brings me to lack of VFS_ debug macros which would allow for
-> > > generous sprinkling of asserts without affecting production kernels -=
--
-> > > someone(tm) should look into it.
-> > >
-> > > I'll try to find some time in the evening to repro and validate that
-> > > this is indeed the issue though.
-> > > --
-> >
-> > Now that I had some caffeine I see we both messed up here -- bailing
-> > on the unhashed status without I_FREEING is not necessarily equivalent
-> > to doing this after, so the check indeed should land in
-> > __wait_on_freeing_inode.
->
-> Yeah.
->
-> > That said, assuming testing passes later, I'm going to submit this
-> > (with maybe some word-smithing):
-> >
-> > diff --git a/fs/inode.c b/fs/inode.c
-> > index f356fe2ec2b6..e1082d61c093 100644
-> > --- a/fs/inode.c
-> > +++ b/fs/inode.c
-> > @@ -676,7 +676,18 @@ static void evict(struct inode *inode)
-> >
-> >         remove_inode_hash(inode);
-> >
-> > +       /*
-> > +        * Wake up waiters in __wait_on_freeing_inode().
-> > +        *
-> > +        * Lockless hash lookup may end up finding the inode before we =
-removed
-> > +        * it above, but only lock it *after* we are done with the wake=
-up below.
-> > +        * Should this happen there will be noone to wake the waiter.
-> > +        *
-> > +        * Use inode_unhashed() status as an indicator whether blocking=
- there is
-> > +        * safe.
-> > +        */
-> >         spin_lock(&inode->i_lock);
-> > +       BUG_ON(!inode_unhashed(inode));
->
-> So this is going to trip on XFS I'm afraid. XFS is not using VFS to hash
-> inodes and sets inode->i_hash through hlist_add_fake() and
-> remove_inode_hash() does nothing for it. So XFS inodes return
-> !inode_unhashed(inode) all the way until they are destroyed. Now this is
-> fine because these inodes have no way to get to __wait_on_freeing_inode()=
-.
-> Also the !inode_unhashed() check looks a bit weird just a few lines below
-> remove_inode_hash() so I'd just drop this check.
->
-> Otherwise the fix looks good to me!
->
+Lockless hash lookup can find and lock the inode after it gets the
+I_FREEING flag set, at which point it blocks waiting for teardown in
+evict() to finish.
 
-I'll poke at xfs, worst case I'll drop the assert.
+However, the flag is still set even after evict() wakes up all waiters.
 
-Fixing the bug aside, perhaps I should elaborate that I'm bothered by
-the fact that the initial condition indicating whether one can go to
-sleep *still holds* after there are no legal means to do the wakeup.
-The added assert merely tries to document the side condition which has
-to be checked separately, but is indeed optional and it may happen to
-get messed up by filesystems which don't use the inode hash.
+This results in a race where if the inode lock is taken late enough, it
+can happen after both hash removal and wakeups, meaning there is nobody
+to wake the racing thread up.
 
-Doing something about the entire ordeal landed somewhere on my TODO
-list after the bug is sorted out.
+This worked prior to RCU-based lookup because the entire ordeal was
+synchronized with the inode hash lock.
 
-Thanks for feedback.
+Since unhashing requires the inode lock, we can safely check whether it
+happened after acquiring it.
 
->                                                                 Honza
->
->
-> >         wake_up_bit(&inode->i_state, __I_NEW);
-> >         BUG_ON(inode->i_state !=3D (I_FREEING | I_CLEAR));
-> >         spin_unlock(&inode->i_lock);
-> > @@ -2291,6 +2302,16 @@ static void __wait_on_freeing_inode(struct
-> > inode *inode, bool locked)
-> >  {
-> >         wait_queue_head_t *wq;
-> >         DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
-> > +
-> > +       /*
-> > +        * Handle racing against evict().
-> > +        */
-> > +       if (unlikely(inode_unhashed(inode))) {
-> > +               BUG_ON(locked);
-> > +               spin_unlock(&inode->i_lock);
-> > +               return;
-> > +       }
-> > +
-> >         wq =3D bit_waitqueue(&inode->i_state, __I_NEW);
-> >         prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
-> >         spin_unlock(&inode->i_lock);
-> >
-> > --
-> > Mateusz Guzik <mjguzik gmail.com>
-> >
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Link: https://lore.kernel.org/v9fs/20240717102458.649b60be@kernel.org/
+Reported-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 7180f8d91fcb ("vfs: add rcu-based find_inode variants for iget ops")
+Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
+---
+
+The 'fixes' tag is contingent on testing by someone else. :>
+
+I have 0 experience with 9pfs and the docs failed me vs getting it
+running on libvirt+qemu, so I gave up on trying to test it myself.
+
+Dominique, you offered to narrow things down here, assuming the offer
+stands I would appreciate if you got this sorted out :)
+
+Even if the patch in the current form does not go in, it should be
+sufficient to confirm the problem diagnosis is correct.
+
+A debug printk can be added to validate the problematic condition was
+encountered, for example:
+
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 54e0be80be14..8f61fad0bc69 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -2308,6 +2308,7 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
+>         if (unlikely(inode_unhashed(inode))) {
+>                 BUG_ON(locked);
+>                 spin_unlock(&inode->i_lock);
+> +               printk(KERN_EMERG "%s: got unhashed inode %p\n", __func__, inode);
+>                 return;
+>         }
 
 
+ fs/inode.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---=20
-Mateusz Guzik <mjguzik gmail.com>
+diff --git a/fs/inode.c b/fs/inode.c
+index f356fe2ec2b6..54e0be80be14 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -676,6 +676,16 @@ static void evict(struct inode *inode)
+ 
+ 	remove_inode_hash(inode);
+ 
++	/*
++	 * Wake up waiters in __wait_on_freeing_inode().
++	 *
++	 * Lockless hash lookup may end up finding the inode before we removed
++	 * it above, but only lock it *after* we are done with the wakeup below.
++	 * In this case the potential waiter cannot safely block.
++	 *
++	 * The inode being unhashed after the call to remove_inode_hash() is
++	 * used as an indicator whether blocking on it is safe.
++	 */
+ 	spin_lock(&inode->i_lock);
+ 	wake_up_bit(&inode->i_state, __I_NEW);
+ 	BUG_ON(inode->i_state != (I_FREEING | I_CLEAR));
+@@ -2291,6 +2301,16 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
+ {
+ 	wait_queue_head_t *wq;
+ 	DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
++
++	/*
++	 * Handle racing against evict(), see that routine for more details.
++	 */
++	if (unlikely(inode_unhashed(inode))) {
++		BUG_ON(locked);
++		spin_unlock(&inode->i_lock);
++		return;
++	}
++
+ 	wq = bit_waitqueue(&inode->i_state, __I_NEW);
+ 	prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
+ 	spin_unlock(&inode->i_lock);
+-- 
+2.43.0
+
