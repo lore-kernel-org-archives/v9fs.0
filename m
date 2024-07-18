@@ -1,167 +1,222 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A4B143C76
-	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 15:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EE514535E
+	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 20:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721315937; cv=none; b=r/E+mMXpMzv0CqPqdeq8Lk0Y4ZQdUTD0dGzaEzG/e0cpjYBaT3Fh0yM8eP689SQXrTBaFCm58MdH5ZdCJguglWzkuxvA0YDtRgMoZTLx9ilGiFci/zB8ljKR84hVcFltMjCWKIwuOqmn14q/UOq99ap0WhBuHLfFarkyikMH674=
+	t=1721335217; cv=none; b=s1eMmz/2cfLqnEJhDd2L/4JHYPgzn0pY1JS0q3RthvNENS5heZTVhsThKw7iQ+LHEw/7iFCOsL4toPFeYjHeVfjgq4vmT5j5AuD6mvAsW9QwFCklq7M8xZMD/Pc9Uy9U5/jC1T1NPwZXWX7qxq4Xu/7fZTDBB1/SdwlSFzmKDSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721315937; c=relaxed/simple;
-	bh=TfJwI1DxA0iQKpb1qdrSRO0yvas7Lmr0kvx/NkBIRtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X4bJaeLwzsmN9rSfjlsgziIN0L4MVYSrGTkG2YKKCdZQPRw5F1WnCaE34xciPpIweLcoRgh1Mjvt5LL4z/W37HlGh8l5TuPrIFq9BPL/99EDmidaMR8alTsvTz3opeoyY6jKgrqk/qQIXt3isnFcqNCl2o/bVJoRK2T9WgvhU3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BO/qo60z; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721335217; c=relaxed/simple;
+	bh=QivVf0yOJ4j9FWAgm7rYE+HpDApzpZa/B0WyGW+kKVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eyhvv7o5EAPIjk+brOeYP3hix5kha7TUz/Uc3oF2PdeLChA6Z6UF9eXLxRMjvXSkFuCaiHg8kjUh0SHX01MaWriJxXvs0UPC/CHSTHVzvLcJPnohcLgmdanJLpi+xs3yqyOS0ujUIta2oqP4N6HRjh96Ec6HrP8LEEgjyvw3qXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CwQXc5aC; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3TFas+F3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=D+ZeWRmY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SZjz36ZN; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BO/qo60z"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5a22f09d976so790064a12.1
-        for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 08:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721315934; x=1721920734; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=66tOt3U7e+mliJJ0zIhh+HtH8ytlVxjCTIQsAfp/IiY=;
-        b=BO/qo60zSgdLBX+5FceNY6z1ehDCmR0bJbaak15tNOy9nco+S0TGglrv/UNUGTrzn4
-         deOHL1hTDMYgg5uH2FrRbUcCEw6V8kOld/VLy5ps9TX0oTjlueP+5Wm9ypZRdTpf4pkk
-         AD+EK56iZF87bPKBnbHGJ5MCVzFGHUpiPqz04HqdyPgZT+N8bMc7ZuQvxTG/TeQCmctE
-         209evm+/cF0QhHLsglJYHoU4CLI6Zj7SsldKsPB470tRZGd3TtYDZ6Vks5hrF+WUULte
-         cguLazneLgWdOmJrRiVDPDBSNGO1yaq+BCrAb3NpSLd+JOLMZhB6OytzO5JBfhJNqf7B
-         oKJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721315934; x=1721920734;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=66tOt3U7e+mliJJ0zIhh+HtH8ytlVxjCTIQsAfp/IiY=;
-        b=uNdcyMHSS2KoSX8gFyugxCIbFqvHVMBk/PsMmRDaBQzXehTp7td6K5k0QU6W2stRb2
-         UfS9XoKipCePBi3oCbfnOzBwtB1xvNdnErTtkhK+VsB6VI90v0mLGomhVd38pjS/RhI2
-         MJThrJcpLgksdSgbHoq6tQcdiZR3WteqVmFhtUcCdK02vuxRF477MzpFigbAqrKjqh49
-         hwX34yQZLbvUXU5mkGUePWesPeJ0U+vgmWe720rm1jgJkroCiq/7NARHdPOEVlAACm9m
-         DEn/1TKWMIVEmkiaYkmI5QI7yzHSnM7L+QPGv16YWgovH9jj3vyINbF102VMZUp2P80z
-         mxyA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4zLZApQBJlBwPZ87Mtv6iAZR8k/YrybO6ogCc7l0BdvwgS+NHPW/LBigCwFYJRkz7Pf1WhcPrdzePKH41wN6VkmooJA==
-X-Gm-Message-State: AOJu0Ywd9sd9Dr75qsZsdODf/mUthC93/Mw4Eig4ByWRW7Ol6Hx3o0kb
-	X+W+qWazqzMu6cgSeVEsbyPG4hCQ6fFUeNG/aWzj9vMS77pLOxIv
-X-Google-Smtp-Source: AGHT+IE5uwWjaNe+xWyJsYA3Q9W9tES3ir/K/R4AB7aMUxALfpcM+4hBfX86Yv6StyXC7bfdgiipqw==
-X-Received: by 2002:a05:6402:2110:b0:57d:3e48:165d with SMTP id 4fb4d7f45d1cf-5a1557cd01fmr4004540a12.4.1721315933804;
-        Thu, 18 Jul 2024 08:18:53 -0700 (PDT)
-Received: from f.. (cst-prg-77-238.cust.vodafone.cz. [46.135.77.238])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59f7464d40asm4218581a12.68.2024.07.18.08.18.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 08:18:53 -0700 (PDT)
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: brauner@kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CwQXc5aC";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3TFas+F3";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="D+ZeWRmY";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SZjz36ZN"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1CBF721C30;
+	Thu, 18 Jul 2024 20:40:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1721335214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
+	b=CwQXc5aCeoEaYQ9XiULmidgV2142YcqVZ9csbDWRUutHH7tD3OAUGQyh+jhIQgzDOUBEoF
+	lxGCvZFEX85wpFr3/efKpQI1Cw4DisSsp6daMWlyY0ZYPSg1aAruRa8F2WEytwvOOkkKC7
+	EytZwa3TUPmMT10DgR3LNJneCjQ5lj4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1721335214;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
+	b=3TFas+F39BetoT5zCbnbLDWnqBIbRPJrvIgleTBKnuJ8AZvYY+/f2W5HRhL1cwiP9CFtCn
+	D+D04Wp34SXawuDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1721335213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
+	b=D+ZeWRmY6Nvf5CYCPoS5o8+ViBZUaYym0unMu6LBP00Pmh3VKqDnWHrItVDHzFeCpitu3p
+	OPYr5hj1Evns5FDXH48v0E784RbEj114RVJmi9lbG8Xu/rX5seec8567B04f0u/i0QYcNY
+	KKeQysFGXYDRtaJsz8u7XSrF9zdyrlI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1721335213;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
+	b=SZjz36ZNJV4zkutOwS5CEa1Ko8dUwk6/eeFMjePho18EQq0Z+2ZR/fxdETFLeixqWwXVen
+	oHv25rZDX9DI9sAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10684136F7;
+	Thu, 18 Jul 2024 20:40:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id G1r3A619mWbAfwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 18 Jul 2024 20:40:13 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A61ABA0987; Thu, 18 Jul 2024 22:40:12 +0200 (CEST)
+Date: Thu, 18 Jul 2024 22:40:12 +0200
+From: Jan Kara <jack@suse.cz>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	v9fs@lists.linux.dev,
-	Mateusz Guzik <mjguzik@gmail.com>
-Subject: [PATCH] vfs: handle __wait_on_freeing_inode() and evict() race
-Date: Thu, 18 Jul 2024 17:18:37 +0200
-Message-ID: <20240718151838.611807-1-mjguzik@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, v9fs@lists.linux.dev
+Subject: Re: [PATCH] vfs: handle __wait_on_freeing_inode() and evict() race
+Message-ID: <20240718204012.x4ysnjmvjh5v2zf3@quack3>
+References: <20240718151838.611807-1-mjguzik@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240718151838.611807-1-mjguzik@gmail.com>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,imap1.dmz-prg2.suse.org:helo,suse.com:email,codewreck.org:email]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
 
-Lockless hash lookup can find and lock the inode after it gets the
-I_FREEING flag set, at which point it blocks waiting for teardown in
-evict() to finish.
+On Thu 18-07-24 17:18:37, Mateusz Guzik wrote:
+> Lockless hash lookup can find and lock the inode after it gets the
+> I_FREEING flag set, at which point it blocks waiting for teardown in
+> evict() to finish.
+> 
+> However, the flag is still set even after evict() wakes up all waiters.
+> 
+> This results in a race where if the inode lock is taken late enough, it
+> can happen after both hash removal and wakeups, meaning there is nobody
+> to wake the racing thread up.
+> 
+> This worked prior to RCU-based lookup because the entire ordeal was
+> synchronized with the inode hash lock.
+> 
+> Since unhashing requires the inode lock, we can safely check whether it
+> happened after acquiring it.
+> 
+> Link: https://lore.kernel.org/v9fs/20240717102458.649b60be@kernel.org/
+> Reported-by: Dominique Martinet <asmadeus@codewreck.org>
+> Fixes: 7180f8d91fcb ("vfs: add rcu-based find_inode variants for iget ops")
+> Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
 
-However, the flag is still set even after evict() wakes up all waiters.
+Looks good. Feel free to add:
 
-This results in a race where if the inode lock is taken late enough, it
-can happen after both hash removal and wakeups, meaning there is nobody
-to wake the racing thread up.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-This worked prior to RCU-based lookup because the entire ordeal was
-synchronized with the inode hash lock.
+								Honza
 
-Since unhashing requires the inode lock, we can safely check whether it
-happened after acquiring it.
-
-Link: https://lore.kernel.org/v9fs/20240717102458.649b60be@kernel.org/
-Reported-by: Dominique Martinet <asmadeus@codewreck.org>
-Fixes: 7180f8d91fcb ("vfs: add rcu-based find_inode variants for iget ops")
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
----
-
-The 'fixes' tag is contingent on testing by someone else. :>
-
-I have 0 experience with 9pfs and the docs failed me vs getting it
-running on libvirt+qemu, so I gave up on trying to test it myself.
-
-Dominique, you offered to narrow things down here, assuming the offer
-stands I would appreciate if you got this sorted out :)
-
-Even if the patch in the current form does not go in, it should be
-sufficient to confirm the problem diagnosis is correct.
-
-A debug printk can be added to validate the problematic condition was
-encountered, for example:
-
+> ---
+> 
+> The 'fixes' tag is contingent on testing by someone else. :>
+> 
+> I have 0 experience with 9pfs and the docs failed me vs getting it
+> running on libvirt+qemu, so I gave up on trying to test it myself.
+> 
+> Dominique, you offered to narrow things down here, assuming the offer
+> stands I would appreciate if you got this sorted out :)
+> 
+> Even if the patch in the current form does not go in, it should be
+> sufficient to confirm the problem diagnosis is correct.
+> 
+> A debug printk can be added to validate the problematic condition was
+> encountered, for example:
+> 
+> > diff --git a/fs/inode.c b/fs/inode.c
+> > index 54e0be80be14..8f61fad0bc69 100644
+> > --- a/fs/inode.c
+> > +++ b/fs/inode.c
+> > @@ -2308,6 +2308,7 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
+> >         if (unlikely(inode_unhashed(inode))) {
+> >                 BUG_ON(locked);
+> >                 spin_unlock(&inode->i_lock);
+> > +               printk(KERN_EMERG "%s: got unhashed inode %p\n", __func__, inode);
+> >                 return;
+> >         }
+> 
+> 
+>  fs/inode.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
 > diff --git a/fs/inode.c b/fs/inode.c
-> index 54e0be80be14..8f61fad0bc69 100644
+> index f356fe2ec2b6..54e0be80be14 100644
 > --- a/fs/inode.c
 > +++ b/fs/inode.c
-> @@ -2308,6 +2308,7 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
->         if (unlikely(inode_unhashed(inode))) {
->                 BUG_ON(locked);
->                 spin_unlock(&inode->i_lock);
-> +               printk(KERN_EMERG "%s: got unhashed inode %p\n", __func__, inode);
->                 return;
->         }
-
-
- fs/inode.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/fs/inode.c b/fs/inode.c
-index f356fe2ec2b6..54e0be80be14 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -676,6 +676,16 @@ static void evict(struct inode *inode)
- 
- 	remove_inode_hash(inode);
- 
-+	/*
-+	 * Wake up waiters in __wait_on_freeing_inode().
-+	 *
-+	 * Lockless hash lookup may end up finding the inode before we removed
-+	 * it above, but only lock it *after* we are done with the wakeup below.
-+	 * In this case the potential waiter cannot safely block.
-+	 *
-+	 * The inode being unhashed after the call to remove_inode_hash() is
-+	 * used as an indicator whether blocking on it is safe.
-+	 */
- 	spin_lock(&inode->i_lock);
- 	wake_up_bit(&inode->i_state, __I_NEW);
- 	BUG_ON(inode->i_state != (I_FREEING | I_CLEAR));
-@@ -2291,6 +2301,16 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
- {
- 	wait_queue_head_t *wq;
- 	DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
-+
-+	/*
-+	 * Handle racing against evict(), see that routine for more details.
-+	 */
-+	if (unlikely(inode_unhashed(inode))) {
-+		BUG_ON(locked);
-+		spin_unlock(&inode->i_lock);
-+		return;
-+	}
-+
- 	wq = bit_waitqueue(&inode->i_state, __I_NEW);
- 	prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
- 	spin_unlock(&inode->i_lock);
+> @@ -676,6 +676,16 @@ static void evict(struct inode *inode)
+>  
+>  	remove_inode_hash(inode);
+>  
+> +	/*
+> +	 * Wake up waiters in __wait_on_freeing_inode().
+> +	 *
+> +	 * Lockless hash lookup may end up finding the inode before we removed
+> +	 * it above, but only lock it *after* we are done with the wakeup below.
+> +	 * In this case the potential waiter cannot safely block.
+> +	 *
+> +	 * The inode being unhashed after the call to remove_inode_hash() is
+> +	 * used as an indicator whether blocking on it is safe.
+> +	 */
+>  	spin_lock(&inode->i_lock);
+>  	wake_up_bit(&inode->i_state, __I_NEW);
+>  	BUG_ON(inode->i_state != (I_FREEING | I_CLEAR));
+> @@ -2291,6 +2301,16 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
+>  {
+>  	wait_queue_head_t *wq;
+>  	DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
+> +
+> +	/*
+> +	 * Handle racing against evict(), see that routine for more details.
+> +	 */
+> +	if (unlikely(inode_unhashed(inode))) {
+> +		BUG_ON(locked);
+> +		spin_unlock(&inode->i_lock);
+> +		return;
+> +	}
+> +
+>  	wq = bit_waitqueue(&inode->i_state, __I_NEW);
+>  	prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
+>  	spin_unlock(&inode->i_lock);
+> -- 
+> 2.43.0
+> 
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
