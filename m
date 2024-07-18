@@ -1,85 +1,44 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EE514535E
-	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 20:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CC675808
+	for <v9fs@lists.linux.dev>; Thu, 18 Jul 2024 21:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721335217; cv=none; b=s1eMmz/2cfLqnEJhDd2L/4JHYPgzn0pY1JS0q3RthvNENS5heZTVhsThKw7iQ+LHEw/7iFCOsL4toPFeYjHeVfjgq4vmT5j5AuD6mvAsW9QwFCklq7M8xZMD/Pc9Uy9U5/jC1T1NPwZXWX7qxq4Xu/7fZTDBB1/SdwlSFzmKDSA=
+	t=1721338975; cv=none; b=kcGvkbUvjovh9mZUrEfOxg7ZGbA4JqJjwAVoEINMB/ibuT6ta2PUqi7NOXSh3LdlBhIe7GKK/5mozvdR74MwZ/CPTiUXD8Z6P8jW/5WW+pSmNDPnfyRBvWeEBr0s/Tm9/U+ZcfbQcIAaeBXX3x46JIDgKAwZgC/+gZWv+Vn+63k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721335217; c=relaxed/simple;
-	bh=QivVf0yOJ4j9FWAgm7rYE+HpDApzpZa/B0WyGW+kKVE=;
+	s=arc-20240116; t=1721338975; c=relaxed/simple;
+	bh=rwBrBSOWEvecCpPOsN8DxHsjyJveE8a6kM3AAAAnytE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eyhvv7o5EAPIjk+brOeYP3hix5kha7TUz/Uc3oF2PdeLChA6Z6UF9eXLxRMjvXSkFuCaiHg8kjUh0SHX01MaWriJxXvs0UPC/CHSTHVzvLcJPnohcLgmdanJLpi+xs3yqyOS0ujUIta2oqP4N6HRjh96Ec6HrP8LEEgjyvw3qXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CwQXc5aC; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3TFas+F3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=D+ZeWRmY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SZjz36ZN; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=I1/Am/pkTaqJE+uNrGTF8c1doiVaQiEZ58RDbPMQ9Le5gYc97VbP5hcjxPw7YODuSDcHFWL8QILQa8/3GlzFTAyX8eg3OX0pjeXIZZfcg5CFJGPyJxn2+Dybdtgmjq016wHEXQV3FYcTYKAGQz6Ti5xFcIssvqojIPNDVYNEcVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=U8DYPjfB; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CwQXc5aC";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3TFas+F3";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="D+ZeWRmY";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SZjz36ZN"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1CBF721C30;
-	Thu, 18 Jul 2024 20:40:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721335214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="U8DYPjfB"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id AACCE14C2DD;
+	Thu, 18 Jul 2024 23:42:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1721338971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
-	b=CwQXc5aCeoEaYQ9XiULmidgV2142YcqVZ9csbDWRUutHH7tD3OAUGQyh+jhIQgzDOUBEoF
-	lxGCvZFEX85wpFr3/efKpQI1Cw4DisSsp6daMWlyY0ZYPSg1aAruRa8F2WEytwvOOkkKC7
-	EytZwa3TUPmMT10DgR3LNJneCjQ5lj4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721335214;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
-	b=3TFas+F39BetoT5zCbnbLDWnqBIbRPJrvIgleTBKnuJ8AZvYY+/f2W5HRhL1cwiP9CFtCn
-	D+D04Wp34SXawuDw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721335213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
-	b=D+ZeWRmY6Nvf5CYCPoS5o8+ViBZUaYym0unMu6LBP00Pmh3VKqDnWHrItVDHzFeCpitu3p
-	OPYr5hj1Evns5FDXH48v0E784RbEj114RVJmi9lbG8Xu/rX5seec8567B04f0u/i0QYcNY
-	KKeQysFGXYDRtaJsz8u7XSrF9zdyrlI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721335213;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=82lPptaZbhKCSi1vGqHZHbBmsVDaEQXXJeWHUMbZyII=;
-	b=SZjz36ZNJV4zkutOwS5CEa1Ko8dUwk6/eeFMjePho18EQq0Z+2ZR/fxdETFLeixqWwXVen
-	oHv25rZDX9DI9sAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10684136F7;
-	Thu, 18 Jul 2024 20:40:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G1r3A619mWbAfwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 18 Jul 2024 20:40:13 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A61ABA0987; Thu, 18 Jul 2024 22:40:12 +0200 (CEST)
-Date: Thu, 18 Jul 2024 22:40:12 +0200
-From: Jan Kara <jack@suse.cz>
+	bh=U/bUkXzKitNH6YGqYdzXljxkIPFqMZav005MXLILfYg=;
+	b=U8DYPjfBivQPvUxmsnle9Iu4s6VEg3rqZbt8V2nYogOSm1ufX5X9yfzr6U2s8pH2jHsodQ
+	cCeRoMdTz4DO58ZIv4qrSIBWULt0kVJ1d+QyNIXOFKARamBVEWVW1Rz4CEXxogu7JU+dPY
+	qDapbQGi7omx4MLeM09z/oEoo/u3vPVc220ZzM3L+/G994eBmoz5Tb3T92WACbd5QZjWf4
+	0wcYaPgjHyqZb4msgY4R1K3GD7h7n0BeslfPIbJui3C8i7GKwxMLM+PxTqk9S1XjWxKdps
+	AltuOXRY3jPIdytIbx+Du9Roca8i0zDsVuRyNg5MfStRU575pQIgdmpoATy3+w==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3e6bcb59;
+	Thu, 18 Jul 2024 21:42:46 +0000 (UTC)
+Date: Fri, 19 Jul 2024 06:42:31 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: Mateusz Guzik <mjguzik@gmail.com>
 Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Dominique Martinet <asmadeus@codewreck.org>,
 	Jakub Kicinski <kuba@kernel.org>, v9fs@lists.linux.dev
 Subject: Re: [PATCH] vfs: handle __wait_on_freeing_inode() and evict() race
-Message-ID: <20240718204012.x4ysnjmvjh5v2zf3@quack3>
+Message-ID: <ZpmMRzyE-mVrK74M@codewreck.org>
 References: <20240718151838.611807-1-mjguzik@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -87,36 +46,11 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20240718151838.611807-1-mjguzik@gmail.com>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,imap1.dmz-prg2.suse.org:helo,suse.com:email,codewreck.org:email]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
 
-On Thu 18-07-24 17:18:37, Mateusz Guzik wrote:
+Mateusz Guzik wrote on Thu, Jul 18, 2024 at 05:18:37PM +0200:
 > Lockless hash lookup can find and lock the inode after it gets the
 > I_FREEING flag set, at which point it blocks waiting for teardown in
 > evict() to finish.
@@ -137,29 +71,70 @@ On Thu 18-07-24 17:18:37, Mateusz Guzik wrote:
 > Reported-by: Dominique Martinet <asmadeus@codewreck.org>
 > Fixes: 7180f8d91fcb ("vfs: add rcu-based find_inode variants for iget ops")
 > Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
 > ---
 > 
 > The 'fixes' tag is contingent on testing by someone else. :>
-> 
+
+Thanks for the quick fix!
+
 > I have 0 experience with 9pfs and the docs failed me vs getting it
 > running on libvirt+qemu, so I gave up on trying to test it myself.
-> 
+
+I hadn't used it until yesterday either, but virtme-ng[1] should be easy
+enough to get running without much effort: just cloning this and running
+/path/to/virtme-ng/vng from a built linux tree will start a vm with /
+mounted as 9p read-only (--rwdir /foo for writing)
+[1] https://github.com/arighi/virtme-ng 
+
 > Dominique, you offered to narrow things down here, assuming the offer
 > stands I would appreciate if you got this sorted out :)
-> 
+
+Unfortunately I haven't been able to reproduce this :/
+I'm not running the exact same workload but 9p should be instanciating
+inodes from just a find in a large tree; I tried running finds in
+parallel etc to no avail.
+
+You mentioned adding some sleep to make this easier to hit, should
+something like this help or did I get this wrong?
+----
+diff --git a/fs/inode.c b/fs/inode.c
+index 54e0be80be14..c2991142a462 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -21,6 +21,7 @@
+ #include <linux/list_lru.h>
+ #include <linux/iversion.h>
+ #include <linux/rw_hint.h>
++#include <linux/delay.h>
+ #include <trace/events/writeback.h>
+ #include "internal.h"
+ 
+@@ -962,6 +963,7 @@ static struct inode *find_inode_fast(struct super_block *sb,
+                        continue;
+                if (inode->i_sb != sb)
+                        continue;
++               usleep_range(10,100);
+                spin_lock(&inode->i_lock);
+                if (inode->i_state & (I_FREEING|I_WILL_FREE)) {
+                        __wait_on_freeing_inode(inode, locked);
+----
+unfortunately I've checked with a printk there too and I never get there
+in the first place, so it probably needs to hit another race first where
+we're getting an inode that's about or has just been dropped or
+something, but none of my "9p stress" workloads seem to be hitting it
+either...
+Could be some scheduling difference or just that my workloads aren't
+appropriate; I need to try running networking tests but ran out of time
+for today.
+
 > Even if the patch in the current form does not go in, it should be
 > sufficient to confirm the problem diagnosis is correct.
 > 
 > A debug printk can be added to validate the problematic condition was
 > encountered, for example:
-> 
+
+That was helpful, thanks.
+
 > > diff --git a/fs/inode.c b/fs/inode.c
 > > index 54e0be80be14..8f61fad0bc69 100644
 > > --- a/fs/inode.c
@@ -171,52 +146,6 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 > > +               printk(KERN_EMERG "%s: got unhashed inode %p\n", __func__, inode);
 > >                 return;
 > >         }
-> 
-> 
->  fs/inode.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/fs/inode.c b/fs/inode.c
-> index f356fe2ec2b6..54e0be80be14 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -676,6 +676,16 @@ static void evict(struct inode *inode)
->  
->  	remove_inode_hash(inode);
->  
-> +	/*
-> +	 * Wake up waiters in __wait_on_freeing_inode().
-> +	 *
-> +	 * Lockless hash lookup may end up finding the inode before we removed
-> +	 * it above, but only lock it *after* we are done with the wakeup below.
-> +	 * In this case the potential waiter cannot safely block.
-> +	 *
-> +	 * The inode being unhashed after the call to remove_inode_hash() is
-> +	 * used as an indicator whether blocking on it is safe.
-> +	 */
->  	spin_lock(&inode->i_lock);
->  	wake_up_bit(&inode->i_state, __I_NEW);
->  	BUG_ON(inode->i_state != (I_FREEING | I_CLEAR));
-> @@ -2291,6 +2301,16 @@ static void __wait_on_freeing_inode(struct inode *inode, bool locked)
->  {
->  	wait_queue_head_t *wq;
->  	DEFINE_WAIT_BIT(wait, &inode->i_state, __I_NEW);
-> +
-> +	/*
-> +	 * Handle racing against evict(), see that routine for more details.
-> +	 */
-> +	if (unlikely(inode_unhashed(inode))) {
-> +		BUG_ON(locked);
-> +		spin_unlock(&inode->i_lock);
-> +		return;
-> +	}
-> +
->  	wq = bit_waitqueue(&inode->i_state, __I_NEW);
->  	prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
->  	spin_unlock(&inode->i_lock);
-> -- 
-> 2.43.0
-> 
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Dominique Martinet | Asmadeus
