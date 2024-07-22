@@ -1,168 +1,225 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB2218030
-	for <v9fs@lists.linux.dev>; Mon, 22 Jul 2024 06:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9FA18042
+	for <v9fs@lists.linux.dev>; Mon, 22 Jul 2024 06:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721628864; cv=none; b=jobYw55Voe2W66vQYU2/WODQtDdGG0SCli2rtMHYIMAdIetdlsc0vCr1CfUrVSBkQjF2J4z+X4WX/TxUmWezqhQxQFKybQ5ntFqjA2htvBPazZPqluM26IU4Ro0rL7W+8r9PaxnQKLWZMNL5tlGl/kQvMOeQYfhvOP9tYKL/0CY=
+	t=1721631590; cv=none; b=cKxWIoVmLfYhda9ZN2xlfX/aW9oAgbIuTbuKrZ9TueUAhf/ZldeWOfKUuUd7vtWLLG1u9VtY0PijeDRRlXhQT6mD7k3MdHEinV8AAbX0FXl+CNcdNavvkpmiSpC3HMIAeoxy8r+MSBz5oFVpY6LgpF829oiShXnHnqquwKZav6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721628864; c=relaxed/simple;
-	bh=/eyD6HCsH1UmSIV9phStUm4X/SnjGHfK2IHwLF1n+9g=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=V6yZlzffxl5/6DIimbGwndcnNisBH7pbZUyUmjR7O+WjXKwdjFJ0XZol5vpevCiKq657EmQ4BTvoLf5F+GiFspNgDameiEX0LUT0oImO13pdJZyU6vxE9hLz3UMmWdVDKgsScExq6LI8ebMJCd6CHyBZi4cq94rd4CDhw3CRERg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-398602ba734so39854835ab.1
-        for <v9fs@lists.linux.dev>; Sun, 21 Jul 2024 23:14:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721628862; x=1722233662;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gru2AhLxxo0LYxQduGd0yhBPJk3tJ2VvI8DmdYaNIG4=;
-        b=Swtfuh7VK+6jNNMVdVLBhuilDCk0o+yy2QLfVAZO8pOG9DeKnSWASetR1kEPFXy9mL
-         gR814sA5F3nDWTSR02d6zh5wpGy8ivUeiSv0tRgREfwgCvt7OQbWFFvdJD34v0dt20uN
-         uP7VqpFLAVRrwvilSo/PSijRXM74oLtWRq0RLwPyjncmkCJSXg9YwJrOODLTqxF0/jjn
-         wvQkvbHmVbedIbs+alV7NSVZYjq6NXoLUZuX8CLRyP3vgDuM9+3vy22NMnynJNzb1bGl
-         HSiURBdmqwXlAkRlqKdHWN40bkYbHI1vhsEJMtrWQZ5AaeHx44RExMlNHvB1AhgxK2AC
-         XdJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBrtI7VeCD0GWadkRyAKeeogLNHdLdMsNXZYiY+/Fmar6bSoCQJrKUysYQiQY2tDQbxgwKFu/1E6GN9IOsyvJVoFo4xA==
-X-Gm-Message-State: AOJu0Yxm1Ks2BGkIcZBCVbSBZQs8WovYMOuWcQbtb5x4jCw1P/UQ5zln
-	9Meg6wmypvx3ccjvrj5Sod4JRZ0FVWCxLSvAfsQeih6b6HEotFIWneCt7GLdKX9L/9aKRQk1ID4
-	eT9sme+AvNUny+MVn6BThD+zAcZoI/MgIzJLpC3RBXAomE3WI4cmF6Rc=
-X-Google-Smtp-Source: AGHT+IGRgx3mBmXSAi/ZeOlVcipCDW6rMswB62W8uFEt5wKspDP/ZRGObdLgDCp3yW6oEHeAdfCWw3+k4l+p3LpEpiQUHAeHdtKq
+	s=arc-20240116; t=1721631590; c=relaxed/simple;
+	bh=/K4WJJpu5w/ixAKK77poL1WNPEn65qXKbiqtEOj058U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G/b3/jluvkVujWiH760Rc5ei35FPWVEasgieQAK7NV2ZGMO/WN3bAtUvT8K1+g0wV9wPndDRE9vJMx9lGJg029ud2v4Wdinae8qU8JvGgvPeSBqJ/d8f4w1nZjonwG5EjobO6160Hg/kZjNd5Wrnj3zHP8VsmKQTbMZAdSBqhQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=1eiaZJQ7; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="1eiaZJQ7"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 680BB14C1E1;
+	Mon, 22 Jul 2024 08:59:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1721631580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HfIFdx4oWgQSVOCKIlbEQGzvUuQvIMzMdhNdW5DA4H0=;
+	b=1eiaZJQ7+ixGHzC0jlMK+9bjOSFc58FOztQKBstyftCg3v/0wt++LvMiAzMc1dz3cuSoEa
+	a9ZPCsKODnd0oHy+J2D+ujkbsbSGt4fxDYalL9NsDAnZItjfnfd0fx9rSOlV/Eo3s5vsh3
+	JFbGDtevY/5kK3A99ed5JFSGFke+v2KZRpWiNHOhSfpDrxcrAmlmdccIiA1OnDLKlzP0eL
+	yGXiRks0m6LRcMA0OeAbdPVWCHuHmgDrpwtiAWj6h6vDDQvAThQnNdXRlZWdtbCI0QEgqV
+	wct4yI2i3RMNOhh/GXiPjKlHrAT9pzvxu/cYJfy3S9SCHYkzSzFzh/uUls7GIA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 906e708a;
+	Mon, 22 Jul 2024 06:59:36 +0000 (UTC)
+Date: Mon, 22 Jul 2024 15:59:21 +0900
+From: asmadeus@codewreck.org
+To: David Vernet <void@manifault.com>
+Cc: linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
+	linux_oss@crudebyte.com, v9fs@lists.linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH] net/9p: Fix uaf / refcnt underflow for req object in
+ virtio
+Message-ID: <Zp4DSeHdOU0U1PZC@codewreck.org>
+References: <20240709162904.226952-1-void@manifault.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a0c:b0:396:ec3b:df69 with SMTP id
- e9e14a558f8ab-398e67c444fmr4392365ab.3.1721628862018; Sun, 21 Jul 2024
- 23:14:22 -0700 (PDT)
-Date: Sun, 21 Jul 2024 23:14:22 -0700
-In-Reply-To: <000000000000ee5c6c060fd59890@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c18c15061dcff478@google.com>
-Subject: Re: [syzbot] [v9fs?] WARNING: refcount bug in p9_req_put (3)
-From: syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, kuba@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, netdev@vger.kernel.org, 
-	nogikh@google.com, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240709162904.226952-1-void@manifault.com>
 
-syzbot has found a reproducer for the following issue on:
+David Vernet wrote on Tue, Jul 09, 2024 at 11:29:04AM -0500:
+> We can currently encounter an underflow when freeing an rpc request object
+> when using a virtio 9p transport, as shown by stress-ng:
+> 
+> $ stress-ng --exec 1 -t 1
+> ...
+> [    5.188359] ------------[ cut here ]------------
+> [    5.211094] refcount_t: underflow; use-after-free.
+> [    5.230781] WARNING: CPU: 6 PID: 557 at lib/refcount.c:28 refcount_warn_saturate+0xb4/0x140
+> [    5.247551] Modules linked in:
+> [    5.258476] CPU: 6 PID: 557 Comm: stress-ng-exec- Not tainted 6.10.0-rc2-virtme #26
+> [    5.276072] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+> [    5.294310] RIP: 0010:refcount_warn_saturate+0xb4/0x140
+> [    5.313818] Code: ff 90 0f 0b 90 90 e9 16 07 91 00 cc 80 3d f9 14 83 01 00 75 90 c6 05 f0 14 83 01 01 90 48 c7 c7 97 ad 48 84 e8 5d d2 b5 ff 90 <0f> 0b 90 90 e9 ee 06 91 00 cc 80 3d ce 14 83 01 00 0f 85 64 ff ff
+> [    5.342462] RSP: 0018:ffffa9ac80a47a28 EFLAGS: 00010246
+> [    5.345307] RAX: b2786dec9d38b800 RBX: ffff9b67e704eaa8 RCX: ffffffff84c6e950
+> [    5.361743] RDX: 0000000000000002 RSI: 0000000100005ceb RDI: ffffffff84c9ed60
+> [    5.384172] RBP: 0000000000000000 R08: 0000000000001ceb R09: ffffffff84c6ed60
+> [    5.408242] R10: 00000000000056c1 R11: 0000000000000003 R12: 00000000fffffe00
+> [    5.425085] R13: ffffffff8452db57 R14: ffff9b67cb3b2f00 R15: ffff9b67c4e33ec0
+> [    5.444305] FS:  00007fb7ba9e16c0(0000) GS:ffff9b67fe780000(0000) knlGS:0000000000000000
+> [    5.464612] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    5.481423] CR2: 00007fffcdf76fe8 CR3: 000000000c142000 CR4: 0000000000750ef0
+> [    5.498275] PKRU: 55555554
+> [    5.502138] Call Trace:
+> [    5.505372]  <TASK>
+> [    5.507353]  ? __warn+0xc9/0x1c0
+> [    5.511056]  ? refcount_warn_saturate+0xb4/0x140
+> [    5.520082]  ? report_bug+0x148/0x1e0
+> [    5.531777]  ? handle_bug+0x3e/0x70
+> [    5.543371]  ? exc_invalid_op+0x1a/0x50
+> [    5.557119]  ? asm_exc_invalid_op+0x1a/0x20
+> [    5.564184]  ? refcount_warn_saturate+0xb4/0x140
+> [    5.576789]  ? refcount_warn_saturate+0xb3/0x140
+> [    5.589334]  p9_req_put+0x9e/0xf0
+> [    5.598119]  p9_client_zc_rpc+0x3ac/0x460
+> [    5.611438]  ? wake_page_function+0x41/0xa0
+> [    5.620745]  ? __wake_up_locked_key+0x3f/0x70
+> [    5.631290]  p9_client_read_once+0xd8/0x2d0
+> [    5.644251]  p9_client_read+0x3e/0x70
+> [    5.655285]  v9fs_issue_read+0x47/0x90
+> [    5.668043]  netfs_begin_read+0x3f2/0x880
+> [    5.673140]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    5.676800]  ? netfs_alloc_request+0x21a/0x2b0
+> [    5.679999]  netfs_read_folio+0xde/0x380
+> [    5.685441]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    5.695729]  ? __filemap_get_folio+0x158/0x2a0
+> [    5.713327]  filemap_read_folio+0x1f/0x70
+> [    5.726596]  filemap_fault+0x28d/0x510
+> [    5.737644]  __do_fault+0x42/0xb0
+> [    5.747996]  handle_mm_fault+0x59c/0x13a0
+> [    5.759156]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    5.776631]  ? mt_find+0x2da/0x400
+> [    5.785758]  do_user_addr_fault+0x1fd/0x790
+> [    5.800640]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    5.813852]  exc_page_fault+0x68/0x180
+> [    5.822403]  asm_exc_page_fault+0x26/0x30
+> [    5.933431]  </TASK>
+> [    5.941515] ---[ end trace 0000000000000000 ]---
+> 
+> The sequence that causes this underflow is as follows:
+> 
+> 1. The virtio transport returns -ERESTARTSYS from p9_virtio_zc_request()
+>    due to virtqueue_add_sgs() returning -ENOSPC, and wait_event_killable()
+>    eventually returning -ERESTARTSYS.
+> 
+> 2. The request is never kicked, so its reference is dropped at the end of
+>    p9_virtio_zc_request(). This is the first of the two available
+>    references.
+> 
+> 3. In p9_client_zc_rpc(), the client is still connected, so we call
+>    p9_client_flush() which drops the second and final reference in
+>    the callback to p9_virtio_cancelled().
+> 
+> 4. We reference the req object below in p9_virtio_zc_request(), and then
+>    hit a refcnt underflow when we again try to drop a reference in the
+>    reterr path.
+> 
+> Let's fix this by only dropping that reference if we're not exiting due to
+> -ERESTARTSYS, as the assumption is that the reference will instead be
+> dropped later when we flush the request.
 
-HEAD commit:    7846b618e0a4 Merge tag 'rtc-6.11' of git://git.kernel.org/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1221eb21980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=be4129de17851dbe
-dashboard link: https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15555ec3980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15900f49980000
+Thanks for the patch!
+I hadn't forgotten about it, I'm just not convinced this is the only
+problem we have around these refs or how to fix that, and haven't had
+time to look in details...
+looking again now I think we can sum it up to a p9_client_flush problem
+instead: basically dropping your 3. instead of dropping the 2.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-7846b618.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3a2831ffe61c/vmlinux-7846b618.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/575e23a7c452/bzImage-7846b618.xz
+If the request really was cancelled we'll get the flush reply before the
+response and that'll drop the second ref in the cancelled callback,
+which would also blow up, but afaik qemu doesn't implement this so this
+code path so this was never tested.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com
+And this also made me notice our cancelled callbacks are all over the
+place with rdma and xen not doing anything about the ref, so let's make
+that ref dropping common, so we can remove the virtio callback
+altogether - I'm now starting to doubt if any server actually implement
+cancelling flushes, it might be worth testing with a synthetic fd mount
+as syzcaller does..
 
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 3 PID: 5213 at lib/refcount.c:28 refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
-Modules linked in:
-CPU: 3 PID: 5213 Comm: syz-executor225 Not tainted 6.10.0-syzkaller-11323-g7846b618e0a4 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
-Code: ff 89 de e8 08 59 08 fd 84 db 0f 85 66 ff ff ff e8 5b 5e 08 fd c6 05 e6 c9 4e 0b 01 90 48 c7 c7 80 3b 90 8b e8 a7 9b ca fc 90 <0f> 0b 90 90 e9 43 ff ff ff e8 38 5e 08 fd 0f b6 1d c1 c9 4e 0b 31
-RSP: 0018:ffffc90000908d90 EFLAGS: 00010082
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff814c9029
-RDX: ffff888026a3a440 RSI: ffffffff814c9036 RDI: 0000000000000001
-RBP: ffff88801e6b4ff8 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffff88801e6b4ff8 R14: ffff88801b0c5c00 R15: 0000000000000000
-FS:  000055557f8c13c0(0000) GS:ffff88806b300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f95101d91b8 CR3: 00000000204fe000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- __refcount_sub_and_test include/linux/refcount.h:275 [inline]
- __refcount_dec_and_test include/linux/refcount.h:307 [inline]
- refcount_dec_and_test include/linux/refcount.h:325 [inline]
- p9_req_put+0x1f4/0x250 net/9p/client.c:404
- req_done+0x1e7/0x2f0 net/9p/trans_virtio.c:147
- vring_interrupt drivers/virtio/virtio_ring.c:2595 [inline]
- vring_interrupt+0x31b/0x400 drivers/virtio/virtio_ring.c:2570
- __handle_irq_event_percpu+0x229/0x7c0 kernel/irq/handle.c:158
- handle_irq_event_percpu kernel/irq/handle.c:193 [inline]
- handle_irq_event+0xab/0x1e0 kernel/irq/handle.c:210
- handle_edge_irq+0x263/0xd10 kernel/irq/chip.c:831
- generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
- handle_irq arch/x86/kernel/irq.c:247 [inline]
- call_irq_handler arch/x86/kernel/irq.c:259 [inline]
- __common_interrupt+0xdf/0x250 arch/x86/kernel/irq.c:285
- common_interrupt+0xab/0xd0 arch/x86/kernel/irq.c:278
- </IRQ>
- <TASK>
- asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
-RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x31/0x80 kernel/locking/spinlock.c:194
-Code: f5 53 48 8b 74 24 10 48 89 fb 48 83 c7 18 e8 36 9d 75 f6 48 89 df e8 4e 1a 76 f6 f7 c5 00 02 00 00 75 23 9c 58 f6 c4 02 75 37 <bf> 01 00 00 00 e8 a5 90 67 f6 65 8b 05 e6 50 11 75 85 c0 74 16 5b
-RSP: 0018:ffffc90003387c20 EFLAGS: 00000246
-RAX: 0000000000000002 RBX: ffff88801e795280 RCX: 1ffffffff1fce401
-RDX: 0000000000000000 RSI: ffffffff8b2cbac0 RDI: ffffffff8b909e40
-RBP: 0000000000000246 R08: 0000000000000001 R09: 0000000000000001
-R10: ffffffff8fe7645f R11: ffff88806b028a40 R12: 1ffff92000670f8c
-R13: ffffffff92f07180 R14: ffff88801e794b30 R15: ffff88806b03fa18
- task_rq_unlock kernel/sched/sched.h:1689 [inline]
- wake_up_new_task+0x7b5/0xd30 kernel/sched/core.c:4703
- kernel_clone+0x5fd/0x980 kernel/fork.c:2811
- __do_sys_clone+0xba/0x100 kernel/fork.c:2923
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f95101586a3
-Code: 1f 84 00 00 00 00 00 64 48 8b 04 25 10 00 00 00 45 31 c0 31 d2 31 f6 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 35 89 c2 85 c0 75 2c 64 48 8b 04 25 10 00 00
-RSP: 002b:00007fff6f7d9978 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f95101586a3
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0079746972756365
-R10: 000055557f8c1690 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f95101dab60 R14: 00007f95101dcd20 R15: 00007fff6f7d9ad0
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	f5                   	cmc
-   1:	53                   	push   %rbx
-   2:	48 8b 74 24 10       	mov    0x10(%rsp),%rsi
-   7:	48 89 fb             	mov    %rdi,%rbx
-   a:	48 83 c7 18          	add    $0x18,%rdi
-   e:	e8 36 9d 75 f6       	call   0xf6759d49
-  13:	48 89 df             	mov    %rbx,%rdi
-  16:	e8 4e 1a 76 f6       	call   0xf6761a69
-  1b:	f7 c5 00 02 00 00    	test   $0x200,%ebp
-  21:	75 23                	jne    0x46
-  23:	9c                   	pushf
-  24:	58                   	pop    %rax
-  25:	f6 c4 02             	test   $0x2,%ah
-  28:	75 37                	jne    0x61
-* 2a:	bf 01 00 00 00       	mov    $0x1,%edi <-- trapping instruction
-  2f:	e8 a5 90 67 f6       	call   0xf66790d9
-  34:	65 8b 05 e6 50 11 75 	mov    %gs:0x751150e6(%rip),%eax        # 0x75115121
-  3b:	85 c0                	test   %eax,%eax
-  3d:	74 16                	je     0x55
-  3f:	5b                   	pop    %rbx
-
+So something like that (untested)
+---
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 5cd94721d974..51ce3bd4aece 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -616,9 +616,10 @@ static int p9_client_flush(struct p9_client *c, struct p9_req_t *oldreq)
+        if (READ_ONCE(oldreq->status) == REQ_STATUS_SENT) {
+                if (c->trans_mod->cancelled)
+                        c->trans_mod->cancelled(c, oldreq);
++               /* reply won't come anymore, drop the "receive" ref */
++               p9_req_put(client, req);
+        }
+ 
+-       p9_req_put(c, req);
+        return 0;
+ }
+ 
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 196060dc6138..5184730a2639 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -737,8 +737,6 @@ static int p9_fd_cancelled(struct p9_client *client, struct p9_req_t *req)
+        WRITE_ONCE(req->status, REQ_STATUS_FLSHD);
+        spin_unlock(&m->req_lock);
+ 
+-       p9_req_put(client, req);
+-
+        return 0;
+ }
+ 
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index 0b8086f58ad5..1c1fd9fbecc9 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -195,13 +195,6 @@ static int p9_virtio_cancel(struct p9_client *client, struct p9_req_t *req)
+        return 1;
+ }
+ 
+-/* Reply won't come, so drop req ref */
+-static int p9_virtio_cancelled(struct p9_client *client, struct p9_req_t *req)
+-{
+-       p9_req_put(client, req);
+-       return 0;
+-}
+-
+ /**
+  * pack_sg_list_p - Just like pack_sg_list. Instead of taking a buffer,
+  * this takes a list of pages.
+@@ -793,7 +786,6 @@ static struct p9_trans_module p9_virtio_trans = {
+        .request = p9_virtio_request,
+        .zc_request = p9_virtio_zc_request,
+        .cancel = p9_virtio_cancel,
+-       .cancelled = p9_virtio_cancelled,
+        /*
+         * We leave one entry for input and one entry for response
+         * headers. We also skip one more entry to accommodate, address
 
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+
+I'll try to find time to play with it a bit more overnight then send the
+patch proper and ask syzbot if that fixes this one:
+https://lkml.kernel.org/r/000000000000c18c15061dcff478@google.com 
+
+But if you could also test that'd be great.
+Shall I keep you as the author for the above, or would you rather just
+be reported-by given the patch is different enough?
+I think most of the commit message can also be kept.
+
+Thanks,
+-- 
+Dominique Martinet | Asmadeus
