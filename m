@@ -1,168 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B07747F;
-	Mon, 22 Jul 2024 02:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB2218030
+	for <v9fs@lists.linux.dev>; Mon, 22 Jul 2024 06:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721614261; cv=none; b=KDzT5F7k3ssbTY9C9Au6ogc5xKdgVN+r2aseV7Ys5ptmhSACaLgOOJZU5w7YJu3M4Vp4IgT+osFARqoHa2/IYMUzcIAV7LbYVjC2w1M/Lvvv4A9hvg9OQQIFeULHPs4Ugz58e7RJF3C+TdtQ3Xs57W9v3KlWJu40udSykLsSJAE=
+	t=1721628864; cv=none; b=jobYw55Voe2W66vQYU2/WODQtDdGG0SCli2rtMHYIMAdIetdlsc0vCr1CfUrVSBkQjF2J4z+X4WX/TxUmWezqhQxQFKybQ5ntFqjA2htvBPazZPqluM26IU4Ro0rL7W+8r9PaxnQKLWZMNL5tlGl/kQvMOeQYfhvOP9tYKL/0CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721614261; c=relaxed/simple;
-	bh=DqCgC/c3s9Favave3nv1YMDm0RGrEYC1Cxb9EP9Ys6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d+WacmmOXxv6lnb8p3kpmTYtmFBk69ukNd7yML4wET+AVMaDjUYaD801ym2amMOc50i7u0KAAo7btia3Orvjj9SGOteq/l5urOS9BG2Ol/++omnZ24eaHhWA5xEt8oQ0yKKyLfBGi6eK16VNd2zb/5pJ1AHosC2KQzdDWOdUaTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qync40Vh; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qync40Vh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721614260; x=1753150260;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DqCgC/c3s9Favave3nv1YMDm0RGrEYC1Cxb9EP9Ys6k=;
-  b=Qync40VhwhrGpa7Y+j2UtqlrA39Sn0w6r36xiUy7TS2HlTUrtiqA4f7o
-   bgY9QLvIFSukU136AQRcYhcCPD+hqUllhOq6P55C9aGtKIHgCIHNNDMlH
-   GZu4/y5hJSilpme+jhJEcPD+QYQ52HkA1QNYsK63byvYP++/8g9TzmvD7
-   MHvwtVjWvPrk4cMAOvbZopqtju1Tppp3W236CRXfKVSzgNwcXod5/IgnZ
-   JmLtYsqkNZ3IZO7GwqasDx8sYpZfOFW/hVHFvpypQ2nifWqI7a10fA8er
-   W6BrjkOzyOJYzJ7E3Au3QC3LDU7pHvJq4HTBeO58/+qt9evSq9ihVocE5
-   Q==;
-X-CSE-ConnectionGUID: gNnxYO7sR7KtXHaR3+6v3A==
-X-CSE-MsgGUID: 5Iil3sbUTMG4bvzdeyF9xw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="19338588"
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; 
-   d="scan'208";a="19338588"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2024 19:10:59 -0700
-X-CSE-ConnectionGUID: SbkeeR7FRKeBEK9JRb8tYQ==
-X-CSE-MsgGUID: etfCb4j5Sl+lldNDKrRV0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; 
-   d="scan'208";a="89177499"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 21 Jul 2024 19:10:56 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sViVo-000kno-2Q;
-	Mon, 22 Jul 2024 02:10:52 +0000
-Date: Mon, 22 Jul 2024 10:10:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	kernel@pengutronix.de,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>
-Subject: Re: [PATCH v8 2/3] net/9p/usbg: Add new usb gadget function transport
-Message-ID: <202407220933.WQ9L15Zw-lkp@intel.com>
-References: <20240116-ml-topic-u9p-v8-2-409e659ca4dd@pengutronix.de>
+	s=arc-20240116; t=1721628864; c=relaxed/simple;
+	bh=/eyD6HCsH1UmSIV9phStUm4X/SnjGHfK2IHwLF1n+9g=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=V6yZlzffxl5/6DIimbGwndcnNisBH7pbZUyUmjR7O+WjXKwdjFJ0XZol5vpevCiKq657EmQ4BTvoLf5F+GiFspNgDameiEX0LUT0oImO13pdJZyU6vxE9hLz3UMmWdVDKgsScExq6LI8ebMJCd6CHyBZi4cq94rd4CDhw3CRERg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-398602ba734so39854835ab.1
+        for <v9fs@lists.linux.dev>; Sun, 21 Jul 2024 23:14:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721628862; x=1722233662;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gru2AhLxxo0LYxQduGd0yhBPJk3tJ2VvI8DmdYaNIG4=;
+        b=Swtfuh7VK+6jNNMVdVLBhuilDCk0o+yy2QLfVAZO8pOG9DeKnSWASetR1kEPFXy9mL
+         gR814sA5F3nDWTSR02d6zh5wpGy8ivUeiSv0tRgREfwgCvt7OQbWFFvdJD34v0dt20uN
+         uP7VqpFLAVRrwvilSo/PSijRXM74oLtWRq0RLwPyjncmkCJSXg9YwJrOODLTqxF0/jjn
+         wvQkvbHmVbedIbs+alV7NSVZYjq6NXoLUZuX8CLRyP3vgDuM9+3vy22NMnynJNzb1bGl
+         HSiURBdmqwXlAkRlqKdHWN40bkYbHI1vhsEJMtrWQZ5AaeHx44RExMlNHvB1AhgxK2AC
+         XdJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBrtI7VeCD0GWadkRyAKeeogLNHdLdMsNXZYiY+/Fmar6bSoCQJrKUysYQiQY2tDQbxgwKFu/1E6GN9IOsyvJVoFo4xA==
+X-Gm-Message-State: AOJu0Yxm1Ks2BGkIcZBCVbSBZQs8WovYMOuWcQbtb5x4jCw1P/UQ5zln
+	9Meg6wmypvx3ccjvrj5Sod4JRZ0FVWCxLSvAfsQeih6b6HEotFIWneCt7GLdKX9L/9aKRQk1ID4
+	eT9sme+AvNUny+MVn6BThD+zAcZoI/MgIzJLpC3RBXAomE3WI4cmF6Rc=
+X-Google-Smtp-Source: AGHT+IGRgx3mBmXSAi/ZeOlVcipCDW6rMswB62W8uFEt5wKspDP/ZRGObdLgDCp3yW6oEHeAdfCWw3+k4l+p3LpEpiQUHAeHdtKq
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240116-ml-topic-u9p-v8-2-409e659ca4dd@pengutronix.de>
+X-Received: by 2002:a05:6e02:1a0c:b0:396:ec3b:df69 with SMTP id
+ e9e14a558f8ab-398e67c444fmr4392365ab.3.1721628862018; Sun, 21 Jul 2024
+ 23:14:22 -0700 (PDT)
+Date: Sun, 21 Jul 2024 23:14:22 -0700
+In-Reply-To: <000000000000ee5c6c060fd59890@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000c18c15061dcff478@google.com>
+Subject: Re: [syzbot] [v9fs?] WARNING: refcount bug in p9_req_put (3)
+From: syzbot <syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, kuba@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, netdev@vger.kernel.org, 
+	nogikh@google.com, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Michael,
+syzbot has found a reproducer for the following issue on:
 
-kernel test robot noticed the following build warnings:
+HEAD commit:    7846b618e0a4 Merge tag 'rtc-6.11' of git://git.kernel.org/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1221eb21980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=be4129de17851dbe
+dashboard link: https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15555ec3980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15900f49980000
 
-[auto build test WARNING on 2c9b3512402ed192d1f43f4531fb5da947e72bd0]
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-7846b618.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/3a2831ffe61c/vmlinux-7846b618.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/575e23a7c452/bzImage-7846b618.xz
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Michael-Grzeschik/usb-gadget-function-move-u_f-h-to-include-linux-usb-func_utils-h/20240722-070652
-base:   2c9b3512402ed192d1f43f4531fb5da947e72bd0
-patch link:    https://lore.kernel.org/r/20240116-ml-topic-u9p-v8-2-409e659ca4dd%40pengutronix.de
-patch subject: [PATCH v8 2/3] net/9p/usbg: Add new usb gadget function transport
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20240722/202407220933.WQ9L15Zw-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240722/202407220933.WQ9L15Zw-lkp@intel.com/reproduce)
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d99d2414db66171fccbb@syzkaller.appspotmail.com
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407220933.WQ9L15Zw-lkp@intel.com/
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 3 PID: 5213 at lib/refcount.c:28 refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
+Modules linked in:
+CPU: 3 PID: 5213 Comm: syz-executor225 Not tainted 6.10.0-syzkaller-11323-g7846b618e0a4 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
+Code: ff 89 de e8 08 59 08 fd 84 db 0f 85 66 ff ff ff e8 5b 5e 08 fd c6 05 e6 c9 4e 0b 01 90 48 c7 c7 80 3b 90 8b e8 a7 9b ca fc 90 <0f> 0b 90 90 e9 43 ff ff ff e8 38 5e 08 fd 0f b6 1d c1 c9 4e 0b 31
+RSP: 0018:ffffc90000908d90 EFLAGS: 00010082
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff814c9029
+RDX: ffff888026a3a440 RSI: ffffffff814c9036 RDI: 0000000000000001
+RBP: ffff88801e6b4ff8 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
+R13: ffff88801e6b4ff8 R14: ffff88801b0c5c00 R15: 0000000000000000
+FS:  000055557f8c13c0(0000) GS:ffff88806b300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f95101d91b8 CR3: 00000000204fe000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ __refcount_sub_and_test include/linux/refcount.h:275 [inline]
+ __refcount_dec_and_test include/linux/refcount.h:307 [inline]
+ refcount_dec_and_test include/linux/refcount.h:325 [inline]
+ p9_req_put+0x1f4/0x250 net/9p/client.c:404
+ req_done+0x1e7/0x2f0 net/9p/trans_virtio.c:147
+ vring_interrupt drivers/virtio/virtio_ring.c:2595 [inline]
+ vring_interrupt+0x31b/0x400 drivers/virtio/virtio_ring.c:2570
+ __handle_irq_event_percpu+0x229/0x7c0 kernel/irq/handle.c:158
+ handle_irq_event_percpu kernel/irq/handle.c:193 [inline]
+ handle_irq_event+0xab/0x1e0 kernel/irq/handle.c:210
+ handle_edge_irq+0x263/0xd10 kernel/irq/chip.c:831
+ generic_handle_irq_desc include/linux/irqdesc.h:173 [inline]
+ handle_irq arch/x86/kernel/irq.c:247 [inline]
+ call_irq_handler arch/x86/kernel/irq.c:259 [inline]
+ __common_interrupt+0xdf/0x250 arch/x86/kernel/irq.c:285
+ common_interrupt+0xab/0xd0 arch/x86/kernel/irq.c:278
+ </IRQ>
+ <TASK>
+ asm_common_interrupt+0x26/0x40 arch/x86/include/asm/idtentry.h:693
+RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+RIP: 0010:_raw_spin_unlock_irqrestore+0x31/0x80 kernel/locking/spinlock.c:194
+Code: f5 53 48 8b 74 24 10 48 89 fb 48 83 c7 18 e8 36 9d 75 f6 48 89 df e8 4e 1a 76 f6 f7 c5 00 02 00 00 75 23 9c 58 f6 c4 02 75 37 <bf> 01 00 00 00 e8 a5 90 67 f6 65 8b 05 e6 50 11 75 85 c0 74 16 5b
+RSP: 0018:ffffc90003387c20 EFLAGS: 00000246
+RAX: 0000000000000002 RBX: ffff88801e795280 RCX: 1ffffffff1fce401
+RDX: 0000000000000000 RSI: ffffffff8b2cbac0 RDI: ffffffff8b909e40
+RBP: 0000000000000246 R08: 0000000000000001 R09: 0000000000000001
+R10: ffffffff8fe7645f R11: ffff88806b028a40 R12: 1ffff92000670f8c
+R13: ffffffff92f07180 R14: ffff88801e794b30 R15: ffff88806b03fa18
+ task_rq_unlock kernel/sched/sched.h:1689 [inline]
+ wake_up_new_task+0x7b5/0xd30 kernel/sched/core.c:4703
+ kernel_clone+0x5fd/0x980 kernel/fork.c:2811
+ __do_sys_clone+0xba/0x100 kernel/fork.c:2923
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f95101586a3
+Code: 1f 84 00 00 00 00 00 64 48 8b 04 25 10 00 00 00 45 31 c0 31 d2 31 f6 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 35 89 c2 85 c0 75 2c 64 48 8b 04 25 10 00 00
+RSP: 002b:00007fff6f7d9978 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f95101586a3
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0079746972756365
+R10: 000055557f8c1690 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f95101dab60 R14: 00007f95101dcd20 R15: 00007fff6f7d9ad0
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	f5                   	cmc
+   1:	53                   	push   %rbx
+   2:	48 8b 74 24 10       	mov    0x10(%rsp),%rsi
+   7:	48 89 fb             	mov    %rdi,%rbx
+   a:	48 83 c7 18          	add    $0x18,%rdi
+   e:	e8 36 9d 75 f6       	call   0xf6759d49
+  13:	48 89 df             	mov    %rbx,%rdi
+  16:	e8 4e 1a 76 f6       	call   0xf6761a69
+  1b:	f7 c5 00 02 00 00    	test   $0x200,%ebp
+  21:	75 23                	jne    0x46
+  23:	9c                   	pushf
+  24:	58                   	pop    %rax
+  25:	f6 c4 02             	test   $0x2,%ah
+  28:	75 37                	jne    0x61
+* 2a:	bf 01 00 00 00       	mov    $0x1,%edi <-- trapping instruction
+  2f:	e8 a5 90 67 f6       	call   0xf66790d9
+  34:	65 8b 05 e6 50 11 75 	mov    %gs:0x751150e6(%rip),%eax        # 0x75115121
+  3b:	85 c0                	test   %eax,%eax
+  3d:	74 16                	je     0x55
+  3f:	5b                   	pop    %rbx
 
-All warnings (new ones prefixed by >>):
 
-   net/9p/trans_usbg.c: In function 'p9_usbg_create':
->> net/9p/trans_usbg.c:407:35: warning: variable 'cdev' set but not used [-Wunused-but-set-variable]
-     407 |         struct usb_composite_dev *cdev;
-         |                                   ^~~~
-
-
-vim +/cdev +407 net/9p/trans_usbg.c
-
-   404	
-   405	static int p9_usbg_create(struct p9_client *client, const char *devname, char *args)
-   406	{
- > 407		struct usb_composite_dev *cdev;
-   408		struct f_usb9pfs_dev *dev;
-   409		struct f_usb9pfs_dev *tmp;
-   410		struct f_usb9pfs *usb9pfs;
-   411		struct usb_function *f;
-   412		int ret = -ENOENT;
-   413		int found = 0;
-   414	
-   415		if (!devname)
-   416			return -EINVAL;
-   417	
-   418		mutex_lock(&usb9pfs_lock);
-   419		list_for_each_entry_safe(dev, tmp, &usbg_instance_list, usb9pfs_instance) {
-   420			if (!strncmp(devname, dev->tag, strlen(devname))) {
-   421				if (!dev->inuse) {
-   422					dev->inuse = true;
-   423					found = 1;
-   424					break;
-   425				}
-   426				ret = -EBUSY;
-   427				break;
-   428			}
-   429		}
-   430	
-   431		if (!found) {
-   432			mutex_unlock(&usb9pfs_lock);
-   433			pr_err("no channels available for device %s\n", devname);
-   434			return ret;
-   435		}
-   436	
-   437		usb9pfs = dev->usb9pfs;
-   438		if (!usb9pfs) {
-   439			mutex_unlock(&usb9pfs_lock);
-   440			return -EINVAL;
-   441		}
-   442	
-   443		INIT_LIST_HEAD(&usb9pfs->tx_req_list);
-   444	
-   445		f = &usb9pfs->function;
-   446		cdev = f->config->cdev;
-   447	
-   448		client->trans = (void *)usb9pfs;
-   449		if (!usb9pfs->in_req)
-   450			client->status = Disconnected;
-   451		else
-   452			client->status = Connected;
-   453		usb9pfs->client = client;
-   454	
-   455		client->trans_mod->maxsize = usb9pfs->buflen;
-   456	
-   457		mutex_unlock(&usb9pfs_lock);
-   458	
-   459		return 0;
-   460	}
-   461	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
