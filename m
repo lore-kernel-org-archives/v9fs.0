@@ -1,88 +1,79 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60FB7482;
-	Thu, 25 Jul 2024 15:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DEA23D0;
+	Thu, 25 Jul 2024 18:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721920215; cv=none; b=hdbLFn+8P/nLBhgBzP+yrWyVyVPb/SeAlbf3OlNU6eBQD99Fl/SargVapeftFgpfWUL8FxNM/DyLyfGWO6jn4y7Za7+1w+DJy1wpZd98Zl88BNk8/ZjqWn7WxNz5DrYsfj8dmjO73HN5hPG9JBIq9oH1m72zVAGd+3QtIoBg3Mw=
+	t=1721930475; cv=none; b=NV6LLrWDSdcQtuZboN2tONqHrDMG+qWEbTAG3Zksa/k+DogtkD3yie/MP/uChaYqtfgokW0Plw32m4UsDyloYeVFUn6GiA/zD9S9KSz7UDRGa1TMwjSmQU3UrgzMAHGOosXxDUDBItmaosm7hBx7aXX6npMnv41CgzmptuLYwC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721920215; c=relaxed/simple;
-	bh=giEmIQyfujgK7trC3Z5BVs33T8wG9iTIdiSpNdknO8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d6I9FJCw264fZiXA9ThMZf8ajiklyOP8xiOu/P+l8PBocz5PS5qXMaMYzW1Z0VRSYxNPX12W+jB7xStcZw31GZ9M9sz4a3mj/yvMEv53hl5pK8jNUQKrLeMZ6VIAkdWKCU5APSvpNxfuOZYU2cL2Vu9Y1UixghKWYQKBamNxOk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=GckM/erz; arc=none smtp.client-ip=46.235.229.95
+	s=arc-20240116; t=1721930475; c=relaxed/simple;
+	bh=CQWswAaKiUd/1H9VPf7BR5G0SCIN5b4m3hSctlgX3fg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cB7keWDJuO/CmBpTmX+v0S99Ywy9hsoUrAMqCw01RnpiFiBTJzjVT7zMmsOhNUD9fj/0TMNC0I9Ut/PSuB6fq+XEukUIpLWqwyWxr/6QRTqxEt6WIv1l5htvNo1X5pgC0yKnR/uqXf1iBBnCdD6XaZgNsUKuaT9D5OkzUv3Nc7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=jtn4yVW3; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="GckM/erz"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="jtn4yVW3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=7fgIlaj7VIBRKbKi7Dde+07wn6FnHltfd48aihj7Dfw=; b=GckM/erz476VA3L3
-	94NtvBcuHNQiXZ9fv1tvbntVTdR1QZA1Z4swFGO/3LUGn2mQWPItsfYAa3lnqGk6SXXGhRyqt3nVw
-	r1toAfTjQDe7vzfJ6Io/eRK9S/ekFqt86iolILI6kSoyj00NKFikJb3EBGf5Upyl1ogCOW2+X4uyA
-	eR0ygJqVbabAmYqs+5EF6LzDp9jHMSGuwe81RYs3Pp+ntliMJzRBiT/aamnKXhNSvr10j5c8vh7pv
-	jadNWvIF6fZYyQBCYFYYqgmE3+7fP56d0m2aDUB4txjsUwoNEOXHMrDbofGhN9gfqIhEBM3bPsTjU
-	aMRULUhFg435qeuIuw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1sX06X-00DDOj-0e;
-	Thu, 25 Jul 2024 15:10:05 +0000
-Date: Thu, 25 Jul 2024 15:10:05 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: 9p goo.gl link
-Message-ID: <ZqJqzcJRaXgMRLoT@gallifrey>
-References: <ZqE9zUXO3agBjno7@gallifrey>
- <b7ec9dba-5ba7-40d1-b1a0-e85f3149f445@infradead.org>
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=0OL4xG2f7OPGglRnI+nOrrSi0qdVFdIQOVDEO5YpO0A=; b=jtn4yVW3DhhxhBUw
+	qWdikRA9VIGamBDT/1bZMXNEe+zxvdblkEIP4vBig9E6dlhZT6/ZTliT8yRtJS6baX7haqRqYD67U
+	P3pN8xt1+iS4AIyAYHug0BHfifSi1uEPspFxE2CVdmxUsAW9OMX0il9KsugZj3S5Jk8cXhyg9iFCO
+	6SBmZz7w4rRMmj4IgogJ4lSB512X+89uHdSY5+6HbqMRAGAVcuYze9fdUeBNHekhSqACllXo9vo3T
+	j+wywhpB2uu2pvEcwiSsSJ4iFpYBqnMsBCvGChWF/hDGaI5+/HimFBi77xpxmT/mwwChzExsrybtE
+	arI+pdQeUrZIctMk9A==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1sX2lt-00DEap-06;
+	Thu, 25 Jul 2024 18:00:57 +0000
+From: linux@treblig.org
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	rdunlap@infradead.org
+Cc: v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] Documentation/fs/9p: Expand goo.gl link
+Date: Thu, 25 Jul 2024 19:00:41 +0100
+Message-ID: <20240725180041.80862-1-linux@treblig.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <b7ec9dba-5ba7-40d1-b1a0-e85f3149f445@infradead.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 15:09:48 up 78 days,  2:23,  1 user,  load average: 0.07, 0.02, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+Content-Transfer-Encoding: 8bit
 
-* Randy Dunlap (rdunlap@infradead.org) wrote:
-> 
-> 
-> On 7/24/24 10:45 AM, Dr. David Alan Gilbert wrote:
-> > Hi,
-> >   I noticed there was a goo.gl link in Documentation/filesystems/9p.rst
-> > 
-> >     * VirtFS: A Virtualization Aware File System pass-through
-> >       http://goo.gl/3WPDg
-> > 
-> > Given goo.gl is going away, I was going to expand the link, but
-> > the link looks fairly ill; it goes to a sciweavers.org site
-> > that has an abstract, but it doesn't seem to download the full document.
-> > 
-> > I can see links to the document around, but I'm not sure if there's
-> > a 'right' address.
-> 
-> Yeah, it (or a variant of it) is available in quite a few places.
-> 
-> I prefer this one:
-> https://kernel.org/doc/ols/2010/ols2010-pages-109-120.pdf
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Thanks, I'll post a patch.
+The goo.gl URL shortener is deprecated and is due to stop
+expanding existing links in 2025.
 
-Dave
+The old goo.gl link in the 9p docs doesn't work anyway,
+replace it by a kernel.org link suggested by Randy instead.
 
-> 
-> -- 
-> ~Randy
-> 
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ Documentation/filesystems/9p.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+index 1e0e0bb6fdf9..d270a0aa8d55 100644
+--- a/Documentation/filesystems/9p.rst
++++ b/Documentation/filesystems/9p.rst
+@@ -31,7 +31,7 @@ Other applications are described in the following papers:
+ 	* PROSE I/O: Using 9p to enable Application Partitions
+ 	  http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
+ 	* VirtFS: A Virtualization Aware File System pass-through
+-	  http://goo.gl/3WPDg
++	  https://kernel.org/doc/ols/2010/ols2010-pages-109-120.pdf
+ 
+ Usage
+ =====
 -- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+2.45.2
+
