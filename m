@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A021191F8E
-	for <v9fs@lists.linux.dev>; Mon, 29 Jul 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27E918735C
+	for <v9fs@lists.linux.dev>; Mon, 29 Jul 2024 16:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722270179; cv=none; b=G3d2xUHRsnsfX/ShwMuJN7WO6kPSyP12OWgozh8JPCtCpdhRywYqrbjRWpnWvJFPIXANJ/E1Pjw+qR/dHDL9+DfzDXBpfOqx6BnxLMbJ9o6EzedsR+yVjK/B7uFMyVKP14YWbqBasrBJTK3NgtBIfYACbZuaqFS4Pu4Mor0pqgA=
+	t=1722270186; cv=none; b=u60NuwfBRvs6k1ohIOAORMyA9WeI9KTNcmqkJn32bbyiA0QaTl7GyB8Q0B1RH4/vAo0eircaj3Hq/1Ty/wpJ+jtmx3FjtNjrj7UgZdlXLhXZFC78/q0IirYX42xsDU7gm6TnJ3FsUqpFlkOzUKSMXU0CTx4DEeWonbyPR8LTbWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722270179; c=relaxed/simple;
-	bh=H+ppgUJN0USWOT+d8eZ/+GDIh9HADUMZVxr1fUWv9ng=;
+	s=arc-20240116; t=1722270186; c=relaxed/simple;
+	bh=dSBDPG/FjcygfFFDbaMBvikq9ZldreOsesR4n2CHWMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G92yw3AdadVEBQPKTKLSwvbJt4VxERW0bzz/bh4XQMV89riZ7uFyDRyzi2srCSBExh2U5c6CRl1OeQnhqZ/gRfPh5uqJ7kAlQ6NBD//flsIcy132lZtTxopnP96aYYt/FB/kbHVqsrayjRmzuWOuNNtywBf1zdRgZOzwcfJeIsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fAt+8V5x; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=Gt09VsZJp81DHOec5JLcL3HcbZ/ozHx8DAUDr764fTHZOiCq9tMuCs8e7S9OIUTPLcHxPTxOM/Yb/+vPLmqFxC6yK7nBGc7G4R/Xr48Pb4o1Iu+qSASaI2zKRX+sJ3lXWTvii18T4ldZdnpJKr+EGGGx2l1IFwA7CJhrIpdtz6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jWVqdYJA; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fAt+8V5x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jWVqdYJA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722270177;
+	s=mimecast20190719; t=1722270183;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x0kZOPMyNmDVYhInpXB87sOLpVD7+5JBPbyefcGWBPI=;
-	b=fAt+8V5x0wQ0hD50KVPMKzv352auKCXhhNRMhiGgXY2LBAHbx7b8hqE03ES/VBjShnN43K
-	JDemqDJVyqJgbqNWg2CTfBSdqsfmg4h7UGhDdApLaoclTGNsyHJrULhT+gWpk3EWHmWvhu
-	t6WEGtxnGTnIS8PFBdlE6gQP0eF2pmo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=nD8BuDcHuaWMd5Fn2FK+IU9NPvXO40RV6M0I0jL+Pvo=;
+	b=jWVqdYJAjA2WyoTB8nxr3E9fqrCGVvywMH4d353/HJ0j0CLx3ntfIpYY3C+tMuy7fOYYAI
+	D35DlcU727ICFdDDwotUM0FtxBXZZTJeD8HuinDKt2EE3MA4njNFpwCv/L9ssONZWLypNU
+	T2LtyhWDgXLLEMu2rvy85nxIsw6jyq4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-sRFi_MKbN4WqT1BJaC2kbQ-1; Mon,
- 29 Jul 2024 12:22:53 -0400
-X-MC-Unique: sRFi_MKbN4WqT1BJaC2kbQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-Wrs6ae_MPFKUPRt8EssjBw-1; Mon,
+ 29 Jul 2024 12:20:41 -0400
+X-MC-Unique: Wrs6ae_MPFKUPRt8EssjBw-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 269871955D45;
-	Mon, 29 Jul 2024 16:22:50 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 24DDC1955F08;
+	Mon, 29 Jul 2024 16:20:38 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.216])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5BA9B19560AA;
-	Mon, 29 Jul 2024 16:22:44 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CF3B819560AA;
+	Mon, 29 Jul 2024 16:20:31 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Steve French <smfrench@gmail.com>,
@@ -66,9 +66,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 21/24] netfs: Cancel dirty folios that have no storage destination
-Date: Mon, 29 Jul 2024 17:19:50 +0100
-Message-ID: <20240729162002.3436763-22-dhowells@redhat.com>
+Subject: [PATCH 03/24] netfs: Adjust labels in /proc/fs/netfs/stats
+Date: Mon, 29 Jul 2024 17:19:32 +0100
+Message-ID: <20240729162002.3436763-4-dhowells@redhat.com>
 In-Reply-To: <20240729162002.3436763-1-dhowells@redhat.com>
 References: <20240729162002.3436763-1-dhowells@redhat.com>
 Precedence: bulk
@@ -80,69 +80,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Kafs wants to be able to cache the contents of directories (and symlinks),
-but whilst these are downloaded from the server with the FS.FetchData RPC
-op and similar, the same as for regular files, they can't be updated by
-FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
-
-Now, rather than redownloading a directory's content after each change made
-to that directory, kafs modifies the local blob.  This blob can be saved
-out to the cache, and since it's using netfslib, kafs just marks the folios
-dirty and lets ->writepages() on the directory take care of it, as for an
-regular file.
-
-This is fine as long as there's a cache as although the upload stream is
-disabled, there's a cache stream to drive the procedure.  But if the cache
-goes away in the meantime, suddenly there's no way do any writes and the
-code gets confused, complains "R=%x: No submit" to dmesg and leaves the
-dirty folio hanging.
-
-Fix this by just cancelling the store of the folio if neither stream is
-active.  (If there's no cache at the time of dirtying, we should just not
-mark the folio dirty).
+Adjust the labels in /proc/fs/netfs/stats that refer to netfs-specific
+counters.  These currently all begin with "Netfs", but change them to begin
+with more specific labels.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Jeff Layton <jlayton@kernel.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/write_issue.c       | 6 +++++-
- include/trace/events/netfs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ fs/netfs/stats.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 87a5aeb77073..0cd12c86ea91 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -397,13 +397,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	folio_unlock(folio);
+diff --git a/fs/netfs/stats.c b/fs/netfs/stats.c
+index 0892768eea32..95ed2d2623a8 100644
+--- a/fs/netfs/stats.c
++++ b/fs/netfs/stats.c
+@@ -42,39 +42,39 @@ atomic_t netfs_n_wh_write_failed;
  
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
--		if (!fscache_resources_valid(&wreq->cache_resources)) {
-+		if (!cache->avail) {
- 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
- 			netfs_issue_write(wreq, upload);
- 			netfs_folio_written_back(folio);
- 			return 0;
- 		}
- 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-+	} else if (!upload->avail && !cache->avail) {
-+		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
-+		netfs_folio_written_back(folio);
-+		return 0;
- 	} else if (!upload->construct) {
- 		trace_netfs_folio(folio, netfs_folio_trace_store);
- 	} else {
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 4ac3b5d56ebd..1ece47af0b2f 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -151,6 +151,7 @@
- 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
- 	EM(netfs_folio_trace_abandon,		"abandon")	\
- 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-+	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
- 	EM(netfs_folio_trace_clear,		"clear")	\
- 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
- 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
+ int netfs_stats_show(struct seq_file *m, void *v)
+ {
+-	seq_printf(m, "Netfs  : DR=%u RA=%u RF=%u WB=%u WBZ=%u\n",
++	seq_printf(m, "Reads  : DR=%u RA=%u RF=%u WB=%u WBZ=%u\n",
+ 		   atomic_read(&netfs_n_rh_dio_read),
+ 		   atomic_read(&netfs_n_rh_readahead),
+ 		   atomic_read(&netfs_n_rh_read_folio),
+ 		   atomic_read(&netfs_n_rh_write_begin),
+ 		   atomic_read(&netfs_n_rh_write_zskip));
+-	seq_printf(m, "Netfs  : BW=%u WT=%u DW=%u WP=%u\n",
++	seq_printf(m, "Writes : BW=%u WT=%u DW=%u WP=%u\n",
+ 		   atomic_read(&netfs_n_wh_buffered_write),
+ 		   atomic_read(&netfs_n_wh_writethrough),
+ 		   atomic_read(&netfs_n_wh_dio_write),
+ 		   atomic_read(&netfs_n_wh_writepages));
+-	seq_printf(m, "Netfs  : ZR=%u sh=%u sk=%u\n",
++	seq_printf(m, "ZeroOps: ZR=%u sh=%u sk=%u\n",
+ 		   atomic_read(&netfs_n_rh_zero),
+ 		   atomic_read(&netfs_n_rh_short_read),
+ 		   atomic_read(&netfs_n_rh_write_zskip));
+-	seq_printf(m, "Netfs  : DL=%u ds=%u df=%u di=%u\n",
++	seq_printf(m, "DownOps: DL=%u ds=%u df=%u di=%u\n",
+ 		   atomic_read(&netfs_n_rh_download),
+ 		   atomic_read(&netfs_n_rh_download_done),
+ 		   atomic_read(&netfs_n_rh_download_failed),
+ 		   atomic_read(&netfs_n_rh_download_instead));
+-	seq_printf(m, "Netfs  : RD=%u rs=%u rf=%u\n",
++	seq_printf(m, "CaRdOps: RD=%u rs=%u rf=%u\n",
+ 		   atomic_read(&netfs_n_rh_read),
+ 		   atomic_read(&netfs_n_rh_read_done),
+ 		   atomic_read(&netfs_n_rh_read_failed));
+-	seq_printf(m, "Netfs  : UL=%u us=%u uf=%u\n",
++	seq_printf(m, "UpldOps: UL=%u us=%u uf=%u\n",
+ 		   atomic_read(&netfs_n_wh_upload),
+ 		   atomic_read(&netfs_n_wh_upload_done),
+ 		   atomic_read(&netfs_n_wh_upload_failed));
+-	seq_printf(m, "Netfs  : WR=%u ws=%u wf=%u\n",
++	seq_printf(m, "CaWrOps: WR=%u ws=%u wf=%u\n",
+ 		   atomic_read(&netfs_n_wh_write),
+ 		   atomic_read(&netfs_n_wh_write_done),
+ 		   atomic_read(&netfs_n_wh_write_failed));
+-	seq_printf(m, "Netfs  : rr=%u sr=%u wsc=%u\n",
++	seq_printf(m, "Objs   : rr=%u sr=%u wsc=%u\n",
+ 		   atomic_read(&netfs_n_rh_rreq),
+ 		   atomic_read(&netfs_n_rh_sreq),
+ 		   atomic_read(&netfs_n_wh_wstream_conflict));
 
