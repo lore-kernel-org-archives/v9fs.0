@@ -1,138 +1,119 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94DC15FA96
-	for <v9fs@lists.linux.dev>; Tue,  6 Aug 2024 09:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17ED91C6899
+	for <v9fs@lists.linux.dev>; Wed,  7 Aug 2024 09:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722937533; cv=none; b=qORZ4KLVhl2ZBj/rZxAlxU1WvE/4Gnc3Sthgp8q2re9kC/WiMFHEq3WDNoSRvtshKVgMAfJRF5NHdWJbWEwaWPwbsEEah9Fd902IFxPWgWxwy9E7Y04X5sjqAxJ+7cNBnRUULf9BhR+dqXMjQo093Q3pzgp5WhbtjdaR1GV0CCU=
+	t=1723024053; cv=none; b=n55U7DHG6I6MKC5M0NjwvlNhBxVq4XgTy7r6C/cLAVmZAKvK2+/O8/WVLhmlR76fcrlarTdeIB5Gc3hheKkCQEqi9DKAKYqlT0ZciypipQ8f5zIoNuMs7IyZJKf4ZPUlAHF6K6BrLOlm10uHpSp7PCIAtWZk5BVShgovAK7wQfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722937533; c=relaxed/simple;
-	bh=tu9a25U64jCbSxqqXBPxFQ1YyuA5n8O8iVZKcPVXOwA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Z0EA5TBZ+GRk7KBIc6Z4yeGD0z2bpF8f9J/90pBfsai5CHAQZJ1HiyBzm/lpRd1036eg/QF1qBCrLhH8Nhb9V28F++HTWq52WnZbLhhdMgutuI/rNpFpQjlQ5GXbk1V1i0JA+2WhauEcr0Cn23L8yEg5Q1fVW6Ad8E+AnjdxDUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-39b28ea6f37so7758145ab.1
-        for <v9fs@lists.linux.dev>; Tue, 06 Aug 2024 02:45:31 -0700 (PDT)
+	s=arc-20240116; t=1723024053; c=relaxed/simple;
+	bh=ioksRDqwNLk17P3K0C/NbICBneuR8qlCZWl6hNhU3fo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EMQQaD+HzkFu7ddP2sI1RwJU+TZ9mFG3JjDIfPr0wwZbZR83+QlAtkH6bddx/BerEzDlFL1vKMzDEX2Zr7g3XnywMSyjP+b8tGZ+xV9DaJjg8D4rta6Z3A8cJA8pMi41mVV+6oyKZNDWatlaY5ZgZVYid+FJdYSxbew68vgqG8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0xNCXZq; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0xNCXZq"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4281d812d3eso15070235e9.3
+        for <v9fs@lists.linux.dev>; Wed, 07 Aug 2024 02:47:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723024050; x=1723628850; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=62SrWCnNhxclSxuLWcVToN8VEVDl6BzHuN80K65dNUg=;
+        b=Z0xNCXZqS1Ya/DsbAYTYJnqV79jjHXhBghqt5wUTKUkXDh70hMvU6OHjgR9DAX2GO5
+         EnnWRBrpK0QGpPXCrVfX7aJxNJ06+0sh2z8XtktAod5fnLRo/yaqHyb6MISk2EK+SNBv
+         Mo/9FrJG+FCuMbTrgUILElT+6kGFPgKjYOCjD3jyQfM2IjT6gf4AVuy6iii+EHXyo2nt
+         TeWCYp5QR3CDUy4Lsj3eXRZNJ3led+9Sqf6yLiBH2WTaQg7PHw26U6IDYbMcjd1JbRJB
+         oabl99qfsdsDpUte374YRka1/xT6XyRi1TCgkgHTAQoDx8MVAtva9riTR3yAjMKUclrr
+         61FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722937531; x=1723542331;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oV1Kl44AMk2B99r0J/5HNNLjueYPWtTB6yqfoBERVr0=;
-        b=O+G1xSgyDh12E0jn8jFAWt3ikHDU1fy8ImrK1anz+ehH1S9uopzWMm1kprOZYnQQhn
-         i+piOlbzrD/5UHbXvhSZx6QceaXFekt7QiHrAPIR4akfyj6LHxBtvEVac4eg4nwSNXQh
-         pGrplciyWvTjS5wXhhSg5HC3F38vy4VMShX4oL8srwr1FG0wOLQeQekM97MW+NZcnP0u
-         evvuVQ0EgYKtXQkTVPm4+/FjrGp/E8iR6WYJ3126tJKMawNPgjT3p24PFKSBFPTYDN/k
-         KVbHYfhReKjxe6uh4Da0MS2RAdBabntJyUqOUM0ZsSLd77uhnDKcqgTYhgGMfYjo3e0F
-         KlJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxmFqyloR70HjEnxnQHr1/Ye61bky7Cz2D2UGx/JzEKJCdM5fUWEG9Xp9ibafkLASP2nnV+gPN1cTmyiVV1jXBxnjG9w==
-X-Gm-Message-State: AOJu0YxEbma/xTFP3IQDI3Gwbb6xeytZiriMooh36DGXQQlGSB30I9iD
-	StL7wW3na1r00AcdG05KzRmoBbFl4Tu7Cr9W9EB/TgM9wysdjWznCVAAHsAY730918OnF6AH6DY
-	DNrc4zKn9XRjjU++gdTiKKvvUwmTia7cOS7G8T3Gn7phoGaUsvK4fYZY=
-X-Google-Smtp-Source: AGHT+IFXF2sccMXHtW2qIwpdgqNKEG55y3f8O5nzkgNbm3N9yIkKZyPR8aIVb5XnVsizZJsVBt6q2e/8YD0hTjQQljddKXIBjQUA
+        d=1e100.net; s=20230601; t=1723024050; x=1723628850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=62SrWCnNhxclSxuLWcVToN8VEVDl6BzHuN80K65dNUg=;
+        b=NuSBrhFWhIo5gg0vk89NgEILLZ6eXmf1xj05dcb2IGSPVBXkpO6IxjAi5mzjM1vRJJ
+         GsSVkuWroNdRXZrOi3Lbcb05TU5AKXPi8WMOMIXARLX7wjHxTNfM4tDFupBc35aP71Bp
+         nC6l4aUYd9EsKQBqQJNwHYSquW9iPy/f+ftua2+arHR4H/xlTzFDtM6yT8Nnh9fkzm7h
+         Oj+DW2yUEqpEar9D9FyJiOy4qDkv4aL+rowHxo9ZJ8xkAS4brb6JzhXVqklT3EhjUbMc
+         jw7S9QFAp+dvT2m43MkQO64ZDLUNk/jFteKq4/pnXG8bckr8PcaZHyoDXF0dyN9RH6Bu
+         YcPw==
+X-Gm-Message-State: AOJu0Yz3Y3Oab5LrlpDWukzFFyZL8VRvv4tQE2QBb4Q33zT5C3fYCauC
+	VMUYFGS/IGN07c7C9zgsYeDbD9Ix7RD7euGT2TtCXllrjf5GWZuw
+X-Google-Smtp-Source: AGHT+IHHiCLygoa5Cy0kG4Ocdj4Rt8Aj3T1Zf7ZwIMSu/V2JXiJj0SzeBsGgeuQCLQrUwtO+HDNpTQ==
+X-Received: by 2002:a05:600c:4e87:b0:426:5b44:2be7 with SMTP id 5b1f17b1804b1-428e6b02594mr161877885e9.10.1723024050150;
+        Wed, 07 Aug 2024 02:47:30 -0700 (PDT)
+Received: from PC-PEDRO-ARCH.lan ([2001:818:e92f:6400:96b:aa92:afc0:2d3d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059a3e99sm20860085e9.31.2024.08.07.02.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Aug 2024 02:47:29 -0700 (PDT)
+From: Pedro Falcato <pedro.falcato@gmail.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Pedro Falcato <pedro.falcato@gmail.com>
+Subject: [PATCH] 9p: Avoid creating multiple slab caches with the same name
+Date: Wed,  7 Aug 2024 10:47:25 +0100
+Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c24:b0:385:ffe:4516 with SMTP id
- e9e14a558f8ab-39b1fb7398emr9098045ab.2.1722937530821; Tue, 06 Aug 2024
- 02:45:30 -0700 (PDT)
-Date: Tue, 06 Aug 2024 02:45:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000007ec511061f00a7b2@google.com>
-Subject: [syzbot] [v9fs?] WARNING in v9fs_begin_writeback
-From: syzbot <syzbot+0b74d367d6e80661d6df@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+In the spirit of [1], avoid creating multiple slab caches with the same
+name. Instead, add the dev_name into the mix.
 
-syzbot found the following issue on:
+[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
 
-HEAD commit:    c0ecd6388360 Merge tag 'pci-v6.11-fixes-1' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=133ac8d3980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8da8b059e43c5370
-dashboard link: https://syzkaller.appspot.com/bug?extid=0b74d367d6e80661d6df
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ffa365980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e4b703980000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-c0ecd638.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/4e795892c4ac/vmlinux-c0ecd638.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3e387ec3cd3f/bzImage-c0ecd638.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0b74d367d6e80661d6df@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-folio expected an open fid inode->i_ino=23005ff
-WARNING: CPU: 2 PID: 1155 at fs/9p/vfs_addr.c:39 v9fs_begin_writeback fs/9p/vfs_addr.c:39 [inline]
-WARNING: CPU: 2 PID: 1155 at fs/9p/vfs_addr.c:39 v9fs_begin_writeback+0x210/0x280 fs/9p/vfs_addr.c:33
-Modules linked in:
-CPU: 2 UID: 0 PID: 1155 Comm: kworker/u32:9 Not tainted 6.11.0-rc1-syzkaller-00154-gc0ecd6388360 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: writeback wb_workfn (flush-9p-55)
-RIP: 0010:v9fs_begin_writeback fs/9p/vfs_addr.c:39 [inline]
-RIP: 0010:v9fs_begin_writeback+0x210/0x280 fs/9p/vfs_addr.c:33
-Code: 00 fc ff df 48 8b 5b 48 48 8d 7b 40 48 89 fa 48 c1 ea 03 80 3c 02 00 75 66 48 8b 73 40 48 c7 c7 20 9a 8e 8b e8 51 4a 0d fe 90 <0f> 0b 90 90 e9 62 ff ff ff e8 32 2b a8 fe e9 51 ff ff ff e8 98 2a
-RSP: 0018:ffffc9000610f480 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff8880327a0670 RCX: ffffffff814cc379
-RDX: ffff88802329a440 RSI: ffffffff814cc386 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff888012c4a408
-R13: dffffc0000000000 R14: ffffc9000610f840 R15: ffff888012c4a658
-FS:  0000000000000000(0000) GS:ffff88806b200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020001000 CR3: 0000000011d46000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- netfs_writepages+0x656/0xde0 fs/netfs/write_issue.c:534
- do_writepages+0x1a3/0x7f0 mm/page-writeback.c:2683
- __writeback_single_inode+0x163/0xf90 fs/fs-writeback.c:1651
- writeback_sb_inodes+0x611/0x1150 fs/fs-writeback.c:1947
- wb_writeback+0x199/0xb50 fs/fs-writeback.c:2127
- wb_do_writeback fs/fs-writeback.c:2274 [inline]
- wb_workfn+0x28d/0xf40 fs/fs-writeback.c:2314
- process_one_work+0x9c5/0x1b40 kernel/workqueue.c:3231
- process_scheduled_works kernel/workqueue.c:3312 [inline]
- worker_thread+0x6c8/0xf20 kernel/workqueue.c:3390
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-
+Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/9p/client.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 5cd94721d97..9e7b9151816 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -979,6 +979,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ 	int err;
+ 	struct p9_client *clnt;
+ 	char *client_id;
++	char *cache_name;
+ 
+ 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
+ 	if (!clnt)
+@@ -1035,15 +1036,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ 	if (err)
+ 		goto close_trans;
+ 
++	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	if (!cache_name) {
++		err = -ENOMEM;
++		goto close_trans;
++	}
++
+ 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
+ 	 * followed by data accessed from userspace by read
+ 	 */
+ 	clnt->fcall_cache =
+-		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
++		kmem_cache_create_usercopy(cache_name, clnt->msize,
+ 					   0, 0, P9_HDRSZ + 4,
+ 					   clnt->msize - (P9_HDRSZ + 4),
+ 					   NULL);
+ 
++	kfree(cache_name);
+ 	return clnt;
+ 
+ close_trans:
+-- 
+2.46.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
