@@ -1,81 +1,137 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE8F15CD78
-	for <v9fs@lists.linux.dev>; Sun, 11 Aug 2024 22:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05D7170A1C
+	for <v9fs@lists.linux.dev>; Mon, 12 Aug 2024 13:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723416184; cv=none; b=ihtOHg0pPfl2HZklTitJFp1o2t2Z3xonWli0W7Rwb6J3FHyLCOzpXwJ6hI2vsnhMS3KfW7f6GJj+Gl2j9vmKUy/6hLhQzD5EwX7myYCgg7O0DOnkAl4l8TRyE+I+eiP23IXB1C2TevkrZSPVPRHjN59KIrF/OSE0V/OoUjZ5fH8=
+	t=1723467726; cv=none; b=AhCW2rRYTEEpjX99hTG1q/v83EftL/tbe6mYcEczH4z4OBFgPZ0j1o6W59A97l08dIAyuPmvW2TZo2nlWuW3Py2j1KTude+G4rjyMtMCBnD7OcXPioUmomS++2j28dP9GsbwCSSwj50hPrGI2rrTn/S8ckEWox3tXT8mIZBnaN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723416184; c=relaxed/simple;
-	bh=L4Lv+V3TAvpIqLu3MSz4+YFRq/dbvUKkqeQBE+ixKpw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=uRQe39dxrJIBpEBACkFU8Gm4BjTejfsP4IWcggor0riQ4DaK6koWQtJ/UkEq5WMwdEPuJR8IQqpjcKhaFpv8ULz9CrHvahjkKLu+wnx5aYYLkpn/aa9JdCKLJbt+66XXIar0YOwCJxKxuONSXnHvjrQPW8wbyGFzT3gBaYKzVvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-39b0bee2173so53564755ab.2
-        for <v9fs@lists.linux.dev>; Sun, 11 Aug 2024 15:43:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723416182; x=1724020982;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vVqFzBryEujNvLyT47tPqWQBFIh9FtkAq+KHfk8fPj4=;
-        b=dAG8+9oMxe6eZZkr6WWVuZNsN92OdiiTzoQl4JPog1HfM1LosurBE9zf0JjT7iB9gL
-         j+wY++zJaNoZNBW+X8WQtN/IfTZHHIWU8MMQbm/zG4re4rHrs9JszsXT3UcOTHeQjBY0
-         Sucfn9P/8TQwxZQaAE8cQSAVWZAc5AyABlGUxALCs308my4UPgcz+C2KLmPVXk3Gb6Oe
-         SGOPNNosQAZi1MXHaBxhuPYVxSfSkXIT7vpMYapNrxnXUXxMvdG5hp8HDsoS7JReEVfT
-         w7D53+iXDDgYVGii8SAFGXnrzlYKSM8ctvG2hv7pK/ROZMoVw7aD1n5JXrvB4p7RuEi2
-         2NBg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/ZaEtv4zcj8D/yZ0yWyJ3ajUiA+msWq/KSJicOYqe7RhGy6T7/UWoXmB/48QhJ23Svp8c7lBN0I56T/ptsKuGkPzmZg==
-X-Gm-Message-State: AOJu0Yww583YcU3oWo4r6HGtH9F6qKU8j7j4SL0FQ90bGHs7YMefiEiX
-	1XknAzRVWRMQcz1TR8EWXTVkguRAGGmdz7GpMzKkoPQB1IVRfoiNiQxTDiTZOn7Sf76ffZ4CXbm
-	+xruhmMTMj1sbetX6VZru6dhURSlquKiMlreDfBT1mEnjKdsyVYCx4ic=
-X-Google-Smtp-Source: AGHT+IF7jkF4oBqJtIkn6QuGeZP/SaW+o6WVuB+UpJ1Q7K+E62/xT80ADTCE4nj7LwY0M348sXjLlvffGGJyVNNQbX8hhCmM1l+c
+	s=arc-20240116; t=1723467726; c=relaxed/simple;
+	bh=as8kn+c7p1Dq/fpAWxsQXzGWdCzINA9p7OO4grgDg74=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ZYUyE/uPaoMerS67FvXPyY1Fe19/VtQETWzvz3XTtldNd/Q/5KhER6kvv3FxSjIQUlCBjH5N/MGHJ2fuv2MqIXN2E6fZKIkx1IKPkLpUguO3o0bKzkp9uG7D0GJqMriteoadkscutx5LeJxpC+2QnRjOSWDBQvJ00cXxj8Qhsis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 35255464CE;
+	Mon, 12 Aug 2024 15:01:55 +0200 (CEST)
+Message-ID: <db686d0c-2f27-47c8-8c14-26969433b13b@proxmox.com>
+Date: Mon, 12 Aug 2024 15:01:52 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:219d:b0:376:1fae:4604 with SMTP id
- e9e14a558f8ab-39b8709bc57mr6384475ab.4.1723416182349; Sun, 11 Aug 2024
- 15:43:02 -0700 (PDT)
-Date: Sun, 11 Aug 2024 15:43:02 -0700
-In-Reply-To: <0000000000002fd2de0618de2e65@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005971a8061f70191d@google.com>
-Subject: Re: [syzbot] [fs?] general protection fault in iter_file_splice_write
-From: syzbot <syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
-	eadavis@qq.com, ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lizhi.xu@windriver.com, 
-	lucho@ionkov.net, marc.dionne@auristor.com, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/40] netfs: Add iov_iters to (sub)requests to
+ describe various buffers
+From: Christian Ebner <c.ebner@proxmox.com>
+To: David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+ Steve French <smfrench@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Marc Dionne <marc.dionne@auristor.com>, Paulo Alcantara <pc@manguebit.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+ Christian Brauner <christian@brauner.io>, linux-cachefs@redhat.com,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20231221132400.1601991-1-dhowells@redhat.com>
+ <20231221132400.1601991-15-dhowells@redhat.com>
+ <d0ada96d-1805-44d2-b02c-eff64ec0c7d6@proxmox.com>
+Content-Language: en-US, de-DE
+In-Reply-To: <d0ada96d-1805-44d2-b02c-eff64ec0c7d6@proxmox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-syzbot has bisected this issue to:
+On 8/8/24 10:07, Christian Ebner wrote:
+> Hi,
+> 
+> recently some of our (Proxmox VE) users report issues with file 
+> corruptions when accessing contents located on CephFS via the in-kernel 
+> ceph client [0,1]. According to these reports, our kernels based on 
+> (Ubuntu) v6.8 do show these corruptions, using the FUSE client or the 
+> in-kernel ceph client with kernels based on v6.5 does not show these.
+> Unfortunately the corruption is hard to reproduce.
+> 
+> After a further report of file corruption [2] with a completely 
+> unrelated code path, we managed to reproduce the corruption for one file 
+> by sheer chance on one of our ceph test clusters. We were able to narrow 
+> it down to be possibly an issue with reading of the contents via the 
+> in-kernel ceph client. Note that we can exclude the file contents itself 
+> being corrupt, as any not affected kernel version or the FUSE client 
+> gives the correct contents.
+> 
+> The issue is present also in the current mainline kernel 6.11-rc2.
+> 
+> Bisection with the reproducer points to this commit:
+> 
+> "92b6cc5d: netfs: Add iov_iters to (sub)requests to describe various 
+> buffers"
+> 
+> Description of the issue:
+> 
+> * file copied from local filesystem to cephfs via:
+> `cp /tmp/proxmox-backup-server_3.2-1.iso 
+> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso`
+> * sha256sum on local filesystem:
+> `1d19698e8f7e769cf0a0dcc7ba0018ef5416c5ec495d5e61313f9c84a4237607 
+> /tmp/proxmox-backup-server_3.2-1.iso`
+> * sha256sum on cephfs with kernel up to above commit:
+> `1d19698e8f7e769cf0a0dcc7ba0018ef5416c5ec495d5e61313f9c84a4237607 
+> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso`
+> * sha256sum on cephfs with kernel after above commit:
+> `89ad3620bf7b1e0913b534516cfbe48580efbaec944b79951e2c14e5e551f736 
+> /mnt/pve/cephfs/proxmox-backup-server_3.2-1.iso`
+> * removing and/or recopying the file does not change the issue, the 
+> corrupt checksum remains the same.
+> * Only this one particular file has been observed to show the issue, for 
+> others the checksums match.
+> * Accessing the same file from different clients results in the same 
+> output: The one with above patch applied do show the incorrect checksum, 
+> ones without the patch show the correct checksum.
+> * The issue persists even across reboot of the ceph cluster and/or clients.
+> * The file is indeed corrupt after reading, as verified by a `cmp -b`.
+> 
+> Does anyone have an idea what could be the cause of this issue, or how 
+> to further debug this? Happy to provide more information or a dynamic 
+> debug output if needed.
+> 
+> Best regards,
+> 
+> Chris
+> 
+> [0] https://forum.proxmox.com/threads/78340/post-676129
+> [1] https://forum.proxmox.com/threads/149249/
+> [2] https://forum.proxmox.com/threads/151291/
 
-commit 2df86547b23dabcd02ab000a24ed7813606c269f
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Mar 8 12:36:05 2024 +0000
+Hi,
 
-    netfs: Cut over to using new writeback code
+please allow me to send a followup regarding this:
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=148b014b980000
-start commit:   5189dafa4cf9 Merge tag 'nfsd-6.11-1' of git://git.kernel.o..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=168b014b980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=128b014b980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e8a2eef9745ade09
-dashboard link: https://syzkaller.appspot.com/bug?extid=d2125fcb6aa8c4276fd2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16828c5d980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103c7805980000
+Thanks to a suggestion by my colleague Friedrich Weber we have some 
+further interesting findings.
 
-Reported-by: syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com
-Fixes: 2df86547b23d ("netfs: Cut over to using new writeback code")
+The issue is related to the readahead size passed to `mount.ceph`, when 
+mounting the filesystem [0].
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Passing an `rasize` in the range of [0..1k] leads to the correct 
+checksum, independent of the bisected patch being applied or not.
+Ranges from (1k..1M] lead to corrupt, but different checksums for 
+different `rasize` values, and finally `rasize` values above 1M lead to 
+a corrupt, but constant checksum value. Again, without the bisected 
+patch, the issue is not present.
+
+Please let me know if I can provide further information or debug outputs 
+in order to narrow down the issue.
+
+Best regards,
+Chris
+
+[0] https://docs.ceph.com/en/reef/man/8/mount.ceph/#advanced
+
