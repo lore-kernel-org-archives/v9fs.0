@@ -1,53 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6744A1EB4A0
-	for <v9fs@lists.linux.dev>; Wed, 14 Aug 2024 20:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9BD1714A8;
+	Thu, 15 Aug 2024 13:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723668143; cv=none; b=D6csnxJPfarqThguyPGU3hTIgZw3X89bUBra4n7fmL2PQaqe1csdCso9o2G7k51+kY0zOZqtULoJRbg7BHvnqEIjd1Ctsadk6Ih48kNLCrZ3L0KQx3//N+YMSzdQCzIg6WgZS34rWDVhnia/IFQaDaMbJRyEadDH51l+q2VRq1M=
+	t=1723727274; cv=none; b=Y5LtgRdPlYSG4DLjfYUrHbBRfTnlmGFLpv5JRI9bLPL/rK4XX6B8HVHnVyre/oNpQkJo2LA7Ujp/cbJe/EJTR0HDYtlA9uvSNz1BYo8kUkQpnIgzAIMHOso7CzQszsDLH2zU6+i4WF9ElS4Yd3w97AAC+lX7+Xum/3ZbaXiWMYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723668143; c=relaxed/simple;
-	bh=/4RHZpXKGmdLr3x2mXP5YKs8fw+5k6cV3FZeRK23GrQ=;
+	s=arc-20240116; t=1723727274; c=relaxed/simple;
+	bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hV0hCVBgCD2jp2WLx2HSfkXy4hVXsfUnqkU33zc5woFUDhyCh2ioqX3c7g9nA7B+g4HkSfDBhitkVSG3+eeBBvxmd13VRDOVi+2hhZzU8ucrBUOiKHr6s6vnJCn1ZuHJXEdC6CM0k5Vc4KNFvmhrVxJMZYu7famvXovdqg4AXFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E9JajQjr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=sK4OKI0xV2ECB2cAJ29dVLkJy9xmJE9ZqXf5KKAG/AYe+Y7fHV4ehrLrl1ucKaa7pR9/Dl2jk1Vt6wHghZHFyj02mfLerz4sVNvA7GL5O2wA8VqIxdWR/yoeTeJCcmQ+RIS1OynoUBmUgaarZpojtWUc774tFU2hjQYuOL/J7g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWysPbmr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E9JajQjr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723668138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G4MNzaMiFDukGg48jovETePA3npABSpoRCz9c88nf5g=;
-	b=E9JajQjrvkaLSMsM58EQ9759yIJhErJ6b1zynu48ysULbTHL6FMkOf/W7ovlJmO4c5+eF1
-	H53hQ15XCIH8MSl/b2yxQ+0CQDqHSZ/bPrkhy6/+6VGuwSAcGtWU9fSUGQRRv+elPCW0xN
-	sE6FW3xc4e7PJCQ5eBjwxJTgw56c4uk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-k4Nb6-ZQNa-w-MVZAByrPQ-1; Wed,
- 14 Aug 2024 16:42:11 -0400
-X-MC-Unique: k4Nb6-ZQNa-w-MVZAByrPQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97CAC1954B0F;
-	Wed, 14 Aug 2024 20:42:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.30])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9B2041955F66;
-	Wed, 14 Aug 2024 20:42:02 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWysPbmr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC276C4AF12;
+	Thu, 15 Aug 2024 13:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723727274;
+	bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CWysPbmrhoJPoY6REaRiKM1koRkT1R+xchonrJPpv1x9I+tee+tSfKXPRigLEF1Pp
+	 H0I6xL+kL3jAdP83wrbd95nqrX4gOFtGasClay/ikEcqMAsrRbgUgm8uymaNB2JJyC
+	 s9fAuxND+GVsI3CvvG4maGRFXUv1mrH/QMsPdEHwjeAnn4LLJl1uL87/6fKQvF81e/
+	 gN47e2z5uZcj4pF1aOpUhKbSFnw/JNFL2aRtTdKMtegAQCGM+3alB+E0XbvxVZ0GZx
+	 vSI/1pnVv1gMF6wJ8a7T6crM136WP7rIW/dyqW6P8SmyiDRFQoN0YMbOf3Fz7aHcH8
+	 iawKWeu/fPcSQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
 	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Marc Dionne <marc.dionne@auristor.com>,
 	Paulo Alcantara <pc@manguebit.com>,
@@ -66,11 +48,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Steve French <sfrench@samba.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>
-Subject: [PATCH v2 25/25] cifs: Don't support ITER_XARRAY
-Date: Wed, 14 Aug 2024 21:38:45 +0100
-Message-ID: <20240814203850.2240469-26-dhowells@redhat.com>
+	Gao Xiang <xiang@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v2 00/25] netfs: Read/write improvements
+Date: Thu, 15 Aug 2024 15:07:42 +0200
+Message-ID: <20240815-umzog-irgendein-80514d89315a@brauner>
+X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240814203850.2240469-1-dhowells@redhat.com>
 References: <20240814203850.2240469-1-dhowells@redhat.com>
 Precedence: bulk
@@ -79,160 +63,81 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3763; i=brauner@kernel.org; h=from:subject:message-id; bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTt/TvfdD5fB2vZ4St+TJxt5mWrLDw33/gjvqHIU/p1x 4z/b++v6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI3TKGf7rW+puKJr8xC2Fc +4dN6MQSIQHtD5UCjw3EjTPKG9RWaTEyrOUUX7jY9aVQn42A5tbDjh4fbp/6mSTXO6u8fQdHhII sPwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-There's now no need to support ITER_XARRAY in cifs as netfslib hands down
-ITER_FOLIOQ instead - and that's simpler to use with iterate_and_advance()
-as it doesn't hold the RCU read lock over the step function.
+On Wed, 14 Aug 2024 21:38:20 +0100, David Howells wrote:
+> This set of patches includes a couple of fixes:
+> 
+>  (1) Revert the removal of waits on PG_private_2 from netfs_release_page()
+>      and netfs_invalidate_page().
+> 
+>  (2) Make cachefiles take the sb_writers lock around set/removexattr.
+> 
+> [...]
 
-This is part of the process of phasing out ITER_XARRAY.
+Applied to the vfs.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs.netfs branch should appear in linux-next soon.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: Enzo Matsumiya <ematsumiya@suse.de>
-cc: linux-cifs@vger.kernel.org
----
- fs/smb/client/cifsencrypt.c | 51 -------------------------------------
- fs/smb/client/smbdirect.c   | 49 -----------------------------------
- 2 files changed, 100 deletions(-)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
-index 991a1ab047e7..7481b21a0489 100644
---- a/fs/smb/client/cifsencrypt.c
-+++ b/fs/smb/client/cifsencrypt.c
-@@ -25,54 +25,6 @@
- #include "../common/arc4.h"
- #include <crypto/aead.h>
- 
--/*
-- * Hash data from an XARRAY-type iterator.
-- */
--static ssize_t cifs_shash_xarray(const struct iov_iter *iter, ssize_t maxsize,
--				 struct shash_desc *shash)
--{
--	struct folio *folios[16], *folio;
--	unsigned int nr, i, j, npages;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t last, index = start / PAGE_SIZE;
--	ssize_t ret = 0;
--	size_t len, offset, foffset;
--	void *p;
--
--	if (maxsize == 0)
--		return 0;
--
--	last = (start + maxsize - 1) / PAGE_SIZE;
--	do {
--		nr = xa_extract(iter->xarray, (void **)folios, index, last,
--				ARRAY_SIZE(folios), XA_PRESENT);
--		if (nr == 0)
--			return -EIO;
--
--		for (i = 0; i < nr; i++) {
--			folio = folios[i];
--			npages = folio_nr_pages(folio);
--			foffset = start - folio_pos(folio);
--			offset = foffset % PAGE_SIZE;
--			for (j = foffset / PAGE_SIZE; j < npages; j++) {
--				len = min_t(size_t, maxsize, PAGE_SIZE - offset);
--				p = kmap_local_page(folio_page(folio, j));
--				ret = crypto_shash_update(shash, p, len);
--				kunmap_local(p);
--				if (ret < 0)
--					return ret;
--				maxsize -= len;
--				if (maxsize <= 0)
--					return 0;
--				start += len;
--				offset = 0;
--				index++;
--			}
--		}
--	} while (nr == ARRAY_SIZE(folios));
--	return 0;
--}
--
- static size_t cifs_shash_step(void *iter_base, size_t progress, size_t len,
- 			      void *priv, void *priv2)
- {
-@@ -96,9 +48,6 @@ static int cifs_shash_iter(const struct iov_iter *iter, size_t maxsize,
- 	struct iov_iter tmp_iter = *iter;
- 	int err = -EIO;
- 
--	if (iov_iter_type(iter) == ITER_XARRAY)
--		return cifs_shash_xarray(iter, maxsize, shash);
--
- 	if (iterate_and_advance_kernel(&tmp_iter, maxsize, shash, &err,
- 				       cifs_shash_step) != maxsize)
- 		return err;
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index c946b38ca825..80262a36030f 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -2584,52 +2584,6 @@ static ssize_t smb_extract_folioq_to_rdma(struct iov_iter *iter,
- 	return ret;
- }
- 
--/*
-- * Extract folio fragments from an XARRAY-class iterator and add them to an
-- * RDMA list.  The folios are not pinned.
-- */
--static ssize_t smb_extract_xarray_to_rdma(struct iov_iter *iter,
--					  struct smb_extract_to_rdma *rdma,
--					  ssize_t maxsize)
--{
--	struct xarray *xa = iter->xarray;
--	struct folio *folio;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t index = start / PAGE_SIZE;
--	ssize_t ret = 0;
--	size_t off, len;
--	XA_STATE(xas, xa, index);
--
--	rcu_read_lock();
--
--	xas_for_each(&xas, folio, ULONG_MAX) {
--		if (xas_retry(&xas, folio))
--			continue;
--		if (WARN_ON(xa_is_value(folio)))
--			break;
--		if (WARN_ON(folio_test_hugetlb(folio)))
--			break;
--
--		off = offset_in_folio(folio, start);
--		len = min_t(size_t, maxsize, folio_size(folio) - off);
--
--		if (!smb_set_sge(rdma, folio_page(folio, 0), off, len)) {
--			rcu_read_unlock();
--			return -EIO;
--		}
--
--		maxsize -= len;
--		ret += len;
--		if (rdma->nr_sge >= rdma->max_sge || maxsize <= 0)
--			break;
--	}
--
--	rcu_read_unlock();
--	if (ret > 0)
--		iov_iter_advance(iter, ret);
--	return ret;
--}
--
- /*
-  * Extract page fragments from up to the given amount of the source iterator
-  * and build up an RDMA list that refers to all of those bits.  The RDMA list
-@@ -2657,9 +2611,6 @@ static ssize_t smb_extract_iter_to_rdma(struct iov_iter *iter, size_t len,
- 	case ITER_FOLIOQ:
- 		ret = smb_extract_folioq_to_rdma(iter, rdma, len);
- 		break;
--	case ITER_XARRAY:
--		ret = smb_extract_xarray_to_rdma(iter, rdma, len);
--		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return -EIO;
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.netfs
+
+[01/25] cachefiles: Fix non-taking of sb_writers around set/removexattr
+        https://git.kernel.org/vfs/vfs/c/4ca422fc1c25
+[02/25] netfs: Adjust labels in /proc/fs/netfs/stats
+        https://git.kernel.org/vfs/vfs/c/2d8e8e0dcfa8
+[03/25] netfs: Record contention stats for writeback lock
+        https://git.kernel.org/vfs/vfs/c/b946f63b34fa
+[04/25] netfs: Reduce number of conditional branches in netfs_perform_write()
+        https://git.kernel.org/vfs/vfs/c/922d33ef048c
+[05/25] netfs, cifs: Move CIFS_INO_MODIFIED_ATTR to netfs_inode
+        https://git.kernel.org/vfs/vfs/c/4c1daf044aed
+[06/25] netfs: Move max_len/max_nr_segs from netfs_io_subrequest to netfs_io_stream
+        https://git.kernel.org/vfs/vfs/c/a479f52b4401
+[07/25] netfs: Reserve netfs_sreq_source 0 as unset/unknown
+        https://git.kernel.org/vfs/vfs/c/e1de76429131
+[08/25] netfs: Remove NETFS_COPY_TO_CACHE
+        https://git.kernel.org/vfs/vfs/c/2a4e83a305ef
+[09/25] netfs: Set the request work function upon allocation
+        https://git.kernel.org/vfs/vfs/c/52c62b5f6dc0
+[10/25] netfs: Use bh-disabling spinlocks for rreq->lock
+        https://git.kernel.org/vfs/vfs/c/45268b70a77d
+[11/25] mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios
+        https://git.kernel.org/vfs/vfs/c/3e73d92929db
+[12/25] iov_iter: Provide copy_folio_from_iter()
+        https://git.kernel.org/vfs/vfs/c/7a51f5cf0851
+[13/25] cifs: Provide the capability to extract from ITER_FOLIOQ to RDMA SGEs
+        https://git.kernel.org/vfs/vfs/c/97b15fbddd0c
+[14/25] netfs: Use new folio_queue data type and iterator instead of xarray iter
+        https://git.kernel.org/vfs/vfs/c/b33aa21f3b7f
+[15/25] netfs: Provide an iterator-reset function
+        https://git.kernel.org/vfs/vfs/c/7306dffdd871
+[16/25] netfs: Simplify the writeback code
+        https://git.kernel.org/vfs/vfs/c/5fb0299ed8df
+[17/25] afs: Make read subreqs async
+        https://git.kernel.org/vfs/vfs/c/05fd361eb083
+[18/25] netfs: Speed up buffered reading
+        https://git.kernel.org/vfs/vfs/c/6437a28f5de1
+[19/25] netfs: Remove fs/netfs/io.c
+        https://git.kernel.org/vfs/vfs/c/85112b95630c
+[20/25] cachefiles, netfs: Fix write to partial block at EOF
+        https://git.kernel.org/vfs/vfs/c/3b5a6483e8d2
+[21/25] netfs: Cancel dirty folios that have no storage destination
+        https://git.kernel.org/vfs/vfs/c/3cca08a1c4c5
+[22/25] cifs: Use iterate_and_advance*() routines directly for hashing
+        https://git.kernel.org/vfs/vfs/c/c86e6c334311
+[23/25] cifs: Switch crypto buffer to use a folio_queue rather than an xarray
+        https://git.kernel.org/vfs/vfs/c/04c9967360ea
+[24/25] cifs: Don't support ITER_XARRAY
+        https://git.kernel.org/vfs/vfs/c/7d0f7f2d1e8b
