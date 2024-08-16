@@ -1,143 +1,277 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9BD1714A8;
-	Thu, 15 Aug 2024 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50E619A281;
+	Fri, 16 Aug 2024 11:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723727274; cv=none; b=Y5LtgRdPlYSG4DLjfYUrHbBRfTnlmGFLpv5JRI9bLPL/rK4XX6B8HVHnVyre/oNpQkJo2LA7Ujp/cbJe/EJTR0HDYtlA9uvSNz1BYo8kUkQpnIgzAIMHOso7CzQszsDLH2zU6+i4WF9ElS4Yd3w97AAC+lX7+Xum/3ZbaXiWMYA=
+	t=1723806750; cv=none; b=GvlPNun1faoITaiVgAV3GXu+qSOcLzwK46P9vOBoHxM3cVw036i6nSrHqYC6n0nYCCjH0c3eJg7zclAoPzOAr69WjFzerylPkXexvabb+GRMJPzSHK6VhMD4lGFq0tQDS5shh5BARbzAROt9mvX/MURW73/QO+flat4yKXZxiHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723727274; c=relaxed/simple;
-	bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sK4OKI0xV2ECB2cAJ29dVLkJy9xmJE9ZqXf5KKAG/AYe+Y7fHV4ehrLrl1ucKaa7pR9/Dl2jk1Vt6wHghZHFyj02mfLerz4sVNvA7GL5O2wA8VqIxdWR/yoeTeJCcmQ+RIS1OynoUBmUgaarZpojtWUc774tFU2hjQYuOL/J7g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWysPbmr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723806750; c=relaxed/simple;
+	bh=Xvhko6m4gXDcrQOr/bnImNG8IdOv4SrzCD327herT1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C1/8SRPev3HaBf+E4b/XdlUxTcBL6QS7oS/ZCMzeKiG+r0G6wGCWMCLJHL+/9cyTLckmGuhx51HwfL1HyAfQfDYZ9eDiq2SArge6dDMe6ixzQInXE2vpj+fLCxtiCLh77y3hOuI87HTsm/LIsZuaxYYthZUBBgtVN0bPLCavjNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYeXurtm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWysPbmr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC276C4AF12;
-	Thu, 15 Aug 2024 13:07:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYeXurtm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCC8C32782;
+	Fri, 16 Aug 2024 11:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723727274;
-	bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWysPbmrhoJPoY6REaRiKM1koRkT1R+xchonrJPpv1x9I+tee+tSfKXPRigLEF1Pp
-	 H0I6xL+kL3jAdP83wrbd95nqrX4gOFtGasClay/ikEcqMAsrRbgUgm8uymaNB2JJyC
-	 s9fAuxND+GVsI3CvvG4maGRFXUv1mrH/QMsPdEHwjeAnn4LLJl1uL87/6fKQvF81e/
-	 gN47e2z5uZcj4pF1aOpUhKbSFnw/JNFL2aRtTdKMtegAQCGM+3alB+E0XbvxVZ0GZx
-	 vSI/1pnVv1gMF6wJ8a7T6crM136WP7rIW/dyqW6P8SmyiDRFQoN0YMbOf3Fz7aHcH8
-	 iawKWeu/fPcSQ==
-From: Christian Brauner <brauner@kernel.org>
+	s=k20201202; t=1723806749;
+	bh=Xvhko6m4gXDcrQOr/bnImNG8IdOv4SrzCD327herT1c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gYeXurtmdnv5fR0Lvxwg11Rmuc4ghH5uPedjp9RUF9ZTVRnFe2KEe0exw3cCImVFK
+	 rCaAS7BmZxAY/8WKFqSPpuApwA/YreEZ9JZ14QNkvArFFGle3hRED2RvbCpLyCba2l
+	 rIPVVL5acPzqM+YeW9LejtpG8c61dmocnDYvshJQKqGbPQJB2fbGcmY9H6N30CodvY
+	 inuJJ0QRj7hpszFcgk6KmUmw7RkjTNRCuLb4pQX2F0ynh6meOkJZNOwdlryD6Dy8zV
+	 g7Vy8wfyyWx8LeA3HgxdqtkuHQaZe/I9xJVOX78DNQ2ZR0Dft1NVeuF8t5cTsweIxv
+	 AbnNlysFgTzuQ==
+Date: Fri, 16 Aug 2024 12:12:22 +0100
+From: Simon Horman <horms@kernel.org>
 To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
+Cc: Christian Brauner <christian@brauner.io>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
 	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Marc Dionne <marc.dionne@auristor.com>,
 	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Gao Xiang <xiang@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v2 00/25] netfs: Read/write improvements
-Date: Thu, 15 Aug 2024 15:07:42 +0200
-Message-ID: <20240815-umzog-irgendein-80514d89315a@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240814203850.2240469-1-dhowells@redhat.com>
+	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 19/25] netfs: Speed up buffered reading
+Message-ID: <20240816111222.GT632411@kernel.org>
 References: <20240814203850.2240469-1-dhowells@redhat.com>
+ <20240814203850.2240469-20-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3763; i=brauner@kernel.org; h=from:subject:message-id; bh=jMFzZlcFi1TkZ5Y4pxf1tYJzK0rbZrrELQbpOJ8RF3U=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTt/TvfdD5fB2vZ4St+TJxt5mWrLDw33/gjvqHIU/p1x 4z/b++v6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI3TKGf7rW+puKJr8xC2Fc +4dN6MQSIQHtD5UCjw3EjTPKG9RWaTEyrOUUX7jY9aVQn42A5tbDjh4fbp/6mSTXO6u8fQdHhII sPwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240814203850.2240469-20-dhowells@redhat.com>
 
-On Wed, 14 Aug 2024 21:38:20 +0100, David Howells wrote:
-> This set of patches includes a couple of fixes:
+On Wed, Aug 14, 2024 at 09:38:39PM +0100, David Howells wrote:
+> Improve the efficiency of buffered reads in a number of ways:
 > 
->  (1) Revert the removal of waits on PG_private_2 from netfs_release_page()
->      and netfs_invalidate_page().
+>  (1) Overhaul the algorithm in general so that it's a lot more compact and
+>      split the read submission code between buffered and unbuffered
+>      versions.  The unbuffered version can be vastly simplified.
 > 
->  (2) Make cachefiles take the sb_writers lock around set/removexattr.
+>  (2) Read-result collection is handed off to a work queue rather than being
+>      done in the I/O thread.  Multiple subrequests can be processes
+>      simultaneously.
 > 
-> [...]
+>  (3) When a subrequest is collected, any folios it fully spans are
+>      collected and "spare" data on either side is donated to either the
+>      previous or the next subrequest in the sequence.
+> 
+> Notes:
+> 
+>  (*) Readahead expansion is massively slows down fio, presumably because it
+>      causes a load of extra allocations, both folio and xarray, up front
+>      before RPC requests can be transmitted.
+> 
+>  (*) RDMA with cifs does appear to work, both with SIW and RXE.
+> 
+>  (*) PG_private_2-based reading and copy-to-cache is split out into its own
+>      file and altered to use folio_queue.  Note that the copy to the cache
+>      now creates a new write transaction against the cache and adds the
+>      folios to be copied into it.  This allows it to use part of the
+>      writeback I/O code.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-Applied to the vfs.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs.netfs branch should appear in linux-next soon.
+...
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+...
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+> @@ -334,9 +344,8 @@ static void ceph_netfs_issue_read(struct netfs_io_subrequest *subreq)
+>  	struct ceph_client *cl = fsc->client;
+>  	struct ceph_osd_request *req = NULL;
+>  	struct ceph_vino vino = ceph_vino(inode);
+> -	struct iov_iter iter;
+> -	int err = 0;
+> -	u64 len = subreq->len;
+> +	int err;
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.netfs
+Hi David,
 
-[01/25] cachefiles: Fix non-taking of sb_writers around set/removexattr
-        https://git.kernel.org/vfs/vfs/c/4ca422fc1c25
-[02/25] netfs: Adjust labels in /proc/fs/netfs/stats
-        https://git.kernel.org/vfs/vfs/c/2d8e8e0dcfa8
-[03/25] netfs: Record contention stats for writeback lock
-        https://git.kernel.org/vfs/vfs/c/b946f63b34fa
-[04/25] netfs: Reduce number of conditional branches in netfs_perform_write()
-        https://git.kernel.org/vfs/vfs/c/922d33ef048c
-[05/25] netfs, cifs: Move CIFS_INO_MODIFIED_ATTR to netfs_inode
-        https://git.kernel.org/vfs/vfs/c/4c1daf044aed
-[06/25] netfs: Move max_len/max_nr_segs from netfs_io_subrequest to netfs_io_stream
-        https://git.kernel.org/vfs/vfs/c/a479f52b4401
-[07/25] netfs: Reserve netfs_sreq_source 0 as unset/unknown
-        https://git.kernel.org/vfs/vfs/c/e1de76429131
-[08/25] netfs: Remove NETFS_COPY_TO_CACHE
-        https://git.kernel.org/vfs/vfs/c/2a4e83a305ef
-[09/25] netfs: Set the request work function upon allocation
-        https://git.kernel.org/vfs/vfs/c/52c62b5f6dc0
-[10/25] netfs: Use bh-disabling spinlocks for rreq->lock
-        https://git.kernel.org/vfs/vfs/c/45268b70a77d
-[11/25] mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios
-        https://git.kernel.org/vfs/vfs/c/3e73d92929db
-[12/25] iov_iter: Provide copy_folio_from_iter()
-        https://git.kernel.org/vfs/vfs/c/7a51f5cf0851
-[13/25] cifs: Provide the capability to extract from ITER_FOLIOQ to RDMA SGEs
-        https://git.kernel.org/vfs/vfs/c/97b15fbddd0c
-[14/25] netfs: Use new folio_queue data type and iterator instead of xarray iter
-        https://git.kernel.org/vfs/vfs/c/b33aa21f3b7f
-[15/25] netfs: Provide an iterator-reset function
-        https://git.kernel.org/vfs/vfs/c/7306dffdd871
-[16/25] netfs: Simplify the writeback code
-        https://git.kernel.org/vfs/vfs/c/5fb0299ed8df
-[17/25] afs: Make read subreqs async
-        https://git.kernel.org/vfs/vfs/c/05fd361eb083
-[18/25] netfs: Speed up buffered reading
-        https://git.kernel.org/vfs/vfs/c/6437a28f5de1
-[19/25] netfs: Remove fs/netfs/io.c
-        https://git.kernel.org/vfs/vfs/c/85112b95630c
-[20/25] cachefiles, netfs: Fix write to partial block at EOF
-        https://git.kernel.org/vfs/vfs/c/3b5a6483e8d2
-[21/25] netfs: Cancel dirty folios that have no storage destination
-        https://git.kernel.org/vfs/vfs/c/3cca08a1c4c5
-[22/25] cifs: Use iterate_and_advance*() routines directly for hashing
-        https://git.kernel.org/vfs/vfs/c/c86e6c334311
-[23/25] cifs: Switch crypto buffer to use a folio_queue rather than an xarray
-        https://git.kernel.org/vfs/vfs/c/04c9967360ea
-[24/25] cifs: Don't support ITER_XARRAY
-        https://git.kernel.org/vfs/vfs/c/7d0f7f2d1e8b
+err is set conditionally in various places in this function, and then read
+unconditionally near the end of this function. With this change isn't
+entirely clear that err is always initialised by the end of the function.
+
+Flagged by Smatch.
+
+> +	u64 len;
+>  	bool sparse = IS_ENCRYPTED(inode) || ceph_test_mount_opt(fsc, SPARSEREAD);
+>  	u64 off = subreq->start;
+>  	int extent_cnt;
+
+...
+
+> @@ -410,17 +423,19 @@ static void ceph_netfs_issue_read(struct netfs_io_subrequest *subreq)
+>  	req->r_inode = inode;
+>  	ihold(inode);
+>  
+> +	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+>  	ceph_osdc_start_request(req->r_osdc, req);
+>  out:
+>  	ceph_osdc_put_request(req);
+>  	if (err)
+> -		netfs_subreq_terminated(subreq, err, false);
+> +		netfs_read_subreq_terminated(subreq, err, false);
+>  	doutc(cl, "%llx.%llx result %d\n", ceph_vinop(inode), err);
+>  }
+
+...
+
+> diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+
+...
+
+> +/*
+> + * Go through the list of failed/short reads, retrying all retryable ones.  We
+> + * need to switch failed cache reads to network downloads.
+> + */
+> +static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
+> +{
+> +	struct netfs_io_subrequest *subreq;
+> +	struct netfs_io_stream *stream0 = &rreq->io_streams[0];
+> +	LIST_HEAD(sublist);
+> +	LIST_HEAD(queue);
+> +
+> +	_enter("R=%x", rreq->debug_id);
+> +
+> +	if (list_empty(&rreq->subrequests))
+> +		return;
+> +
+> +	if (rreq->netfs_ops->retry_request)
+> +		rreq->netfs_ops->retry_request(rreq, NULL);
+> +
+> +	/* If there's no renegotiation to do, just resend each retryable subreq
+> +	 * up to the first permanently failed one.
+> +	 */
+> +	if (!rreq->netfs_ops->prepare_read &&
+> +	    !test_bit(NETFS_RREQ_COPY_TO_CACHE, &rreq->flags)) {
+> +		struct netfs_io_subrequest *subreq;
+> +
+> +		list_for_each_entry(subreq, &rreq->subrequests, rreq_link) {
+> +			if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
+> +				break;
+> +			if (__test_and_clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
+> +				netfs_reset_iter(subreq);
+> +				netfs_reissue_read(rreq, subreq);
+> +			}
+> +		}
+> +		return;
+> +	}
+> +
+> +	/* Okay, we need to renegotiate all the download requests and flip any
+> +	 * failed cache reads over to being download requests and negotiate
+> +	 * those also.  All fully successful subreqs have been removed from the
+> +	 * list and any spare data from those has been donated.
+> +	 *
+> +	 * What we do is decant the list and rebuild it one subreq at a time so
+> +	 * that we don't end up with donations jumping over a gap we're busy
+> +	 * populating with smaller subrequests.  In the event that the subreq
+> +	 * we just launched finishes before we insert the next subreq, it'll
+> +	 * fill in rreq->prev_donated instead.
+> +
+> +	 * Note: Alternatively, we could split the tail subrequest right before
+> +	 * we reissue it and fix up the donations under lock.
+> +	 */
+> +	list_splice_init(&rreq->subrequests, &queue);
+> +
+> +	do {
+> +		struct netfs_io_subrequest *from;
+> +		struct iov_iter source;
+> +		unsigned long long start, len;
+> +		size_t part, deferred_next_donated = 0;
+> +		bool boundary = false;
+> +
+> +		/* Go through the subreqs and find the next span of contiguous
+> +		 * buffer that we then rejig (cifs, for example, needs the
+> +		 * rsize renegotiating) and reissue.
+> +		 */
+> +		from = list_first_entry(&queue, struct netfs_io_subrequest, rreq_link);
+> +		list_move_tail(&from->rreq_link, &sublist);
+> +		start = from->start + from->transferred;
+> +		len   = from->len   - from->transferred;
+> +
+> +		_debug("from R=%08x[%x] s=%llx ctl=%zx/%zx/%zx",
+> +		       rreq->debug_id, from->debug_index,
+> +		       from->start, from->consumed, from->transferred, from->len);
+> +
+> +		if (test_bit(NETFS_SREQ_FAILED, &from->flags) ||
+> +		    !test_bit(NETFS_SREQ_NEED_RETRY, &from->flags))
+> +			goto abandon;
+> +
+> +		deferred_next_donated = from->next_donated;
+> +		while ((subreq = list_first_entry_or_null(
+> +				&queue, struct netfs_io_subrequest, rreq_link))) {
+> +			if (subreq->start != start + len ||
+> +			    subreq->transferred > 0 ||
+> +			    !test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags))
+> +				break;
+> +			list_move_tail(&subreq->rreq_link, &sublist);
+> +			len += subreq->len;
+> +			deferred_next_donated = subreq->next_donated;
+> +			if (test_bit(NETFS_SREQ_BOUNDARY, &subreq->flags))
+> +				break;
+> +		}
+> +
+> +		_debug(" - range: %llx-%llx %llx", start, start + len - 1, len);
+> +
+> +		/* Determine the set of buffers we're going to use.  Each
+> +		 * subreq gets a subset of a single overall contiguous buffer.
+> +		 */
+> +		netfs_reset_iter(from);
+> +		source = from->io_iter;
+> +		source.count = len;
+> +
+> +		/* Work through the sublist. */
+> +		while ((subreq = list_first_entry_or_null(
+> +				&sublist, struct netfs_io_subrequest, rreq_link))) {
+> +			list_del(&subreq->rreq_link);
+> +
+> +			subreq->source	= NETFS_DOWNLOAD_FROM_SERVER;
+> +			subreq->start	= start - subreq->transferred;
+> +			subreq->len	= len   + subreq->transferred;
+> +			stream0->sreq_max_len = subreq->len;
+> +
+> +			__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+> +			__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
+> +
+> +			spin_lock_bh(&rreq->lock);
+> +			list_add_tail(&subreq->rreq_link, &rreq->subrequests);
+> +			subreq->prev_donated += rreq->prev_donated;
+> +			rreq->prev_donated = 0;
+> +			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
+> +			spin_unlock_bh(&rreq->lock);
+> +
+> +			BUG_ON(!len);
+> +
+> +			/* Renegotiate max_len (rsize) */
+> +			if (rreq->netfs_ops->prepare_read(subreq) < 0) {
+
+Earlier in this function it is assumed that prepare_read may be NULL.
+Can that also be the case here?
+
+Also flagged by Smatch.
+
+> +				trace_netfs_sreq(subreq, netfs_sreq_trace_reprep_failed);
+> +				__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
+> +			}
+
+...
