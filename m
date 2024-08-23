@@ -1,46 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74629192D63
-	for <v9fs@lists.linux.dev>; Fri, 23 Aug 2024 16:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1DE194129
+	for <v9fs@lists.linux.dev>; Fri, 23 Aug 2024 16:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724429565; cv=none; b=MRx0gN6TYdGsU8UOPOTu3THqPPdKmez9XJjiV3n8UaUMEDBt9n9iiwFPN10L1cx60I+LpQ732shxLlzmf8PvqYyZR+RJ2lUarURl2c6kk7Lz57xLscm8D46+5LEJ/o+hK4bcOKg9odq8Ohjj0Xxl4i7m9u/5bbQ8/sXllOPjMw0=
+	t=1724429578; cv=none; b=FmcEzo8U2IAdu2mdT068dgE6l1REM/iM/DNOMeMWtHwf0qDQDuAMbJjCAWO9XZFyG/AfQaUVXQgBVtVlrZ49rCCaZRz6eGX7rQPwcW8q0D82QJYLnW896j+CoYOa612Z4uQLhI1vAr1c+i7JJSUa5rzrCXWAISUrt/EVBvi8074=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724429565; c=relaxed/simple;
-	bh=580hFqprR8ZFI5WWkFW4PKJxwZHdomHT+uVT2jWzm8I=;
+	s=arc-20240116; t=1724429578; c=relaxed/simple;
+	bh=FbX1MxFORvAXV1r6WiurHQFuRWa9an4aaCwoArqvxcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bv1htaTdl0M1ihVgKToNkfdu74KpMD+Yk3W2hzhRRAP/xGhdUn/uT8rCbK0I6I65/I/FOz63DYLNzVJv6KZaJyGCHUhDwjNJlKia44uKYXYCxAX9VZmiMvBll7QjgEHAfNRuk8o0qV1Vh0M1Yb+DfY/vF99grKbYUSTiKTl2feU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pzxv2XtO; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=M83rz7s9OeVVLBUSNe5tlxrfW1cQ2KtPKxqJ3V4MfGi4zI0evqAas/nPG+POqHHCXSXm8+pvT3matISwOwpjZ02gFLRLvimQ2iN2JFMpKuRcLuiDi9JWxCbtTK6clr5QtVmsev3X2d2W0Hve1teNok2EuIci1fzj7tVzSR4c9ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YKTTK4Zm; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pzxv2XtO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YKTTK4Zm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724429563;
+	s=mimecast20190719; t=1724429575;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UF1dQkOHc38/CxHdvA+HTnp1kknbAHEKTFkwj9qcOQo=;
-	b=Pzxv2XtOas/YNXwixAGB04IyB6qvPd6K+nXK+9J8n7XLInXJARr7WFk83jPrkUE7BFycX3
-	PW5ffrmBc8UBi9yZjj17hn255xmw4eS3VWIWjFp6RQnKvAnLMcSk3jaQpTwz14t5No/vA0
-	rKNl0IWU6Ai2+SK8+f3y230S7R/Oy1Q=
+	bh=C4kdxje9pJwe2F8kxgsN+SQonQ75sAMbOz8YwNBazmI=;
+	b=YKTTK4Zm2+sJapdWpmWnL5oBJ0oA9mFlLgPIoEeLWkPBh+WDaguOZrImc80BHqR3eUlJp2
+	ec1/VUhB3/ENO/rPuf8FL5F0GoEZFQPPbbimGJHK4e1IvWtrnIfV+/2VRri0RLYGlxBkEY
+	TgGK8C4KIoAjz0ssPCTYQ4mua93BdCo=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-8smGqBV2N5OacPwQdgxAmQ-1; Fri,
- 23 Aug 2024 12:12:39 -0400
-X-MC-Unique: 8smGqBV2N5OacPwQdgxAmQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-tWlcgTiVMRa8lhTgu6q_UA-1; Fri,
+ 23 Aug 2024 12:12:44 -0400
+X-MC-Unique: tWlcgTiVMRa8lhTgu6q_UA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 571C51955D4E;
-	Fri, 23 Aug 2024 16:12:36 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CFCD01955D47;
+	Fri, 23 Aug 2024 16:12:41 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.30])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 11C6819560AA;
-	Fri, 23 Aug 2024 16:12:31 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9B46D19560A3;
+	Fri, 23 Aug 2024 16:12:37 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -59,9 +59,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Steve French <sfrench@samba.org>,
 	Paulo Alcantara <pc@manguebit.com>
-Subject: [PATCH 3/5] netfs: Fix missing iterator reset on retry of short read
-Date: Fri, 23 Aug 2024 17:12:04 +0100
-Message-ID: <20240823161209.434705-4-dhowells@redhat.com>
+Subject: [PATCH 4/5] cifs: Fix short read handling
+Date: Fri, 23 Aug 2024 17:12:05 +0100
+Message-ID: <20240823161209.434705-5-dhowells@redhat.com>
 In-Reply-To: <20240823161209.434705-1-dhowells@redhat.com>
 References: <20240823161209.434705-1-dhowells@redhat.com>
 Precedence: bulk
@@ -71,12 +71,13 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Fix netfs_rreq_perform_resubmissions() to reset before retrying a short
-read, otherwise the wrong part of the output buffer will be used.
+Fix smb2_readv_callback() to always take -ENODATA as indicating we hit EOF
+and to always set the NETFS_SREQ_HIT_EOF flag rather than only doing it
+under some circumstances.
 
-Fixes: 92b6cc5d1e7c ("netfs: Add iov_iters to (sub)requests to describe various buffers")
+Fixes: 942ad91e2956 ("netfs, cifs: Fix handling of short DIO read")
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Steve French <sfrench@samba.org>
 cc: Paulo Alcantara <pc@manguebit.com>
@@ -85,19 +86,30 @@ cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/io.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/smb2pdu.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index 605b667fe3a6..d6ada4eba744 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -315,6 +315,7 @@ static bool netfs_rreq_perform_resubmissions(struct netfs_io_request *rreq)
- 			netfs_read_from_server(rreq, subreq);
- 		} else if (test_bit(NETFS_SREQ_SHORT_IO, &subreq->flags)) {
- 			__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
-+			netfs_reset_subreq_iter(rreq, subreq);
- 			netfs_rreq_short_read(rreq, subreq);
- 		}
- 	}
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index e182fdbec887..9829784e8ec5 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4601,16 +4601,8 @@ smb2_readv_callback(struct mid_q_entry *mid)
+ 				     rdata->got_bytes);
+ 
+ 	if (rdata->result == -ENODATA) {
+-		/* We may have got an EOF error because fallocate
+-		 * failed to enlarge the file.
+-		 */
+-		if (rdata->subreq.start + rdata->subreq.transferred < rdata->subreq.rreq->i_size)
+-			rdata->result = 0;
+-		if (rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes >=
+-		    ictx->remote_i_size) {
+-			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+-			rdata->result = 0;
+-		}
++		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
++		rdata->result = 0;
+ 	} else {
+ 		if (rdata->got_bytes < rdata->actual_len &&
+ 		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
 
