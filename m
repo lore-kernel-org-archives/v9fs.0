@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82CE14036E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD94D13CF9C
 	for <v9fs@lists.linux.dev>; Fri, 23 Aug 2024 07:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724398628; cv=none; b=RfU+RiZqORv+TqQ5gNrEqh8SmD1oqzjZKTHpPKI9N1iDZsdZgK4jLyUPjY4Uxl58W9SXlN/UhPQtue3/KFDO0eDp6W3/Z3ZrnqFKjniTDZtQTozM0gjzB1bEn6seQuw/E4gR2kJrFx4a8u8U7PAxXU2/apmz0zIInwT1TXhIVV0=
+	t=1724398628; cv=none; b=JdAy8GOVlHMdCcf4T9WkBVdGfvyivZNg2PLe25MDKELlKljQg12mabymMV1/sf0WRriF+wRfXkbTDBew5m5h8/5XJDgHcZRJBPjtBD+34ILh6geYAFbdv777JfYIrkdl7C2rs8e5bhh0xjwEixgUpPSk39VsI63h6lKRphNldDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724398628; c=relaxed/simple;
-	bh=9eBMCKlGTwUhw3wmdfPekwCyagi2vE6PHh1pfEDUoEQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ejO+R6zmRYCE1LxHvwNDY53ouu+xJEkuaHltDUF9+/+naxIgJ4RF8eZItNwSCjA+awd7JSmes6pYi5dW+OAnTkwdHMu9U08TG1D6uCgy3MWexWlAysIczUbjyzj8NQdtgLPZlduShmY2xNgoLBtWxIafEs+lFezAMsmx/HDMXec=
+	bh=eroYpqdyOiSP4cxkVpk2TA7jSZdwEq21PIcg/hcChc4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rASQEHREUuHIuBFgLrFWtTECD5bW49FkqXJtVSzALvEZ4JV7v4ZYT9xAo5MSyL8gGzTfhx2/LN676bITNjKl71mgMx/HT3uHY3rF5tajrRxjoEzYhgSec1dPU/q89/CbRRhbtn/go6UMQah/ZwEq2aiGwfQ9yiu8ZR43WJvzPOo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,21 +17,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1shOqr-0004KV-Kz; Fri, 23 Aug 2024 09:36:53 +0200
+	id 1shOqr-0004KT-Kz; Fri, 23 Aug 2024 09:36:53 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1shOqn-002R4M-60; Fri, 23 Aug 2024 09:36:49 +0200
+	id 1shOqn-002R4L-5k; Fri, 23 Aug 2024 09:36:49 +0200
 Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
 	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1shOqn-00AtQT-0K;
+	id 1shOqn-00AtQT-0J;
 	Fri, 23 Aug 2024 09:36:49 +0200
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Fri, 23 Aug 2024 09:36:47 +0200
-Subject: [PATCH v9 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/func_utils.h
+Subject: [PATCH v9 0/3] usb: gadget: 9pfs transport
+Date: Fri, 23 Aug 2024 09:36:46 +0200
+Message-Id: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -41,9 +40,12 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240116-ml-topic-u9p-v9-1-93d73f47b76b@pengutronix.de>
-References: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
-In-Reply-To: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAA48yGYC/33Py26DMBAF0F+JvK4bv4276n9UXfgxDpYIIENQq
+ oh/r2Fb18s7unNG80IL5AQL+ri8UIYtLWkaSzBvF+R7O94Ap1AyYoQJQqnC9wGv05w8fpgZd0Y
+ yLSQn4CgqK84ugF22o++PpftwH65n+1raR2HOENPzvPf1XXKflnXKP+f5jR7Tfy5tFBNsQ+c5U
+ dFYAZ8zjLfHmqcxPd8DoEPbWEtgRXBCeRelYUaxqsBbAi+CV8xyBd4HS6uCaAmiCJoxCKxzxIb
+ 6F7IlyCJICMS6IDlEWRVUS1BFUEYarYNWIcaqoFuCLgK3FACi1tHVv+haQlcEQQwoabwVIfwR9
+ n3/Be6NkVycAgAA
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
  Latchesar Ionkov <lucho@ionkov.net>, 
  Dominique Martinet <asmadeus@codewreck.org>, 
@@ -53,23 +55,24 @@ To: Eric Van Hensbergen <ericvh@kernel.org>,
 Cc: Andrzej Pietrasiewicz <andrzej.p@collabora.com>, v9fs@lists.linux.dev, 
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-usb@vger.kernel.org, kernel@pengutronix.de, 
- Michael Grzeschik <m.grzeschik@pengutronix.de>
+ Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+ Jan Luebbe <jlu@pengutronix.de>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5304;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5641;
  i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=9eBMCKlGTwUhw3wmdfPekwCyagi2vE6PHh1pfEDUoEQ=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmyDwQwmCl6t0rNTyax+t+0x2mr1x30jFatJmMp
- 6Fi9G/tT1OJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZsg8EAAKCRC/aVhE+XH0
- qxbyD/0RiX3j17QGqddXoukA8lqwuM9DOmsEobozr+uST+WVylml4NCpN6R5TMBRUal5gKVB8dw
- 693u+T1pGfJSgLp9eZteNwOqe7/mpv+69WtfMg0YOSU0gkTL3GuCF/LwtsVRnoDdzTmnUVKDLSv
- vZvrRdz1MSAf7X2Dpr+lhmQ9ruPwAH82IjGSqQcrNrQJyus5t4Watuq/apqlgq4fFU3wlwAqfMe
- YUFyb/UCBWaUYA9E+QY/Rj4RUqLbOmCs9BuzdhxU/vwnmpp5c/NBJtGse3/9qghlusLUQC0vpYV
- XT2CtwK/Zlhm0Gzrukc4WyiH1fNuFVs82LKd2DogZH/YD+G3qhLSfQoNRpgVn6AF4lom9iBglkJ
- w79Kt7BU+XYEnT29maFgzqgUw1gFr5RccQZkPjWKXi5jV2mi6d6TGScG4mbK1opgoPTMfXbkyRr
- xVYrl2v+Go7DiBiLRS+pQ7TCCy3ycARnuDuOKnine3t70sX//SGmjBUjGzU2YvzvupIE+KVNVVV
- FZ9JBZIqjJMsHjWKt1uDk1nxgXEyqyF9PhnsNQgHybJilAzH9hZzJd24z2Zu2yQPbc+c/aj6Xjl
- 5KIFZtvxXvNDUuQziHiURR4vQzsuiti/e+K2DrNd5X47F7YLb4be1cX9R1exIBXlRRIRmswSaWX
- jcdIeVED9oT9Yvw==
+ bh=eroYpqdyOiSP4cxkVpk2TA7jSZdwEq21PIcg/hcChc4=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmyDwPcmiUnUg90Z5vYStde383Rnzy6DR7cQjdG
+ LrE+HLauOCJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZsg8DwAKCRC/aVhE+XH0
+ qzNuD/4p66j34UbVtTX1LBfJy2ZgIOqotnBmsrQtrg14PTIp26+4K6hf7z79yhFBhWHuxcoLRtb
+ JaOeeHd2UV7EA3X/j5LFGAo+YDUiBiNLLNCmRblqPnApPytxnQYGGnXYtlQADj+vzfzF/kF3SlB
+ 4a1al1gw5Gzu3qANa5RVYe0QCBl8CQaQvhyF0G3Tbb/zSlcuexaaF0Y4+EHOxbYwVNzTuwPbE9U
+ d7KBNsBc4u+JUAGVHbvSnm55QtsJTpZiraH8ALt/vVQWgOUON5vcdUOq5sU8k5ToY+8RQb6T2fr
+ 5Kxw2lJ991SMnJg3/dTAG42UOpkIsWPvrJ0HsiVI3CdcMGbaqq1oPQHJuJ0yWBPK9ECBapcK8Fv
+ GWYI4JUgDmelgBlgju/BAer10K+GPoQwHxfQA9YTA76+Fl3zfOGPHC+LLjUsjsFeWMS0/tcgsFJ
+ dlUmnIwUP5mkItEQ7GpDtgToWWZxz2DezWK3gvXStz4+XRAl6pSlJam/P90K7ZyyMhSjr3rD4hi
+ 3rivLzAYvHK0aUUq+YOiZrdI1X273O6Ju4kj/Xsjoa3p15OWV7ZquOLW1G5oHoT1uNMQ3VSRQJc
+ 9C8HTYrmDJhISBSDquMi7zGS8a3IwI2/EWRuDN5v8vxIylZ+7IE2oxg8f8E+8xeJwj/uu1xsmUW
+ CoguOWFCY2ScWXw==
 X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -77,171 +80,117 @@ X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-We move the func_utils.h header to include/linux/usb to be
-able to compile function drivers outside of the
-drivers/usb/gadget/function directory.
+This series is adding support to mount usb hostside exported 9pfs
+filesystems via the usb gadget interface. It also includes a simple tool
+(p9_fwd.py) to translate an tcp 9pfs transport and reuse it via the usb
+interface.
+
+    +--------------------------+    |    +--------------------------+
+    |  9PFS mounting client    |    |    |  9PFS exporting server   |
+ SW |                          |    |    |                          |
+    |   (this:trans_usbg)      |    |    |(e.g. diod or nfs-ganesha)|
+    +-------------^------------+    |    +-------------^------------+
+                  |                 |                  |
+                  |                 |           +------v------+
+                  |                 |           |  p9_fwd.py  |
+                  |                 |           +------^------+
+                  |                 |                  |
+------------------|------------------------------------|-------------
+                  |                 |                  |
+    +-------------v------------+    |    +-------------v------------+
+    |                          |    |    |                          |
+ HW |   USB Device Controller  <--------->   USB Host Controller    |
+    |                          |    |    |                          |
+    +--------------------------+    |    +--------------------------+
+
+The USB host exports a filesystem, while the gadget on the USB device
+side makes it mountable.
+
+Diod (9pfs server) and the forwarder are on the development host, where
+the root filesystem is actually stored. The gadget is initialized during
+boot (or later) on the embedded board. Then the forwarder will find it
+on the USB bus and start forwarding requests.
+
+In this case the 9p requests come from the device and are handled by the
+host. The reason is that USB device ports are normally not available on
+PCs, so a connection in the other direction would not work.
+
+One use-case is to use it as an alternative to NFS root booting during
+the development of embedded Linux devices.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+Changes in v9:
+- solved the error return path by using wait_for_completion instead of
+  running in the usb complete callback in a loop
+- by using wait_for_completion solves the req_lock
+- using req->context instead of using a state variable
+- Link to v8: https://lore.kernel.org/r/20240116-ml-topic-u9p-v8-0-409e659ca4dd@pengutronix.de
+
+Changes in v8:
+- this time really added the req_lock spinlock
+- Link to v7: https://lore.kernel.org/r/20240116-ml-topic-u9p-v7-0-3a1eeef77fbe@pengutronix.de
+
+Changes in v7:
+- added back the req_lock spinlock
+- Link to v6: https://lore.kernel.org/r/20240116-ml-topic-u9p-v6-0-695977d76dff@pengutronix.de
+
+Changes in v6:
+- fixed the python script not to have path set by default
+- improved the lock init
+- fixed usb9pfs status change to connected
+- Link to v5: https://lore.kernel.org/r/20240116-ml-topic-u9p-v5-0-5ed0abd53ef5@pengutronix.de
+
+Changes in v5:
+- fixed lockup in mount -> remount -> monut scenario
+- improved p9_fwd transport script with more options
+- Link to v4: https://lore.kernel.org/r/20240116-ml-topic-u9p-v4-0-722ed28b0ade@pengutronix.de
+
+Changes in v4:
+- reworked the naming scheme to be set by the configfs instance
+- added conn_cancel function to properly stop the transfers
+- ensured that umount -f will work even when the host side has crahed
+- added all the review feedback from Andrzej Pietrasiewicz
+- Link to v3: https://lore.kernel.org/r/20240116-ml-topic-u9p-v3-0-c62a36eccda1@pengutronix.de
+
+Changes in v3:
+- dropped patch "usb: gadget: legacy: add 9pfs multi gadget" as discussed with gregkh
+- Link to v2: https://lore.kernel.org/r/20240116-ml-topic-u9p-v2-0-b46cbf592962@pengutronix.de
+
+Changes in v2:
+- improved the commit messages
+- introduced an patch to move the header u_f.h to include/linux/usb to compile usb gadget functions treewide
+- moved usbg gadget function to net/9p/
+- adderessed several comments in function driver, like the cleanup path and kbuild errors
+- improved the documentation in Documentation/filesystems/9p.rst
+- Link to v1: https://lore.kernel.org/r/20240116-ml-topic-u9p-v1-0-ad8c306f9a4e@pengutronix.de
 
 ---
-v8 -> v9: -
-v7 -> v8: -
-v6 -> v7: -
-v5 -> v6: -
-v4 -> v5:
-  - renamed to func_utils.h
-v3 -> v4: -
-v2 -> v3: -
-v1 -> v2:
-  - new introduced patch
+Michael Grzeschik (3):
+      usb: gadget: function: move u_f.h to include/linux/usb/func_utils.h
+      net/9p/usbg: Add new usb gadget function transport
+      tools: usb: p9_fwd: add usb gadget packet forwarder script
+
+ Documentation/filesystems/9p.rst                   |  58 +-
+ drivers/usb/gadget/configfs.c                      |   2 +-
+ drivers/usb/gadget/function/f_fs.c                 |   2 +-
+ drivers/usb/gadget/function/f_hid.c                |   2 +-
+ drivers/usb/gadget/function/f_loopback.c           |   2 +-
+ drivers/usb/gadget/function/f_midi.c               |   2 +-
+ drivers/usb/gadget/function/f_midi2.c              |   2 +-
+ drivers/usb/gadget/function/f_sourcesink.c         |   2 +-
+ drivers/usb/gadget/u_f.c                           |   2 +-
+ .../gadget/u_f.h => include/linux/usb/func_utils.h |   2 +-
+ net/9p/Kconfig                                     |   6 +
+ net/9p/Makefile                                    |   4 +
+ net/9p/trans_usbg.c                                | 982 +++++++++++++++++++++
+ tools/usb/p9_fwd.py                                | 243 +++++
+ 14 files changed, 1301 insertions(+), 10 deletions(-)
 ---
- drivers/usb/gadget/configfs.c                              | 2 +-
- drivers/usb/gadget/function/f_fs.c                         | 2 +-
- drivers/usb/gadget/function/f_hid.c                        | 2 +-
- drivers/usb/gadget/function/f_loopback.c                   | 2 +-
- drivers/usb/gadget/function/f_midi.c                       | 2 +-
- drivers/usb/gadget/function/f_midi2.c                      | 2 +-
- drivers/usb/gadget/function/f_sourcesink.c                 | 2 +-
- drivers/usb/gadget/u_f.c                                   | 2 +-
- drivers/usb/gadget/u_f.h => include/linux/usb/func_utils.h | 2 +-
- 9 files changed, 9 insertions(+), 9 deletions(-)
+base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
+change-id: 20240116-ml-topic-u9p-895274530eb1
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 0e7c1e947c0a0..0f8553795a8ed 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -8,8 +8,8 @@
- #include <linux/usb/composite.h>
- #include <linux/usb/gadget_configfs.h>
- #include <linux/usb/webusb.h>
-+#include <linux/usb/func_utils.h>
- #include "configfs.h"
--#include "u_f.h"
- #include "u_os_desc.h"
- 
- int check_user_usb_string(const char *name,
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index e0ceaa7219493..411f0273d8d44 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -33,6 +33,7 @@
- #include <linux/usb/ccid.h>
- #include <linux/usb/composite.h>
- #include <linux/usb/functionfs.h>
-+#include <linux/usb/func_utils.h>
- 
- #include <linux/aio.h>
- #include <linux/kthread.h>
-@@ -40,7 +41,6 @@
- #include <linux/eventfd.h>
- 
- #include "u_fs.h"
--#include "u_f.h"
- #include "u_os_desc.h"
- #include "configfs.h"
- 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 93dae017ae456..1293d8db07f6c 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -16,8 +16,8 @@
- #include <linux/wait.h>
- #include <linux/sched.h>
- #include <linux/usb/g_hid.h>
-+#include <linux/usb/func_utils.h>
- 
--#include "u_f.h"
- #include "u_hid.h"
- 
- #define HIDG_MINORS	4
-diff --git a/drivers/usb/gadget/function/f_loopback.c b/drivers/usb/gadget/function/f_loopback.c
-index 979b028edb99e..49b009a7d5d79 100644
---- a/drivers/usb/gadget/function/f_loopback.c
-+++ b/drivers/usb/gadget/function/f_loopback.c
-@@ -14,9 +14,9 @@
- #include <linux/module.h>
- #include <linux/err.h>
- #include <linux/usb/composite.h>
-+#include <linux/usb/func_utils.h>
- 
- #include "g_zero.h"
--#include "u_f.h"
- 
- /*
-  * LOOPBACK FUNCTION ... a testing vehicle for USB peripherals,
-diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-index 67052a664e746..1d7a955e990b4 100644
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -33,8 +33,8 @@
- #include <linux/usb/gadget.h>
- #include <linux/usb/audio.h>
- #include <linux/usb/midi.h>
-+#include <linux/usb/func_utils.h>
- 
--#include "u_f.h"
- #include "u_midi.h"
- 
- MODULE_AUTHOR("Ben Williamson");
-diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
-index 3f63253ad3e07..3edc32c0e0983 100644
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -18,8 +18,8 @@
- #include <linux/usb/gadget.h>
- #include <linux/usb/audio.h>
- #include <linux/usb/midi-v2.h>
-+#include <linux/usb/func_utils.h>
- 
--#include "u_f.h"
- #include "u_midi2.h"
- 
- struct f_midi2;
-diff --git a/drivers/usb/gadget/function/f_sourcesink.c b/drivers/usb/gadget/function/f_sourcesink.c
-index 6f3702210450f..ec5fd25020fdb 100644
---- a/drivers/usb/gadget/function/f_sourcesink.c
-+++ b/drivers/usb/gadget/function/f_sourcesink.c
-@@ -13,10 +13,10 @@
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/usb/composite.h>
-+#include <linux/usb/func_utils.h>
- #include <linux/err.h>
- 
- #include "g_zero.h"
--#include "u_f.h"
- 
- /*
-  * SOURCE/SINK FUNCTION ... a primary testing vehicle for USB peripheral
-diff --git a/drivers/usb/gadget/u_f.c b/drivers/usb/gadget/u_f.c
-index 6aea1ecb39999..9f90665827945 100644
---- a/drivers/usb/gadget/u_f.c
-+++ b/drivers/usb/gadget/u_f.c
-@@ -8,7 +8,7 @@
-  * Author: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
-  */
- 
--#include "u_f.h"
-+#include <linux/usb/func_utils.h>
- #include <linux/usb/ch9.h>
- 
- struct usb_request *alloc_ep_req(struct usb_ep *ep, size_t len)
-diff --git a/drivers/usb/gadget/u_f.h b/include/linux/usb/func_utils.h
-similarity index 99%
-rename from drivers/usb/gadget/u_f.h
-rename to include/linux/usb/func_utils.h
-index e313c3b8dcb19..9f2a32c765260 100644
---- a/drivers/usb/gadget/u_f.h
-+++ b/include/linux/usb/func_utils.h
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * u_f.h
-+ * usbf_utils.h
-  *
-  * Utility definitions for USB functions
-  *
-
+Best regards,
 -- 
-2.39.2
+Michael Grzeschik <m.grzeschik@pengutronix.de>
 
