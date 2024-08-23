@@ -1,204 +1,247 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751DF1D2796
-	for <v9fs@lists.linux.dev>; Thu, 22 Aug 2024 22:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82CE14036E
+	for <v9fs@lists.linux.dev>; Fri, 23 Aug 2024 07:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724364440; cv=none; b=VV2UlnCvWyEu9kYsqgKNCDRwv4/s5KqmlF9gckWLvSUeZgT1HUj31/tkCY7FvCfqIcJTisGFwbluP2YG7NneR91rxT6l8NPUfTYJkl9HQxWMOlQv+MCdkdJzagREh8NFk5mRsPpeKbsQgsBpQl/C0+kiACCr9xz2MU7YtuRH/Ik=
+	t=1724398628; cv=none; b=RfU+RiZqORv+TqQ5gNrEqh8SmD1oqzjZKTHpPKI9N1iDZsdZgK4jLyUPjY4Uxl58W9SXlN/UhPQtue3/KFDO0eDp6W3/Z3ZrnqFKjniTDZtQTozM0gjzB1bEn6seQuw/E4gR2kJrFx4a8u8U7PAxXU2/apmz0zIInwT1TXhIVV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724364440; c=relaxed/simple;
-	bh=BDYrAsd6P1ev6Wpp5VhwprsXS01M0sKadjGZCpGaMhk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kywq96ldS5NDNMPCVhXA0Eyw5qTlFK1BzNaE6DIKChQRbacA+uxCVxrnEY+yrOzV3QDqOVHp4ZK69lkfcUKRyc1H52ahgUg8IZhgbsIC6X6BjsI0KROkAZwb1Fm0xBvvq9AYP1AE0Et9RoSZvsxVvg4ZE04s0MLSnuZxbp+ISS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W6VcskzZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W6VcskzZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724364437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K4cMR1cPV7JXYWx72h4PebZI2yNIfo6unToml+bPSHM=;
-	b=W6VcskzZywatLjfQVtnUtwtKo1JnlTpIVgZyUHEcx3UQXrQg+VHq0DH6w2CpDY3N7xFsKF
-	V7EpTCMLK5Xz2rmMlE+TFaBnMUVA5V+IXX49YBY9aEX/fcfoUj3NCY7iRQ3dR9N1XyGZ6L
-	4EcmMyuzUVB9BK42AeK27H2xgwP/80s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-bMIxmBy2PluYI0jC0-NnCQ-1; Thu,
- 22 Aug 2024 18:07:14 -0400
-X-MC-Unique: bMIxmBy2PluYI0jC0-NnCQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C8AD61955F40;
-	Thu, 22 Aug 2024 22:07:11 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.30])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F0C2F19560A3;
-	Thu, 22 Aug 2024 22:07:06 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>
-Subject: [PATCH 2/2] netfs, cifs: Fix handling of short DIO read
-Date: Thu, 22 Aug 2024 23:06:49 +0100
-Message-ID: <20240822220650.318774-3-dhowells@redhat.com>
-In-Reply-To: <20240822220650.318774-1-dhowells@redhat.com>
-References: <20240822220650.318774-1-dhowells@redhat.com>
+	s=arc-20240116; t=1724398628; c=relaxed/simple;
+	bh=9eBMCKlGTwUhw3wmdfPekwCyagi2vE6PHh1pfEDUoEQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ejO+R6zmRYCE1LxHvwNDY53ouu+xJEkuaHltDUF9+/+naxIgJ4RF8eZItNwSCjA+awd7JSmes6pYi5dW+OAnTkwdHMu9U08TG1D6uCgy3MWexWlAysIczUbjyzj8NQdtgLPZlduShmY2xNgoLBtWxIafEs+lFezAMsmx/HDMXec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1shOqr-0004KV-Kz; Fri, 23 Aug 2024 09:36:53 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1shOqn-002R4M-60; Fri, 23 Aug 2024 09:36:49 +0200
+Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
+	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1shOqn-00AtQT-0K;
+	Fri, 23 Aug 2024 09:36:49 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Fri, 23 Aug 2024 09:36:47 +0200
+Subject: [PATCH v9 1/3] usb: gadget: function: move u_f.h to
+ include/linux/usb/func_utils.h
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240116-ml-topic-u9p-v9-1-93d73f47b76b@pengutronix.de>
+References: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
+In-Reply-To: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrzej Pietrasiewicz <andrzej.p@collabora.com>, v9fs@lists.linux.dev, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, kernel@pengutronix.de, 
+ Michael Grzeschik <m.grzeschik@pengutronix.de>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5304;
+ i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
+ bh=9eBMCKlGTwUhw3wmdfPekwCyagi2vE6PHh1pfEDUoEQ=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmyDwQwmCl6t0rNTyax+t+0x2mr1x30jFatJmMp
+ 6Fi9G/tT1OJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZsg8EAAKCRC/aVhE+XH0
+ qxbyD/0RiX3j17QGqddXoukA8lqwuM9DOmsEobozr+uST+WVylml4NCpN6R5TMBRUal5gKVB8dw
+ 693u+T1pGfJSgLp9eZteNwOqe7/mpv+69WtfMg0YOSU0gkTL3GuCF/LwtsVRnoDdzTmnUVKDLSv
+ vZvrRdz1MSAf7X2Dpr+lhmQ9ruPwAH82IjGSqQcrNrQJyus5t4Watuq/apqlgq4fFU3wlwAqfMe
+ YUFyb/UCBWaUYA9E+QY/Rj4RUqLbOmCs9BuzdhxU/vwnmpp5c/NBJtGse3/9qghlusLUQC0vpYV
+ XT2CtwK/Zlhm0Gzrukc4WyiH1fNuFVs82LKd2DogZH/YD+G3qhLSfQoNRpgVn6AF4lom9iBglkJ
+ w79Kt7BU+XYEnT29maFgzqgUw1gFr5RccQZkPjWKXi5jV2mi6d6TGScG4mbK1opgoPTMfXbkyRr
+ xVYrl2v+Go7DiBiLRS+pQ7TCCy3ycARnuDuOKnine3t70sX//SGmjBUjGzU2YvzvupIE+KVNVVV
+ FZ9JBZIqjJMsHjWKt1uDk1nxgXEyqyF9PhnsNQgHybJilAzH9hZzJd24z2Zu2yQPbc+c/aj6Xjl
+ 5KIFZtvxXvNDUuQziHiURR4vQzsuiti/e+K2DrNd5X47F7YLb4be1cX9R1exIBXlRRIRmswSaWX
+ jcdIeVED9oT9Yvw==
+X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-Short DIO reads, particularly in relation to cifs, are not being handled
-correctly by cifs and netfslib.  This can be tested by doing a DIO read of
-a file where the size of read is larger than the size of the file.  When it
-crosses the EOF, it gets a short read and this gets retried, and in the
-case of cifs, the retry read fails, with the failure being translated to
-ENODATA.
+We move the func_utils.h header to include/linux/usb to be
+able to compile function drivers outside of the
+drivers/usb/gadget/function directory.
 
-Fix this by the following means:
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
- (1) Add a flag, NETFS_SREQ_HIT_EOF, for the filesystem to set when it
-     detects that the read did hit the EOF.
-
- (2) Make the netfslib read assessment stop processing subrequests when it
-     encounters one with that flag set.
-
- (3) Return rreq->transferred, the accumulated contiguous amount read to
-     that point, to userspace for a DIO read.
-
- (4) Make cifs set the flag and clear the error if the read RPC returned
-     ENODATA and the read-to file position is at or after the remote inode
-     size.
-
- (5) Make cifs set the flag and clear the error if a short read occurred
-     without error and the read-to file position is now at the remote inode
-     size.
-
-Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/io.c           | 17 +++++++++++------
- fs/smb/client/smb2pdu.c | 15 ++++++++++++++-
- include/linux/netfs.h   |  1 +
- 3 files changed, 26 insertions(+), 7 deletions(-)
+v8 -> v9: -
+v7 -> v8: -
+v6 -> v7: -
+v5 -> v6: -
+v4 -> v5:
+  - renamed to func_utils.h
+v3 -> v4: -
+v2 -> v3: -
+v1 -> v2:
+  - new introduced patch
+---
+ drivers/usb/gadget/configfs.c                              | 2 +-
+ drivers/usb/gadget/function/f_fs.c                         | 2 +-
+ drivers/usb/gadget/function/f_hid.c                        | 2 +-
+ drivers/usb/gadget/function/f_loopback.c                   | 2 +-
+ drivers/usb/gadget/function/f_midi.c                       | 2 +-
+ drivers/usb/gadget/function/f_midi2.c                      | 2 +-
+ drivers/usb/gadget/function/f_sourcesink.c                 | 2 +-
+ drivers/usb/gadget/u_f.c                                   | 2 +-
+ drivers/usb/gadget/u_f.h => include/linux/usb/func_utils.h | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index a72bc01b9609..d6510a9385dc 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -367,7 +367,8 @@ static void netfs_rreq_assess_dio(struct netfs_io_request *rreq)
- 		if (subreq->error || subreq->transferred == 0)
- 			break;
- 		transferred += subreq->transferred;
--		if (subreq->transferred < subreq->len)
-+		if (subreq->transferred < subreq->len ||
-+		    test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags))
- 			break;
- 	}
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 0e7c1e947c0a0..0f8553795a8ed 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -8,8 +8,8 @@
+ #include <linux/usb/composite.h>
+ #include <linux/usb/gadget_configfs.h>
+ #include <linux/usb/webusb.h>
++#include <linux/usb/func_utils.h>
+ #include "configfs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
  
-@@ -502,7 +503,8 @@ void netfs_subreq_terminated(struct netfs_io_subrequest *subreq,
+ int check_user_usb_string(const char *name,
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index e0ceaa7219493..411f0273d8d44 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -33,6 +33,7 @@
+ #include <linux/usb/ccid.h>
+ #include <linux/usb/composite.h>
+ #include <linux/usb/functionfs.h>
++#include <linux/usb/func_utils.h>
  
- 	subreq->error = 0;
- 	subreq->transferred += transferred_or_error;
--	if (subreq->transferred < subreq->len)
-+	if (subreq->transferred < subreq->len &&
-+	    !test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags))
- 		goto incomplete;
+ #include <linux/aio.h>
+ #include <linux/kthread.h>
+@@ -40,7 +41,6 @@
+ #include <linux/eventfd.h>
  
- complete:
-@@ -781,10 +783,13 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 			    TASK_UNINTERRUPTIBLE);
+ #include "u_fs.h"
+-#include "u_f.h"
+ #include "u_os_desc.h"
+ #include "configfs.h"
  
- 		ret = rreq->error;
--		if (ret == 0 && rreq->submitted < rreq->len &&
--		    rreq->origin != NETFS_DIO_READ) {
--			trace_netfs_failure(rreq, NULL, ret, netfs_fail_short_read);
--			ret = -EIO;
-+		if (ret == 0) {
-+			if (rreq->origin == NETFS_DIO_READ) {
-+				ret = rreq->transferred;
-+			} else if (rreq->submitted < rreq->len) {
-+				trace_netfs_failure(rreq, NULL, ret, netfs_fail_short_read);
-+				ret = -EIO;
-+			}
- 		}
- 	} else {
- 		/* If we decrement nr_outstanding to 0, the ref belongs to us. */
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index d80107d1ba9e..e182fdbec887 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4507,6 +4507,7 @@ static void
- smb2_readv_callback(struct mid_q_entry *mid)
- {
- 	struct cifs_io_subrequest *rdata = mid->callback_data;
-+	struct netfs_inode *ictx = netfs_inode(rdata->rreq->inode);
- 	struct cifs_tcon *tcon = tlink_tcon(rdata->req->cfile->tlink);
- 	struct TCP_Server_Info *server = rdata->server;
- 	struct smb2_hdr *shdr =
-@@ -4603,8 +4604,20 @@ smb2_readv_callback(struct mid_q_entry *mid)
- 		/* We may have got an EOF error because fallocate
- 		 * failed to enlarge the file.
- 		 */
--		if (rdata->subreq.start < rdata->subreq.rreq->i_size)
-+		if (rdata->subreq.start + rdata->subreq.transferred < rdata->subreq.rreq->i_size)
- 			rdata->result = 0;
-+		if (rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes >=
-+		    ictx->remote_i_size) {
-+			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
-+			rdata->result = 0;
-+		}
-+	} else {
-+		if (rdata->got_bytes < rdata->actual_len &&
-+		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
-+		    ictx->remote_i_size) {
-+			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
-+			rdata->result = 0;
-+		}
- 	}
- 	trace_smb3_rw_credits(rreq_debug_id, subreq_debug_index, rdata->credits.value,
- 			      server->credits, server->in_flight,
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 983816608f15..c47443e7a97e 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -198,6 +198,7 @@ struct netfs_io_subrequest {
- #define NETFS_SREQ_NEED_RETRY		9	/* Set if the filesystem requests a retry */
- #define NETFS_SREQ_RETRYING		10	/* Set if we're retrying */
- #define NETFS_SREQ_FAILED		11	/* Set if the subreq failed unretryably */
-+#define NETFS_SREQ_HIT_EOF		12	/* Set if we hit the EOF */
- };
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 93dae017ae456..1293d8db07f6c 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -16,8 +16,8 @@
+ #include <linux/wait.h>
+ #include <linux/sched.h>
+ #include <linux/usb/g_hid.h>
++#include <linux/usb/func_utils.h>
  
- enum netfs_io_origin {
+-#include "u_f.h"
+ #include "u_hid.h"
+ 
+ #define HIDG_MINORS	4
+diff --git a/drivers/usb/gadget/function/f_loopback.c b/drivers/usb/gadget/function/f_loopback.c
+index 979b028edb99e..49b009a7d5d79 100644
+--- a/drivers/usb/gadget/function/f_loopback.c
++++ b/drivers/usb/gadget/function/f_loopback.c
+@@ -14,9 +14,9 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/func_utils.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * LOOPBACK FUNCTION ... a testing vehicle for USB peripherals,
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 67052a664e746..1d7a955e990b4 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -33,8 +33,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi.h>
++#include <linux/usb/func_utils.h>
+ 
+-#include "u_f.h"
+ #include "u_midi.h"
+ 
+ MODULE_AUTHOR("Ben Williamson");
+diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
+index 3f63253ad3e07..3edc32c0e0983 100644
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -18,8 +18,8 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/audio.h>
+ #include <linux/usb/midi-v2.h>
++#include <linux/usb/func_utils.h>
+ 
+-#include "u_f.h"
+ #include "u_midi2.h"
+ 
+ struct f_midi2;
+diff --git a/drivers/usb/gadget/function/f_sourcesink.c b/drivers/usb/gadget/function/f_sourcesink.c
+index 6f3702210450f..ec5fd25020fdb 100644
+--- a/drivers/usb/gadget/function/f_sourcesink.c
++++ b/drivers/usb/gadget/function/f_sourcesink.c
+@@ -13,10 +13,10 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/usb/composite.h>
++#include <linux/usb/func_utils.h>
+ #include <linux/err.h>
+ 
+ #include "g_zero.h"
+-#include "u_f.h"
+ 
+ /*
+  * SOURCE/SINK FUNCTION ... a primary testing vehicle for USB peripheral
+diff --git a/drivers/usb/gadget/u_f.c b/drivers/usb/gadget/u_f.c
+index 6aea1ecb39999..9f90665827945 100644
+--- a/drivers/usb/gadget/u_f.c
++++ b/drivers/usb/gadget/u_f.c
+@@ -8,7 +8,7 @@
+  * Author: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
+  */
+ 
+-#include "u_f.h"
++#include <linux/usb/func_utils.h>
+ #include <linux/usb/ch9.h>
+ 
+ struct usb_request *alloc_ep_req(struct usb_ep *ep, size_t len)
+diff --git a/drivers/usb/gadget/u_f.h b/include/linux/usb/func_utils.h
+similarity index 99%
+rename from drivers/usb/gadget/u_f.h
+rename to include/linux/usb/func_utils.h
+index e313c3b8dcb19..9f2a32c765260 100644
+--- a/drivers/usb/gadget/u_f.h
++++ b/include/linux/usb/func_utils.h
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * u_f.h
++ * usbf_utils.h
+  *
+  * Utility definitions for USB functions
+  *
+
+-- 
+2.39.2
 
