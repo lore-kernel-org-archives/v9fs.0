@@ -1,173 +1,81 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B86119CCF4
-	for <v9fs@lists.linux.dev>; Mon, 26 Aug 2024 21:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DC519B3D8
+	for <v9fs@lists.linux.dev>; Mon, 26 Aug 2024 22:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724709002; cv=none; b=oGu9le6y7jnC92XAikVRkqcLdtiqZkl3tWasE9ueR2ndc9PrOUmMnKtOEk+EW0sLXWR+/XUlKZ1KBUF4LQBEywqQYWGopQ2JLxJDwFTYs9+885xPbAAtFJuB6w0F+gewErMfNAA5eVjxT8L+zqiTfgB0RMrDH9Vcln9xqwMmj7k=
+	t=1724712113; cv=none; b=Ef2bqtsvTrcbMp6KSCwezxntTY5CLVhc3BWC6TJ1Eh1MfQ4ISh35e5nneD4KyVxXCCkiaB97lCUo0i2ZFPWWWavtwWwuQ4AewFTbsx6cFMIB1nQDMjfxWjgsPiKt2hKGi5h0RIXbiLnjX0H9lnxHc+YCm84QnHpt7nYUI6mbbqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724709002; c=relaxed/simple;
-	bh=YJ3tRDhtDoPbJA9n+5dj1xKdtRMfYbLpSbQxBnF0Q0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iS0yYYQeBo/henasC2gxEoWlBcRyFTPbgqPIKm+kwBEP2DPUy7Z5OV6W4VNUOfQ+WG//4YWco6Uc37NYvP7EK2M2jSq/hj0z2ZiC0zNsyKny2/Ya8r2VnIOoOLN/Vgro05qMpanuWQPxMsge0ojMPMs9KqACkL5rOAdhJNNHBD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sihau-0001Gp-Gu; Mon, 26 Aug 2024 23:49:48 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sihau-003HKY-35; Mon, 26 Aug 2024 23:49:48 +0200
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sihat-007ByZ-38;
-	Mon, 26 Aug 2024 23:49:47 +0200
-Date: Mon, 26 Aug 2024 23:49:47 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: andrzej.p@collabora.com, asmadeus@codewreck.org, corbet@lwn.net,
-	ericvh@kernel.org, gregkh@linuxfoundation.org,
-	kernel@pengutronix.de, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH v9 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/func_utils.h
-Message-ID: <Zsz4e0RUZ9M1OT7v@pengutronix.de>
-References: <20240116-ml-topic-u9p-v9-0-93d73f47b76b@pengutronix.de>
- <20240116-ml-topic-u9p-v9-1-93d73f47b76b@pengutronix.de>
- <5fce67e8-5687-4fde-b6ee-b564a335283e@wanadoo.fr>
+	s=arc-20240116; t=1724712113; c=relaxed/simple;
+	bh=f4MKN2HbRnrkU0wW17LkNNhYBkHj33v4X604bMdlwQU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=drZPkzMIe7TtYy4NN5HfcCz0/+zMRVmf8uvT+LdmroYghXq+S3B5Gy9RrLnloUCjwAjmpHFaWpJAWFZ7F/eCL8WkEo/c2OHEGtwwmVSjmhhW86l7IxesBx+o0DWqwbsbEfYDZCEVm7V8ZM02MscZTjvgV8/xSEUWD5mUcDJTBe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=mzLejvdn; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="mzLejvdn"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B10FC42D39
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1724712110; bh=DHTAo+3eqHqGYJgtecztNEhf4IFJ+ibD/sDKHNht7Bk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=mzLejvdnaUPdMyvAQbiuANUfr/ST6VQ28/PkwkLKjNYIWDGwT0iChJXb4miQsJUPM
+	 VTkmhzV7d+XvbrKQqsYS16/i9v+q3Cl4d2E+2iLWdaHMmNz0NLHljGrA3xe495wkz2
+	 h3bZWd/PC8Q2urLeyyIH+/nP+L/ajMgR4hqttzQNCc8va0oT1coT1l3h9kALQEoS5u
+	 VOPmRPAWqzmv6TjBT6WByn3BSs2oZwzW4B6pQevcT7tcAsoIEb2sS+n0xS0od+38Ll
+	 Hi715aWhHfDF12NdZzF8p7uJyQWw7q264h5+NAAxuQwzVHTTqWg1FN7g2i9xB6CDzR
+	 CsdoezPd3hn6g==
+Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id B10FC42D39;
+	Mon, 26 Aug 2024 22:41:50 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Dominique Martinet <asmadeus@codewreck.org>, SeongJae Park <sj@kernel.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+ v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dr. David Alan Gilbert <linux@treblig.org>
+Subject: Re: [PATCH 3/3] Docs/filesystems/9p: Convert a goo.gl URL to
+ original one
+In-Reply-To: <ZsvX90dovlI52Ohd@codewreck.org>
+References: <20240826010949.78305-1-sj@kernel.org>
+ <20240826010949.78305-3-sj@kernel.org> <ZsvX90dovlI52Ohd@codewreck.org>
+Date: Mon, 26 Aug 2024 16:41:49 -0600
+Message-ID: <874j766h5e.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="x4m+YBvvTd+UQ/49"
-Content-Disposition: inline
-In-Reply-To: <5fce67e8-5687-4fde-b6ee-b564a335283e@wanadoo.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
+Content-Type: text/plain
 
+Dominique Martinet <asmadeus@codewreck.org> writes:
 
---x4m+YBvvTd+UQ/49
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 23, 2024 at 10:30:09AM +0200, Christophe JAILLET wrote:
->Le 23/08/2024 =E0 09:36, Michael Grzeschik a =E9crit=A0:
->>We move the func_utils.h header to include/linux/usb to be
->>able to compile function drivers outside of the
->>drivers/usb/gadget/function directory.
->>
->>Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@publ=
-ic.gmane.org>
->>
->>---
->>v8 -> v9: -
->>v7 -> v8: -
->>v6 -> v7: -
->>v5 -> v6: -
->>v4 -> v5:
->>   - renamed to func_utils.h
->>v3 -> v4: -
->>v2 -> v3: -
->>v1 -> v2:
->>   - new introduced patch
->>---
->>  drivers/usb/gadget/configfs.c                              | 2 +-
->>  drivers/usb/gadget/function/f_fs.c                         | 2 +-
->>  drivers/usb/gadget/function/f_hid.c                        | 2 +-
->>  drivers/usb/gadget/function/f_loopback.c                   | 2 +-
->>  drivers/usb/gadget/function/f_midi.c                       | 2 +-
->>  drivers/usb/gadget/function/f_midi2.c                      | 2 +-
->>  drivers/usb/gadget/function/f_sourcesink.c                 | 2 +-
->>  drivers/usb/gadget/u_f.c                                   | 2 +-
->>  drivers/usb/gadget/u_f.h =3D> include/linux/usb/func_utils.h | 2 +-
->>  9 files changed, 9 insertions(+), 9 deletions(-)
->>
->>diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
->>index 0e7c1e947c0a0..0f8553795a8ed 100644
->>--- a/drivers/usb/gadget/configfs.c
->>+++ b/drivers/usb/gadget/configfs.c
->>@@ -8,8 +8,8 @@
->>  #include <linux/usb/composite.h>
->>  #include <linux/usb/gadget_configfs.h>
->>  #include <linux/usb/webusb.h>
->>+#include <linux/usb/func_utils.h>
+> SeongJae Park wrote on Sun, Aug 25, 2024 at 06:09:49PM -0700:
+>> Google URL shortner will be unavailable soon[1].  Replace a shortened
+>> URL on 9p.rst with its original one.
+>> 
+>> [1] https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/
+>> 
+>> Signed-off-by: SeongJae Park <sj@kernel.org>
 >
->Hi,
+> Sorry, we (9p maintainers) slacked on this one - there's been a better
+> patch for this one:
+> https://lkml.kernel.org/r/20240725180041.80862-1-linux@treblig.org
 >
->Here and in the other files, maybe, keep alphabetic order?
->(even if it is not already completely sorted)
+> The sciweavers link doesn't actually work, so it doesn't make sense to
+> replace as is.
+> (although you could argue that it's probably been broken forever an
+> nobody noticed, so it could just as well be removed...)
 >
->>  #include "configfs.h"
->>-#include "u_f.h"
->>  #include "u_os_desc.h"
->>  int check_user_usb_string(const char *name,
->
->...
->
->>rename from drivers/usb/gadget/u_f.h
->>rename to include/linux/usb/func_utils.h
->>index e313c3b8dcb19..9f2a32c765260 100644
->>--- a/drivers/usb/gadget/u_f.h
->>+++ b/include/linux/usb/func_utils.h
->>@@ -1,6 +1,6 @@
->>  // SPDX-License-Identifier: GPL-2.0
->>  /*
->>- * u_f.h
->>+ * usbf_utils.h
->>   *
->>   * Utility definitions for USB functions
->>   *
->>
->
->Maybe the include guard could be updated as-well?
->
+> There's no patch queued for 9p, so if you (Jonathan) want to take the
+> other patch please feel free to.
 
-I reworked it in v10:
+It wasn't sent to me ... how did we ever manage without b4?  I've
+applied, it, thanks.
 
-https://lore.kernel.org/all/20240116-ml-topic-u9p-v10-0-a85fdeac2c52@pengut=
-ronix.de/
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---x4m+YBvvTd+UQ/49
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmbM+HsACgkQC+njFXoe
-LGQESg/+KuIbwRo818qLCBM8owS/IjkRfm9s/NM5VBCHQW3B0SdIadvD4dsoXlnt
-S99xcOXKzm4zLqbHGej3cHSgUkefTBEfm/1ipbbPRo4Tcppn8EmcA7cwFkkz3SIt
-0tFSaLScIAvOnVAC8dTZTyGSfQH9WfEdzlBxzs/Zv1mHPYMLHIY+zPsNAANqmvrS
-fFGZiohGwv7AkEgrcJ1iWCyFcJqDInQDeriMdMTdy26HX2N1ptbUAM2r1Bxhb/FW
-+yO4H8cRU8WVEpgxY7S3ppy6fAyvQjBdlMUHpJlb0GHeJlwx+KmgLWhSI7Yxw+gC
-cOLqnZruuO3DAge9dv6Y73xj5WZeTG50AeER37ih9AYc4YEFeSG6U/z+OCATRZJD
-6JEd/UZu5W89PTRoyq4nnN8/98td/B2YVGHVrDYSXXqBUrxsFU/GQ3Y+H2w394qz
-GXMCNg0JJOFAv4dxNfW7w/cTEB5EzjiFuaEsJ+G1s1AhSh+2khDGfnAIupXAhnAT
-FiwgY9+bxZFlGZtmuaDXWzcr6NZvFkUB5XW7HSTv0FWI+hjvNk/GTVWucq+T5nF3
-eeINgs0Sq4yxG4j4wQ4o8idnEBkr32la3XROqVWRTN8383O9pRyEwjuMGU9vB6S1
-Eo74RD0JJJ+5cQpWkazz9Tpur+3c5+YCf4sU/cJMpJPqqn+uk2I=
-=QduD
------END PGP SIGNATURE-----
-
---x4m+YBvvTd+UQ/49--
+jon
