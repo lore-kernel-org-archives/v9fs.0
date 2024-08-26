@@ -1,78 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026A25228;
-	Mon, 26 Aug 2024 01:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618633E7
+	for <v9fs@lists.linux.dev>; Mon, 26 Aug 2024 01:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724634597; cv=none; b=E2tCxFjSFe7YMsqOUa+K2/0beSsRH3atgdC5Vrvr97xdJcg5BdfPjoCHwqOJ3Npe8ejFAEWLtos3H47nORd56z8c1ObRKMW7M1+jdr+baiEwwZ+kVgz2VUtq88lbN+v1aucWTrvcfFxltIbNPKIfhPQ0JuyKut1vLIV99J/hNa4=
+	t=1724635459; cv=none; b=sNNkmkDIj2w7+34i37TXW2XDU/MlyWj39YQS9NNRAbyS8oTTF/aRj6RuSqiC07M6ZroNA9GinCh95JnoAAl2eLHV+pTCMLAmE3BimxhfXoZ/oJLDLoWo5hkCu+CoqLwFxwt8uknKWqNJjeI/Kj8vZZ6AQH7SBBCLVhNCTqBVkR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724634597; c=relaxed/simple;
-	bh=EfzpTOP5OovwHBqThSFBP/stRU1MypontvSDuMhO92Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uGxAyAKSiqzZeWlGy7/n4pW0852Je+zTsfkGPzWaj9XXImGOUVdCMa1rPV/apuBQuyN4swRwNmeLEAKuf0kWVBrHYkQ9iUNUpXLhPsK7Lv5HVLPjuGR/POejjbiekPT6idMrAPZZOdaDJFVAq320nMtuV5QZUnVgkGWdNeIRJJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JkOwTB4i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724635459; c=relaxed/simple;
+	bh=2lhZOhnyTlMgqD2SrXiAJZIq3W7WNtFgPBl1dA/44rA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qd4gXzTxItP/AeY8g9FAgYm8fJjTLnacTxuZC1e02WxfdSLR9QyZrnx9ixrLSydbtYddWLuc1iijlbxxatz/OT9RVZGatWm5z645olq0PMcvRlNqvySNR+8JOBIr6EL19t7EuIE4xaO1VBmGrqy0z4+3iY8fDhIbhgGPXf+HdUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=LKEek1ya; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JkOwTB4i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11B9C4AF18;
-	Mon, 26 Aug 2024 01:09:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724634596;
-	bh=EfzpTOP5OovwHBqThSFBP/stRU1MypontvSDuMhO92Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkOwTB4iWHu2kittAe1VlEqwCb2YNsyZLPlvlJEP+RYDW9KeMjVvD8vYQk+WF67jD
-	 3qp+u9jBYTPVHU08qIpJxIdw0GcvR0AOHRxcJWG1hWBlPMPPD/sAXUzSU5vJN4piIG
-	 nFBUCvZx+2xxL2BbCuwZzyMgURoI1+8ko7MIapVAYR8zU6x7ZY6j6tqRbc+W9iNJKk
-	 IMhp750UZOrZyWb5fp8LM5l0S9XVPTWpSCC03tv3BJGg0UU20/uJGtInKcTInYbZkg
-	 nWPE7keih5viYr4mjSzAFTgwjt7GP+Bczg+arA/zEAXVuqi/4+7p3N3OcX1+dMpxd0
-	 PJ1QKbo8NRhCQ==
-From: SeongJae Park <sj@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>,
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="LKEek1ya"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id C959314C1E1;
+	Mon, 26 Aug 2024 03:19:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1724635146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J+QcNhh0VWoV5otdU1nJZBsnrM5AKjg1RiGKnZhNWAU=;
+	b=LKEek1yaWqoDk84IfnpqG0lhZ37tuLeMPuKXe+WPDcZP8odwd4NHtDjlk725lR12m4ipgc
+	TGvPNDbEQ4bGYQbqCYGPt9B2ecQskBMKhEuS/kAR5lO3ms5/EDkwAPXmcYPb42NJm956Me
+	su6g+JeDlUPuI4ZuvpaZE1Nq0m5SsWIOIY7B2TNcNfvZq23BgSV3YIVCKFL0Jy7xNoHGW+
+	5on+AjCi8ph0vtnAqyJYCnJr8mwa42YNkDwQHt4Pkd3knoJbCZCpNTZJS1w/+Crwx6OdLG
+	cKlOepP+fIBVcAayYGnX85svwu5j6ZtxsViwNIPjxwvZRZ4n1Tlxf3hXaFwYzg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ca8414c2;
+	Mon, 26 Aug 2024 01:19:02 +0000 (UTC)
+Date: Mon, 26 Aug 2024 10:18:47 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	v9fs@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] Docs/filesystems/9p: Convert a goo.gl URL to original one
-Date: Sun, 25 Aug 2024 18:09:49 -0700
-Message-Id: <20240826010949.78305-3-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240826010949.78305-1-sj@kernel.org>
+Subject: Re: [PATCH 3/3] Docs/filesystems/9p: Convert a goo.gl URL to
+ original one
+Message-ID: <ZsvX90dovlI52Ohd@codewreck.org>
 References: <20240826010949.78305-1-sj@kernel.org>
+ <20240826010949.78305-3-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240826010949.78305-3-sj@kernel.org>
 
-Google URL shortner will be unavailable soon[1].  Replace a shortened
-URL on 9p.rst with its original one.
+SeongJae Park wrote on Sun, Aug 25, 2024 at 06:09:49PM -0700:
+> Google URL shortner will be unavailable soon[1].  Replace a shortened
+> URL on 9p.rst with its original one.
+> 
+> [1] https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
-[1] https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/
+Sorry, we (9p maintainers) slacked on this one - there's been a better
+patch for this one:
+https://lkml.kernel.org/r/20240725180041.80862-1-linux@treblig.org
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/filesystems/9p.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The sciweavers link doesn't actually work, so it doesn't make sense to
+replace as is.
+(although you could argue that it's probably been broken forever an
+nobody noticed, so it could just as well be removed...)
 
-diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
-index 1e0e0bb6fdf9..50dc82f33726 100644
---- a/Documentation/filesystems/9p.rst
-+++ b/Documentation/filesystems/9p.rst
-@@ -31,7 +31,7 @@ Other applications are described in the following papers:
- 	* PROSE I/O: Using 9p to enable Application Partitions
- 	  http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
- 	* VirtFS: A Virtualization Aware File System pass-through
--	  http://goo.gl/3WPDg
-+          https://www.sciweavers.org/publications/virtfs-virtualization-aware-file-system-pass-through
- 
- Usage
- =====
+There's no patch queued for 9p, so if you (Jonathan) want to take the
+other patch please feel free to.
+If it goes through the 9p tree it'll get in the next time we send
+something as I don't feel the need to send Linus a PR just for this, so
+that might be a couple of months further down.
+(I don't like patch series where folks are added in Cc on individual
+patches because it's never clear who is expected to grab the patch in
+the end...)
+
+
+Thanks,
 -- 
-2.39.2
-
+Dominique
