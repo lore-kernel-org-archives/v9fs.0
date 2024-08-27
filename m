@@ -1,147 +1,88 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48111CFECE
-	for <v9fs@lists.linux.dev>; Tue, 27 Aug 2024 17:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07FD1D31A7;
+	Tue, 27 Aug 2024 19:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724778845; cv=none; b=phUqdENRZK9j7msgtu960Hu5alGKsMj+Mz4gDa/Z/7zd7Ctc9CgOj7PS3rLo41+PWO75uMpr5oWsUNNB7qTjKbG5qGwNZ47fqp8R4iWiOqfc8yeXAjS22TJlTo6OgTqs1290CwxeksMsLsGDmR/YHaflh3e6GMudafemdAbLNzM=
+	t=1724788740; cv=none; b=hXWsp3QybEU9PLltyrLDbBC+NoW6WeyrY44rpGN3oi5B/T8IzCZlDvbv53IzQcHCm5FCH9Nzcgznr69qWQGREJZwGxXvYPyn7QPnp/BMaqMVCj+25ATwDxndZBwxDSzMy+fyu6iyI6xm0PYZDCN6nCQ3C4KhLARceY868xRNQfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724778845; c=relaxed/simple;
-	bh=VTHNMJuIWalwgU2VfUrTvqwD0q/dzKXGq/joqrcZ2ZQ=;
+	s=arc-20240116; t=1724788740; c=relaxed/simple;
+	bh=79Wy4990U5+ACAgLZJtukWndwWdUtDEuehTjLakTktA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kzh7QdJU43PYaOy2gC89NgxihrHzoBdxDE9AnEyXbkBLR37ms6jHIdvY0wPME5KsNOXdSZadpKKEW6YOmvB+nEhCm/wiMfr4Z5STIkym8Zfqy7Rke7cJJs7fsky337EPdEjqTPsIQXVBZ6B2S/aooTE8/I1AxtJrKT5QIXZXMVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sizlJ-0006U8-Bs; Tue, 27 Aug 2024 19:13:45 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sizlE-003TxI-T5; Tue, 27 Aug 2024 19:13:40 +0200
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sizlE-0091ks-2W;
-	Tue, 27 Aug 2024 19:13:40 +0200
-Date: Tue, 27 Aug 2024 19:13:40 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: andrzej.p@collabora.com, asmadeus@codewreck.org, corbet@lwn.net,
-	ericvh@kernel.org, gregkh@linuxfoundation.org,
-	kernel@pengutronix.de, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH v10 1/3] usb: gadget: function: move u_f.h to
- include/linux/usb/func_utils.h
-Message-ID: <Zs4JRPR9CKWX_hWb@pengutronix.de>
-References: <20240116-ml-topic-u9p-v10-0-a85fdeac2c52@pengutronix.de>
- <20240116-ml-topic-u9p-v10-1-a85fdeac2c52@pengutronix.de>
- <1a5d3a68-56e5-4084-b86c-e60542cbbb98@wanadoo.fr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CYPTbkxHjuaNJBrbblH3QqOp19u8Ub7mCxA9D3lc3d5wyq8iWhNvhv1EHkfI2kGyzMzgYw5eeg/7dhuoZppmf8SzmYlc2K0ioyZZ2XZHX20wrBcNFwll0GvR79vHXIgou6TYzrKMTPUovDvN2zDO36McMC+3XZ9EdpJ20gBYXzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=sKZShOio; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="sKZShOio"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 5511514C1E1;
+	Tue, 27 Aug 2024 21:58:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1724788736;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gnImlVYxTHmpkmEFgvN6q4f1eiqqHxJTkuzCyeQ6ZA4=;
+	b=sKZShOioJBhejkG1/gZziebNy9sGtzAqp9mG0hCodcqXWnln8zAhyG+7/vGa8BKIPB/+Sz
+	X7mVhsJmxFg9XFaeU3j9hIHGfNNCHn4UGZhSHmKMtIy00DNzkfQOsOI54Wev7s70XEDdg6
+	vd8cF0iyb4TTIVHXWwwJLA4Pxmm98Oi5FJBSe2GLx2277bJN7b4syiKlgXUI3CMdtSV7GN
+	YrOJ0o6Nn4Aa3d3pj/8wEsKnMYRYV7kyzbtlZL5kaPAro5knSONFN4docvwUkfhIepupT+
+	PnKYilgevshsMeOivp1dO2qnFF8wK0VjDn9J29VibVCYUtZaj23JHbTMPxF9bg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 591bc950;
+	Tue, 27 Aug 2024 19:58:48 +0000 (UTC)
+Date: Wed, 28 Aug 2024 04:58:33 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Ilya Dryomov <idryomov@gmail.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+	ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 083/273] 9p: Fix DIO read through netfs
+Message-ID: <Zs4v6aV4-VpIqdfy@codewreck.org>
+References: <20240827143833.371588371@linuxfoundation.org>
+ <20240827143836.571273512@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0j5NiQ+wIVM5a7qk"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1a5d3a68-56e5-4084-b86c-e60542cbbb98@wanadoo.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
+In-Reply-To: <20240827143836.571273512@linuxfoundation.org>
 
+Greg Kroah-Hartman wrote on Tue, Aug 27, 2024 at 04:36:47PM +0200:
+> From: Dominique Martinet <asmadeus@codewreck.org>
+> 
+> [ Upstream commit e3786b29c54cdae3490b07180a54e2461f42144c ]
 
---0j5NiQ+wIVM5a7qk
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As much as I'd like to have this in, it breaks cifs so please hold this
+patch until at least these two patches also get backported (I didn't
+actually test the fix so not sure which is needed, *probably*
+either/both):
+950b03d0f66 ("netfs: Fix missing iterator reset on retry of short read")
+https://lore.kernel.org/r/20240823200819.532106-8-dhowells@redhat.com ("netfs, cifs: Fix handling of short DIO read")
 
-On Tue, Aug 27, 2024 at 06:46:39PM +0200, Christophe JAILLET wrote:
->Le 26/08/2024 =E0 23:47, Michael Grzeschik a =E9crit=A0:
->>We move the func_utils.h header to include/linux/usb to be
->>able to compile function drivers outside of the
->>drivers/usb/gadget/function directory.
->>
->>Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@publ=
-ic.gmane.org>
->>
->>---
->>v9 -> v10:
->>   - respect alphabetical order
->>   - correctly changed filename in func_utils.h itself
->>
->
->...
->
->>index e313c3b8dcb19..e7b69e3145c07 100644
->>--- a/drivers/usb/gadget/u_f.h
->>+++ b/include/linux/usb/func_utils.h
->>@@ -1,6 +1,6 @@
->>  // SPDX-License-Identifier: GPL-2.0
->>  /*
->>- * u_f.h
->>+ * func_utils.h
->>   *
->>   * Utility definitions for USB functions
->>   *
->>
->
->Maybe the include guard could be updated as-well?
->
->By include guard I mean:
->
->	#ifndef __U_F_H__
->	#define __U_F_H__
->	...
->	#endif /* __U_F_H__ */
->
->s/__U_F_H__/_FUNC_UTILS_H_/ or something like that.
->
->CJ
->
+For some reason the former got in master but the later wasn't despite
+having been sent together, I might have missed some mails and only the
+first might actually be required.. David, Steve please let us know if
+just the first is enough.
 
-Doh! I missed that but will spin another round!
+Either way the 9p patch can wait a couple more weeks; stuck debian CI
+(9p) is bad but cifs corruptions are worse.
 
 Thanks,
-Michael
-
-
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---0j5NiQ+wIVM5a7qk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmbOCUEACgkQC+njFXoe
-LGQiCxAAlPehYXviL/Tao53N3ObBQa9mJ0Oiw7j+6/nmmk1A1NbOz/92pmKZLxxp
-a+l8k4VKNf7mUW3FaszDXabIpq9844Qoh7SqrtBvVA+a6mcggDBuJbGQfVKnAB7n
-asBnF0InhhXRkhCmpELmrTOIaPt8Q4TTTZXWRRTEvPxQ2rh/5VbpErQ4OwT6Wy/o
-P2HH/9s467xfmcEEuy8uKLuAOXuTiTKCCPtwqxoO4x6zw2N4j2hgH79VzzZb95kv
-+c+AaZrHQb+jQ9maDliIqyEHbhCBfgS0IKVLFH6scwooL1TLNIcMKRg7fZorOvBp
-s+imoVuNZV9fSXT5JdENSM5gDkqyTj9vJTleW7/JAEZ7G/mbRuIqe23Sj9LoA910
-iWXtmnvR2atikD3gUlJE9DwrFG9SK0aQp9ac7pcn72MWaKk0asAsNoXD59aYQRrw
-rZSrG1TWNt8RHnD6wpP0NfqxQDtimXqUSateAxQa9cMqN981C887dNDjrC5468WB
-rtqKo1r3YPT+qyhOxNahLp775nRCujzvmS+DIZa5knjkwP25KBMNanGMnRjjPnz5
-/wsBhYP7u+BRKtaAJDxXhmOOq3klBi25T2N5ET3GGDGFkhUkGxTzUAIIrrxlENmF
-pvFLTqOyhKFa5hjrq4RbOk+Hp5YgFiyC2Z/GsROkf7wjSDOah68=
-=vBTo
------END PGP SIGNATURE-----
-
---0j5NiQ+wIVM5a7qk--
+-- 
+Dominique
