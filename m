@@ -1,137 +1,136 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFEF16D9B9;
-	Wed, 28 Aug 2024 11:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35BC158A26
+	for <v9fs@lists.linux.dev>; Wed, 28 Aug 2024 21:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724845094; cv=none; b=b/KvqGy5H4xlrORxaIpmQFddKibGhnwNGJtpDLfvP+1q80Olm9sr6wRF1NpGts76SVTGr/LSAdcIYWPGFQCZhFOVzD2NCDh9Y+Z8+djWRn79jxuaX80JkmxdcJM82mf/Q7g00bsbW8j0H0iMzXpQQ/+MPpqHWofD+iuzk18y0Mo=
+	t=1724878990; cv=none; b=hZ59XPMUyPgwnIxld5ZZzTZI9X9hM/tXx0rMWER9wwkx6MCzuGEicmrqip6/bafMNmLOD1rWcomYCukMRg8LVSxtiyMFSHXq8Fv8ZM+w4CIAHOTVNNWrjPHbjDecpi+1PwJWQKNYyv3skngs+rHAkzH44RkHjRcEd/Ly0OlC240=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724845094; c=relaxed/simple;
-	bh=E31P5Kg44PX5FddtsdpCqwEt5trkfZRkPjofUJ7lGjU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Leygta9N1I8qPWJjT/h+0bbAzraOvyCMKvfyqoWlNxcfzb6D8DBdO6QKXXCY+6K0qScysuuD4ds87ndPOv1rnu4I9iBv67tavNb69vtSFpF/L24Fz3tAPcMg8Q7UoN+CrFwYgYC0HGh0srWMEeOk1vvfM173zQXsiex51CMv1pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com; spf=pass smtp.mailfrom=pankajraghav.com; dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b=mJLhydL7; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pankajraghav.com
+	s=arc-20240116; t=1724878990; c=relaxed/simple;
+	bh=VV17+nS8C1q2KfvL5zDpbmlRmgEDHZV0Gqx+Dv4LhVM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l7dX+U4dzM1ARPA1mxFkI2hfC1CQmEWIThwJYiuuiEh6zVsoSVaJqwX7fZ2LQnKwGoPmrwSEaPOoIjogqZGVQWR/ihWjrflx4sBFw2fGpKthrPXqCOsJcFM7lBK8B1o1K2cDbR6YWulwGnzeERszGH/KJdj3G9WGsYXT9kBYsi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d9tkoZGy; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b="mJLhydL7"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Wv2Tr0lJSz9smc;
-	Wed, 28 Aug 2024 13:38:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1724845088;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d9tkoZGy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724878987;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M9H3cmWIhxcYHesHqGjL9yLjjaE0Sjuz4VP0wEL0R1w=;
-	b=mJLhydL76GrRuW737D6RbtsIACkQniYpae63FPhyPs9Pee+QHLNrfzj/Dn6gSl2+qVcAck
-	MVhc292Hk0qoYqRGPD9zpnjIJaX8d5O1yrEGSsYMHhB1+EF4LynKehX/Qv4NwsOAORThkP
-	k5bWZcHdv0PyZBZcaqlBvqgtANUpntIsXofOCzDNTvyXHhr67zhJgWGQGo5atd0XckJdjA
-	rR8WlNWo6KNpCx03tSIETgCaJaWlHH6X25OSelFFa9ulW6U63lsK1ZpkkPI1xPEYndn84+
-	YFzGD2FOYgW6xaGMmQg8fuRa8gQKRsMbN/YCojlBlhbfJL6rkfQG9gO0UIpgVg==
-Date: Wed, 28 Aug 2024 11:38:02 +0000
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Steve French <sfrench@samba.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XFobmMcyik8XghRtkh2gK9+MeaxVAEEC6pZ/c4IMu/w=;
+	b=d9tkoZGyXHxS5MHOW6x/8wo4rt2MzLG9QUDWlya2wP8s1ENaSNpvJBK4ASO9WIEGd8Ojai
+	8O0/2RAjt6WU9QfqRsnlsN+HK4KaVOSlm+h5oLlmlHo/15Dr9ZKp6D4TJBwyNhWNKGsF7e
+	0u3GsHk3wdOLvhj1gtKmErP+/lAFpmg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-pWU2m7E2O3W_VVpN-j_iRQ-1; Wed,
+ 28 Aug 2024 17:03:04 -0400
+X-MC-Unique: pWU2m7E2O3W_VVpN-j_iRQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 413511955D47;
+	Wed, 28 Aug 2024 21:03:00 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.30])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C48D1955BED;
+	Wed, 28 Aug 2024 21:02:53 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <sfrench@samba.org>
+Cc: David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Marc Dionne <marc.dionne@auristor.com>
-Subject: Re: [PATCH 1/9] mm: Fix missing folio invalidation calls during
- truncation
-Message-ID: <20240828113802.xw5wzlq2hxrquclb@quentin>
-References: <20240823200819.532106-1-dhowells@redhat.com>
- <20240823200819.532106-2-dhowells@redhat.com>
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/6] mm, netfs, cifs: Miscellaneous fixes
+Date: Wed, 28 Aug 2024 22:02:41 +0100
+Message-ID: <20240828210249.1078637-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823200819.532106-2-dhowells@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, Aug 23, 2024 at 09:08:09PM +0100, David Howells wrote:
-> When AS_RELEASE_ALWAYS is set on a mapping, the ->release_folio() and
-> ->invalidate_folio() calls should be invoked even if PG_private and
-> PG_private_2 aren't set.  This is used by netfslib to keep track of the
-Should we update the comment in pagemap? 
+Hi Christian, Steve,
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 55b254d951da..18dd6174e6cc 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -204,7 +204,8 @@ enum mapping_flags {
-        AS_EXITING      = 4,    /* final truncate in progress */
-        /* writeback related tags are not used */
-        AS_NO_WRITEBACK_TAGS = 5,
--       AS_RELEASE_ALWAYS = 6,  /* Call ->release_folio(), even if no private data */
-+       AS_RELEASE_ALWAYS = 6,  /* Call ->release_folio() and ->invalidate_folio,
-+                                  even if no private data */
-        AS_STABLE_WRITES = 7,   /* must wait for writeback before modifying
-                                   folio contents */
-        AS_INACCESSIBLE = 8,    /* Do not attempt direct R/W access to the mapping */
+Firstly, here are some fixes to DIO read handling and the retrying of
+reads, particularly in relation to cifs:
 
-> point above which reads can be skipped in favour of just zeroing pagecache
-> locally.
-> 
-> There are a couple of places in truncation in which invalidation is only
-> called when folio_has_private() is true.  Fix these to check
-> folio_needs_release() instead.
-> 
-> Without this, the generic/075 and generic/112 xfstests (both fsx-based
-> tests) fail with minimum folio size patches applied[1].
-> 
-> Fixes: b4fa966f03b7 ("mm, netfs, fscache: stop read optimisation when folio removed from pagecache")
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> cc: Pankaj Raghav <p.raghav@samsung.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: Marc Dionne <marc.dionne@auristor.com>
-> cc: linux-afs@lists.infradead.org
-> cc: netfs@lists.linux.dev
-> cc: linux-mm@kvack.org
-> cc: linux-fsdevel@vger.kernel.org
-> Link: https://lore.kernel.org/r/20240815090849.972355-1-kernel@pankajraghav.com/ [1]
-> ---
->  mm/truncate.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index 4d61fbdd4b2f..0668cd340a46 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -157,7 +157,7 @@ static void truncate_cleanup_folio(struct folio *folio)
->  	if (folio_mapped(folio))
->  		unmap_mapping_folio(folio);
->  
-> -	if (folio_has_private(folio))
-> +	if (folio_needs_release(folio))
->  		folio_invalidate(folio, 0, folio_size(folio));
->  
->  	/*
-> @@ -219,7 +219,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  	if (!mapping_inaccessible(folio->mapping))
->  		folio_zero_range(folio, offset, length);
->  
-> -	if (folio_has_private(folio))
-> +	if (folio_needs_release(folio))
->  		folio_invalidate(folio, offset, length);
->  	if (!folio_test_large(folio))
->  		return true;
-> 
+ (1) Fix the missing credit renegotiation in cifs on the retrying of reads.
+     The credits we had ended with the original read (or the last retry)
+     and to perform a new read we need more credits otherwise the server
+     can reject our read with EINVAL.
 
--- 
-Pankaj Raghav
+ (2) Fix the handling of short DIO reads to avoid ENODATA when the read
+     retry tries to access a portion of the file after the EOF.
+
+Secondly, some patches fixing cifs copy and zero offload:
+
+ (3) Fix cifs_file_copychunk_range() to not try to partially invalidate
+     folios that are only partly covered by the range, but rather flush
+     them back and invalidate them.
+
+ (4) Fix filemap_invalidate_inode() to use the correct invalidation
+     function so that it doesn't leave partially invalidated folios hanging
+     around (which may hide part of the result of an offloaded copy).
+
+ (5) Fix smb3_zero_data() to correctly handle zeroing of data that's
+     buffered locally but not yet written back and with the EOF position on
+     the server short of the local EOF position.
+
+     Note that this will also affect afs and 9p, particularly with regard
+     to direct I/O writes.
+
+And finally, here's an adjustment to debugging statements:
+
+ (6) Adjust three debugging output statements.  Not strictly a fix, so
+     could be dropped.  Including the subreq ID in some extra debug lines
+     helps a bit, though.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+David Howells (6):
+  cifs: Fix lack of credit renegotiation on read retry
+  netfs, cifs: Fix handling of short DIO read
+  cifs: Fix copy offload to flush destination region
+  mm: Fix filemap_invalidate_inode() to use
+    invalidate_inode_pages2_range()
+  cifs: Fix FALLOC_FL_ZERO_RANGE to preflush buffered part of target
+    region
+  netfs, cifs: Improve some debugging bits
+
+ fs/netfs/io.c            | 21 +++++++++++++-------
+ fs/smb/client/cifsfs.c   | 21 ++++----------------
+ fs/smb/client/cifsglob.h |  1 +
+ fs/smb/client/file.c     | 37 ++++++++++++++++++++++++++++++++----
+ fs/smb/client/smb2ops.c  | 26 +++++++++++++++++++------
+ fs/smb/client/smb2pdu.c  | 41 +++++++++++++++++++++++++---------------
+ fs/smb/client/trace.h    |  1 +
+ include/linux/netfs.h    |  1 +
+ mm/filemap.c             |  2 +-
+ 9 files changed, 101 insertions(+), 50 deletions(-)
+
