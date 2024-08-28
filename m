@@ -1,116 +1,137 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D381F943;
-	Tue, 27 Aug 2024 21:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFEF16D9B9;
+	Wed, 28 Aug 2024 11:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724794193; cv=none; b=CNIy/5lAt5y4R7WLWGJmWFC9+awh3fFvC4U7ErhsEjTMX0DSjUVvyyRxt7P+wfZcHA5ywzPz9nV0Ke2cMMzelixr0LQz0yTlcgEVW/rjQO2wu9+sZmcsLZ8Y4CjhD/Xx4lgTJrSUdNLeETeCIV7lkVN+0Zf01qDyQOuTaQ1E7vs=
+	t=1724845094; cv=none; b=b/KvqGy5H4xlrORxaIpmQFddKibGhnwNGJtpDLfvP+1q80Olm9sr6wRF1NpGts76SVTGr/LSAdcIYWPGFQCZhFOVzD2NCDh9Y+Z8+djWRn79jxuaX80JkmxdcJM82mf/Q7g00bsbW8j0H0iMzXpQQ/+MPpqHWofD+iuzk18y0Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724794193; c=relaxed/simple;
-	bh=d+yn0nkxzSuimP+TA4VAK1zkmLd8RAXtLCH9HszvZbs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dK1k1yt/uUOPEounG6h3hsRdvY1tTRvF3iwLVIAjtNt5h2beSCUfm5eSil8/u0h36hc7UgCzc9WPHldnymwJxgUw6/au3xqZ18qw9FZ745hfkdp5e6YQPQJH4GYIAfncpCCKTMek3u3W90yfKCxOM4mx1ZNhRIrjEKmqIos2frw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MhbCi//C; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724845094; c=relaxed/simple;
+	bh=E31P5Kg44PX5FddtsdpCqwEt5trkfZRkPjofUJ7lGjU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Leygta9N1I8qPWJjT/h+0bbAzraOvyCMKvfyqoWlNxcfzb6D8DBdO6QKXXCY+6K0qScysuuD4ds87ndPOv1rnu4I9iBv67tavNb69vtSFpF/L24Fz3tAPcMg8Q7UoN+CrFwYgYC0HGh0srWMEeOk1vvfM173zQXsiex51CMv1pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com; spf=pass smtp.mailfrom=pankajraghav.com; dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b=mJLhydL7; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pankajraghav.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MhbCi//C"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-533496017f8so7974375e87.0;
-        Tue, 27 Aug 2024 14:29:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724794190; x=1725398990; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d+yn0nkxzSuimP+TA4VAK1zkmLd8RAXtLCH9HszvZbs=;
-        b=MhbCi//CtbmpjeYHKI+8PAbjtpt8pk3qZwi4ioJFGMoKbwrBs0xcTjWDVRVUo/Skv8
-         CEBM3yQwEpcrEoMlm1cGcWZNY5gjNpAo2ZDtQpuGNvQruYo6xkk6x/fEISdpPRYcKS/k
-         STPeuGU1IugbPrdnN9+XPsFFTsBm+bhlGPpJ/qXzNjYr/y0l++GjxgrcbQp17/M+6jLi
-         RbArcZEMoHtGl/gY7pxJLWA2+7iph7aXMkONd5U92oPlXrCsxSfDK6Woac0/xGwXJX63
-         W9ropJ2ZQWPvH+DDIEpzXdLeFEdF5+vH1JIAv/GxYHMnZvJL63uyp5mx5Y0HCl+B9KrO
-         Vp2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724794190; x=1725398990;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d+yn0nkxzSuimP+TA4VAK1zkmLd8RAXtLCH9HszvZbs=;
-        b=v6LrbZvTkLCl76Sq+M5YkQ2rY1dhP2O7uW1M8sTkAplx7J/eD6ferg5ZdEyvE4CD+d
-         LdGloVK/Z1ChyyJsLEoHDiKWJeFN0i/ndtNSYM3grCK1LK64JbIXcDOysDnTUgh19KTE
-         fkvPn8kD7xG+APGlrwS4FiP03u583f1i+Y+/4vtHI/QVrebC+dcHUtOVzLSRsfhetCvz
-         cWWHCUpQUVW3s9Dvx83PNkYG3cazU4S/rb/jlDdvX175HTodlBWd78bTKxdAj9S9Dr9C
-         Iw291qFmfIVaCUewIaBiIKvgUqE+oH9rNqGkoVlGi4McvRVX17Uh9136+C55FK++y3kt
-         jfdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxEjjoihz8SDrie3AhjH1P1o7Q5glQP+zphsgAB96UqJtUfR6TveonpPcG9t8POpRVrS4X5g==@lists.linux.dev, AJvYcCWXw1LFmdY5IneKDmz74sMlKHj4ImoEGCz7rzohZK0wHM4WyQz1h5hFtiOgKWPxsRoLtkZaTQ==@lists.linux.dev, AJvYcCXoKz7/LlID5RtBYhsqAwN2aKR+QCrXxstiyVKhEV5urx8VKlqk1yKtyOtirZauan2sT92G9Gtdew==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3OhQNLgd9uDRxB7aeEiY8FX3ArmQYUY2v8eTgSw/RvBVbZu+C
-	HMqmOShzV52s5hWPxuTNaR7xww0IA+Y/VVkfzOySQL9vDY+xFnx9YgkYUYtdK6bSwFubFxS6tJT
-	S2I2NXan0yADlyoxFkKrPfr4E1ZU=
-X-Google-Smtp-Source: AGHT+IGMOY6Yiz4YkwEpjgWpibJQdtfTsGczDtl/VBKoJFb+V6GQ4EsLOSKLYsP/M6ZKPP5miCYIGAihYSQoDTyOxJw=
-X-Received: by 2002:a05:6512:2386:b0:52c:df8c:72cc with SMTP id
- 2adb3069b0e04-5343885f615mr9361153e87.43.1724794189192; Tue, 27 Aug 2024
- 14:29:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b="mJLhydL7"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Wv2Tr0lJSz9smc;
+	Wed, 28 Aug 2024 13:38:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1724845088;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M9H3cmWIhxcYHesHqGjL9yLjjaE0Sjuz4VP0wEL0R1w=;
+	b=mJLhydL76GrRuW737D6RbtsIACkQniYpae63FPhyPs9Pee+QHLNrfzj/Dn6gSl2+qVcAck
+	MVhc292Hk0qoYqRGPD9zpnjIJaX8d5O1yrEGSsYMHhB1+EF4LynKehX/Qv4NwsOAORThkP
+	k5bWZcHdv0PyZBZcaqlBvqgtANUpntIsXofOCzDNTvyXHhr67zhJgWGQGo5atd0XckJdjA
+	rR8WlNWo6KNpCx03tSIETgCaJaWlHH6X25OSelFFa9ulW6U63lsK1ZpkkPI1xPEYndn84+
+	YFzGD2FOYgW6xaGMmQg8fuRa8gQKRsMbN/YCojlBlhbfJL6rkfQG9gO0UIpgVg==
+Date: Wed, 28 Aug 2024 11:38:02 +0000
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+	Steve French <sfrench@samba.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Marc Dionne <marc.dionne@auristor.com>
+Subject: Re: [PATCH 1/9] mm: Fix missing folio invalidation calls during
+ truncation
+Message-ID: <20240828113802.xw5wzlq2hxrquclb@quentin>
+References: <20240823200819.532106-1-dhowells@redhat.com>
+ <20240823200819.532106-2-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240827143833.371588371@linuxfoundation.org> <20240827143836.571273512@linuxfoundation.org>
- <Zs4v6aV4-VpIqdfy@codewreck.org>
-In-Reply-To: <Zs4v6aV4-VpIqdfy@codewreck.org>
-From: Steve French <smfrench@gmail.com>
-Date: Tue, 27 Aug 2024 16:29:38 -0500
-Message-ID: <CAH2r5mtaz5NSzhvq0hyWJJVvYyk_h-LxW=Ku_YjwSEe49EDO7A@mail.gmail.com>
-Subject: Re: [PATCH 6.10 083/273] 9p: Fix DIO read through netfs
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, David Howells <dhowells@redhat.com>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Steve French <sfrench@samba.org>, 
-	Paulo Alcantara <pc@manguebit.com>, Trond Myklebust <trond.myklebust@hammerspace.com>, v9fs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240823200819.532106-2-dhowells@redhat.com>
 
-We are working through this regression with David this week -
-hopefully will have more info in a few days
+On Fri, Aug 23, 2024 at 09:08:09PM +0100, David Howells wrote:
+> When AS_RELEASE_ALWAYS is set on a mapping, the ->release_folio() and
+> ->invalidate_folio() calls should be invoked even if PG_private and
+> PG_private_2 aren't set.  This is used by netfslib to keep track of the
+Should we update the comment in pagemap? 
 
-On Tue, Aug 27, 2024 at 2:59=E2=80=AFPM Dominique Martinet
-<asmadeus@codewreck.org> wrote:
->
-> Greg Kroah-Hartman wrote on Tue, Aug 27, 2024 at 04:36:47PM +0200:
-> > From: Dominique Martinet <asmadeus@codewreck.org>
-> >
-> > [ Upstream commit e3786b29c54cdae3490b07180a54e2461f42144c ]
->
-> As much as I'd like to have this in, it breaks cifs so please hold this
-> patch until at least these two patches also get backported (I didn't
-> actually test the fix so not sure which is needed, *probably*
-> either/both):
-> 950b03d0f66 ("netfs: Fix missing iterator reset on retry of short read")
-> https://lore.kernel.org/r/20240823200819.532106-8-dhowells@redhat.com ("n=
-etfs, cifs: Fix handling of short DIO read")
->
-> For some reason the former got in master but the later wasn't despite
-> having been sent together, I might have missed some mails and only the
-> first might actually be required.. David, Steve please let us know if
-> just the first is enough.
->
-> Either way the 9p patch can wait a couple more weeks; stuck debian CI
-> (9p) is bad but cifs corruptions are worse.
->
-> Thanks,
-> --
-> Dominique
->
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 55b254d951da..18dd6174e6cc 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -204,7 +204,8 @@ enum mapping_flags {
+        AS_EXITING      = 4,    /* final truncate in progress */
+        /* writeback related tags are not used */
+        AS_NO_WRITEBACK_TAGS = 5,
+-       AS_RELEASE_ALWAYS = 6,  /* Call ->release_folio(), even if no private data */
++       AS_RELEASE_ALWAYS = 6,  /* Call ->release_folio() and ->invalidate_folio,
++                                  even if no private data */
+        AS_STABLE_WRITES = 7,   /* must wait for writeback before modifying
+                                   folio contents */
+        AS_INACCESSIBLE = 8,    /* Do not attempt direct R/W access to the mapping */
 
+> point above which reads can be skipped in favour of just zeroing pagecache
+> locally.
+> 
+> There are a couple of places in truncation in which invalidation is only
+> called when folio_has_private() is true.  Fix these to check
+> folio_needs_release() instead.
+> 
+> Without this, the generic/075 and generic/112 xfstests (both fsx-based
+> tests) fail with minimum folio size patches applied[1].
+> 
+> Fixes: b4fa966f03b7 ("mm, netfs, fscache: stop read optimisation when folio removed from pagecache")
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> cc: Pankaj Raghav <p.raghav@samsung.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: linux-afs@lists.infradead.org
+> cc: netfs@lists.linux.dev
+> cc: linux-mm@kvack.org
+> cc: linux-fsdevel@vger.kernel.org
+> Link: https://lore.kernel.org/r/20240815090849.972355-1-kernel@pankajraghav.com/ [1]
+> ---
+>  mm/truncate.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index 4d61fbdd4b2f..0668cd340a46 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -157,7 +157,7 @@ static void truncate_cleanup_folio(struct folio *folio)
+>  	if (folio_mapped(folio))
+>  		unmap_mapping_folio(folio);
+>  
+> -	if (folio_has_private(folio))
+> +	if (folio_needs_release(folio))
+>  		folio_invalidate(folio, 0, folio_size(folio));
+>  
+>  	/*
+> @@ -219,7 +219,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>  	if (!mapping_inaccessible(folio->mapping))
+>  		folio_zero_range(folio, offset, length);
+>  
+> -	if (folio_has_private(folio))
+> +	if (folio_needs_release(folio))
+>  		folio_invalidate(folio, offset, length);
+>  	if (!folio_test_large(folio))
+>  		return true;
+> 
 
---=20
-Thanks,
-
-Steve
+-- 
+Pankaj Raghav
