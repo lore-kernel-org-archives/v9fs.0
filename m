@@ -1,64 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C8542C0B;
-	Thu,  5 Sep 2024 06:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95AA1990C2;
+	Thu,  5 Sep 2024 09:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725518810; cv=none; b=JGscI+2Nl+RF/o4F5uxKN3xsSGpMu2DyrqS1OLHbR7adssVcOh1yAg5rap3cwSfdYqqrYrsqXfo5fKwrsTMWOA987iodKHbjLUk1r4vgxkiWnMPJIInle1iDnGfZDkj+RIPGF5eDGySueIvcDnxT8rRm6ycu5jk7ZIGljJsFVqA=
+	t=1725529914; cv=none; b=IrfGlG9w6FUji15x9YOFuImanesa+g6XCEgqNhcs9rskpGmhRcjgxmI6j8Bgz76tjeJFS3m/PnHjGNfSDkClxbs0mgetRT+8Xf/ic09oEuLW1ZzC/euNUg5RIvcojWaQ/WXeTlVvxoqoHvhoTu/AWBFs11JcVLyZYi6fsMbAfVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725518810; c=relaxed/simple;
-	bh=38JsQ1Jq63ahIUMQOrTKd3e8gtJecngXzxRxlfLO/d8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Vp+A8rS9TzoMBZCKZAM19CSVHkzSsjbHlsAWKOfhphfjEIbK53A7z6esdXHScenJ5fUlmpJbfOqOnFzE9LeaGkLEZBvyTgYkz9iUucYU5E2dKOKd8P3SReK8YqvUzCn+4Xzx+7w6kuq4z9yTSbmSNY0Plzo5/fqC2mjftpVamk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QegYRVrb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725529914; c=relaxed/simple;
+	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dz9/HgPWaTZwGJtwGCfRiltZqw+Kth+dtFbZD3z27uMvAgwNKduGxNkZ96/pPCwbq4WNxk5pNpEE1kL9f2xz9LCRDHRB5Yt/SEXn+jkhOEGObRUgwPefgNauZQum2MIhuhFdefuFnbLAp23JfMURvGUTu2qH4GIWLgkJ9hz3L84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJWFPVVW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QegYRVrb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CE5C4CEC4;
-	Thu,  5 Sep 2024 06:46:49 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJWFPVVW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9BC4CEC3;
+	Thu,  5 Sep 2024 09:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725518810;
-	bh=38JsQ1Jq63ahIUMQOrTKd3e8gtJecngXzxRxlfLO/d8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=QegYRVrb2NzR7xvbBNcZMUcEpgA+F50GaPdJssc0XzamdfOhOHWA5Fiy4Qt0euORw
-	 EmY7BpOjlZdcsu7AGNtI+q3jQ2rOoypLHkQdzahAmzmkdMQ3+N5wFh5LL7Hg2d2I1p
-	 Fp/C9ouggfYndWW3efK6ag01QHtsF/zS51Z/P02M=
-Subject: Patch "mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()" has been added to the 6.10-stable tree
-To: akpm@linux-foundation.org,brauner@kernel.org,devel@lists.orangefs.org,dhowells@redhat.com,gregkh@linuxfoundation.org,hch@lst.de,jlayton@kernel.org,linux-afs@lists.infradead.org,linux-mm@kvack.org,miklos@szeredi.hu,netfs@lists.linux.dev,trond.myklebust@hammerspace.com,v9fs@lists.linux.dev,viro@zeniv.linux.org.uk,willy@infradead.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 05 Sep 2024 08:46:46 +0200
-Message-ID: <2024090546-massive-repulsion-9ceb@gregkh>
+	s=korg; t=1725529914;
+	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AJWFPVVWLcHfpsizWbz8T8Hfn013dySUHGfmkPdRx8TBnDyA11sgF+9RTkLBDt/Ki
+	 v2w/TZjyRfvlwahqn3BqphFd5Z223u+pD0OGvkN9HjH/jR8lXfaICYuHWl5T2UxI00
+	 C8fDdZ479HGvyBsc8jH0SJhs2SZbwEi4CGKHRlcI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	ceph-devel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	devel@lists.orangefs.org
+Subject: [PATCH 6.10 181/184] mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
+Date: Thu,  5 Sep 2024 11:41:34 +0200
+Message-ID: <20240905093739.395261770@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
+References: <20240905093732.239411633@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
 
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
-This is a note to let you know that I've just added the patch titled
-
-    mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
-
-to the 6.10-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mm-fix-filemap_invalidate_inode-to-use-invalidate_inode_pages2_range.patch
-and it can be found in the queue-6.10 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From c26096ee0278c5e765009c5eee427bbafe6dc090 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 28 Aug 2024 22:02:45 +0100
-Subject: mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
+------------------
 
 From: David Howells <dhowells@redhat.com>
 
@@ -112,6 +118,3 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	filemap_invalidate_unlock(mapping);
 
 
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-6.10/mm-fix-filemap_invalidate_inode-to-use-invalidate_inode_pages2_range.patch
