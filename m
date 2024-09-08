@@ -1,120 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95AA1990C2;
-	Thu,  5 Sep 2024 09:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ED8156F41
+	for <v9fs@lists.linux.dev>; Sun,  8 Sep 2024 11:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529914; cv=none; b=IrfGlG9w6FUji15x9YOFuImanesa+g6XCEgqNhcs9rskpGmhRcjgxmI6j8Bgz76tjeJFS3m/PnHjGNfSDkClxbs0mgetRT+8Xf/ic09oEuLW1ZzC/euNUg5RIvcojWaQ/WXeTlVvxoqoHvhoTu/AWBFs11JcVLyZYi6fsMbAfVA=
+	t=1725795282; cv=none; b=GgLwY7res516xHme4W/lEtZda9u8Q3s3+dBkFmOVfDxPgH5UDd3GQ4TXkBi/zsJyTWiiPv3DRe6oZGHy/aH94Xp/bpeManaNH8Pcm/gnL6rwn09DZ4pGN+QBzer5O13vI7iSzB9cfsJPP43+voZl+8qBJLgRGtPpDSyWM9WfirY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529914; c=relaxed/simple;
-	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dz9/HgPWaTZwGJtwGCfRiltZqw+Kth+dtFbZD3z27uMvAgwNKduGxNkZ96/pPCwbq4WNxk5pNpEE1kL9f2xz9LCRDHRB5Yt/SEXn+jkhOEGObRUgwPefgNauZQum2MIhuhFdefuFnbLAp23JfMURvGUTu2qH4GIWLgkJ9hz3L84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJWFPVVW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725795282; c=relaxed/simple;
+	bh=l8Afgqu3WXAVFAIqNvZ59IhIs09LB+0FmnTuuXCr790=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RIyuXrWkN+C+4A7Qj355bASOkBDhoQrNhHCS6S10w7X7GyJ+c8emxhW3Q7UwJvv2OOA8BoFmJd5ZipF1oboJpbMfhjCGCB7FwT/J6PtT78NtSYl9pCiAXB5t+WmQRyHmaT1Tr/mjsjFz2JxtnxouHMcSQT9Ap0ocppJQk6Mcneo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcA5JgvW; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJWFPVVW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9BC4CEC3;
-	Thu,  5 Sep 2024 09:51:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725529914;
-	bh=/eCNOC97u0BQscr+7Vs8bpxdBwn4RYq/sinJaLLMzGA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJWFPVVWLcHfpsizWbz8T8Hfn013dySUHGfmkPdRx8TBnDyA11sgF+9RTkLBDt/Ki
-	 v2w/TZjyRfvlwahqn3BqphFd5Z223u+pD0OGvkN9HjH/jR8lXfaICYuHWl5T2UxI00
-	 C8fDdZ479HGvyBsc8jH0SJhs2SZbwEi4CGKHRlcI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	ceph-devel@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	devel@lists.orangefs.org
-Subject: [PATCH 6.10 181/184] mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
-Date: Thu,  5 Sep 2024 11:41:34 +0200
-Message-ID: <20240905093739.395261770@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcA5JgvW"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-718d606726cso1572027b3a.3
+        for <v9fs@lists.linux.dev>; Sun, 08 Sep 2024 04:34:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725795279; x=1726400079; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TevhFPkg0ehgq3/IrZZMrhzq3fN8W8bdolBRTCGu5DA=;
+        b=AcA5JgvWJ/nkd6ZhESwj/Wy/3iyCXtAcu/bvSeVk2cQ/ubdM7CwmxrVhF+JWuBGZZL
+         dwOcGd426mwaaTZ7QhlLAiXrK3HQgVtAwCCxuMoWfX6s0X1TD9/zW3blIqf7+EC3gKg4
+         YYL1dyinmwWnpFIeS9NwR+3kx1OhZFtFkO+c69GEtRuktPvFrjeJG1pgYosJ0kVTxy63
+         4eAxaRaP9fw8wc6/rCFSwZTtS/2jb5NbcruyxDSKkkAyzA3ATwPlPsVIfvZTQqaWa6Rn
+         zfgGJHx/IfoZRaPlWCUW8Cy7K7UWisRiQJpIB0f/FKF0EDIShNIAMehZnKxjjJlKgeum
+         RaZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725795279; x=1726400079;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TevhFPkg0ehgq3/IrZZMrhzq3fN8W8bdolBRTCGu5DA=;
+        b=fed6bXZRM1bevkAyqP2Qto34OZFX1eURlQU3muEdUlAw+a97kXTWAOUOCu16o0drxc
+         ygwL2BKXxOXPmbHuiECqBIB2eo5lCYtYAzOIeSOqVF0Rib2G40zRxS4dznnMW5GkuOf9
+         Z6MG8ncH4YMBKU6H1G7wzmvlFNxtUyHSTgKBBshTEazvovclCaUQqzcasCOnFfQKr14I
+         Q1XDodqZHoK7yy6Hd5JDnSwMCglkxXsTOVlu5W/N2rNV8oAji7jFALmMV/qWsLhRjaGj
+         yuO9N1dshs8nyhJWMt7GCYT/6E5DjPgit+e9HwpzeZmRJHRaIZIQr/bBtBHxT4YbkjGO
+         iLcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXh0K3ME0MqQCtR8rBMVlrU+RJIAQmH0//AFx/hOTcBLMitmy24e7hGeK+imhwpsF0QBAos@lists.linux.dev
+X-Gm-Message-State: AOJu0YyGVQAnzt0BLXzoV/MZ7K18tjkRl4KjRGG/dlc5kuKqK7Qtk8xD
+	66paSGiecZBp9iA6NhyYcBr8fiAomBuLtgS1ly500IhznPx0c8NA
+X-Google-Smtp-Source: AGHT+IH6GPQK9EkkIM7ZYRVSmYXzhsKD5YcP8izmijFJcd7CdVzsEBDd4KL7pL76B3SbTRorF5l+dQ==
+X-Received: by 2002:a17:902:f547:b0:206:ae88:417f with SMTP id d9443c01a7336-206f04e17fdmr111199545ad.6.1725795278085;
+        Sun, 08 Sep 2024 04:34:38 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2071a6109cfsm13980345ad.175.2024.09.08.04.34.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2024 04:34:37 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id A1ABB4A19C6E; Sun, 08 Sep 2024 18:34:31 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux USB <linux-usb@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	v9fs@lists.linux.dev
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Jan Luebbe <jlu@pengutronix.de>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCH] tools: usb: p9_fwd: wrap USBG shell command examples in literal code blocks
+Date: Sun,  8 Sep 2024 18:34:23 +0700
+Message-ID: <20240908113423.158352-1-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240905093732.239411633@linuxfoundation.org>
-References: <20240905093732.239411633@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2171; i=bagasdotme@gmail.com; h=from:subject; bh=l8Afgqu3WXAVFAIqNvZ59IhIs09LB+0FmnTuuXCr790=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDGl3uw48Tfu/RCuuck9OdunT1UdCLn944Nl8dsskHollK qqXIr9+6yhlYRDjYpAVU2SZlMjXdHqXkciF9rWOMHNYmUCGMHBxCsBEjtsxMkw8xnBop8Aap+KN O1+cKlqz79IftZsZvI+6tvJnr0kR9f/B8L9+53RdkbCzO1rnHdz6QMzJtYxvUZaNP3tK66q0R1z vrXgB
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+Stephen Rothwell reported htmldocs warning when merging usb tree:
 
-------------------
+Documentation/filesystems/9p.rst:99: ERROR: Unexpected indentation.
 
-From: David Howells <dhowells@redhat.com>
+That's because Sphinx tries rendering p9_fwd.py output as a grid table
+instead.
 
-commit c26096ee0278c5e765009c5eee427bbafe6dc090 upstream.
+Wrap shell commands in "USBG Example" section in literal code blocks
+to fix above warning and to be in line with rest of commands in the doc.
 
-Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
-rather than truncate_inode_pages_range().  The latter clears the
-invalidated bit of a partial pages rather than discarding it entirely.
-This causes copy_file_range() to fail on cifs because the partial pages at
-either end of the destination range aren't evicted and reread, but rather
-just partly cleared.
-
-This causes generic/075 and generic/112 xfstests to fail.
-
-Fixes: 74e797d79cf1 ("mm: Provide a means of invalidation without using launder_folio")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240828210249.1078637-5-dhowells@redhat.com
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Miklos Szeredi <miklos@szeredi.hu>
-cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-cc: Christoph Hellwig <hch@lst.de>
-cc: Andrew Morton <akpm@linux-foundation.org>
-cc: Alexander Viro <viro@zeniv.linux.org.uk>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: ceph-devel@vger.kernel.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-nfs@vger.kernel.org
-cc: devel@lists.orangefs.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20240905184059.0f30ff9a@canb.auug.org.au/
+Fixes: 673f0c3ffc75 ("tools: usb: p9_fwd: add usb gadget packet forwarder script")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- mm/filemap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/filesystems/9p.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4221,7 +4221,7 @@ int filemap_invalidate_inode(struct inod
- 	}
+diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+index 2cc85f3e8659ff..514ed13a0122b0 100644
+--- a/Documentation/filesystems/9p.rst
++++ b/Documentation/filesystems/9p.rst
+@@ -86,11 +86,11 @@ When using the usbg transport, for now there is no native usb host
+ service capable to handle the requests from the gadget driver. For
+ this we have to use the extra python tool p9_fwd.py from tools/usb.
  
- 	/* Wait for writeback to complete on all folios and discard. */
--	truncate_inode_pages_range(mapping, start, end);
-+	invalidate_inode_pages2_range(mapping, start / PAGE_SIZE, end / PAGE_SIZE);
+-Just start the 9pfs capable network server like diod/nfs-ganesha e.g.:
++Just start the 9pfs capable network server like diod/nfs-ganesha e.g.::
  
- unlock:
- 	filemap_invalidate_unlock(mapping);
+         $ diod -f -n -d 0 -S -l 0.0.0.0:9999 -e $PWD
+ 
+-Optionaly scan your bus if there are more then one usbg gadgets to find their path:
++Optionaly scan your bus if there are more then one usbg gadgets to find their path::
+ 
+         $ python $kernel_dir/tools/usb/p9_fwd.py list
+ 
+@@ -99,7 +99,7 @@ Optionaly scan your bus if there are more then one usbg gadgets to find their pa
+           2 |   67 | unknown          | unknown          | 1d6b:0109 | 2-1.1.2
+           2 |   68 | unknown          | unknown          | 1d6b:0109 | 2-1.1.3
+ 
+-Then start the python transport:
++Then start the python transport::
+ 
+         $ python $kernel_dir/tools/usb/p9_fwd.py --path 2-1.1.2 connect -p 9999
+ 
 
+base-commit: 9c0c11bb87b09a8b7cdc21ca1090e7b36abe9d09
+-- 
+An old man doll... just what I always wanted! - Clara
 
