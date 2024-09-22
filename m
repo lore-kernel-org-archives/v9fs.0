@@ -1,48 +1,51 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CCD2581
-	for <v9fs@lists.linux.dev>; Sun, 22 Sep 2024 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6753A4AEE6
+	for <v9fs@lists.linux.dev>; Sun, 22 Sep 2024 20:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727023285; cv=none; b=mDPgK9OXo0a74MUYhFjVwxlrAlf97P9Kb67ctflweh9Lh5Z6kHlKEBqxSfTA6LHKhvBQX7rV8H1KnA2r5mT8lTRty5mO1Tah6EX7bWmKNuiVvYLIk3vZGYHFiSg/85s8xqNu/IeTwB3lwiGh0coJidFXxayxSdE8sNnsGjNLVuw=
+	t=1727036795; cv=none; b=mBblh4BmVsqiQk8whTO6G3Y3lGxLbbyzn3p+zWRO/HMhLOwgLCgbLugnTRZXEsYFYRTJ6xlTkCOKggPOZkKnSyyqGbx52l/42OBrQjYnNdrByyDWJMj/Y0+vJp0QAswxExPUYFn0/FBw6wyiriDGV0g4Q8dOlVzBdhRS8LTL9Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727023285; c=relaxed/simple;
-	bh=H3ITRVHeVK3MQetuvUo+jYd7fzfi4mDme8vBdLJR1bI=;
+	s=arc-20240116; t=1727036795; c=relaxed/simple;
+	bh=30E2ZrcpqAJXR/rQlNeag+vBjVRGwF9eqgwqsjL4Qyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IHcoDEJ2cRbN7X7/pcPKj4tvVxha/toVB+owztIDKBKYvPoJtzTwRkrDFqexRwBqtRNfjfRr5DT7AqdJN/c6Gjf8s+6kml7RgZ3YvpHloXLZzKj4gjrfajMYNhqlOZL0XxkhegKxM8BjIMIdsXdJkJEOPBmPGIGTP62zL6Tp4aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ZUOxvaUM; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=B8hdRznb0oy0wXtACP7NFJ8P6micmA4V1IG8xoNL9OiFJKQ0fBhasuBr/65hzn29VLhC4EIliybB5U7rOZZ9y+Wmvqcx76n8w0QjTEGU1AGZodyLFS1QAH2fY494lXjJUtsA1hBlJ/rkU5L1wziIVIpKoM3aZEn77Hg7qac3lWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=y+Cetb23; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ZUOxvaUM"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="y+Cetb23"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id CE44614C1E1;
-	Sun, 22 Sep 2024 18:41:11 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 1C76114C1E1;
+	Sun, 22 Sep 2024 22:26:26 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1727023274;
+	s=2; t=1727036790;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1P1Jf0ApaFd/B8Qm3MqF7vJhOb3M7CqnXehx+3pU5eg=;
-	b=ZUOxvaUMPkXN0wei9pFj8ede5uEJwaXlYsc39HlxDAOcpwPljh4l664/2WJjlrGorEs4+O
-	BN9ITDY1xV7z61C4MSWveMRb9KC/XS5AKJebr5dig1bqhMqtkYKeDCUiU2SYArGZnXV1bM
-	OHoR4GDi46ljuybAclwtD7+CCrT14F5D7qTeAMBJAGqokbxTVd065C2ZCZz2lbGLmQSdH0
-	CyOWZvY+uLb8yv7DzT35N3JBsHjCNJnx6L5Qa7TKhwc/39J1S/vVi/R0GR3MxBiwfHJuJ6
-	OMMjHhDy6LqdR6eD6q5bh2BrC9gj2UfNkAXMlcNJjB88k13jtUA0Aft1fhDglQ==
+	bh=r7dZ8UIKFzbGUVg3pSKlD91524IzhscrWvBGhjOvt7w=;
+	b=y+Cetb23XgV5Ris3lDR3faJ2AdBYrWTZnR63raarh4QYi8UZ79ta+gE/JggRqU5a9MCl0w
+	dpAZ4v5F7p8q3IYJq1gjV6qCMlBF2EV3vz4ev1jDNNTUd+7wqx7wOw/qWlGV2BFwiBOq13
+	gETITZulgpjVcdTIFTnBlten8BGwASBT4JdlAjt8YiWsTa/g4BDhSgatus3VStsVvmWj4d
+	zdS+cZuV7XMJWotrAo8BAF2uv0rX6QEqikN7Y784d77SAf6YGEOc1LzCiwawuH5zViT4Io
+	ISxrDKhNN6Zw61n5SBRQCGg3CQxx4G6rSKF14UTyeIThsTvGvXwLa5vG0B5XOg==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 0ff33cac;
-	Sun, 22 Sep 2024 16:41:10 +0000 (UTC)
-Date: Mon, 23 Sep 2024 01:40:55 +0900
-From: asmadeus@codewreck.org
-To: Pedro Falcato <pedro.falcato@gmail.com>
-Cc: syzbot <syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com>,
-	cl@linux.com, ericvh@kernel.org, linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net,
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev,
-	vbabka@suse.cz
-Subject: Re: [syzbot] [v9fs?] WARNING in p9_client_create (2)
-Message-ID: <ZvBIl8b9RRK9jgtJ@codewreck.org>
-References: <66f0092d.050a0220.3195df.009b.GAE@google.com>
- <CAKbZUD08BQeK0R-KuU07=QUCW7GHbmZ0RgfUcOpzKd+Yv4b5CQ@mail.gmail.com>
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a9b140c5;
+	Sun, 22 Sep 2024 20:26:25 +0000 (UTC)
+Date: Mon, 23 Sep 2024 05:26:10 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	xingwei lee <xrivendell7@gmail.com>,
+	sam sun <samsun1006219@gmail.com>, lvc-project@linuxtesting.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: Re: [PATCH] 9p: cap xattr max size to XATTR_SIZE_MAX
+Message-ID: <ZvB9YsV8BZSFoDrC@codewreck.org>
+References: <4091309.WcpKHNDlqE@silver>
+ <20240901-075b24ce58df695232e3d345-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -51,34 +54,52 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAKbZUD08BQeK0R-KuU07=QUCW7GHbmZ0RgfUcOpzKd+Yv4b5CQ@mail.gmail.com>
+In-Reply-To: <20240901-075b24ce58df695232e3d345-pchelkin@ispras.ru>
 
-Pedro Falcato wrote on Sun, Sep 22, 2024 at 03:59:17PM +0100:
-> This was one of the issues I actually ran into when using virtme.
-> Fix was submitted here back in August:
-> https://lore.kernel.org/v9fs/20240807094725.2193423-1-pedro.falcato@gmail.com/
-> 
-> No replies nor was it picked up. Can it go through the slab tree?
+Fedor Pchelkin wrote on Sun, Sep 01, 2024 at 10:16:55AM +0300:
+> the issue is still present in upstream kernel [1].
 
-Sorry, we're not getting many patches for 9p so I've been slacking and
-trying to batch a bit for when I can find time to pick them up -- don't
-hesitate to ping again if nobody replied in a week or two.
+Right, I didn't register the end of discussion, thanks for the reminder
 
-In this particular case I remember thinking it was a shame we're
-creating a cache for this when most mounts will be sharing the same
-msize but never found time to actually consider how to share the
-caches... But this isn't anything wrong with the patch itself, sorry for
-the delay.
-(and now I'm thinking about it, I guess the slab code has something to
-regroup identical caches? Just looked and didn't find it but I recall
-something like that...)
+> Considering the remark from Christian that limiting the allocation to
+> XATTR_SIZE_MAX seems too Linux-specific, maybe just fail silently with
+> __GFP_NOWARN flag passed to the allocator and return ENOMEM? I submitted
+> the patch [2] sometime ago which looks still applicable to the mainline
+> kernel. It was superseded with current discussion.
 
-Anyway, I've just picked that patch up (don't expect any trouble but
-will be queued to next later today), I'll send it to Linus in a week.
+Hmm, at high level, I don't really see the problem of being
+linux-specific here - we're writing a linux client.
+Something larger might work in the very specific case of the acl call
+here, but normal userspace getxattr will be truncated to XATTR_SIZE_MAX
+anyway (in do_getxattr), and returning a size larger than that will
+yield odd behavior for userspace: calling getxattr with a zero size will
+return a size larger than XATTR_SIZE_MAX, then trying to call getxattr
+with the returned size will just fail as the buffer is silently
+truncated to a shorter size without any way to work around that; it
+sounds more coherent to me to just say we can't do it in the first
+place.
 
-(I'm also adding the syzbot reported by so this gets closed even if it
-came later)
+Anyway, I guess a malicious server has an infinite number of way to
+cause nuisance to our clients here so this is the least of our worry,
+and not giving a warning is better than giving one, so if we're not
+doing anything else adding NOWARN is probably for the best but I'm
+really not sure I agree there...
 
-Thanks!
+I'm getting less involved with linux as real life commitments increase,
+so I'll just defer to whatever eminent folks think about here --
+Christian (Brauner), please take your pick of either of these (or
+anything else) and I'll apply it:
+(just adding nowarn to the acl path that warned)
+https://lore.kernel.org/lkml/20240202121319.21743-1-pchelkin@ispras.ru/
+or
+(limit to XATTR_SIZE_MAX in 9p's xattr_handler->get() op)
+https://lore.kernel.org/all/20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org/
+
+
+
+(and I see vfs_getxattr_alloc() hasn't been updated to error on
+size > XATTR_SIZE_MAX either, but we don't use it anyway)
+
+Thanks,
 -- 
 Dominique Martinet | Asmadeus
