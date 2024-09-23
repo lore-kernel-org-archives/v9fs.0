@@ -1,82 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15DC39AE3;
-	Mon, 23 Sep 2024 10:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9302D19C571
+	for <v9fs@lists.linux.dev>; Mon, 23 Sep 2024 15:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727085915; cv=none; b=kUlhpSj/j3yBRfLaRP66dkFdyW9GvtI3+ZQNiaqa+j676V8vpuXtQrek0+V2we21IrBIvCcoNA4Zl7Smazkk/mD4u8kFwzEuveFIk0Z/yEMRz19XMztXAqNTB9SY9UQ0Xc7w1ADzvg7QyuHlAtqvw9Yi4GLFw1XE3BshJQK/s00=
+	t=1727104098; cv=none; b=dHIQc+tJiwtgdysqxUCH2a92Ytbk55KkzuqDD1WRM0vKCPWK056icpXUGiHRoIL8GHyC829r+/rRfjlwI6wUti+zK2is2ct04rMN1cXAZVZr4Jr2w3k0W52tzS32srrrE15BTdXCnWIkKBPMJ9BpTwBppqEBpQCAFG9yCAhxRRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727085915; c=relaxed/simple;
-	bh=sfHsfjwf54qbv4SUznUDWk3U25+whbeyuat/1WGP9IU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Aq96d3JJu9odCtUXJrYbp05SAnw3fejhqHsb+agzNLfS8hxFbC3G0aHdxk+grCCkM9EaV0vS92Ac90FYQfmZgCs763GtXNKQO/0FagBmY54qK0ejGCy6GWj9R1dh57MjzYkcqoRV7sGNsNd8x7Ny1QJ5/6c7WYuOzbOsgG0T0ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EvCNtseT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727104098; c=relaxed/simple;
+	bh=/GNlxMRLpq91WxvczmAyf92nZZLDG814e6S03oDyT64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p+P6yKQ/GNzxK96nE/l3GMRvrIr46/sx34UJzcl+O0cQRpvEapGF7vpOtyL+lkoNi1VDJqS1m1OOXvit0Ry6QiMFPYluYrchAzdiqCx1DLYPqJ02m+fI4DEy8fmydvsXWFUja8kOgQT4excGdRYcYF60wowqhh1zYhBoh67OsHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fkrWtsyQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EvCNtseT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD210C4CEC4;
-	Mon, 23 Sep 2024 10:05:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727085915;
-	bh=sfHsfjwf54qbv4SUznUDWk3U25+whbeyuat/1WGP9IU=;
-	h=Date:From:To:Cc:Subject:From;
-	b=EvCNtseTLWpe6Lh9BZPq7Myk+8ChfjfkiiZ5sqjAb/Loa/mSP0abAOm0Q6hVtBlb+
-	 7GTn0yUGld8fUp+42dMSWN42y3wAyuw65E5pBxdrpuBempm5hpLToB/v2nGoPzLR1G
-	 ovrmX5QKvBTADnBGGIe2fHk+ZsCoz4Fm4DKi8zYM9t4qgjS5XwqVIoZ9RQetVxOVqq
-	 he2WbV8oXTpE0xEduaWHGvwkhg1j7MmXeDuNyfGV3aj0CzIvKtgywIhxmOV2tZqkQ0
-	 HnrmVO6WFZUNdmR3YoMorkAzkfln/ha0B6tyrbfpaL0mIlwPqPsmZ1se5UyyL/jtam
-	 doEiPVbZPlOZQ==
-Date: Mon, 23 Sep 2024 11:05:10 +0100
-From: Will Deacon <will@kernel.org>
-To: ericvh@kernel.org
-Cc: lucho@ionkov.net, asmadeus@codewreck.org, oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, oleg@redhat.com,
-	keirf@google.com
-Subject: VFS regression with 9pfs ("Lookup would have caused loop")
-Message-ID: <20240923100508.GA32066@willie-the-truck>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fkrWtsyQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727104094;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=deDp5fXNcCneGmSM6E3aF14XvR7SODlrONWVXGCHh5M=;
+	b=fkrWtsyQri3M4rRt79ynI8bBFKN3dr0J+jfuubN+wB11jRmEICglYF4lKAhSoVBD2zFqYt
+	XB62BnlVGXrWMzsCSwG+T2WW+TZVX3Pn9rHYBFPkumAi1H9GKbxtzGj2diI6hzimSlqg03
+	PRS4mRLibwmODEN3WrKbCIpfGFZx0Dw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-4y-C8U9DPSq2ZrlXAofqpQ-1; Mon,
+ 23 Sep 2024 11:08:09 -0400
+X-MC-Unique: 4y-C8U9DPSq2ZrlXAofqpQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29E0C18EB2E2;
+	Mon, 23 Sep 2024 15:08:06 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.145])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1ACE8194328E;
+	Mon, 23 Sep 2024 15:07:59 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <sfrench@samba.org>,
+	Marc Dionne <marc.dionne@auristor.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] netfs, afs, cifs: Miscellaneous fixes/changes
+Date: Mon, 23 Sep 2024 16:07:44 +0100
+Message-ID: <20240923150756.902363-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi Eric,
+Hi Christian, Steve, Marc,
 
-I'm trying to use kvmtool to run a simple guest under an Android host
-but, for v6.9+ guest kernels, 'init' reliably fails to run from a 9pfs
-mount because VFS emits this error:
+Here are some miscellaneous fixes and changes for netfslib and the afs and
+cifs filesystems, some of which are already in the vfs or cifs trees, but I
+thought I'd repost them all for completeness, starting with netfs:
 
-  | VFS: Lookup of 'com.android.runtime' in 9p 9p would have caused loop
+ (1) Fix the update of mtime and ctime for mmapped files.
 
-The host directory being shared is a little odd, as it has symlinks out
-to other mount points. In the guest, /apex is a symlink to /host/apex.
-On the host, /apex/com.android.runtime is a mounted loopback device:
+ (2) Drop the was_async argument from netfs_read_subreq_terminated().
 
-/dev/block/loop13 on /apex/com.android.runtime type ext4 (ro,dirsync,seclabel,nodev,noatime)
+then afs:
 
-This used to work prior to 724a08450f74 ("fs/9p: simplify iget to remove
-unnecessary paths") and it looks like Oleg ran into something similar
-before:
+ (3) Wire up afs_retry_request() so that writeback rotates through the
+     available keys.
 
-  https://lore.kernel.org/all/20240408141436.GA17022@redhat.com/
+ (4) Remove some unused defs.
 
-although he worked around it by driving QEMU with different options.
+ (5) Fix a potential infinite loop in the server rotation code.
 
-I can confirm that reverting the following commits gets mainline guests
-working again for me:
+ (6) Fix an oops that can occur when a server responds, but we decide the
+     operation failed (e.g. an abort).
 
-	724a08450f74 "fs/9p: simplify iget to remove unnecessary paths"
-	11763a8598f8 "fs/9p: fix uaf in in v9fs_stat2inode_dotl"
-	10211b4a23cf "fs/9p: remove redundant pointer v9ses"
-	d05dcfdf5e16 " fs/9p: mitigate inode collisions"
+and then cifs:
 
-Do you have any better ideas? I'm happy to test anything you might have,
-since this is 100% reproducible on my setup.
+ (7) Fix reversion of the I/O iterator causing cryptographically signed
+     transport reception to fail.
 
-Cheers,
+ (8) Alter the write tracepoints to display netfs request info.
 
-Will
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+David Howells (6):
+  netfs: Fix mtime/ctime update for mmapped writes
+  netfs: Drop the was_async arg from netfs_read_subreq_terminated()
+  afs: Fix missing wire-up of afs_retry_request()
+  afs: Fix the setting of the server responding flag
+  cifs: Fix reversion of the iter in cifs_readv_receive().
+  cifs: Make the write_{enter,done,err} tracepoints display netfs info
+
+Marc Dionne (1):
+  afs: Fix possible infinite loop with unresponsive servers
+
+Thorsten Blum (1):
+  afs: Remove unused struct and function prototype
+
+ fs/9p/vfs_addr.c          |  3 +-
+ fs/afs/afs_vl.h           |  9 ----
+ fs/afs/file.c             | 16 ++++---
+ fs/afs/fs_operation.c     |  2 +-
+ fs/afs/fs_probe.c         |  4 +-
+ fs/afs/fsclient.c         |  2 +-
+ fs/afs/rotate.c           | 11 +++--
+ fs/afs/yfsclient.c        |  2 +-
+ fs/ceph/addr.c            | 13 ++++--
+ fs/netfs/buffered_read.c  | 16 +++----
+ fs/netfs/buffered_write.c |  1 +
+ fs/netfs/direct_read.c    |  2 +-
+ fs/netfs/internal.h       |  2 +-
+ fs/netfs/objects.c        | 17 ++++++-
+ fs/netfs/read_collect.c   | 95 ++++++++++++++++-----------------------
+ fs/netfs/read_retry.c     |  2 +-
+ fs/nfs/fscache.c          |  6 ++-
+ fs/nfs/fscache.h          |  3 +-
+ fs/smb/client/cifssmb.c   | 10 +----
+ fs/smb/client/connect.c   |  6 +--
+ fs/smb/client/file.c      |  3 +-
+ fs/smb/client/smb2ops.c   |  9 ++--
+ fs/smb/client/smb2pdu.c   | 32 ++++++-------
+ fs/smb/client/trace.h     |  6 +--
+ fs/smb/client/transport.c |  3 --
+ include/linux/netfs.h     |  7 ++-
+ 26 files changed, 139 insertions(+), 143 deletions(-)
+
