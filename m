@@ -1,292 +1,245 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B6419DFB5
-	for <v9fs@lists.linux.dev>; Wed, 25 Sep 2024 11:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF421A0BE5
+	for <v9fs@lists.linux.dev>; Wed, 25 Sep 2024 11:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264318; cv=none; b=ETmXvAxjM87xXeBCFrt0jmGWqC5y73SG8H/qw1I+9J5oayOieKD4/utcJD0sySS1zrCzADzbgeys7D+k+oQhW1F6TPs6PG5AXL1sxqO62s7kvypyZT7ZuQt5EozMLiSRmoh+2yV1nxcjqRbarJdFZUADj8LHIX/DPtkFY5R2zTU=
+	t=1727265375; cv=none; b=msSR7nZ8VQ9xIV4jkRjn0KuoN+fHMJAoTwacLJS/momk/Tmnilw0mckIbNdhpo+IY/1tdyMN0eUh0NN6zq6vfeXUvYN0YRJVz1kP/lbVY+SNIcb0UTMm9+W/RAN1CxFcMRRb80VVbjjGKF+x4j+rO1VoFma9HLskDsMROX1iOAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264318; c=relaxed/simple;
-	bh=PE6nKTXhgHxTDs5N4SS0Vh9SBcMqQD2/GFEtB+w3lPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aer5/Yh0lYEMeF7IRtBuyugqSukYhIhXcfe8Ep+XmVLoq4f8UUOITgI5AbTgnKDouWSwwQLt8QaraU4MZL/I5CSYbVKQCH/HTnV8kNp5t1GKWfvs8lConCVw0xaR1Ewqmd7wQEh4uiuXFxezWpRy5Mxrx4yxEF5ynNPPGpdhJsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rjDAUP8w; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=296P/npR; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rjDAUP8w; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=296P/npR; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1727265375; c=relaxed/simple;
+	bh=mS4uhdRju8X5Td4QSd7Uw+4gWZ1W1SX8IC8aDIYTSh0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z85AMQUODmNqLoniyqouzNU32qfv0XhuIYFmv3qz++jiECoG5XnKnkGkyM19YcX2zWS4LsiRsPA2ppyA3GfmXxM8qQ/yagROdK6xV00mRs41OChVRJF+8gKyWZCASnAjG0Nm0Y0EDPdTXwayPdxvI8T6aoVpk6YNlT4j+n7fri0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgA8kw0X; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rjDAUP8w";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="296P/npR";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rjDAUP8w";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="296P/npR"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 930FF1F450;
-	Wed, 25 Sep 2024 11:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1727264314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ag/38XRNvmoyn/TOBeLjQRUMlwr0F6jACn3zVBgjBG8=;
-	b=rjDAUP8wng27+e6Ymr9KZTGcossd4L8tmuPtoaBs7bFDnHFCx0L01ycUjjYCb6dzgHZvJN
-	RceRpAdOZO3HiuNJs4aSWU6hN+Fzeqkh6TjqZ+MF5+6uTxPnFWOUc53KxzWv3aHpfmC7dT
-	FIt1BlWn7M8ov+aFOvs84NSn2yGcX+M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1727264314;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ag/38XRNvmoyn/TOBeLjQRUMlwr0F6jACn3zVBgjBG8=;
-	b=296P/npRv1gsc81qKOmUZZxcMjcddm2qIyWlxCvIsD6QrJ4jIA1Z0R4RX9xjNsp37AT+/N
-	qCFsPtb6BVQ8XjCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rjDAUP8w;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="296P/npR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1727264314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ag/38XRNvmoyn/TOBeLjQRUMlwr0F6jACn3zVBgjBG8=;
-	b=rjDAUP8wng27+e6Ymr9KZTGcossd4L8tmuPtoaBs7bFDnHFCx0L01ycUjjYCb6dzgHZvJN
-	RceRpAdOZO3HiuNJs4aSWU6hN+Fzeqkh6TjqZ+MF5+6uTxPnFWOUc53KxzWv3aHpfmC7dT
-	FIt1BlWn7M8ov+aFOvs84NSn2yGcX+M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1727264314;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ag/38XRNvmoyn/TOBeLjQRUMlwr0F6jACn3zVBgjBG8=;
-	b=296P/npRv1gsc81qKOmUZZxcMjcddm2qIyWlxCvIsD6QrJ4jIA1Z0R4RX9xjNsp37AT+/N
-	qCFsPtb6BVQ8XjCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7836913A6A;
-	Wed, 25 Sep 2024 11:38:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ghv9HDr282Z8OwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 25 Sep 2024 11:38:34 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 1A6A5A089B; Wed, 25 Sep 2024 13:38:34 +0200 (CEST)
-Date: Wed, 25 Sep 2024 13:38:34 +0200
-From: Jan Kara <jack@suse.cz>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Krishna Vivek Vitta <kvitta@microsoft.com>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
-Subject: Re: [EXTERNAL] Re: Git clone fails in p9 file system marked with
- FANOTIFY
-Message-ID: <20240925113834.eywqa4zslz6b6dag@quack3>
-References: <SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxiuPn4g1EBAq70XU-_5tYOXh4HqO5WF6O2YsfF9kM=qPw@mail.gmail.com>
- <SI2P153MB07187CEE4DFF8CDD925D6812D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxjd2pf-KHiXdHWDZ10um=_Joy9y5_1VC34gm6Yqb-JYog@mail.gmail.com>
- <SI2P153MB0718D1D7D2F39F48E6D870C1D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <SI2P153MB07187B0BE417F6662A991584D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <20240925081146.5gpfxo5mfmlcg4dr@quack3>
- <20240925081808.lzu6ukr6pr2553tf@quack3>
- <CAOQ4uxji2ENLXB2CeUmt72YhKv_wV8=L=JhnfYTh0RTunyTQXw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgA8kw0X"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a9a3071c6bso752261885a.0
+        for <v9fs@lists.linux.dev>; Wed, 25 Sep 2024 04:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727265372; x=1727870172; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g4cyAfr4fWqD7jvgUimcE1VahgNajaf5Yl9ON4qFTNc=;
+        b=FgA8kw0Xskl2iUpwG4NizVY6Kka6w3lFEOumyUAQGLH+iKYS4Uqkqs9VzoVPuVtUnf
+         PjEHMcciwztZ2jl/b65gaTumzdWT+vMBEn31tPDjTkQE74df+vbwlaHnm+zuyp7Pj2sy
+         niYWpozWyfKtBK4Oz7vweA47/Qzzam8brKwTqFbZ3rx0+af0puMO8l181NYtlpz4omIe
+         P1KwWqpIakUki67dUvG1oHeqCAe+ta5ttemYK/3zoEXTJi9ncRgLws7kTkqigQaMmiXC
+         uV+vmRY19hPTfQ/uCjcg9btLjcaQLDrp1swNp4BOSInTuXncwdFJHQ0HWzu8Q4lTzCtB
+         +E2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727265372; x=1727870172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g4cyAfr4fWqD7jvgUimcE1VahgNajaf5Yl9ON4qFTNc=;
+        b=qjymCqcl9kN2xFYt2kH9dIWyYIa2Fu70YHDlYaJz+tNkptq4KWT553dDY39HV76Lx9
+         rD+BHMXgfkMFnbq9trzU94fXw8O5P9DxqKZDm6jjf1ieNTFXagaTxlMg3TIM18SQtSNr
+         uUrnK51yWUjgUcnUuFI1/1sAWBT/7BSstP1dwXfEk5Lxa1XB9qRQaICdVkUR9oUK3FfH
+         ENCds+WNG7pwS6KbVMzOwu2ux6Alh4IlSCAysQpd0fHSemRBNhF6nI77LaClJ8aZ76Wa
+         nSby58d0vjz7mSl2ST2gXs4LgQcQkujxMsEsZPe8VoJaF4en72OV9PrKqMdmQ+d8QjLF
+         WNbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDxbZy0m3Ukns5UaECY0LW1RREK3qbIk3772+qDBolt73rnLxdu/ne3hP7yC2vTcTr0SmI@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcaiLEZ+j7KC6aU9fMHo1GkLYD8nmFyrax9YirvwbC2/MECXvT
+	2QPWFrXzx2wl2+5m9aMZj2iV2ZQbRk2trm+4UWTW531hPySJbpguG+3z39RRlqgOKGbqMJBHBkw
+	pYkLR2A0gMuhhpY4oOB6UHAkecnI=
+X-Google-Smtp-Source: AGHT+IFJGMjWM0oaiAOzZUjic1L3j6tHn6UXqILAkG6i/Sb+oHH/0asN0SkR8Q7HIs/mg0B+D/DbdaBbTGhAIpHFinE=
+X-Received: by 2002:a05:620a:3721:b0:7a9:b618:16aa with SMTP id
+ af79cd13be357-7ace73e1af5mr364103285a.10.1727265372124; Wed, 25 Sep 2024
+ 04:56:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxji2ENLXB2CeUmt72YhKv_wV8=L=JhnfYTh0RTunyTQXw@mail.gmail.com>
-X-Rspamd-Queue-Id: 930FF1F450
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,suse.cz:dkim];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+References: <SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxiuPn4g1EBAq70XU-_5tYOXh4HqO5WF6O2YsfF9kM=qPw@mail.gmail.com>
+ <SI2P153MB07187CEE4DFF8CDD925D6812D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxjd2pf-KHiXdHWDZ10um=_Joy9y5_1VC34gm6Yqb-JYog@mail.gmail.com>
+ <SI2P153MB0718D1D7D2F39F48E6D870C1D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <SI2P153MB07187B0BE417F6662A991584D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <20240925081146.5gpfxo5mfmlcg4dr@quack3> <20240925081808.lzu6ukr6pr2553tf@quack3>
+ <CAOQ4uxji2ENLXB2CeUmt72YhKv_wV8=L=JhnfYTh0RTunyTQXw@mail.gmail.com> <20240925113834.eywqa4zslz6b6dag@quack3>
+In-Reply-To: <20240925113834.eywqa4zslz6b6dag@quack3>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 25 Sep 2024 13:56:00 +0200
+Message-ID: <CAOQ4uxgEcQ5U=FOniFRnV1k1EYpqEjawt52377VgFh7CY2pP8A@mail.gmail.com>
+Subject: Re: [EXTERNAL] Re: Git clone fails in p9 file system marked with FANOTIFY
+To: Jan Kara <jack@suse.cz>
+Cc: Krishna Vivek Vitta <kvitta@microsoft.com>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[Adding 9p guys to CC]
-
-On Wed 25-09-24 12:51:38, Amir Goldstein wrote:
-> On Wed, Sep 25, 2024 at 10:18 AM Jan Kara <jack@suse.cz> wrote:
-> > On Wed 25-09-24 10:11:46, Jan Kara wrote:
-> > > On Tue 24-09-24 12:07:51, Krishna Vivek Vitta wrote:
-> > > > Please ignore the last line.
-> > > > Git clone operation is failing with fanotify example code as well.
+On Wed, Sep 25, 2024 at 1:38=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> [Adding 9p guys to CC]
+>
+> On Wed 25-09-24 12:51:38, Amir Goldstein wrote:
+> > On Wed, Sep 25, 2024 at 10:18=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > On Wed 25-09-24 10:11:46, Jan Kara wrote:
+> > > > On Tue 24-09-24 12:07:51, Krishna Vivek Vitta wrote:
+> > > > > Please ignore the last line.
+> > > > > Git clone operation is failing with fanotify example code as well=
+.
+> > > > >
+> > > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitC=
+loneIssue# ./fanotify_ex /mnt/c
+> > > > > Press enter key to terminate.
+> > > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitC=
+loneIssue# ./fanotify_ex /mnt/c
+> > > > > Press enter key to terminate.
+> > > > > Listening for events.
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/info/exclude
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/info/exclude
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-appl=
+ypatch.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-ap=
+plypatch.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/applypat=
+ch-msg.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/applyp=
+atch-msg.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/commit-m=
+sg.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/commit=
+-msg.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-push=
+.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-pu=
+sh.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-merg=
+e-commit.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-me=
+rge-commit.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-comm=
+it.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-co=
+mmit.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/post-upd=
+ate.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/post-u=
+pdate.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/push-to-=
+checkout.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/push-t=
+o-checkout.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/fsmonito=
+r-watchman.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/fsmoni=
+tor-watchman.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/update.s=
+ample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/update=
+.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-reba=
+se.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-re=
+base.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-rece=
+ive.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-re=
+ceive.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/prepare-=
+commit-msg.sample
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/prepar=
+e-commit-msg.sample
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/description
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/description
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/HEAD.lock
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/HEAD.lock
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config.lock
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
+> > > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/tNbqjiA
+> > > > > read: No such file or directory
+> > > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitC=
+loneIssue#
 > > > >
-> > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitCloneIssue# ./fanotify_ex /mnt/c
-> > > > Press enter key to terminate.
-> > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitCloneIssue# ./fanotify_ex /mnt/c
-> > > > Press enter key to terminate.
-> > > > Listening for events.
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/info/exclude
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/info/exclude
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-applypatch.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-applypatch.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/applypatch-msg.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/applypatch-msg.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/commit-msg.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/commit-msg.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-push.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-push.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-merge-commit.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-merge-commit.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-commit.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-commit.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/post-update.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/post-update.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/push-to-checkout.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/push-to-checkout.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/fsmonitor-watchman.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/fsmonitor-watchman.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/update.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/update.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-rebase.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-rebase.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-receive.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/pre-receive.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/hooks/prepare-commit-msg.sample
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/hooks/prepare-commit-msg.sample
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/description
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/description
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/HEAD.lock
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/HEAD.lock
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config.lock
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config.lock
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_CLOSE_WRITE: File /mnt/c/Users/kvitta/gtest/.git/config
-> > > > FAN_OPEN_PERM: File /mnt/c/Users/kvitta/gtest/.git/tNbqjiA
-> > > > read: No such file or directory
-> > > > root@MININT-S244RA7:/mnt/c/Users/kvitta/Desktop/MDE binaries/GitCloneIssue#
-> > >
-> > > OK, so it appears that dentry_open() is failing with ENOENT when we try to
-> > > open the file descriptor to return with the event. This is indeed
-> > > unexpected from the filesystem.
-> 
-> How did you conclude that is what is happening?
-> Were you able to reproduce, because I did not.
-
-No, I didn't reproduce. But checking the source of the reproducer the
-message "read: No such file or directory" means fanotify_read() has
-returned -ENOENT and within fanotify there's no way how that could happen.
-So the only possible explanation is that dentry_open() returns it.
-
-> > > On the other hand we already do silently
-> > > fixup similar EOPENSTALE error that can come from NFS so perhaps we should
-> > > be fixing ENOENT similarly? What do you thing Amir?
+> > > > OK, so it appears that dentry_open() is failing with ENOENT when we=
+ try to
+> > > > open the file descriptor to return with the event. This is indeed
+> > > > unexpected from the filesystem.
 > >
-> 
-> But we never return this error to the caller for a non-permission event,
-> so what am I missing?
+> > How did you conclude that is what is happening?
+> > Were you able to reproduce, because I did not.
+>
+> No, I didn't reproduce. But checking the source of the reproducer the
+> message "read: No such file or directory" means fanotify_read() has
+> returned -ENOENT and within fanotify there's no way how that could happen=
+.
+> So the only possible explanation is that dentry_open() returns it.
+>
 
-Umm. If dentry_open() fails, we return the error from copy_event_to_user()
-without copying anything. Then fanotify_read() does:
+Ah, I missed that bit in the report.
 
-		ret = copy_event_to_user(group, event, buf, count);
-		...
-                if (!fanotify_is_perm_event(event->mask)) {
-                        fsnotify_destroy_event(group, &event->fse);
-			// unused event destroyed
-                } else {
-		...
-		}
-                if (ret < 0)
-                        break;	// read loop aborted
-		...
-	}
-	...
-	if (start != buf && ret != -EFAULT)
-                ret = buf - start;
-        return ret;
-
-So the error *is* IMO returned to userspace if this was the first event.
-
-> > But what is still unclear to me is how this failure to generate fanotify
-> > event relates to git clone failing. Perhaps the dentry references fanotify
-> > holds in the notification queue confuse 9p and it returns those ENOENT
-> > errors?
-> 
-> My guess is that ENOENT for openat(2)/newfstatat(2) is from this code
-> in fid_out label in:
-> v9fs_vfs_getattr() => v9fs_fid_lookup() =>
-> v9fs_fid_lookup_with_uid()
-> 
->                 if (d_unhashed(dentry)) {
->                         spin_unlock(&dentry->d_lock);
->                         p9_fid_put(fid);
->                         fid = ERR_PTR(-ENOENT);
+> > > > On the other hand we already do silently
+> > > > fixup similar EOPENSTALE error that can come from NFS so perhaps we=
+ should
+> > > > be fixing ENOENT similarly? What do you thing Amir?
+> > >
+> >
+> > But we never return this error to the caller for a non-permission event=
+,
+> > so what am I missing?
+>
+> Umm. If dentry_open() fails, we return the error from copy_event_to_user(=
+)
+> without copying anything. Then fanotify_read() does:
+>
+>                 ret =3D copy_event_to_user(group, event, buf, count);
+>                 ...
+>                 if (!fanotify_is_perm_event(event->mask)) {
+>                         fsnotify_destroy_event(group, &event->fse);
+>                         // unused event destroyed
 >                 } else {
->                         __add_fid(dentry, fid);
-> 
-> So fanotify contributes a deferred reference on the dentry,
-> and that can somehow lead to operating on a stale unhashed dentry?
-> Not exactly sure how to piece that all together.
+>                 ...
+>                 }
+>                 if (ret < 0)
+>                         break;  // read loop aborted
+>                 ...
+>         }
+>         ...
+>         if (start !=3D buf && ret !=3D -EFAULT)
+>                 ret =3D buf - start;
+>         return ret;
+>
+> So the error *is* IMO returned to userspace if this was the first event.
+>
 
-For example d_delete() will only unhash the deleted dentry if it does not
-hold the last reference to it (which it would not due to fanotify holding
-reference). So presumably 9p could return this error if we delivered event
-for an already deleted dentry. That would explain the fanotify side of
-things. But not really the git clone failure.
+Yes it is "returned to userspace" but it is returned to the fanotify listen=
+er.
 
-> This seems like a problem that requires p9 developers to look at it.
-> fanotify mark has an indirect effect on this use case IMO.
+The original complaint is about the error returned to open(2) after rename(=
+2)
+in the rename_try.c reproducer (when fanotify is watching close events).
 
-I agree, this looks more like a problem with 9p that gets exposed by
-fanotify. Guys, Krishna is seeing git-clone failure on 9p filesystem when
-fanotify events are generated for the filesystem. We suspect additional
-dentry references from generated fanotify events somehow upset something
-inside 9p so it returns -ENOENT errors sometimes (see previous email in
-this thread for strace output).
+I admit that fanotify_read() randomly returning an error is sub-optimal,
+but I do prefer it over dropping the error silently.
 
-Krishna, you've mentioned you are using the kernel from WSL
-(https://github.com/microsoft/WSL2-Linux-Kernel/). Is it possible to
-reproduce the failure with 9p from a standard Linux kernel?
+BTW, there are several other dentry_open() errors that are easy to
+reproduce in this context:
+ENXIO after an event on a pipe with no reader
+ENODEV after an event on a device node with no backing instance
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+These were part of the reason that I excluded special files from
+new pre-content events...
+
+Thanks,
+Amir.
