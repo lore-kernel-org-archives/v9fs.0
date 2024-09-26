@@ -1,190 +1,289 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2135.outbound.protection.outlook.com [40.107.255.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C9F13C695
-	for <v9fs@lists.linux.dev>; Wed, 25 Sep 2024 15:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276714; cv=none; b=W1n2Hq8TkvaiiqunzYF7IvFcKCsP66tCqcecvdjnwZBNOLG8Sb28gTjuyJq12YBK3PZ5/nHk9dvrRGJFDXbjPL6Zwn/Prsl2QZNhitC3XM/h0BRezo6+YnDvxw6MxbjhGl5WRAprW6fBzOuMWWGWeLd49oj/Dnq97C5hilR9PpE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276714; c=relaxed/simple;
-	bh=i4aWQ74F68GcZ66T0SPUsPClUeL1Pwn1OnLNsTQW20M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AmzCxvlHhImOHhdWYt6t99fglwFa2oiLzmUJHNIoSwSU9G+FcxoEwHDPdZb4hYgEoKH2ioprsFD17sHbotGDOCmWkUX5rnZSMo814WYd3fONK3E6zliEvY+92qhfLiaAZDoI27RalbLMv2gBPil38lupYT3BmrgJIoqId/9syRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gc3z3azD; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1628118638
+	for <v9fs@lists.linux.dev>; Thu, 26 Sep 2024 07:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.255.135
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727336688; cv=fail; b=KRsOPI1T/eI4MDsg+acRQFXfZZNzLB99k4yc2qbadW2B+s4i7NA6mEywZB60GHG5GBmTMRv3zoRhvXEbrWuKu5wfVN0mz7d1ZCxsstKVN7tpPvIlcZDv69gc/PZzxg5Fpa9GmHmeFsUTY4j4El33pbcHSo0cvl+F5A28HkAiR2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727336688; c=relaxed/simple;
+	bh=46WRdTpyISUunT9JPdpBNfSPWN0ocZfupfdqbwfnKBo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=THpwW4uAuL49gpSea7E7dwZsIGzaOWVBWommsDTE2RBRv+aa+ooCP9ooq/gyih5POWwtJ4AFce9Y5jb627yygO0eH47mpdG1LN9GnL2mWVZLHi8Rzxg52yl7e8PxBMOhJMeJmWMy5lQ6bVCgjXnMsGEJy8B2BoTGCCfbkLRRTIw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=Wz3CwRch; arc=fail smtp.client-ip=40.107.255.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gc3z3azD"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7a99de9beb2so439088085a.3
-        for <v9fs@lists.linux.dev>; Wed, 25 Sep 2024 08:05:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727276711; x=1727881511; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i4aWQ74F68GcZ66T0SPUsPClUeL1Pwn1OnLNsTQW20M=;
-        b=Gc3z3azDBzIWaLQovaKU8EJXxbx6FWwt0BrmM0n38SFzMkGjmlwuj2A7dBN909SKyc
-         Yx+eHPNmrjWJ7QgD5JrC89p4bzQ1DLs17LOkrie6szKjjr6fNm09tEhYDKzJT1dguVZj
-         5k4lYM8r0FTR33oFWWWKS9MUszV8UtBzNOFoVbvCJe5ErtbC3G5M8dxzvA4Z1E2fxslz
-         KRe6SuvodfiF2c9mBpo9FoHfWdxpugBwxE86DZBkyTNGnneztBMBHMeCgoJz1O71ThsJ
-         P5QKnXJdHNEHIS1H0KC7XjsxB1L8lo/J9DCIWlEYiruWgtgZN+TpI6zCJ5QmcTxlmHUm
-         C3/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727276711; x=1727881511;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i4aWQ74F68GcZ66T0SPUsPClUeL1Pwn1OnLNsTQW20M=;
-        b=lCbmBWl5xUxsJxQqbK4Gq2+eTxjVU2hLnF1Npd3UHFDDq/mET2VUoBRVKXwtcKpIIR
-         b87+TV486duWbUwGku6lUZS5IPtv0tyiIO1NIGRUhd+sSzfYu5An9LPsFrniuQuW468t
-         NceQ/CN7rpoBslGc3j0u19NSJSfQHZeiCQ1CzU14a3uPQZPzBRnRqO/P7Wz4ZAp2ZS7W
-         GsPPYIR83x42ydM9fX0jWgFnsMKtWjJyvtJYuoGjYltKUuDXiRx27UtukgjgFXEFtzqJ
-         jz+JFwBTK6zgqFW3Pc9LfQtSPsgIVBpcXI/BrIPG4+ckJyDNLnqAKTTAC+D7MN1epeox
-         FASg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNuRsc58yV9hRY1wM1NFCpdSeNZKgWmMf1lQUvUWqjf9g71avg7G7y5PkRiE3K6zS+d+3g@lists.linux.dev
-X-Gm-Message-State: AOJu0YybkViDNFhr2q/V2oWHKLvhFuHvG9HJxhynMVLa2fsMnpCeh898
-	YF2RBOYsaYZnrO1lfHj1B44zu+ZC+R8oMDN/byzzGs5vV//+2v9haTB/wyy2HeUfFY07fkXm+o/
-	DZox8FcuzBsHH+CZN9z81wV8FlwI=
-X-Google-Smtp-Source: AGHT+IHLRkUkrQz9oX2/jWpdyBnuBn0AH6wAkFvLI7fK0CnB4oT1RUmW00sdQaCzOkjws2SMxFckIGwkQIeAn/NNTSY=
-X-Received: by 2002:a05:620a:4145:b0:7a9:b04a:b324 with SMTP id
- af79cd13be357-7ace74658ebmr362468785a.64.1727276709328; Wed, 25 Sep 2024
- 08:05:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="Wz3CwRch"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v6yAfXJ/If+ffGEfJUohHdD/aKSstLHjc22LzlrFQXiuoR5bbQJDsThZe4Qr8+MFhkGxCxicQBdyCzW1uRoVEzrNjAz4UOHFSFfpGZzBmfo41h4r8bZ4NpvVIKXQnsMb0nI45P2Y8IlteYMunhCFm798ixeOjIbtDqIR4XQEs5+xORAQ2zXQgzhqx840ntKPQ2gqTtCLttun275Es/wi8yczMqzx3ot9J8Cjmi1uSP9clo6j0CwtJCmdQ0s+rM4x4fRzw7sG7SIkkziAljLjZUL8IkrAYsrskplNQgsnv0oe54dith71ZxbFpvVSka2i20b21lFANJKptzT5czR9gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=46WRdTpyISUunT9JPdpBNfSPWN0ocZfupfdqbwfnKBo=;
+ b=OEywpMkt7YDcCIj5JZEEhBG+eaaV4tRfPtFgLw+JWdTHF+aAGYu29Fj5SgaC1e1v9ffOtRBWmQhjYUJZU/3zoJDXA3TOshWvtSuHcERBCAy8y+CzYuVfAgq03LWa4gJL4kOyRRxEJL2s77pmgoxrLnRmYod4ve1tetEnURPDtjlsosEKWDsNppLwLrm8EmIzSKBZLicEbATJZ5RvmTnck20xEbiSYea8+cgbLHQCwBYH5LWzmwHbw5ApwJic8bXjq3sGBZ+XIMNyNHpFgbzpup7pwG3KqvaNswe0bs4r9h8wap2n1vePjgykflM3MVr26EGN08La2mvJEcCmA2ilNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=46WRdTpyISUunT9JPdpBNfSPWN0ocZfupfdqbwfnKBo=;
+ b=Wz3CwRchCpBPvBIxJ4AHkNeLsZPRmd+HFHYTVaZxwgdG+j27TYjFJAqHjKRqCMYzhM4T3WT1w945c4cozOQcEKXC3qRaZiUTQj54kJlGL6dgguTrhBkf26mYHD7oz9JPJuxYjZb2kdJ2DfPa4JJdWleHMdgNl3+XOmQUleLTD6s=
+Received: from JH0P153MB0999.APCP153.PROD.OUTLOOK.COM (2603:1096:990:66::7) by
+ TYZP153MB0399.APCP153.PROD.OUTLOOK.COM (2603:1096:400:21::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8026.8; Thu, 26 Sep 2024 07:44:43 +0000
+Received: from JH0P153MB0999.APCP153.PROD.OUTLOOK.COM
+ ([fe80::4922:44b2:6f40:adc5]) by JH0P153MB0999.APCP153.PROD.OUTLOOK.COM
+ ([fe80::4922:44b2:6f40:adc5%3]) with mapi id 15.20.8026.005; Thu, 26 Sep 2024
+ 07:44:43 +0000
+From: Krishna Vivek Vitta <kvitta@microsoft.com>
+To: Amir Goldstein <amir73il@gmail.com>
+CC: Jan Kara <jack@suse.cz>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
+	<asmadeus@codewreck.org>, "v9fs@lists.linux.dev" <v9fs@lists.linux.dev>
+Subject: RE: [EXTERNAL] Re: Git clone fails in p9 file system marked with
+ FANOTIFY
+Thread-Topic: [EXTERNAL] Re: Git clone fails in p9 file system marked with
+ FANOTIFY
+Thread-Index:
+ AdsMF7H2pA+A3TMFT7qIn4M6deqPigBk8OQAACP7Z1AACRNwgAABPHQwAAVRWhAAKioFAAAAOOwAAAVcZgAAAaOeAAAAm94AAAPF+pAAAR6dAAAAJY+wAAGPMoAAInJjcA==
+Date: Thu, 26 Sep 2024 07:44:42 +0000
+Message-ID:
+ <JH0P153MB099940642723553BA921C520D46A2@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
+References:
+ <SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxiuPn4g1EBAq70XU-_5tYOXh4HqO5WF6O2YsfF9kM=qPw@mail.gmail.com>
+ <SI2P153MB07187CEE4DFF8CDD925D6812D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxjd2pf-KHiXdHWDZ10um=_Joy9y5_1VC34gm6Yqb-JYog@mail.gmail.com>
+ <SI2P153MB0718D1D7D2F39F48E6D870C1D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <SI2P153MB07187B0BE417F6662A991584D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
+ <20240925081146.5gpfxo5mfmlcg4dr@quack3>
+ <20240925081808.lzu6ukr6pr2553tf@quack3>
+ <CAOQ4uxji2ENLXB2CeUmt72YhKv_wV8=L=JhnfYTh0RTunyTQXw@mail.gmail.com>
+ <20240925113834.eywqa4zslz6b6dag@quack3>
+ <CAOQ4uxgEcQ5U=FOniFRnV1k1EYpqEjawt52377VgFh7CY2pP8A@mail.gmail.com>
+ <JH0P153MB0999C71E821090B2C13227E5D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxirX3XUr4UOusAzAWhmhaAdNbVAfEx60CFWSa8Wn9y5ZQ@mail.gmail.com>
+ <JH0P153MB0999464D8F8D0DE2BC38EE62D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
+ <CAOQ4uxjfO0BJUsnB-QqwqsjQ6jaGuYuAizOB6N2kNgJXvf7eTg@mail.gmail.com>
+In-Reply-To:
+ <CAOQ4uxjfO0BJUsnB-QqwqsjQ6jaGuYuAizOB6N2kNgJXvf7eTg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=5e904157-457f-4fda-ac75-acfef3be5aba;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-09-26T07:31:16Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: JH0P153MB0999:EE_|TYZP153MB0399:EE_
+x-ms-office365-filtering-correlation-id: 0521622b-806d-4e67-41b0-08dcddff159e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?OVd4NDN2YXNOVHNpRnZnbDZhdU5lRE5QWjFtOUtrZE1qY1JEQVZRYm8ySGN2?=
+ =?utf-8?B?UTVLMlliY21XWVJ6Qk5LZ1lneml4ZHNheUVMWHZmVHkwZEh6T1hvekxvSHhE?=
+ =?utf-8?B?N1pYbzZJUlR2ODF4NU1KdVAzM21BYk9zNzZGWUtubTJmRnNSR2xvcE12cmFY?=
+ =?utf-8?B?OHByenNGMGNiUVpPMVJiTEZYN0xJc29Db2pCS3AxTElRcFlWZFpBN3FqNy9p?=
+ =?utf-8?B?MGtTVjgxZVRjZExjWEFVdkhhbU5LWEY3RjBqbEZVcVFCQzB6djcvaTVGOVJ6?=
+ =?utf-8?B?c0ZhNTBoNXdBYWYrTnVmeDlhQkpIWWY5MVRwQjhBNW1vQ2FYVjBJZXJ5Y1dQ?=
+ =?utf-8?B?bUxKVUpSc29aUG5YTnFxVE1rVXNMUzBObHdPSmFkUTVGNWFQajJLc2J5OXdk?=
+ =?utf-8?B?aUMvTjd5L2dyMFNGdlFLL05abG54NGxXdlVlWDROSHYwVHppT20zV0hCbmdy?=
+ =?utf-8?B?bFczMmhkazRhRmhOMlhqQWJ6Y2lIUjJwMkk0V0liZkxFalc0NlJBOGRZK1Zq?=
+ =?utf-8?B?b1M2VXdrdEtLZjZmUkxXLytJS2lHd0FUdGJOT1RCeFpqOHMxbE9uSkxGWjRx?=
+ =?utf-8?B?cmRWWEkvbWtTUG5vZEdRQ0h4cFNTb0J5STBjL1locXdSTFlSTUUyUHBYa0FS?=
+ =?utf-8?B?MEV4eTBMcWJDQzlxMUVWYjk0UkF3cjFhTCtza1IzbUlTd2Z2LzJTaXdTK0Qv?=
+ =?utf-8?B?TkhpUzMxUzg2S1FMcFRMWC9oWlJncW50RjJKQVBLMDNNcEdrT2dEa3VLeThv?=
+ =?utf-8?B?YjdJZlFrSTVRSG9sbVYrNjZITWlab3hlQU1kY3A4dEFQOXF6UEtORnB3Z3Ny?=
+ =?utf-8?B?QXp1NXgzZ05QOEZoQ0o0dG1yR1lERFdsbWZ1U3BzQnpwanhJZGFNYzduY2Ja?=
+ =?utf-8?B?Skp0emc3U3ZUUEhqS3M5cG5NcUtEZStYNU5HTFI2U0JiRUJmbnF5bE4wYnd1?=
+ =?utf-8?B?WmFlQnlLZGdpYldoVjh4eHU3NmZzdDUyTHFrRDhKZHRpOEg5Yk96L0J4Qk53?=
+ =?utf-8?B?WVF3MTRTWUtqZm9MS3FVYlBVRGxKVEUxeDhmWm85NE1pWnh2d0pON2hNenRN?=
+ =?utf-8?B?ZWxrVzg1dWpScmdSVU9WUmJ1Sis3eG9UR2pVbTh1YitIUmJjS054NTBxQXpq?=
+ =?utf-8?B?NW1HQ1pzenlmMUh1SnNQc2dVU2JYMEMrQkNKWnBkK01RTjU3ZXI4enA0aXZt?=
+ =?utf-8?B?OGMzUDU0TmZvVklEZkNFck5xZGVMa1NQYVl4bWhTYzlTMWVwdmlJcENueXRS?=
+ =?utf-8?B?ay83dkZWWXFWaGdJMnhzL0pESzRucHlaTWZYOVFaSmVvbHpnaHFMenRtQkZG?=
+ =?utf-8?B?clVhMmgvelYvRUtFQWJmUEhNOUl5Vi9aT3JMOTY5SG42Sm9NeG0zQ0o2cFBa?=
+ =?utf-8?B?eHY2ZithTCtVdUNBNndRY3JhekQwZFlnQUVMU1hHdFVST3NlaVo5RTV1SkNh?=
+ =?utf-8?B?NDdPT2hzN080WWdzZkhTTlRVSzljOGpWRHF6UmU2UzBYUzRLczF5SkYrSmg3?=
+ =?utf-8?B?bkMyMVdKOUJ5NDd0cm9hSFNVdU5uZmd3VVJ3OWhiSmcvWkQxQzRkTjdHRTR3?=
+ =?utf-8?B?SFpiYTZNVzl4aUx2SEllbWVhbmprNFJLRUNKdWt0TXNUQWh3QTNVa0R0aG1Q?=
+ =?utf-8?B?bTMxSGl6Sk9lWHBoc2VaVEI2ZHppcTc3amF6cE9JUy9oU2R6YXQwdXR1VEtw?=
+ =?utf-8?B?ZlYrTDltcVNIcUxVWjN1N21JQUVpcWZ0MjdiY2xXVU9MWGtPd29xek0wSDVt?=
+ =?utf-8?B?bXlCZ25iYm5kQkxIUnNNcVR4YUVvMTJoNzgraXJMVjFpbDRielJuRWtlVzVz?=
+ =?utf-8?B?ZElQcWdQbjNUalQ3bjBIZz09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:JH0P153MB0999.APCP153.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Y05MdEdoMG1GYlAvTUVEUmJjYVNjbnZLYVF0SVE5WWhRL1VBS1JVdXAzSWcx?=
+ =?utf-8?B?Y0xrTFdON1BpK091OVpNTlAwVjBVN0pXZEU0T0tLK1pDVUF0VjdYejh2OFM0?=
+ =?utf-8?B?MFhyc1JScEJ1L0RseDBwT1FMaW5PT2dGSm04dzBnN0tvTjRjak4ydXFUd3g4?=
+ =?utf-8?B?TGJrS1RVMmdsbDA3R2xQQnQ3MGpXelB6U2c2WEpheGJSK1NPV3dyQmFBSFNi?=
+ =?utf-8?B?bTZwbjFzd0tSU2E5YVVldEVpbERnK1pydkp5MndtRGIwNmM3SVhqam4wcUdV?=
+ =?utf-8?B?QlNUNm9WMW52UWNucVlFZGdkU3Q1cUU4ZFNjZ2RVR3hFZ3pKVGJ6TVVyQldZ?=
+ =?utf-8?B?enJGY2ZlQXlUM09VUHhydDdkQmVJWXVaaGN0VDV3alFoakl0Z2w3b0RFSkVD?=
+ =?utf-8?B?YXVkMXFDMkpWVVZSYXRHenQyRC9xR1ovS1VjTkRhZVdEV045WU4rejdzWmdT?=
+ =?utf-8?B?UW5HTWduS0tUSlFMV1NTSklYSUhQdWh6L3V0Y3RYOHZSV1EvNnRqdk5lYk1a?=
+ =?utf-8?B?a094VEc3emhNZjlIbSszTUhJUndTOHhxSUhISU5mdmF5b0Z4aC81WnZIQTV0?=
+ =?utf-8?B?NnhOZFppb01tb2tkMXExZDVMRTdQbEhNVGlGUXJrM2VzZHByYW83RWUweVVV?=
+ =?utf-8?B?QVR0aXFEL3hxN3BMLzRhV3lmYVh3LytkZXRXaTZQZWtaTkFZSlVIY3l6elVW?=
+ =?utf-8?B?c2pjUzQ1VVA3cEQzV29QbUx4cHlGYzFoU2s5VkNDaG1DOGMxL2pOSWgwTE1m?=
+ =?utf-8?B?T1VIQktBOG9LL1ZQVnN0WTR1N2xnWFpKME1DQVNuQUpZdTFtY2FTZm85aFpx?=
+ =?utf-8?B?L1F4TjZTK2VaUVlQaUMzc3BHbG9QYXYwbEcwclVqRnJ2V1lNVU9yOWtEWENX?=
+ =?utf-8?B?VXFlaGtvTmtWdWhIOUxrRldKR1FEdk9ZbWJ0V2owemxncEhKRnJMRmNnOW5O?=
+ =?utf-8?B?RU9EWHZVQkRBNHQ0NTlOWnQwRFpLbXg5R3RUdksrTDBmZDVjdUIwWmJOcndW?=
+ =?utf-8?B?Q0FrU3Blcndlc3F1ZjBlN0VQeXdza1VZUkRicktjbzdMUnI3UytPRk5EQlQ0?=
+ =?utf-8?B?M1prNFRZcTVhMyttd3FURkZLWExtOXRqejFSUWRjS3NXcmorbEFWa3htR1h3?=
+ =?utf-8?B?MTNkSjVINXdhRko1MmdSTVJKUndUKzhsWkpRM29ldVYzQ3MvMlhhRUd2aEFk?=
+ =?utf-8?B?M1pVa21KVDFybUQ0UnFPYW9sTTNGK3hnamJrSytZWGk1dlZnUVRSK2x4MXhr?=
+ =?utf-8?B?VFZiQjcvUUdSVHRiaWFBWGFuWnMzUUtGL0wwSG9YZ1R6R2x4Y1dzaXFHc2JF?=
+ =?utf-8?B?U0gyWWIrZUkzVk1oQU9jRjJvRmhjNkZ6OVVUTDMwNU1UYUM0VnZncVkxOGhj?=
+ =?utf-8?B?SGNFKzhwTUkwUkl1cUZpdzM5ZWhlQlFQaEV6ZFUxaWJpbzlKRllXRG0vSm93?=
+ =?utf-8?B?QUNTOW82QjBVdVNjM2hIQ0dRWXlGVW9aVUdwNGthUVVoRW9ML0dpekk4ZUtM?=
+ =?utf-8?B?YWVXbnR6MTYxRktOOFpRcjFHb210WEJiRmxmQVVhZWYzQUxXRTVLcDZTM1Z4?=
+ =?utf-8?B?ajh0UEgvUjRzbkZzYUFXdDFva01sZWJBb2k2cTQ2d3pqNEd5eWZxMHJzdHpI?=
+ =?utf-8?B?K25veTF2TGFWTmJ1WG8zWVhBclJDcGh6U3V0bzNWbEJUQTRRWW01S21nMW9x?=
+ =?utf-8?B?RlM2alRNNEFBUm1RbG9CbzRxandseHRGcDJLQnVaejFUYml5aXUyRDN1RFR3?=
+ =?utf-8?B?L3ZZWDMrRk9RL0cybWNhKzdnTlVabWNWZGpublFPQ0ZOd000N3Y2WmhpeThk?=
+ =?utf-8?B?cjFTMlpzbk8xWXNSWWNmekxjcVY4Q1hvcFpWQXdCSmJOUkpObjZxbGtwVjJL?=
+ =?utf-8?B?MHltUDVEdGJPUG5RNUtHT3hwc3pRYk41N0ttOHZyUmdMd1B4MjFyTS82UzYw?=
+ =?utf-8?B?Mis3eURxQllCa2N1R2hWcEVpWnBCUXlTWkIzVEN1RmpqL25iNFpGVnhMTnIr?=
+ =?utf-8?Q?wxiQ2AduzoMbejASi8hu79GUJjEArk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxiuPn4g1EBAq70XU-_5tYOXh4HqO5WF6O2YsfF9kM=qPw@mail.gmail.com>
- <SI2P153MB07187CEE4DFF8CDD925D6812D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxjd2pf-KHiXdHWDZ10um=_Joy9y5_1VC34gm6Yqb-JYog@mail.gmail.com>
- <SI2P153MB0718D1D7D2F39F48E6D870C1D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <SI2P153MB07187B0BE417F6662A991584D4682@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM>
- <20240925081146.5gpfxo5mfmlcg4dr@quack3> <20240925081808.lzu6ukr6pr2553tf@quack3>
- <CAOQ4uxji2ENLXB2CeUmt72YhKv_wV8=L=JhnfYTh0RTunyTQXw@mail.gmail.com>
- <20240925113834.eywqa4zslz6b6dag@quack3> <CAOQ4uxgEcQ5U=FOniFRnV1k1EYpqEjawt52377VgFh7CY2pP8A@mail.gmail.com>
- <JH0P153MB0999C71E821090B2C13227E5D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxirX3XUr4UOusAzAWhmhaAdNbVAfEx60CFWSa8Wn9y5ZQ@mail.gmail.com> <JH0P153MB0999464D8F8D0DE2BC38EE62D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
-In-Reply-To: <JH0P153MB0999464D8F8D0DE2BC38EE62D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 25 Sep 2024 17:04:57 +0200
-Message-ID: <CAOQ4uxjfO0BJUsnB-QqwqsjQ6jaGuYuAizOB6N2kNgJXvf7eTg@mail.gmail.com>
-Subject: Re: [EXTERNAL] Re: Git clone fails in p9 file system marked with FANOTIFY
-To: Krishna Vivek Vitta <kvitta@microsoft.com>
-Cc: Jan Kara <jack@suse.cz>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	"v9fs@lists.linux.dev" <v9fs@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: JH0P153MB0999.APCP153.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0521622b-806d-4e67-41b0-08dcddff159e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2024 07:44:42.8760
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iW7AAMH2LKSBuUdrOiiBWQ7GCpp/BRTZGuSR4QMXpFdyrqtfG1NwfoTOxZR9HEklZcAZY8i3jG0BLMgCjOZNIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZP153MB0399
 
-On Wed, Sep 25, 2024 at 4:22=E2=80=AFPM Krishna Vivek Vitta
-<kvitta@microsoft.com> wrote:
->
-> Thanks for the link.
->
-> Also can you try the third step on your standard linux kernel by omitting=
- FAN_OPEN_PERM in the mask and share the observations of git clone operatio=
-n. Does it succeed ?
->
-
-So it depends on the definition of success..
-
-I do get this error with the fanotify_example watching 9p mount:
-
-root@kvm-xfstests:~# /vtmp/fanotify_example /vtmp/
-Press enter key to terminate.
-Listening for events.
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/info/exclude
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/description
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/applypatch-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-merge-commit.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-receive.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/update.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/post-update.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-push.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-commit.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/prepare-commit-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/push-to-checkout.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-rebase.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-applypatch.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/fsmonitor-watchman.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/commit-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/HEAD.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-read: No such file or directory
-
-But git clone does not complain at all:
-
-root@kvm-xfstests:/vtmp# git clone https://github.com/filebench/filebench.g=
-it
-Cloning into 'filebench'...
-remote: Enumerating objects: 1157, done.
-remote: Total 1157 (delta 0), reused 0 (delta 0), pack-reused 1157 (from 1)
-Receiving objects: 100% (1157/1157), 1.13 MiB | 1005.00 KiB/s, done.
-Resolving deltas: 100% (812/812), done.
-Updating files: 100% (136/136), done.
-
-I did get the same error with FAN_OPEN_PERM:
-
-root@kvm-xfstests:~# /vtmp/fanotify_example /vtmp/
-Press enter key to terminate.
-Listening for events.
-FAN_OPEN_PERM: File /vtmp/filebench/.git/info/exclude
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/info/exclude
-FAN_OPEN_PERM: File /vtmp/filebench/.git/description
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/description
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/applypatch-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/applypatch-msg.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-merge-commit.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-merge-commit.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-receive.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-receive.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/update.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/update.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/post-update.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/post-update.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-push.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-push.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-commit.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-commit.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/prepare-commit-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/prepare-commit-msg.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/push-to-checkout.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/push-to-checkout.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-rebase.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-rebase.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/pre-applypatch.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/pre-applypatch.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/fsmonitor-watchman.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/fsmonitor-watchman.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/hooks/commit-msg.sample
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/hooks/commit-msg.sample
-FAN_OPEN_PERM: File /vtmp/filebench/.git/HEAD.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/HEAD.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config.lock
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_OPEN_PERM: File /vtmp/filebench/.git/config
-FAN_CLOSE_WRITE: File /vtmp/filebench/.git/config.lock
-FAN_OPEN_PERM: File /vtmp/filebench/.git/tSXZBNw
-read: No such file or directory
-
-I do not get fanotify error when watching and git clone on xfs mount.
-
-Thanks,
-Amir.
+SGkgQW1pcg0KDQpUaGFua3MgZm9yIHRoZSBvdXRwdXRzLiBGcm9tIHlvdXIgYW5hbHlzaXMsIGl0
+IGlzIGZvdW5kIHRoYXQgdGhlcmUgYXJlIHNvbWUgZGVudHJ5IHJlZmVyZW5jZXMgdGhhdCBhcmUg
+Y2F1c2luZyBpc3N1ZXMgaW4gcDkgdG8gcmVwb3J0IEVOT0VOVCBlcnJvci4NCg0KRmV3IHF1ZXN0
+aW9uczoNCjEuKSBXaGF0IGlzIHRoZSBrZXJuZWwgdmVyc2lvbiBvZiB5b3VyIHNldHVwID8NCjIu
+KSBJcyB0aGVyZSBhbnkgY29tbWFuZC90b29sIHRvIGNoZWNrIHRoZSBtYXJrZWQgbW91bnQgcG9p
+bnRzID8NCg0KV2hhdCB3b3VsZCBiZSB0aGUgbmV4dCBzdGVwcyBmb3IgdGhpcyBpbnZlc3RpZ2F0
+aW9uID8NCg0KVGhhbmsgeW91LA0KS3Jpc2huYSBWaXZlaw0KDQotLS0tLU9yaWdpbmFsIE1lc3Nh
+Z2UtLS0tLQ0KRnJvbTogQW1pciBHb2xkc3RlaW4gPGFtaXI3M2lsQGdtYWlsLmNvbT4NClNlbnQ6
+IFdlZG5lc2RheSwgU2VwdGVtYmVyIDI1LCAyMDI0IDg6MzUgUE0NClRvOiBLcmlzaG5hIFZpdmVr
+IFZpdHRhIDxrdml0dGFAbWljcm9zb2Z0LmNvbT4NCkNjOiBKYW4gS2FyYSA8amFja0BzdXNlLmN6
+PjsgbGludXgtZnNkZXZlbEB2Z2VyLmtlcm5lbC5vcmc7IEVyaWMgVmFuIEhlbnNiZXJnZW4gPGVy
+aWN2aEBrZXJuZWwub3JnPjsgTGF0Y2hlc2FyIElvbmtvdiA8bHVjaG9AaW9ua292Lm5ldD47IERv
+bWluaXF1ZSBNYXJ0aW5ldCA8YXNtYWRldXNAY29kZXdyZWNrLm9yZz47IHY5ZnNAbGlzdHMubGlu
+dXguZGV2DQpTdWJqZWN0OiBSZTogW0VYVEVSTkFMXSBSZTogR2l0IGNsb25lIGZhaWxzIGluIHA5
+IGZpbGUgc3lzdGVtIG1hcmtlZCB3aXRoIEZBTk9USUZZDQoNCk9uIFdlZCwgU2VwIDI1LCAyMDI0
+IGF0IDQ6MjLigK9QTSBLcmlzaG5hIFZpdmVrIFZpdHRhIDxrdml0dGFAbWljcm9zb2Z0LmNvbT4g
+d3JvdGU6DQo+DQo+IFRoYW5rcyBmb3IgdGhlIGxpbmsuDQo+DQo+IEFsc28gY2FuIHlvdSB0cnkg
+dGhlIHRoaXJkIHN0ZXAgb24geW91ciBzdGFuZGFyZCBsaW51eCBrZXJuZWwgYnkgb21pdHRpbmcg
+RkFOX09QRU5fUEVSTSBpbiB0aGUgbWFzayBhbmQgc2hhcmUgdGhlIG9ic2VydmF0aW9ucyBvZiBn
+aXQgY2xvbmUgb3BlcmF0aW9uLiBEb2VzIGl0IHN1Y2NlZWQgPw0KPg0KDQpTbyBpdCBkZXBlbmRz
+IG9uIHRoZSBkZWZpbml0aW9uIG9mIHN1Y2Nlc3MuLg0KDQpJIGRvIGdldCB0aGlzIGVycm9yIHdp
+dGggdGhlIGZhbm90aWZ5X2V4YW1wbGUgd2F0Y2hpbmcgOXAgbW91bnQ6DQoNCnJvb3RAa3ZtLXhm
+c3Rlc3RzOn4jIC92dG1wL2Zhbm90aWZ5X2V4YW1wbGUgL3Z0bXAvIFByZXNzIGVudGVyIGtleSB0
+byB0ZXJtaW5hdGUuDQpMaXN0ZW5pbmcgZm9yIGV2ZW50cy4NCkZBTl9DTE9TRV9XUklURTogRmls
+ZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9pbmZvL2V4Y2x1ZGUNCkZBTl9DTE9TRV9XUklURTogRmls
+ZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9kZXNjcmlwdGlvbg0KRkFOX0NMT1NFX1dSSVRFOiBGaWxl
+IC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL2FwcGx5cGF0Y2gtbXNnLnNhbXBsZQ0KRkFOX0NM
+T1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3ByZS1tZXJnZS1jb21t
+aXQuc2FtcGxlDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9v
+a3MvcHJlLXJlY2VpdmUuc2FtcGxlDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAvZmlsZWJl
+bmNoLy5naXQvaG9va3MvdXBkYXRlLnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBGaWxlIC92dG1w
+L2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3Bvc3QtdXBkYXRlLnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRF
+OiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3ByZS1wdXNoLnNhbXBsZQ0KRkFOX0NM
+T1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3ByZS1jb21taXQuc2Ft
+cGxlDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcHJl
+cGFyZS1jb21taXQtbXNnLnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGVi
+ZW5jaC8uZ2l0L2hvb2tzL3B1c2gtdG8tY2hlY2tvdXQuc2FtcGxlDQpGQU5fQ0xPU0VfV1JJVEU6
+IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcHJlLXJlYmFzZS5zYW1wbGUNCkZBTl9D
+TE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9wcmUtYXBwbHlwYXRj
+aC5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29r
+cy9mc21vbml0b3Itd2F0Y2htYW4uc2FtcGxlDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAv
+ZmlsZWJlbmNoLy5naXQvaG9va3MvY29tbWl0LW1zZy5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTog
+RmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9IRUFELmxvY2sNCkZBTl9DTE9TRV9XUklURTogRmls
+ZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcubG9jaw0KRkFOX0NMT1NFX1dSSVRFOiBGaWxl
+IC92dG1wL2ZpbGViZW5jaC8uZ2l0L2NvbmZpZy5sb2NrDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUg
+L3Z0bXAvZmlsZWJlbmNoLy5naXQvY29uZmlnLmxvY2sNCkZBTl9DTE9TRV9XUklURTogRmlsZSAv
+dnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcubG9jaw0KcmVhZDogTm8gc3VjaCBmaWxlIG9yIGRp
+cmVjdG9yeQ0KDQpCdXQgZ2l0IGNsb25lIGRvZXMgbm90IGNvbXBsYWluIGF0IGFsbDoNCg0Kcm9v
+dEBrdm0teGZzdGVzdHM6L3Z0bXAjIGdpdCBjbG9uZSBodHRwczovL2dpdGh1Yi5jb20vZmlsZWJl
+bmNoL2ZpbGViZW5jaC5naXQNCkNsb25pbmcgaW50byAnZmlsZWJlbmNoJy4uLg0KcmVtb3RlOiBF
+bnVtZXJhdGluZyBvYmplY3RzOiAxMTU3LCBkb25lLg0KcmVtb3RlOiBUb3RhbCAxMTU3IChkZWx0
+YSAwKSwgcmV1c2VkIDAgKGRlbHRhIDApLCBwYWNrLXJldXNlZCAxMTU3IChmcm9tIDEpIFJlY2Vp
+dmluZyBvYmplY3RzOiAxMDAlICgxMTU3LzExNTcpLCAxLjEzIE1pQiB8IDEwMDUuMDAgS2lCL3Ms
+IGRvbmUuDQpSZXNvbHZpbmcgZGVsdGFzOiAxMDAlICg4MTIvODEyKSwgZG9uZS4NClVwZGF0aW5n
+IGZpbGVzOiAxMDAlICgxMzYvMTM2KSwgZG9uZS4NCg0KSSBkaWQgZ2V0IHRoZSBzYW1lIGVycm9y
+IHdpdGggRkFOX09QRU5fUEVSTToNCg0Kcm9vdEBrdm0teGZzdGVzdHM6fiMgL3Z0bXAvZmFub3Rp
+ZnlfZXhhbXBsZSAvdnRtcC8gUHJlc3MgZW50ZXIga2V5IHRvIHRlcm1pbmF0ZS4NCkxpc3Rlbmlu
+ZyBmb3IgZXZlbnRzLg0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9p
+bmZvL2V4Y2x1ZGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9p
+bmZvL2V4Y2x1ZGUNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvZGVz
+Y3JpcHRpb24NCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9kZXNj
+cmlwdGlvbg0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9h
+cHBseXBhdGNoLW1zZy5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVu
+Y2gvLmdpdC9ob29rcy9hcHBseXBhdGNoLW1zZy5zYW1wbGUNCkZBTl9PUEVOX1BFUk06IEZpbGUg
+L3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcHJlLW1lcmdlLWNvbW1pdC5zYW1wbGUNCkZBTl9D
+TE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9wcmUtbWVyZ2UtY29t
+bWl0LnNhbXBsZQ0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29r
+cy9wcmUtcmVjZWl2ZS5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVu
+Y2gvLmdpdC9ob29rcy9wcmUtcmVjZWl2ZS5zYW1wbGUNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0
+bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvdXBkYXRlLnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBG
+aWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3VwZGF0ZS5zYW1wbGUNCkZBTl9PUEVOX1BF
+Uk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcG9zdC11cGRhdGUuc2FtcGxlDQpG
+QU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcG9zdC11cGRh
+dGUuc2FtcGxlDQpGQU5fT1BFTl9QRVJNOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tz
+L3ByZS1wdXNoLnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8u
+Z2l0L2hvb2tzL3ByZS1wdXNoLnNhbXBsZQ0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRtcC9maWxl
+YmVuY2gvLmdpdC9ob29rcy9wcmUtY29tbWl0LnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBGaWxl
+IC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3ByZS1jb21taXQuc2FtcGxlDQpGQU5fT1BFTl9Q
+RVJNOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tzL3ByZXBhcmUtY29tbWl0LW1zZy5z
+YW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9w
+cmVwYXJlLWNvbW1pdC1tc2cuc2FtcGxlDQpGQU5fT1BFTl9QRVJNOiBGaWxlIC92dG1wL2ZpbGVi
+ZW5jaC8uZ2l0L2hvb2tzL3B1c2gtdG8tY2hlY2tvdXQuc2FtcGxlDQpGQU5fQ0xPU0VfV1JJVEU6
+IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcHVzaC10by1jaGVja291dC5zYW1wbGUN
+CkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvcHJlLXJlYmFz
+ZS5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29r
+cy9wcmUtcmViYXNlLnNhbXBsZQ0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRtcC9maWxlYmVuY2gv
+LmdpdC9ob29rcy9wcmUtYXBwbHlwYXRjaC5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmlsZSAv
+dnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9wcmUtYXBwbHlwYXRjaC5zYW1wbGUNCkZBTl9PUEVO
+X1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvaG9va3MvZnNtb25pdG9yLXdhdGNobWFu
+LnNhbXBsZQ0KRkFOX0NMT1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2hvb2tz
+L2ZzbW9uaXRvci13YXRjaG1hbi5zYW1wbGUNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmls
+ZWJlbmNoLy5naXQvaG9va3MvY29tbWl0LW1zZy5zYW1wbGUNCkZBTl9DTE9TRV9XUklURTogRmls
+ZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9ob29rcy9jb21taXQtbXNnLnNhbXBsZQ0KRkFOX09QRU5f
+UEVSTTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9IRUFELmxvY2sNCkZBTl9DTE9TRV9XUklU
+RTogRmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9IRUFELmxvY2sNCkZBTl9PUEVOX1BFUk06IEZp
+bGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvY29uZmlnLmxvY2sNCkZBTl9DTE9TRV9XUklURTogRmls
+ZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcubG9jaw0KRkFOX09QRU5fUEVSTTogRmlsZSAv
+dnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcubG9jaw0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRt
+cC9maWxlYmVuY2gvLmdpdC9jb25maWcNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJl
+bmNoLy5naXQvY29uZmlnDQpGQU5fQ0xPU0VfV1JJVEU6IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5n
+aXQvY29uZmlnLmxvY2sNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQv
+Y29uZmlnLmxvY2sNCkZBTl9PUEVOX1BFUk06IEZpbGUgL3Z0bXAvZmlsZWJlbmNoLy5naXQvY29u
+ZmlnDQpGQU5fT1BFTl9QRVJNOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2NvbmZpZw0KRkFO
+X0NMT1NFX1dSSVRFOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2NvbmZpZy5sb2NrDQpGQU5f
+T1BFTl9QRVJNOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2NvbmZpZy5sb2NrDQpGQU5fT1BF
+Tl9QRVJNOiBGaWxlIC92dG1wL2ZpbGViZW5jaC8uZ2l0L2NvbmZpZw0KRkFOX09QRU5fUEVSTTog
+RmlsZSAvdnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcNCkZBTl9DTE9TRV9XUklURTogRmlsZSAv
+dnRtcC9maWxlYmVuY2gvLmdpdC9jb25maWcubG9jaw0KRkFOX09QRU5fUEVSTTogRmlsZSAvdnRt
+cC9maWxlYmVuY2gvLmdpdC90U1haQk53DQpyZWFkOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5
+DQoNCkkgZG8gbm90IGdldCBmYW5vdGlmeSBlcnJvciB3aGVuIHdhdGNoaW5nIGFuZCBnaXQgY2xv
+bmUgb24geGZzIG1vdW50Lg0KDQpUaGFua3MsDQpBbWlyLg0K
