@@ -1,54 +1,55 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E9A27473
-	for <v9fs@lists.linux.dev>; Thu, 26 Sep 2024 20:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9883418953C
+	for <v9fs@lists.linux.dev>; Thu, 26 Sep 2024 22:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727382497; cv=none; b=lA1FefN1Uq0xobF8P6FeuGONr5ly9tzhyusp608tV8aBS1gqcoTw9A1scjhxa53Tagl3EivyiBUFKETmKJkjDf/f/PnUtvhgQHDEJqc0y2sevXx5Gi6VKkmNtq3QM6k2N4JhLWwNylFLbRhyNk6QkIlpvs+orZmpy4sVbhdzfto=
+	t=1727388629; cv=none; b=dpZId9Nm4iusCOBtMNPFgIeVm5mqYU25iYItFDMHiVGdD9O5HWmh4ylMEcBxfLAGV1ffHZCTn1thru6Tbquz6LqvWuKjxyxzYp4w0r68OgfHIhyNHmJMGDd6EcqT99g3AUnHMtRrgboxpSMisYx6WAOivw7tJdWHzJ3rydjitAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727382497; c=relaxed/simple;
-	bh=pknfZZZQcqqBmnB4YUw1rasAfvsUhrx+hscgFcM1NfM=;
+	s=arc-20240116; t=1727388629; c=relaxed/simple;
+	bh=G+L6BGRI1dQMplCLGhjNNKl68X658qh33Dvj/U6qwXU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I/PvBPmBM5HfW7++axD74SFv7R4jqP4eqX/6SSDUA+bEktZBjDbH+QzoMMTe5/5XWExKtZVgT2dBhwjdg3gKKeAZPJjbVMjl8oN6H+SAKx6G8+Yyar2qeqMOF7Vy4uZcO6bzXW6nKkVbzj3PNkDY0OPbGs79ZAnHvVSWbmzKYG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ext4MHvK; arc=none smtp.client-ip=209.85.219.179
+	 To:Cc:Content-Type; b=hRWY7rUrX455uatNCV6NKTMvotIke4yC1gY4T0EIqKbxmAdWb//cLExWEn/6iwXpgKvhPJehGUyX/8yc/w3d6nN1txgekJ/23p6jUJ7n3LqEdR6kpzdVOvDZdevIpL155IFpO8p052t69E23ieuDfZjtSdvJAmZMEu7puYCp1G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPueh+Jd; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ext4MHvK"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e25d6342837so731895276.1
-        for <v9fs@lists.linux.dev>; Thu, 26 Sep 2024 13:28:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RPueh+Jd"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7a9aec89347so110067085a.0
+        for <v9fs@lists.linux.dev>; Thu, 26 Sep 2024 15:10:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727382495; x=1727987295; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pknfZZZQcqqBmnB4YUw1rasAfvsUhrx+hscgFcM1NfM=;
-        b=Ext4MHvK1r6PEvyRvxPv5zno69IILOGhi1SEh/OlZLKvAfsFgm7rs/2HWLWxRWAoZ+
-         7BzjefYrk8O0I4q2tpaA8wkCDY7uFFxznBsMIz8Y4ALqQ2t+D7D3/BltcoRsRsQ27+My
-         mmN5+VdnsdEIeUbHmPMOIh5gNP6e8HAeN6g7nvopsoSmuJwL0wbiZdh+RhCo+u2UKvLr
-         GyIroKrYFv/35qCvxtS80osMmuzJsA1PMw+q2WBXGiZhVPrZ7PS2vPzo6ViIWIUUGsW8
-         Fpz2Is63ZgqqIL6jqOC4B4YkmkIrRjRwXGpHM7w076PM4UTgv0tBsXmtZHkIG2o6jFqY
-         sSNQ==
+        d=gmail.com; s=20230601; t=1727388626; x=1727993426; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XzolFJ9r7P6dC1Xh/Y6FYKRpWyNfvBP43rsrIRfwlv8=;
+        b=RPueh+JdgDExY9tbtATjNXmDiFvtigMhkM6CwCOPczirtI48LgZCKIeuORUsJesfx8
+         7QhO5sOcXADhTPnQm9fR4gtmHcjn/pcj31T+WBgFgivHtJTzubloUXitVEl9kLYeT3TU
+         h7VWduE9rf6aVDWCFixu5qErQk4drYtx8MT8FL3iDCsaQalUDf8Z/Xo3NMn5q7gy4fvb
+         pdD4U10IGQyIE2Frf+kGQKlK/lxaRHeJnuRVVAy/xQEh3jQTiKlhQR5cwP+TkFzbO7rD
+         91Fse2gnaEO1lzNsH3aO1+JYtDssujwKkEbW7600ks24i3w59K3cjzUVshbeLT0p4+Yo
+         Tvbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727382495; x=1727987295;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pknfZZZQcqqBmnB4YUw1rasAfvsUhrx+hscgFcM1NfM=;
-        b=QItPzdIrMGijgdui3+Vuk7Tkum1s7zcwx3WO33GFUfDaHtI6OkX7/z/VdvU5xGs3F0
-         dO7lNE/X/OaM69FqAY9MYI2VLWutHHOEoReXAg3Hex0evxbctXrYO+/vNLs9Gl2Bdfod
-         J2KwPXygJOf3PhRL5ZgpnTxpIAG0nvAOf132JZc2FbROonaDVW5gLUdzGU2rG56H0oFw
-         bMhR4LfHwmUTMsc5Tz10kR23LVG/8cU32Z+4wixGujWjzYop4Gtr0Kb6kLIjlObdvta2
-         tVagdk2SQ2Oa5Z9eMIITQVSRLrocdJsHxEM+nySidqf3fhnw8MQqNrKv5Xm5NKMmMXWx
-         epmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBVEOYTLVCQzLwHXE431fh1DrNuugZWPXsCnG7NB9OG3jeR4JotVsIBbYxucSwoqC5tZFM@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMW+cT4Qp2H8vZEhoMnMj+yVNnMxb86/Oh27TbtVECRGd/jNNF
-	r6bwNb0ddEvieMhznEIiwS1b5ifuFT/BI5KS3w+0ybX04XMAW5t9DjAlSWzZTvukoZAW36LBlhE
-	5uy0k/b3oVp0DAh4CqcDS3Pju6BY=
-X-Google-Smtp-Source: AGHT+IGBDy2RlG2XLotWUmR2bMly7Lt4Vd4mdCIC/hqNHTAu18kx/fUhOHB434FIoE0n7SUspusrRyC/zDShng7K5Q4=
-X-Received: by 2002:a05:690c:2848:b0:6db:d5e8:d612 with SMTP id
- 00721157ae682-6e247585df5mr7090797b3.23.1727382494998; Thu, 26 Sep 2024
- 13:28:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727388626; x=1727993426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XzolFJ9r7P6dC1Xh/Y6FYKRpWyNfvBP43rsrIRfwlv8=;
+        b=f8CuZndCfk44pmFglKHksHuhDz6+2iC8KrVtbM8OXDD35nT8AGl+aC80M0+QOX8Di4
+         sy2ZZNNDrj9tkzaN2FOrCyAxVj2NF+Lr0MKbBSTfeMZbazjiwrEnPMV2YA5fTBk9xh7g
+         A1tAdQk8KlPpauz3IiNqGuCnHtngkZk3zwMbotFsykPcJ4TUUXUwz0tWTyuyTaBdN77w
+         9O/uicDJwDy/q014jLmabA86PMTLGhRHJeiUIHArjlEKvY4UDAbKmL1EKKoIQfXXVvNU
+         qFk9C8mzJ5K6AKf+gbF9/tDPXmdOHh6SH5wyewYBZKC+edcBggiC+dNGf/vqNxwLtDVE
+         3G+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUuwJDNWOjDMHk4DbaPU6wuNTl1XX6M/jMQMm1RmxcvhzcBOclK7IFKtgWcfOS8a/khikJB@lists.linux.dev
+X-Gm-Message-State: AOJu0YyEEWAiDH+gKWCOlh4uPN3YdWncbm5/L/4uo9byhJqXrVFUSh00
+	VVmKjqaYVfKUUvJ7goZaSNGjXnD8h6gYZ6DFmbiP4ZZdTvifKvUQKRDgV9bV7jie6pK511c+mES
+	QaULFMZLNd8eK/OcEMfZQkwKU2ag=
+X-Google-Smtp-Source: AGHT+IFz7MzXUpx/7skxhd/YFqB/RceGdY1NOSEf+hmf5J4yYDT2reFYBVxZMcnoTz3IOAXM4uHMf6zohfQgaqLHQO0=
+X-Received: by 2002:a05:620a:17ab:b0:7a9:c13d:6e5c with SMTP id
+ af79cd13be357-7ae37852751mr128385485a.29.1727388626322; Thu, 26 Sep 2024
+ 15:10:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -69,77 +70,89 @@ References: <SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.O
  <JH0P153MB0999464D8F8D0DE2BC38EE62D4692@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
  <CAOQ4uxjfO0BJUsnB-QqwqsjQ6jaGuYuAizOB6N2kNgJXvf7eTg@mail.gmail.com>
  <JH0P153MB099940642723553BA921C520D46A2@JH0P153MB0999.APCP153.PROD.OUTLOOK.COM>
- <CAOQ4uxjyihkjfZTF3qVX0varsj5HyjqRRGvjBHTC5s258_WpiQ@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjyihkjfZTF3qVX0varsj5HyjqRRGvjBHTC5s258_WpiQ@mail.gmail.com>
+ <CAOQ4uxjyihkjfZTF3qVX0varsj5HyjqRRGvjBHTC5s258_WpiQ@mail.gmail.com> <CAOQ4uxivUh4hKoB_V3H7D75wTX1ijX4bV4rYcgMyoEuZMD+-Eg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxivUh4hKoB_V3H7D75wTX1ijX4bV4rYcgMyoEuZMD+-Eg@mail.gmail.com>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 26 Sep 2024 22:28:03 +0200
-Message-ID: <CAOQ4uxivUh4hKoB_V3H7D75wTX1ijX4bV4rYcgMyoEuZMD+-Eg@mail.gmail.com>
+Date: Fri, 27 Sep 2024 00:10:14 +0200
+Message-ID: <CAOQ4uxgRnzB0E2ESeqgZBHW++zyRj8-VmvB38Vxm5OXgr=EM9g@mail.gmail.com>
 Subject: Re: [EXTERNAL] Re: Git clone fails in p9 file system marked with FANOTIFY
 To: Krishna Vivek Vitta <kvitta@microsoft.com>
 Cc: Jan Kara <jack@suse.cz>, 
 	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
 	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
 	"v9fs@lists.linux.dev" <v9fs@lists.linux.dev>
-Content-Type: multipart/mixed; boundary="00000000000001b36e06230b9422"
-
---00000000000001b36e06230b9422
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > What would be the next steps for this investigation ?
-> >
+On Thu, Sep 26, 2024 at 10:28=E2=80=AFPM Amir Goldstein <amir73il@gmail.com=
+> wrote:
 >
-> I need to find some time and to debug the reason for 9p open failure
-> so we can make sure the problem is in 9p code and report more details
-> of the bug to 9p maintainers, but since a simple reproducer exists,
-> they can also try to reproduce the issue right now.
+> > > What would be the next steps for this investigation ?
+> > >
+> >
+> > I need to find some time and to debug the reason for 9p open failure
+> > so we can make sure the problem is in 9p code and report more details
+> > of the bug to 9p maintainers, but since a simple reproducer exists,
+> > they can also try to reproduce the issue right now.
+>
+> FWIW, the attached reproducer mimics git clone rename_over pattern closer=
+.
+> It reproduces fanotify_read() errors sometimes, not always,
+> with either CLOSE_WRITE or OPEN_PERM | CLOSE_WRITE.
+> maybe CLOSE_WRITE alone has better odds - I'm not sure.
+>
 
-FWIW, the attached reproducer mimics git clone rename_over pattern closer.
-It reproduces fanotify_read() errors sometimes, not always,
-with either CLOSE_WRITE or OPEN_PERM | CLOSE_WRITE.
-maybe CLOSE_WRITE alone has better odds - I'm not sure.
+scratch that.
+I think the renames were just a destruction
+git clone events do not always fail on a close+rename pattern,
+they always fail on the close+unlink that follows the renames:
+
+1776  openat(AT_FDCWD, "/vtmp/filebench/.git/tjEzMUw",
+O_RDWR|O_CREAT|O_EXCL, 0600) =3D 3
+1776  close(3)                          =3D 0
+1776  unlink("/vtmp/filebench/.git/tjEzMUw") =3D 0
+1776  symlink("testing", "/vtmp/filebench/.git/tjEzMUw") =3D 0
+1776  lstat("/vtmp/filebench/.git/tjEzMUw", {st_mode=3DS_IFLNK|0777,
+st_size=3D7, ...}) =3D 0
+1776  unlink("/vtmp/filebench/.git/tjEzMUw") =3D 0
+
+I know because I added this print:
+
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -275,6 +275,7 @@ static int create_fd(struct fsnotify_group *group,
+const struct path *path,
+                 */
+                put_unused_fd(client_fd);
+                client_fd =3D PTR_ERR(new_file);
++               pr_warn("%s(%pd2): ret=3D%d\n", __func__, path->dentry,
+client_fd);
+        } else {
+
+We should consider adding it as is or maybe ratelimited.
+
+The trivial reproducer below fails fanotify_read() always with one try.
 
 Thanks,
 Amir.
 
---00000000000001b36e06230b9422
-Content-Type: text/x-csrc; charset="US-ASCII"; name="rename_over.c"
-Content-Disposition: attachment; filename="rename_over.c"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m1jqwsjk0>
-X-Attachment-Id: f_m1jqwsjk0
+int main() {
+    const char *filename =3D "config.lock";
+    int fd;
 
-I2luY2x1ZGUgPHN0ZGlvLmg+DQojaW5jbHVkZSA8c3RkbGliLmg+DQojaW5jbHVkZSA8dW5pc3Rk
-Lmg+DQojaW5jbHVkZSA8ZmNudGwuaD4NCiNpbmNsdWRlIDxzdHJpbmcuaD4NCiNpbmNsdWRlIDxl
-cnJuby5oPg0KI2luY2x1ZGUgPHB0aHJlYWQuaD4NCg0KDQp2b2lkICp0aHJlYWQodm9pZCAqcHRy
-KQ0Kew0KICAgIGNoYXIgZmlsZW5hbWVbMTBdID0ge307DQogICAgY29uc3QgY2hhciAqbmV3X2Zp
-bGVuYW1lID0gImNvbmZpZyI7DQogICAgY29uc3QgY2hhciAqY29udGVudCA9ICJIZWxsbywgdGhp
-cyBpcyBhIHRlc3Qgd2l0aCBmaWxlIHJlbmFtZSBvcGVyYXRpb24uXG4iOw0KICAgIGNoYXIgYnVm
-ZmVyWzEwMF07DQogICAgaW50IGZkOw0KICAgIHNzaXplX3QgYnl0ZXNfcmVhZDsNCiAgICBpbnQg
-Y291bnRlcj0wOw0KDQogICAgZnByaW50ZihzdGRlcnIsIlRocmVhZCAlbGQgc3RhcnRlZFxuIiwg
-KGxvbmcpcHRyKTsNCiAgICBzcHJpbnRmKGZpbGVuYW1lLCJjb25maWcuJWxkIiwgKGxvbmcpcHRy
-KTsNCg0KcmV0cnk6DQogICAgLy8gQ3JlYXRlIGEgbmV3IGZpbGUgYW5kIHdyaXRlIHRvIGl0DQog
-ICAgZmQgPSBvcGVuKGZpbGVuYW1lLCBPX1dST05MWSB8IE9fQ1JFQVQgfCBPX0VYQ0wsIDA2NDQp
-Ow0KICAgIGlmIChmZCA9PSAtMSkgew0KICAgICAgICBwZXJyb3IoIkZhaWxlZCB0byBjcmVhdGUg
-ZmlsZSIpOw0KICAgICAgICByZXR1cm4gTlVMTDsNCiAgICB9DQogICAgaWYgKHdyaXRlKGZkLCBj
-b250ZW50LCBzdHJsZW4oY29udGVudCkpID09IC0xKSB7DQogICAgICAgIHBlcnJvcigiRmFpbGVk
-IHRvIHdyaXRlIHRvIGZpbGUiKTsNCiAgICAgICAgY2xvc2UoZmQpOw0KICAgICAgICByZXR1cm4g
-TlVMTDsNCiAgICB9DQogICAgY2xvc2UoZmQpOw0KDQogICAgLy8gUmVuYW1lIHRoZSBmaWxlDQog
-ICAgaWYgKHJlbmFtZShmaWxlbmFtZSwgbmV3X2ZpbGVuYW1lKSAhPSAwKSB7DQogICAgICAgIHBl
-cnJvcigiRmFpbGVkIHRvIHJlbmFtZSBmaWxlIik7DQogICAgICAgIHJldHVybiBOVUxMOw0KICAg
-IH0NCg0KICAgIGZkID0gb3BlbihuZXdfZmlsZW5hbWUsIE9fUkRPTkxZKTsNCg0KICAgIGlmIChm
-ZCA9PSAtMSkgew0KICAgICAgICBwZXJyb3IoIkZhaWxlZCB0byBvcGVuIHJlbmFtZWQgZmlsZSIp
-Ow0KICAgICAgICByZXR1cm4gTlVMTDsNCiAgICB9DQogICAgYnl0ZXNfcmVhZCA9IHJlYWQoZmQs
-IGJ1ZmZlciwgc2l6ZW9mKGJ1ZmZlcikgLSAxKTsNCiAgICBpZiAoYnl0ZXNfcmVhZCA9PSAtMSkg
-ew0KICAgICAgICBwZXJyb3IoIkZhaWxlZCB0byByZWFkIGZyb20gZmlsZSIpOw0KICAgICAgICBj
-bG9zZShmZCk7DQogICAgICAgIHJldHVybiBOVUxMOw0KICAgIH0NCiAgICBidWZmZXJbYnl0ZXNf
-cmVhZF0gPSAnXDAnOyAgLy8gTnVsbC10ZXJtaW5hdGUgdGhlIGJ1ZmZlcg0KICAgIGNsb3NlKGZk
-KTsNCg0KICAgIC8vIE9wZW4gdGhlIHJlbmFtZWQgZmlsZSBhbmQgcmVhZCB0aGUgY29udGVudA0K
-ICAgIGlmIChjb3VudGVyKysgPCAxMDApDQoJICAgIGdvdG8gcmV0cnk7DQoNCiAgICBwcmludGYo
-IkZpbGUgc2F2ZWQgJWQgaXRlcmF0aW9uc1xuIiwgY291bnRlcik7DQoNCiAgICAvLyBQcmludCB0
-aGUgY29udGVudA0KICAgIHByaW50ZigiQ29udGVudCBvZiAlczpcbiVzIiwgbmV3X2ZpbGVuYW1l
-LCBidWZmZXIpOw0KDQogICAgcmV0dXJuIHB0cjsNCn0NCg0KaW50IG1haW4oKSB7DQogICAgcHRo
-cmVhZF90IHRoWzEwXTsNCiAgICBsb25nIGk7DQogICAgZm9yIChpID0gMDsgaSA8IDEwOyBpKysp
-DQoJICAgIHB0aHJlYWRfY3JlYXRlKCZ0aFtpXSwgTlVMTCwgKnRocmVhZCwgKHZvaWQgKilpKTsN
-Cg0KICAgIGZvciAoaSA9IDA7IGkgPCAxMDsgaSsrKQ0KCSAgICBwdGhyZWFkX2pvaW4odGhbaV0g
-LE5VTEwpOw0KDQogICAgcmV0dXJuIEVYSVRfU1VDQ0VTUzsNCn0NCg==
---00000000000001b36e06230b9422--
+    // Create a new file
+    fd =3D open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd =3D=3D -1) {
+        perror("Failed to create file");
+        return EXIT_FAILURE;
+    }
+    close(fd);
+
+    // Remove the file
+    if (unlink(filename) !=3D 0) {
+        perror("Failed to unlink file");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
