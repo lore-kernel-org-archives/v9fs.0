@@ -1,85 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B97198831
-	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 18:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140F4198850
+	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 18:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727721320; cv=none; b=d9xUUQqa6EJmsLyR+t8EtFmkb89+SeupBjW5CFryHQwjwi0qdY7/Ikt7+JX9VRaaDdW+HIdjGJr3aHeG4eSx8codzT2BtUK1cIDU42aLU8dR/CKQuIMlKmpCBYzY0nH6BsKVwvIrT30uIlvQYHMOutqzr+dHxouF8gzt4mhP4OA=
+	t=1727722512; cv=none; b=MQyBPTsn9Ouz2avEyWhj0mwGILsXEklpYH0Lmmhceucf+hHl5lEwQ8H79EW/Mp7UmQdw3PjvmoJ4d9X/xGjg3sir6VmQOGGNKfIAjcBQAh67yUeSDQKQQA6Q/O50tEYkgLdiX24T2CdHbPqZwN6fAnHLSID6X62nA9nXq70vr0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727721320; c=relaxed/simple;
-	bh=u/r1gsK3d9HgHSLkwy9YD8P0OsrJDIi+1lCKi06YOU0=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=EcrVn74+EGZE2scOx6xZcr7nze3qeGfYb44yyaJKHOTckiX8BWhOwarYD/ua8EnSHH3SaADRay//hULJr39rQoqEhfohd/3bUkM09huOUHQij1GaUQ0pbke5+zW6H/libCZxI/6euiwYMu3XJfVzWuaGQHUvnq8I4sp1mxfcjjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WkQOw5kt; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727722512; c=relaxed/simple;
+	bh=DncG/RMrnPEbFWH6D8LtrSW9LSny2ClSKkba5oLV8OI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XTey9RnRoqsF88OmnHnP2f9H1GkJ5XUxQNJ/r6Di9J9dEeijoJncSEzTVH6PW31QK6FCHsskZYwHHFwDZZVQbXgLrUHaTDJ0lp7SdltTWLT3MGr3rHSzE7DJq4AxkBs9Cj5eqKvhy61MbM+QhKklzHf4H6fziHwakGg1EzTXDTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=RFolJnzI; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WkQOw5kt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727721318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7X8o4DowsqGONQ/4kasxk3OiTMOAJHVfF5+gN/kqpqg=;
-	b=WkQOw5kt70R/WrIEdj2b5mUT+hMkUkKd1zw3+SQlm684xmNjgEdlKh6YEnR1NcV+AAGQ5a
-	XxgkF0eCyqq9ff6s50XZKg9WFgamqjdUntt18PbzCzGFSJZ2Eztsi1vobHDwXhOfsPZObu
-	JqdLvxAGYhKaNQteBTmxuJ5T7UQoPBw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453--d_Kp97WPyK6rMA1zpyZig-1; Mon,
- 30 Sep 2024 14:35:14 -0400
-X-MC-Unique: -d_Kp97WPyK6rMA1zpyZig-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 59638196A10F;
-	Mon, 30 Sep 2024 18:35:11 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 10E771944CF6;
-	Mon, 30 Sep 2024 18:35:02 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <423fbd9101dab18ba772f24db4ab2fecf5de2261.camel@gmail.com>
-References: <423fbd9101dab18ba772f24db4ab2fecf5de2261.camel@gmail.com> <2968940.1727700270@warthog.procyon.org.uk> <20240925103118.GE967758@unreal> <20240923183432.1876750-1-chantr4@gmail.com> <20240814203850.2240469-20-dhowells@redhat.com> <1279816.1727220013@warthog.procyon.org.uk> <4b5621958a758da830c1cf09c6f6893aed371f9d.camel@gmail.com> <2969660.1727700717@warthog.procyon.org.uk>
-To: Eduard Zingerman <eddyz87@gmail.com>
-Cc: dhowells@redhat.com, Leon Romanovsky <leon@kernel.org>,
-    Christian Brauner <brauner@kernel.org>,
-    Manu Bretelle <chantr4@gmail.com>, asmadeus@codewreck.org,
-    ceph-devel@vger.kernel.org, christian@brauner.io, ericvh@kernel.org,
-    hsiangkao@linux.alibaba.com, idryomov@gmail.com, jlayton@kernel.org,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-    linux-nfs@vger.kernel.org, marc.dionne@auristor.com,
-    netdev@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.com,
-    smfrench@gmail.com, sprasad@microsoft.com, tom@talpey.com,
-    v9fs@lists.linux.dev, willy@infradead.org
-Subject: Re: [PATCH v2 19/25] netfs: Speed up buffered reading
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="RFolJnzI"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7dafb321dbcso238684a12.1
+        for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 11:55:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1727722510; x=1728327310; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8VAQ/SmVDfVAhynU7T94wopV4O6hecY0N9QDW6gOokw=;
+        b=RFolJnzIywLJh9HHTM5wgtrzhSVCCXd1oTZGk1oQSc4eM2ZEdFxTTAWIgSn+ICTwHt
+         BM8o4SR3tXLSGgvD8oDm+M3kQgyg92rXVwemlnwkj7E8fdxCWl8h8uIsS9sGtxLx6ozE
+         Xyo0kLHL/ks6QzO25wbP/heOcaErSr60mRcPmuDkcPn6KaxCHKm4yPhCyL5JtRkkavNK
+         EZFYMUjWgPidG6+xkB2LLf6+UlNvSugfqFPQIGmjK4wsJ5M91V6MiJlMM6p0AubnRupJ
+         YGsiFQeCd2hQWIxcB3wmvDwWLJKddmARMrYZMml+mrYuMcLKM8Y4tk7SSi7zbdsKmA53
+         PsbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727722510; x=1728327310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8VAQ/SmVDfVAhynU7T94wopV4O6hecY0N9QDW6gOokw=;
+        b=LX/oCpPTVhHidAF6l99ccCx6oIOPfuSEQjOO/fbmPF1TS5athE7hMljwAhdvCbA7lO
+         qDTgiaROMMWCa80c10xJOn1jDyEOnAWRSEDuo31laZQ3rItB25d/mSl+1h0O1oSJZPH5
+         AHOi1rrHWilGe3rxapkx3mprDS0QGh3KV2V2vrCRV23e7I0pNQoIhP1IUZLJiJVfo0L1
+         50S2IaM6UDFY3Ii/VIIjns3i2w9czUHEeZFcAxaRochHI8heVKZHXPWniMjFL1QLAZAf
+         9PMa/lm8/tt+A26z0kLVKTlqv9lqrJ81VY2kJsYBwroU3AIAoIJs0KRZDjw3/+mrmGk0
+         uehg==
+X-Forwarded-Encrypted: i=1; AJvYcCXi/MCwrfSFtDrXMBdVuNJF7QQcjYxrMMThFSt/SpxWvrNfv3ypB3DgLNxnkYXX08oppw3Y@lists.linux.dev
+X-Gm-Message-State: AOJu0YwO2WIMUMhS2Si72bIc80Dpp3FYjewa3d+o5XJojQHzN162SirN
+	Nii2AMGsDbQARdtbS69ch18yfqfT77TWX6JiUfcyYwS9Pfi60D5meTFEc/YrqUo=
+X-Google-Smtp-Source: AGHT+IEHnADY9Lk/jZUl1YRpGsPuBms2JZDBO/xgFDkOwrdjxf+4j2N2oNKU13O1aDFUuC5vUMn2fA==
+X-Received: by 2002:a05:6a21:3283:b0:1cf:4903:7f66 with SMTP id adf61e73a8af0-1d509b1c3dcmr6304093637.2.1727722510147;
+        Mon, 30 Sep 2024 11:55:10 -0700 (PDT)
+Received: from telecaster.thefacebook.com ([2620:10d:c090:500::6:e49b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b264bc3ecsm6610976b3a.60.2024.09.30.11.55.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 11:55:09 -0700 (PDT)
+From: Omar Sandoval <osandov@osandov.com>
+To: linux-fsdevel@vger.kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Cc: kernel-team@fb.com,
+	v9fs@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Manu Bretelle <chantr4@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH] iov_iter: fix advancing slot in iter_folioq_get_pages()
+Date: Mon, 30 Sep 2024 11:55:00 -0700
+Message-ID: <cbaf141ba6c0e2e209717d02746584072844841a.1727722269.git.osandov@fb.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3007427.1727721302.1@warthog.procyon.org.uk>
-Date: Mon, 30 Sep 2024 19:35:02 +0100
-Message-ID: <3007428.1727721302@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Transfer-Encoding: 8bit
 
-Eduard Zingerman <eddyz87@gmail.com> wrote:
+From: Omar Sandoval <osandov@fb.com>
 
-> Are there any hacks possible to printout tracelog before complete boot
-> somehow?
+iter_folioq_get_pages() decides to advance to the next folioq slot when
+it has reached the end of the current folio. However, it is checking
+offset, which is the beginning of the current part, instead of
+iov_offset, which is adjusted to the end of the current part, so it
+doesn't advance the slot when it's supposed to. As a result, on the next
+iteration, we'll use the same folio with an out-of-bounds offset and
+return an unrelated page.
 
-You could try setting CONFIG_NETFS_DEBUG=y.  That'll print some stuff to
-dmesg.
+This manifested as various crashes and other failures in 9pfs in drgn's
+VM testing setup and BPF CI.
 
-David
+Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
+Link: https://lore.kernel.org/linux-fsdevel/20240923183432.1876750-1-chantr4@gmail.com/
+Tested-by: Manu Bretelle <chantr4@gmail.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+---
+ lib/iov_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 97003155bfac..1abb32c0da50 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1033,7 +1033,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
+ 		if (maxpages == 0 || extracted >= maxsize)
+ 			break;
+ 
+-		if (offset >= fsize) {
++		if (iov_offset >= fsize) {
+ 			iov_offset = 0;
+ 			slot++;
+ 			if (slot == folioq_nr_slots(folioq) && folioq->next) {
+-- 
+2.46.1
 
