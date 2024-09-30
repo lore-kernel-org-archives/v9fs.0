@@ -1,83 +1,97 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDD415C13A
-	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 07:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6C040862
+	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 08:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727681909; cv=none; b=TR2qEgsP6vEbZIqnCnhZPJ30JevfoGWtsFhymbi4VO3BfMtDdJtdYSFjZ4tBPsgGUO/7zJ19yxrwqQ2wh7iGslOQNz9PjtahHWkkS/bJALK+fBcz/AgDC9LZLBKXisFn0oQhDAwMVr+TiqtopoOC6PC9khINJZK0VGYyFDGLnGM=
+	t=1727683496; cv=none; b=I6Kq03ubzPej3z63HUfYgBTd3FSHgPqTJgvOXM5oXwBUVtbUm1a91JSZEGOrMvfm4hg/sP52534CHlDetPbOZ5ZpZF3GGzcNN/ISJjNH+1G8xllvC4Y/625ynGq2dz8vRYrrF1lcI6s0kxao+4q6iBJ6poxAwoOpCfBA+suFCvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727681909; c=relaxed/simple;
-	bh=Ci5gZ2/uPSu/oziTiVK6V8inA4emnWAXOmXiBnqWkrc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KK3EqEQzSJqdb29uQI4t0WihAMY9Jymz0crIgLawL1KC8jqLnAFa2qaK1mB1Q7OVt7BBgy3nZD/wUOK0gTVcyM6p0Q8rca2sMI4geaCADDtNAELffG4v17+luwP6/0eNZ6YAod/9NFdT7U3vjHqPzzFCS6PuptvEQxtPOiC3kDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a19665ed40so32259635ab.1
-        for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 00:38:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727681907; x=1728286707;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XxlMTOU2mzL+3rUriWACIZZLQuKPP8xQrF+zmKFQkJw=;
-        b=JnBoaCtADkTK6467SI1/GhYvCSBu+87d+kKiSYfFBC1PtkSpFdvpDplC13+wB8t7WI
-         HwKkY0Rzv6qHAcq2SglhZpsCqJJQXk6c/RRrgJaXiJ95E47IuWQPtOfuhpH3dU/MUP2+
-         MRnPAuQIXJTjKJ+DSX6fEXFou55NXDNMbXyTf//g/fjKLxMUhuNDXTo8H/3rik2kXARf
-         ttjr8RfNYYe6Uv2elA6h1JxXCxTj5yRVd8QvpzrbpDp3AtXWgUwmNbdvfanQ3BZanKSI
-         qSI7W5F0LOVuRKe/UotbZcptEuU/o91SaRXLUUyQIJH6vSLAszBNe4Ys+z4C54UjiIAH
-         /10A==
-X-Forwarded-Encrypted: i=1; AJvYcCVi+w0i2/WSvTT0qgHPPYr2l/utiOjAextTApoJmdrb9bTHJ8X6TToaQJPP8Tnl7/+9C3/G@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx88KxE4inATGaM7bzPueUafN68V3X8pC947lTO33JCdAoRNN5y
-	qqhF2qNUtvThdpUesZ+yPrIAHM5W863v61C2ml9tzvMqnSgD1/GBTrlY4qKMPYkpGXhE3STeqdS
-	mI4U99BSAxAOv1T+oCwGzASEXOea2LveVa5k6C+oNLmTGjadghL0zR9Q=
-X-Google-Smtp-Source: AGHT+IE5jdf691+FBSsW7HKtfTkMdheschOcFT3XglMNkPfZNtemCPCQV7AOUEja9Ptj9WfXI4H8ES2sVDKtWyYFv3/yxn+1ko1l
+	s=arc-20240116; t=1727683496; c=relaxed/simple;
+	bh=n+3ucnwcpKavVDnZ0QPclYZ6KtnqyG/pl1f3tfLnuvE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dKyKJH7xQhKWG78YgG4SLMO2vS69VnBnnZuHQShD9pMX8yy6tfCsUEa7Y4lnvqzWeKfE4MkY2adH58iIQiG9yqOo96ZXcyLpUUD8eDCxW80Ron/ZBz0fIS5Ue3EbKz+1EfP8cBxuNuh74r4tPqBTd4xheXy5LeJaP4JL3B3qtXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XHDB04ZQLz20pSY;
+	Mon, 30 Sep 2024 16:04:24 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 437471400CB;
+	Mon, 30 Sep 2024 16:04:51 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Sep
+ 2024 16:04:50 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <ericvh@kernel.org>, <lucho@ionkov.net>, <asmadeus@codewreck.org>,
+	<linux_oss@crudebyte.com>, <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
+	<aou@eecs.berkeley.edu>, <m.grzeschik@pengutronix.de>,
+	<gregkh@linuxfoundation.org>, <v9fs@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH] net/9p/usbg: Fix build error
+Date: Mon, 30 Sep 2024 16:15:20 +0800
+Message-ID: <20240930081520.2371424-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:18c5:b0:3a0:9238:d3c with SMTP id
- e9e14a558f8ab-3a3445ec927mr75425745ab.3.1727681907002; Mon, 30 Sep 2024
- 00:38:27 -0700 (PDT)
-Date: Mon, 30 Sep 2024 00:38:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <66fa5572.050a0220.aab67.0029.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Sep 2024)
-From: syzbot <syzbot+list812c5632ce6defff608a@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-Hello v9fs maintainers/developers,
+When CONFIG_NET_9P_USBG=y but CONFIG_USB_LIBCOMPOSITE=m and
+CONFIG_CONFIGFS_FS=m, the following build error occurs:
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_free_func':
+	trans_usbg.c:(.text+0x124): undefined reference to `usb_free_all_descriptors'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_rx_complete':
+	trans_usbg.c:(.text+0x2d8): undefined reference to `usb_interface_id'
+	riscv64-unknown-linux-gnu-ld: trans_usbg.c:(.text+0x2f6): undefined reference to `usb_string_id'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_func_bind':
+	trans_usbg.c:(.text+0x31c): undefined reference to `usb_ep_autoconfig'
+	riscv64-unknown-linux-gnu-ld: trans_usbg.c:(.text+0x336): undefined reference to `usb_ep_autoconfig'
+	riscv64-unknown-linux-gnu-ld: trans_usbg.c:(.text+0x378): undefined reference to `usb_assign_descriptors'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `f_usb9pfs_opts_buflen_store':
+	trans_usbg.c:(.text+0x49e): undefined reference to `usb_put_function_instance'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_alloc_instance':
+	trans_usbg.c:(.text+0x5fe): undefined reference to `config_group_init_type_name'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_alloc':
+	trans_usbg.c:(.text+0x7aa): undefined reference to `config_ep_by_speed'
+	riscv64-unknown-linux-gnu-ld: trans_usbg.c:(.text+0x7ea): undefined reference to `config_ep_by_speed'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_set_alt':
+	trans_usbg.c:(.text+0x828): undefined reference to `alloc_ep_req'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_modexit':
+	trans_usbg.c:(.exit.text+0x10): undefined reference to `usb_function_unregister'
+	riscv64-unknown-linux-gnu-ld: net/9p/trans_usbg.o: in function `usb9pfs_modinit':
+	trans_usbg.c:(.init.text+0x1e): undefined reference to `usb_function_register'
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 6 issues are still open and 32 have been fixed so far.
+Select the config for NET_9P_USBG to fix it.
 
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 3220    Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 273     Yes   kernel BUG in __iov_iter_get_pages_alloc
-                  https://syzkaller.appspot.com/bug?extid=2fcb246021c963371c20
-<3> 1       No    KASAN: use-after-free Read in p9pdu_vwritef
-                  https://syzkaller.appspot.com/bug?extid=9e324cf5c0846336fefd
-
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/9p/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/net/9p/Kconfig b/net/9p/Kconfig
+index 63f988f0c9e8..ee967fd25312 100644
+--- a/net/9p/Kconfig
++++ b/net/9p/Kconfig
+@@ -43,6 +43,8 @@ config NET_9P_XEN
+ config NET_9P_USBG
+ 	bool "9P USB Gadget Transport"
+ 	depends on USB_GADGET=y || USB_GADGET=NET_9P
++	select CONFIGFS_FS
++	select USB_LIBCOMPOSITE
+ 	help
+ 	  This builds support for a transport for 9pfs over
+ 	  usb gadget.
+-- 
+2.34.1
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
