@@ -1,126 +1,83 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D4F770ED
-	for <v9fs@lists.linux.dev>; Sun, 29 Sep 2024 19:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDD415C13A
+	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 07:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727637783; cv=none; b=XG6PINXiqVaSSiNyFgDW2TPfcjsFQEZDKBOusxKyefm2VAcDMBbDoegC4HYMSJ93j4PhC1zG3VbKQM5F/nPn46a4keDMoTx4rtsbsyODI2xLThbVHQilxyYeRRbYeJe6SXVUv212LDoVyYRto8/E8pdh/qlTHnvniUTeA+G9QHY=
+	t=1727681909; cv=none; b=TR2qEgsP6vEbZIqnCnhZPJ30JevfoGWtsFhymbi4VO3BfMtDdJtdYSFjZ4tBPsgGUO/7zJ19yxrwqQ2wh7iGslOQNz9PjtahHWkkS/bJALK+fBcz/AgDC9LZLBKXisFn0oQhDAwMVr+TiqtopoOC6PC9khINJZK0VGYyFDGLnGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727637783; c=relaxed/simple;
-	bh=L7mjGuTuTjqihi6ACzkDkfLo81I9/BYiSeA+V8+nmqQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TszV+sYy1gWMPvPENSWSZZev59OBJNG2mn5moRB7B750GjKJLwdffwYs0HrgyWFZx/to2EDB35XB086OEdb20JeVQrGgT+pOTeHYfAdDgNCZUyhVYGLpK99Ce2F0YoR5JnLlUmP713KfpLDDXbbo60hgicJ+rlYj5/BkW+aFylI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1suzVR-0005Js-Me; Sun, 29 Sep 2024 21:22:57 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1suzVQ-002SFV-Nd; Sun, 29 Sep 2024 21:22:56 +0200
-Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
-	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1suzVQ-002EdD-2A;
-	Sun, 29 Sep 2024 21:22:56 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Sun, 29 Sep 2024 21:22:55 +0200
-Subject: [PATCH] net/9p/usbg: dont call usb9pfs_clear_tx if client is not
- connected
+	s=arc-20240116; t=1727681909; c=relaxed/simple;
+	bh=Ci5gZ2/uPSu/oziTiVK6V8inA4emnWAXOmXiBnqWkrc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KK3EqEQzSJqdb29uQI4t0WihAMY9Jymz0crIgLawL1KC8jqLnAFa2qaK1mB1Q7OVt7BBgy3nZD/wUOK0gTVcyM6p0Q8rca2sMI4geaCADDtNAELffG4v17+luwP6/0eNZ6YAod/9NFdT7U3vjHqPzzFCS6PuptvEQxtPOiC3kDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a19665ed40so32259635ab.1
+        for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 00:38:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727681907; x=1728286707;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XxlMTOU2mzL+3rUriWACIZZLQuKPP8xQrF+zmKFQkJw=;
+        b=JnBoaCtADkTK6467SI1/GhYvCSBu+87d+kKiSYfFBC1PtkSpFdvpDplC13+wB8t7WI
+         HwKkY0Rzv6qHAcq2SglhZpsCqJJQXk6c/RRrgJaXiJ95E47IuWQPtOfuhpH3dU/MUP2+
+         MRnPAuQIXJTjKJ+DSX6fEXFou55NXDNMbXyTf//g/fjKLxMUhuNDXTo8H/3rik2kXARf
+         ttjr8RfNYYe6Uv2elA6h1JxXCxTj5yRVd8QvpzrbpDp3AtXWgUwmNbdvfanQ3BZanKSI
+         qSI7W5F0LOVuRKe/UotbZcptEuU/o91SaRXLUUyQIJH6vSLAszBNe4Ys+z4C54UjiIAH
+         /10A==
+X-Forwarded-Encrypted: i=1; AJvYcCVi+w0i2/WSvTT0qgHPPYr2l/utiOjAextTApoJmdrb9bTHJ8X6TToaQJPP8Tnl7/+9C3/G@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx88KxE4inATGaM7bzPueUafN68V3X8pC947lTO33JCdAoRNN5y
+	qqhF2qNUtvThdpUesZ+yPrIAHM5W863v61C2ml9tzvMqnSgD1/GBTrlY4qKMPYkpGXhE3STeqdS
+	mI4U99BSAxAOv1T+oCwGzASEXOea2LveVa5k6C+oNLmTGjadghL0zR9Q=
+X-Google-Smtp-Source: AGHT+IE5jdf691+FBSsW7HKtfTkMdheschOcFT3XglMNkPfZNtemCPCQV7AOUEja9Ptj9WfXI4H8ES2sVDKtWyYFv3/yxn+1ko1l
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240929-fixes9p-v1-1-40000d94d836@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAA6p+WYC/x3KQQqAIBCF4avErJNKSrKrRAsnp5qNiQMRSHfPW
- v7vfRmEEpPAVGVIdLHwGUp0dQXr4cJOin1p0K3uW6ut2vgmsVEN3nQjIhlvEIpGJ6QwubAen/9
- ZY+N3xUR/ln1enucFZH/nW3QAAAA=
-To: Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1538;
- i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=L7mjGuTuTjqihi6ACzkDkfLo81I9/BYiSeA+V8+nmqQ=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBm+akQflDQxctyPd1jgK+LgafzXC35sy/dS9k/Y
- /1yLCGTak+JAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZvmpEAAKCRC/aVhE+XH0
- q0wIEACAhZdYrodVxhcqNZFb267ESH5exofxgfnqpWCbpHmYVjyBzt42uiEH2dA2+J2uVgaLZW/
- al+6YbKo3c8+5OgusNLioELTiKmkqPSxs6XDoZ9rFCtsXlWXbO8AtSiZJ+MitkcXtdLeVfqxbCY
- BEy1DpHRwx2zTusd1vKEueKWlR+FkUeKiHAVvnO+e1TkjgUfpS6hlMiuALlVMNQ+wc1QXV23WuZ
- A13H903kxDsD4UuHQcxkZ2yw27lXzF3MRdm0+rf520Tb7/y/PLLCoiE2RvkmmbtkbfrlKI6NYRi
- x7NKJMNGpdRAjx7LJhKwnFv9kM8YVRapVCXWs4qERrcIAsRAJq50v9cKK4RyncCYudr7hnNTuCB
- ssgKPkXOXu/IOkfb1bcmAdMu+nxaXM4wlT3unfx9opPywSWfRQLPgKmNfVCYFSa2wUrH47ChNPi
- L70GWMXWK36zrRnX7QhP7osmIEVZPc80sGpvkaZK2N3VD1a3dN8M9otCirOpiFIPU9SgtLYvecD
- 9ZUqS6+dafCZhygXGNK3qKYOdYVYiorOdP2tfYCdrtcgB6n5pjitab+7aOeAmfRUUWsqj4XQ/r7
- fsU3JQo7ZM4P19U4c9sUoA7oY5CwJfZhXNla5M53/c5/tyIImPtSoHacDudzCnLt7kgsDaCvfnT
- vJb2SXCNBq/zumw==
-X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
- fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
+X-Received: by 2002:a05:6e02:18c5:b0:3a0:9238:d3c with SMTP id
+ e9e14a558f8ab-3a3445ec927mr75425745ab.3.1727681907002; Mon, 30 Sep 2024
+ 00:38:27 -0700 (PDT)
+Date: Mon, 30 Sep 2024 00:38:26 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66fa5572.050a0220.aab67.0029.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Sep 2024)
+From: syzbot <syzbot+list812c5632ce6defff608a@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-When the client is not Connected it is not valid to call
-usb9pfs_clear_tx since the endpoints are not even allocated. By running
-into p9_usbg_close in that case we would dereference the in_req which is
-NULL when the client->status is Disconnected. Fix that by leaving
-usb9pfs_clear_tx immediately if the state is wrong.
+Hello v9fs maintainers/developers,
 
-We also update the client->status after the for usb9pfs_clear_tx to
-check for the actual state when running from p9_usbg_close.
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- net/9p/trans_usbg.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 32 have been fixed so far.
 
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 975b76839dca1..64a5209943dbc 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -417,6 +417,10 @@ static void usb9pfs_clear_tx(struct f_usb9pfs *usb9pfs)
- {
- 	struct p9_req_t *req;
- 
-+	/* we are not allocated - return */
-+	if (usb9pfs->client->status != Connected)
-+		return;
-+
- 	guard(spinlock_irqsave)(&usb9pfs->lock);
- 
- 	req = usb9pfs->in_req->context;
-@@ -442,10 +446,10 @@ static void p9_usbg_close(struct p9_client *client)
- 	if (!usb9pfs)
- 		return;
- 
--	client->status = Disconnected;
--
- 	usb9pfs_clear_tx(usb9pfs);
- 
-+	client->status = Disconnected;
-+
- 	opts = container_of(usb9pfs->function.fi,
- 			    struct f_usb9pfs_opts, func_inst);
- 
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 3220    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 273     Yes   kernel BUG in __iov_iter_get_pages_alloc
+                  https://syzkaller.appspot.com/bug?extid=2fcb246021c963371c20
+<3> 1       No    KASAN: use-after-free Read in p9pdu_vwritef
+                  https://syzkaller.appspot.com/bug?extid=9e324cf5c0846336fefd
 
 ---
-base-commit: 68d4209158f43a558c5553ea95ab0c8975eab18c
-change-id: 20240929-fixes9p-5d618bbe6d6b
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Best regards,
--- 
-Michael Grzeschik <m.grzeschik@pengutronix.de>
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
