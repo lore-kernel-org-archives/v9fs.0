@@ -1,110 +1,87 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C599192D6E
-	for <v9fs@lists.linux.dev>; Mon, 30 Sep 2024 20:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AC436AF8;
+	Tue,  1 Oct 2024 05:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727727015; cv=none; b=pMPgWmbFTS9+nFzc413i8VIetF5CN0nAgdZ2dHgzzLNNYImc/5Pn5pZOuEyDlroC8WO0CJrhVu9Pii2WDQDWO1EGvMXRKR0MIYMIR55MK/N4ZsiLcr0rPbKQrTMZXvVPlzQMqAiyplrjrEsOhUDuEeeMZBcxVVbFkuha2IdpWoU=
+	t=1727761980; cv=none; b=II80Qv5AvAyQt+qPavxie1F4sHRTr2yBvIKUHknq6daKMDYk7/Gf6rNOggM3okXVU5BkyNL47ZVU2XNc6pIXVrjI1TSf0hisAIcx4b9nDSoX58VFSY9WH8C6PdxOV/EI3mSQTuhWTsBCVCHBpckzjDLpe0TIb4zGmISoAv01Lps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727727015; c=relaxed/simple;
-	bh=zOQ6Hs0/cVGtqjjJFkZB7pBKk5JKlQcCKDTL+hZmyNU=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=u6fveH7c9kJ8qd1Laxf3kBNmFebW7oknzx929W4e/fem5e4j8E/nRbXeTzdQBa+vqt/udaHOeBm14tU4PZ6qO1/Cc0+7RxLAfI5CSjJvkAV2Ilp7TuqIgK83XqN6zk/gWDXAz5o+CR5GM7vtpK8bHzcecBzyi7HaXxkqf0YMSE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SjCpkozf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727761980; c=relaxed/simple;
+	bh=0+CPOfnmHYHeRC7eu59dVaMtF89w2IqUByfrozk8r2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mYHAl6mW7VJnarvhj+nq4bhdZ1KjAjy35PlGeyZFW6QKo7srpCybexbVn+lhQ6Bh/8Rt8bb9UdYZ6xWZ14eTd/buKpc75LdGoQRhpQTi3Pe7DMTeYpseosneKN71J53Aihq7gXc0443rHPASh9UjoeugdBHMD08eJyajoZorY4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnaXq/TM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SjCpkozf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727727013;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kPKn2Kv6qjDNm6/HF2s7vGlTGGGWG6HMQFjCEB8xiMU=;
-	b=SjCpkozfsUprRiR7oFACup0lECgKstrhzn5HRRq91MhAwO5mkk2aAHem4G5S+jTQT4FFWk
-	aBDZI8rK0B8OdqxJDnjSv+bT4Lb70g66O7pkONml7Zr4HrfVcq6Jt1MV27ZIfNGceWnWLV
-	vEv3ZMSRB2i5Hgp2sIK8YCLSJg0vEq8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-5azF9J-mOqmL2byezmZePw-1; Mon,
- 30 Sep 2024 16:10:07 -0400
-X-MC-Unique: 5azF9J-mOqmL2byezmZePw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E4C719626EF;
-	Mon, 30 Sep 2024 20:10:06 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 943993003E4D;
-	Mon, 30 Sep 2024 20:10:03 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <cbaf141ba6c0e2e209717d02746584072844841a.1727722269.git.osandov@fb.com>
-References: <cbaf141ba6c0e2e209717d02746584072844841a.1727722269.git.osandov@fb.com>
-To: Omar Sandoval <osandov@osandov.com>,
-    Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
-    Al Viro <viro@zeniv.linux.org.uk>, kernel-team@fb.com,
-    v9fs@lists.linux.dev, Manu Bretelle <chantr4@gmail.com>,
-    Eduard Zingerman <eddyz87@gmail.com>,
-    Leon Romanovsky <leon@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnaXq/TM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC9EC4CEC6;
+	Tue,  1 Oct 2024 05:52:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727761978;
+	bh=0+CPOfnmHYHeRC7eu59dVaMtF89w2IqUByfrozk8r2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rnaXq/TMSwK1Y1WfiSZKejaMZfKjmUA95eg1Qb+tz2KdQbp4x35JzjHNavKTKpV6+
+	 ANIEOQdJ8bzLhZBJJOfGoxR51LZti9avkhLo/Ksi/MlDm2hPZNbw0LqFJFA5qlEAO0
+	 sQC6Iv9w0ypEA4wsD+z4Bcuwk1bIHEu9Q9htl3P/lBCQXOiMaicGBUZvBCLCQpJXf1
+	 2p+O3a7i9Zd4hNKDBk/4zWJOoiPx6UzJo2KuhabWmtqZGeYJ0hT4Fv1/QhDYCg8OIP
+	 amdhGLJUq7U8DQDICTaaYFtu8taij1xBdK478Uda0+FFuip+WET4XSKjf1nJAaPbM8
+	 dYoP6Z2fM2UOQ==
+Date: Tue, 1 Oct 2024 08:52:54 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Cc: Omar Sandoval <osandov@osandov.com>, linux-fsdevel@vger.kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>, kernel-team@fb.com,
+	v9fs@lists.linux.dev, Manu Bretelle <chantr4@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>
 Subject: Re: [PATCH] iov_iter: fix advancing slot in iter_folioq_get_pages()
+Message-ID: <20241001055254.GC459313@unreal>
+References: <cbaf141ba6c0e2e209717d02746584072844841a.1727722269.git.osandov@fb.com>
+ <3011076.1727727002@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3011075.1727727002.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 30 Sep 2024 21:10:02 +0100
-Message-ID: <3011076.1727727002@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3011076.1727727002@warthog.procyon.org.uk>
 
-Omar Sandoval <osandov@osandov.com> wrote:
+On Mon, Sep 30, 2024 at 09:10:02PM +0100, David Howells wrote:
+> Omar Sandoval <osandov@osandov.com> wrote:
+> 
+> > From: Omar Sandoval <osandov@fb.com>
+> > 
+> > iter_folioq_get_pages() decides to advance to the next folioq slot when
+> > it has reached the end of the current folio. However, it is checking
+> > offset, which is the beginning of the current part, instead of
+> > iov_offset, which is adjusted to the end of the current part, so it
+> > doesn't advance the slot when it's supposed to. As a result, on the next
+> > iteration, we'll use the same folio with an out-of-bounds offset and
+> > return an unrelated page.
+> > 
+> > This manifested as various crashes and other failures in 9pfs in drgn's
+> > VM testing setup and BPF CI.
+> > 
+> > Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
+> > Link: https://lore.kernel.org/linux-fsdevel/20240923183432.1876750-1-chantr4@gmail.com/
+> > Tested-by: Manu Bretelle <chantr4@gmail.com>
+> > Signed-off-by: Omar Sandoval <osandov@fb.com>
+> 
+> Thanks for finding that!  That would explain why I didn't see it with afs or
+> cifs - both of those pass the iterator directly to the socket rather than
+> pulling the pages out of it.  I'm not sure how I managed to do things like run
+> xfstests to completion and git clone and build a kernel without encountering
+> the bug.
+> 
+> Christian: Can you add this to vfs.fixes and tag it:
+> 
+> Acked-by: David Howells <dhowells@redhat.com>
+> Tested-by: Eduard Zingerman <eddyz87@gmail.com>
 
-> From: Omar Sandoval <osandov@fb.com>
-> =
+It worked for me too.
 
-> iter_folioq_get_pages() decides to advance to the next folioq slot when
-> it has reached the end of the current folio. However, it is checking
-> offset, which is the beginning of the current part, instead of
-> iov_offset, which is adjusted to the end of the current part, so it
-> doesn't advance the slot when it's supposed to. As a result, on the next
-> iteration, we'll use the same folio with an out-of-bounds offset and
-> return an unrelated page.
-> =
+Tested-by: Leon Romanovsky <leon@kernel.org>
 
-> This manifested as various crashes and other failures in 9pfs in drgn's
-> VM testing setup and BPF CI.
-> =
-
-> Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to h=
-andle a sequence of folios")
-> Link: https://lore.kernel.org/linux-fsdevel/20240923183432.1876750-1-cha=
-ntr4@gmail.com/
-> Tested-by: Manu Bretelle <chantr4@gmail.com>
-> Signed-off-by: Omar Sandoval <osandov@fb.com>
-
-Thanks for finding that!  That would explain why I didn't see it with afs =
-or
-cifs - both of those pass the iterator directly to the socket rather than
-pulling the pages out of it.  I'm not sure how I managed to do things like=
- run
-xfstests to completion and git clone and build a kernel without encounteri=
-ng
-the bug.
-
-Christian: Can you add this to vfs.fixes and tag it:
-
-Acked-by: David Howells <dhowells@redhat.com>
-Tested-by: Eduard Zingerman <eddyz87@gmail.com>
-
+Thanks
