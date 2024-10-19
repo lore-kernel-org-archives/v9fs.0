@@ -1,68 +1,63 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF5A1DE887;
-	Sat, 19 Oct 2024 12:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9BE2F3E;
+	Sat, 19 Oct 2024 16:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729340735; cv=none; b=AylRSU6x0jW2kUDnexwLlnZQWso0ysf2fZhcUfmy4982FNe7RjKvG/+WAwgm+Uc1f/PVpuBFnzRPLrjib+Z6Kmtentt/wgjQ+UL9XZim3SLEfU/fUTIpPvcld9LnC4+r1pRqwH5wX5JjjWKGBCqe+0LaEsg68Mgtv9YP3mH7THM=
+	t=1729353670; cv=none; b=slfwOI9HRHN/E9JoBQP+w2lWPXTeCsm1xuDzXJWqDw7FWR5vlZESR8azeNXIIb4DqENm7TrQ34aJ3hWdIWAcw18Yu7PBfImjLj6hPAsVsV0BjVwENgE716YcW2Dz52JkBh1mZM5wyf03HeO/MLGgo4rlpkvdv6Aa4m61CS6fwFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729340735; c=relaxed/simple;
-	bh=83gIlBADgU0w1Q7k794QLQ7+PeOyUylNZ3LEjz601W8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DSvzStPS0vOhoyXnhGAcBku8t/mxzV7anUyXj61VRZ8UHYN/Me7+a7JV1sr9tRXdAfbd1oav3FVIYRrg5l5qfyRs8BhD3gpsVJg667U27g3ygDWj2WqKv578e+5UQoKi+lvjq87FnFg1ilmLI9oDQdONGm7Z29QMY83Pvim64c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- m.grzeschik@pengutronix.de, yuehaibing@huawei.com,
- gregkh@linuxfoundation.org, Yue Haibing <yuehaibing@huawei.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH] 9p/trans_usbg: Fix incorrect error check in
- usb9pfs_alloc_instance()
-Date: Sat, 19 Oct 2024 13:58:37 +0200
-Message-ID: <1854979.Kn10jCkGcg@silver>
-In-Reply-To: <20241019092302.212221-1-yuehaibing@huawei.com>
-References: <20241019092302.212221-1-yuehaibing@huawei.com>
+	s=arc-20240116; t=1729353670; c=relaxed/simple;
+	bh=/B9ZLsaqPtNdTkvYo1MlOsWm47YFrbAT50kqlmkdQrM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=UjE/jz2HTkmjg9O/lzkxUcUsGQbwGYosF2Q6hhO6cz9mDSQtrXn/VAjNNeZzAl9RX5n1rFNRlUpuD7mdmg/BN1TYpZxXvcAIfLgEMWyvDDxcuqtxf3ZT5t/yHU/cL7Laj/RznAIaZ84LRqY9u+dAQQy9RoIQdMhLo5c2qKGZr8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEpgdDt7; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEpgdDt7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B6DC4CEC5;
+	Sat, 19 Oct 2024 16:01:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729353670;
+	bh=/B9ZLsaqPtNdTkvYo1MlOsWm47YFrbAT50kqlmkdQrM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=NEpgdDt7K7XRQePhSGdO5N0ANSHv6sQhCKN5Bwr+TYmgDeL4P6yEiT2FuaoYop2SE
+	 vRwe9Qy3qaDWBQuWte6MlCuFTCl1//Q4QCUKpmTXVWnrH4kZAi47hVu2hndp+PBeoH
+	 5olOHNiUhow2W+1u7d0zVPFgaRcFRrJijxdedElbI1AdzBu1NYyy+KPIJlElRDEy2q
+	 +hxFgpVH79unNBYYt9biLmj0pAXYki6VpI0/BRHYj8NXLfLUZFQF4jfOaFJg/eg4/E
+	 bpWqcs9Y8rnQVt2jbZzNdAONH6Eak+HXdRkgY6JMBUuml5XKPtCBxtENTELN44NUz3
+	 N+LV9IInIOFng==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBC023805CC0;
+	Sat, 19 Oct 2024 16:01:16 +0000 (UTC)
+Subject: Re: [GIT PULL] 9p fixes for 6.12-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ZxL0kMXLDng3Kw_V@codewreck.org>
+References: <ZxL0kMXLDng3Kw_V@codewreck.org>
+X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
+X-PR-Tracked-Message-Id: <ZxL0kMXLDng3Kw_V@codewreck.org>
+X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.12-rc4
+X-PR-Tracked-Commit-Id: 79efebae4afc2221fa814c3cae001bede66ab259
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 9197b73fd7bb263084a95d1c578b7ee0ad54dfb3
+Message-Id: <172935367545.3434115.15709053125208214309.pr-tracker-bot@kernel.org>
+Date: Sat, 19 Oct 2024 16:01:15 +0000
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Pedro Falcato <pedro.falcato@gmail.com>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, Thorsten Leemhuis <regressions@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
 
-On Saturday, October 19, 2024 11:23:02 AM CEST Yue Haibing wrote:
-> kzalloc() should use NULL check not a IS_ERR() check.
-> 
-> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+The pull request you sent on Sat, 19 Oct 2024 08:51:44 +0900:
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+> https://github.com/martinetd/linux tags/9p-for-6.12-rc4
 
-> ---
->  net/9p/trans_usbg.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-> index 975b76839dca..6b694f117aef 100644
-> --- a/net/9p/trans_usbg.c
-> +++ b/net/9p/trans_usbg.c
-> @@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
->  	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
->  
->  	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-> -	if (IS_ERR(dev)) {
-> +	if (!dev) {
->  		kfree(usb9pfs_opts);
-> -		return ERR_CAST(dev);
-> +		return ERR_PTR(-ENOMEM);
->  	}
->  
->  	usb9pfs_opts->dev = dev;
-> 
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/9197b73fd7bb263084a95d1c578b7ee0ad54dfb3
 
+Thank you!
 
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
