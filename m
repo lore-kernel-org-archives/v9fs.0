@@ -1,95 +1,112 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10401C9B89
-	for <v9fs@lists.linux.dev>; Mon, 21 Oct 2024 23:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F5A85C5E;
+	Tue, 22 Oct 2024 15:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729551634; cv=none; b=PgR/7fn96LEVmExG7ehuybU7wUJ8yGbn/Ny5SYxF6erD/FBSyjrfG+UG9vaWZATJk7rbWf0Tef/4VwOdBpv4NbqnDaV1yJRtyussmVbAihBkQTY7nXxy9+rKz8blQmcRdsoWCRZ068DJd7DjCVIt3b3pPuT+1rm8HF8JSeI1XrE=
+	t=1729609317; cv=none; b=u/UBIFXya22IdZzj6njAHShxJ78wZNgaoyBG9caUPkWCy8tqMJjbXdBtj4MBw7qYoQXjbnkeFFYnk1rOdtzYUuWJk+fv7ckajfbYvlMdpCFblttgvBnoYSqf10w9FmTJbLvumFbivdQ1I/Ahcx2WrpL66q3zfIU7WOVy5dZgh50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729551634; c=relaxed/simple;
-	bh=3LeeyEafeXaGnkqTR7YkYuS9ctyqOUkRKIdPORL0JMQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sT6YVYPuZ8K5KmVl3lko8YhTlu6/90RSvUSEV7QPNuLrhkTpHLVSsRePg2D2YTXQpIx/x/jweaqf4DobWFG+Bk9yNswN619aAvSn1rZUp666e3w1MQdBY0xr+BBEHmhan+9w+xCAWJIictdv9s07f3GNaqwzXDSjzQro0UyHRuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eGKMZY5S; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1729609317; c=relaxed/simple;
+	bh=wLqL5G1fJBdDKZdoYSyYQ6Gn8QO4wi41ipLs3UAmGBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQ4slrSe9t7y/2NOyUbq9DeSW1iMKGMHp0ZFp61AWHR3BvzfOMQCC7fDnMaA5h731ftEOOyv/hK8EWC5SrhgBpSaXwHYWA6YLi+/8WjmqtuPahNKopx7XeEg+Ra2pjrQF9ulYvzPeTjgmAUFrRQanhaos5RUH+JiuwHEYuneaOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRgoLqoL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eGKMZY5S"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a9a6b4ca29bso389408666b.3
-        for <v9fs@lists.linux.dev>; Mon, 21 Oct 2024 16:00:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1729551631; x=1730156431; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rZmK1iIL6psL/Ic0R5BQSUU9uDtSN6VQwETroA+PQ+k=;
-        b=eGKMZY5SAoa6WTIh8mY1EMq9jA6od/qa4VEBmjq08qBTQP8cuhGEq4jjV7Nja36g4d
-         BHFVLC+xGHSmTxSbmwdSWr9WLSShZDnbst84ak8c/++3BbKUR44fHAPCKL4zbUsmbOGO
-         YyvPCnXLYzo5ZD3IR7hXFl433k3YGWue9zbmM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729551631; x=1730156431;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rZmK1iIL6psL/Ic0R5BQSUU9uDtSN6VQwETroA+PQ+k=;
-        b=tBFSJIwiXKa4r56dVhDJdqKp/flUL9arPpOS0lmoctrTwlvyr0fabO4Y1m/u8/EcP8
-         aYAhPSJxDiCCMH9twgKOoKuMTY8TQiMG/Rwe/flr58TQ+2UjCdUP1LcjisTKMga8v+Rk
-         HZ7RDcM6k76m2QLtEhRB9Tdaw9siQRU29SPHxpG6YHCGZa8yPgYpN4Vb9nA8EwyuD1i6
-         yA/t/opJyOboo7FW32J63P8PhHFzL9rDzQKJ6LxwU9XGZowQxs0gGRYu9+5smZAn3Skj
-         lteFd1tLrDHlASnNlRPQIIYem3kyhibxHsZ0EHBy9HRSQp2AfiV6NjZg6eMBTgT7d3Gl
-         b/ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWh446DQ9SdQQKhehvN7OjYTor3Jj2B/fqGuK/s6LUsIbo63Q1jopKeuDSEFNVHnGBsT1qg@lists.linux.dev
-X-Gm-Message-State: AOJu0YzbkKx9PPqieJzHcBWEc6p3ZfjC6pujHkfkmzUz2uJl/BtZCOcz
-	hrETq7YvcCx6IIhR/lANggZdUW+5PFEgBwZ+13/dQe4vfek2a3lfj9q2bcK0XC9CAfSY7zmsMx4
-	a1a/eiw==
-X-Google-Smtp-Source: AGHT+IGBB5aKgyVt5hd2gHggG7a2wnjn2jY/pcfyf09/3UPHIRgDiB8Cg9hNch2QEHYVbVPQQkABVg==
-X-Received: by 2002:a17:907:944d:b0:a99:dfb3:dcb4 with SMTP id a640c23a62f3a-a9aace98b43mr41423366b.39.1729551630821;
-        Mon, 21 Oct 2024 16:00:30 -0700 (PDT)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912ee11asm262926666b.68.2024.10.21.16.00.29
-        for <v9fs@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Oct 2024 16:00:30 -0700 (PDT)
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a99f1fd20c4so683445766b.0
-        for <v9fs@lists.linux.dev>; Mon, 21 Oct 2024 16:00:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVRyuvlZEsl46TyQAgNWLTZcY4Cz29CKPrG4huF2ap2YCR/zyxBYaKFt3F7PrAjltnBY9fz@lists.linux.dev
-X-Received: by 2002:a17:907:97c3:b0:a9a:4e77:92f with SMTP id
- a640c23a62f3a-a9aad3d659bmr42656766b.56.1729551629565; Mon, 21 Oct 2024
- 16:00:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRgoLqoL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6F5C4CEC3;
+	Tue, 22 Oct 2024 15:01:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729609316;
+	bh=wLqL5G1fJBdDKZdoYSyYQ6Gn8QO4wi41ipLs3UAmGBM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jRgoLqoLkCtpHyliTt/1PQ8RP5Q4lwET601tPX3cyOlCHlt0t9C3GrTfTgA2dcD5G
+	 8xOzMum+13B0yZpnqyFF9CJ7rNQJAsvtXTIIt0iwkKq5CSNtIvDWZPW+accC06iup+
+	 KWlI05rk/rZuz0G+1vDBOhttOWhEK9BVlu6aiLQTZryFZzxMicjdCr3/cqhvSka/0d
+	 Fnvj0A/lWw1vyHH6zcCP3oY/UWOk3fmp+H48env2qqZvirSWV0PA+d29HGD6Pjc77T
+	 4xm2L6lTb9sAvDA4Ru70TtmB4QQDPuZP9dfEVU8kAX+NFkzLLPPJi4Ip/tLGZyD2g/
+	 Rn9GBJZrzjXbQ==
+Date: Tue, 22 Oct 2024 16:01:49 +0100
+From: Will Deacon <will@kernel.org>
+To: asmadeus@codewreck.org
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, ericvh@kernel.org,
+	lucho@ionkov.net, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, oss@crudebyte.com,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, oleg@redhat.com,
+	keirf@google.com, regressions@lists.linux.dev
+Subject: Re: VFS regression with 9pfs ("Lookup would have caused loop")
+Message-ID: <20241022150149.GA27397@willie-the-truck>
+References: <20240923100508.GA32066@willie-the-truck>
+ <20241009153448.GA12532@willie-the-truck>
+ <4966de3e-6900-481c-8f6b-00e37cebab7e@leemhuis.info>
+ <Zw-J0DdrCFLYpT5y@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240807094725.2193423-1-pedro.falcato@gmail.com>
- <20241018172804.GA2151929@nvidia.com> <CAKbZUD0Z_Kyumx3ourywUYhfksGNgJWrCpjAdnxtsbwS4vMRkA@mail.gmail.com>
- <1cb07628-269c-4d6c-9936-f3a2b233165f@leemhuis.info> <b6852c2d-3371-47a4-bfeb-049f4048e88a@suse.cz>
- <ZxL3FsmjGrTT_EV9@codewreck.org> <d937fd92-249e-4660-a59a-ee85b6ec4691@suse.cz>
- <ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com> <CAHk-=wjpxeTifM1LFPQFR5_RjD2uvDAHbZ-ATCqox+RuFwkbDQ@mail.gmail.com>
- <Zxa0K-4mhSI91S-w@telecaster.dhcp.thefacebook.com>
-In-Reply-To: <Zxa0K-4mhSI91S-w@telecaster.dhcp.thefacebook.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 21 Oct 2024 16:00:13 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiBSEzzC2CTtTgnJ-ou+1ye7CVw45ogeH_eFR_fDF=Z8A@mail.gmail.com>
-Message-ID: <CAHk-=wiBSEzzC2CTtTgnJ-ou+1ye7CVw45ogeH_eFR_fDF=Z8A@mail.gmail.com>
-Subject: Re: [PATCH] 9p: Avoid creating multiple slab caches with the same name
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Thorsten Leemhuis <regressions@leemhuis.info>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	Jason Gunthorpe <jgg@nvidia.com>, Pedro Falcato <pedro.falcato@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zw-J0DdrCFLYpT5y@codewreck.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, 21 Oct 2024 at 13:06, Omar Sandoval <osandov@osandov.com> wrote:
+Hi Dominique,
+
+On Wed, Oct 16, 2024 at 06:39:28PM +0900, asmadeus@codewreck.org wrote:
+> Thorsten Leemhuis wrote on Tue, Oct 15, 2024 at 08:07:10PM +0200:
+> > Thx for bringing this to my attention. I had hoped that Eric might reply
+> > and waited a bit, but that did not happen. I kind of expected that, as
+> > he seems to be  somewhat afk, as the last mail from him on lore is from
+> > mid-September; and in the weeks before that he did not post much either.
+> > Hmmm. :-/
+> 
+> Right, I had hoped he'd find time to look further into this and kept my
+> head in the ground, but it looks like we'll have to handle this somehow...
+> 
+> One note though he did sent a patch that seems related and wasn't sent
+> for merge:
+> https://lore.kernel.org/all/CAFkjPTn7JAbmKYASaeBNVpumOncPaReiPbc4Ph6ik3nNf8UTNg@mail.gmail.com/T/#u
 >
-> Yup, that works here.
->
-> Tested-by: Omar Sandoval <osandov@fb.com>
+> Will, perhaps you can try it? I'm pretty sure the setup to reproduce
+> this is easy enough that I'll be able to reproduce in less than an hour
+> (export two tmpfs [sequential inode number fs] wthin the same 9p mount
+> in qemu without 'multidevs=remap'), but I don't even have that time
+> right now.
+> 
+> (I didn't even read the patch properly and it might not help at all,
+> sorry in this case)
 
-Ok, I changed the '%d' to a '%u' (because go big or go home), and applied it.
+I think this patch landed upsteam as d05dcfdf5e16 (" fs/9p: mitigate
+inode collisions") and so I can confirm that it doesn't help with the
+issue.
 
-Hopefully I didn't screw anything up in the process.
+> > CCed Christian and Al, maybe they might be able to help directly or
+> > indirectly somehow. If not, we likely need to get Linus involved to
+> > decide if we want to at least temporarily revert the changes you mentioned.
+> 
+> I'm not sure this really needs to get Linus involved - it's breaking a
+> server that used to work even if qemu has been printing a warning about
+> these duplicate qid.path for a while, and the server really is the
+> better place to remap these inodes as we have no idea of the underlying
+> device id as far as I know...
 
-              Linus
+FWIW, I'm not using QEMU at all. This is with kvmtool which, for better
+or worse, prints no such diagnostic and used to be reliable enough with
+whatever magic the kernel had prior to v6.9.
+
+> So the question really just is do we have or can we build a workable, so
+> the question is can we resonable do any better, or do we just want to
+> live wth the old behaviour.
+> (Note that as far as I understand the old code isn't 100% "loop" proof
+> either anyway, a open(O_CREAT)/mkdir/mknod could happen to get identical
+> inode numbers as well, it's just less likely so folks haven't been
+> hitting it)
+
+I'm happy to test patches if there's anything available, but otherwise
+the reverts at least get us back to the old behaviour if nobody has time
+to come up with something better.
+
+Cheers,
+
+Will
