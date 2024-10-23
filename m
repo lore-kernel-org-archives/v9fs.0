@@ -1,183 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D1562171;
-	Wed, 23 Oct 2024 15:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545D41CF5CF;
+	Wed, 23 Oct 2024 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729696446; cv=none; b=fQ9ms1FHyib9/xIpgVvdbvJxme7Og6vRszIXUeDNdE4xoRs5iBz5Xqk7pdWJsQoBXGCSB89ttAm8hSgtgXKq1PAMjIN5jpFafR/pYHX1YUtwqQLkmLFBngj6SBultm/ZZNMhlMiXDUbJq5YzWGxUaTL0/SRU43OTTFfE/ExnLvQ=
+	t=1729702573; cv=none; b=BAL4wnAMzqIwrNsQC5yUXIoDelUOSa3CVI7EwBAd4ZHSdhHDR5fYAkJtDjKUvxR0IgKQAv100POV8mAUYBRzL0efnE6gYcOs3IFOIRzATfmzRmwg9zJNTgYYfbhbnJdNzCqnDcP+KQEdOAnC5x1nKjCqvu6vu2oC6hYQFYUS1r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729696446; c=relaxed/simple;
-	bh=taE8zoZsuDjUP07UaX3+OcRzpCvHXDeBn3RxXkE2UpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VjfcwLdJXyA8gly9Z0CKuaJug299zCMguMIsMuj62ZrrAi51mYQD67t1sGcgCt6jrPktpAxLnBOO50dZL+5e2RC4aMVhiiejz322FPpSofjtLkCtkKKoVL4cNamx6agwYqB1gWMZGeR0wb0s5WAu3cGgBntaXGpc4tZLnTHdErY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfJCbfBL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729702573; c=relaxed/simple;
+	bh=9FQMpnUuD/q0UYsx9FcXZS3U5Eb/ILV6G0JOybEs5S8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=mvjOND2ApiLBZ5HkMmn4ASh9dKzsjGLplLtXx8KCEQdQN3b9XJg7uSWvzSC8AGZ3sbH9BRJe6yoLqbkwf0GNZmIQMIcHurhZ8uMqU68VPmzKGZQy5F5XCUvSZay3MYL7kUXUFgAvnJO/qH0wKCcBtQUoL3v0/YHEAZyKdVaXAXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2p77taZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfJCbfBL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795A0C4CEC6;
-	Wed, 23 Oct 2024 15:14:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2p77taZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB988C4CEC7;
+	Wed, 23 Oct 2024 16:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729696445;
-	bh=taE8zoZsuDjUP07UaX3+OcRzpCvHXDeBn3RxXkE2UpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GfJCbfBLL0yBJA2GLMFVvqDg7PBoIIJ3qhwikNb1aWwaszYTVxOW3Kr2JqNy5F4Ml
-	 mCpsu6x0GCH3cmcGvzWTU5TGr3GpCHCa7dTXN4aZMTqka0RRVbl5JdSRZxXNMjCJsj
-	 NCbt23CYWiHWWwo1qcFQaYJfAynI4vd1THLHROkbC/jaDzxyxHrWI2LpmrPMF4G99L
-	 QEnog9LT22+Kuefr6hudLAjio29XTM9Detyqdoit0VltL/ec/PR2FAvrYPMuvAZ8vg
-	 PyRiCOpWv/XYMcGlaGoPFe2Y+X7/c2xV9AdQ5/WZaB0C+2NkTtLIUHZnyZli+jPquX
-	 3QmxDULChjgrA==
-Date: Wed, 23 Oct 2024 16:14:00 +0100
-From: Will Deacon <will@kernel.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: ericvh@kernel.org, Thorsten Leemhuis <regressions@leemhuis.info>,
-	lucho@ionkov.net, Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, oleg@redhat.com,
-	keirf@google.com, regressions@lists.linux.dev
-Subject: Re: VFS regression with 9pfs ("Lookup would have caused loop")
-Message-ID: <20241023151358.GB28800@willie-the-truck>
-References: <20240923100508.GA32066@willie-the-truck>
- <20241009153448.GA12532@willie-the-truck>
- <4966de3e-6900-481c-8f6b-00e37cebab7e@leemhuis.info>
- <Zw-J0DdrCFLYpT5y@codewreck.org>
- <20241022150149.GA27397@willie-the-truck>
- <ZxgudMCSgbDOEjpD@codewreck.org>
+	s=k20201202; t=1729702572;
+	bh=9FQMpnUuD/q0UYsx9FcXZS3U5Eb/ILV6G0JOybEs5S8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J2p77taZ93Bj9iJwzNRpltWv0zl/EBXHjf+PlYgBMw56Ebj7DP8CSXCAZ8P55Prr0
+	 9yrZBrOzCZPk3bL8bbgKhSRN3fO6Q4e9i1Ho+hWj6aUm8MS4ffPD3UQVuNfdXYtPeX
+	 W47So/g4KxFjXNtT01nIJ4uJEWejQ3695DQjtD0ome742uZ5ZDZIPDvngYUxHfppZu
+	 039vvSD+JWkb3nvQHR3CEBaUDM0X5s1+blJhk701dWiU3Ib41Y+ZmFnIblvU8jmQxH
+	 wyyGUm47aKBG3nXkpBtqTaIW1ae54tCAFqkraFeCEdkrVMIy/LVi0qnfSaCe5xVbZA
+	 v4H29uYZpnqGw==
+From: Andrii Nakryiko <andrii@kernel.org>
+To: asmadeus@codewreck.org
+Cc: ericvh@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	pedro.falcato@gmail.com,
+	regressions@leemhuis.info,
+	torvalds@linux-foundation.org,
+	v9fs@lists.linux.dev,
+	bpf@vger.kernel.org
+Subject: Re: [GIT PULL] 9p fixes for 6.12-rc4
+Date: Wed, 23 Oct 2024 09:56:06 -0700
+Message-ID: <20241023165606.3051029-1-andrii@kernel.org>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <ZxL0kMXLDng3Kw_V@codewreck.org>
+References: <ZxL0kMXLDng3Kw_V@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZxgudMCSgbDOEjpD@codewreck.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 23, 2024 at 08:00:04AM +0900, Dominique Martinet wrote:
-> Will Deacon wrote on Tue, Oct 22, 2024 at 04:01:49PM +0100:
-> > > One note though he did sent a patch that seems related and wasn't sent
-> > > for merge:
-> > > https://lore.kernel.org/all/CAFkjPTn7JAbmKYASaeBNVpumOncPaReiPbc4Ph6ik3nNf8UTNg@mail.gmail.com/T/#u
-> > >
-> > > Will, perhaps you can try it? I'm pretty sure the setup to reproduce
-> > > this is easy enough that I'll be able to reproduce in less than an hour
-> > > (export two tmpfs [sequential inode number fs] wthin the same 9p mount
-> > > in qemu without 'multidevs=remap'), but I don't even have that time
-> > > right now.
-> > > 
-> > > (I didn't even read the patch properly and it might not help at all,
-> > > sorry in this case)
-> > 
-> > I think this patch landed upsteam as d05dcfdf5e16 (" fs/9p: mitigate
-> > inode collisions") and so I can confirm that it doesn't help with the
-> > issue.
+> The following changes since commit 98f7e32f20d28ec452afb208f9cffc08448a2652:
+>
+>   Linux 6.11 (2024-09-15 16:57:56 +0200)
+>
+> are available in the Git repository at:
 > 
-> Ugh, yes, sorry I'm blind it's there alright (you even listed it in your
-> first post in the list of commits to revert)
+>   https://github.com/martinetd/linux tags/9p-for-6.12-rc4
+> 
+> for you to fetch changes up to 79efebae4afc2221fa814c3cae001bede66ab259:
+>
+>   9p: Avoid creating multiple slab caches with the same name (2024-09-23 05:51:27 +0900)
+>
+> ----------------------------------------------------------------
+> Mashed-up update that I sat on too long:
+> 
+> - fix for multiple slabs created with the same name
+> - enable multipage folios
+> - theorical fix to also look for opened fids by inode if none
+> was found by dentry
+> 
+> ----------------------------------------------------------------
+> David Howells (1):
+>      9p: Enable multipage folios
 
-Heh, no worries. It has a funny leading space at the start which is
-weirdly jarring when you read it!
+Are there any known implications of this change on madvise()'s MADV_PAGEOUT
+behavior? After most recent pull from Linus's tree, one of BPF selftests
+started failing. Bisection points to:
 
-> > > I'm not sure this really needs to get Linus involved - it's breaking a
-> > > server that used to work even if qemu has been printing a warning about
-> > > these duplicate qid.path for a while, and the server really is the
-> > > better place to remap these inodes as we have no idea of the underlying
-> > > device id as far as I know...
-> > 
-> > FWIW, I'm not using QEMU at all. This is with kvmtool which, for better
-> > or worse, prints no such diagnostic and used to be reliable enough with
-> > whatever magic the kernel had prior to v6.9.
-> 
-> Yes, that problem isn't specific to qemu, anything that re-exports
-> multiple filesystems using underlying inode numbers directly has this
-> risk (e.g. even diod/nfs-ganesha tcp mounts ought to reproduce if they
-> don't mangle inodes); I agree we need to handle servers throwing junk at
-> us.
-> 
-> It's easy enough to reproduce with qemu if remapping is disabled as
-> expected (I don't hit the VFS warning in d_splice_alias() but the
-> behaviour is definitely wrong):
-> ----
-> # host side
-> cd /tmp/linux-test
-> mkdir m1 m2
-> mount -t tmpfs tmpfs m1
-> mount -t tmpfs tmpfs m2
-> mkdir m1/dir m2/dir
-> echo foo > m1/dir/foo
-> echo bar > m2/dir/bar
-> 
-> # guest side
-> # started with -virtfs local,path=/tmp/linux-test,mount_tag=tmp,security_model=mapped-file
-> mount -t 9p -o trans=virtio,debug=1 tmp /mnt/t
-> 
-> ls /mnt/t/m1/dir
-> # foo
-> ls /mnt/t/m2/dir
-> # bar (works ok if directry isn't open)
-> 
-> # cd to keep first dir's inode alive
-> cd /mnt/t/m1/dir
-> ls /mnt/t/m2/dir
-> # foo (should be bar)
-> ----
-> 
-> This can also be observed with files if mounting with cache=fscache or
-> similar (but interestingly even keeping the file open will properly
-> disociate both files in default cache=none mode); either way we won't be
-> able to properly work with hard links if we assume the server isn't
-> reliable; I guess that if someone wants that we'd really need to
-> implement some capability negotiation at mount time so the server can
-> tell us what is supported and unless that is done assume the server
-> cannot reliably assign inodes...
-> 
-> And if we go that way then we just shouldn't ever look at the inode
-> number?... Which seems to pretty much be what the old code was doing in
-> the "new" path of v9fs_qid_iget(); the compare function would just
-> always say the inodes are different and get a new one...
-> The mitigation Eric implemented is similar enough (re-added a 'new'
-> parameter, and fail if I_NEW isn't set when new was requested), but it
-> looks like v9fs_fid_iget_dotl() isn't called at all when accessing the
-> other overlapping directory, so that wasn't effective here as some
-> higher level of caching caught the inode first.
+  9197b73fd7bb ("Merge tag '9p-for-6.12-rc4' of https://github.com/martinetd/linux")
 
-Nice, thanks for digging into this. I'm now pretty grateful I ran into
-the vfs error rather than whacky filesystem behaviours.
+... which is just an empty merge commit. So the "9p: Enable multipage folios"
+by itself doesn't cause any regression, but when merged with the rest of the
+code it does. I confirmed by reverting
+1325e4a91a40 ("9p: Enable multipage folios"), after which the test in question
+is succeeding again.
 
-> I've also confirmed reverting the 4 commits listed by Will do fix both
-> behaviors (along with a fscache warning when hitting the duplicate inode
-> file, but that's expected):
->         724a08450f74 "fs/9p: simplify iget to remove unnecessary paths"
->         11763a8598f8 "fs/9p: fix uaf in in v9fs_stat2inode_dotl"
->         10211b4a23cf "fs/9p: remove redundant pointer v9ses"
->         d05dcfdf5e16 " fs/9p: mitigate inode collisions"
+The test in question itself is a bit involved, but what it ultimately tries to
+do is to ensure that part of ELF file containing build ID is paged out to cause
+BPF helper to fail to retrieve said build ID (due to non-faulable context).
+
+For that, we use the following sequence in target binary and process:
+
+madvise(addr, page_sz, MADV_POPULATE_READ);
+madvise(addr, page_sz, MADV_PAGEOUT);
+
+First making sure page is paged in, then paged out. We make sure that build ID
+is memory mapped in a separate segment with its own single-page memory mapping.
+No changes or regressions there. No huge pages seem to be involved.
+
+It used to work reliably, now it doesn't work. Any clue why or what should we
+do differently to make sure that memory page with build ID information is not
+paged in (reliably)?
+
+Thanks!
+
+P.S. The target binary and madvise() manipulations are at:
+
+  tools/testing/selftests/bpf/uprobe_multi.c, see trigger_uprobe()
+
+The test itself in BPF selftest is at:
+
+  tools/testing/selftests/bpf/prog_tests/build_id.c, see subtest_nofault(),
+  build_id_resident is false in this case.
+
+>
+> Dominique Martinet (1):
+>       9p: v9fs_fid_find: also lookup by inode if not found dentry
 > 
+> Pedro Falcato (1):
+>       9p: Avoid creating multiple slab caches with the same name
 > 
-> > I'm happy to test patches if there's anything available, but otherwise
-> > the reverts at least get us back to the old behaviour if nobody has time
-> > to come up with something better.
+>  fs/9p/fid.c       |  5 ++---
+>  fs/9p/vfs_inode.c |  1 +
+>  net/9p/client.c   | 10 +++++++++-
+>  3 files changed, 12 insertions(+), 4 deletions(-)
 > 
-> I think that's the sane thing to do, let's first go back to something
-> that works and we can try again if/when someone has time - I've
-> certainly just spent more time here than I have, and starting over is just
-> a matter of reapplying the patches in a local branch so it's not like
-> there's anything to lose (afaiu this was intended as code cleanup to
-> make the code more maintainable rather than fixing something specific)
-
-Agreed, and I'm happy to test any subsequent patches now that I've got
-my Android environment up and running again.
-
-> Thorsten, is there a preferred way reverts should be done?
-> In this case it'd probably make sense to squash the 4 reverts in a
-> single megarevert? At the very least getting anywhere in the middle with
-> the uaf isn't something one would want... And they all made it in 6.9
-> together so there's no benefit in splitting them for backport either.
-> 
-> Once that's decided I'll prepare something to send Linus in a few days,
-> I don't think there's much point in sitting on this either...
-
-I'll leave it up to you, but I'd personally do four separate reverts
-because it makes the whole process entirely mechanical. I can't recall
-seeing a megarevert before.
-
-Will
+> -- 
+> Dominique Martinet | Asmadeus
