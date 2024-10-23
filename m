@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA081B4F1F;
-	Wed, 23 Oct 2024 14:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A061CCB21;
+	Wed, 23 Oct 2024 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693925; cv=none; b=PXbPvUcGhZPyOf1Ale/2Igae4MWMq/odetmcYmlhl9d7sR/yLOaWNNKXNvTpFt6TLny768qu4DEMEqkkVFjqUMeRy7eECXW0BSnV4HU3KtLPnCQ6MgNuhBmklA4mydJsqwITg7Zn+imIBk/P+yYmC6MH9bE26IqMVCpfOSgsLWA=
+	t=1729693958; cv=none; b=g+m1zspOapd7/lL2WGi3GcwMXbnvvqH7lqMFgJFJM6X4lYnM3N/Ts7idl+05pK2RpgltUJe+EzQkwHJ0WLyvqSmK5lH2xPdemp6p2Qp3VNqnYTpcElEeiOxALDdnTvD+LOJCNrmegVXy7lguhcf62qJ78DcG1ZiHkOFt9r/X95Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693925; c=relaxed/simple;
-	bh=76f2RsbrqidExfabF95ZRI/qIYiV+foDoIZ/olRyPfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nsETv3Lnzve07Uiz+7wHV1qGR6bubxEU4D0vIgv3riHHLMB7FpPVTfQW3xlIkpDMk7XCDRwdPtv2U4Z9U4N5LMOW2sXHLhatCOEZQ7Ro//GyZJ0eL2qsAwHBpyhiWd2a/zhf0VrvfWv/SNbXH+v9JqwX07vhW/5XC9KG6eO6wMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAphImLN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729693958; c=relaxed/simple;
+	bh=uwNLXZ/zAK/Sj8Jz0Vf9ZAnMhKukm/ZqYC9tygGgxT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ovGFhBmQU+4noKd9858mH/uLpYBZAaB1jrTDvnSLoTJjzSMJMu4G9tUPZkZ4sLXTrgBCkA37sbpqD/z/yVGG3D6O+vzPHkjGSLCRCvdezpDHhOQUEeeiHFN+C2YjnhiUEOFm9SvMRU9ZflFTcSBbeZ0n6owbRGUi8DgB+scw/as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3tma4Lv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAphImLN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D0EC4CEC6;
-	Wed, 23 Oct 2024 14:32:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3tma4Lv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29954C4CEC6;
+	Wed, 23 Oct 2024 14:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693925;
-	bh=76f2RsbrqidExfabF95ZRI/qIYiV+foDoIZ/olRyPfM=;
+	s=k20201202; t=1729693958;
+	bh=uwNLXZ/zAK/Sj8Jz0Vf9ZAnMhKukm/ZqYC9tygGgxT8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=cAphImLNmcCCmxUAm7Ews2kdmX4r4I1W5Lk/quVH7IQ6aDDI7ig1v2zXP0fizupvQ
-	 XZ7MCt68q3fqyRnhl8oTq3BHVglzOSZL+NuV7mc5XRglMegOcj0JvIjzWWEicDhZ7F
-	 x4PflHbYQQ+g+iVQHql0gyH9BjOjf4teg6N9Ja7N4XPXCgCk5jLPwHnS5Jr1T7YaN7
-	 i10cMZAMjYWs8ih3OZr9OSXZ8wD7Dq1ybHHZGRstKPKv2MzdKIA8toIapVohMxWu/s
-	 YDqFVnnIfmehQs56wNoVZguwUdLzQvZGaF/qI04fRqMpNlkl5g+XjU85xbFKXVC5m1
-	 xM4+V80IkzhaQ==
+	b=T3tma4LvZcqwHf0U1uLhSO6wThMkGF8TuKBzXJc2pL/3K6znLsGyRNixbFXe/enJd
+	 vQdw2cjI5Xo0uXiEc5VHXT9Q0mApbLZw2fiADaNS7MrU330V7iMw1AZJmyZKmVJwUP
+	 Zj5RsuIUab5ZYRcXYJh6hLmvPr4fT9xfDMOEdq3ZO24cGTRWVv3s7MAPRgm0j+4UZv
+	 HbWXP11Neu0zi9Pju/5LzRwDNljshOI94ex4BpCQfSjKsPmCvRqlY/40MeRjpL7ebN
+	 QNLOZpTs/6Zq0C5NqoZ08oj58PfTqQ6nfVkvEgajna+1ECV25PLjtx/7pqY1woi9Dd
+	 83DEzVAyBfRnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -35,9 +35,9 @@ Cc: Pedro Falcato <pedro.falcato@gmail.com>,
 	ericvh@kernel.org,
 	lucho@ionkov.net,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 01/17] 9p: Avoid creating multiple slab caches with the same name
-Date: Wed, 23 Oct 2024 10:31:40 -0400
-Message-ID: <20241023143202.2981992-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 01/10] 9p: Avoid creating multiple slab caches with the same name
+Date: Wed, 23 Oct 2024 10:32:22 -0400
+Message-ID: <20241023143235.2982363-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.114
+X-stable-base: Linux 5.15.169
 Content-Transfer-Encoding: 8bit
 
 From: Pedro Falcato <pedro.falcato@gmail.com>
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/net/9p/client.c b/net/9p/client.c
-index 0fc2d706d9c23..18db0e23e2f15 100644
+index bf29462c919bb..03fb36d938c70 100644
 --- a/net/9p/client.c
 +++ b/net/9p/client.c
-@@ -969,6 +969,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+@@ -1005,6 +1005,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
  	int err;
  	struct p9_client *clnt;
  	char *client_id;
@@ -80,7 +80,7 @@ index 0fc2d706d9c23..18db0e23e2f15 100644
  
  	err = 0;
  	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
-@@ -1026,15 +1027,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+@@ -1057,15 +1058,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
  	if (err)
  		goto close_trans;
  
