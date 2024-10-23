@@ -1,132 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545D41CF5CF;
-	Wed, 23 Oct 2024 16:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D55D1A0AF0;
+	Wed, 23 Oct 2024 19:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729702573; cv=none; b=BAL4wnAMzqIwrNsQC5yUXIoDelUOSa3CVI7EwBAd4ZHSdhHDR5fYAkJtDjKUvxR0IgKQAv100POV8mAUYBRzL0efnE6gYcOs3IFOIRzATfmzRmwg9zJNTgYYfbhbnJdNzCqnDcP+KQEdOAnC5x1nKjCqvu6vu2oC6hYQFYUS1r4=
+	t=1729712332; cv=none; b=RwswFbft6KxzZ6pAD4lTXHAdWSy/6pVZard7J5lokxyaBV+jDAYqjcjLPstvLeh+CTa5gNek9JOfPqN13PrQqz0/ZmqlTqi40WLaw4W5YAxZJCyHoHVX2lQy+GwzJLS3inaayo36n8Tm7jK03gOpNWXgqxprEh/ljy7coc62vAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729702573; c=relaxed/simple;
-	bh=9FQMpnUuD/q0UYsx9FcXZS3U5Eb/ILV6G0JOybEs5S8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=mvjOND2ApiLBZ5HkMmn4ASh9dKzsjGLplLtXx8KCEQdQN3b9XJg7uSWvzSC8AGZ3sbH9BRJe6yoLqbkwf0GNZmIQMIcHurhZ8uMqU68VPmzKGZQy5F5XCUvSZay3MYL7kUXUFgAvnJO/qH0wKCcBtQUoL3v0/YHEAZyKdVaXAXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2p77taZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729712332; c=relaxed/simple;
+	bh=pZd83N5LKORVi3t9LWs6w8gSvKkToNeI2Gv/S936pGc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OPFhVGy7lwz+RspJpWyoPAESKCz/AWaNW1Mtq/4ws/iPk0ZP+r8Bl/Cm9Dg/ZzLqsR2avOsmlS5q+RegTY7AuNdzhSXmVI7EByxTfpF700e6iTjgH5K+cmKwQnvpMIk4C1njqqbSzOBJrmQ9ywEeBdAsgbITU75rfLM6M0RBsPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Rd6smkGo; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2p77taZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB988C4CEC7;
-	Wed, 23 Oct 2024 16:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729702572;
-	bh=9FQMpnUuD/q0UYsx9FcXZS3U5Eb/ILV6G0JOybEs5S8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2p77taZ93Bj9iJwzNRpltWv0zl/EBXHjf+PlYgBMw56Ebj7DP8CSXCAZ8P55Prr0
-	 9yrZBrOzCZPk3bL8bbgKhSRN3fO6Q4e9i1Ho+hWj6aUm8MS4ffPD3UQVuNfdXYtPeX
-	 W47So/g4KxFjXNtT01nIJ4uJEWejQ3695DQjtD0ome742uZ5ZDZIPDvngYUxHfppZu
-	 039vvSD+JWkb3nvQHR3CEBaUDM0X5s1+blJhk701dWiU3Ib41Y+ZmFnIblvU8jmQxH
-	 wyyGUm47aKBG3nXkpBtqTaIW1ae54tCAFqkraFeCEdkrVMIy/LVi0qnfSaCe5xVbZA
-	 v4H29uYZpnqGw==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: asmadeus@codewreck.org
-Cc: ericvh@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com,
-	pedro.falcato@gmail.com,
-	regressions@leemhuis.info,
-	torvalds@linux-foundation.org,
-	v9fs@lists.linux.dev,
-	bpf@vger.kernel.org
-Subject: Re: [GIT PULL] 9p fixes for 6.12-rc4
-Date: Wed, 23 Oct 2024 09:56:06 -0700
-Message-ID: <20241023165606.3051029-1-andrii@kernel.org>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <ZxL0kMXLDng3Kw_V@codewreck.org>
-References: <ZxL0kMXLDng3Kw_V@codewreck.org>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Rd6smkGo"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 814BE20842;
+	Wed, 23 Oct 2024 21:38:48 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2XZ8ubZrULdx; Wed, 23 Oct 2024 21:38:47 +0200 (CEST)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id D98D32074A;
+	Wed, 23 Oct 2024 21:38:47 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com D98D32074A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1729712327;
+	bh=uwlhbuYxhgG8sftTwRRQlyfVeglWzt2ynojBOuu12rQ=;
+	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
+	b=Rd6smkGo3UJQ1pLzL7bTloWJLbLDhbEfx/WQXzI3icKQNFW1qs2iqBJuHs2YWiA/E
+	 3qSyIIR+EQiq8B2VkKciYQuOps51ndNIJ91ukr8QzA69cBmX/V22UzM4ompznfFJBy
+	 0IvDk62uc3VPTB4Bglg4NIIWHIQN2kVtuLw4KEk4CFUYtOuS1WZ3lb+qBlsW+8FhPh
+	 UHnYhNjwSqcWO06JicLtFIxRXUls7q0pqvkhpme4Fbnd88cOdqcDVXmzaya2xqXRAC
+	 cYk5+KcBKjfcAA/oemL1TqA2CuiNkx1PoeQA+BRRymXlJsKp6asyi20pW5wEZpyT2h
+	 /Lws9D62X6SMA==
+Received: from mbx-essen-01.secunet.de (10.53.40.197) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 23 Oct 2024 21:38:47 +0200
+Received: from moon.secunet.de (172.18.149.1) by mbx-essen-01.secunet.de
+ (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 23 Oct
+ 2024 21:38:46 +0200
+Date: Wed, 23 Oct 2024 21:38:39 +0200
+From: Antony Antony <antony.antony@secunet.com>
+To: David Howells <dhowells@redhat.com>
+CC: Antony Antony <antony@phenome.org>, Christian Brauner
+	<brauner@kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>, "Latchesar
+ Ionkov" <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Sedat Dilek
+	<sedat.dilek@gmail.com>, Maximilian Bosch <maximilian@mbosch.me>,
+	<regressions@lists.linux.dev>, <v9fs@lists.linux.dev>,
+	<netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Antony Antony <antony.antony@secunet.com>
+Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
+Message-ID: <ZxlQv5OXjJUbkLah@moon.secunet.de>
+Reply-To: <antony.antony@secunet.com>
+References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
+ <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
+ <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
+ <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me>
+ <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com>
+ <3327438.1729678025@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <3327438.1729678025@warthog.procyon.org.uk>
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-01.secunet.de (10.53.40.197)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-> The following changes since commit 98f7e32f20d28ec452afb208f9cffc08448a2652:
->
->   Linux 6.11 (2024-09-15 16:57:56 +0200)
->
-> are available in the Git repository at:
+On Wed, Oct 23, 2024 at 11:07:05 +0100, David Howells wrote:
+> Hi Antony,
 > 
->   https://github.com/martinetd/linux tags/9p-for-6.12-rc4
-> 
-> for you to fetch changes up to 79efebae4afc2221fa814c3cae001bede66ab259:
->
->   9p: Avoid creating multiple slab caches with the same name (2024-09-23 05:51:27 +0900)
->
-> ----------------------------------------------------------------
-> Mashed-up update that I sat on too long:
-> 
-> - fix for multiple slabs created with the same name
-> - enable multipage folios
-> - theorical fix to also look for opened fids by inode if none
-> was found by dentry
-> 
-> ----------------------------------------------------------------
-> David Howells (1):
->      9p: Enable multipage folios
+> I think the attached should fix it properly rather than working around it as
+> the previous patch did.  If you could give it a whirl?
 
-Are there any known implications of this change on madvise()'s MADV_PAGEOUT
-behavior? After most recent pull from Linus's tree, one of BPF selftests
-started failing. Bisection points to:
+Yes this also fix the crash.
 
-  9197b73fd7bb ("Merge tag '9p-for-6.12-rc4' of https://github.com/martinetd/linux")
+Tested-by: Antony Antony <antony.antony@secunet.com>
 
-... which is just an empty merge commit. So the "9p: Enable multipage folios"
-by itself doesn't cause any regression, but when merged with the rest of the
-code it does. I confirmed by reverting
-1325e4a91a40 ("9p: Enable multipage folios"), after which the test in question
-is succeeding again.
-
-The test in question itself is a bit involved, but what it ultimately tries to
-do is to ensure that part of ELF file containing build ID is paged out to cause
-BPF helper to fail to retrieve said build ID (due to non-faulable context).
-
-For that, we use the following sequence in target binary and process:
-
-madvise(addr, page_sz, MADV_POPULATE_READ);
-madvise(addr, page_sz, MADV_PAGEOUT);
-
-First making sure page is paged in, then paged out. We make sure that build ID
-is memory mapped in a separate segment with its own single-page memory mapping.
-No changes or regressions there. No huge pages seem to be involved.
-
-It used to work reliably, now it doesn't work. Any clue why or what should we
-do differently to make sure that memory page with build ID information is not
-paged in (reliably)?
-
-Thanks!
-
-P.S. The target binary and madvise() manipulations are at:
-
-  tools/testing/selftests/bpf/uprobe_multi.c, see trigger_uprobe()
-
-The test itself in BPF selftest is at:
-
-  tools/testing/selftests/bpf/prog_tests/build_id.c, see subtest_nofault(),
-  build_id_resident is false in this case.
-
->
-> Dominique Martinet (1):
->       9p: v9fs_fid_find: also lookup by inode if not found dentry
-> 
-> Pedro Falcato (1):
->       9p: Avoid creating multiple slab caches with the same name
-> 
->  fs/9p/fid.c       |  5 ++---
->  fs/9p/vfs_inode.c |  1 +
->  net/9p/client.c   | 10 +++++++++-
->  3 files changed, 12 insertions(+), 4 deletions(-)
-> 
-> -- 
-> Dominique Martinet | Asmadeus
+thanks,
+-antony
