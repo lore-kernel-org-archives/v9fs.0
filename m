@@ -1,82 +1,106 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C021171D
-	for <v9fs@lists.linux.dev>; Fri, 25 Oct 2024 01:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB78315D5CA;
+	Fri, 25 Oct 2024 15:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729818848; cv=none; b=VE13k9fXFRaMYpyJ7u68Bb+JYuXNQ0o3CvT76fW3mYRujr9as7cCy3NA5bmbiIZuLqSrzOtRpdEymbVIHIkrPsGuVa9OYq2NJobNRc5uIp9ulL5BhCjZbrY8vv8fupD4eXA65GDV1ePLTGqWdzsaNaM8PNx9w5Y5xZ2NqzlidNY=
+	t=1729869952; cv=none; b=OOa7FrjLUeJQ8h1r+Rt7Rhv3aGaFxMqvtBhIz+9pbuCcOhB5K6YISVLlXPiN826Z/wmSKsojzuPnfRDuSSFJSy7LYCPXIAg0+1s+eQ7SkWATJv4FQXYBIbg9OIJQ0CjGkihHvSaFj3ojx/c6FcQb09fbvk9iAwEXDrQ9RsO2nO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729818848; c=relaxed/simple;
-	bh=pDpDrDPgqn1rWuPf4vWJjM/QhwM5DXeysn5Qug/olq4=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=dSsY5IytLgZUbc/MC87L+ykQrgoQzmEjQxSjvc0xRj1pTQgwtZXXopIdXI9R8fV8d/k2xBnHtt4duOETZ4f8jR/Ha6qE2L1rqfLTZMV0Lay0tQnUgke8YqVzwwVk31nQS5x0QtVim7P7Hw7tyVdZtpdaK3QmQcp5IHc2G8n90ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a3ae775193so15436585ab.1
-        for <v9fs@lists.linux.dev>; Thu, 24 Oct 2024 18:14:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729818846; x=1730423646;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cOZsZyIJmZeHEQPVNHkWmGsoWMx76fs5Fvyz/nsiQgY=;
-        b=BFDBcxzRkYs9WGXaEOFi7omzQMRjyay3I123/4NF8sZT6wgTqunQFidClly+W/I7XV
-         H79FOq8XlsEkKcDX7YXEG3Ex63GWG/sSZxEmIhHzZ5fu69acqKktx2Th4+uEuTcMVOVT
-         3UXKsBOmhcsP2ya5tkbWycw+8SNSLvLYtMgCSHfS+jAfEgWrq890CSTAaG/LTVxYYDXt
-         4UjfNEObDzBHGCXJ/ROySd/F+jT/xmUa6WNDcfK42ilQKkhSeG0+PQ4TNHtRMZ7mMt8U
-         srKiJc7JKMCiMMNDa1+QT2Z8srvuVCbHmixNUcZR0kRp3BA0gTiJ3NPBgqLP1ca7QzY8
-         nieA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtBv2YWipaBtz5V94kg0P0EMQKQ3JBAZC5Hh+n80hPKWhhciNjVkXQV2v4A0eNqiwOmt8M@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmBrM6SjZEWS6JQHlXEF5dtIzviFi/3ZNiJvThPHPPVMSBU5R6
-	plMjS6QeIyUljh3KniZhBUyvLN3ZQclJBrigWW8sGWp0l9J7NLGFYuR+t527oMYVR9t8yftheQp
-	d1dyAFS/JX5E0SWE1yanyAffk5fSZ58pLtChc1EDmQ4T3Uf6OEv+DMKk=
-X-Google-Smtp-Source: AGHT+IGOjltPBrz6CEsrXS0y1SoDlaDKKPoKA5PSdGZVz6ycSLBxXb8Nnn0qnpjr6zRJ+fl8sGud8IaiQJe6+LFu8+phyUzjp/zo
+	s=arc-20240116; t=1729869952; c=relaxed/simple;
+	bh=MiwcC2uykYAEEHt7MzLsCsQ78r/dJlY3KdNH0P1orNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uVPBQolvZq/+nuzBbsJP9/FVO1v6bXidYfz0r+sjx0uXDwVAKUssTdtae5CAQlAXtU8S6vuBbHaxmogbSCYf/C4cMLDQS5pp0BSsr4o6SnjpqIKwaps349m2POlD/XiLjsg4bbkaXUQm9qmCoEv6FiAYeEbll+xe6vRqf68hXw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftZ2d9jD; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftZ2d9jD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B41C4CEC3;
+	Fri, 25 Oct 2024 15:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729869952;
+	bh=MiwcC2uykYAEEHt7MzLsCsQ78r/dJlY3KdNH0P1orNc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ftZ2d9jDn8xkP7JxhAdi21rljLTyp35KM5NYjLMq4WWCCDiHfXpLYgaK7D7bZ4BEK
+	 rv2KVe1cQq3ZjK10ceQd8F2x28IHEfyDESIsnstzJCrZt9YgeQXgK5UQvIa2EdWWPt
+	 ABHI9CBHKUeDPdfOabA1SP5c5i68maQoEsBfpVUMoywjtVXvM3UXgAVm6r78cRqYTB
+	 cmiwG0kEZojWY8sqyGbJXU9BDCtzgaaOd9Q0vsPLQtbvSbTr6BhTTEsH8UDE7eWwJG
+	 t/K2yc34Y/HdBhT3Dsol6but6K0rsX9JAtwoCBswKz/A/81tbdxQ3ijGKePD4ufxPR
+	 LdhAuTuf81NZw==
+Date: Fri, 25 Oct 2024 17:25:47 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Will Deacon <will@kernel.org>, ericvh@kernel.org, lucho@ionkov.net, 
+	asmadeus@codewreck.org, Alexander Viro <viro@zeniv.linux.org.uk>, oss@crudebyte.com, 
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, oleg@redhat.com, keirf@google.com, 
+	regressions@lists.linux.dev
+Subject: Re: VFS regression with 9pfs ("Lookup would have caused loop")
+Message-ID: <20241025-ungewiss-zersplittern-c124bc48be5c@brauner>
+References: <20240923100508.GA32066@willie-the-truck>
+ <20241009153448.GA12532@willie-the-truck>
+ <4966de3e-6900-481c-8f6b-00e37cebab7e@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1707:b0:3a0:915d:a4a7 with SMTP id
- e9e14a558f8ab-3a4d592fb67mr91969855ab.2.1729818845820; Thu, 24 Oct 2024
- 18:14:05 -0700 (PDT)
-Date: Thu, 24 Oct 2024 18:14:05 -0700
-In-Reply-To: <000000000000a519120616f973cb@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <671af0dd.050a0220.2eb763.00ce.GAE@google.com>
-Subject: Re: [syzbot] [fs] INFO: rcu detected stall in sys_mount (7)
-From: syzbot <syzbot+de026b20f56e1598e760@syzkaller.appspotmail.com>
-To: andrii@kernel.org, asmadeus@codewreck.org, ast@kernel.org, 
-	bpf@vger.kernel.org, bristot@kernel.org, daniel@iogearbox.net, 
-	eddyz87@gmail.com, ericvh@kernel.org, haoluo@google.com, 
-	john.fastabend@gmail.com, jolsa@kernel.org, juri.lelli@redhat.com, 
-	kpsingh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lucho@ionkov.net, martin.lau@linux.dev, 
-	peterz@infradead.org, sdf@google.com, song@kernel.org, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
-	vineeth@bitbyteword.org, yonghong.song@linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4966de3e-6900-481c-8f6b-00e37cebab7e@leemhuis.info>
 
-syzbot suspects this issue was fixed by commit:
+On Tue, Oct 15, 2024 at 08:07:10PM +0200, Thorsten Leemhuis wrote:
+> Hi Will! Top-posting for once, to make this easily accessible to everyone.
+> 
+> Thx for bringing this to my attention. I had hoped that Eric might reply
+> and waited a bit, but that did not happen. I kind of expected that, as
+> he seems to be  somewhat afk, as the last mail from him on lore is from
+> mid-September; and in the weeks before that he did not post much either.
+> Hmmm. :-/
+> 
+> CCed Christian and Al, maybe they might be able to help directly or
+> indirectly somehow. If not, we likely need to get Linus involved to
+> decide if we want to at least temporarily revert the changes you mentioned.
 
-commit 5f6bd380c7bdbe10f7b4e8ddcceed60ce0714c6d
-Author: Peter Zijlstra <peterz@infradead.org>
-Date:   Mon May 27 12:06:55 2024 +0000
+Sorry, I'm just getting to this thread now as I'm still out with a
+fscking case of the flu.
+/me reads...
 
-    sched/rt: Remove default bandwidth control
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=126a5e40580000
-start commit:   3b68086599f8 Merge tag 'sched_urgent_for_v6.9_rc5' of git:..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f47e5e015c177e57
-dashboard link: https://syzkaller.appspot.com/bug?extid=de026b20f56e1598e760
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1775971b180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1290b320980000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: sched/rt: Remove default bandwidth control
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+> 
+> Ciao, Thorsten
+> 
+> On 09.10.24 17:34, Will Deacon wrote:
+> > On Mon, Sep 23, 2024 at 11:05:08AM +0100, Will Deacon wrote:
+> >>
+> >> I'm trying to use kvmtool to run a simple guest under an Android host
+> >> but, for v6.9+ guest kernels, 'init' reliably fails to run from a 9pfs
+> >> mount because VFS emits this error:
+> >>
+> >>   | VFS: Lookup of 'com.android.runtime' in 9p 9p would have caused loop
+> >>
+> >> The host directory being shared is a little odd, as it has symlinks out
+> >> to other mount points. In the guest, /apex is a symlink to /host/apex.
+> >> On the host, /apex/com.android.runtime is a mounted loopback device:
+> >>
+> >> /dev/block/loop13 on /apex/com.android.runtime type ext4 (ro,dirsync,seclabel,nodev,noatime)
+> >>
+> >> This used to work prior to 724a08450f74 ("fs/9p: simplify iget to remove
+> >> unnecessary paths") and it looks like Oleg ran into something similar
+> >> before:
+> >>
+> >>   https://lore.kernel.org/all/20240408141436.GA17022@redhat.com/
+> >>
+> >> although he worked around it by driving QEMU with different options.
+> >>
+> >> I can confirm that reverting the following commits gets mainline guests
+> >> working again for me:
+> >>
+> >> 	724a08450f74 "fs/9p: simplify iget to remove unnecessary paths"
+> >> 	11763a8598f8 "fs/9p: fix uaf in in v9fs_stat2inode_dotl"
+> >> 	10211b4a23cf "fs/9p: remove redundant pointer v9ses"
+> >> 	d05dcfdf5e16 " fs/9p: mitigate inode collisions"
+> >>
+> >> Do you have any better ideas? I'm happy to test anything you might have,
+> >> since this is 100% reproducible on my setup.
+> > 
+> > Adding the regression tracker as I've not heard anything back on this :(
+> > #regzbot introduced: 724a08450f74
