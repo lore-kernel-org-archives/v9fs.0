@@ -1,114 +1,63 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2E320EA25
-	for <v9fs@lists.linux.dev>; Fri, 25 Oct 2024 21:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBCC1CEE98;
+	Fri, 25 Oct 2024 22:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729893198; cv=none; b=TLwfSwYsmX+K3imL6PP40sllCxQH9ycqQ9roDXSMb0IZtsIY4z4Qgmb/ZG8VYDlwdoSwisnPJHBcxmwnriHRXDX1jpTdt7vrPSmST2oVFElskhVAByzLaUxsa8bMNAJ2Kh0MOg3z3i96pGeLXHuH24mzo1i8X7t0+tXR+F50gSY=
+	t=1729897175; cv=none; b=c/nGYoe2XJKAc8s0HeAotR9Rf39+uiD+BwUpztVEQBWW8KURoK87rXwekiGDZ1wqE5lmHbdYCAVeqMr9cSmlmVkKxaSd4NWY9DM6P0O53G6op4CajSqdq3ra5d4TzZTAL/sV4/MrUDSZmW+noFw0ufIitGETilFztZSvQ+Wioes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729893198; c=relaxed/simple;
-	bh=B2eKg6piefvOLUgc+8fdQZjha3kgkzP8l6w3dYBUF+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltfJl7gev02sGew+SYBcyP+cqVZrSfpJyrKqpU0vVHv9QA/nEKI3rdbFFFsk0NrbijwRFCUp40LxuvC9ORsjfGno/D52cfAqJ9OIqrQFHU4bgL/ubmxXQpL0PjQ0Rno9bffxzr5DdbYj/fKtJJKXck2fjQrNrNCUBuiGyfqeZoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=DIv2Z/In; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1729897175; c=relaxed/simple;
+	bh=NTGgpjY12du3cbB1uiIDOxDLVnU8Dp47TfJiDstOOd8=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=JjlD7o1hIKfZXopOQf5gDlgBBkSHgC030aUJ7Aizhn1lkRTmueG2MIb6GTEcr9bOuABnrVQbMDkLjkgcuAL6UzFzC7FpaNvwbW3u8vrCZylNgAYY0zXX+6/xa0TYARhXtmcAyYtK/Ld4L3DzDwL37zc5yE0qCSXKgdhP13Xpwuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCfEWYZQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="DIv2Z/In"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 592AA14C1E1;
-	Fri, 25 Oct 2024 23:53:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1729893195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7KP7DYMAuwzCylxcT416P2aabyuPSXwgPLZEtgS+OhA=;
-	b=DIv2Z/In+d9HJvJTHWir6U0Y+lqU1ichbOC8y9mr0UdB1HAOaOKsSgIN0O6ep++IOvts3/
-	hkfBBITf1Qr9OYMomhf7qfcARVCy5PDiXnqrTck+3nJQf7uj38PAIWrOxiBrI/WCFA+kl/
-	goLe64NMgsfEI2xoqsWuBhbxbOM67Ym2amui2urmJECog2sTpTx3vFkcZyQvB83MmyVMCz
-	RASkXJtoYtCBY56KusIemJ/nqXC/QdIubDR7u61PLXrl8Mq5vIGDyoh7WuxZGV4T+ZbY0r
-	yTKK8Vkx7zCSJKAUdEVcg0xsdAHd7GhRv1phCHEjSVvImrExa+eIf9V+vaN9UQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e2930f9b;
-	Fri, 25 Oct 2024 21:53:11 +0000 (UTC)
-Date: Sat, 26 Oct 2024 06:52:56 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Guan Xin <guanx.bac@gmail.com>
-Cc: v9fs@lists.linux.dev,
-	Linux Kernel Network Developers <netdev@vger.kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>
-Subject: Re: Calculate VIRTQUEUE_NUM in "net/9p/trans_virtio.c" from stack
- size
-Message-ID: <ZxwTOB5ENi66C_kq@codewreck.org>
-References: <CANeMGR6CBxC8HtqbGamgpLGM+M1Ndng_WJ-RxFXXJnc9O3cVwQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCfEWYZQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFC5C4CEC3;
+	Fri, 25 Oct 2024 22:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729897175;
+	bh=NTGgpjY12du3cbB1uiIDOxDLVnU8Dp47TfJiDstOOd8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=aCfEWYZQ3Hy+5b9oryznBXuJxhOp8NCrVO079e7+sA1hKbaLZuGKZFrA4hIME3B6v
+	 i8HkfKPpkdDf5PPDA1GPNjRFavR5lw37ZQlR/CJ4LBDfmeQmSS0USHRL1pZ/170SFo
+	 O1/gZePt+LFZSv5LRgVyDIDri+EUAdxnMycRrVZuV9Hl5O+qTSJ/b498Hqlnbe6qNi
+	 YMhv/ajUyF4y3xQd47lcdbxJoyqv0mvp6oZF84fY1F5G26JPyk3oC6Uu2lfYInHRiF
+	 XEaSbGLzIIymfLSXWreuwZaiOb25DPaT32dQQ1+do8nV3/eT8Q/8rbZrU47NT+aI54
+	 VoFBEoA2VLDRA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F773809A8A;
+	Fri, 25 Oct 2024 22:59:43 +0000 (UTC)
+Subject: Re: [GIT PULL] more 9p reverts for 6.12-rc5
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ZxwPQTUCnbGEt1KQ@codewreck.org>
+References: <ZxwPQTUCnbGEt1KQ@codewreck.org>
+X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
+X-PR-Tracked-Message-Id: <ZxwPQTUCnbGEt1KQ@codewreck.org>
+X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.12-rc5
+X-PR-Tracked-Commit-Id: be2ca3825372085d669d322dccd0542a90e5b434
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 850925a8133c73c4a2453c360b2c3beb3bab67c9
+Message-Id: <172989718186.3095439.2377412556751777379.pr-tracker-bot@kernel.org>
+Date: Fri, 25 Oct 2024 22:59:41 +0000
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Will Deacon <will@kernel.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, Thorsten Leemhuis <regressions@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANeMGR6CBxC8HtqbGamgpLGM+M1Ndng_WJ-RxFXXJnc9O3cVwQ@mail.gmail.com>
 
-Christian,
+The pull request you sent on Sat, 26 Oct 2024 06:36:01 +0900:
 
-this is more up your alley, letting you comment as well as you weren't
-even sent a copy in Ccs
+> https://github.com/martinetd/linux tags/9p-for-6.12-rc5
 
-Guan,
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/850925a8133c73c4a2453c360b2c3beb3bab67c9
 
-overall, please check Documentation/process/submitting-patches.rst -
-this is missing [PATCH] in the mail header, missing some recipients that
-you'd have gotten from get_maintiner.pl, and the commit title is a mess.
-
-Have a look at other recent patches on https://lore.kernel.org/v9fs/
-
-Guan Xin wrote on Sat, Oct 26, 2024 at 12:18:42AM +0800:
-> For HPC applications the hard-coded VIRTQUEUE_NUM of 128 seems to
-> limit the throughput of guest systems accessing cluster filesystems
-> mounted on the host.
-> 
-> Just increase VIRTQUEUE_NUM for kernels with a
-> larger stack.
-
-You're replacing an hardcoded value with another, this could be made
-dynamic e.g. as a module_param so someone could tune this based on their
-actual needs (and test more easily); I'd more readily accept such a
-patch.
-
-> Author: GUAN Xin <guanx.bac@gmail.com>
-
-Author: tag doesn't exist and would be useless here as it's the mail you
-sent the patch from.
-
-> Signed-off-by: GUAN Xin <guanx.bac@gmail.com>
-> cc: Eric Van Hensbergen <ericvh@kernel.org>
-> cc: v9fs@lists.linux.dev
-> cc: netdev@vger.kernel.org
-> cc: linux-fsdevel@vger.kernel.org
-> 
-> --- net/9p/trans_virtio.c.orig  2024-10-25 10:25:09.390922517 +0800
-> +++ net/9p/trans_virtio.c       2024-10-25 16:48:40.451680192 +0800
-> @@ -31,11 +31,12 @@
-> #include <net/9p/transport.h>
-> #include <linux/scatterlist.h>
-> #include <linux/swap.h>
-> +#include <linux/thread_info.h>
-> #include <linux/virtio.h>
-> #include <linux/virtio_9p.h>
-> #include "trans_common.h"
-> 
-> -#define VIRTQUEUE_NUM  128
-> +#define VIRTQUEUE_NUM  (1 << (THREAD_SIZE_ORDER + PAGE_SHIFT - 6))
-
-(FWIW that turned out to be 256 on my system)
-
-> /* a single mutex to manage channel initialization and attachment */
-> static DEFINE_MUTEX(virtio_9p_lock);
-> 
+Thank you!
 
 -- 
-Dominique Martinet | Asmadeus
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
