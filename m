@@ -1,60 +1,85 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB551E493;
-	Sun, 27 Oct 2024 13:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826E5192B70
+	for <v9fs@lists.linux.dev>; Thu, 31 Oct 2024 09:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730034706; cv=none; b=AcDLmMsKNj08y2jGRjdHJCZ61jo9X+qPsQY1YMzVrNgBlUujzviVLqWnZNQGTerr6gyiPNT0W9nhO8RurtOs5RvJtMDAT4w5rwlB7LL0e28FE40M+B8lIJ4fwa+cmoq0gmvkcFhirERpwvPww4oVsqLLLuUCU7rNlb6jEMtbBPs=
+	t=1730365831; cv=none; b=WwmE18XiLVrU/u2sBjzpdfaTAU/c7FpfAgdRGuidrzxIDop6e4ItjXDzXRAHCST1vVTFff3+jWzbhY6+G8grTSsRhjJoe6IIJvIfxuAb2ZCR7qy8evKIsxkniPbvfPe1YwW2lhHxEH7/otlbu4KlqwQZjZxYKsihsaGsMymuCwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730034706; c=relaxed/simple;
-	bh=FyHoYGFbWTamC7/YRq7XJbj+xniyhRWqgqDOZwyc8k0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Atzx85seXn+/0cB+Jz7J2/8vhjRcQ4bqXlVCVOvlt88+va0jMotExw/Pt4hlk9WogObkC3/zNUcDYYzq+CRrBL7DC/BXFjniVRMlHViJ/HrT726hHZv53RwxmKgg429Gg6jkshPAfoYr8+gWh2Ept+uUddhuv2yJyfgz2c2Hmro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Guan Xin <guanx.bac@gmail.com>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev,
- Linux Kernel Network Developers <netdev@vger.kernel.org>,
- linux-fsdevel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>
-Subject:
- Re: Calculate VIRTQUEUE_NUM in "net/9p/trans_virtio.c" from stack size
-Date: Sun, 27 Oct 2024 14:11:33 +0100
-Message-ID: <2894536.PhyXTn6laM@silver>
-In-Reply-To: <1921500.ue69UQ14vC@silver>
-References:
- <CANeMGR6CBxC8HtqbGamgpLGM+M1Ndng_WJ-RxFXXJnc9O3cVwQ@mail.gmail.com>
- <ZxwTOB5ENi66C_kq@codewreck.org> <1921500.ue69UQ14vC@silver>
+	s=arc-20240116; t=1730365831; c=relaxed/simple;
+	bh=163O/Ucc+5WV8cV+djHy7aZiqGw7oFPmS3WfJQc/ZVA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=e+Z/XnbSsdxo9xMnqtRDaAbZ3umZQkY0/mHV7skZkH7CrqWTmnoX9W3mVMRFS1ShAD9cJb8edPi5hRKH60iwlkWWE2+QpkJKlAVnk8lrx8VyDIuST1KT9n5pvljTGmXrcD+R30uaX5DaRO11pjFJ86Wwo3hQAi6QUBVCZ/adm3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-83b567c78c3so111072239f.1
+        for <v9fs@lists.linux.dev>; Thu, 31 Oct 2024 02:10:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730365828; x=1730970628;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pllFhsMTTU+3e5QN9Fdfs0yUJvv8zYxTy7BrtxYTxPg=;
+        b=CKTfOGD2rFwIwy4nYeFTR8Npjsh/HZmN8unGGyI0BEpMhVitZpwMDbpJy+L9uKOv2+
+         ylXI16jv/p5TQy8ncZK0UU5OKFzHHe1BbNgObroc2RCNRnZO397ujcPrxjMJMsEphPBA
+         Q1ikiqYEgIAxlAh4orgkzLI22PD89pasYU9OYan5euaTtHD9zEKbDUILrBMTYh9VMUxN
+         vXaDcX35p8D+EF/M7tg7o3bJoDQjhUN3+UmVpRBmqRHFx24zvg3O5XRS87dqzG7IMC7I
+         iDDK5TEfaJISfepuntTrVhpFtiaR/YOMnaFbpda1tocNYMKEWOI2tTSWrVk1ABaNikfB
+         eMlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnho2LArKvjf/aF3v2Y9nku3IFif4+dKneRf2g92Qt9LJmvsMSJq4ymngYoF6bKqDhe9uj@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcH3iax5gG0rj0jffS102rnggQalcsrM5Yu2Y5+6qCHxl8XjYf
+	zYKfOthchjenfSWKaA6Veog7aeFUqpr+I1pYP84jaOuZqbzur4hrjFfTfjM+VprD3gh+6dquxPr
+	Rh/U/2pwON4Wt44OxPS35I6ZQghuX5fGAjSss/MLlsuCypKKXxkXjiMk=
+X-Google-Smtp-Source: AGHT+IGeBseJGnuFoU8xnWO+MtB1URSw+AcYBSUQuMbpl/WKGMC+mTKqGfTrG5WmOu/m0OmZ0JdMGemFqnnBXsaeoZzC47JFhn2c
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+X-Received: by 2002:a05:6e02:20ef:b0:3a5:e7a5:af2 with SMTP id
+ e9e14a558f8ab-3a6a947cf4bmr14177305ab.3.1730365828712; Thu, 31 Oct 2024
+ 02:10:28 -0700 (PDT)
+Date: Thu, 31 Oct 2024 02:10:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67234984.050a0220.3c8d68.076f.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Oct 2024)
+From: syzbot <syzbot+list7b3e748d81f2ae91c10c@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Saturday, October 26, 2024 11:36:13 AM CET Christian Schoenebeck wrote:
-[...]
-> I have also been working on increasing performance by allowing larger 9p
-> message size and made it user-configurable at runtime. Here is the latest
-> version of my patch set:
-> 
-> https://lore.kernel.org/all/cover.1657636554.git.linux_oss@crudebyte.com/
-> 
-> Patches 8..11 have already been merged. Patches 1..7 are still to be merged.
+Hello v9fs maintainers/developers,
 
-Sorry, it's been a while, I linked the wrong version of this patch set (v5).
-Latest version is actually v6 here:
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-https://lore.kernel.org/all/cover.1657920926.git.linux_oss@crudebyte.com/
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 10 issues are still open and 33 have been fixed so far.
 
-Accordingly patches 7..11 (of v6) have already been merged, whereas patches
-1..6 are not merged yet.
+Some of the still happening issues:
 
-/Christian
+Ref Crashes Repro Title
+<1> 3357    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 11      Yes   WARNING in p9pdu_vwritef
+                  https://syzkaller.appspot.com/bug?extid=94b73a3e8ea625efcd05
+<3> 7       No    BUG: corrupted list in p9_fd_cancelled (3)
+                  https://syzkaller.appspot.com/bug?extid=15a08eabe3d3838fb641
+<4> 2       Yes   WARNING in v9fs_begin_writeback
+                  https://syzkaller.appspot.com/bug?extid=0b74d367d6e80661d6df
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
