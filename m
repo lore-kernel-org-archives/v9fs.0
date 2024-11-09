@@ -1,79 +1,68 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8182309FB
-	for <v9fs@lists.linux.dev>; Fri,  8 Nov 2024 17:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF426233D6B
+	for <v9fs@lists.linux.dev>; Sat,  9 Nov 2024 21:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731087412; cv=none; b=ugy3VBzmW4bkHdPcDLCx21IejGANuJZfhBPuJxawp5rh7Jao6oFYW0c/SsOBvIsRUM25agTpp07r3AubkY594k43smH2NadsCpokK7qWtZjnzJpMHGyp7G94Vr5ZzRhAUhabWOfh9JU9G5IZ3WU82z8/tTwfP1yaWqzEDymaSPc=
+	t=1731187227; cv=none; b=eLa4rhwy2y1tQ7rLDmczn7rC4lQYCHpYJwOhinFFo/JGvSB5d9t53VwpSfHcc+Cuj3sIloEXtkaPnKESJMOTArrjA8mHwkY/gdJKuIx2aGQ8Lu1hbLb1AEXaZ8KKlKi5OkG1nBQXDZNAaP/MobqlGQ943V+UE1g7EwabiDcVdb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731087412; c=relaxed/simple;
-	bh=YfHQHHklQqGthguUT+hofehz3Evx2ahQywNsAF+2OGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoKLeoUAYgqlqBGxS6ZYz9cYc6hKj2oe6vi9JOXFa3BJmuyE6JEvmvB8F9mKgk1iRxODDfNp31X8XN8oNM6ojB6m69hG7HvX55ZuJ93EjolzR7xEPKBRq04sAicgAKIj/hjIFm136LqGeEr4AJOTeZZwhxnujFa+P9IT/UUjruM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hNM/HZ0K; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731187227; c=relaxed/simple;
+	bh=zX6YE+/DDtNfVrgMGSZcRMfqOuc0nTcDRyL0ymhSzz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aDVQVehYq0LwhHihw3sFEdAGqybnkBPL/YX/IAscAwK7XRaRVTwxl4kvh5LX6Mm7PUQ9dzl4uwz7sDcJ8LolSqtgu2dxxea6Ohtop9Zjs30tsfNjjcxMm0+dovGZmI0TKBfP5l/lqlgQMxF/cGWW5gw0DnlMeIkJROIrpEs6fEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=enU47vxd; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hNM/HZ0K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731087409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jlfv2ApsSBgn//KdBsSlx8BkotK5+tCpg2808yZLllw=;
-	b=hNM/HZ0KNJbO+In8DiGM7pVSUJVLCSH+ilrVBlV58TNdxeWh8XnT1DhKCnMFvf7p3Tv39M
-	iQLlHKhJIzyLpWEzjxBylzMzt2xLK2gwfyofUzii+04bYTPau16PTXwnEgKHLzevna6Hre
-	cOZJDHxu7KU5yXv+UpgBWIN+2cyiaxQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-sjYpWV5SMt6Lmz3uofTwYw-1; Fri,
- 08 Nov 2024 12:36:48 -0500
-X-MC-Unique: sjYpWV5SMt6Lmz3uofTwYw-1
-X-Mimecast-MFC-AGG-ID: sjYpWV5SMt6Lmz3uofTwYw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 935F41954128;
-	Fri,  8 Nov 2024 17:36:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9CB78195E480;
-	Fri,  8 Nov 2024 17:36:37 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="enU47vxd"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a4031f69fso541344766b.0
+        for <v9fs@lists.linux.dev>; Sat, 09 Nov 2024 13:20:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731187224; x=1731792024; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AFZmkyoCv2kVb7ODlAwqK+9+SWXoO1Y9sGe1uejDVg4=;
+        b=enU47vxd/avhqjHDK6cpOLaQ3VIp8albGTm8KK0Zxh9F6/twK041d57RH5MoM3ifJv
+         SS/filgh7h+HYFwYU1+TsUJo9I/2MjaJgdn24wqsje7lkJDEiHEwKwiAEseUgHP8svrA
+         BMxq1MgWmv2R9K9wgZETC3b+ZR6gdCZXp6ok2t0iHVEGVT3UAZi1u4bSKiZklH1jMdCz
+         T40D4KQlqW742d1Xuwm2sUIRYiSf5yqfC1PXdAAidMI3pUZI93QcvR3A+nQBK+jywnmS
+         9+xq46vlAUFY+ILwERs+Xnbsi97lgT6RYStZnaheSg3dWgUOJHhAHQP28ehiPGKdbd0j
+         dt4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731187224; x=1731792024;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AFZmkyoCv2kVb7ODlAwqK+9+SWXoO1Y9sGe1uejDVg4=;
+        b=ivmvZl8/NJwCeCt9ZiAr8DtV8FbYefXO0jLUNiyXcMe7bSJdXJUD0PtkOnYqumejq8
+         Pt8PQ6juzHELEdGiyIdI3tR6oYzde4XlaeXcTKTfWZkJtM73kJjMn3t6kUa43gHaWqmv
+         ZiiWLYp/ONkPOttcSOznD0V0p/hRIealmxzwmmDodNS4jVTc3AJ1VMhvY5NgtLfTQnBO
+         7DDlQ13Px8cd0syJz+pXoo1wkteXTbLNpFaea00tD7udoa0Azwt0528ExNF75P9DZUZO
+         JHI7fiO0CmrJztVSCupvu59jC9ctfO6Tnq1waiJJTzpMlDCf1K1e6PksbLXLaFUnBK58
+         46MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVd6MUN4dq/5JWvkJvB3vMSGIkxUjkRWbvzpiCHoLda7uU3h0zp7a7GgJWCBAG9HakbSR+j@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgmPCv+t9NBL8GOV1xlZLLFP2BB6rKREt5tOmeaNFncoG3F/sy
+	pwdNbj+uP/+opgWU0Fbi3Tlj0T8PFzwnrAYS2lQQgjkH1YpnyPV9
+X-Google-Smtp-Source: AGHT+IEX0KiXpqhnHtQQDp+D5+tK7VGAsz5Td/YIo4FS77MqvFvBxzCgmHMQtCMZOw+Ifb5t3zzFAA==
+X-Received: by 2002:a17:907:608a:b0:a99:fb10:1269 with SMTP id a640c23a62f3a-a9eeff0eac2mr684321066b.17.1731187223612;
+        Sat, 09 Nov 2024 13:20:23 -0800 (PST)
+Received: from localhost (dh207-40-48.xnet.hr. [88.207.40.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a17624sm406441566b.24.2024.11.09.13.20.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Nov 2024 13:20:23 -0800 (PST)
+From: Mirsad Todorovac <mtodorovac69@gmail.com>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
 	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com,
-	Chang Yu <marcus.yu.56@gmail.com>
-Subject: [PATCH v4 33/33] netfs: Report on NULL folioq in netfs_writeback_unlock_folios()
-Date: Fri,  8 Nov 2024 17:32:34 +0000
-Message-ID: <20241108173236.1382366-34-dhowells@redhat.com>
-In-Reply-To: <20241108173236.1382366-1-dhowells@redhat.com>
-References: <20241108173236.1382366-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: [PATCH v1 1/1] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
+Date: Sat,  9 Nov 2024 22:18:41 +0100
+Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -81,95 +70,47 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-It seems that it's possible to get to netfs_writeback_unlock_folios() with
-an empty rolling buffer during buffered writes.  This should not be
-possible as the rolling buffer is initialised as the write request is set
-up and thereafter maintains at least one folio_queue struct therein until
-it gets destroyed.  This allows lockless addition and removal of
-folio_queue structs in the buffer because, unlike with a ring buffer, the
-producer and consumer each only need to look at and alter one pointer into
-the buffer.
+On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
+following error report:
 
-Now, the rolling buffer is only used for buffered I/O operations as
-netfs_collect_write_results() should only call
-netfs_writeback_unlock_folios() if the request is of origin type
-NETFS_WRITEBACK, NETFS_WRITETHROUGH or NETFS_PGPRIV2_COPY_TO_CACHE.
+./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
+NULL not ERR_PTR on failure
 
-So it would seem that one of the following occurred: (1) I/O started before
-the request was fully initialised, (2) the origin got switched mid-flow or
-(3) the request has already been freed and this is a UAF error.  I think the
-last is the most likely.
+kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
 
-Make netfs_writeback_unlock_folios() report information about the request
-and subrequests if folioq is seen to be NULL to try and help debug this,
-throw a warning and return.
-
-Note that this does not try to fix the problem.
-
-Reported-by: syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=af5c06208fa71bf31b16
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Chang Yu <marcus.yu.56@gmail.com>
-Link: https://lore.kernel.org/r/ZxshMEW4U7MTgQYa@gmail.com/
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
+Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
 ---
- fs/netfs/write_collect.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ v1:
+    initial version.
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 3d8b87c8e6a6..4a1499167770 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -21,6 +21,34 @@
- #define NEED_RETRY		0x10	/* A front op requests retrying */
- #define SAW_FAILURE		0x20	/* One stream or hit a permanent failure */
+ net/9p/trans_usbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 975b76839dca..6b694f117aef 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
+ 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
  
-+static void netfs_dump_request(const struct netfs_io_request *rreq)
-+{
-+	pr_err("Request R=%08x r=%d fl=%lx or=%x e=%ld\n",
-+	       rreq->debug_id, refcount_read(&rreq->ref), rreq->flags,
-+	       rreq->origin, rreq->error);
-+	pr_err("  st=%llx tsl=%zx/%llx/%llx\n",
-+	       rreq->start, rreq->transferred, rreq->submitted, rreq->len);
-+	pr_err("  cci=%llx/%llx/%llx\n",
-+	       rreq->cleaned_to, rreq->collected_to, atomic64_read(&rreq->issued_to));
-+	pr_err("  iw=%pSR\n", rreq->netfs_ops->issue_write);
-+	for (int i = 0; i < NR_IO_STREAMS; i++) {
-+		const struct netfs_io_subrequest *sreq;
-+		const struct netfs_io_stream *s = &rreq->io_streams[i];
-+
-+		pr_err("  str[%x] s=%x e=%d acnf=%u,%u,%u,%u\n",
-+		       s->stream_nr, s->source, s->error,
-+		       s->avail, s->active, s->need_retry, s->failed);
-+		pr_err("  str[%x] ct=%llx t=%zx\n",
-+		       s->stream_nr, s->collected_to, s->transferred);
-+		list_for_each_entry(sreq, &s->subrequests, rreq_link) {
-+			pr_err("  sreq[%x:%x] sc=%u s=%llx t=%zx/%zx r=%d f=%lx\n",
-+			       sreq->stream_nr, sreq->debug_index, sreq->source,
-+			       sreq->start, sreq->transferred, sreq->len,
-+			       refcount_read(&sreq->ref), sreq->flags);
-+		}
-+	}
-+}
-+
- /*
-  * Successful completion of write of a folio to the server and/or cache.  Note
-  * that we are not allowed to lock the folio here on pain of deadlocking with
-@@ -87,6 +115,12 @@ static void netfs_writeback_unlock_folios(struct netfs_io_request *wreq,
- 	unsigned long long collected_to = wreq->collected_to;
- 	unsigned int slot = wreq->buffer.first_tail_slot;
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (IS_ERR(dev)) {
++	if (!dev) {
+ 		kfree(usb9pfs_opts);
+-		return ERR_CAST(dev);
++		return ERR_PTR(-ENOMEM);
+ 	}
  
-+	if (WARN_ON_ONCE(!folioq)) {
-+		pr_err("[!] Writeback unlock found empty rolling buffer!\n");
-+		netfs_dump_request(wreq);
-+		return;
-+	}
-+
- 	if (wreq->origin == NETFS_PGPRIV2_COPY_TO_CACHE) {
- 		if (netfs_pgpriv2_unlock_copied_folios(wreq))
- 			*notes |= MADE_PROGRESS;
+ 	usb9pfs_opts->dev = dev;
+-- 
+2.43.0
 
