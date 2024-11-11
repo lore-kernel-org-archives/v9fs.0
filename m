@@ -1,116 +1,162 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF426233D6B
-	for <v9fs@lists.linux.dev>; Sat,  9 Nov 2024 21:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F011016A959;
+	Mon, 11 Nov 2024 09:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731187227; cv=none; b=eLa4rhwy2y1tQ7rLDmczn7rC4lQYCHpYJwOhinFFo/JGvSB5d9t53VwpSfHcc+Cuj3sIloEXtkaPnKESJMOTArrjA8mHwkY/gdJKuIx2aGQ8Lu1hbLb1AEXaZ8KKlKi5OkG1nBQXDZNAaP/MobqlGQ943V+UE1g7EwabiDcVdb8=
+	t=1731316379; cv=none; b=hb4dNgDtEt1pzeC+FsijQ8uLvQsRo7zkF1/dQcTIDGdj3MbXr6A+HfcEnxqnfp7osEgZqDaidC7wvpGo+WDXgMSl5pGJH1oJz/qiEB4ybcaRSs7anMyWS5qrklr4JPBWqT7jrY78nsbRrg/1H9EgCo9S33Mfs/mN0YdPsuPKTHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731187227; c=relaxed/simple;
-	bh=zX6YE+/DDtNfVrgMGSZcRMfqOuc0nTcDRyL0ymhSzz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aDVQVehYq0LwhHihw3sFEdAGqybnkBPL/YX/IAscAwK7XRaRVTwxl4kvh5LX6Mm7PUQ9dzl4uwz7sDcJ8LolSqtgu2dxxea6Ohtop9Zjs30tsfNjjcxMm0+dovGZmI0TKBfP5l/lqlgQMxF/cGWW5gw0DnlMeIkJROIrpEs6fEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=enU47vxd; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731316379; c=relaxed/simple;
+	bh=eLegIPzm6kl+o1xbtiBt0w/Vn129KLVaIrdkjfKYWaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ACjyU5n7k2nOg9QueFtI6LYwdN8HtxLJhGJjoYSxR6XO6idLkWoAYYnD1pP5q1+TDcMLhkkC4pr+HZqBxd36ceJWFY3zkxwvCB2X9lZ8RRmozU3leoSy2J//PSIEdWT7pkSzGYxv7uYsKW0/4gj9jpk5fkiY/xxhRG38nOa912E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgPSPhwK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="enU47vxd"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a4031f69fso541344766b.0
-        for <v9fs@lists.linux.dev>; Sat, 09 Nov 2024 13:20:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731187224; x=1731792024; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFZmkyoCv2kVb7ODlAwqK+9+SWXoO1Y9sGe1uejDVg4=;
-        b=enU47vxd/avhqjHDK6cpOLaQ3VIp8albGTm8KK0Zxh9F6/twK041d57RH5MoM3ifJv
-         SS/filgh7h+HYFwYU1+TsUJo9I/2MjaJgdn24wqsje7lkJDEiHEwKwiAEseUgHP8svrA
-         BMxq1MgWmv2R9K9wgZETC3b+ZR6gdCZXp6ok2t0iHVEGVT3UAZi1u4bSKiZklH1jMdCz
-         T40D4KQlqW742d1Xuwm2sUIRYiSf5yqfC1PXdAAidMI3pUZI93QcvR3A+nQBK+jywnmS
-         9+xq46vlAUFY+ILwERs+Xnbsi97lgT6RYStZnaheSg3dWgUOJHhAHQP28ehiPGKdbd0j
-         dt4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731187224; x=1731792024;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AFZmkyoCv2kVb7ODlAwqK+9+SWXoO1Y9sGe1uejDVg4=;
-        b=ivmvZl8/NJwCeCt9ZiAr8DtV8FbYefXO0jLUNiyXcMe7bSJdXJUD0PtkOnYqumejq8
-         Pt8PQ6juzHELEdGiyIdI3tR6oYzde4XlaeXcTKTfWZkJtM73kJjMn3t6kUa43gHaWqmv
-         ZiiWLYp/ONkPOttcSOznD0V0p/hRIealmxzwmmDodNS4jVTc3AJ1VMhvY5NgtLfTQnBO
-         7DDlQ13Px8cd0syJz+pXoo1wkteXTbLNpFaea00tD7udoa0Azwt0528ExNF75P9DZUZO
-         JHI7fiO0CmrJztVSCupvu59jC9ctfO6Tnq1waiJJTzpMlDCf1K1e6PksbLXLaFUnBK58
-         46MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVd6MUN4dq/5JWvkJvB3vMSGIkxUjkRWbvzpiCHoLda7uU3h0zp7a7GgJWCBAG9HakbSR+j@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgmPCv+t9NBL8GOV1xlZLLFP2BB6rKREt5tOmeaNFncoG3F/sy
-	pwdNbj+uP/+opgWU0Fbi3Tlj0T8PFzwnrAYS2lQQgjkH1YpnyPV9
-X-Google-Smtp-Source: AGHT+IEX0KiXpqhnHtQQDp+D5+tK7VGAsz5Td/YIo4FS77MqvFvBxzCgmHMQtCMZOw+Ifb5t3zzFAA==
-X-Received: by 2002:a17:907:608a:b0:a99:fb10:1269 with SMTP id a640c23a62f3a-a9eeff0eac2mr684321066b.17.1731187223612;
-        Sat, 09 Nov 2024 13:20:23 -0800 (PST)
-Received: from localhost (dh207-40-48.xnet.hr. [88.207.40.48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a17624sm406441566b.24.2024.11.09.13.20.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Nov 2024 13:20:23 -0800 (PST)
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgPSPhwK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D85C4CED0;
+	Mon, 11 Nov 2024 09:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731316378;
+	bh=eLegIPzm6kl+o1xbtiBt0w/Vn129KLVaIrdkjfKYWaA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fgPSPhwKVCoHhP5ZUhqFPaUA3BckikO442jgj8GZjtPjAiQvZy2Zt8UJaqx4sZ4cn
+	 tLQLnuNp8PDWRuevwPEyIHOAmeXYlFpVSIX3s7ozITJY1rKstBsCZlFlksJ0gw6tmS
+	 kdvvTwHsIdFewza2NlXVyqYUKM9MykIn/gCPy6V7rfKaE5bePR/WM3+hqBWYTt+baE
+	 ElCEQ+0slDPOh3YKguR0LIEL0eNaL2YyYEX/vSMtnmZZUKcDhQynA4VIMn0yTrjVZ3
+	 fE5fwQWPiTHePSimVwb1JplWrql7brpCmIVXRpE7c1XmVUtvAeONSspLa67X4zbXJl
+	 sD6sd7jx8WGRQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: [PATCH v1 1/1] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
-Date: Sat,  9 Nov 2024 22:18:41 +0100
-Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gao Xiang <xiang@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v4 00/33] netfs: Read performance improvements and "single-blob" support
+Date: Mon, 11 Nov 2024 10:12:33 +0100
+Message-ID: <20241111-kochkunst-kroll-f8386db7f273@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241108173236.1382366-1-dhowells@redhat.com>
+References: <20241108173236.1382366-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4915; i=brauner@kernel.org; h=from:subject:message-id; bh=eLegIPzm6kl+o1xbtiBt0w/Vn129KLVaIrdkjfKYWaA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQbnuoTcJer1I9iZPy/KXnXkR3yzUvPeSUdKhatyKkPP 1/h4qTTUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJHXyowMJ73NZvvz71XzWu/R kX/O6mpbvrbzAbX0naeF5dI9IzTqGRmeOOw/3D7HYsVKm7tHJ/g+THnPZ3IgVWj+mYxQHlHHyPM MAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
-following error report:
+On Fri, 08 Nov 2024 17:32:01 +0000, David Howells wrote:
+> This set of patches is primarily about two things: improving read
+> performance and supporting monolithic single-blob objects that have to be
+> read/written as such (e.g. AFS directory contents).  The implementation of
+> the two parts is interwoven as each makes the other possible.
+> 
+> READ PERFORMANCE
+> ================
+> 
+> [...]
 
-./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
-NULL not ERR_PTR on failure
+Applied to the vfs-6.14.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-6.14.netfs branch should appear in linux-next soon.
 
-kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
----
- v1:
-    initial version.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
- net/9p/trans_usbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 975b76839dca..6b694f117aef 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
- 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
- 
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (IS_ERR(dev)) {
-+	if (!dev) {
- 		kfree(usb9pfs_opts);
--		return ERR_CAST(dev);
-+		return ERR_PTR(-ENOMEM);
- 	}
- 
- 	usb9pfs_opts->dev = dev;
--- 
-2.43.0
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.14.netfs
 
+[01/33] kheaders: Ignore silly-rename files
+        https://git.kernel.org/vfs/vfs/c/3033d243b97c
+[02/33] netfs: Remove call to folio_index()
+        https://git.kernel.org/vfs/vfs/c/f709cec9dc52
+[03/33] netfs: Fix a few minor bugs in netfs_page_mkwrite()
+        https://git.kernel.org/vfs/vfs/c/07a80742a52b
+[04/33] netfs: Remove unnecessary references to pages
+        https://git.kernel.org/vfs/vfs/c/53f5f31a1549
+[05/33] netfs: Use a folio_queue allocation and free functions
+        https://git.kernel.org/vfs/vfs/c/1d044b4cb3e9
+[06/33] netfs: Add a tracepoint to log the lifespan of folio_queue structs
+        https://git.kernel.org/vfs/vfs/c/7583f643f714
+[07/33] netfs: Abstract out a rolling folio buffer implementation
+        https://git.kernel.org/vfs/vfs/c/2029a747a14d
+[08/33] netfs: Make netfs_advance_write() return size_t
+        https://git.kernel.org/vfs/vfs/c/34961bbe07a5
+[09/33] netfs: Split retry code out of fs/netfs/write_collect.c
+        https://git.kernel.org/vfs/vfs/c/8816207a3e26
+[10/33] netfs: Drop the error arg from netfs_read_subreq_terminated()
+        https://git.kernel.org/vfs/vfs/c/44c5114bb155
+[11/33] netfs: Drop the was_async arg from netfs_read_subreq_terminated()
+        https://git.kernel.org/vfs/vfs/c/3c8a83f74e0e
+[12/33] netfs: Don't use bh spinlock
+        https://git.kernel.org/vfs/vfs/c/5c962f9982cd
+[13/33] afs: Don't use mutex for I/O operation lock
+        https://git.kernel.org/vfs/vfs/c/244059f6472c
+[14/33] afs: Fix EEXIST error returned from afs_rmdir() to be ENOTEMPTY
+        https://git.kernel.org/vfs/vfs/c/10e890507ed5
+[15/33] afs: Fix directory format encoding struct
+        https://git.kernel.org/vfs/vfs/c/c8f34615191c
+[16/33] netfs: Remove some extraneous directory invalidations
+        https://git.kernel.org/vfs/vfs/c/ab143ef48b3b
+[17/33] cachefiles: Add some subrequest tracepoints
+        https://git.kernel.org/vfs/vfs/c/46599823a281
+[18/33] cachefiles: Add auxiliary data trace
+        https://git.kernel.org/vfs/vfs/c/499c9d489d7b
+[19/33] afs: Add more tracepoints to do with tracking validity
+        https://git.kernel.org/vfs/vfs/c/606d920396fd
+[20/33] netfs: Add functions to build/clean a buffer in a folio_queue
+        https://git.kernel.org/vfs/vfs/c/823f8d570db5
+[21/33] netfs: Add support for caching single monolithic objects such as AFS dirs
+        https://git.kernel.org/vfs/vfs/c/5ae8e69c119a
+[22/33] afs: Make afs_init_request() get a key if not given a file
+        https://git.kernel.org/vfs/vfs/c/bfeb953ddf0b
+[23/33] afs: Use netfslib for directories
+        https://git.kernel.org/vfs/vfs/c/2b6bae4ca558
+[24/33] afs: Use netfslib for symlinks, allowing them to be cached
+        https://git.kernel.org/vfs/vfs/c/a16c68c66f52
+[25/33] afs: Eliminate afs_read
+        https://git.kernel.org/vfs/vfs/c/b84e275b6da2
+[26/33] afs: Fix cleanup of immediately failed async calls
+        https://git.kernel.org/vfs/vfs/c/355d07737082
+[27/33] afs: Make {Y,}FS.FetchData an asynchronous operation
+        https://git.kernel.org/vfs/vfs/c/e31fb01515da
+[28/33] netfs: Change the read result collector to only use one work item
+        https://git.kernel.org/vfs/vfs/c/1bd9011ee163
+[29/33] afs: Make afs_mkdir() locally initialise a new directory's content
+        https://git.kernel.org/vfs/vfs/c/4e93a341aec1
+[30/33] afs: Use the contained hashtable to search a directory
+        https://git.kernel.org/vfs/vfs/c/08890740b1d7
+[31/33] afs: Locally initialise the contents of a new symlink on creation
+        https://git.kernel.org/vfs/vfs/c/d4f4a6bde676
+[32/33] afs: Add a tracepoint for afs_read_receive()
+        https://git.kernel.org/vfs/vfs/c/f06ba511d8d5
+[33/33] netfs: Report on NULL folioq in netfs_writeback_unlock_folios()
+        https://git.kernel.org/vfs/vfs/c/19375843912f
