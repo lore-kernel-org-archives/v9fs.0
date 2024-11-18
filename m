@@ -1,61 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6086522F19
-	for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 16:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0CA1BD9FF
+	for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731947074; cv=none; b=jA57D1myGueI9SjaRgovFMKMyjsKEXORAIu4nL6nKL6e9zmA3VozdyiSUJhJUQJclcKJENVvN/R5E7v3HPDHj4rmfmH4eZYw+AaomCb1OVNst0rRNxEPzQ5HI6Mf2K1jvfOZxXpjMNdBlURrMCWDC4goA1W53bhuwFm2HRG2zNY=
+	t=1731947741; cv=none; b=YVB49bsFD8Ohn4MRZ+sYQggjz0OV0nbYgZCtVDcXxJr1e+dCCrBkg/nmKBGmPpg/BQX9FPyCODX8LFRFqMrVPEg/VEJeaZCufmFVBuH8IEnB8bCrvzFXEcRDoktxFvC2DR2Z5RvvHDLNNqf0TwrXj2kOErrE5Y06igQAF5W9qOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731947074; c=relaxed/simple;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
+	s=arc-20240116; t=1731947741; c=relaxed/simple;
+	bh=wwmrSMmvUtQxOnWoWMX94ibGfGj/+431cg0WAd2Ud6U=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=MVechoO2SaAQFTSFByItugwzpVcOtjBFP8bqqkSrA7dfj9fwe1icaEtQKQvkPRWRbVYVGzvga1aawrjd9YLFZ4IbNMjpG7YG8hUMNNzHnVdOsf0dTbPkuWh6mRcxvVTED4AH8LPdUMaOoj4UgJ+WZRcrGrsNM0fZsfJXHiebTwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YI0wnARa; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=lvN2CzsxqLChZvugmJP4n65Fe7czGO6d4X6xYuGSY2oW8U9lcoPeb1z79J3v6/nmXRacNS9PrY8n7pr96PzW6dBQuIlKG6jc4psc4WmoRUo8qza6EIc/ytkcBcx5MkoVDEXlUUEHp/PEMzVJCw9DMDKWa1cxPhsCNDkDgy2BFNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C+ZgNer4; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YI0wnARa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C+ZgNer4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731947072;
+	s=mimecast20190719; t=1731947738;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
-	b=YI0wnARaQ/7r9QDbQsdIA/gSKHlhrrnpeku19U3qWxWJILOTw/SajfE0riCzQMsArG3HUC
-	cevhIHPdDqbmtAG1+/0HMKD3lAZwHPJXNQhRof555/8F61lxnwkyMhqVIpTv2JE0ANTcuz
-	JBW9zqbs26B2Qy7UISmHjCYG3/N8/Yg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=F48vEQ6V/tDlXaOtinAU3DdgDvVmHs2S/fGlg/NOvdQ=;
+	b=C+ZgNer4hKOeHdJEBG/l6jXUewb3GN736uG8q4K4/NF8RzEYX/ixS5TCkMfD/cdt+Xct8Y
+	MKVk2ifwKjV6qHboJL65bnLN0aow7LdWt8Hs/+sDR6naIxDDZlqlrLNacPsmA5TLIqJT62
+	F0F0Cu3nbjXKcvtoR6R9kiGO9Jinitc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-dhQ99ud4NJO1pQxSCMBWGQ-1; Mon,
- 18 Nov 2024 11:24:21 -0500
-X-MC-Unique: dhQ99ud4NJO1pQxSCMBWGQ-1
-X-Mimecast-MFC-AGG-ID: dhQ99ud4NJO1pQxSCMBWGQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-HpCdFzANNgKaFZmQE0YgOw-1; Mon,
+ 18 Nov 2024 11:35:33 -0500
+X-MC-Unique: HpCdFzANNgKaFZmQE0YgOw-1
+X-Mimecast-MFC-AGG-ID: HpCdFzANNgKaFZmQE0YgOw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E88D18F661D;
-	Mon, 18 Nov 2024 16:23:58 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5300197731B;
+	Mon, 18 Nov 2024 16:35:28 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.207])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B65711955F43;
-	Mon, 18 Nov 2024 16:23:54 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 710421956054;
+	Mon, 18 Nov 2024 16:35:20 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <6739490e.050a0220.87769.0000.GAE@google.com>
-References: <6739490e.050a0220.87769.0000.GAE@google.com>
-To: syzbot <syzbot+885c03ad650731743489@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, akpm@linux-foundation.org,
-    asmadeus@codewreck.org, ericvh@kernel.org,
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-    linux_oss@crudebyte.com, lucho@ionkov.net,
-    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [mm?] [v9fs?] BUG: stack guard page was hit in sys_open
+In-Reply-To: <17eb79fc-ccd9-4c85-bd23-e08380825c41@ijzerbout.nl>
+References: <17eb79fc-ccd9-4c85-bd23-e08380825c41@ijzerbout.nl> <20241108173236.1382366-1-dhowells@redhat.com> <20241108173236.1382366-24-dhowells@redhat.com>
+To: Kees Bakker <kees@ijzerbout.nl>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Steve French <smfrench@gmail.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 23/33] afs: Use netfslib for directories
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -63,12 +73,22 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <941061.1731947033.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 Nov 2024 16:23:53 +0000
-Message-ID: <941062.1731947033@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-ID: <941498.1731947719.1@warthog.procyon.org.uk>
+Date: Mon, 18 Nov 2024 16:35:19 +0000
+Message-ID: <941499.1731947719@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git netfs-writeback
+Kees Bakker <kees@ijzerbout.nl> wrote:
+
+> > +	iterate_folioq(&iter, iov_iter_count(&iter), dvnode, ctx,
+> > +		       afs_dir_iterate_step);
+> > +
+> > +	if (ret == -ESTALE)
+> This is dead code because `ret` is set to 0 and never changed.
+> > +		afs_invalidate_dir(dvnode, afs_dir_invalid_iter_stale);
+
+Yeah.  I posted a modification for this in response to someone else.  ESTALE
+needs to be set if iterate_folioq() returns 0.
+
+David
 
