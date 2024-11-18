@@ -1,72 +1,61 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3776B1C1AAA
-	for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 17:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15ED1AE01D
+	for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731950427; cv=none; b=urxoyJFPzF3wCVT1HP2DOBYdGwBDBjDyvmSNnOan9flLw1MhTRr+2k50WPbgH5diE2Gpc/Y+wYRN8/ZYaGO71oo/YwJXHdh8zTBiUvak3nubsPNTWvx0M5XHcTJM+AEQzSOxUbsapRKa4kBZ/zgTRBMES6S4pCqTVKgTFLGRlQQ=
+	t=1731950627; cv=none; b=H19pJjgDHxVoKQVOrZm8LVfVBAK9yjT6O+pj6w3Ywnfrm5Ns0P9JkP+5mY1umfc0qFsKf2yXXiyiA49jxt3xVW6JW5pxFmAd3Y4FVopaSaYGVFezrHQBDQODK4tr85RtevITcuw2oh83/So7MCqHMuypB/qmSxnHwMXzTFB+Bh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731950427; c=relaxed/simple;
-	bh=QvW2+t11JE5qZYQ/utYmcrFzR4tFb8NbOkxwQxklLRY=;
+	s=arc-20240116; t=1731950627; c=relaxed/simple;
+	bh=gIYTphgBS/75KlW4jAzpUBgWBLopebYpIzbUsi6RdAU=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=dHunQk99CAAYpIAJnI/PbzBye4iDyRTTNQyryJwxlDLQ35O2/E+asCAR7IWP+UJuqCUIjbzzut7PpT5cPwGcyC+kEnjrAn7krp48cidD6gqGQugXN+hlHnbr4Gk8S8RPjSl4IE4SXyeXP9SdJhX1enQqsq199hU7Cqoq7m1iOx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkvuyAmD; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Date:Message-ID; b=bwpMyRVf/LntB8ZzGdoj9dzfyZhBtaybS9cJ4EMeMsEmIOvAZubFbnCaYn4x6bLTXFOsV2d09Nauu5+WIesGxau7OmzMH24F3IKwB7Mx2lR4mtWrjOux7ALZI3NnG4AV6EBbvfozH8zSr7YbPyiH9jz8ax6RX090pR+gzFmOBz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZuzlO3WO; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkvuyAmD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZuzlO3WO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731950425;
+	s=mimecast20190719; t=1731950624;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FHIXshzU7B/fw7mP4ANo81ZSu1pvlr9VA+iMyEA9kz8=;
-	b=PkvuyAmDP/lS+z4Vli408Dy/08wbevlFxTRj0W/L3Flkt/ZglkUhypkcGn3hCjSDlYt9r4
-	Yibm0/5ianRmwd75mKkpkwERyY+JJa8CsL/Ys4zIsszZuqQB/iXOn6ze3rMQJIf/zFWxdk
-	sIeFmrrxD4WnemuuHRvRHzh7jxfqdpw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=gIYTphgBS/75KlW4jAzpUBgWBLopebYpIzbUsi6RdAU=;
+	b=ZuzlO3WOk3mRYOwGHu0OjoL74z3zT+GjA+yvnNdOZT92/AdZvu+oaZxEauaYnWYzf02I8x
+	yJsdczcPucKkmXGxT72WTew8uBSemBNV6nil5N5/dbryDsSK4OWpL6GThmGyaIDco7OTT+
+	dw4Mcb2X1E8kGp70AInNDa5okHvnZrs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-152-eXuZijuZMpiG0ZJ9iVPEIQ-1; Mon,
- 18 Nov 2024 12:20:22 -0500
-X-MC-Unique: eXuZijuZMpiG0ZJ9iVPEIQ-1
-X-Mimecast-MFC-AGG-ID: eXuZijuZMpiG0ZJ9iVPEIQ
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-PLDdk2NYMnGQEVEymQMxGw-1; Mon,
+ 18 Nov 2024 12:23:38 -0500
+X-MC-Unique: PLDdk2NYMnGQEVEymQMxGw-1
+X-Mimecast-MFC-AGG-ID: PLDdk2NYMnGQEVEymQMxGw
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A67371955D62;
-	Mon, 18 Nov 2024 17:20:16 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 678801956064;
+	Mon, 18 Nov 2024 17:23:35 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.207])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 261D5195DF81;
-	Mon, 18 Nov 2024 17:20:08 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 311F91944CC9;
+	Mon, 18 Nov 2024 17:23:31 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20241114163931.GA1928968@thelio-3990X>
-References: <20241114163931.GA1928968@thelio-3990X> <20241108173236.1382366-1-dhowells@redhat.com> <20241108173236.1382366-29-dhowells@redhat.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
-    Steve French <smfrench@gmail.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Jeff Layton <jlayton@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 28/33] netfs: Change the read result collector to only use one work item
+In-Reply-To: <6739490e.050a0220.87769.0000.GAE@google.com>
+References: <6739490e.050a0220.87769.0000.GAE@google.com>
+To: syzbot <syzbot+885c03ad650731743489@syzkaller.appspotmail.com>
+Cc: dhowells@redhat.com, akpm@linux-foundation.org,
+    asmadeus@codewreck.org, ericvh@kernel.org,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linux_oss@crudebyte.com, lucho@ionkov.net,
+    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Subject: Re: [syzbot] [mm?] [v9fs?] BUG: stack guard page was hit in sys_open
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -74,37 +63,12 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <948807.1731950408.1@warthog.procyon.org.uk>
+Content-ID: <949457.1731950611.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 Nov 2024 17:20:08 +0000
-Message-ID: <948808.1731950408@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Date: Mon, 18 Nov 2024 17:23:31 +0000
+Message-ID: <949458.1731950611@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Nathan Chancellor <nathan@kernel.org> wrote:
-
-> This change as commit 1bd9011ee163 ("netfs: Change the read result
-> collector to only use one work item") in next-20241114 causes a clang
-> warning:
-> =
-
->   fs/netfs/read_retry.c:235:20: error: variable 'subreq' is uninitialize=
-d when used here [-Werror,-Wuninitialized]
->     235 |         if (list_is_last(&subreq->rreq_link, &stream->subreque=
-sts))
->         |                           ^~~~~~
->   fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to=
- silence this warning
->      28 |         struct netfs_io_subrequest *subreq;
->         |                                           ^
->         |                                            =3D NULL
-> =
-
-> May be a shadowing issue, as adding KCFLAGS=3D-Wshadow shows:
-
-Yep.  I'll remove both shadowing variables (there's also one at line 45 in=
- the
-bit that deals with the non-renegotiation case) and use the outermost one.
-
-Thanks,
-David
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
+.git 2aece382e1dadd03231e3133c17ddddd6c6f75bb
 
