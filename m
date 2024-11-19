@@ -1,74 +1,122 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B577813B297
-	for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 17:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A307C156F4C
+	for <v9fs@lists.linux.dev>; Tue, 19 Nov 2024 21:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731951667; cv=none; b=KcmDGSiTx6PaKOQ9GF+afgjahl059je16TW08KV3KyQyaV4aMCxXKfBAeetJozcykTrQDVfhHObMSDIaAvRflQFT9ntBN8Q42YalNA4LC6efcqbYqh+c1D2I29Hc7ZD9ogPnL0ukiU2zMvwXttvmp8wmLAbD1UU3O3NFGapWgE8=
+	t=1732051011; cv=none; b=ToC1LO4Gqmwt6KqSU7F2uQlDHpjVKnRDPukVfwMsdO89mpTLj2vppeaYhF7p67hYEI4EWrybHnr936bUXvdomPrdzWRowTITqz5ZYEzPoC+3CQSRBlVBoYC9cEIdNqdeksfmqzZpmIMG6FVmDp50nxTzMYuPQkFAbMo9qg2u/0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731951667; c=relaxed/simple;
-	bh=q9Qgt2DmgQFigkaYeiK/TKVRJt1z5fm0Ha46dAqq1u0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=rkbPUncaasnm5UgWJ8E+QJnJWduiUv/Om8YadOeVooYqR57ZtidKcEbjgOqsZvXByF1BZ8hNb3H2yIn7jeVhbjigS//mPKOp4BBERUhV3Y1PHUvEz8E0C5zrVHNTFVq5VivqhmacAb003Axjy6BuCOPHrKnpMJ+nHmWa/2y/VWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a77085a3d7so5303365ab.1
-        for <v9fs@lists.linux.dev>; Mon, 18 Nov 2024 09:41:04 -0800 (PST)
+	s=arc-20240116; t=1732051011; c=relaxed/simple;
+	bh=11+Sy7m6oTI0vrvYq2MPsw+viVG+AnDGVAxeGecmcew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NAPIxLNlXHuF4+WremANE4c7BTcOZNjBDRnSrkIhGQ2oiUlINpUQh7kTcLXEhydaHeBH9FnvzuAMpQzubPMJdyrRFpcI4FIMWDBPQr3ja4RoT2JF7g8aZOqnWOLAsdnNVENCjKOhaVZ53axvEYDWnYkSCLLxdhIUCseKAlSbc18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=edera.dev; spf=pass smtp.mailfrom=edera.dev; dkim=pass (2048-bit key) header.d=edera.dev header.i=@edera.dev header.b=K3E0P2Sy; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=edera.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=edera.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=edera.dev header.i=@edera.dev header.b="K3E0P2Sy"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6d382677c92so26448766d6.3
+        for <v9fs@lists.linux.dev>; Tue, 19 Nov 2024 13:16:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=edera.dev; s=google; t=1732051008; x=1732655808; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eg7OcnGXpKtgXWaHwtGS+ToZC8TTTiMcCPq5ZYxyLCo=;
+        b=K3E0P2Syb/DcGp+kKDQFBstHOTy1Ad8ZXGdBgTb9k1CpwQ+k0mgajRjoYv/K+TInOv
+         YUGBCc7ueMe7PSs5JDf5ahyc/gUw55OFYxerEKUSSv6KIF0hH4OhIQGKSSIzW0cQ8ly6
+         XHntkONYrvT9c/2CU38iaCPP065MCcLSluFQ8VcsfF/V5YstDJoPS3QcxxUJtb+nW+aG
+         05E4B5Ok4lD8QgqrfQ9DeHo6LIVBDu86Df8MNZ/bB1N0QBZppYaR6aD+yZ7a/N6JGlgS
+         8eYSrdfNvy/9qE+5bTiI43PykYds3nAA3pZPawIix8dGJhpoSugirXMmaYYNK7n63X22
+         U/pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731951664; x=1732556464;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R+eyOHdkIZSYMZRH4DcsQR8I81X6UeSZ86aZEWeyMBA=;
-        b=C40+KrvmitQVmfaWD3W6Sdz53HrKz/+qhpyEFwpmbLOcMah43UkBqivrSLYd3muGzp
-         vL3LbxoFijWh8BuwoA6F/+NvCY5ZohuzzrU3c4EmfKP5dkZzKhJMnaoGQ58ZofMYTS7D
-         xAr7vjLsrKizGxHBGywqJG6bD5YFz8wArMdv34ggvVHTXQ8+Lgyo6+nyhnRHAOgPDXXH
-         9rctFZV18GfxJ6AMPFLCt9uKd8fxjrI+ex5EDN6kFeksOSCvu8BNk9RLDOPBS+cScTX0
-         elFLLphUtju+UyChstvR5Q7v3RbwCAAMCdUhGzp3AbeH2t8y74/Foi+ag0LEiYNgORCo
-         XdTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzyGiWzRa3a1aQqQhMv/q8ypeVbEG9ybIFZ4iKEfd2vZZ4vKljnj10snpOIxGLlWHm8F34@lists.linux.dev
-X-Gm-Message-State: AOJu0YwvMTakRj6EuA58qrP5TTGDW2w9vaJgCPx5hf3xr8j0S/m9xysV
-	H5umaOSyJqaW+s+P95Q0ehAzEVxYtWaCCEuSgAdqM2KLbXKGv8FqYGzQLKmdbHGXtjc8lyt4CoN
-	OcWg0mp+wNnGsC3TcJeFKgb11shvballV+QtXF3SVLnN/BbW5EHPCooc=
-X-Google-Smtp-Source: AGHT+IElwG55NQquD0GWFUFxabkI3rZ7NfRUYnvEJbi5TbWuwX/VdFh46AaPLhqYxQVETibg96kShUvE3RMzLvCLW3O+ePH1FTcs
+        d=1e100.net; s=20230601; t=1732051008; x=1732655808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Eg7OcnGXpKtgXWaHwtGS+ToZC8TTTiMcCPq5ZYxyLCo=;
+        b=HLDeI95vMbWDUm/HHjOYmOmKgtN6Xt1odHSnwK6wvM0F8XCz3r7tkSFlMQ1MPl2oUn
+         LZE6a2mr8TSJpOYonGBk2v5zcEfk5SypqwKkw1oXoWKj/QzzP89xEkwPlu+F3KrNLPWq
+         +wNRwxVm32hOoNZiTpprSbVRmY4Lea0Aj1JVU9vThdu4bEFr0vaX+9TPCWxdsky/gbRy
+         iNiM8l0vNGngWLulcFOImwIXvypyUuIyeKERcoAb+KongcGxD1iGozkhedvzwWC0itpU
+         EmOx7zthbqnjprq3P3TzKhThqXFjHDsSXW/3kvxVSvOmPziQEU/1OV1XwvwjjQg3r6Dt
+         9O3w==
+X-Gm-Message-State: AOJu0YyE1qPtBuoF6+1BI7/ozlcaXGSQZcdh+2GUE3I3iAHByEh/bM6f
+	CGiY2YlHlGPzdKlKdkDQiEz7itD+HAOzgfslcY4PLqjuORVZ6YfZqB4XUb+yG9wa1iQGPS2aATJ
+	i0jc=
+X-Google-Smtp-Source: AGHT+IHB3u2/l2rZG0k9ZOUXZliIL+D2FSwQjxK7a12SP+D4OKLAIj7VApFTPwlDLTNgD+mrpxyQ9A==
+X-Received: by 2002:a05:6214:5004:b0:6d4:2778:ecb6 with SMTP id 6a1803df08f44-6d4377a118bmr7865406d6.18.1732051008401;
+        Tue, 19 Nov 2024 13:16:48 -0800 (PST)
+Received: from ip-172-31-19-182.us-east-2.compute.internal (ec2-18-219-201-45.us-east-2.compute.amazonaws.com. [18.219.201.45])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380db2edsm865966d6.36.2024.11.19.13.16.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2024 13:16:47 -0800 (PST)
+From: Alexander Merritt <alexander@edera.dev>
+To: v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	xen-devel@lists.xenproject.org
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Simon Horman <horms@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>
+Subject: [PATCH] 9p/xen: fix init sequence
+Date: Tue, 19 Nov 2024 21:16:33 +0000
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1382:b0:3a7:158d:6398 with SMTP id
- e9e14a558f8ab-3a777448011mr1522735ab.7.1731951664002; Mon, 18 Nov 2024
- 09:41:04 -0800 (PST)
-Date: Mon, 18 Nov 2024 09:41:03 -0800
-In-Reply-To: <949458.1731950611@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <673b7c2f.050a0220.87769.0053.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [v9fs?] BUG: stack guard page was hit in sys_open
-From: syzbot <syzbot+885c03ad650731743489@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, asmadeus@codewreck.org, dhowells@redhat.com, 
-	ericvh@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Alex Zenla <alex@edera.dev>
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-Reported-by: syzbot+885c03ad650731743489@syzkaller.appspotmail.com
-Tested-by: syzbot+885c03ad650731743489@syzkaller.appspotmail.com
+Only allow initialization of 9p frontend once.
 
-Tested on:
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+---
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-commit:         2aece382 netfs: Report on NULL folioq in netfs_writeba..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=12714930580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=55f8591b98dd132
-dashboard link: https://syzkaller.appspot.com/bug?extid=885c03ad650731743489
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index dfdbe1ca5338..0304e8a1616d 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -465,6 +465,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
+ 	}
+ 
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+  error_xenbus:
+@@ -512,8 +513,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
++
++		xen_9pfs_front_init(dev);
+ 		break;
+ 
+ 	case XenbusStateConnected:
+-- 
+2.43.0
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
