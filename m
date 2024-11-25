@@ -1,87 +1,62 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56F7182D2
-	for <v9fs@lists.linux.dev>; Fri, 22 Nov 2024 14:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732286885; cv=none; b=bPmMTVtGJ5LG3zZS2M843cEEem2R8+dQ22AF3f9ZzFg6C2m29mnFga1pRDAOlSiwcoxQVbdCOCONPbbg6VzZZpCWVVttP8z3dUo646dTf9ZPevDg4/ixwEHP1O9rJNHp4+Zh5ijVFdHJ5K5dpn7eM+NbvXRidnVm6r/KXdui+FM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732286885; c=relaxed/simple;
-	bh=k0DLlJF5pzxf+dcq5+CjwFaUm4bEs1VCSTahRbdTxzs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U0hVyPHs9UohRIkyXBXscyutma2Ut36UtFnSipMtn8nVzjaHOl/3+jgOrxgAHi1OJmvHL23ltdPqgTherywKjdISbfOiVl6SoYHQ9LRbknaUGEqz8mfrxbeQ3V5W7zcdLuM6/xZJsVAX903lXyI+vW5+RMf/8ODynpL2VebD0Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=uzsdk1BC; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="uzsdk1BC"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 81AC914C1E1;
-	Fri, 22 Nov 2024 15:48:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1732286882;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mChST4oG1qTA4hRQNt9WCwIj728ndP8rnvxu0Kdgk0c=;
-	b=uzsdk1BCqr8wi4Znob9ds8rgWKsF35V8cYc2KSwskhfEQVCSDP5GHszd/jnUzlDbvHv35A
-	t9u1VfavpoObfmRMzbA5x1Rg978gWAkni68kGVaAzteuLZmY16NElhXwqOrjYvPtlcj8Ni
-	naHZh4Tu+mIZMfioCjj9QCa/f3AM7SzjVVeW0yPJWtfT9vHVCbr/v3zSPUATZrJWxmmCDk
-	714y9mp3wIJrm+yi7dkeWMXQOKOs97xRPx6mZUa9r1FEAo6wNLuF0/EeAhQcSGxVmDKPUV
-	2x790r0J8VkZx7vwMCzlCCER8CTJPKE7XOWcblOR7bmXwdxESi0BpnSZZY+Nyw==
-Received: from gaia.codewreck.org (localhost.lan [::1])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 837d027c;
-	Fri, 22 Nov 2024 14:47:58 +0000 (UTC)
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net/9p/usbg: allow building as standalone module
-Date: Fri, 22 Nov 2024 23:47:51 +0900
-Message-ID: <20241122144754.1231919-1-asmadeus@codewreck.org>
-X-Mailer: git-send-email 2.46.1
+Received: from c1521c0h.mwprem.net (c1521c0h.mwprem.net [122.17.135.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B360A1AB500
+	for <v9fs@lists.linux.dev>; Mon, 25 Nov 2024 19:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=122.17.135.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732563000; cv=pass; b=R9CtkwEUtd+BZqqDnZb/xqZ7zzGCBVOc83v5V2z07MnhTmuvWm18RhBu/gQPGf31P3vLmjRH0LQPaTQfVZPyzuDWcGa+RLKLqx7E6414z/fiGy21kaoDKGbbLzXxZvRw4VBgPMW51FsirwY2vu7r7rB07B5+VXaXDn8+cHS5LV4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732563000; c=relaxed/simple;
+	bh=4NPDwwNBJrqobK34eXVgHRLUUUsimz0Cf3DgCzrS8OA=;
+	h=Content-Type:MIME-Version:Subject:To:From:Date:Message-Id; b=n03/ZcYBZTRZQoYVM8+PXCZkW/eQgqzC5Iaa7kZUDD/nDVrIsjs+NoyY4ifsjZdAlKZere7O3N9dsBQ47llJGFcePW/Ejrf1FYCkmr0xj6sLkVq/6/wy2/Vyi5nwIJG7+8oIK3nsnwCwvwGD7/Z/D4nLWmYdQa8fKZijJ2gVwJ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=robert-harewood.com; spf=fail smtp.mailfrom=robert-harewood.com; arc=pass smtp.client-ip=122.17.135.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=robert-harewood.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=robert-harewood.com
+Received: from [192.168.0.149] (unknown [146.70.201.136])
+	by c1521c0h.mwprem.net (Postfix) with ESMTPA id 85EDDC4AD077
+	for <v9fs@lists.linux.dev>; Tue, 26 Nov 2024 04:23:32 +0900 (JST)
+Authentication-Results: c1521c0h.mwprem.net; arc=none smtp.remote-ip=146.70.201.136
+ARC-Seal: i=1; a=rsa-sha256; d=mwprem.net; s=default; t=1732562612; cv=none;
+	b=PvUQ3eIcoj8jTGYmRCt2+PgwTT2L9upy/tbK8d8FwigVmHXru9pUYdQ+0WNHPTIuYpaeA87MKZ0uo3CUjHxOuXtgQqpVAE2ejYY/FahODvOTFjilHwOm3kXgaBoNEFV8l/rVFMYG+lEkawRTLU3xLzglfQuQDeGi2AcboqX1gzw=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=mwprem.net; s=default;
+	t=1732562612; c=relaxed/relaxed;
+	bh=4NPDwwNBJrqobK34eXVgHRLUUUsimz0Cf3DgCzrS8OA=;
+	h=MIME-Version:Subject:To:From:Date:Message-Id; b=ae5j/FgyLm0t8Tfo9naI0WMARJfoynEV3fhKqM2t4gvyff0s6TiUeq3RgJXeDGuVlM9gDSYRqwZ+BjrB4HJvfcDoeM+8B3nnBXhIdCndwVAYS2IeoCHOC2VEBq5FU8ixcZcUEJWo0VKi2bXBK7jTCdZrOFiNtX89B8sV4LdtnQk=
+ARC-Authentication-Results: i=1; c1521c0h.mwprem.net
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Re:
+To: v9fs@lists.linux.dev
+From: "Robert Harewood" <info@robert-harewood.com>
+Date: Tue, 26 Nov 2024 03:23:32 +0800
+Reply-To: "Robert Harewood" <rh@robert-harewood.com>
+Message-Id: <20241125192332.85EDDC4AD077@c1521c0h.mwprem.net>
 
-There is no reason only the usbg transport would not be its own module,
-so make it tristate.
+Dear CEO,
 
-In particular, this fixes a couple of issues the current bool had:
-- trans_usbg was apparently not compiled at all when NET_9P=m
-- the workaround added in commit 2193ede180dd ("net/9p/usbg: fix
-CONFIG_USB_GADGET dependency") became redundant because a tristate item
-cannot be built-in when its dependency is a module, so we can depend on
-USB_GADGET "normally" again.
+I hope this message finds you safe and well.
 
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lkml.kernel.org/r/ZzhWRPDNwu225NWz@codewreck.org
----
- net/9p/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I have a team of investors who are interested in providing capital to your
+business operations and projects without any upfront costs from you. I'd
+love to have the chance to discuss the details with you further.
 
-diff --git a/net/9p/Kconfig b/net/9p/Kconfig
-index ee967fd25312..22f8c167845d 100644
---- a/net/9p/Kconfig
-+++ b/net/9p/Kconfig
-@@ -41,8 +41,8 @@ config NET_9P_XEN
- 	  two Xen domains.
- 
- config NET_9P_USBG
--	bool "9P USB Gadget Transport"
--	depends on USB_GADGET=y || USB_GADGET=NET_9P
-+	tristate "9P USB Gadget Transport"
-+	depends on USB_GADGET
- 	select CONFIGFS_FS
- 	select USB_LIBCOMPOSITE
- 	help
--- 
-2.46.1
+Please let me know if this is something that you would be interested in, and
+we can schedule a call to further evaluate the details.
 
+Thank you for your time and consideration.
+
+Warm regards,
+
+Robert Harewood,
+Robert Harewood Advisory
+The Broadgate Tower
+20 Primrose St,
+London, United Kingdom, EC2A 2EW.
