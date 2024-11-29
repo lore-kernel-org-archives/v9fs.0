@@ -1,247 +1,90 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90DB14C5B3
-	for <v9fs@lists.linux.dev>; Fri, 29 Nov 2024 16:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7441613BAEE
+	for <v9fs@lists.linux.dev>; Fri, 29 Nov 2024 16:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732897214; cv=none; b=MvxdDOkTsrRViqo1QAoGVe7a7Eyg+foHhjdceAiTTZDt6QMWylLtJGozWmgDlH4DWRaWg03tDyTNINSfVHZVmElmSGLQ/uRmCH84HPYoDE83fYZ10A728MwHNeye5B7SpaP9Xsr5nbkgOofwwj5zPX92eV8MRMMp22cFLO0JlYY=
+	t=1732899117; cv=none; b=OPBq9H8X3o4uvXwq8e31SE8KFNKYyKZyyTY2mGPXG/GXlnLe/B38DH0nXBnnaHjpdamOeOCKzXB7jVK8YDcp0RGymPqnWVH/zC30LV3InPuS/8oIAHTWwuodNumtX7cl94caUTFOUZzO/rGoR732qgPgwM88DtKKFBPFpdXHhXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732897214; c=relaxed/simple;
-	bh=VLIEVNL9LBNDEDmtL3P5+Dw+zfGuvDucK94TvHOCz8o=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Kk3qNi/q2YLtytpbnxOXI9blxnYVjRhvKcTGBYJhVdnBJV5GvjtljSuAuLBkHkiOYf1LQ9NZZqcrDQZgnTbhgFOiv0LbqEbH47QgYfli3+qpBbmdXVnSXmEug8dxPCoCzUYqOiAJOKXXOOaWGOXKa5FNFlqjUJIhQMVWs5abx1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WMXvO+Sn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732899117; c=relaxed/simple;
+	bh=d6NinvUuWTKaXw7mA/SrT0xN3cZpoKHINerF5cdEjKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=SMcZNt19NFCvhpv/hdoOGlhDVP9//IP64N3Y5m7CoQ4y3XoQlwtWfGFA+yDWgPxHUTF31YlDcxQ93v1s8ktUkpE1A/BCzwFeGWJ35/s4EczySjYmn6nHG4CqMOJZ0j5Zk2Im92Mc5/nKZPYsjlaBAexFhS0+RBUpGn5l9f2qzmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fqX2TvD9; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WMXvO+Sn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732897211;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fqX2TvD9"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id C7CBC14C1E1;
+	Fri, 29 Nov 2024 17:51:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1732899107;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b5o8km8xnhEeZ9EFzhJ7F1HLgoKQ4zXXkjzA/RaAN1c=;
-	b=WMXvO+SnO8I4yXzy7UXCcO4a3tPn/dYG/bjIpyvKgyNtoCElkiJqyfmpmc4/y+avkys/32
-	smPW0i+TEGYks6CJ2w/ZlYs0wTFcf+qqIiybPPnxW3HETdALYfkzHuEqDIXj+WY2Ra8QLB
-	3aCqi24I1U2ZlHWDlrrPcUiF8WWZ/QA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-TkIfTi1AOgyUXVT740yygA-1; Fri,
- 29 Nov 2024 11:20:07 -0500
-X-MC-Unique: TkIfTi1AOgyUXVT740yygA-1
-X-Mimecast-MFC-AGG-ID: TkIfTi1AOgyUXVT740yygA
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 706971953952;
-	Fri, 29 Nov 2024 16:20:01 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E45931955D47;
-	Fri, 29 Nov 2024 16:19:53 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <67478d91.050a0220.253251.0061.GAE@google.com>
-References: <67478d91.050a0220.253251.0061.GAE@google.com>
-To: syzbot <syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, asmadeus@codewreck.org, bharathsm@microsoft.com,
-    brauner@kernel.org, ericvh@kernel.org, jlayton@kernel.org,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-    lucho@ionkov.net, marc.dionne@auristor.com,
-    mathieu.desnoyers@efficios.com, mhiramat@kernel.org,
-    netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com,
-    rostedt@goodmis.org, samba-technical@lists.samba.org,
-    sfrench@samba.org, sprasad@microsoft.com,
-    syzkaller-bugs@googlegroups.com, tom@talpey.com,
-    v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_read_iter
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=td5Pg2qCCZ84Cz1o4OZYGGXXxg/WaDPyDpc9W3ziyUI=;
+	b=fqX2TvD9TNJNPZH+QbtKgFP5OHXV3kvsTTSgjiGjr53NdV1NYoukFtGz/XrfUKln9QyuEJ
+	XDPVDozHlTZ+EahY5C0NGZfTjH7xMkCIwarDct/+wwbgy1wUfIlwGug9kOiBIBoN8f5bKD
+	WIt+qqae7E7pPp5rtq4N7y1jqlltV3b1qmKJ58oprrH4pBG/G4MV80ao5W6CDDwRTGAtP+
+	zGrsOzGyUSFvS2z1Ekv50ID+y2uw6QSNQ3dDIW35eB0iMShheR+s/5mB3m4Uaurvk7hJD8
+	ZW6OnEWx7jWHFbzSZd2y6OCgo9RYSNe6q2M4oIsRnqWc6u1GYlZOEYZxDhrojA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3f466bd0;
+	Fri, 29 Nov 2024 16:51:44 +0000 (UTC)
+Date: Sat, 30 Nov 2024 01:51:29 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p fixes for 6.13-rc1
+Message-ID: <Z0nxET2etduwcfj0@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4020303.1732897192.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 Nov 2024 16:19:52 +0000
-Message-ID: <4020304.1732897192@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git netfs-writeback
+The following changes since commit 2d5404caa8c7bb5c4e0435f94b28834ae5456623:
 
-commit 1daca71a815b0d8cfe3db81a31b6dd3fc0da4b50
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Nov 29 16:19:03 2024 +0000
+  Linux 6.12-rc7 (2024-11-10 14:19:35 -0800)
 
-    netfs: Fix hang in synchronous read due to failed subreq
-    =
+are available in the Git repository at:
 
-    When netfs is performing a synchronous read, it doesn't offload the
-    collection of results off to a workqueue, but rather does the collecti=
-on in
-    the app thread - thereby avoiding the overhead of using a work queue.
-    =
+  https://github.com/martinetd/linux tags/9p-for-6.13-rc1
 
-    However, if a failure occurs and we might want to retry or if it wants=
- to
-    throttle the production of new subreqs, netfs can throw a pause on the
-    producer by setting NETFS_RREQ_PAUSE.  This is fine if collection is d=
-one
-    by workqueue, but in synchronous mode, the collection and retry is don=
-e
-    after the producer loop completes - thereby deadlocking the two parts.
-    =
+for you to fetch changes up to e0260d530b73ee969ae971d14daa02376dcfc93f:
 
-    Fix this by making the synchronous read producer loop, when it sees th=
-e
-    PAUSE flag, go and wait for the flag to be cleared or the op to comple=
-te
-    whilst running the collector to process results.
-    =
+  net/9p/usbg: allow building as standalone module (2024-11-22 23:48:14 +0900)
 
-    This fixes "netfs: Change the read result collector to only use one wo=
-rk
-    item" - but there's no stable commit ID yet.
-    =
+----------------------------------------------------------------
+9p update for 6.13-rc1
 
-    Reported-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Jeff Layton <jlayton@kernel.org>
-    cc: netfs@lists.linux.dev
-    cc: linux-fsdevel@vger.kernel.org
+- usbg: fix alloc failure handling & build-as-module
+- xen: couple of fixes
+- v9fs_cache_register/unregister code cleanup
 
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index dedcfc2bab2d..0bf3c2f5a710 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -102,10 +102,8 @@ static int netfs_dispatch_unbuffered_reads(struct net=
-fs_io_request *rreq)
- =
+----------------------------------------------------------------
+Alex Zenla (2):
+      9p/xen: fix init sequence
+      9p/xen: fix release of IRQ
 
- 		rreq->netfs_ops->issue_read(subreq);
- =
+Colin Ian King (1):
+      fs/9p: replace functions v9fs_cache_{register|unregister} with direct calls
 
--		if (test_bit(NETFS_RREQ_PAUSE, &rreq->flags)) {
--			trace_netfs_rreq(rreq, netfs_rreq_trace_wait_pause);
--			wait_on_bit(&rreq->flags, NETFS_RREQ_PAUSE, TASK_UNINTERRUPTIBLE);
--		}
-+		if (test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
-+			netfs_wait_for_pause(rreq);
- 		if (test_bit(NETFS_RREQ_FAILED, &rreq->flags))
- 			break;
- 		if (test_bit(NETFS_RREQ_BLOCKED, &rreq->flags) &&
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 334bf9f6e6f2..db59ed8880e3 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -96,6 +96,7 @@ void netfs_read_collection_worker(struct work_struct *wo=
-rk);
- void netfs_wake_read_collector(struct netfs_io_request *rreq);
- void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error=
-, bool was_async);
- ssize_t netfs_wait_for_read(struct netfs_io_request *rreq);
-+void netfs_wait_for_pause(struct netfs_io_request *rreq);
- =
+Dominique Martinet (1):
+      net/9p/usbg: allow building as standalone module
 
- /*
-  * read_pgpriv2.c
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index f1b15c20b6f8..3803ef5894c8 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -312,7 +312,7 @@ static void netfs_collect_read_results(struct netfs_io=
-_request *rreq)
- 	if ((notes & MADE_PROGRESS) && test_bit(NETFS_RREQ_PAUSE, &rreq->flags))=
- {
- 		trace_netfs_rreq(rreq, netfs_rreq_trace_unpause);
- 		clear_bit_unlock(NETFS_RREQ_PAUSE, &rreq->flags);
--		wake_up_bit(&rreq->flags, NETFS_RREQ_PAUSE);
-+		wake_up(&rreq->waitq);
- 	}
- =
+Mirsad Todorovac (1):
+      net/9p/usbg: fix handling of the failed kzalloc() memory allocation
 
- 	if (notes & MADE_PROGRESS) {
-@@ -659,3 +659,39 @@ ssize_t netfs_wait_for_read(struct netfs_io_request *=
-rreq)
- =
+ fs/9p/v9fs.c        | 21 +++------------------
+ net/9p/Kconfig      |  4 ++--
+ net/9p/trans_usbg.c |  4 ++--
+ net/9p/trans_xen.c  |  9 ++++++---
+ 4 files changed, 13 insertions(+), 25 deletions(-)
 
- 	return ret;
- }
-+
-+/*
-+ * Wait for a paused read operation to unpause or complete in some manner=
-.
-+ */
-+void netfs_wait_for_pause(struct netfs_io_request *rreq)
-+{
-+	struct netfs_io_subrequest *subreq;
-+	struct netfs_io_stream *stream =3D &rreq->io_streams[0];
-+	DEFINE_WAIT(myself);
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_wait_pause);
-+
-+	for (;;) {
-+		trace_netfs_rreq(rreq, netfs_rreq_trace_wait_queue);
-+		prepare_to_wait(&rreq->waitq, &myself, TASK_UNINTERRUPTIBLE);
-+
-+		subreq =3D list_first_entry_or_null(&stream->subrequests,
-+						  struct netfs_io_subrequest, rreq_link);
-+		if (subreq &&
-+		    (!test_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags) ||
-+		     test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags))) {
-+			__set_current_state(TASK_RUNNING);
-+			netfs_read_collection(rreq);
-+			continue;
-+		}
-+
-+		if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags) ||
-+		    !test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
-+			break;
-+
-+		schedule();
-+		trace_netfs_rreq(rreq, netfs_rreq_trace_woke_queue);
-+	}
-+
-+	finish_wait(&rreq->waitq, &myself);
-+}
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 4a1499167770..bb74f30a4216 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -324,7 +324,7 @@ static void netfs_collect_write_results(struct netfs_i=
-o_request *wreq)
- 	if ((notes & MADE_PROGRESS) && test_bit(NETFS_RREQ_PAUSE, &wreq->flags))=
- {
- 		trace_netfs_rreq(wreq, netfs_rreq_trace_unpause);
- 		clear_bit_unlock(NETFS_RREQ_PAUSE, &wreq->flags);
--		wake_up_bit(&wreq->flags, NETFS_RREQ_PAUSE);
-+		wake_up(&wreq->waitq);
- 	}
- =
-
- 	if (notes & NEED_REASSESS) {
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index cd2b349243b3..6506bf1d970e 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -721,7 +721,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wr=
-eq, bool may_wait, size_t
- 		rolling_buffer_advance(&wreq->buffer, part);
- 		if (test_bit(NETFS_RREQ_PAUSE, &wreq->flags)) {
- 			trace_netfs_rreq(wreq, netfs_rreq_trace_wait_pause);
--			wait_on_bit(&wreq->flags, NETFS_RREQ_PAUSE, TASK_UNINTERRUPTIBLE);
-+			wait_event(wreq->waitq, !test_bit(NETFS_RREQ_PAUSE, &wreq->flags));
- 		}
- 		if (test_bit(NETFS_RREQ_FAILED, &wreq->flags))
- 			break;
-
+--
+Dominique Martinet | Asmadeus
