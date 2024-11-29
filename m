@@ -1,90 +1,80 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7441613BAEE
-	for <v9fs@lists.linux.dev>; Fri, 29 Nov 2024 16:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D345319E7F7
+	for <v9fs@lists.linux.dev>; Fri, 29 Nov 2024 17:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732899117; cv=none; b=OPBq9H8X3o4uvXwq8e31SE8KFNKYyKZyyTY2mGPXG/GXlnLe/B38DH0nXBnnaHjpdamOeOCKzXB7jVK8YDcp0RGymPqnWVH/zC30LV3InPuS/8oIAHTWwuodNumtX7cl94caUTFOUZzO/rGoR732qgPgwM88DtKKFBPFpdXHhXM=
+	t=1732900507; cv=none; b=cwGTacJgp6CgySY1zOYWyBIfegB88m3ZKvQcH9MZ1R6QJ4qI15CazoGbVlxgvYmsSaJjNFlzB7jM7WD8sl0zT/MH4E5mUOcP8RNV27L+Gj6sYwFxf7tl6T+3fEEkJaPDuq7BQ47Ok/wqIyrkPk3FeG1uxrZDSiOKr4py63aO5Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732899117; c=relaxed/simple;
-	bh=d6NinvUuWTKaXw7mA/SrT0xN3cZpoKHINerF5cdEjKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=SMcZNt19NFCvhpv/hdoOGlhDVP9//IP64N3Y5m7CoQ4y3XoQlwtWfGFA+yDWgPxHUTF31YlDcxQ93v1s8ktUkpE1A/BCzwFeGWJ35/s4EczySjYmn6nHG4CqMOJZ0j5Zk2Im92Mc5/nKZPYsjlaBAexFhS0+RBUpGn5l9f2qzmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fqX2TvD9; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fqX2TvD9"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id C7CBC14C1E1;
-	Fri, 29 Nov 2024 17:51:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1732899107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=td5Pg2qCCZ84Cz1o4OZYGGXXxg/WaDPyDpc9W3ziyUI=;
-	b=fqX2TvD9TNJNPZH+QbtKgFP5OHXV3kvsTTSgjiGjr53NdV1NYoukFtGz/XrfUKln9QyuEJ
-	XDPVDozHlTZ+EahY5C0NGZfTjH7xMkCIwarDct/+wwbgy1wUfIlwGug9kOiBIBoN8f5bKD
-	WIt+qqae7E7pPp5rtq4N7y1jqlltV3b1qmKJ58oprrH4pBG/G4MV80ao5W6CDDwRTGAtP+
-	zGrsOzGyUSFvS2z1Ekv50ID+y2uw6QSNQ3dDIW35eB0iMShheR+s/5mB3m4Uaurvk7hJD8
-	ZW6OnEWx7jWHFbzSZd2y6OCgo9RYSNe6q2M4oIsRnqWc6u1GYlZOEYZxDhrojA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3f466bd0;
-	Fri, 29 Nov 2024 16:51:44 +0000 (UTC)
-Date: Sat, 30 Nov 2024 01:51:29 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] 9p fixes for 6.13-rc1
-Message-ID: <Z0nxET2etduwcfj0@codewreck.org>
+	s=arc-20240116; t=1732900507; c=relaxed/simple;
+	bh=GnhFjpEQk2QTU3xMRMxYSIU7Dc+xnhMFHvUYOX0FzPs=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=oKzUsqGZ+ynBSJJvEIeewL3nfqrnlJEgA6aatNwH23QMPTt5oNlfrqDBPbxHFedx2hxqlJlkOTBpj7/uzqlvg7h0ebTvv4OTy7fFefsuAM70fat4cE6cQJkcgruv6ugD/FSsdwA3urQNf1rmTmzYRHmgyMuTQimOzEaKyLhMPX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-83e5dd390bfso219892639f.1
+        for <v9fs@lists.linux.dev>; Fri, 29 Nov 2024 09:15:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732900505; x=1733505305;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cabndGigWtS979m0rIc0e06+sfnwrdqk4oGx1hUPQVw=;
+        b=vr9cZVmcsBw6GbPBS0l6UIV9PQl4WPEg4JyDD4RFONFeqeUCE3FVBk/m3v80Usd2Nn
+         A/qmekWNHiO9LNRqBmUZCaHHJHTdb9PeuyiTHHv9jfFp7c5nrE34jU4zE0WLfk+NF0Wb
+         jITTdmP6CElEMJneCOfJb0pUu2LGDm+QvaXd8MZ+FnMrOAtOeCADI3DlGiwq1I4LPSS3
+         oNny3yTdhHJJDZHwqZmbqtxV45CYXR6nEMGtIqw0uRZ/Toprqsg5raob6MvKZSYQIInd
+         Pn9jy2DOrp44n8Hl5r0cnnVG+ThTicCBav7d7oyYCqKNZB+5r1LVyp/S8sqFbuCEC003
+         697A==
+X-Forwarded-Encrypted: i=1; AJvYcCUD/0F0YowIEv8TVNC0A47U+23d3DEY5BEvO7HBs4XTU+Va0KPn19p/b0WtdQURKjWMAZk3@lists.linux.dev
+X-Gm-Message-State: AOJu0YySC6vBlcTzVTfeviT9idPWE1vYeyzc6TuDQfv1ctnFyMzURJ2Y
+	uZ1KrdsgTzjcLQPlU7/IygCEA78x7ouGejq0HOaoJkUlMR00+Ny0k+Y0YMRbaoI5LIg8tf5AClY
+	FWAFo/4QreHIKfpF/IFewbsiiMUTRnwYQaEZjC4oNuNWOlcL+Sa8/MF8=
+X-Google-Smtp-Source: AGHT+IHe8uD7Va/t9RghiydunC7nRHm/GXM4J1aMUOaYHKIypML+ORhOP4P4xsuLh0/azcIVXHk232/8no/NPRjgk/tTxHq54l6N
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Received: by 2002:a05:6e02:1a46:b0:3a7:c81e:825f with SMTP id
+ e9e14a558f8ab-3a7cbd23d37mr83760205ab.9.1732900504111; Fri, 29 Nov 2024
+ 09:15:04 -0800 (PST)
+Date: Fri, 29 Nov 2024 09:15:04 -0800
+In-Reply-To: <4020304.1732897192@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6749f698.050a0220.253251.00bd.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_read_iter
+From: syzbot <syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-The following changes since commit 2d5404caa8c7bb5c4e0435f94b28834ae5456623:
+Hello,
 
-  Linux 6.12-rc7 (2024-11-10 14:19:35 -0800)
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-are available in the Git repository at:
+Reported-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
+Tested-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
 
-  https://github.com/martinetd/linux tags/9p-for-6.13-rc1
+Tested on:
 
-for you to fetch changes up to e0260d530b73ee969ae971d14daa02376dcfc93f:
+commit:         2aece382 netfs: Report on NULL folioq in netfs_writeba..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
+console output: https://syzkaller.appspot.com/x/log.txt?x=159cf3c0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=225053d900535838
+dashboard link: https://syzkaller.appspot.com/bug?extid=8965fea6a159ab9aa32d
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=1328f3c0580000
 
-  net/9p/usbg: allow building as standalone module (2024-11-22 23:48:14 +0900)
-
-----------------------------------------------------------------
-9p update for 6.13-rc1
-
-- usbg: fix alloc failure handling & build-as-module
-- xen: couple of fixes
-- v9fs_cache_register/unregister code cleanup
-
-----------------------------------------------------------------
-Alex Zenla (2):
-      9p/xen: fix init sequence
-      9p/xen: fix release of IRQ
-
-Colin Ian King (1):
-      fs/9p: replace functions v9fs_cache_{register|unregister} with direct calls
-
-Dominique Martinet (1):
-      net/9p/usbg: allow building as standalone module
-
-Mirsad Todorovac (1):
-      net/9p/usbg: fix handling of the failed kzalloc() memory allocation
-
- fs/9p/v9fs.c        | 21 +++------------------
- net/9p/Kconfig      |  4 ++--
- net/9p/trans_usbg.c |  4 ++--
- net/9p/trans_xen.c  |  9 ++++++---
- 4 files changed, 13 insertions(+), 25 deletions(-)
-
---
-Dominique Martinet | Asmadeus
+Note: testing is done by a robot and is best-effort only.
