@@ -1,83 +1,179 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8DF9EC
-	for <v9fs@lists.linux.dev>; Mon,  2 Dec 2024 10:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E399C1DB365
+	for <v9fs@lists.linux.dev>; Mon,  2 Dec 2024 17:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733135125; cv=none; b=siY9CmvdJh2UysYrQIr7d1Su5ULDs+k2uP5KyRhJ3hlFltXJDlVyzjuEIkBbdQWrOn1Es2Xd3V5Rq10QDE9OffrJQgMGCwxhTsvM5NiAm69gXJ1PTjG9tvXUApOrLM2+tbrrqiZY0JzzMPNo6cihYk1TxZOXljTatKmHoTNgfo4=
+	t=1733160206; cv=none; b=TGf95WFI0mue1ANQf8JbVc3/FB7JiYECEwuHeFym2z1eP/wPkxgDs/2UuleQi5tlWh+G077iHBQ1GSquG21WrMe00Y+qu+w50rEx517nE+usPhYUEYKmvUcgYbHNKOixiBP4UoN2G5266LhXf55wLIKih9F9zPmL4K8eFpL0Yuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733135125; c=relaxed/simple;
-	bh=bwU+8Vz6+R85zrOlU8SH1G6SCKGlY2MSsNEldJi4Zlc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gE2lIIaGdNgoYZfK9H7k1von7p3s2wS2mDDCGqQeWFQvaCuYhVUMdzdbGlztytkodXrXQmc5zG1YEB19mcWaZB/bP7fvFytE0GM23EC7oEmo8O3mR2RE2WHBI8uy0lJjSNiJ2B1FAAKIrDw0F7EqT8epmttVwDThCGikdVQ4+Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+	s=arc-20240116; t=1733160206; c=relaxed/simple;
+	bh=niYey3A2BI1zHc9oE/V9wTEb2AngGjaDi9xTB6eXJp0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=angC5Ig0w5go8gWBplc4Q5PrglE8KVryHmE+M3maFhGE8gTBnZb/ZC1iVhBLF4iXh0XPuIF8dsFvG0Lgq+GmvGXOMW8Ak6+QqEFyYSoghy6MHSq96NytEQTy8JGpK7DkTNFMAoLXqtkyaU/EYP8SOgrDZxV6o1cbUBiRa5DIt3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a76690f813so50051885ab.2
-        for <v9fs@lists.linux.dev>; Mon, 02 Dec 2024 02:25:23 -0800 (PST)
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a7e4bfae54so27646385ab.0
+        for <v9fs@lists.linux.dev>; Mon, 02 Dec 2024 09:23:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733135123; x=1733739923;
+        d=1e100.net; s=20230601; t=1733160203; x=1733765003;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=G7BvBK1k+7yzTwiL16aKjkj3lzK9QCpioNhQY+7cKWQ=;
-        b=mzvQy+dWwMWGtLmBiSJMdHq6ME22aC9XvUM7aexvoa5qUvjObIlXSkc25JBUNTNglN
-         ILgWwXF8CAiXeQe/gxyw+x+/8adePLEZavTtkC+ADiyUUo1e6p6ypQZtQol0yu2X7QJP
-         VRDilAiD5UP3eY2vzaVQAko5HYpXvS46AKJKPRedkYIJCzK8x84bmYkCCCibUq7Dmwmq
-         u8P46OA8Cpr1MO2H3ZPSDkolaCtPfxDIegnBcXdycSVIVaXQ9/K6q4Fu55J2mvUNLKv8
-         muCMqKZQuhEFKQyZs/Au9rauooJaLwnqJzjLRgwv7JweW8UpUUCAvSwD8TxxPDDDfNEu
-         h7tA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCrh4ua+b3bS4b9falyVOKJXZhpSFFRuZ32j8NhxBUaFacdsMCmIymahnxs7oIfkbhDee/@lists.linux.dev
-X-Gm-Message-State: AOJu0YzaiRz7Dt6XhAOqG5Ko6BZi8nt+kXtrYRrJSEOF+FKNm4xKQ422
-	rTM8APqURyC4qfuRTg9zTkeWrYch2JIc8YTSnV481hZz28/sKtFy1bdh6hT/x0sMhxmbxY/nGGD
-	DBwmfkURGXKBVa++MOJohRuAY1ZOi51Hu4e3kxo+xtbtmrJvDmrEQMpo=
-X-Google-Smtp-Source: AGHT+IH3LIxnVeeh5wlBJugS0WttyQLB/huRt9dxiUbMi/2OagJ6D5L01Xwupne/kcxNt3P+h7wQy40tjnA8T2Xkkvfpm0bS0VJK
+        bh=cWtCFCl9BH6B1/hrLDgMJbyasTsGi0yL5kBQrDwE6xQ=;
+        b=vrwTgkY2F/7cVDnCoGXVAPfdTIIPdq4i+bvzuHJW72aBFh/WUQATXZhiw8nzpZOjiE
+         SaKcS3VpbuAfSL/syGnz6Wq9oOshgu3AMWNHdd66rSL4gQ37HRbn0aeMUB6F7cRHpD76
+         m4hEFV3qvCGGpGDSh6MdDTZKuHASwcgB0CV/Raulzv7s/Zz/p9Iw0lKXDiGN1hCwpd7T
+         TJfm4piwv1eX69wsubbtPttuZPY8Cw7vCsebcE9RDFGU0XqWatfIap2hijeY9NJNKb0u
+         Qqr2qanzVuoOFfm2/NwkHJCLQk0QemMm/uCfJT+OOs7lJIkXmKGPHX5Fq+4Rz5KZHWq8
+         K50w==
+X-Forwarded-Encrypted: i=1; AJvYcCXGmmyqgO4QXNQDx6WsKitO65aa2UQudTwn/d+foivJZmTxEGABPCrvEx0jCOq1p8NHXep9@lists.linux.dev
+X-Gm-Message-State: AOJu0YyuVBU8BxBtQFxBetZUFJxUapZ8UJEywb7c6QLNuuDQJTEYYN+0
+	3a8j1fD2k0WNZ6HjMZjh8OGUALePuyeTMAdt3ZL7dCBpN8lATAC0/lFTuARqeeRwJLKbBaEGe6Y
+	KK+WsKG7LwLipXbAWhcTQ4/5zdRBBq221KB8JzYPxdHnqzPAF4beI1/8=
+X-Google-Smtp-Source: AGHT+IFGrYLgVMCkuWthz1BRGHleiw9U22O8SugwE5SIOQ51OAgdGsPOdMZVjiB1rIUZC23Pv25Kpzsr+8zM3B/WjzigFSvEFPLm
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:4515:20b0:3a7:c5ff:e5e2 with SMTP id
- e9e14a558f8ab-3a7c5ffe759mr131776685ab.0.1733135123386; Mon, 02 Dec 2024
- 02:25:23 -0800 (PST)
-Date: Mon, 02 Dec 2024 02:25:23 -0800
+X-Received: by 2002:a05:6e02:1a02:b0:3a7:9347:5465 with SMTP id
+ e9e14a558f8ab-3a7c5523826mr268135525ab.3.1733160203172; Mon, 02 Dec 2024
+ 09:23:23 -0800 (PST)
+Date: Mon, 02 Dec 2024 09:23:23 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674d8b13.050a0220.ad585.004b.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Dec 2024)
-From: syzbot <syzbot+list45a27aadcc5c46dbab45@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Message-ID: <674ded0b.050a0220.48a03.0027.GAE@google.com>
+Subject: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Hello v9fs maintainers/developers,
+Hello,
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+syzbot found the following issue on:
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 11 issues are still open and 33 have already been fixed.
+HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=1236a0df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
+dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17da7f78580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=138f3d30580000
 
-Some of the still happening issues:
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
 
-Ref Crashes Repro Title
-<1> 3691    Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 27      Yes   WARNING in p9pdu_vwritef
-                  https://syzkaller.appspot.com/bug?extid=94b73a3e8ea625efcd05
-<3> 9       No    BUG: corrupted list in p9_fd_cancelled (3)
-                  https://syzkaller.appspot.com/bug?extid=15a08eabe3d3838fb641
+The issue was bisected to:
+
+commit 1bd9011ee163e11f186b72705978fd6b21bdc07b
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Nov 8 17:32:29 2024 +0000
+
+    netfs: Change the read result collector to only use one work item
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=144ccfc0580000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=164ccfc0580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=124ccfc0580000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+Fixes: 1bd9011ee163 ("netfs: Change the read result collector to only use one work item")
+
+------------[ cut here ]------------
+do not call blocking ops when !TASK_RUNNING; state=2 set at [<ffffffff8177c166>] prepare_to_wait+0x186/0x210 kernel/sched/wait.c:237
+WARNING: CPU: 0 PID: 5828 at kernel/sched/core.c:8685 __might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
+Modules linked in:
+CPU: 0 UID: 0 PID: 5828 Comm: syz-executor222 Not tainted 6.12.0-next-20241128-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:__might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
+Code: 94 0e 01 90 42 80 3c 23 00 74 08 48 89 ef e8 ae 30 9b 00 48 8b 4d 00 48 c7 c7 e0 2d 0a 8c 44 89 ee 48 89 ca e8 08 e6 f0 ff 90 <0f> 0b 90 90 eb b5 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c 70 ff ff ff
+RSP: 0018:ffffc900039765a8 EFLAGS: 00010246
+RAX: b7d7501871149800 RBX: 1ffff1100ff252ed RCX: ffff88807f928000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88807f929768 R08: ffffffff81601ea2 R09: fffffbfff1cfa220
+R10: dffffc0000000000 R11: fffffbfff1cfa220 R12: dffffc0000000000
+R13: 0000000000000002 R14: 000000000000004a R15: ffffffff8c1ca1a0
+FS:  0000555593050480(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055bb6dfcc068 CR3: 000000002f04e000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ wait_on_bit include/linux/wait_bit.h:74 [inline]
+ netfs_retry_reads+0xde/0x1e10 fs/netfs/read_retry.c:263
+ netfs_collect_read_results fs/netfs/read_collect.c:333 [inline]
+ netfs_read_collection+0x334e/0x4020 fs/netfs/read_collect.c:414
+ netfs_wait_for_read+0x2ba/0x4e0 fs/netfs/read_collect.c:629
+ netfs_unbuffered_read fs/netfs/direct_read.c:156 [inline]
+ netfs_unbuffered_read_iter_locked+0x11fc/0x1540 fs/netfs/direct_read.c:231
+ netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
+ __kernel_read+0x513/0x9d0 fs/read_write.c:523
+ integrity_kernel_read+0xb0/0x100 security/integrity/iint.c:28
+ ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:480 [inline]
+ ima_calc_file_shash security/integrity/ima/ima_crypto.c:511 [inline]
+ ima_calc_file_hash+0xae6/0x1b30 security/integrity/ima/ima_crypto.c:568
+ ima_collect_measurement+0x520/0xb10 security/integrity/ima/ima_api.c:293
+ process_measurement+0x1351/0x1fb0 security/integrity/ima/ima_main.c:372
+ ima_file_check+0xd9/0x120 security/integrity/ima/ima_main.c:572
+ security_file_post_open+0xb9/0x280 security/security.c:3121
+ do_open fs/namei.c:3830 [inline]
+ path_openat+0x2ccd/0x3590 fs/namei.c:3987
+ do_filp_open+0x27f/0x4e0 fs/namei.c:4014
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1402
+ do_sys_open fs/open.c:1417 [inline]
+ __do_sys_open fs/open.c:1425 [inline]
+ __se_sys_open fs/open.c:1421 [inline]
+ __x64_sys_open+0x225/0x270 fs/open.c:1421
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdf86d213b9
+Code: d8 5b c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdb23978f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007ffdb2397940 RCX: 00007fdf86d213b9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000340
+RBP: 00007ffdb2397948 R08: aaaaaaaaaaaa0102 R09: aaaaaaaaaaaa0102
+R10: aaaaaaaaaaaa0102 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 000000000000001d R15: 00007fdf86d983a0
+ </TASK>
+
 
 ---
 This report is generated by a bot. It may contain errors.
 See https://goo.gl/tpsmEJ for more information about syzbot.
 syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-You may send multiple commands in a single email message.
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
