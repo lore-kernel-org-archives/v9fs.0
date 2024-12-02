@@ -1,63 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645231A76D1;
-	Sat, 30 Nov 2024 18:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8DF9EC
+	for <v9fs@lists.linux.dev>; Mon,  2 Dec 2024 10:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732991928; cv=none; b=EvjTIFBmI8+xQUfQzghaWWjNX8FWP3vMXXXOOmSNgHIv8p98W/0jnGJrooyV4pV1Kz/yzdgOX6aBrZAYA91BJ/sPwjKKOTDZTRLt1G0pdzv708Ij4wXMQTs9fnpRiUlTbGxdUZ4QGyDLrdHjP8PU2MZh6TxKz0TGTi6QmBvSBi4=
+	t=1733135125; cv=none; b=siY9CmvdJh2UysYrQIr7d1Su5ULDs+k2uP5KyRhJ3hlFltXJDlVyzjuEIkBbdQWrOn1Es2Xd3V5Rq10QDE9OffrJQgMGCwxhTsvM5NiAm69gXJ1PTjG9tvXUApOrLM2+tbrrqiZY0JzzMPNo6cihYk1TxZOXljTatKmHoTNgfo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732991928; c=relaxed/simple;
-	bh=QHqcs6Hv6d0ys+NG4iu6CiT261jXzaJk20qAU3K/1OA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=F0N3KH0X2YZ0s79UmU8PISL6jRDiq9spdHr+zcF1K5eTzA3A9uu+SurFIpbVrmCbDA9dlky1veAeGnKVpRLaWUBn7NYvvOXesMkkKFuU9iEO9lP6zcatq6lbAjVFI8M1VWbgch+KOwy8gOy2iwFMqCf32iXjvJUExyLj6EiyaVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZTBSQqq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZTBSQqq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41169C4CED3;
-	Sat, 30 Nov 2024 18:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732991928;
-	bh=QHqcs6Hv6d0ys+NG4iu6CiT261jXzaJk20qAU3K/1OA=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=SZTBSQqq/L1hpWFA4HgTwkJzmnmaxgDke6PbKEqIKe42+i0IuqGYMvFb6GLj2u4WG
-	 kPAeHj8+MlFrDv8r8tyeXpB6AWK0WRQ3ji5g/uXN31pwrIwQwXtBw4Xc/+1toJB78m
-	 PvrDRXukMoW3HdJktOoJgCXP+eUwaW1i/bDYiyaxVYPLOYiqdb6/bIhqHKmgyAmL+v
-	 QEIddVJzjQPnpQSp5+LGr/SR2UbBauDk2MVDhUhIB1hXD6OTNjwexvAzQDFv867XZJ
-	 frx0TLm9K6LwPSNhjOeh3qDlh9a7urQucua0u9zk4k348VcdGKkvjml69CyOm/oNnl
-	 itu4J+XhnqIJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 342A9380A944;
-	Sat, 30 Nov 2024 18:39:03 +0000 (UTC)
-Subject: Re: [GIT PULL] 9p fixes for 6.13-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <Z0nxET2etduwcfj0@codewreck.org>
-References: <Z0nxET2etduwcfj0@codewreck.org>
-X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
-X-PR-Tracked-Message-Id: <Z0nxET2etduwcfj0@codewreck.org>
-X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.13-rc1
-X-PR-Tracked-Commit-Id: e0260d530b73ee969ae971d14daa02376dcfc93f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: e864effa1fe240473e023fc8e8d243045a7763e0
-Message-Id: <173299194161.2451487.12983152164622795358.pr-tracker-bot@kernel.org>
-Date: Sat, 30 Nov 2024 18:39:01 +0000
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1733135125; c=relaxed/simple;
+	bh=bwU+8Vz6+R85zrOlU8SH1G6SCKGlY2MSsNEldJi4Zlc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gE2lIIaGdNgoYZfK9H7k1von7p3s2wS2mDDCGqQeWFQvaCuYhVUMdzdbGlztytkodXrXQmc5zG1YEB19mcWaZB/bP7fvFytE0GM23EC7oEmo8O3mR2RE2WHBI8uy0lJjSNiJ2B1FAAKIrDw0F7EqT8epmttVwDThCGikdVQ4+Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a76690f813so50051885ab.2
+        for <v9fs@lists.linux.dev>; Mon, 02 Dec 2024 02:25:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733135123; x=1733739923;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G7BvBK1k+7yzTwiL16aKjkj3lzK9QCpioNhQY+7cKWQ=;
+        b=mzvQy+dWwMWGtLmBiSJMdHq6ME22aC9XvUM7aexvoa5qUvjObIlXSkc25JBUNTNglN
+         ILgWwXF8CAiXeQe/gxyw+x+/8adePLEZavTtkC+ADiyUUo1e6p6ypQZtQol0yu2X7QJP
+         VRDilAiD5UP3eY2vzaVQAko5HYpXvS46AKJKPRedkYIJCzK8x84bmYkCCCibUq7Dmwmq
+         u8P46OA8Cpr1MO2H3ZPSDkolaCtPfxDIegnBcXdycSVIVaXQ9/K6q4Fu55J2mvUNLKv8
+         muCMqKZQuhEFKQyZs/Au9rauooJaLwnqJzjLRgwv7JweW8UpUUCAvSwD8TxxPDDDfNEu
+         h7tA==
+X-Forwarded-Encrypted: i=1; AJvYcCWCrh4ua+b3bS4b9falyVOKJXZhpSFFRuZ32j8NhxBUaFacdsMCmIymahnxs7oIfkbhDee/@lists.linux.dev
+X-Gm-Message-State: AOJu0YzaiRz7Dt6XhAOqG5Ko6BZi8nt+kXtrYRrJSEOF+FKNm4xKQ422
+	rTM8APqURyC4qfuRTg9zTkeWrYch2JIc8YTSnV481hZz28/sKtFy1bdh6hT/x0sMhxmbxY/nGGD
+	DBwmfkURGXKBVa++MOJohRuAY1ZOi51Hu4e3kxo+xtbtmrJvDmrEQMpo=
+X-Google-Smtp-Source: AGHT+IH3LIxnVeeh5wlBJugS0WttyQLB/huRt9dxiUbMi/2OagJ6D5L01Xwupne/kcxNt3P+h7wQy40tjnA8T2Xkkvfpm0bS0VJK
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:4515:20b0:3a7:c5ff:e5e2 with SMTP id
+ e9e14a558f8ab-3a7c5ffe759mr131776685ab.0.1733135123386; Mon, 02 Dec 2024
+ 02:25:23 -0800 (PST)
+Date: Mon, 02 Dec 2024 02:25:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <674d8b13.050a0220.ad585.004b.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Dec 2024)
+From: syzbot <syzbot+list45a27aadcc5c46dbab45@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-The pull request you sent on Sat, 30 Nov 2024 01:51:29 +0900:
+Hello v9fs maintainers/developers,
 
-> https://github.com/martinetd/linux tags/9p-for-6.13-rc1
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/e864effa1fe240473e023fc8e8d243045a7763e0
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 11 issues are still open and 33 have already been fixed.
 
-Thank you!
+Some of the still happening issues:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Ref Crashes Repro Title
+<1> 3691    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 27      Yes   WARNING in p9pdu_vwritef
+                  https://syzkaller.appspot.com/bug?extid=94b73a3e8ea625efcd05
+<3> 9       No    BUG: corrupted list in p9_fd_cancelled (3)
+                  https://syzkaller.appspot.com/bug?extid=15a08eabe3d3838fb641
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
