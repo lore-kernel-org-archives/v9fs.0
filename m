@@ -1,108 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C81E25E3;
-	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521C41F8AF8
+	for <v9fs@lists.linux.dev>; Tue,  3 Dec 2024 16:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242820; cv=none; b=Nk+2WKH2NqY7+WFfXEKMbEzW/K5cLwanxWLloY2Xim1UyAOBQUhGwHV3NXd/6FV9mvLDQONg3vmeowDas0X2WTyei2v1byn+dRKrgkupfc1+VtWZpJJ9Vfx/utPwu6irXTOcjPaDiGwA3rEICLyS2AftjKvW9PBFVpGiZ9owDEQ=
+	t=1733244642; cv=none; b=llPLskD7vNNK7hLn5kC5S/nfl+/DWA2qnvuFMWwwicPrilbDv0fxUKzt+5HgtgONxBe8ghm2dwnMUoHbjmm6kzOPNJ8Cl9qdl6EWfWcP+EaVIdEkqjP+YHsmyhBeM0e0qxv0eh0xH7NI8iQQYyTr/lJQjO7ulK4BrgxOmtF07u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242820; c=relaxed/simple;
-	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/aIDDktOsfOc8Fbwj+4q4IfV4fxM48YK9GSqYnDwIf4Y/RMcgMFlILGgaR6/EmB/n6idDkseWJjFnUlbHrSDV6KWWobtdMxEg/U1Z5H5Y9qd/Nca6BZkX6a+pwDsDiZPY/zkTLMx1MyUOg3yh2+Sz5xlemUVTwooCBH8lnBZF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOFJsxDv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733244642; c=relaxed/simple;
+	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=TMoEPldQoP5CxVzJmsdIgv6Jf/HYgtR3+w7EiKSJlYoUKC9F4JDQcJaO8Mz/9c7U8SN/TvSRlsqsCICBcjbx9sefUU9SyVUV/famW2cT03iB0Nj/Z1BkJ4O9yuyN8O3AXMXiFBSlvbnKl59s3xO/60EYQ9OP80YzTaY+Hry3k6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KOm5RBU3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOFJsxDv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58DC4CECF;
-	Tue,  3 Dec 2024 16:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242820;
-	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOFJsxDv/bNxXo+4JozOQECQ3aJAhC5s8mMxYwZGVIwOM3XG2qIaUktictBi1g20l
-	 ik565XTYeqv+yBKbk8jhbKi4RdZPxZ6wz3wEV2w0yQ86agjlrtJFaqPuPUAED9QgLk
-	 lgXASGBM7LEKi+ns2CwTeQMZ7eO9/K7wHnTQ4RF4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 788/826] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
-Date: Tue,  3 Dec 2024 15:48:35 +0100
-Message-ID: <20241203144814.499396037@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KOm5RBU3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733244639;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
+	b=KOm5RBU3R9xv+4NCbHnxg/GBPr0u4kA5bf6IdaaR7PcD/03pQya3a5AiYNScLrRKdAYClS
+	5edh6T3sF6oIf7KKu1abZwiTEre4UqoKMQYkGlBz6gyMRJ+vfKF50V8//e0sghyMZ4/8me
+	tJj+zgRqBzt9SYcZ5l6YlZExITPtLI4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-ZaPuXlSMM0KYIhsLt3rKvg-1; Tue,
+ 03 Dec 2024 11:50:36 -0500
+X-MC-Unique: ZaPuXlSMM0KYIhsLt3rKvg-1
+X-Mimecast-MFC-AGG-ID: ZaPuXlSMM0KYIhsLt3rKvg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0BF71944DDF;
+	Tue,  3 Dec 2024 16:50:31 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA9A030000DF;
+	Tue,  3 Dec 2024 16:50:23 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <674ded0b.050a0220.48a03.0027.GAE@google.com>
+References: <674ded0b.050a0220.48a03.0027.GAE@google.com>
+To: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
+Cc: dhowells@redhat.com, asmadeus@codewreck.org, bharathsm@microsoft.com,
+    brauner@kernel.org, ericvh@kernel.org, jlayton@kernel.org,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com,
+    lucho@ionkov.net, marc.dionne@auristor.com,
+    mathieu.desnoyers@efficios.com, mhiramat@kernel.org,
+    netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com,
+    rostedt@goodmis.org, samba-technical@lists.samba.org,
+    sfrench@samba.org, sprasad@microsoft.com,
+    syzkaller-bugs@googlegroups.com, tom@talpey.com,
+    v9fs@lists.linux.dev
+Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <589148.1733244622.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Dec 2024 16:50:22 +0000
+Message-ID: <589149.1733244622@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
-
-[ Upstream commit ff1060813d9347e8c45c8b8cff93a4dfdb6726ad ]
-
-On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
-following error report:
-
-./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
-NULL not ERR_PTR on failure
-
-kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
-
-Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/9p/trans_usbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 975b76839dca1..6b694f117aef2 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
- 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
- 
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (IS_ERR(dev)) {
-+	if (!dev) {
- 		kfree(usb9pfs_opts);
--		return ERR_CAST(dev);
-+		return ERR_PTR(-ENOMEM);
- 	}
- 
- 	usb9pfs_opts->dev = dev;
--- 
-2.43.0
-
-
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
+.git netfs-writeback
 
