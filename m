@@ -1,179 +1,108 @@
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E399C1DB365
-	for <v9fs@lists.linux.dev>; Mon,  2 Dec 2024 17:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C81E25E3;
+	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733160206; cv=none; b=TGf95WFI0mue1ANQf8JbVc3/FB7JiYECEwuHeFym2z1eP/wPkxgDs/2UuleQi5tlWh+G077iHBQ1GSquG21WrMe00Y+qu+w50rEx517nE+usPhYUEYKmvUcgYbHNKOixiBP4UoN2G5266LhXf55wLIKih9F9zPmL4K8eFpL0Yuc=
+	t=1733242820; cv=none; b=Nk+2WKH2NqY7+WFfXEKMbEzW/K5cLwanxWLloY2Xim1UyAOBQUhGwHV3NXd/6FV9mvLDQONg3vmeowDas0X2WTyei2v1byn+dRKrgkupfc1+VtWZpJJ9Vfx/utPwu6irXTOcjPaDiGwA3rEICLyS2AftjKvW9PBFVpGiZ9owDEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733160206; c=relaxed/simple;
-	bh=niYey3A2BI1zHc9oE/V9wTEb2AngGjaDi9xTB6eXJp0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=angC5Ig0w5go8gWBplc4Q5PrglE8KVryHmE+M3maFhGE8gTBnZb/ZC1iVhBLF4iXh0XPuIF8dsFvG0Lgq+GmvGXOMW8Ak6+QqEFyYSoghy6MHSq96NytEQTy8JGpK7DkTNFMAoLXqtkyaU/EYP8SOgrDZxV6o1cbUBiRa5DIt3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a7e4bfae54so27646385ab.0
-        for <v9fs@lists.linux.dev>; Mon, 02 Dec 2024 09:23:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733160203; x=1733765003;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cWtCFCl9BH6B1/hrLDgMJbyasTsGi0yL5kBQrDwE6xQ=;
-        b=vrwTgkY2F/7cVDnCoGXVAPfdTIIPdq4i+bvzuHJW72aBFh/WUQATXZhiw8nzpZOjiE
-         SaKcS3VpbuAfSL/syGnz6Wq9oOshgu3AMWNHdd66rSL4gQ37HRbn0aeMUB6F7cRHpD76
-         m4hEFV3qvCGGpGDSh6MdDTZKuHASwcgB0CV/Raulzv7s/Zz/p9Iw0lKXDiGN1hCwpd7T
-         TJfm4piwv1eX69wsubbtPttuZPY8Cw7vCsebcE9RDFGU0XqWatfIap2hijeY9NJNKb0u
-         Qqr2qanzVuoOFfm2/NwkHJCLQk0QemMm/uCfJT+OOs7lJIkXmKGPHX5Fq+4Rz5KZHWq8
-         K50w==
-X-Forwarded-Encrypted: i=1; AJvYcCXGmmyqgO4QXNQDx6WsKitO65aa2UQudTwn/d+foivJZmTxEGABPCrvEx0jCOq1p8NHXep9@lists.linux.dev
-X-Gm-Message-State: AOJu0YyuVBU8BxBtQFxBetZUFJxUapZ8UJEywb7c6QLNuuDQJTEYYN+0
-	3a8j1fD2k0WNZ6HjMZjh8OGUALePuyeTMAdt3ZL7dCBpN8lATAC0/lFTuARqeeRwJLKbBaEGe6Y
-	KK+WsKG7LwLipXbAWhcTQ4/5zdRBBq221KB8JzYPxdHnqzPAF4beI1/8=
-X-Google-Smtp-Source: AGHT+IFGrYLgVMCkuWthz1BRGHleiw9U22O8SugwE5SIOQ51OAgdGsPOdMZVjiB1rIUZC23Pv25Kpzsr+8zM3B/WjzigFSvEFPLm
+	s=arc-20240116; t=1733242820; c=relaxed/simple;
+	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R/aIDDktOsfOc8Fbwj+4q4IfV4fxM48YK9GSqYnDwIf4Y/RMcgMFlILGgaR6/EmB/n6idDkseWJjFnUlbHrSDV6KWWobtdMxEg/U1Z5H5Y9qd/Nca6BZkX6a+pwDsDiZPY/zkTLMx1MyUOg3yh2+Sz5xlemUVTwooCBH8lnBZF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOFJsxDv; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOFJsxDv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58DC4CECF;
+	Tue,  3 Dec 2024 16:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733242820;
+	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kOFJsxDv/bNxXo+4JozOQECQ3aJAhC5s8mMxYwZGVIwOM3XG2qIaUktictBi1g20l
+	 ik565XTYeqv+yBKbk8jhbKi4RdZPxZ6wz3wEV2w0yQ86agjlrtJFaqPuPUAED9QgLk
+	 lgXASGBM7LEKi+ns2CwTeQMZ7eO9/K7wHnTQ4RF4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 788/826] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
+Date: Tue,  3 Dec 2024 15:48:35 +0100
+Message-ID: <20241203144814.499396037@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a02:b0:3a7:9347:5465 with SMTP id
- e9e14a558f8ab-3a7c5523826mr268135525ab.3.1733160203172; Mon, 02 Dec 2024
- 09:23:23 -0800 (PST)
-Date: Mon, 02 Dec 2024 09:23:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674ded0b.050a0220.48a03.0027.GAE@google.com>
-Subject: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
-From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
-	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
-	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
-	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-syzbot found the following issue on:
+------------------
 
-HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=1236a0df980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
-dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17da7f78580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=138f3d30580000
+From: Mirsad Todorovac <mtodorovac69@gmail.com>
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
+[ Upstream commit ff1060813d9347e8c45c8b8cff93a4dfdb6726ad ]
 
-The issue was bisected to:
+On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
+following error report:
 
-commit 1bd9011ee163e11f186b72705978fd6b21bdc07b
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Nov 8 17:32:29 2024 +0000
+./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
+NULL not ERR_PTR on failure
 
-    netfs: Change the read result collector to only use one work item
+kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=144ccfc0580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=164ccfc0580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=124ccfc0580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
-Fixes: 1bd9011ee163 ("netfs: Change the read result collector to only use one work item")
-
-------------[ cut here ]------------
-do not call blocking ops when !TASK_RUNNING; state=2 set at [<ffffffff8177c166>] prepare_to_wait+0x186/0x210 kernel/sched/wait.c:237
-WARNING: CPU: 0 PID: 5828 at kernel/sched/core.c:8685 __might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
-Modules linked in:
-CPU: 0 UID: 0 PID: 5828 Comm: syz-executor222 Not tainted 6.12.0-next-20241128-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:__might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
-Code: 94 0e 01 90 42 80 3c 23 00 74 08 48 89 ef e8 ae 30 9b 00 48 8b 4d 00 48 c7 c7 e0 2d 0a 8c 44 89 ee 48 89 ca e8 08 e6 f0 ff 90 <0f> 0b 90 90 eb b5 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c 70 ff ff ff
-RSP: 0018:ffffc900039765a8 EFLAGS: 00010246
-RAX: b7d7501871149800 RBX: 1ffff1100ff252ed RCX: ffff88807f928000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff88807f929768 R08: ffffffff81601ea2 R09: fffffbfff1cfa220
-R10: dffffc0000000000 R11: fffffbfff1cfa220 R12: dffffc0000000000
-R13: 0000000000000002 R14: 000000000000004a R15: ffffffff8c1ca1a0
-FS:  0000555593050480(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055bb6dfcc068 CR3: 000000002f04e000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- wait_on_bit include/linux/wait_bit.h:74 [inline]
- netfs_retry_reads+0xde/0x1e10 fs/netfs/read_retry.c:263
- netfs_collect_read_results fs/netfs/read_collect.c:333 [inline]
- netfs_read_collection+0x334e/0x4020 fs/netfs/read_collect.c:414
- netfs_wait_for_read+0x2ba/0x4e0 fs/netfs/read_collect.c:629
- netfs_unbuffered_read fs/netfs/direct_read.c:156 [inline]
- netfs_unbuffered_read_iter_locked+0x11fc/0x1540 fs/netfs/direct_read.c:231
- netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
- __kernel_read+0x513/0x9d0 fs/read_write.c:523
- integrity_kernel_read+0xb0/0x100 security/integrity/iint.c:28
- ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:480 [inline]
- ima_calc_file_shash security/integrity/ima/ima_crypto.c:511 [inline]
- ima_calc_file_hash+0xae6/0x1b30 security/integrity/ima/ima_crypto.c:568
- ima_collect_measurement+0x520/0xb10 security/integrity/ima/ima_api.c:293
- process_measurement+0x1351/0x1fb0 security/integrity/ima/ima_main.c:372
- ima_file_check+0xd9/0x120 security/integrity/ima/ima_main.c:572
- security_file_post_open+0xb9/0x280 security/security.c:3121
- do_open fs/namei.c:3830 [inline]
- path_openat+0x2ccd/0x3590 fs/namei.c:3987
- do_filp_open+0x27f/0x4e0 fs/namei.c:4014
- do_sys_openat2+0x13e/0x1d0 fs/open.c:1402
- do_sys_open fs/open.c:1417 [inline]
- __do_sys_open fs/open.c:1425 [inline]
- __se_sys_open fs/open.c:1421 [inline]
- __x64_sys_open+0x225/0x270 fs/open.c:1421
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdf86d213b9
-Code: d8 5b c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffdb23978f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
-RAX: ffffffffffffffda RBX: 00007ffdb2397940 RCX: 00007fdf86d213b9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000340
-RBP: 00007ffdb2397948 R08: aaaaaaaaaaaa0102 R09: aaaaaaaaaaaa0102
-R10: aaaaaaaaaaaa0102 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 000000000000001d R15: 00007fdf86d983a0
- </TASK>
-
-
+Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/9p/trans_usbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 975b76839dca1..6b694f117aef2 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
+ 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
+ 
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (IS_ERR(dev)) {
++	if (!dev) {
+ 		kfree(usb9pfs_opts);
+-		return ERR_CAST(dev);
++		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+ 	usb9pfs_opts->dev = dev;
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
