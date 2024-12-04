@@ -1,81 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521C41F8AF8
-	for <v9fs@lists.linux.dev>; Tue,  3 Dec 2024 16:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE41FC08
+	for <v9fs@lists.linux.dev>; Wed,  4 Dec 2024 01:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244642; cv=none; b=llPLskD7vNNK7hLn5kC5S/nfl+/DWA2qnvuFMWwwicPrilbDv0fxUKzt+5HgtgONxBe8ghm2dwnMUoHbjmm6kzOPNJ8Cl9qdl6EWfWcP+EaVIdEkqjP+YHsmyhBeM0e0qxv0eh0xH7NI8iQQYyTr/lJQjO7ulK4BrgxOmtF07u8=
+	t=1733277065; cv=none; b=k4zNb93EZlL1LCopZDa9xy0b7toZ5tL2J9qvidOksqLqppwuqqsb3xI2NlLBHam+rQ646+A+YoSmXO+R7mN3I0e+7NpIXor8A6gsfBaXBeh19+Gv79sAjejmg5kv8U9Ux+CJsLwyI61bYHBoh2hMv/Fdg3SQLuAsuv74We4v8Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244642; c=relaxed/simple;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=TMoEPldQoP5CxVzJmsdIgv6Jf/HYgtR3+w7EiKSJlYoUKC9F4JDQcJaO8Mz/9c7U8SN/TvSRlsqsCICBcjbx9sefUU9SyVUV/famW2cT03iB0Nj/Z1BkJ4O9yuyN8O3AXMXiFBSlvbnKl59s3xO/60EYQ9OP80YzTaY+Hry3k6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KOm5RBU3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KOm5RBU3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733244639;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
-	b=KOm5RBU3R9xv+4NCbHnxg/GBPr0u4kA5bf6IdaaR7PcD/03pQya3a5AiYNScLrRKdAYClS
-	5edh6T3sF6oIf7KKu1abZwiTEre4UqoKMQYkGlBz6gyMRJ+vfKF50V8//e0sghyMZ4/8me
-	tJj+zgRqBzt9SYcZ5l6YlZExITPtLI4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-ZaPuXlSMM0KYIhsLt3rKvg-1; Tue,
- 03 Dec 2024 11:50:36 -0500
-X-MC-Unique: ZaPuXlSMM0KYIhsLt3rKvg-1
-X-Mimecast-MFC-AGG-ID: ZaPuXlSMM0KYIhsLt3rKvg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0BF71944DDF;
-	Tue,  3 Dec 2024 16:50:31 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA9A030000DF;
-	Tue,  3 Dec 2024 16:50:23 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <674ded0b.050a0220.48a03.0027.GAE@google.com>
-References: <674ded0b.050a0220.48a03.0027.GAE@google.com>
-To: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, asmadeus@codewreck.org, bharathsm@microsoft.com,
-    brauner@kernel.org, ericvh@kernel.org, jlayton@kernel.org,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-    lucho@ionkov.net, marc.dionne@auristor.com,
-    mathieu.desnoyers@efficios.com, mhiramat@kernel.org,
-    netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com,
-    rostedt@goodmis.org, samba-technical@lists.samba.org,
-    sfrench@samba.org, sprasad@microsoft.com,
-    syzkaller-bugs@googlegroups.com, tom@talpey.com,
-    v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+	s=arc-20240116; t=1733277065; c=relaxed/simple;
+	bh=rWtZF8Dus1RjbJZaZTLBXSr66OIKeFm9TueYUIt7Zoc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=kTQ6+qpk39IJ7NuIrHvJg1ZLYBMH5AprVMBtywekOBERulEjgp59xOYWXtpHA1o5iA5Ro4F59yCYycWcUP3psGU4w9saJtLV55Uxdf13GpMU7I47NWsdXU3T+GrPJMTLjh6l1HDfBhcjlesrbx12O6rS/t1baGf+qV66NLnYzzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a7e1e6d83fso89656245ab.3
+        for <v9fs@lists.linux.dev>; Tue, 03 Dec 2024 17:51:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733277062; x=1733881862;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojyRDzOs4L5r1zvt5rLALFwRhgSLoRI+YAka9dryW2U=;
+        b=UV0p+A8TdrRBQNz8NtSIFyfbUYKuxpftQwKYZTWyYVWZCt3c4WzTEvoMrYrRc/Jju3
+         NRPnyhI/fT6/Fqlr/5xPPyAlFoLM6+AfnuSc+GqeNjORipr+ZRPDOkjYi8bekxRMS9ry
+         xVTpmAepNKMxxivez57FYQYyHFZg7k62jxQs1qMvmlYJPYjVuh7UH86/CnsP7KnBu+oN
+         m8UCBE2C2nWjd2pQaG2YI3FTIi1ONIUjdl1cSiO6y/pRFYpBnkAe2zdy3o75K5zuBpdC
+         J4vSqFQaVdlKHBl482DsOQ755TyioQqdjLZFqpn5Sur+QXvHaPlXnvNJPYNBphIt5lyq
+         o4tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUB7oFbKjJKzGC9FkVzspHlVySrhX4QmEy4ohOfAHYqSYj73EMCq0QnPWn0c7JWf1cclwuO@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxd9QnWdU5yPM9/pYMbW7wLwZYyY3IXz4ouPjIu67BPu90zdb0v
+	bWIQ2HaDSo3WrNCybU6XrEy61jyb3khMU5uZLKWbAGh7Z9XbPCTEv03MX7fSgNXRlSa2JFruHJP
+	Aby3vqdf+25wAEdZ0FLblKaiqV4fQgwhWtAHeS/1m878Ce/d70kTnfhA=
+X-Google-Smtp-Source: AGHT+IGmDky9ubXMdmWEyJvsqWfLs/KF8vdb5UnF3UfBT6VPtkSCq7Mi1MPMv2mpAS+sZb0fM/xrpgyQuWJKEeTuR3Zk+AqaSlPn
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <589148.1733244622.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Dec 2024 16:50:22 +0000
-Message-ID: <589149.1733244622@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Received: by 2002:a05:6e02:1fce:b0:3a7:21ad:72a9 with SMTP id
+ e9e14a558f8ab-3a7fed5f51amr26749215ab.17.1733277062597; Tue, 03 Dec 2024
+ 17:51:02 -0800 (PST)
+Date: Tue, 03 Dec 2024 17:51:02 -0800
+In-Reply-To: <589149.1733244622@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <674fb586.050a0220.17bd51.0057.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git netfs-writeback
+Hello,
 
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+
+Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+Tested-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         12588c3f netfs: Fix hang in synchronous read due to fa..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
+console output: https://syzkaller.appspot.com/x/log.txt?x=135e1fc0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=50c7a61469ce77e7
+dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
