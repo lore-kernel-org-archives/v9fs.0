@@ -1,241 +1,516 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F169E19007E
-	for <v9fs@lists.linux.dev>; Thu,  5 Dec 2024 10:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1BC1B0431
+	for <v9fs@lists.linux.dev>; Mon,  9 Dec 2024 15:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733394508; cv=none; b=Es9IHXhwUyIvgqTVlIe8JhsZ3trDZ1mdQT57+5TW6juklRMTsaWLf+iguJIF/h2STNezht6VgiOuFriMjD9qJ5OkP67FEXUcqKbyUC7dE3w0oWcCq+yiFANZmnhthMJhvJpNuV/uDIr1PwPE80L3WGq951c5NRtPyeZR7LTv9BE=
+	t=1733756827; cv=none; b=ibMylijO+pie8UYZYSxRm0Lm6tnoeGWTjzhNfg6FNxoAF9czDBs4UaNxpXHC3b2HXxX/Iz9LhnYB5IVj39nStQUINH7LaxQOGzREWL2E2CgAHO4L/lohAdv4jd5CjpJqRjUSPlDbvkkUMqE3PCYPVZQuTROKRds35cQCV5bcUi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733394508; c=relaxed/simple;
-	bh=ORoh/JBIeL4xUw8V6YZ0B4jqJHmp6i0zSTjhSv4hdFY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=MdJ+SrqvQlBHOy9RdBj0nSt9USQmpO8aSSWEaaYNIefCelZTpQHRzWCURdzzHreHHFksikXnafGndWnC+ULZ6FwgfWdm9xRajBUp/czmCRkNmRJ6B9pcMLtWxEzUlAaqA/vWft34HtpIlqmISA2VMd1HuROO7eyQGGe7fTBOr98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-841963a1fb4so118601739f.2
-        for <v9fs@lists.linux.dev>; Thu, 05 Dec 2024 02:28:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733394506; x=1733999306;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o8KbNEV/lPNOeyeMlgzjF4k2zcfrT5xclIxTCtjGuUQ=;
-        b=gAOwo8ZTlqCQLI0ZbPsseU6N9/XNQdEpv9mOo0y+KDeJDWwdEMdOyuO9eUfGF0/cMo
-         T46jOGjVIHYKGfSe9zLA5+FujvKcfiocuo4CAA3dnhcSOuKrye18IRXx+NphGt3+Mc9/
-         MNamQTFPeRtoGGunnvbxX5kRlCqmb+aT8tw9HZ5qw1647U1lQjvfye19uqQeYxVnyemj
-         LSpPdU+BHUOoCFE9kOoGVOMgPzguWpIPkDjX7luafLZqS3bREDaNsSQTOSyBlhjQPUEG
-         PsDvih9fiPyVw4mmq5S0aE3/Mfv5NXq4fZRGwhZvGewIlaxSF4+SZbvDMdvReDWinKPh
-         ScYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXvCLzAPgHt62VKGtFDsd+JC7r9aeWaNTHXzXC7VQDcBUbsyWBNFjZSsfmODt2ICIV7I3IZ@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtzOVhKg4AHZ1uvan/jfT/WwiRXyAP1F48qegew+QEzm/Qz+74
-	PvJjnOLC4Qgx4nVcu98ZAHsIybp9Z0P46vbY3cPCkDL5TLS/G2BuNPDX5uCNHkHVBHzcCqnTmQO
-	4NQQSrf1zitB/R7RW2xXp511y+SSpqC25ktrhnKcGw7hHqSVzWivgN70=
-X-Google-Smtp-Source: AGHT+IGElam6A8Bqaw0H97kGC36yyRWIC/j2lkZCveXRK0BFGDny2FxgTCQKQmIfZW2XlWRDQS0lljzAVD89OesvVCGMhvbAfRC7
+	s=arc-20240116; t=1733756827; c=relaxed/simple;
+	bh=9jQOpwWojfzrOhDIkyNKzco0d5ufUHfGwnIKFGMZBmQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=M91M8qbSnHfGUmtsTzKj4jkAt52CHtS/Xk29gus32fcgcXidMjMTDtOJHIsWHvdEEpCdc8OzIk0wuIdWaw1v6vl2YHDIMlViqQCdKTQU/uMdlSXeiPzkUpORCVD8j94OpassU2K5IEBVboRhDYWjiK4P07koapZSvXC8uF/c9w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XMtkQCK5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XMtkQCK5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733756824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i9cLnQ6UytpouGLzY0YS9yYXg7IAnDgNtlnGtZSqteo=;
+	b=XMtkQCK5NYKVZYW797k/gCpQ1+q1O9pq+5h6T0r6f0DHHQFM3QFFpvfq2qp9Te4ifFON8Z
+	WUF6nyqMjZTOfBlQBNdPPHKlDOfs/VCBFIn739J3FFPX4pJ5/hNKb6UJ/7j71o7F685/Dy
+	FLEq6ybj2IxqzMgtCLwf0Cv+qCqGvc4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-VYI7zqsPNEW68UH08Q-zyQ-1; Mon,
+ 09 Dec 2024 10:07:00 -0500
+X-MC-Unique: VYI7zqsPNEW68UH08Q-zyQ-1
+X-Mimecast-MFC-AGG-ID: VYI7zqsPNEW68UH08Q-zyQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 57CF61956061;
+	Mon,  9 Dec 2024 15:06:58 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79A09195605A;
+	Mon,  9 Dec 2024 15:06:54 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <6739490e.050a0220.87769.0000.GAE@google.com>
+References: <6739490e.050a0220.87769.0000.GAE@google.com>
+To: syzbot <syzbot+885c03ad650731743489@syzkaller.appspotmail.com>
+Cc: dhowells@redhat.com, akpm@linux-foundation.org,
+    asmadeus@codewreck.org, ericvh@kernel.org,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linux_oss@crudebyte.com, lucho@ionkov.net,
+    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Subject: Re: [syzbot] [mm?] [v9fs?] BUG: stack guard page was hit in sys_open
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:184a:b0:3a7:70a4:6872 with SMTP id
- e9e14a558f8ab-3a7f9a3b564mr119264425ab.9.1733394506086; Thu, 05 Dec 2024
- 02:28:26 -0800 (PST)
-Date: Thu, 05 Dec 2024 02:28:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6751804a.050a0220.17bd51.009a.GAE@google.com>
-Subject: [syzbot] [v9fs?] INFO: task hung in v9fs_evict_inode
-From: syzbot <syzbot+56bd5818697f0f93fdd9@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2131862.1733756813.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Dec 2024 15:06:53 +0000
+Message-ID: <2131863.1733756813@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hello,
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t
 
-syzbot found the following issue on:
+commit 78513c0ee0d9a767b5c2568c6c220a941e73529c
+Author: Lizhi Xu <lizhi.xu@windriver.com>
+Date:   Fri Nov 8 11:40:20 2024 +0800
 
-HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=159927c0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
-dashboard link: https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c765e8580000
+    netfs: If didn't read new data then abandon retry
+    =
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
+    syzkaller reported a three-level circle calls (netfs_rreq_assess,
+    netfs_retry_reads, netfs_rreq_terminated), during an unbuffered or dir=
+ect
+    I/O read.  [1]
+    =
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+56bd5818697f0f93fdd9@syzkaller.appspotmail.com
+    netfs_rreq_terminated() only checks that subreq's transferred is great=
+er
+    than consumed and then sets the retry flag. There is no limit on the n=
+umber
+    of retries, and there is no judgment on whether the retry is effective=
+ in
+    reading new data. This hitting the stack guard page.
+    =
 
-INFO: task syz-executor:5928 blocked for more than 143 seconds.
-      Not tainted 6.12.0-next-20241128-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor    state:D stack:20080 pid:5928  tgid:5928  ppid:1      flags:0x00004004
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5369 [inline]
- __schedule+0x1850/0x4c30 kernel/sched/core.c:6756
- __schedule_loop kernel/sched/core.c:6833 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6848
- netfs_wait_for_outstanding_io include/linux/netfs.h:558 [inline]
- v9fs_evict_inode+0x171/0x360 fs/9p/vfs_inode.c:348
- evict+0x4e8/0x9a0 fs/inode.c:796
- __dentry_kill+0x20d/0x630 fs/dcache.c:625
- dput+0x19f/0x2b0 fs/dcache.c:867
- shrink_dcache_for_umount+0xb4/0x180 fs/dcache.c:1577
- generic_shutdown_super+0x6a/0x2d0 fs/super.c:620
- kill_anon_super+0x3b/0x70 fs/super.c:1237
- v9fs_kill_super+0x4c/0x90 fs/9p/vfs_super.c:193
- deactivate_locked_super+0xc4/0x130 fs/super.c:473
- cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1373
- task_work_run+0x24f/0x310 kernel/task_work.c:239
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x13f/0x340 kernel/entry/common.c:218
- do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f8a37781b77
-RSP: 002b:00007ffe40eae1a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 00007f8a37781b77
-RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffe40eae260
-RBP: 00007ffe40eae260 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffe40eaf2e0
-R13: 00007f8a377f3824 R14: 000000000003f13f R15: 00007ffe40eaf320
- </TASK>
+    To avoid the issue, let's add retry read times and the length of the d=
+ata
+    just read in struct netfs_io_subrequest, use them to assess the state =
+of a
+    read request and decide what to do retry.
+    =
 
-Showing all locks held in the system:
-3 locks held by kworker/u8:1/12:
-1 lock held by khungtaskd/30:
- #0: ffffffff8e937b20 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- #0: ffffffff8e937b20 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8e937b20 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6744
-2 locks held by kworker/u8:8/3481:
- #0: ffff88801ac89148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3204 [inline]
- #0: ffff88801ac89148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x93b/0x1840 kernel/workqueue.c:3310
- #1: ffffc9000cdb7d00 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3205 [inline]
- #1: ffffc9000cdb7d00 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_scheduled_works+0x976/0x1840 kernel/workqueue.c:3310
-2 locks held by getty/5584:
- #0: ffff88814e3000a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc900032eb2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x6a6/0x1e00 drivers/tty/n_tty.c:2211
-1 lock held by syz-executor/5928:
- #0: ffff8880352ee0e0 (&type->s_umount_key#51){+.+.}-{4:4}, at: __super_lock fs/super.c:56 [inline]
- #0: ffff8880352ee0e0 (&type->s_umount_key#51){+.+.}-{4:4}, at: __super_lock_excl fs/super.c:71 [inline]
- #0: ffff8880352ee0e0 (&type->s_umount_key#51){+.+.}-{4:4}, at: deactivate_super+0xb5/0xf0 fs/super.c:505
-1 lock held by syz.5.407/7698:
-1 lock held by syz.3.408/7704:
-1 lock held by syz.4.409/7705:
-1 lock held by syz.0.410/7711:
-1 lock held by syz.2.411/7714:
+    [1]
+    BUG: TASK stack guard page was hit at ffffc9000482ff48 (stack is ffffc=
+90004830000..ffffc90004838000)
+    Oops: stack guard page: 0000 [#1] PREEMPT SMP KASAN NOPTI
+    CPU: 3 UID: 0 PID: 6237 Comm: syz-executor663 Not tainted 6.12.0-rc6-s=
+yzkaller-00077-g2e1b3cc9d7f7 #0
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian=
+-1.16.3-2~bpo12+1 04/01/2014
+    RIP: 0010:mark_lock+0x25/0xc60 kernel/locking/lockdep.c:4686
+    Code: 90 90 90 90 90 55 48 89 e5 41 57 41 56 41 89 d6 48 ba 00 00 00 0=
+0 00 fc ff df 41 55 41 54 53 48 83 e4 f0 48 81 ec 10 01 00 00 <48> c7 44 2=
+4 30 b3 8a b5 41 48 8d 44 24 30 48 c7 44 24 38 c0 4d 7a
+    RSP: 0018:ffffc9000482ff50 EFLAGS: 00010086
+    RAX: 000000000000000c RBX: ffff8880306c2fba RCX: 0000000000000002
+    RDX: dffffc0000000000 RSI: ffff8880306c2f98 RDI: ffff8880306c2440
+    RBP: ffffc90004830088 R08: 0000000000000000 R09: 0000000000000006
+    R10: ffffffff96e2dd27 R11: 0000000000000000 R12: dffffc0000000000
+    R13: ffff8880306c2f98 R14: 0000000000000008 R15: ffff8880306c2440
+    FS:  00007fedf3b6e6c0(0000) GS:ffff88806a900000(0000) knlGS:0000000000=
+000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: ffffc9000482ff48 CR3: 000000002c910000 CR4: 0000000000352ef0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Call Trace:
+     <#DF>
+     </#DF>
+     <TASK>
+     mark_usage kernel/locking/lockdep.c:4646 [inline]
+     __lock_acquire+0x906/0x3ce0 kernel/locking/lockdep.c:5156
+     lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5825
+     local_lock_acquire include/linux/local_lock_internal.h:29 [inline]
+     ___slab_alloc+0x123/0x1880 mm/slub.c:3695
+     __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3908
+     __slab_alloc_node mm/slub.c:3961 [inline]
+     slab_alloc_node mm/slub.c:4122 [inline]
+     kmem_cache_alloc_noprof+0x2a7/0x2f0 mm/slub.c:4141
+     radix_tree_node_alloc.constprop.0+0x1e8/0x350 lib/radix-tree.c:253
+     idr_get_free+0x528/0xa40 lib/radix-tree.c:1506
+     idr_alloc_u32+0x191/0x2f0 lib/idr.c:46
+     idr_alloc+0xc1/0x130 lib/idr.c:87
+     p9_tag_alloc+0x394/0x870 net/9p/client.c:321
+     p9_client_prepare_req+0x19f/0x4d0 net/9p/client.c:644
+     p9_client_zc_rpc.constprop.0+0x105/0x880 net/9p/client.c:793
+     p9_client_read_once+0x443/0x820 net/9p/client.c:1570
+     p9_client_read+0x13f/0x1b0 net/9p/client.c:1534
+     v9fs_issue_read+0x115/0x310 fs/9p/vfs_addr.c:74
+     netfs_retry_read_subrequests fs/netfs/read_retry.c:60 [inline]
+     netfs_retry_reads+0x153a/0x1d00 fs/netfs/read_retry.c:232
+     netfs_rreq_assess+0x5d3/0x870 fs/netfs/read_collect.c:371
+     netfs_rreq_terminated+0xe5/0x110 fs/netfs/read_collect.c:407
+     netfs_retry_reads+0x155e/0x1d00 fs/netfs/read_retry.c:235
+     netfs_rreq_assess+0x5d3/0x870 fs/netfs/read_collect.c:371
+     netfs_rreq_terminated+0xe5/0x110 fs/netfs/read_collect.c:407
+     netfs_retry_reads+0x155e/0x1d00 fs/netfs/read_retry.c:235
+     netfs_rreq_assess+0x5d3/0x870 fs/netfs/read_collect.c:371
+     ...
+     netfs_rreq_terminated+0xe5/0x110 fs/netfs/read_collect.c:407
+     netfs_retry_reads+0x155e/0x1d00 fs/netfs/read_retry.c:235
+     netfs_rreq_assess+0x5d3/0x870 fs/netfs/read_collect.c:371
+     netfs_rreq_terminated+0xe5/0x110 fs/netfs/read_collect.c:407
+     netfs_retry_reads+0x155e/0x1d00 fs/netfs/read_retry.c:235
+     netfs_rreq_assess+0x5d3/0x870 fs/netfs/read_collect.c:371
+     netfs_rreq_terminated+0xe5/0x110 fs/netfs/read_collect.c:407
+     netfs_dispatch_unbuffered_reads fs/netfs/direct_read.c:103 [inline]
+     netfs_unbuffered_read fs/netfs/direct_read.c:127 [inline]
+     netfs_unbuffered_read_iter_locked+0x12f6/0x19b0 fs/netfs/direct_read.=
+c:221
+     netfs_unbuffered_read_iter+0xc5/0x100 fs/netfs/direct_read.c:256
+     v9fs_file_read_iter+0xbf/0x100 fs/9p/vfs_file.c:361
+     do_iter_readv_writev+0x614/0x7f0 fs/read_write.c:832
+     vfs_readv+0x4cf/0x890 fs/read_write.c:1025
+     do_preadv fs/read_write.c:1142 [inline]
+     __do_sys_preadv fs/read_write.c:1192 [inline]
+     __se_sys_preadv fs/read_write.c:1187 [inline]
+     __x64_sys_preadv+0x22d/0x310 fs/read_write.c:1187
+     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+     do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    RIP: 0033:0x7fedf3bd4dd9
+    Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 8=
+9 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f=
+0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+    RSP: 002b:00007fedf3b6e168 EFLAGS: 00000246 ORIG_RAX: 0000000000000127
+    RAX: ffffffffffffffda RBX: 00007fedf3c5e318 RCX: 00007fedf3bd4dd9
+    RDX: 0000000000000001 RSI: 00000000200015c0 RDI: 0000000000000003
+    RBP: 00007fedf3c5e310 R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000000 R11: 0000000000000246 R12: 00007fedf3c5e31c
+    R13: 000000000000000b R14: 00007fffe9d355b0 R15: 00007fffe9d35698
+     </TASK>
+    =
 
-=============================================
+    Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+    Closes: https://syzkaller.appspot.com/bug?extid=3D1fc6f64c40a9d143cfb6
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    Suggested-by: Lizhi Xu <lizhi.xu@windriver.com> [2]
+    cc: Dominique Martinet <asmadeus@codewreck.org>
+    cc: Jeff Layton <jlayton@kernel.org>
+    cc: v9fs@lists.linux.dev
+    cc: netfs@lists.linux.dev
+    cc: linux-fsdevel@vger.kernel.org
+    Link: https://lore.kernel.org/r/20241108034020.3695718-1-lizhi.xu@wind=
+river.com/ [2]
 
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.12.0-next-20241128-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:234 [inline]
- watchdog+0xff6/0x1040 kernel/hung_task.c:397
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 7698 Comm: syz.5.407 Not tainted 6.12.0-next-20241128-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:check_preemption_disabled+0x2/0x120 lib/smp_processor_id.c:13
-Code: 8d 5f 8c 48 c7 c6 80 8d 5f 8c eb 1c 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 41 57 <41> 56 41 54 53 48 83 ec 10 65 48 8b 04 25 28 00 00 00 48 89 44 24
-RSP: 0018:ffffc9000478ee90 EFLAGS: 00000283
-RAX: 0000000000000001 RBX: 0000000000000000 RCX: ffffffff817aaec4
-RDX: 0000000000000000 RSI: ffffffff8c5f8d80 RDI: ffffffff8c5f8d40
-RBP: ffffc9000478f008 R08: ffffffff90199eb7 R09: 1ffffffff20333d6
-R10: dffffc0000000000 R11: fffffbfff20333d7 R12: 1ffff920008f1de0
-R13: dffffc0000000000 R14: 0000000000000000 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f71caed9d58 CR3: 0000000065d88000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- rcu_is_watching_curr_cpu include/linux/context_tracking.h:128 [inline]
- rcu_is_watching+0x15/0xb0 kernel/rcu/tree.c:737
- trace_lock_acquire include/trace/events/lock.h:24 [inline]
- lock_acquire+0xe3/0x550 kernel/locking/lockdep.c:5820
- rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- rcu_read_lock include/linux/rcupdate.h:849 [inline]
- page_ext_get+0x3d/0x2a0 mm/page_ext.c:525
- __page_table_check_zero+0xb1/0x350 mm/page_table_check.c:148
- page_table_check_free include/linux/page_table_check.h:41 [inline]
- free_pages_prepare mm/page_alloc.c:1128 [inline]
- free_unref_folios+0xf76/0x1a90 mm/page_alloc.c:2740
- folios_put_refs+0x76c/0x860 mm/swap.c:962
- folio_batch_release include/linux/pagevec.h:101 [inline]
- shmem_undo_range+0x64c/0x1cf0 mm/shmem.c:1040
- shmem_truncate_range mm/shmem.c:1152 [inline]
- shmem_evict_inode+0x29b/0xa80 mm/shmem.c:1280
- evict+0x4e8/0x9a0 fs/inode.c:796
- __dentry_kill+0x20d/0x630 fs/dcache.c:625
- dput+0x19f/0x2b0 fs/dcache.c:867
- __fput+0x5ba/0xa50 fs/file_table.c:458
- task_work_run+0x24f/0x310 kernel/task_work.c:239
- exit_task_work include/linux/task_work.h:43 [inline]
- do_exit+0xa2f/0x28e0 kernel/exit.c:938
- do_group_exit+0x207/0x2c0 kernel/exit.c:1087
- get_signal+0x16b2/0x1750 kernel/signal.c:3016
- arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0xce/0x340 kernel/entry/common.c:218
- do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fefa3180849
-Code: Unable to access opcode bytes at 0x7fefa318081f.
-RSP: 002b:00007fefa3eb0058 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: 0000000000010106 RBX: 00007fefa3346080 RCX: 00007fefa3180849
-RDX: 0000000000010106 RSI: 00000000200000c0 RDI: 0000000000000008
-RBP: 00007fefa31f3986 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000002 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fefa3346080 R15: 00007ffc05aa9138
- </TASK>
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 819c75233235..3bc9ce6c575e 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -57,6 +57,8 @@ static void v9fs_issue_write(struct netfs_io_subrequest =
+*subreq)
+ 	int err, len;
+ =
 
+ 	len =3D p9_client_write(fid, subreq->start, &subreq->io_iter, &err);
++	if (len > 0)
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	netfs_write_subrequest_terminated(subreq, len ?: err, false);
+ }
+ =
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+@@ -80,8 +82,10 @@ static void v9fs_issue_read(struct netfs_io_subrequest =
+*subreq)
+ 	if (pos + total >=3D i_size_read(rreq->inode))
+ 		__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
+ =
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-	if (!err)
++	if (!err) {
+ 		subreq->transferred +=3D total;
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
++	}
+ =
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+ 	netfs_read_subreq_terminated(subreq, err, false);
+ }
+diff --git a/fs/afs/write.c b/fs/afs/write.c
+index 34107b55f834..ccb6aa8027c5 100644
+--- a/fs/afs/write.c
++++ b/fs/afs/write.c
+@@ -122,7 +122,7 @@ static void afs_issue_write_worker(struct work_struct =
+*work)
+ 	if (subreq->debug_index =3D=3D 3)
+ 		return netfs_write_subrequest_terminated(subreq, -ENOANO, false);
+ =
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+-	if (!test_bit(NETFS_SREQ_RETRYING, &subreq->flags)) {
++	if (!subreq->retry_count) {
+ 		set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+ 		return netfs_write_subrequest_terminated(subreq, -EAGAIN, false);
+ 	}
+@@ -149,6 +149,9 @@ static void afs_issue_write_worker(struct work_struct =
+*work)
+ 	afs_wait_for_operation(op);
+ 	ret =3D afs_put_operation(op);
+ 	switch (ret) {
++	case 0:
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
++		break;
+ 	case -EACCES:
+ 	case -EPERM:
+ 	case -ENOKEY:
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 46ce3b7adf07..47ed3a5044e2 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -438,7 +438,7 @@ void netfs_read_subreq_progress(struct netfs_io_subreq=
+uest *subreq,
+ 	     rreq->origin =3D=3D NETFS_READPAGE ||
+ 	     rreq->origin =3D=3D NETFS_READ_FOR_WRITE)) {
+ 		netfs_consume_read_data(subreq, was_async);
+-		__clear_bit(NETFS_SREQ_NO_PROGRESS, &subreq->flags);
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	}
+ }
+ EXPORT_SYMBOL(netfs_read_subreq_progress);
+@@ -497,7 +497,7 @@ void netfs_read_subreq_terminated(struct netfs_io_subr=
+equest *subreq,
+ 		     rreq->origin =3D=3D NETFS_READPAGE ||
+ 		     rreq->origin =3D=3D NETFS_READ_FOR_WRITE)) {
+ 			netfs_consume_read_data(subreq, was_async);
+-			__clear_bit(NETFS_SREQ_NO_PROGRESS, &subreq->flags);
++			__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 		}
+ 		rreq->transferred +=3D subreq->transferred;
+ 	}
+@@ -511,10 +511,13 @@ void netfs_read_subreq_terminated(struct netfs_io_su=
+brequest *subreq,
+ 		} else {
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_short);
+ 			if (subreq->transferred > subreq->consumed) {
+-				__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-				__clear_bit(NETFS_SREQ_NO_PROGRESS, &subreq->flags);
+-				set_bit(NETFS_RREQ_NEED_RETRY, &rreq->flags);
+-			} else if (!__test_and_set_bit(NETFS_SREQ_NO_PROGRESS, &subreq->flags)=
+) {
++				/* If we didn't read new data, abandon retry. */
++				if (subreq->retry_count &&
++				    test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags)) {
++					__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
++					set_bit(NETFS_RREQ_NEED_RETRY, &rreq->flags);
++				}
++			} else if (test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags)) {
+ 				__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+ 				set_bit(NETFS_RREQ_NEED_RETRY, &rreq->flags);
+ 			} else {
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index 0350592ea804..0e72e9226fc8 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -56,6 +56,8 @@ static void netfs_retry_read_subrequests(struct netfs_io=
+_request *rreq)
+ 			if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
+ 				break;
+ 			if (__test_and_clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
++				__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
++				subreq->retry_count++;
+ 				netfs_reset_iter(subreq);
+ 				netfs_reissue_read(rreq, subreq);
+ 			}
+@@ -137,7 +139,8 @@ static void netfs_retry_read_subrequests(struct netfs_=
+io_request *rreq)
+ 			stream0->sreq_max_len =3D subreq->len;
+ =
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+ 			__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-			__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
++			__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
++			subreq->retry_count++;
+ =
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+ 			spin_lock_bh(&rreq->lock);
+ 			list_add_tail(&subreq->rreq_link, &rreq->subrequests);
+@@ -213,7 +216,6 @@ static void netfs_retry_read_subrequests(struct netfs_=
+io_request *rreq)
+ 			subreq->error =3D -ENOMEM;
+ 		__clear_bit(NETFS_SREQ_FAILED, &subreq->flags);
+ 		__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-		__clear_bit(NETFS_SREQ_RETRYING, &subreq->flags);
+ 	}
+ 	spin_lock_bh(&rreq->lock);
+ 	list_splice_tail_init(&queue, &rreq->subrequests);
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 82290c92ba7a..ca3a11ed9b54 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -179,7 +179,6 @@ static void netfs_retry_write_stream(struct netfs_io_r=
+equest *wreq,
+ 				struct iov_iter source =3D subreq->io_iter;
+ =
 
-If you want to undo deduplication, reply with:
-#syz undup
+ 				iov_iter_revert(&source, subreq->len - source.count);
+-				__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
+ 				netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
+ 				netfs_reissue_write(stream, subreq, &source);
+ 			}
+@@ -234,7 +233,7 @@ static void netfs_retry_write_stream(struct netfs_io_r=
+equest *wreq,
+ 			/* Renegotiate max_len (wsize) */
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
+ 			__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-			__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
++			subreq->retry_count++;
+ 			stream->prepare_write(subreq);
+ =
+
+ 			part =3D min(len, stream->sreq_max_len);
+@@ -279,7 +278,7 @@ static void netfs_retry_write_stream(struct netfs_io_r=
+equest *wreq,
+ 			subreq->start		=3D start;
+ 			subreq->debug_index	=3D atomic_inc_return(&wreq->subreq_counter);
+ 			subreq->stream_nr	=3D to->stream_nr;
+-			__set_bit(NETFS_SREQ_RETRYING, &subreq->flags);
++			subreq->retry_count	=3D 1;
+ =
+
+ 			trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
+ 					     refcount_read(&subreq->ref),
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index bf6d507578e5..ff0e82505a0b 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -244,6 +244,8 @@ void netfs_reissue_write(struct netfs_io_stream *strea=
+m,
+ 	iov_iter_advance(source, size);
+ 	iov_iter_truncate(&subreq->io_iter, size);
+ =
+
++	subreq->retry_count++;
++	__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+ 	netfs_do_issue_write(stream, subreq);
+ }
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index bd42a419458e..6cb1e81993f8 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1319,14 +1319,16 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 	}
+ =
+
+ 	if (rdata->result =3D=3D -ENODATA) {
+-		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 		rdata->result =3D 0;
++		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 	} else {
+ 		size_t trans =3D rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+ 		    rdata->subreq.start + trans =3D=3D ictx->remote_i_size) {
+-			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result =3D 0;
++			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
++		} else if (rdata->got_bytes > 0) {
++			__set_bit(NETFS_SREQ_MADE_PROGRESS, &rdata->subreq.flags);
+ 		}
+ 	}
+ =
+
+@@ -1670,10 +1672,13 @@ cifs_writev_callback(struct mid_q_entry *mid)
+ 		if (written > wdata->subreq.len)
+ 			written &=3D 0xFFFF;
+ =
+
+-		if (written < wdata->subreq.len)
++		if (written < wdata->subreq.len) {
+ 			result =3D -ENOSPC;
+-		else
++		} else {
+ 			result =3D written;
++			if (written > 0)
++				__set_bit(NETFS_SREQ_MADE_PROGRESS, &wdata->subreq.flags);
++		}
+ 		break;
+ 	case MID_REQUEST_SUBMITTED:
+ 	case MID_RETRY_NEEDED:
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 010eae9d6c47..458b53d1f9cb 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4615,6 +4615,7 @@ smb2_readv_callback(struct mid_q_entry *mid)
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result =3D 0;
+ 		}
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &rdata->subreq.flags);
+ 	}
+ 	trace_smb3_rw_credits(rreq_debug_id, subreq_debug_index, rdata->credits.=
+value,
+ 			      server->credits, server->in_flight,
+@@ -4840,10 +4841,12 @@ smb2_writev_callback(struct mid_q_entry *mid)
+ 		if (written > wdata->subreq.len)
+ 			written &=3D 0xFFFF;
+ =
+
+-		if (written < wdata->subreq.len)
++		if (written < wdata->subreq.len) {
+ 			wdata->result =3D -ENOSPC;
+-		else
++		} else if (written > 0) {
+ 			wdata->subreq.len =3D written;
++			__set_bit(NETFS_SREQ_MADE_PROGRESS, &wdata->subreq.flags);
++		}
+ 		break;
+ 	case MID_REQUEST_SUBMITTED:
+ 	case MID_RETRY_NEEDED:
+@@ -5012,7 +5015,7 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
+ 	}
+ #endif
+ =
+
+-	if (test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
++	if (wdata->subreq.retry_count > 0)
+ 		smb2_set_replay(server, &rqst);
+ =
+
+ 	cifs_dbg(FYI, "async write at %llu %u bytes iter=3D%zx\n",
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 5eaceef41e6c..4083d77e3f39 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -185,6 +185,7 @@ struct netfs_io_subrequest {
+ 	short			error;		/* 0 or error that occurred */
+ 	unsigned short		debug_index;	/* Index in list (for debugging output) */
+ 	unsigned int		nr_segs;	/* Number of segs in io_iter */
++	u8			retry_count;	/* The number of retries (0 on initial pass) */
+ 	enum netfs_io_source	source;		/* Where to read from/write to */
+ 	unsigned char		stream_nr;	/* I/O stream this belongs to */
+ 	unsigned char		curr_folioq_slot; /* Folio currently being read */
+@@ -194,14 +195,13 @@ struct netfs_io_subrequest {
+ #define NETFS_SREQ_COPY_TO_CACHE	0	/* Set if should copy the data to the =
+cache */
+ #define NETFS_SREQ_CLEAR_TAIL		1	/* Set if the rest of the read should be=
+ cleared */
+ #define NETFS_SREQ_SEEK_DATA_READ	3	/* Set if ->read() should SEEK_DATA f=
+irst */
+-#define NETFS_SREQ_NO_PROGRESS		4	/* Set if we didn't manage to read any =
+data */
++#define NETFS_SREQ_MADE_PROGRESS	4	/* Set if we transferred at least some=
+ data */
+ #define NETFS_SREQ_ONDEMAND		5	/* Set if it's from on-demand read mode */
+ #define NETFS_SREQ_BOUNDARY		6	/* Set if ends on hard boundary (eg. ceph =
+object) */
+ #define NETFS_SREQ_HIT_EOF		7	/* Set if short due to EOF */
+ #define NETFS_SREQ_IN_PROGRESS		8	/* Unlocked when the subrequest complet=
+es */
+ #define NETFS_SREQ_NEED_RETRY		9	/* Set if the filesystem requests a retr=
+y */
+-#define NETFS_SREQ_RETRYING		10	/* Set if we're retrying */
+-#define NETFS_SREQ_FAILED		11	/* Set if the subreq failed unretryably */
++#define NETFS_SREQ_FAILED		10	/* Set if the subreq failed unretryably */
+ };
+ =
+
+ enum netfs_io_origin {
+
