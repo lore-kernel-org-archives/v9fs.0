@@ -1,170 +1,128 @@
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848A8236FAA
-	for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 10:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C351C1F22
+	for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 20:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733911534; cv=none; b=Med5sfei/X3XfkJUGp4/hjyewfbRukw2ELuw81EHuCKSztbFQqgJ/84VGTUrPYLclChH5OvywTW/Gsm4FqY/tm6U5tyZiqBPEWftwFWwT0aTwCnI6Q+f+T24n/QdmI3r4e+sXxlG8Bfk0jC/LmvZlIsGA7nMFBOEMt48LtwV+qk=
+	t=1733947421; cv=none; b=M+aYX5fCXQfwu+Exuowndsv/Y0xHCfadI0jKW3vqgjuzaXx80400YfYIXK5VRMzA9FisD60macLo0vxaqDl4Kg2HlG+1YR+04WJ+YmmdcIn6/ITDKalciWLZuKeXUbdOS21+QipNQSrotS0ChT5k3ptIO5xiYpK2HiDixgF7Lg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733911534; c=relaxed/simple;
-	bh=4RaSPWsqIozi8X7ITG9ojS1avJvwd06g7NB7hXCUtvY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lbwC/ZWkoVHz9qkVjvos82Cq0oBywuYdNX7wQgUIUmFSYXI+v6oCZNeR8/hBY65DH4ksK8Bn4RzIyrIJkQNro2xhXLxE5Cloo6/4Y0dimZd3DtjQwO6ObmXCazDz+AWja/2gL8RjMhkwiTGTEbKFK35EQK4l/9zlSOZD9Ofe8wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-844c7998c63so185836839f.3
-        for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 02:05:32 -0800 (PST)
+	s=arc-20240116; t=1733947421; c=relaxed/simple;
+	bh=c+2c10RP4eGxCZIDeYuweNxkKIm5rRVnujDbzoBRRQI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lctoM4N7lcm6ZYW7jl5o4qzwzVcDffFXvi7oSwjSzpMKkuyx9hwxdGNH5gAUadxodukULkm51tnGi9NFG8bGQ/OmorILGKC8hMf7X8AkII6JQvImRFMEYPIEDjIoUP9X3IYBv6F2fASw/UOjXJWF0HeuDO3SLncEFJ9KILuKcw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKmvQJ6n; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKmvQJ6n"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7fc41b4c78bso4364278a12.3
+        for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 12:03:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733947419; x=1734552219; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjpNgAxO5KyvvV+aPXyUgI2o0mazz3K0LzFSUucmqIA=;
+        b=bKmvQJ6nZf0z08+JUDQNzih42QS6XXEosUcMJ253rueh0pL9SL5t7erzN32MM7vuzl
+         a/WsVp3NV3Cur1XPPNQ2OTgiGq/q63Ma7L/i4dWcwMAHaji7UDbG1urbyyGFIzJzdtYE
+         uDS7S3fOGMKlUdpn1mnqEtTYWFgJ3J0IL29nb9oZr5imnf6SblTGuSdjNePG0H5p0LCM
+         0H/o2wLfmE+06L+oOHOf5Hp7knHsHyH3kx0putEMX8r/cgeKD/4x0NsCDEF6i5CgGV+r
+         b9ic1skI1/hAKeag7yy3V6Iz0lD+2RHJnMMhcJn9wO9n2IMwF2oGWEpyNzNW005GNrq/
+         zxSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733911532; x=1734516332;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1v3I6zfzgXP0Ysga0Ll9bKQKdnSUtHzDJbNNRqSw5+4=;
-        b=jPloof+3zN/GvPETn4XkzcrknqswWAmh6TLu3LktZO5mwWEzK9oguPlySZbpc+ZqcP
-         /v8lfyjiJa45K7ngJ4a6+iBzEcll1JMaeLVg6k9cn6T8e1eUnHEBN91dDefwWXdGcsFX
-         4xes1lXvKxU9PFkgVGQQ0mP12va9RDtAnXKT1Rfbz2XoW173p8dJc5rTPvqiSzPLY8M4
-         HWZCGze0lQkHWboY69Z4PtIdganE3TVz4v/SrxuNp4Mh6i5FPppNuI4N3+fqNlqTd/gL
-         9XYuXZhoScFc86Oa6Yh4uyW3VTMSfQ4RcJ3XDGoLOONGbmellJgszLetKdKGNSh9mGhN
-         MsaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWuYR7RgYLO0yzQmJ35+eD/mT/Ge3tWwN9I0U9sIR/lQR89asq8sFPvrA29bQ9eSSV3WOpJ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9aSynXoJyEiaYkGgtsxQ7M/P5V9dGUDHA7KhxHntyYuwlqtk5
-	c1UmmYQQro5MqokU6IJoHEg0m5wGPLommtyoXHuTAr4r9/5Nq25RsdVdoc8shFT6qbC+63hC9OR
-	CMXQtNhPHOXGm0uC7nV63POFE/7W6oJdLAUoZq0AW38CL8MB3oK97rpE=
-X-Google-Smtp-Source: AGHT+IElOl1gHGvF3GIfVFdrI5o1zAlVuIxd/c9Lq8l+R5nhGOu9cpxuFrtqc2bTsRrWEWioxXBmzW4kks65UiiHKwKT7+dJTjIr
+        d=1e100.net; s=20230601; t=1733947419; x=1734552219;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zjpNgAxO5KyvvV+aPXyUgI2o0mazz3K0LzFSUucmqIA=;
+        b=KCOSxeEcrs+JEoQm5PkaFXMzIsNVfglzhLwkDOUozq5+UDQ1tZTG3ZM6g1TD16FzGk
+         Np5pLFULZ9Sw38nR+AXCiQl6b0EmXSxgmfLzm00b6cPOpndwNRGuVmGT1gNzsW7n64Ra
+         dFEQDPDHppTjudUhD+v8G4aHVrgvPk+b12UKfSo8BNVTAq92Pj2K+Cz7n25dstGd4Ba3
+         Gse20mICZ7dVM7zm81PBsGRH3qawU38gvFqqgvn/h0TnSNqhHrAkDw/vROW2bzx1p3Mk
+         76wTrKMF4nxFICfGbPiGAiMgQrnfKo7iWh2CMBKnVuwnotw1Bdobih0SgcucTMkJCoWT
+         Lclw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvcagHxjoQX94YIi0PkQYDZHUUANk9zNaCWBiCmf22ayC1/uy6hM7HIjIR6TeePlymKdCK@lists.linux.dev
+X-Gm-Message-State: AOJu0YzO9eU3lZWlBrESxcM9GyIVhrXoIYD7PQAxDK7OBctNPhWXcuJ7
+	wU1VU1I2gmlcyR4n+n2B+dkQMKCmFT0eOS2BX37nFtCMRU5ClK4e
+X-Gm-Gg: ASbGncsZ8tHJj0Cgi2y7MhzVdZEN4s2gV/liGot1hmSDeyi1OL3srUipPcr8YwYFwnx
+	dlJ8HYBohjy2HwsyoNV/ETKBpUK/Ruphx3XIdLtWOF53ZtMXcpvIeThkWaXHDbXakUsYddHYrIi
+	3Txgzc8QeU+cj0lmdEJ6T7X8EpoqaT7bUiXBibewDWzgLeibe8tnJg2U+0R8L4EbnICc4D0zwgO
+	KPxiNPsdQUy7bfhXTo6UjCQqADs+Qz2YyGwomukNHUw84bX8nqGf8tsVUofVji4uJJHnA==
+X-Google-Smtp-Source: AGHT+IFkpFW//odQIKH7vFlXlfPhvueJRWLMq59qElOmOHMBZNOyfMpmd6lTVOFk+xCH3IcDg/u63A==
+X-Received: by 2002:a17:90b:1c87:b0:2ee:aa28:79aa with SMTP id 98e67ed59e1d1-2f127f7e587mr6242980a91.6.1733947418716;
+        Wed, 11 Dec 2024 12:03:38 -0800 (PST)
+Received: from tc.hsd1.or.comcast.net ([2601:1c2:c104:170:a69f:44ab:93c9:b027])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd4757691dsm6158725a12.18.2024.12.11.12.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 12:03:38 -0800 (PST)
+From: Leo Stone <leocstone@gmail.com>
+To: syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com
+Cc: asmadeus@codewreck.org,
+	ericvh@gmail.com,
+	ericvh@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	syzkaller-bugs@googlegroups.com,
+	torvalds@linux-foundation.org,
+	v9fs-developer@lists.sourceforge.net,
+	v9fs@lists.linux.dev,
+	viro@zeniv.linux.org.uk,
+	Leo Stone <leocstone@gmail.com>
+Subject: Re: WARNING in __alloc_frozen_pages_noprof
+Date: Wed, 11 Dec 2024 12:02:40 -0800
+Message-ID: <20241211200240.103853-1-leocstone@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <675963eb.050a0220.17f54a.0038.GAE@google.com>
+References: <675963eb.050a0220.17f54a.0038.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1648:b0:3a6:b783:3c06 with SMTP id
- e9e14a558f8ab-3aa08f669c9mr30078905ab.19.1733911531791; Wed, 11 Dec 2024
- 02:05:31 -0800 (PST)
-Date: Wed, 11 Dec 2024 02:05:31 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <675963eb.050a0220.17f54a.0038.GAE@google.com>
-Subject: [syzbot] [v9fs?] WARNING in __alloc_frozen_pages_noprof
-From: syzbot <syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@gmail.com, ericvh@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	torvalds@linux-foundation.org, v9fs-developer@lists.sourceforge.net, 
-	v9fs@lists.linux.dev, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+syzbot creates a pipe and writes some data to it. It then creates a v9fs
+mount using the pipe as transport. The data in the pipe specifies an ACL
+of size 9 TB (9895604649984 bytes) for the root inode, causing kmalloc
+to fail.
 
-syzbot found the following issue on:
+KMALLOC_MAX_SIZE is probably too loose of an upper bound for the size of
+an ACL, but I didn't see an existing limit for V9FS like in e.g. NFS:
 
-HEAD commit:    af2ea8ab7a54 Add linux-next specific files for 20241205
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=1369fde8580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=76f158395f6f15fd
-dashboard link: https://syzkaller.appspot.com/bug?extid=03fb58296859d8dbab4d
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15070820580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16e870f8580000
+include/linux/nfsacl.h:
+>/* Maximum number of ACL entries over NFS */
+>#define NFS_ACL_MAX_ENTRIES     1024
+>
+>#define NFSACL_MAXWORDS         (2*(2+3*NFS_ACL_MAX_ENTRIES))
+>#define NFSACL_MAXPAGES         ((2*(8+12*NFS_ACL_MAX_ENTRIES) + PAGE_SIZE-1) \
+>                                 >> PAGE_SHIFT)
+>        
+>#define NFS_ACL_MAX_ENTRIES_INLINE      (5)
+>#define NFS_ACL_INLINE_BUFSIZE  ((2*(2+3*NFS_ACL_MAX_ENTRIES_INLINE)) << 2)
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/8af0861258fa/disk-af2ea8ab.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ffb38cf7a344/vmlinux-af2ea8ab.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6fbd2e50358a/bzImage-af2ea8ab.xz
-
-The issue was bisected to:
-
-commit 3a34b13a88caeb2800ab44a4918f230041b37dd9
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri Jul 30 22:42:34 2021 +0000
-
-    pipe: make pipe writes always wake up readers
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10759c0f980000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12759c0f980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14759c0f980000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com
-Fixes: 3a34b13a88ca ("pipe: make pipe writes always wake up readers")
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5830 at mm/page_alloc.c:4728 __alloc_frozen_pages_noprof+0x3c5/0x710 mm/page_alloc.c:4728
-Modules linked in:
-CPU: 0 UID: 0 PID: 5830 Comm: syz-executor405 Not tainted 6.13.0-rc1-next-20241205-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:__alloc_frozen_pages_noprof+0x3c5/0x710 mm/page_alloc.c:4728
-Code: ff df 0f 85 09 01 00 00 44 89 e9 81 e1 7f ff ff ff a9 00 00 04 00 41 0f 44 cd 41 89 cd e9 f9 00 00 00 c6 05 87 3a 0c 0e 01 90 <0f> 0b 90 41 83 fc 0a 0f 86 13 fd ff ff 45 31 e4 48 c7 44 24 20 0e
-RSP: 0018:ffffc90003e8f940 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: dffffc0000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90003e8f9c8
-RBP: ffffc90003e8fa50 R08: ffffc90003e8f9c7 R09: 0000000000000000
-R10: ffffc90003e8f9a0 R11: fffff520007d1f39 R12: 0000000000000020
-R13: 0000000000040d40 R14: 1ffff920007d1f30 R15: 1ffff920007d1f2c
-FS:  0000555587715480(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020001000 CR3: 000000003352e000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __alloc_pages_noprof+0xa/0x30 mm/page_alloc.c:4786
- __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
- alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
- ___kmalloc_large_node+0x8b/0x1d0 mm/slub.c:4228
- __kmalloc_large_node_noprof+0x1a/0x80 mm/slub.c:4255
- __do_kmalloc_node mm/slub.c:4271 [inline]
- __kmalloc_noprof+0x339/0x4c0 mm/slub.c:4295
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1037 [inline]
- v9fs_fid_get_acl+0x4f/0x100 fs/9p/acl.c:32
- __v9fs_get_acl fs/9p/acl.c:66 [inline]
- v9fs_get_acl+0x96/0x350 fs/9p/acl.c:92
- v9fs_qid_iget_dotl fs/9p/vfs_inode_dotl.c:131 [inline]
- v9fs_inode_from_fid_dotl+0x22d/0x2c0 fs/9p/vfs_inode_dotl.c:154
- v9fs_get_new_inode_from_fid fs/9p/v9fs.h:251 [inline]
- v9fs_mount+0x718/0xa90 fs/9p/vfs_super.c:142
- legacy_get_tree+0xee/0x190 fs/fs_context.c:662
- vfs_get_tree+0x90/0x2b0 fs/super.c:1814
- do_new_mount+0x2be/0xb40 fs/namespace.c:3507
- do_mount fs/namespace.c:3847 [inline]
- __do_sys_mount fs/namespace.c:4057 [inline]
- __se_sys_mount+0x2d6/0x3c0 fs/namespace.c:4034
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f05fcd17de9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc85e9b418 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f05fcd17de9
-RDX: 0000000020000b80 RSI: 00000000200003c0 RDI: 0000000000000000
-RBP: 000000000000ec55 R08: 0000000020000580 R09: 00007ffc85e9b450
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc85e9b450
-R13: 00007ffc85e9b43c R14: 431bde82d7b634db R15: 00007f05fcd60087
- </TASK>
-
+#syz test
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/9p/acl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+diff --git a/fs/9p/acl.c b/fs/9p/acl.c
+index eed551d8555f..1b9681d58f8d 100644
+--- a/fs/9p/acl.c
++++ b/fs/9p/acl.c
+@@ -28,6 +28,8 @@ static struct posix_acl *v9fs_fid_get_acl(struct p9_fid *fid, const char *name)
+ 		return ERR_PTR(size);
+ 	if (size == 0)
+ 		return ERR_PTR(-ENODATA);
++	if (size > KMALLOC_MAX_SIZE)
++		return ERR_PTR(-ERANGE);
+ 
+ 	value = kzalloc(size, GFP_NOFS);
+ 	if (!value)
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
