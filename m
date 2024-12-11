@@ -1,109 +1,80 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31001BD9C6
-	for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 21:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537F5195;
+	Wed, 11 Dec 2024 22:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733953425; cv=none; b=m3rWhy9D3N2G5zMxW0krP8z+dVvEmfnwEMrmjRUzDBEBlZb/tYZMYSagUWyjM5WlAz0UMOwcpwBMaXVqjQ+XAQWmMUGhKmtX7GFjn/r79vpxDiFhVYtxv5s9/bPue/k0Q5pPpJMlwbrmyCzhPoJUMufOANtcsPHG7FOC7w1VFZQ=
+	t=1733957708; cv=none; b=bB7GXalZFCC85azauN9L8WBkqfkuCFasphMYF1kml5poNrlyXJhehU/m/oAAOdgEanzyEDbQBlBtS1cEKRiCnVjy8w+ylIXI0E8X0vjBhCrL8N3Y/6//tGm5hb+cpTk7bQfoFwpjVvr0ESFvzKAxW5YWchHuxI2I2s8PTgEO5nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733953425; c=relaxed/simple;
-	bh=B6dLX0PCMF6LNXVlJ1hYteBUz0wRZO8TkeZkHqtFabo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C3BrCWwpkT2Ka/WPFMy2PYF0RRsWVoBDSTkTUMQg0WJjldWCZ5LYcRIN8WaGrDptsBb7hNUF9EZpK7DsVs3w3/6mNplbq6m35EWml5anrJ9YMUXlGsSYsH89gvZheoZaywQpmKwnG0227mb57anF/uUqJWQBCP4U+ZzeNMe9E4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UDU/9XLB; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733957708; c=relaxed/simple;
+	bh=qnUxwhAfYS+RMxLm+6NnfLRtf/G7InWbohQJsC12Kog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dm4pk14wD5HtN/RXH2BaqcPI4MkmUGw0wNDQaL4jqz5mbE3v75tbrKDim/2b/DSXamV7krOSkQX3R8OHriDb//IWClu++yDU1HJoAHnUglRYAb/eAQ+0fzpZiH16oFUJS+8wgJw2NdRF+aO7eFcmKb5kkc3falD/Vfat+K5D1Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=VrtgWFXf; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UDU/9XLB"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa1e6ecd353so1161109566b.1
-        for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 13:43:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733953422; x=1734558222; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jANBAEDCtSv3pwk6q4Vw8RKGkd4R1NtNTLdDCiJ5iYA=;
-        b=UDU/9XLB7dmqX5NAOYbchZaPOZIeD1RXYSVf+PaMyZB5vVCgRIHRKmLyEBXyWu1m/9
-         +SIwkti+YJt2EVRcrRC3SW6WuCmQhfudWplIDTPUM2glzSdXj/nKNU61MBWQE7GUED5Z
-         rqIRJAaMyBZhf1ShJz5cx1ZZKjeIfcDDgknh2JZeUQUACTMJINHwTNzTDBZXnpZKK2l4
-         DwGxLSUsvh97UfzzuZd+7hfiwf60ivkXVmVUD25qoeM3zvGqIMsHPqsbvlC16U1BXGIj
-         DOfC97xm9WdTswZlxJZDKWbA/UIwcUXxTFCdTPwQsZaVSzsyO604KceYsbluvrs0Js6a
-         1I2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733953422; x=1734558222;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jANBAEDCtSv3pwk6q4Vw8RKGkd4R1NtNTLdDCiJ5iYA=;
-        b=iS9XYHDY3coMii6weLWp6LTWrtyqzcw9Vm60OpD4zTZ1huchkPfKKxWAU8YGODEe7l
-         8jmjkJjtxQi3xhcHKNZk+GC3C5ztuyuiX28BtNUqedTMdS0svw8nf6lQzgSVphQTYacl
-         o4kdtfwN+6Oz7jHxhzf2P4SOmIcbL0dvyv6V9p/Dejkh6ZhuZKxRr9QVYPn6HlwxMe/c
-         wWmhm30fFqM7eOD7n5n8w0kKUPIgTja4l8Er5A4Mj1ziawJ20mI4fVqXzjp3CAS+Oxak
-         etaRcKPbKeg+acn2ZiSGn4+TaF+3PyFzX0YKcZmQIfBA5/kv4+FXYNqFI/tXK27O07DP
-         Bp8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXNlpQgjKRAzO9UOdhRt5dd3pY6IazUU6N4qOhE4vJTyxtiicPlMlpuXitdCTXNkS7meUV/@lists.linux.dev
-X-Gm-Message-State: AOJu0YwTUIKgi9zsmKJm3ecSaGHv+2zMqJiK/tovws+Z9NTXeJ/DRR1j
-	Qk/GXVUFm7wZONXmGgMENgs+3+I6G4wOeZ5pICgjOajO00rKyYof
-X-Gm-Gg: ASbGncsK9oB9o1Lg0UlLOnuKjmSqTWfxYailPZww/98P32Pdr/2UsGcRYAEz6Q3ETST
-	qz3H0T05rE3IC9n0dUk2PRwvex37trTcxfbNReXRXzoJOaCtn1LKnEVmA6DWJwRjw3GwtQVAtD7
-	Yh/yTUuSfyCP/HaOP/ikXsYl1A9G4bsHWfAUV/3wAnObCAooKjOLIEV7VTDWtD6/FMP0h2RqfY4
-	7GJB28lwOqZu8p+mc9ZEsR5pjWYJlp+79J/9LC4eBCcgf04gMwTA2s7uDRE0+ZfK8rm4SGvalN0
-	hd4nww==
-X-Google-Smtp-Source: AGHT+IHBaSDKbo7EyeuaVv+rCE+2o82gIsnu/jmJ9j1vGzncTgHiyB1QwqkT1BK6tAWSzDDQjpG1mw==
-X-Received: by 2002:a05:6402:4583:b0:5d0:8f1c:d9d7 with SMTP id 4fb4d7f45d1cf-5d4330358cbmr11222914a12.4.1733953422181;
-        Wed, 11 Dec 2024 13:43:42 -0800 (PST)
-Received: from [192.168.178.20] (dh207-42-21.xnet.hr. [88.207.42.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6a394d380sm304768966b.77.2024.12.11.13.43.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Dec 2024 13:43:40 -0800 (PST)
-Message-ID: <f09bbd18-98bf-4424-9a7e-c5477c52a771@gmail.com>
-Date: Wed, 11 Dec 2024 22:42:39 +0100
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="VrtgWFXf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wLSQMomPRMXyfjszmpA4ht39gCFf4uc3967U/zFycPw=; b=VrtgWFXfzcyrbdrF2pQHjgAYO3
+	LSUn9mJzbNaEwCahXLxa41HhBaTVnJzKSngcc9S3Eu5+WO4BbOXqsITpTgtqJp559PLUiYRsrduj0
+	zeHJKGMTadQvsJnGZKVB9XmeJTwVvOTzq6ubxxzuMr8nuj++8SVTVCu8JaFYwqOXRH9RKDZqFTY0E
+	BQUlY7h3X3whyA/1l5JxnAkzCDq1IMUFTzN7ia+3Oi+dp1X6LtcKwXtLKN3rymurSsDJSOm9sn25r
+	aObCiZ7do6EUhn391snpvCQaEMW0MFFNC7MSblPLtNdrpBnYyJvJHTdeamlQSM3vjfwTVYo5xweCp
+	XjdciA5g==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tLVbg-00000007N6B-1fyc;
+	Wed, 11 Dec 2024 22:55:00 +0000
+Date: Wed, 11 Dec 2024 22:55:00 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: asmadeus@codewreck.org, Leo Stone <leocstone@gmail.com>,
+	syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com,
+	ericvh@gmail.com, ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com,
+	v9fs-developer@lists.sourceforge.net, v9fs@lists.linux.dev,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Seth Forshee <sforshee@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: Alloc cap limit for 9p xattrs (Was: WARNING in
+ __alloc_frozen_pages_noprof)
+Message-ID: <20241211225500.GH3387508@ZenIV>
+References: <675963eb.050a0220.17f54a.0038.GAE@google.com>
+ <20241211200240.103853-1-leocstone@gmail.com>
+ <Z1n-Ue19Pa_AWVu0@codewreck.org>
+ <CAHk-=wiH+FmLBGKk86ung9Qbrwd0S-7iAnEAbV9QDvX5vAjL7A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] net/9p/usbg: fix handling of the failed kzalloc()
- memory allocation
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>
-References: <20241109211840.721226-2-mtodorovac69@gmail.com>
- <ZzhXCi_0m3X2AHpJ@codewreck.org>
-Content-Language: en-US
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
-In-Reply-To: <ZzhXCi_0m3X2AHpJ@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiH+FmLBGKk86ung9Qbrwd0S-7iAnEAbV9QDvX5vAjL7A@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi,
-
-On 11/16/24 09:25, Dominique Martinet wrote:
-> Mirsad Todorovac wrote on Sat, Nov 09, 2024 at 10:18:41PM +0100:
->> On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
->> following error report:
->>
->> ./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
->> NULL not ERR_PTR on failure
->>
->> kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
+On Wed, Dec 11, 2024 at 01:32:26PM -0800, Linus Torvalds wrote:
+> On Wed, 11 Dec 2024 at 13:04, <asmadeus@codewreck.org> wrote:
+> >
+> > Christian Schoenebeck's suggestion was something like this -- I guess
+> > that's good enough for now and won't break anything (e.g. ACLs bigger
+> > than XATTR_SIZE_MAX), so shall we go with that instead?
 > 
-> Thank you, I've taken this in 9p-next and will submit it to Linus next
-> cycle
+> Please use XATTR_SIZE_MAX. The KMALLOC_MAX_SIZE limit seems to make no
+> sense in this context.
+> 
+> Afaik the VFS layer doesn't allow getting an xattr bigger than
+> XATTR_SIZE_MAX anyway, and would return E2BIG for them later
+> regardless, so returning anything bigger wouldn't work anyway, even if
+> p9 tried to return such a thing up to some bigger limit.
 
-Hi, Dominique,
-
-Sorry for the late reply, but yes, it is perfectly OK for the patch to go with the
-next cycle.
-
-I confirm I can see the commit in the torvalds tree, so this is a minor patch (+2/-2 lines),
-but a proof of concept that it can be done.
-
-Best regards,
-Mirsad Todorovac
-
+E2BIG on attempt to set, quiet cap to XATTR_SIZE_MAX on attempt to get
+(i.e. never asking more than that from fs) and if filesystem complains
+about XATTR_SIZE_MAX not being enough, E2BIG it is (instead of ERANGE
+normally expected on "your buffer is too small for that").
