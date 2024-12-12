@@ -1,127 +1,91 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9BC1096F
-	for <v9fs@lists.linux.dev>; Thu, 12 Dec 2024 00:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049C9204C28;
+	Thu, 12 Dec 2024 10:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733962916; cv=none; b=TX4nMFPyFH55j59Ws4sU7PBmukgQQSv8ebRQUdx4ydPgKkO5k/vEQ6HGJyC59EHW05j8nbZzGADUwXpxlWQCVIimayQTXQXBma4ex0Y6qu7DUqbqD6dyIs56NgIE3uhxNjLNtgvIsXnm7CtUldhSQqK2OC6f2xCdnifjpj0pRWU=
+	t=1734000254; cv=none; b=oozGotT67tbUWf62dw8rNX3E7hMZLNZVQQgtM3WEDnZNInDAjLC6bjqghO7FNyTLz22MGZRzU99naw0k7oWP5TPd0mfHuByROj8OSNWHsGGnag8TTHVAuGDCEEmf2P6aYZOcNwzyHkzkbRGk0r7eAPDG7mIcCBZ2hyiIl8op9Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733962916; c=relaxed/simple;
-	bh=uln1aLpbwm/yBjgvBJAUrJVEanXA3yCbq8lbO5GlSlE=;
+	s=arc-20240116; t=1734000254; c=relaxed/simple;
+	bh=CFrVkfQT2FWtC5+zZrjCm6/H5WOJhaB5szdgEdMyzz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUGAyk38nrwp4C/MYI2Dc5eV+JKpp0DqsEfoqZ1ClW+9ma4EpSAlGWulwC7r2POGZVSIqIEgerDvUHWMOB75MBA3ez6k81eihny91TgTuMNPehztZJ64ziLqHxV/WYyAWpDlv6FoE6Ble1DhrJCQTVhU6YbRRdXBcd+xdlUyTio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HVRxpVPy; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=JnjNFwcYR8/jZbpw8/pq9QCGR1+KtZyD9Fe9P0WvNV8ImKonk6ReAtMjadq3nOuu0RWz71XpBJLjMnfSd0pT86jfbE+8FZsRdyV/eA67eEMdUlNmHcqFyQn5iw2foEXGW3J8k7+V7wjRYuFSc1clU4wxP9nMx8OefbpOtcnXFoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=a7PFC7o6; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HVRxpVPy"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7fd377ff3c5so1056019a12.0
-        for <v9fs@lists.linux.dev>; Wed, 11 Dec 2024 16:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733962914; x=1734567714; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3bketrtpeW6UKdUyWO3MVWt53PVBe2dVx+Pr4cx7LBI=;
-        b=HVRxpVPy6TxcGPfDYBBb5X0x5qs/r8zjDgGSxQyfZy+V48beEpGnbA0iJrkDGgR66W
-         kLUJeWg0oLn/KNU+4vEOlY5gtlKPv+zMLFyiIu39KwztempctIdBxs9cTDywhGjcpcUk
-         mN/X/07vYyqtuBjPwNop+RozWV3pr42JO3QhJu4b4HmGL7CMVU5/qGzBtxCa2iFp3HD/
-         PwgercNw/sECC8smTgIBEmYfjQIGW3EyRvwP5fL2ajDn+tagHvUZ3+aFst8dILFJF1KY
-         YHma3mJf4Thi+8vJQY5uIYHHqr/7DGQV5772KLxGSN1qwtBBvlDxZi7WSUG41NhJpIlE
-         yeWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733962914; x=1734567714;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3bketrtpeW6UKdUyWO3MVWt53PVBe2dVx+Pr4cx7LBI=;
-        b=fbL3z4ikDMKRqXiGZJcEr1twz3ySEXZKrk971KITI5xZLSx5T8uGAWEs+cTHtePbma
-         iPXiZFEUYMCcawA1Abm9YLDP34AlDckeXzKIozcwKQ7g6DIddpLsthcJwlUp0Up9J3Ty
-         kgqjOe5rOmMRxnLIGQJdwIkS6XZlwviaqZL7w0tMjjVqe6i8Dzwg76aAKuMV/uoDIRQJ
-         ZAxLNlsK3arQXfmiAqR+R7DGqbVWadiRua1YK7SAONR0Qtsdt60gULkU2EopNrzh/fDe
-         KYpBCbWfCLamuAKbHycUYc//iFbRMvq2ObrzvIh+cLitOxpyG55bE1hmlOZ63gpZs7xK
-         P5Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVR1HzFTpkCi2YQP6kPrz8eGbVVwK+oPb7G6CtzslxZSkxIZKIuLqIAOLyShRXzO2heOoX8@lists.linux.dev
-X-Gm-Message-State: AOJu0YwHfcLYZyQcgOSvrLFGonjk+wGnbODCDwKGyJuhUD0MiriG9dDB
-	9YvyebJS3Gz/5T2gJvNckAsvrrQbHWMXQqrRLtI01Ud0vV6hI3/11gb26PHunD8=
-X-Gm-Gg: ASbGncuwjj9/F2EKJ3GChuMZeZS6fHq7nW3v/uBAothHwuNRiIKTI6K+0F7NG/ddUKh
-	BiMmrbdOdVD2ZbrsyrUKO6nvMEiDd2ykxHfzIiEo7w5DvMkYPC/5Vi8TS+/IcG6N0qaCTo2OWx1
-	3O8qbDUrV7dmt8ZgikxVWXcIDDCKVFIaDMt/j5f0G+bY5F0Q8Fw1qmd5Sskgryf+0ISj4oqaBQ6
-	0SnUNhptHJSlC9obULdvxtsyZUIahbOVrQQ4IhbzKSEtbdcKnMuBeIIUEI+mgQPHS4W+SEV
-X-Google-Smtp-Source: AGHT+IEIh2pxGWlSntUWbdtNDDz1buQFg4Adw/CcEXsV5276tbuH02ZNbu5Nd1bQ7IEod2fpr1de0Q==
-X-Received: by 2002:a17:90b:38cb:b0:2ef:83df:bb3b with SMTP id 98e67ed59e1d1-2f13aba96a6mr1882157a91.8.1733962914123;
-        Wed, 11 Dec 2024 16:21:54 -0800 (PST)
-Received: from tc.hsd1.or.comcast.net ([2601:1c2:c104:170:a69f:44ab:93c9:b027])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef8d84224bsm8241413a91.42.2024.12.11.16.21.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 16:21:53 -0800 (PST)
-From: Leo Stone <leocstone@gmail.com>
-To: syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com
-Cc: asmadeus@codewreck.org,
-	ericvh@gmail.com,
-	ericvh@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com,
-	lucho@ionkov.net,
-	syzkaller-bugs@googlegroups.com,
-	torvalds@linux-foundation.org,
-	v9fs-developer@lists.sourceforge.net,
-	v9fs@lists.linux.dev,
-	viro@zeniv.linux.org.uk,
-	Leo Stone <leocstone@gmail.com>
-Subject: [PATCH] 9p: Limit xattr size to XATTR_SIZE_MAX
-Date: Wed, 11 Dec 2024 16:20:22 -0800
-Message-ID: <20241212002022.209049-1-leocstone@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <675963eb.050a0220.17f54a.0038.GAE@google.com>
-References: <675963eb.050a0220.17f54a.0038.GAE@google.com>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="a7PFC7o6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=0pBBMlpWw78z8gxF0nm1mH/ofBxxUMEFQEaNd51NMN4=; b=a7PFC7o6hws+u+0cwhcXO7kR/b
+	tB/tueVrn4mjzB3aGr1q9FSamGxeUK6RIOdsi2HA7Dd98sm6k2Cpum7T75L9f8Aon4G0TAKxytxyV
+	CrfbZL4faKL4J0nzy2FNbTH9Dp3dknvDdtmQJX1xI1mVLvSr7ZqlzsWE05CxMweSppT7YcNpUW75e
+	YGImZMCzoTS3oQfotCodbLml6ziYXbVI5fLgZZMWqTLwX82GaZqb70a7Gn5GkGI6CABYP2i3o4gqL
+	bt1TUDkLIZF+E74BUAhGof7YHaFlTpmpm1PgqHL0Ne1Ph5bRzNnr63xOB1KEtRtpFyeZOa+PhgBll
+	XXT9G7f2kGgaXNV+iIJMH5F4RmH+MRjQQj15HPcEbhgo7XtE2LG/8MXmc3vyRcog+irz3zkWVBAG6
+	B6H8x4ISBFuoFNhH8biyMkGQBhufQtrWTZnGBd3q/Hpbg1wlyeUCciJ+btzobPqUSJdY7bI4igTbP
+	1vrGxLLDvUZrnRDDA3t4xzeFebhjIh2KhLxiihULMlG/HfJIZfzga8YbqlLstsO2rQEvq1AQKRT8D
+	/f8G7ObtJXAaSHiXVJ/MdjZMSoiK+AQL7LU9//TGSbRkieXX7pzHdef2XIFBE0MrkN4yQmvoit9AU
+	VcBrSOpDNplbYcaOspPsDTnlqM7Zzm8gxee/DJVwc=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>
+Cc: asmadeus@codewreck.org, Leo Stone <leocstone@gmail.com>,
+ syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com, ericvh@gmail.com,
+ ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lucho@ionkov.net,
+ syzkaller-bugs@googlegroups.com, v9fs-developer@lists.sourceforge.net,
+ v9fs@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+ Seth Forshee <sforshee@kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject:
+ Re: Alloc cap limit for 9p xattrs (Was: WARNING in
+ __alloc_frozen_pages_noprof)
+Date: Thu, 12 Dec 2024 11:17:06 +0100
+Message-ID: <2475109.TFnaqUCzQF@silver>
+In-Reply-To: <20241211225500.GH3387508@ZenIV>
+References:
+ <675963eb.050a0220.17f54a.0038.GAE@google.com>
+ <CAHk-=wiH+FmLBGKk86ung9Qbrwd0S-7iAnEAbV9QDvX5vAjL7A@mail.gmail.com>
+ <20241211225500.GH3387508@ZenIV>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-syzbot triggered a warning in kmalloc by trying to mount a v9fs
-filesystem from a pipe, after specifying an ACL size of 9TB for the
-root inode in the data written to the pipe.
+On Wednesday, December 11, 2024 11:55:00 PM CET Al Viro wrote:
+> On Wed, Dec 11, 2024 at 01:32:26PM -0800, Linus Torvalds wrote:
+> > On Wed, 11 Dec 2024 at 13:04, <asmadeus@codewreck.org> wrote:
+> > >
+> > > Christian Schoenebeck's suggestion was something like this -- I guess
+> > > that's good enough for now and won't break anything (e.g. ACLs bigger
+> > > than XATTR_SIZE_MAX), so shall we go with that instead?
+> > 
+> > Please use XATTR_SIZE_MAX. The KMALLOC_MAX_SIZE limit seems to make no
+> > sense in this context.
+> > 
+> > Afaik the VFS layer doesn't allow getting an xattr bigger than
+> > XATTR_SIZE_MAX anyway, and would return E2BIG for them later
+> > regardless, so returning anything bigger wouldn't work anyway, even if
+> > p9 tried to return such a thing up to some bigger limit.
+> 
+> E2BIG on attempt to set, quiet cap to XATTR_SIZE_MAX on attempt to get
+> (i.e. never asking more than that from fs) and if filesystem complains
+> about XATTR_SIZE_MAX not being enough, E2BIG it is (instead of ERANGE
+> normally expected on "your buffer is too small for that").
 
-An xattr larger than XATTR_SIZE_MAX is considered invalid by the VFS
-layer anyway. See do_getxattr():
->        } else if (error == -ERANGE && ctx->size >= XATTR_SIZE_MAX) {
->                /* The file system tried to returned a value bigger
->                   than XATTR_SIZE_MAX bytes. Not possible. */
->                error = -E2BIG;
->        }
+So that cap is effective even if that xattr does not go out to user space?
 
-Reported-by: syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=03fb58296859d8dbab4d
-Fixes: ebf46264a004 ("fs/9p: Add support user. xattr") 
-Signed-off-by: Leo Stone <leocstone@gmail.com>
----
-See: https://lore.kernel.org/all/675963eb.050a0220.17f54a.0038.GAE@google.com/T/ 
----
- fs/9p/xattr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I mean the concern I had was about ACLs on guest, which are often mapped with 
+9p to xattr on host and can become pretty big. So these were xattr not 
+directly exposed to guest's user space.
 
-diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
-index 8604e3377ee7..97f60b73bf16 100644
---- a/fs/9p/xattr.c
-+++ b/fs/9p/xattr.c
-@@ -37,8 +37,8 @@ ssize_t v9fs_fid_xattr_get(struct p9_fid *fid, const char *name,
- 	if (attr_size > buffer_size) {
- 		if (buffer_size)
- 			retval = -ERANGE;
--		else if (attr_size > SSIZE_MAX)
--			retval = -EOVERFLOW;
-+		else if (attr_size > XATTR_SIZE_MAX)
-+			retval = -E2BIG;
- 		else /* request to get the attr_size */
- 			retval = attr_size;
- 	} else {
--- 
-2.43.0
+/Christian
+
 
