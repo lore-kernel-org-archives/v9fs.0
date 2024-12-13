@@ -1,105 +1,117 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6295B1C5497;
-	Thu, 12 Dec 2024 11:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446ED19007F
+	for <v9fs@lists.linux.dev>; Fri, 13 Dec 2024 07:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734002552; cv=none; b=i4qZmqRzj2EOOuDw/8zSLg//AAVbK9jzJu+blz3ABV669LBAa7lexFO2ow4qHVL2s+WidiNIMfElsCqchU2lN2/Si1pgh3zfskYJOZEY+Z0eaek6Wsk0ovUrAlg9Xjr41+7q+0rnhUOSZ+wcKbWS7XIeL0zbPWB0G/OrOiXmIDg=
+	t=1734074836; cv=none; b=huMlAyo0iF+cCJmRY5J520Q7irlYiRGoFGW7Y/LTvPMJ9IizTN+aDFoXX8mMgmWxz3j98NCwYxLAB39lQ6NArY/TiwebEyotWXeBYUTEhZFuinB7Zmr4POpHO0FbDnX8gZbAr2Prbko4BlNcxpFWOjJwW6qoa2lS0dUs9lGQvig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734002552; c=relaxed/simple;
-	bh=DojvQfVDDKCCCmhS0betbHxzY47+lyZQNhOH90MEtPU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ekqp4AIesWekcHdqSqA2uBIkVqyXE1Mp83gFqHMo1r8o+kQE63MP1yxqge4jitHZlU0lwissV9nneCo5lUbDiyxeN1utKV1w1WJnT8PxzwNKvpm1wwyHpc/3Y2GM1TmUBDu+nZ0nv7Q+VXdMCJNhU10hVYtCM+gs4eAq9DFilVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=WhGTaMzZ; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="WhGTaMzZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=nncaMgD9Zf1hOTs2IIZuBWXTffTYXbgQRYKcNJadq9E=; b=WhGTaMzZzo/3Rtf0KgkzYItp7t
-	m5o8K+ds0J4GaguPKCF6eXNQpho568IKhcyN+PeJ4vUi89inx0QKO+rqz9yXyIyg3jI/GHWti3rJz
-	crl3E58EmefyDRzT6QtCeGItYe1GuyzPN0k5l6B4debDjVTUc/CPmBhF1fiHi6EgZ6D1Qq2gyHQYW
-	E/bE41t0o15oqT2r90XCpfwtQWnG8/xv1EvOwVILtqKgwOXGDbhyl1JDtK/6sOM/NJn2b9dE0q5ag
-	ya845l834vRxfWsoh4nNtgrEutvdGyqcrPbhILy01FjNkFuGIZ89/bC0pGtg1m+raZgYEe3ntWDoS
-	PMXsCw7A+vucPMW4dSOeU27yKjl1Y65QdCUuIFgMLO+gjOAWmK6IVuhGgk5m1cbIW04FYCjXZu3Rj
-	wcg+fr8DnquZMzbRHd272FiiGgyHKQ/tuMaVcOoSwDePWz31HoJYvXQgyt4tErjJuHqFhoeRSazin
-	KTkAscAsMaHH/knFsnJ5cPuZhgWqm1L53x6/W7svNbuA8x9QgR2agBTZzMB6bx5FLFdaoGHWwRaCS
-	06Uz/+xDG0iJR3NTQZOfAA1GLQMF1F0GO5ce4nZvO1GqGNTBkHtjLBHLADh7YlAWr/bFDakdwkIxf
-	demMSiNoX6aKnjLdvvm0WakguKvC0aTfDFZyul2fs=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>
-Cc: asmadeus@codewreck.org, Leo Stone <leocstone@gmail.com>,
- syzbot+03fb58296859d8dbab4d@syzkaller.appspotmail.com, ericvh@gmail.com,
- ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, lucho@ionkov.net,
- syzkaller-bugs@googlegroups.com, v9fs-developer@lists.sourceforge.net,
- v9fs@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
- Seth Forshee <sforshee@kernel.org>, Christian Brauner <brauner@kernel.org>
-Subject:
- Re: Alloc cap limit for 9p xattrs (Was: WARNING in
- __alloc_frozen_pages_noprof)
-Date: Thu, 12 Dec 2024 12:22:21 +0100
-Message-ID: <6965367.ZqKit0hgWb@silver>
-In-Reply-To: <2475109.TFnaqUCzQF@silver>
-References:
- <675963eb.050a0220.17f54a.0038.GAE@google.com>
- <20241211225500.GH3387508@ZenIV> <2475109.TFnaqUCzQF@silver>
+	s=arc-20240116; t=1734074836; c=relaxed/simple;
+	bh=fWkBlWpo9o/6W90lOS1o8aqPGNjst66iRAXtFEWx2PY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QGiHSd97w0QbSnVmqlgvCUpxbAOXlGElde3of8IWVxQpEgcCnIgfAmoEveb2R7LEdJt07lxqRzgcM+zcp9OO3Ws2QipvVjIN/4byWkRVPxsKNTZaFOldzzDDtC3BxyBIpIC82SyFdSmLEhfrWD6E2d1BO6z6ZHFvG3MkIRaUieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD51a1L001159;
+	Thu, 12 Dec 2024 23:26:56 -0800
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx1u6tx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 12 Dec 2024 23:26:56 -0800 (PST)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Thu, 12 Dec 2024 23:26:55 -0800
+Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Thu, 12 Dec 2024 23:26:51 -0800
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <dhowells@redhat.com>
+CC: <asmadeus@codewreck.org>, <brauner@kernel.org>, <ericvh@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux_oss@crudebyte.com>, <lizhi.xu@windriver.com>,
+        <lucho@ionkov.net>,
+        <syzbot+1fc6f64c40a9d143cfb6@syzkaller.appspotmail.com>,
+        <syzkaller-bugs@googlegroups.com>, <v9fs@lists.linux.dev>
+Subject: Re: [PATCH] netfs: If didn't read new data then abandon retry
+Date: Fri, 13 Dec 2024 15:26:51 +0800
+Message-ID: <20241213072651.1475826-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2133166.1733759584@warthog.procyon.org.uk>
+References: <2133166.1733759584@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=H/shw/Yi c=1 sm=1 tr=0 ts=675be1c0 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=20KFwNOVAAAA:8 a=_HjyD2lY4jCciDRJ1kwA:9
+X-Proofpoint-ORIG-GUID: 1zFU_zYCelM2ko5GnrQK31GXHGref2uG
+X-Proofpoint-GUID: 1zFU_zYCelM2ko5GnrQK31GXHGref2uG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-13_02,2024-12-12_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1011
+ impostorscore=0 adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2411120000 definitions=main-2412130051
 
-On Thursday, December 12, 2024 11:17:06 AM CET Christian Schoenebeck wrote:
-> On Wednesday, December 11, 2024 11:55:00 PM CET Al Viro wrote:
-> > On Wed, Dec 11, 2024 at 01:32:26PM -0800, Linus Torvalds wrote:
-> > > On Wed, 11 Dec 2024 at 13:04, <asmadeus@codewreck.org> wrote:
-> > > >
-> > > > Christian Schoenebeck's suggestion was something like this -- I guess
-> > > > that's good enough for now and won't break anything (e.g. ACLs bigger
-> > > > than XATTR_SIZE_MAX), so shall we go with that instead?
-> > > 
-> > > Please use XATTR_SIZE_MAX. The KMALLOC_MAX_SIZE limit seems to make no
-> > > sense in this context.
-> > > 
-> > > Afaik the VFS layer doesn't allow getting an xattr bigger than
-> > > XATTR_SIZE_MAX anyway, and would return E2BIG for them later
-> > > regardless, so returning anything bigger wouldn't work anyway, even if
-> > > p9 tried to return such a thing up to some bigger limit.
-> > 
-> > E2BIG on attempt to set, quiet cap to XATTR_SIZE_MAX on attempt to get
-> > (i.e. never asking more than that from fs) and if filesystem complains
-> > about XATTR_SIZE_MAX not being enough, E2BIG it is (instead of ERANGE
-> > normally expected on "your buffer is too small for that").
+On Mon, 09 Dec 2024 15:53:04 +0000, David Howells wrote:
+> David
+> ---
+> commit d0906b4a4611709c02de610d3c34d6172aa28aaf
+> Author: David Howells <dhowells@redhat.com>
+> Date:   Fri Nov 8 11:40:20 2024 +0800
 > 
-> So that cap is effective even if that xattr does not go out to user space?
-> 
-> I mean the concern I had was about ACLs on guest, which are often mapped with 
-> 9p to xattr on host and can become pretty big. So these were xattr not 
-> directly exposed to guest's user space.
+>     netfs: Work around recursion by abandoning retry if nothing read
+>     
+>     syzkaller reported recursion with a loop of three calls (netfs_rreq_assess,
+>     netfs_retry_reads and netfs_rreq_terminated) hitting the limit of the stack
+>     during an unbuffered or direct I/O read.
+>     
+>     There are a number of issues:
+>     
+>      (1) There is no limit on the number of retries.
+>     
+>      (2) A subrequest is supposed to be abandoned if it does not transfer
+>          anything (NETFS_SREQ_NO_PROGRESS), but that isn't checked under all
+>          circumstances.
+>     
+>      (3) The actual root cause, which is this:
+>     
+>             if (atomic_dec_and_test(&rreq->nr_outstanding))
+>                     netfs_rreq_terminated(rreq, ...);
+>     
+>          When we do a retry, we bump the rreq->nr_outstanding counter to
+>          prevent the final cleanup phase running before we've finished
+>          dispatching the retries.  The problem is if we hit 0, we have to do
+>          the cleanup phase - but we're in the cleanup phase and end up
+>          repeating the retry cycle, hence the recursion.
+>     
+>     Work around the problem by limiting the number of retries.  This is based
+>     on Lizhi Xu's patch[1], and makes the following changes:
+>     
+>      (1) Replace NETFS_SREQ_NO_PROGRESS with NETFS_SREQ_MADE_PROGRESS and make
+>          the filesystem set it if it managed to read or write at least one byte
+>          of data.  Clear this bit before issuing a subrequest.
+Will there be conflicts when reading and writing use the same flag to mark?
+>     
+>      (2) Add a ->retry_count member to the subrequest and increment it any time
+>          we do a retry.
+>     
+>      (3) Remove the NETFS_SREQ_RETRYING flag as it is superfluous with
+>          ->retry_count.  If the latter is non-zero, we're doing a retry.
+>     
+>      (4) Abandon a subrequest if retry_count is non-zero and we made no
+>          progress.
+>     
+>      (5) Use ->retry_count in both the write-side and the read-size.
 
-AFAICS it is not capped in this particular case: v9fs_fid_get_acl() calls
-v9fs_fid_xattr_get() for getting the xattr, which in turn calls p9 client
-functions to retrieve the xattr directly from 9p server (host). So the regular
-Linux VFS layers are not involved here.
-
-I also see no limit applied in fs/posix_acl.c when encoding/decoding ACLs.
-
-And 9p server is not necessarily a Linux host, hence Linux's limit for xattr
-do not necessarily apply.
-
-So to me KMALLOC_MAX_SIZE (or better: 9p client's msize - header) still looks
-right here, no?
-
-/Christian
-
-
-
+BR,
+Lizhi
