@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4958D1E0E1A
-	for <v9fs@lists.linux.dev>; Fri, 13 Dec 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E68B1E379F
+	for <v9fs@lists.linux.dev>; Fri, 13 Dec 2024 13:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734097864; cv=none; b=oF80zZX8FAP7T9DWSu2x/SlnImV94QREtP2OMyePMbfDwyFrctOFHs/klUsBsQtOy1QB1P0QkgBCaOimRyP4I/npQKxR0RNEJlcTQFjkWt6QFIhIYbkB9jqJw1f7DJk6UaEia8ce/13L84XM/+NtzZmGq5MWJEV8nMsH2THY1t4=
+	t=1734097872; cv=none; b=duxOT56cfTHTP2ElDXGtboi7bZlGkKlbEkHX9K0YLJImzkRAQDJMGyViUsQvTqM6b7nnoNgjbWuDjIaxSHXD690KQv7kaHFK5J1xwokleE7QET8ps9MPMpPc9FR9/B39w8tY9X5HJxPjeTF9wonWGZy0ZWg1CZQaIHd1M5tmIB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734097864; c=relaxed/simple;
-	bh=lvd/F1J57A1QaB/fJW9dMRjyyIjagIy4YdSoparsG/s=;
+	s=arc-20240116; t=1734097872; c=relaxed/simple;
+	bh=uaeI9J7rEoRhi5ZksmwE/88jFR1W/T6sdc10RyCTsN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSFSLH5JH0weJ/XjAiFqtRQ7XoIGYVBs5XExFnBms8sgLRxS0Ivg0Wt5BStRLHJjEpnvAQR9AX/Pjmc8F3OajlxuD7R9kIfDUtUwo++vN39wGjRpICQPE7Bt3U7SVuMmxTjUppAoJnaRBD0FSK9OAxJgLmaSfWD45Qv7ZXeTw8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CU3ZguXg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=G4lxAkBv++G9dELMg4X3oSLWPo7WCxbUDLKDSZQ6jOrjUvaDCCb5Y2ahiNieblT3Podgr66f5yRDR2bb6c/n24S8V6k/nVgSnq5v78JWUJXZM6s1RclC43p1c0fZkPKZyHUi37QcH95ux74GstwR2pZbDCFEvTIfxvujK7rvZoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Opmb7oMZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CU3ZguXg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Opmb7oMZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734097861;
+	s=mimecast20190719; t=1734097869;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PgqF6qS7NlWWtrfijPJ59f4qec6LLBa+L5U7UdJSTDg=;
-	b=CU3ZguXgn1UzMBirdm6dsD83pINCvfv3OvipVHkJqxaBNg6xKmoVY2UaElocxpjWT/rNaj
-	6G2SlX6z5txvuiXLcth3jZLDGlccyETgGCpU7qf2chNW4RMqCw7EV+rt3VZ0fuKZN0YGiJ
-	YVS6a83h5gPuCf3zkASaTXIP542KEdE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=dahqI5gLkGfD05TuY+PqQn3pxJDwXGZGfLY3MOFYgVE=;
+	b=Opmb7oMZAhU19zFew4Q9s26TEEmklbZ5TZuYFqxDphnYwpLHeZXyUlUyScVyHcke6r3zbL
+	VHWOeS36i2WmfsHH/Bx0ky0XZ28jnIWBIa4wJbLZ0+IUMlhvv0Xlq2eIkTeHfKiJc9gm0D
+	u8KznsG5+25p0n4DvHaG3V2MMw6MUYk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-5qCQLS_NOjiuU8cdRRSGCw-1; Fri,
- 13 Dec 2024 08:50:58 -0500
-X-MC-Unique: 5qCQLS_NOjiuU8cdRRSGCw-1
-X-Mimecast-MFC-AGG-ID: 5qCQLS_NOjiuU8cdRRSGCw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-NQm--YxLM0SK64NOpZx29g-1; Fri,
+ 13 Dec 2024 08:51:06 -0500
+X-MC-Unique: NQm--YxLM0SK64NOpZx29g-1
+X-Mimecast-MFC-AGG-ID: NQm--YxLM0SK64NOpZx29g
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DA8F1955F54;
-	Fri, 13 Dec 2024 13:50:55 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E4CD19560B5;
+	Fri, 13 Dec 2024 13:51:02 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.48])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 51D89195605A;
-	Fri, 13 Dec 2024 13:50:50 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 058071955F40;
+	Fri, 13 Dec 2024 13:50:56 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -60,10 +60,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 05/10] cachefiles: Parse the "secctx" immediately
-Date: Fri, 13 Dec 2024 13:50:05 +0000
-Message-ID: <20241213135013.2964079-6-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Akira Yokosawa <akiyks@gmail.com>
+Subject: [PATCH 06/10] netfs: Remove redundant use of smp_rmb()
+Date: Fri, 13 Dec 2024 13:50:06 +0000
+Message-ID: <20241213135013.2964079-7-dhowells@redhat.com>
 In-Reply-To: <20241213135013.2964079-1-dhowells@redhat.com>
 References: <20241213135013.2964079-1-dhowells@redhat.com>
 Precedence: bulk
@@ -75,127 +77,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-Instead of storing an opaque string, call security_secctx_to_secid()
-right in the "secctx" command handler and store only the numeric
-"secid".  This eliminates an unnecessary string allocation and allows
-the daemon to receive errors when writing the "secctx" command instead
-of postponing the error to the "bind" command handler.  For example,
-if the kernel was built without `CONFIG_SECURITY`, "bind" will return
-`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
-"secctx" will instead return `EOPNOTSUPP` which is the right context
-for this error.
+The function netfs_unbuffered_write_iter_locked() in
+fs/netfs/direct_write.c contains an unnecessary smp_rmb() call after
+wait_on_bit(). Since wait_on_bit() already incorporates a memory barrier
+that ensures the flag update is visible before the function returns, the
+smp_rmb() provides no additional benefit and incurs unnecessary overhead.
 
-This patch adds a boolean flag `have_secid` because I'm not sure if we
-can safely assume that zero is the special secid value for "not set".
-This appears to be true for SELinux, Smack and AppArmor, but since
-this attribute is not documented, I'm unable to derive a stable
-guarantee for that.
+This patch removes the redundant barrier to simplify and optimize the code.
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
+cc: Akira Yokosawa <akiyks@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20241207021952.2978530-1-zilin@seu.edu.cn/
 ---
- fs/cachefiles/daemon.c   | 14 +++++++-------
- fs/cachefiles/internal.h |  3 ++-
- fs/cachefiles/security.c |  6 +++---
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ fs/netfs/direct_write.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 89b11336a836..1806bff8e59b 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -15,6 +15,7 @@
- #include <linux/namei.h>
- #include <linux/poll.h>
- #include <linux/mount.h>
-+#include <linux/security.h>
- #include <linux/statfs.h>
- #include <linux/ctype.h>
- #include <linux/string.h>
-@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
-  */
- static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- {
--	char *secctx;
-+	int err;
- 
- 	_enter(",%s", args);
- 
-@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- 		return -EINVAL;
- 	}
- 
--	if (cache->secctx) {
-+	if (cache->have_secid) {
- 		pr_err("Second security context specified\n");
- 		return -EINVAL;
- 	}
- 
--	secctx = kstrdup(args, GFP_KERNEL);
--	if (!secctx)
--		return -ENOMEM;
-+	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
-+	if (err)
-+		return err;
- 
--	cache->secctx = secctx;
-+	cache->have_secid = true;
- 	return 0;
- }
- 
-@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
- 	put_cred(cache->cache_cred);
- 
- 	kfree(cache->rootdirname);
--	kfree(cache->secctx);
- 	kfree(cache->tag);
- 
- 	_leave("");
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 7b99bd98de75..38c236e38cef 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -122,7 +122,6 @@ struct cachefiles_cache {
- #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
- #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
- 	char				*rootdirname;	/* name of cache root directory */
--	char				*secctx;	/* LSM security context */
- 	char				*tag;		/* cache binding tag */
- 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
- 	struct xarray			reqs;		/* xarray of pending on-demand requests */
-@@ -130,6 +129,8 @@ struct cachefiles_cache {
- 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
- 	u32				ondemand_id_next;
- 	u32				msg_id_next;
-+	u32				secid;		/* LSM security id */
-+	bool				have_secid;	/* whether "secid" was set */
- };
- 
- static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
-index fe777164f1d8..fc6611886b3b 100644
---- a/fs/cachefiles/security.c
-+++ b/fs/cachefiles/security.c
-@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 	struct cred *new;
- 	int ret;
- 
--	_enter("{%s}", cache->secctx);
-+	_enter("{%u}", cache->have_secid ? cache->secid : 0);
- 
- 	new = prepare_kernel_cred(current);
- 	if (!new) {
-@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 		goto error;
- 	}
- 
--	if (cache->secctx) {
--		ret = set_security_override_from_ctx(new, cache->secctx);
-+	if (cache->have_secid) {
-+		ret = set_security_override(new, cache->secid);
- 		if (ret < 0) {
- 			put_cred(new);
- 			pr_err("Security denies permission to nominate security context: error %d\n",
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 88f2adfab75e..173e8b5e6a93 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -104,7 +104,6 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ 		trace_netfs_rreq(wreq, netfs_rreq_trace_wait_ip);
+ 		wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS,
+ 			    TASK_UNINTERRUPTIBLE);
+-		smp_rmb(); /* Read error/transferred after RIP flag */
+ 		ret = wreq->error;
+ 		if (ret == 0) {
+ 			ret = wreq->transferred;
 
