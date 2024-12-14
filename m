@@ -1,229 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F9D1E04A1
-	for <v9fs@lists.linux.dev>; Fri, 13 Dec 2024 14:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE7F12CDA5;
+	Sat, 14 Dec 2024 10:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734098679; cv=none; b=WdgSYHq4ZK+4+/HnZ85O1Nxmf4cchkQp9/kYlSprR7/7VrFsW0bNas+Zyh4qBD82wzsCTSZLgK1i2fWVOA+bvZy5LpjJFuav71GazElul+Iqq7YMSlqaccjMrC03e/vBzN10r5fGaljjrDXUntEVBBOTGG8oSo7cdDQMop2J2NU=
+	t=1734171384; cv=none; b=BTkqpgYMYPyt1KiygqYzwZplCZPrK+5cR0O4bI7S5YoqLi95UcPCj3YRhB2X44zWDMP7Bg2SV3e2cmYG/A4hKQsc6Wz7JlIY9PFYMLmhNnAOOiLKyQeAXphNoIelgM4rUk41sUfp5u2d+75uLkgSFoHwbSpF7saSvNhl8bRBVVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734098679; c=relaxed/simple;
-	bh=BLcmeVJ5U4DYQzHKAiQZlh7Ak2tSTMDloMiK5se3BJg=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=EVDUUfyNhMIke3H1ftsaaH1ixa+CGcFrRHG81oJGNh6RPwEmfV9POw99Ua159z6szEpyO7oj7RQXVDXPWiISmUj10405j371yVwZLlkXlm7m2D72FA8jo2WH7DKk8jsYkk/lF2aKL4kOvW6mBeuoHqQ6n9E60hISOLRP0XKwLi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fbW1lkm9; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734171384; c=relaxed/simple;
+	bh=ppurqkLg5frVMfdj9t/MeoIOWop6fX3bDcl+dcNOFPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MIDlCbRmraRb9ssKJX4kbEzGEb43DXW1Cv3wbKbUiTI7yTgm7d8WK13cUqyYywjRhKO8NvRxOQbycwelw67CUfXE3NoAu8sK7gLlDiIZYFWUYJwdmp6NXwT+Ntsu/RM6hlJsjVpnxwzdhqYa1GWBxQcmPG2pp956Lx2yTn2+AyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUcDz3g2; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fbW1lkm9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734098676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BMjJh3rNwqJWG/q45S190yCaLe7IaLUoUOyUtTRrI4M=;
-	b=fbW1lkm9MwHLhbM6SF61UyyGxvPMRKwkKHnwWZUZ/abJhwWA9Gg3UEMt8/AXNo7rEejY58
-	ouWse9VNbN0WmKOjtyHnEtsyTvE6lVqSv58yTZlkO9wO/gg4kVDXE9NFAnlPhy9BoYBrtQ
-	HIlWNC+N+y2H6Qqw9f1r/x2mV/yK5Js=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-A8uEA95lOSGhAgZJarh21Q-1; Fri,
- 13 Dec 2024 09:04:32 -0500
-X-MC-Unique: A8uEA95lOSGhAgZJarh21Q-1
-X-Mimecast-MFC-AGG-ID: A8uEA95lOSGhAgZJarh21Q
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCB9F1955E9A;
-	Fri, 13 Dec 2024 14:04:29 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9948F195605A;
-	Fri, 13 Dec 2024 14:04:25 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20241213135013.2964079-1-dhowells@redhat.com>
-References: <20241213135013.2964079-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-    Ilya Dryomov <idryomov@gmail.com>
-Cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
-    Xiubo Li <xiubli@redhat.com>, Trond Myklebust <trondmy@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>,
-    Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-    linux-kernel@vger.kernel.org
-Subject: ceph xfstests failures [was Re: [PATCH 00/10] netfs, ceph, nfs, cachefiles: Miscellaneous fixes/changes]
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUcDz3g2"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2161eb95317so23944485ad.1;
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734171382; x=1734776182; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
+        b=ZUcDz3g2iGdi0/EjrMhKwRFUnpHCbf7bXfnDcI2Oa1dWMqYPKR71/sM+oYOXYur41P
+         Q4tuCst/5VpxDNHw77NH2+kseu5nG2ZgsAqm7l+QnKPH5Aj+bdujkWvpwv7EaQX/DCmp
+         gNXrC07xtIMAmZoIyvRb4x/kcJ6fIDMN5WlH7sEZPoEqz06+KhTeEoGgKJ1KauWna3TQ
+         qUOC7e5lOn4QxAaX3pRc6QCdk0N6ZIScYMY/7qKc1v1gcXUplortHQSyW+f3RkPfBHZ8
+         1icg5mztvTgXPJGt2FUZkDI9EXJRg3L9RVLYFOlev57lzU/XX81p/TpBWelY12RNNJJF
+         yOEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734171382; x=1734776182;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
+        b=nymsJFIvXctx24Yx7HmkMhPG7wdin7cAjwm+F9ausmSMsY16mToDPx1GBYJt5/vbV/
+         dGuOHDL+4vsf6DlQ3GHUO0wvrvPvAGSAJ3wW58/k2g/DdSeRvI1Ga4q76KKBExJH2caP
+         VIcylXEkc4OVjh4WJeG5bIqFKSs3F1KQX2a0RHSLHm+DkUUIL2u0eDWnL0gTb2y7AHjY
+         oAN0c6FoESwdzjHl8RReKtfGp89sCK0G3sk1opIO1aTl7HyvXIc3XyqEja8kO0N3yOFN
+         wICb3db2brqFTRtQW+CWy33RvcbL2+ApZYa4T0IAsjgW0UuvK/UjBAmnc0pOQLA1yihr
+         xlKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ9in1LNKj+aFJFoBB7Jo//H0IaOmQcf9aZ+ZDMTZjwlZ+kPL0VsCz922pw+CZvEsJao+AGQ==@lists.linux.dev, AJvYcCXtNcWRwi3UZ0v+em+1+zkt57IZn4CnqX3VHTvH2XjtfmqJARrZksksO9+t6ME2Q9WCNlh/cQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxDylhc3lQndlrNrE6Zaj3l/GwKnQdXsxNfOBRQMUJXT06f3v3
+	c21gH/Bq91XZMmz87Rymfrl4FyitM/wYznbuAMy3lFVxPaUodNiY
+X-Gm-Gg: ASbGncujBx3ky52mhQhiYuNxooatiF3LjhCengJ6bffAmL58nZuVi1QpHybOlGxr8To
+	rogXcgKTAMzQU3PtiumwbbZZsI57qh/jjSZGdCTDMxhDY5gNLwCr+W/eWKwdo4Sn+OH8+CCvZ4L
+	WPlXo8tDRK8CTl9GYKChZIITa9Ou4Y1eWWgvbeYZsRiV8RmLNfAeswi9SeYY0PyPGTgJWjxxVOf
+	E54uOk1wlcyRFGz2ZbZ6k1b7agAgAwM3DrSje5ZYgUgowo47kNZofCVqJ+oIDB26Ev/AeBJxRz+
+	sYFhWAxcLeboVdHGQfV5H04=
+X-Google-Smtp-Source: AGHT+IEZVE15/vEAohikUk6vjIGzOeFn+yVnxHcYlw+pZKWRHHAPNEYP1GeDSZ8W1ZJPAeFwPcezZw==
+X-Received: by 2002:a17:902:f70b:b0:216:28c4:61c6 with SMTP id d9443c01a7336-218929fb17bmr82919535ad.34.1734171382443;
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
+Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e50455sm10069475ad.159.2024.12.14.02.16.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
+Message-ID: <27fff669-bec4-4255-ba2f-4b154b474d97@gmail.com>
+Date: Sat, 14 Dec 2024 19:16:18 +0900
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2964552.1734098664.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Dec 2024 14:04:24 +0000
-Message-ID: <2964553.1734098664@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] netfs: Fix missing barriers by using
+ clear_and_wake_up_bit()
+To: David Howells <dhowells@redhat.com>,
+ Christian Brauner <christian@brauner.io>
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
+ Trond Myklebust <trondmy@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Zilin Guan <zilin@seu.edu.cn>, Akira Yokosawa <akiyks@gmail.com>
+References: <20241213135013.2964079-1-dhowells@redhat.com>
+ <20241213135013.2964079-8-dhowells@redhat.com>
+Content-Language: en-US
+From: Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <20241213135013.2964079-8-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-David Howells <dhowells@redhat.com> wrote:
+Hi David,
 
-> With these patches, I can run xfstest -g quick to completion on ceph wit=
-h a
-> local cache.
+David Howells wrote:
+> Use clear_and_wake_up_bit() rather than something like:
+> 
+> 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
+> 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
+> 
+> as there needs to be a barrier inserted between which is present in
+> clear_and_wake_up_bit().
 
-I should qualify that.  The thing completes and doesn't hang, but I get 6
-failures:
+If I am reading the kernel-doc comment of clear_bit_unlock() [1, 2]:
 
-    Failures: generic/604 generic/633 generic/645 generic/696 generic/697 =
-generic/732
+    This operation is atomic and provides release barrier semantics.
 
-Though these don't appear to be anything to do with netfslib (see attached=
-).
-There are two cases where the mount is busy and the rest seems to be due t=
-o
-id-mapped mounts and/or user namespaces.
+correctly, there already seems to be a barrier which should be
+good enough.
 
-The xfstest local.config file looks something like:
+[1]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.clear_bit_unlock
+[2]: include/asm-generic/bitops/instrumented-lock.h
 
-    export FSTYP=3Dceph
-    export TEST_DEV=3D<ipaddr>:/test
-    export TEST_DIR=3D/xfstest.test
-    TEST_FS_MOUNT_OPTS=3D'-o name=3Dadmin,mds_namespace=3Dtest,fs=3Dtest,f=
-sc'
-    export SCRATCH_DEV=3D<ipaddr>:/scratch
-    export SCRATCH_MNT=3D/xfstest.scratch
-    export MOUNT_OPTIONS=3D'-o name=3Dadmin,mds_namespace=3Dscratch,fs=3Ds=
-cratch,fsc=3Dscratch'
+> 
+> Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 
-David
----
-# ./check -E .exclude generic/604 generic/633 generic/645 generic/696 gene=
-ric/697 generic/732
-FSTYP         -- ceph
-PLATFORM      -- Linux/x86_64 andromeda 6.13.0-rc2-build3+ #5311 SMP Fri D=
-ec 13 09:03:34 GMT 2024
-MKFS_OPTIONS  -- <ipaddr>:/scratch
-MOUNT_OPTIONS -- -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=3D=
-scratch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfstes=
-t.scratch
+So I'm not sure this fixes anything.
 
-generic/604 2s ... [failed, exit status 1]- output mismatch (see /root/xfs=
-tests-dev/results//generic/604.out.bad)
-    --- tests/generic/604.out   2024-09-12 12:36:14.187441830 +0100
-    +++ /root/xfstests-dev/results//generic/604.out.bad 2024-12-13 13:18:5=
-1.910900871 +0000
-    @@ -1,2 +1,4 @@
-     QA output created by 604
-    -Silence is golden
-    +mount error 16 =3D Device or resource busy
-    +mount -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=3Dscra=
-tch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfstest.sc=
-ratch failed
-    +(see /root/xfstests-dev/results//generic/604.full for details)
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/604.out /root/xfstests-=
-dev/results//generic/604.out.bad'  to see the entire diff)
-generic/633       [failed, exit status 1]- output mismatch (see /root/xfst=
-ests-dev/results//generic/633.out.bad)
-    --- tests/generic/633.out   2024-09-12 12:36:14.187441830 +0100
-    +++ /root/xfstests-dev/results//generic/633.out.bad 2024-12-13 13:18:5=
-5.958979531 +0000
-    @@ -1,2 +1,4 @@
-     QA output created by 633
-     Silence is golden
-    +idmapped-mounts.c: 307: tcore_create_in_userns - Input/output error -=
- failure: open file
-    +vfstest.c: 2418: run_test - Success - failure: create operations in u=
-ser namespace
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/633.out /root/xfstests-=
-dev/results//generic/633.out.bad'  to see the entire diff)
-generic/645       [failed, exit status 1]- output mismatch (see /root/xfst=
-ests-dev/results//generic/645.out.bad)
-    --- tests/generic/645.out   2024-09-12 12:36:14.191441810 +0100
-    +++ /root/xfstests-dev/results//generic/645.out.bad 2024-12-13 13:19:2=
-5.526908024 +0000
-    @@ -1,2 +1,4 @@
-     QA output created by 645
-     Silence is golden
-    +idmapped-mounts.c: 6671: nested_userns - Invalid argument - failure: =
-sys_mount_setattr
-    +vfstest.c: 2418: run_test - Invalid argument - failure: test that nes=
-ted user namespaces behave correctly when attached to idmapped mounts
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/645.out /root/xfstests-=
-dev/results//generic/645.out.bad'  to see the entire diff)
-generic/696       - output mismatch (see /root/xfstests-dev/results//gener=
-ic/696.out.bad)
-    --- tests/generic/696.out   2024-09-12 12:36:14.195441791 +0100
-    +++ /root/xfstests-dev/results//generic/696.out.bad 2024-12-13 13:19:3=
-0.254804087 +0000
-    @@ -1,2 +1,6 @@
-     QA output created by 696
-    +idmapped-mounts.c: 7763: setgid_create_umask_idmapped - Input/output =
-error - failure: create
-    +vfstest.c: 2418: run_test - Success - failure: create operations by u=
-sing umask in directories with setgid bit set on idmapped mount
-    +idmapped-mounts.c: 7763: setgid_create_umask_idmapped - Input/output =
-error - failure: create
-    +vfstest.c: 2418: run_test - Success - failure: create operations by u=
-sing umask in directories with setgid bit set on idmapped mount
-     Silence is golden
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/696.out /root/xfstests-=
-dev/results//generic/696.out.bad'  to see the entire diff)
+What am I missing?
 
-HINT: You _MAY_ be missing kernel fix:
-      ac6800e279a2 fs: Add missing umask strip in vfs_tmpfile 1639a49ccdce=
- fs: move S_ISGID stripping into the vfs_*() helpers
+        Thanks, Akira
 
-generic/697       - output mismatch (see /root/xfstests-dev/results//gener=
-ic/697.out.bad)
-    --- tests/generic/697.out   2024-09-12 12:36:14.195441791 +0100
-    +++ /root/xfstests-dev/results//generic/697.out.bad 2024-12-13 13:19:3=
-1.749225548 +0000
-    @@ -1,2 +1,4 @@
-     QA output created by 697
-    +idmapped-mounts.c: 8218: setgid_create_acl_idmapped - Input/output er=
-ror - failure: create
-    +vfstest.c: 2418: run_test - Success - failure: create operations by u=
-sing acl in directories with setgid bit set on idmapped mount
-     Silence is golden
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/697.out /root/xfstests-=
-dev/results//generic/697.out.bad'  to see the entire diff)
-
-HINT: You _MAY_ be missing kernel fix:
-      1639a49ccdce fs: move S_ISGID stripping into the vfs_*() helpers
-
-generic/732 1s ... [failed, exit status 1]- output mismatch (see /root/xfs=
-tests-dev/results//generic/732.out.bad)
-    --- tests/generic/732.out   2024-09-12 12:36:14.195441791 +0100
-    +++ /root/xfstests-dev/results//generic/732.out.bad 2024-12-13 13:19:3=
-4.482858235 +0000
-    @@ -1,2 +1,5 @@
-     QA output created by 732
-     Silence is golden
-    +mount error 16 =3D Device or resource busy
-    +mount -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=3Dscra=
-tch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfstest.te=
-st/mountpoint2-732 failed
-    +(see /root/xfstests-dev/results//generic/732.full for details)
-    ...
-    (Run 'diff -u /root/xfstests-dev/tests/generic/732.out /root/xfstests-=
-dev/results//generic/732.out.bad'  to see the entire diff)
-Ran: generic/604 generic/633 generic/645 generic/696 generic/697 generic/7=
-32
-Failures: generic/604 generic/633 generic/645 generic/696 generic/697 gene=
-ric/732
-Failed 6 of 6 tests
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Zilin Guan <zilin@seu.edu.cn>
+> cc: Akira Yokosawa <akiyks@gmail.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>  fs/netfs/read_collect.c  | 3 +--
+>  fs/netfs/write_collect.c | 9 +++------
+>  2 files changed, 4 insertions(+), 8 deletions(-)
+> 
+[...]
 
