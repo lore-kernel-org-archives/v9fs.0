@@ -1,175 +1,233 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E21DDA10
-	for <v9fs@lists.linux.dev>; Mon, 16 Dec 2024 20:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7091F7545
+	for <v9fs@lists.linux.dev>; Tue, 17 Dec 2024 15:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.30.2.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734381937; cv=none; b=QBXyxcf1K8f+calzM/glfOYd3c0VUhX1OCsnV1rMN2v4qlH8KOm92wPm9/KiKjnShGGM+Qe4IYvZMhGQ8niRVyyNyiIgzHGq2laHye33WenQrXlLtz5Q0PLn4i4oJjE1KSrHANX0babnGChwY4meIfJJeiV0JEyyL65IL13+1gg=
+	t=1734448644; cv=none; b=s/oktnSSxIDxbFge8MwWYgNrRmIBptuRF9QBoHKp9oFZKklE6CEfvoSzp7EJniadVXvQaEIREul5p4m8W9okT3d+jUvdxtqlBnyJ26kptyq7b+R9+Y4DNSrFSQzan3M2sKbzUSfUCBlXe4IYGMkeShLwwhIPG644rv9YyQK1PFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734381937; c=relaxed/simple;
-	bh=wMJoA5AMnEpKevidbj50XhKJhvcyxrAG0ZcvzVHwzdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5eL3GWlJALO/kVWUCe7QhQU0kHJ0WcBS68p4SzyMw0mOJiy3CMTpMO6OhsttYeop5fYyEKk/RjEVP6akTMNs+gdsm8HxY93wXLXCgwGzeusfQO+ptByaTfXYfdrA250hBTvFouG+YRsgAXMyfBcPBB5/8JojJPgy8Af6xZloTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VDwHQU62; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734448644; c=relaxed/simple;
+	bh=5vEhdvhdpg6IKkupsh22150Hog09p8pM0MDtvapUCyA=;
+	h=To:From:Subject:MIME-Version:Content-Type:Date:Message-ID; b=DucoOt34tB58T4RkVXNVjKpyHJAate//2AG42G58Jt4UmLUp4PjaaGcpPAH7dn5R/oQPBcBQcP+s0LhYaw0ev7Z6HKCVUWmOgpUSfLx3p4ZK3Vi16ewTw/BDme2DNK99ziufuX5ynAxQeXJ2vlJY2LZBp7T4kYIBfbSB2NXqfac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu; spf=pass smtp.mailfrom=csail.mit.edu; dkim=pass (2048-bit key) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.b=kunTMSul; arc=none smtp.client-ip=128.30.2.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csail.mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VDwHQU62"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734381934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Oo1wq8deJtNt2OQQxJVQAHf3OBjfRH+YniUEyQHkJfs=;
-	b=VDwHQU6255+nhMSZivKrf+aewrX0JXWZp1/8g6TFDuXlXrOWuIimVOftxoUYobE+I0I48E
-	MnoWgWfLdoKYd4pfQSrKZ9n0DnI376t6o0+Z4uumhPVRgMVIInF4+w4h9Kdj4AlLet23eV
-	sKjhw0EzHwsx+f2o6g2XdEUnFhOWydw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-XuzHjsQvNUyN5PcUdS5A8w-1; Mon,
- 16 Dec 2024 15:45:31 -0500
-X-MC-Unique: XuzHjsQvNUyN5PcUdS5A8w-1
-X-Mimecast-MFC-AGG-ID: XuzHjsQvNUyN5PcUdS5A8w
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A8C74195608E;
-	Mon, 16 Dec 2024 20:45:28 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.48])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9BF4B19560A2;
-	Mon, 16 Dec 2024 20:45:22 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com,
-	Chang Yu <marcus.yu.56@gmail.com>
-Subject: [PATCH v5 32/32] netfs: Report on NULL folioq in netfs_writeback_unlock_folios()
-Date: Mon, 16 Dec 2024 20:41:22 +0000
-Message-ID: <20241216204124.3752367-33-dhowells@redhat.com>
-In-Reply-To: <20241216204124.3752367-1-dhowells@redhat.com>
-References: <20241216204124.3752367-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.b="kunTMSul"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=outgoing.csail.mit.edu; s=test20231205; h=Message-ID:Date:Content-Type:
+	MIME-Version:Subject:Reply-To:From:To:Sender:Cc:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=9Vo7VH8nCwaKLQOIGrMLsnM0AqDUiDVsK0k+o4mHSkU=; t=1734448642; x=1735312642; 
+	b=kunTMSul/eXTZ3KK3AIkbzXaZZ5TGs+ADN64FDDYZ7hJPcO4+KNO6PnNU2IT50YAmpTnx9+oFUA
+	s1QUQ8Dm7h9/pOoBlu6W6a1kISAlhqEQbxYB9MDskXVH1JFz3TEb6icnRRFjnZs3BPm/YNq7KbP6o
+	lyvS8I/EX67ZX3VQsdd3YPbM7YGCPqtFkob3EIVo9lx3CdmtJzNHQoxTtDTvgLF24/4AgMhHtf5GY
+	GLGHZcbwGyyyetUUqBtlaoldyKiMExx2P9k3itEdohiEzOci0RBvlM7/Oew12xkhBC41kVZXjZSl8
+	m3SX1HaeJLSlhLj6WxD4DW/wuveepBlQML+w==;
+Received: from 26-5-164.dynamic.csail.mit.edu ([18.26.5.164])
+	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <rtm@csail.mit.edu>)
+	id 1tNZJv-004Zcq-Tf;
+	Tue, 17 Dec 2024 10:17:11 -0500
+Received: from 26-5-164.dynamic.csail.mit.edu (localhost [127.0.0.1])
+	by 26-5-164.dynamic.csail.mit.edu (Postfix) with ESMTP id B70B4183251D;
+	Tue, 17 Dec 2024 10:17:11 -0500 (EST)
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
+From: rtm@csail.mit.edu
+Reply-To: rtm@csail.mit.edu
+Subject: p9_client_write doesn't check for negative "written" from server
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: multipart/mixed; boundary="=-=-="
+Date: Tue, 17 Dec 2024 10:17:11 -0500
+Message-ID: <16271.1734448631@26-5-164.dynamic.csail.mit.edu>
 
-It seems that it's possible to get to netfs_writeback_unlock_folios() with
-an empty rolling buffer during buffered writes.  This should not be
-possible as the rolling buffer is initialised as the write request is set
-up and thereafter maintains at least one folio_queue struct therein until
-it gets destroyed.  This allows lockless addition and removal of
-folio_queue structs in the buffer because, unlike with a ring buffer, the
-producer and consumer each only need to look at and alter one pointer into
-the buffer.
+--=-=-=
+Content-Type: text/plain
 
-Now, the rolling buffer is only used for buffered I/O operations as
-netfs_collect_write_results() should only call
-netfs_writeback_unlock_folios() if the request is of origin type
-NETFS_WRITEBACK, NETFS_WRITETHROUGH or NETFS_PGPRIV2_COPY_TO_CACHE.
+If the kernel's 9p client sends a write request, and the server returns
+a successful Rwrite reply, but with a negative "written" value, then
+this line towards the end of p9_client_write():
 
-So it would seem that one of the following occurred: (1) I/O started before
-the request was fully initialised, (2) the origin got switched mid-flow or
-(3) the request has already been freed and this is a UAF error.  I think
-the last is the most likely.
+                iov_iter_revert(from, count - written - iov_iter_count(from));
 
-Make netfs_writeback_unlock_folios() report information about the request
-and subrequests if folioq is seen to be NULL to try and help debug this,
-throw a warning and return.
+can pass an unroll argument to iov_iter_revert() that's larger than
+the number of bytes in the iov. This causes iov_iter_folioq_revert()
+to try to back up beyond the beginning of the iov data, and this code
 
-Note that this does not try to fix the problem.
+                if (slot == 0) { 
+                        folioq = folioq->prev;
+                        slot = folioq_nr_slots(folioq);
 
-Reported-by: syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=af5c06208fa71bf31b16
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Chang Yu <marcus.yu.56@gmail.com>
-Link: https://lore.kernel.org/r/ZxshMEW4U7MTgQYa@gmail.com/
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/write_collect.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+tries to dereference a NULL folioq, since folioq->prev is NULL.
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 1b7f53d01b8d..294f67795f79 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -21,6 +21,34 @@
- #define NEED_RETRY		0x10	/* A front op requests retrying */
- #define SAW_FAILURE		0x20	/* One stream or hit a permanent failure */
- 
-+static void netfs_dump_request(const struct netfs_io_request *rreq)
-+{
-+	pr_err("Request R=%08x r=%d fl=%lx or=%x e=%ld\n",
-+	       rreq->debug_id, refcount_read(&rreq->ref), rreq->flags,
-+	       rreq->origin, rreq->error);
-+	pr_err("  st=%llx tsl=%zx/%llx/%llx\n",
-+	       rreq->start, rreq->transferred, rreq->submitted, rreq->len);
-+	pr_err("  cci=%llx/%llx/%llx\n",
-+	       rreq->cleaned_to, rreq->collected_to, atomic64_read(&rreq->issued_to));
-+	pr_err("  iw=%pSR\n", rreq->netfs_ops->issue_write);
-+	for (int i = 0; i < NR_IO_STREAMS; i++) {
-+		const struct netfs_io_subrequest *sreq;
-+		const struct netfs_io_stream *s = &rreq->io_streams[i];
-+
-+		pr_err("  str[%x] s=%x e=%d acnf=%u,%u,%u,%u\n",
-+		       s->stream_nr, s->source, s->error,
-+		       s->avail, s->active, s->need_retry, s->failed);
-+		pr_err("  str[%x] ct=%llx t=%zx\n",
-+		       s->stream_nr, s->collected_to, s->transferred);
-+		list_for_each_entry(sreq, &s->subrequests, rreq_link) {
-+			pr_err("  sreq[%x:%x] sc=%u s=%llx t=%zx/%zx r=%d f=%lx\n",
-+			       sreq->stream_nr, sreq->debug_index, sreq->source,
-+			       sreq->start, sreq->transferred, sreq->len,
-+			       refcount_read(&sreq->ref), sreq->flags);
-+		}
-+	}
-+}
-+
- /*
-  * Successful completion of write of a folio to the server and/or cache.  Note
-  * that we are not allowed to lock the folio here on pain of deadlocking with
-@@ -87,6 +115,12 @@ static void netfs_writeback_unlock_folios(struct netfs_io_request *wreq,
- 	unsigned long long collected_to = wreq->collected_to;
- 	unsigned int slot = wreq->buffer.first_tail_slot;
- 
-+	if (WARN_ON_ONCE(!folioq)) {
-+		pr_err("[!] Writeback unlock found empty rolling buffer!\n");
-+		netfs_dump_request(wreq);
-+		return;
-+	}
-+
- 	if (wreq->origin == NETFS_PGPRIV2_COPY_TO_CACHE) {
- 		if (netfs_pgpriv2_unlock_copied_folios(wreq))
- 			*notes |= MADE_PROGRESS;
+I've attached a demo.
 
+# cc 9p2a.c
+# ./a.out
+...
+BUG: kernel NULL pointer dereference, address: 000000000000011e
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+CPU: 1 UID: 0 PID: 1613 Comm: sh Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #12
+Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+RIP: 0010:iov_iter_revert+0xc9/0x150
+Code: cc cc cc 48 29 f1 48 89 4f 08 c3 cc cc cc cc 48 c7 47 08 00 00 00 00 0f b6
+ 57 20 bf 00 10 00 00 eb 1f 83 ea 01 89 d1 49 89 f9 <41> 0f b6 8c 08 00 01 00 00
+ 49 d3 e1 4c 89 c9 49 39 f1 73 15 4c 29
+RSP: 0018:ffffc900020dfae8 EFLAGS: 00010246
+Call Trace:
+ <TASK>
+ ? __die+0x1e/0x60
+ ? page_fault_oops+0x157/0x450
+ ? check_object+0xc2/0x430
+ ? exc_page_fault+0x66/0x140
+ ? asm_exc_page_fault+0x26/0x30
+ ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ? iov_iter_revert+0xc9/0x150
+ p9_client_write+0x115/0x250
+ v9fs_issue_write+0x38/0x70
+ netfs_advance_write+0xc6/0x2a0
+ netfs_write_folio+0x2e7/0x9a0
+ netfs_writepages+0xd7/0x3e0
+ ? filemap_dirty_folio+0x5b/0x70
+ do_writepages+0xc6/0x240
+ __filemap_fdatawrite_range+0x9a/0xb0
+ v9fs_dir_release+0x153/0x180
+ ? task_work_add+0x71/0xe0
+ __fput+0xe8/0x290
+ task_work_run+0x57/0xa0
+ syscall_exit_to_user_mode+0x105/0x110
+ do_syscall_64+0x4b/0xd0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fdfc55fe96b
+
+Robert Morris
+rtm@mit.edu
+
+
+--=-=-=
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename=9p2a.c
+Content-Transfer-Encoding: base64
+
+I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4KI2luY2x1ZGUgPHVuaXN0ZC5o
+PgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5jbHVkZSA8ZXJybm8u
+aD4KI2luY2x1ZGUgPHN5cy9zb2NrZXQuaD4KI2luY2x1ZGUgPHN5cy9pb2N0bC5oPgojaW5jbHVk
+ZSA8bmV0aW5ldC9pbi5oPgojaW5jbHVkZSA8c3lzL3dhaXQuaD4KI2luY2x1ZGUgPHN5cy9yZXNv
+dXJjZS5oPgoKaW50IHJlYWRuKGludCBmZCwgY2hhciAqYnVmLCBpbnQgbikgewogIGludCBvcmln
+ID0gbjsKICB3aGlsZShuID4gMCl7CiAgICBpbnQgY2MgPSByZWFkKGZkLCBidWYsIG4pOwogICAg
+aWYoY2MgPD0gMCkgeyBwZXJyb3IoInJlYWQiKTsgcmV0dXJuIC0xOyB9CiAgICBuIC09IGNjOwog
+ICAgYnVmICs9IGNjOwogIH0KICByZXR1cm4gb3JpZzsKfQoKY2hhciAqCmdldHN0cih1bnNpZ25l
+ZCBjaGFyICpwKQp7CiAgdW5zaWduZWQgaW50IG4gPSAqKHVuc2lnbmVkIHNob3J0ICopcDsKICBj
+aGFyICpidWYgPSBtYWxsb2MobisxKTsKICBtZW1jcHkoYnVmLCBwKzIsIG4pOwogIGJ1ZltuXSA9
+ICdcMCc7CiAgcmV0dXJuIGJ1ZjsKfQoKaW50Cm1haW4oKXsKICBzdHJ1Y3QgcmxpbWl0IHI7CiAg
+ci5ybGltX2N1ciA9IHIucmxpbV9tYXggPSAwOwogIHNldHJsaW1pdChSTElNSVRfQ09SRSwgJnIp
+OwoKICBpbnQgcyA9IHNvY2tldChBRl9JTkVULCBTT0NLX1NUUkVBTSwgMCk7CiAgeyBpbnQgeWVz
+ID0gMTsKICAgIHNldHNvY2tvcHQocywgU09MX1NPQ0tFVCwgU09fUkVVU0VBRERSLCAmeWVzLCBz
+aXplb2YoeWVzKSk7CiAgfQogIHN0cnVjdCBzb2NrYWRkcl9pbiBzaW47CiAgbWVtc2V0KCZzaW4s
+IDAsIHNpemVvZihzaW4pKTsKICBzaW4uc2luX2ZhbWlseSA9IEFGX0lORVQ7CiAgc2luLnNpbl9w
+b3J0ID0gaHRvbnMoNTY0KTsKICBpZihiaW5kKHMsIChzdHJ1Y3Qgc29ja2FkZHIgKikmc2luLCBz
+aXplb2Yoc2luKSkgPCAwKXsKICAgIHBlcnJvcigiYmluZCIpOyBleGl0KDEpOwogIH0KICBsaXN0
+ZW4ocywgMTApOwogIHN5bmMoKTsgc2xlZXAoMSk7CgogIGlmKGZvcmsoKSA9PSAwKXsKICAgIGNs
+b3NlKHMpOwogICAgLy8gLW8gLi4uLGRlYnVnPTB4MTBmCiAgICBpZihzeXN0ZW0oImVjaG8gLW4g
+bW91bnQ6IDsgbW91bnQgLXQgOXAgLW8gdHJhbnM9dGNwLGNhY2hlPWxvb3NlLGFjY2Vzcz1hbnks
+ZGVidWc9MHgwIDEyNy4wLjAuMSAvbW50IikgPT0gMCl7CiAgICAgIHN5c3RlbSgiZWNobyAtbiBs
+czogOyBscyAtbCAvbW50Ly4gL21udC96Iik7CiAgICAgIHN5c3RlbSgiZWNobyAtbiBlY2hvOiA7
+IGVjaG8gaGkgPiAvbW50L2EiKTsKICAgICAgc3lzdGVtKCJlY2hvIC1uIG1rZGlyOiA7IG1rZGly
+IC9tbnQvZCIpOwoKICAgICAgLy8gc3lzdGVtKCJlY2hvIC1uIG12OiA7IG12IC9tbnQveCAvbW50
+L2QveSIpOwogICAgICBwcmludGYoIm12OiAiKTsgZmZsdXNoKHN0ZG91dCk7IHVzbGVlcCg1MDAw
+MCk7CiAgICAgIGlmKHJlbmFtZSgiL21udC94IiwgIi9tbnQvZC95IikgPCAwKSBwZXJyb3IoInJl
+bmFtZSIpOwoKICAgICAgcHJpbnRmKCJvcGVuOiAiKTsgZmZsdXNoKHN0ZG91dCk7IHVzbGVlcCg1
+MDAwMCk7CiAgICAgIGludCBmZCA9IG9wZW4oIi9tbnQveCIsIDApOwogICAgICBpZihmZCA8IDAp
+IHBlcnJvcigib3BlbiIpOwoKICAgICAgcHJpbnRmKCJyZWFkOiAiKTsgZmZsdXNoKHN0ZG91dCk7
+IHVzbGVlcCg1MDAwMCk7CiAgICAgIHsgY2hhciBqdW5rWzJdOyBpZihyZWFkKGZkLCBqdW5rLCAy
+KSA8IDApIHBlcnJvcigicmVhZCIpOyB9CiAgICAgIGNsb3NlKGZkKTsKCiAgICAgIHN5c3RlbSgi
+ZWNobyAtbiBybTogOyBybSAtZiAvbW50L2QveSIpOwogICAgICBzeXN0ZW0oImVjaG8gLW4gcm06
+IDsgcm0gLWYgL21udC9kL3giKTsKICAgICAgc3lzdGVtKCJlY2hvIC1uIHVtb3VudDogOyB1bW91
+bnQgL21udCIpOwogICAgfQogICAgZXhpdCgwKTsKICB9CgogIGlmKDEpewogICAgc29ja2xlbl90
+IHNpbmxlbiA9IHNpemVvZihzaW4pOwogICAgaW50IHMxID0gYWNjZXB0KHMsIChzdHJ1Y3Qgc29j
+a2FkZHIgKikgJnNpbiwgJnNpbmxlbik7CiAgICBpZihzMSA8IDApIHsgcGVycm9yKCJhY2NlcHQi
+KTsgZXhpdCgxKTsgfQogICAgY2xvc2Uocyk7CiAgCiAgICBpbnQgb3BubyA9IDA7CiAgICB3aGls
+ZSgxKXsKICAgICAgY2hhciBpYnVmWzEwMjRdOwogICAgICBpZihyZWFkbihzMSwgaWJ1ZiwgNCkg
+PCAwKSBicmVhazsKICAgICAgaW50IGlsZW4gPSAqKGludCopKGlidWYrMCk7CiAgICAgIGlmKHJl
+YWRuKHMxLCBpYnVmKzQsIGlsZW4gLSA0KSA8IDApIGJyZWFrOwoKICAgICAgcHJpbnRmKCIlZDog
+Iiwgb3Bubyk7CiAgICAgIGZmbHVzaChzdGRvdXQpOwoKICAgICAgY2hhciBvYnVmW3NpemVvZihp
+YnVmKV07CiAgICAgIG1lbXNldChvYnVmLCAweGZmLCBzaXplb2Yob2J1ZikpOwogICAgICAqKGlu
+dCopKG9idWYrMCkgPSBpbGVuOyAvLyBsZW5ndGgKICAgICAgaWYoaWJ1Zls0XSA9PSAxMDApeyAv
+LyBUdmVyc2lvbgogICAgICAgIHByaW50ZigidmVyc2lvbiAlZCAlc1xuIiwgKihpbnQqKShpYnVm
+KzcpLCBnZXRzdHIoaWJ1ZisxMSkpOwogICAgICAgIG1lbWNweShvYnVmLCBpYnVmLCBpbGVuKTsK
+ICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gMjQpeyAvLyBUZ2V0YXR0ciAoZGlmZmVyZW50IGZy
+b20gVHN0YXQhKQogICAgICAgIHByaW50ZigiZ2V0YXR0clxuIik7CiAgICAgICAgLy8gaHR0cHM6
+Ly9naXRodWIuY29tL2NoYW9zL2Rpb2QvYmxvYi9tYXN0ZXIvcHJvdG9jb2wubWQKICAgICAgICBp
+bnQgc3ogPSAxNjE7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gc3ogKyA3OwogICAgICAgICoo
+aW50Kikob2J1ZiszMikgPSAwOyAvLyB1aWQKICAgICAgICAqKGludCopKG9idWYrMzYpID0gMDsg
+Ly8gZ2lkCiAgICAgICAgaWYob3BubyA9PSAyNSB8fCBvcG5vID09IDM0KXsKICAgICAgICAgICoo
+aW50Kikob2J1ZisyOCkgPSAwMTAwNzc3OyAvLyBTX0lGUkVHLCByd3hyd3hyd3gKICAgICAgICB9
+IGVsc2UgewogICAgICAgICAgKihpbnQqKShvYnVmKzI4KSA9IDAwNDA3Nzc7IC8vIFNfSUZESVIs
+IHJ3eHJ3eHJ3eAogICAgICAgIH0KICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gMTEwKXsgLy8g
+VHdhbGsKICAgICAgICBpbnQgbndxaWQgPSAqKHNob3J0KikoaWJ1ZisxNSk7CiAgICAgICAgcHJp
+bnRmKCJ3YWxrICVkICVzXG4iLCBud3FpZCwgbndxaWQ/Z2V0c3RyKGlidWYrMTcpOiItIik7CiAg
+ICAgICAgaWYoMCAmJiBvcG5vID09IDI0KXsKICAgICAgICAgIC8vIGVycm9yLi4uCiAgICAgICAg
+ICBpYnVmWzRdID0gMTA2OyAvLyBUZXJyb3IKICAgICAgICAgICooaW50Kikob2J1ZiswKSA9IDEx
+OwogICAgICAgICAgKihpbnQqKShvYnVmKzcpID0gRU5PRU5UOwogICAgICAgIH0gZWxzZSB7CiAg
+ICAgICAgICAqKHNob3J0Kikob2J1Zis3KSA9IG53cWlkOwogICAgICAgICAgKihpbnQqKShvYnVm
+KzApID0gOSArIG53cWlkKjEzOwogICAgICAgICAgaWYob3BubyA9PSAyNCl7CiAgICAgICAgICAg
+ICooY2hhciopKG9idWYrMjEpID0gMTsKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0gZWxz
+ZSBpZihpYnVmWzRdID09IDEwNCl7IC8vIFRhdHRhY2gKICAgICAgICBwcmludGYoImF0dGFjaFxu
+Iik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gMjA7CiAgICAgIH0gZWxzZSBpZihpYnVmWzRd
+ID09IDEyMCl7IC8vIFRjbHVuawogICAgICAgIHByaW50ZigiY2x1bmtcbiIpOwogICAgICAgICoo
+aW50Kikob2J1ZiswKSA9IDc7CiAgICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDMwKXsgLy8gVHhh
+dHRyd2FsawogICAgICAgIHByaW50ZigieGF0dHJ3YWxrXG4iKTsKICAgICAgICAqKGludCopKG9i
+dWYrMCkgPSAxNTsKICAgICAgICAqKGxvbmcqKShvYnVmKzcpID0gMjsgLy8gc2l6ZQogICAgICB9
+IGVsc2UgaWYoaWJ1Zls0XSA9PSAxMTYpeyAvLyBUcmVhZAogICAgICAgIHVuc2lnbmVkIGxvbmcg
+b2Zmc2V0ID0gKihsb25nKikoaWJ1ZisxMSk7CiAgICAgICAgdW5zaWduZWQgaW50IGNvdW50ID0g
+KihpbnQqKShpYnVmKzE5KTsKICAgICAgICBwcmludGYoInJlYWQgJWxkICVkXG4iLCBvZmZzZXQs
+IGNvdW50KTsgZmZsdXNoKHN0ZG91dCk7CiAgICAgICAgaW50IG4gPSAwOwogICAgICAgIGlmKG9m
+ZnNldCA9PSAwICYmIGNvdW50ID4gMil7CiAgICAgICAgICB1bnNpZ25lZCBjaGFyICpwID0gb2J1
+ZisxMTsKICAgICAgICAgIHVuc2lnbmVkIGNoYXIgKnAwID0gcDsKCiAgICAgICAgICBwICs9IDI7
+IC8vIHNpemU7CiAgICAgICAgICBwICs9IDI7IC8vIHR5cGUKICAgICAgICAgIHAgKz0gNDsgLy8g
+ZGV2CiAgICAgICAgICBwICs9IDE7IC8vIHFpZC50eXBlCiAgICAgICAgICBwICs9IDQ7IC8vIHFp
+ZC52ZXJzCiAgICAgICAgICBwICs9IDg7IC8vIHFpZC5wYXRoCiAgICAgICAgICBwICs9IDQ7IC8v
+IHBlcm1pc3Npb25zCiAgICAgICAgICBwICs9IDQ7IC8vIGF0aW1lCiAgICAgICAgICBwICs9IDQ7
+IC8vIG10aW1lCiAgICAgICAgICBwICs9IDg7IC8vIGxlbmd0aAogICAgICAgICAgKihzaG9ydCop
+cCA9IDE7IC8vIG5hbWUgbGVuZ3RoCiAgICAgICAgICBwKys7CiAgICAgICAgICAqcCsrID0gJ3gn
+OwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIG93bmVyIG5hbWUgbGVuZ3RoCiAgICAgICAg
+ICAqcCsrID0gJ3gnOwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIGdyb3VwIG5hbWUgbGVu
+Z3RoCiAgICAgICAgICAqcCsrID0gJ3gnOwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIGxh
+c3QgbW9kaWZ5IHVzZXIgbmFtZSBsZW5ndGgKICAgICAgICAgICpwKysgPSAneCc7CiAgICAgICAg
+ICAgIAogICAgICAgICAgbiA9IHAgLSBwMDsKICAgICAgICAgIHByaW50ZigiID4+PiBuPSVkIDw8
+PCAiLCBuKTsgZmZsdXNoKHN0ZG91dCk7CiAgICAgICAgICAqKHNob3J0KikocDApID0gbjsKICAg
+ICAgICB9CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gbiArIDExOwogICAgICAgICooaW50Kiko
+b2J1Zis3KSA9IG47CiAgICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDEyKXsgLy8gVGxvcGVuCiAg
+ICAgICAgcHJpbnRmKCJsb3BlblxuIik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gMjQ7CiAg
+ICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDQwKXsgLy8gVHJlYWRkaXIKICAgICAgICBwcmludGYo
+InJlYWRkaXJcbiIpOwogICAgICAgIC8vIGVhY2ggZGlyZW50IGlzIDI1IGJ5dGVzCiAgICAgICAg
+dW5zaWduZWQgbG9uZyBvZmZzZXQgPSAqKGxvbmcqKShpYnVmKzExKTsKICAgICAgICB1bnNpZ25l
+ZCBpbnQgY291bnQgPSAqKGludCopKGlidWYrMTkpOwogICAgICAgIGludCBuID0gMDsKICAgICAg
+ICBpZihvZmZzZXQgPT0gMCl7CiAgICAgICAgICBuID0gMTsKICAgICAgICAgIHVuc2lnbmVkIGNo
+YXIgKnAwID0gb2J1ZiArIDExOwogICAgICAgICAgdW5zaWduZWQgY2hhciAqcCA9IHAwOwogICAg
+ICAgICAgcCArPSAxMzsgLy8gcWlkCiAgICAgICAgICBwICs9IDg7IC8vIG9mZnNldAogICAgICAg
+ICAgcCArPSAxOyAvLyB0eXBlCiAgICAgICAgICAqKHNob3J0KilwID0gMTsKICAgICAgICAgIHAg
+Kz0gMjsKICAgICAgICAgICpwKysgPSAneCc7CiAgICAgICAgfQogICAgICAgICooaW50Kikob2J1
+ZiswKSA9IDExICsgbioyNTsKICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gOCl7IC8vIFRzdGF0
+ZnMKICAgICAgICBwcmludGYoInN0YXRmc1xuIik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0g
+Njc7CiAgICAgIH0gZWxzZSB7CiAgICAgICAgcHJpbnRmKCIlZCA/Pz9cbiIsIGlidWZbNF0gJiAw
+eGZmKTsKICAgICAgfQogICAgICBmZmx1c2goc3Rkb3V0KTsKICAgICAgb2J1Zls0XSA9IGlidWZb
+NF0gKyAxOyAvLyBjb252ZXJ0IFR4eHggdG8gUnh4eAogICAgICAqKHNob3J0Kikob2J1Zis1KSA9
+ICooc2hvcnQqKShpYnVmKzUpOyAvLyB0YWcKCiAgICAgIGlmKHdyaXRlKHMxLCBvYnVmLCAqKGlu
+dCopKG9idWYrMCkpPD0wKSBwZXJyb3IoIndyaXRlIik7CgogICAgICBvcG5vICs9IDE7CiAgICB9
+CiAgfQogIGNsb3NlKHMpOwp9Cg==
+--=-=-=--
