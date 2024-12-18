@@ -1,233 +1,77 @@
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7091F7545
-	for <v9fs@lists.linux.dev>; Tue, 17 Dec 2024 15:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.30.2.78
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F7A1F956
+	for <v9fs@lists.linux.dev>; Wed, 18 Dec 2024 00:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448644; cv=none; b=s/oktnSSxIDxbFge8MwWYgNrRmIBptuRF9QBoHKp9oFZKklE6CEfvoSzp7EJniadVXvQaEIREul5p4m8W9okT3d+jUvdxtqlBnyJ26kptyq7b+R9+Y4DNSrFSQzan3M2sKbzUSfUCBlXe4IYGMkeShLwwhIPG644rv9YyQK1PFc=
+	t=1734482139; cv=none; b=taTrPXmL3yC2aFOlFHcBScKSgt32aKK6308qTrs4W8k3GpbCuoNTFml1Fjk0eTLf59sdBzz8/p1iQa8ogTywUGIX7j2bIQqlI6RP0JmRcUKR5g8c4wmlAGEsijAleFMbjR/q6TbnECrkR8fZLHEvwbuf2FP7p8xjabctjIpcmyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448644; c=relaxed/simple;
-	bh=5vEhdvhdpg6IKkupsh22150Hog09p8pM0MDtvapUCyA=;
-	h=To:From:Subject:MIME-Version:Content-Type:Date:Message-ID; b=DucoOt34tB58T4RkVXNVjKpyHJAate//2AG42G58Jt4UmLUp4PjaaGcpPAH7dn5R/oQPBcBQcP+s0LhYaw0ev7Z6HKCVUWmOgpUSfLx3p4ZK3Vi16ewTw/BDme2DNK99ziufuX5ynAxQeXJ2vlJY2LZBp7T4kYIBfbSB2NXqfac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu; spf=pass smtp.mailfrom=csail.mit.edu; dkim=pass (2048-bit key) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.b=kunTMSul; arc=none smtp.client-ip=128.30.2.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csail.mit.edu
+	s=arc-20240116; t=1734482139; c=relaxed/simple;
+	bh=+kUYGBVjEIQGlnpaamQr88xZlwTHuNQ6H5KXNowT1Kw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DkHqZGY5hAMw995feyYNRy2Y/Ov6zbptPfZbZmXlzISESyyRkqzU8PLgNWD2edmm4NU8Yq5oDAcXVh5HUAJ6tOpUE0mA42QKb1zo6MY/9+JdJkMtAxXohfO2AgmoWp93YzwxhGpxLO55n5oyARXnwSSVgsJvS5l3hVVxszjKrvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=jhmrd1UR; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.b="kunTMSul"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=Message-ID:Date:Content-Type:
-	MIME-Version:Subject:Reply-To:From:To:Sender:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9Vo7VH8nCwaKLQOIGrMLsnM0AqDUiDVsK0k+o4mHSkU=; t=1734448642; x=1735312642; 
-	b=kunTMSul/eXTZ3KK3AIkbzXaZZ5TGs+ADN64FDDYZ7hJPcO4+KNO6PnNU2IT50YAmpTnx9+oFUA
-	s1QUQ8Dm7h9/pOoBlu6W6a1kISAlhqEQbxYB9MDskXVH1JFz3TEb6icnRRFjnZs3BPm/YNq7KbP6o
-	lyvS8I/EX67ZX3VQsdd3YPbM7YGCPqtFkob3EIVo9lx3CdmtJzNHQoxTtDTvgLF24/4AgMhHtf5GY
-	GLGHZcbwGyyyetUUqBtlaoldyKiMExx2P9k3itEdohiEzOci0RBvlM7/Oew12xkhBC41kVZXjZSl8
-	m3SX1HaeJLSlhLj6WxD4DW/wuveepBlQML+w==;
-Received: from 26-5-164.dynamic.csail.mit.edu ([18.26.5.164])
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <rtm@csail.mit.edu>)
-	id 1tNZJv-004Zcq-Tf;
-	Tue, 17 Dec 2024 10:17:11 -0500
-Received: from 26-5-164.dynamic.csail.mit.edu (localhost [127.0.0.1])
-	by 26-5-164.dynamic.csail.mit.edu (Postfix) with ESMTP id B70B4183251D;
-	Tue, 17 Dec 2024 10:17:11 -0500 (EST)
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev
-From: rtm@csail.mit.edu
-Reply-To: rtm@csail.mit.edu
-Subject: p9_client_write doesn't check for negative "written" from server
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="jhmrd1UR"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 2426114C1E1;
+	Wed, 18 Dec 2024 01:35:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1734482128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7aa4RpIN0gJc0MId92ARrAz9ol7/3oZRHnRyI3A1CAQ=;
+	b=jhmrd1URWOLLqZm01rQt77HGSNoXGiJl3+vt9hQSuW/VZqJ08JcZl/L63/nobwjJmouyen
+	zhkhpnn0EcTDYCXpl0tzziavwsOQ+jrlQSNtvH0bA61CZo61dn6cdUVQi4mDrFCtvSauTp
+	DMExKCVID91YX0v9VLEVTLpj3gvV2jdDqKrXYLpZ3E2tk9kVdhGDxaBnhK6nqaIpqxiYCe
+	LGAWFaOgfr4hU8d6rm8PYZ7VmJLLP65cXMQnIfCbsmVwU8x987Du7xVxV3mdMke3hEsSvF
+	xDlzmeRnMn/CIdmgfHtfU3JIeq7pLJVq/h9Pty91WD3mLCi5US8dg3e1QWIy5Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 58118b4a;
+	Wed, 18 Dec 2024 00:35:25 +0000 (UTC)
+Date: Wed, 18 Dec 2024 09:35:10 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: rtm@csail.mit.edu
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev
+Subject: Re: p9_client_write doesn't check for negative "written" from server
+Message-ID: <Z2IYvnHYTgMxA_Xi@codewreck.org>
+References: <16271.1734448631@26-5-164.dynamic.csail.mit.edu>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-=-="
-Date: Tue, 17 Dec 2024 10:17:11 -0500
-Message-ID: <16271.1734448631@26-5-164.dynamic.csail.mit.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <16271.1734448631@26-5-164.dynamic.csail.mit.edu>
 
---=-=-=
-Content-Type: text/plain
+Hi,
 
-If the kernel's 9p client sends a write request, and the server returns
-a successful Rwrite reply, but with a negative "written" value, then
-this line towards the end of p9_client_write():
+rtm@csail.mit.edu wrote on Tue, Dec 17, 2024 at 10:17:11AM -0500:
+> If the kernel's 9p client sends a write request, and the server returns
+> a successful Rwrite reply, but with a negative "written" value, then
+> this line towards the end of p9_client_write():
+> 
+>                 iov_iter_revert(from, count - written - iov_iter_count(from));
+> 
+> can pass an unroll argument to iov_iter_revert() that's larger than
+> the number of bytes in the iov
 
-                iov_iter_revert(from, count - written - iov_iter_count(from));
+Thanks for the report, I'm surprised this didn't come up sooner through
+syzbot...
 
-can pass an unroll argument to iov_iter_revert() that's larger than
-the number of bytes in the iov. This causes iov_iter_folioq_revert()
-to try to back up beyond the beginning of the iov data, and this code
+That is correct, written (and simlarily received in p9_client_read_once)
+should be made unsigned.
+They're actually compared with 'rsize' which is an int but is set from
+fid->iounit which is a u32, so just making these three variables u32
+will sort the issue.
 
-                if (slot == 0) { 
-                        folioq = folioq->prev;
-                        slot = folioq_nr_slots(folioq);
-
-tries to dereference a NULL folioq, since folioq->prev is NULL.
-
-I've attached a demo.
-
-# cc 9p2a.c
-# ./a.out
-...
-BUG: kernel NULL pointer dereference, address: 000000000000011e
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
-CPU: 1 UID: 0 PID: 1613 Comm: sh Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #12
-Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
-RIP: 0010:iov_iter_revert+0xc9/0x150
-Code: cc cc cc 48 29 f1 48 89 4f 08 c3 cc cc cc cc 48 c7 47 08 00 00 00 00 0f b6
- 57 20 bf 00 10 00 00 eb 1f 83 ea 01 89 d1 49 89 f9 <41> 0f b6 8c 08 00 01 00 00
- 49 d3 e1 4c 89 c9 49 39 f1 73 15 4c 29
-RSP: 0018:ffffc900020dfae8 EFLAGS: 00010246
-Call Trace:
- <TASK>
- ? __die+0x1e/0x60
- ? page_fault_oops+0x157/0x450
- ? check_object+0xc2/0x430
- ? exc_page_fault+0x66/0x140
- ? asm_exc_page_fault+0x26/0x30
- ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ? iov_iter_revert+0xc9/0x150
- p9_client_write+0x115/0x250
- v9fs_issue_write+0x38/0x70
- netfs_advance_write+0xc6/0x2a0
- netfs_write_folio+0x2e7/0x9a0
- netfs_writepages+0xd7/0x3e0
- ? filemap_dirty_folio+0x5b/0x70
- do_writepages+0xc6/0x240
- __filemap_fdatawrite_range+0x9a/0xb0
- v9fs_dir_release+0x153/0x180
- ? task_work_add+0x71/0xe0
- __fput+0xe8/0x290
- task_work_run+0x57/0xa0
- syscall_exit_to_user_mode+0x105/0x110
- do_syscall_64+0x4b/0xd0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fdfc55fe96b
-
-Robert Morris
-rtm@mit.edu
-
-
---=-=-=
-Content-Type: application/octet-stream
-Content-Disposition: attachment; filename=9p2a.c
-Content-Transfer-Encoding: base64
-
-I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4KI2luY2x1ZGUgPHVuaXN0ZC5o
-PgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5jbHVkZSA8ZXJybm8u
-aD4KI2luY2x1ZGUgPHN5cy9zb2NrZXQuaD4KI2luY2x1ZGUgPHN5cy9pb2N0bC5oPgojaW5jbHVk
-ZSA8bmV0aW5ldC9pbi5oPgojaW5jbHVkZSA8c3lzL3dhaXQuaD4KI2luY2x1ZGUgPHN5cy9yZXNv
-dXJjZS5oPgoKaW50IHJlYWRuKGludCBmZCwgY2hhciAqYnVmLCBpbnQgbikgewogIGludCBvcmln
-ID0gbjsKICB3aGlsZShuID4gMCl7CiAgICBpbnQgY2MgPSByZWFkKGZkLCBidWYsIG4pOwogICAg
-aWYoY2MgPD0gMCkgeyBwZXJyb3IoInJlYWQiKTsgcmV0dXJuIC0xOyB9CiAgICBuIC09IGNjOwog
-ICAgYnVmICs9IGNjOwogIH0KICByZXR1cm4gb3JpZzsKfQoKY2hhciAqCmdldHN0cih1bnNpZ25l
-ZCBjaGFyICpwKQp7CiAgdW5zaWduZWQgaW50IG4gPSAqKHVuc2lnbmVkIHNob3J0ICopcDsKICBj
-aGFyICpidWYgPSBtYWxsb2MobisxKTsKICBtZW1jcHkoYnVmLCBwKzIsIG4pOwogIGJ1ZltuXSA9
-ICdcMCc7CiAgcmV0dXJuIGJ1ZjsKfQoKaW50Cm1haW4oKXsKICBzdHJ1Y3QgcmxpbWl0IHI7CiAg
-ci5ybGltX2N1ciA9IHIucmxpbV9tYXggPSAwOwogIHNldHJsaW1pdChSTElNSVRfQ09SRSwgJnIp
-OwoKICBpbnQgcyA9IHNvY2tldChBRl9JTkVULCBTT0NLX1NUUkVBTSwgMCk7CiAgeyBpbnQgeWVz
-ID0gMTsKICAgIHNldHNvY2tvcHQocywgU09MX1NPQ0tFVCwgU09fUkVVU0VBRERSLCAmeWVzLCBz
-aXplb2YoeWVzKSk7CiAgfQogIHN0cnVjdCBzb2NrYWRkcl9pbiBzaW47CiAgbWVtc2V0KCZzaW4s
-IDAsIHNpemVvZihzaW4pKTsKICBzaW4uc2luX2ZhbWlseSA9IEFGX0lORVQ7CiAgc2luLnNpbl9w
-b3J0ID0gaHRvbnMoNTY0KTsKICBpZihiaW5kKHMsIChzdHJ1Y3Qgc29ja2FkZHIgKikmc2luLCBz
-aXplb2Yoc2luKSkgPCAwKXsKICAgIHBlcnJvcigiYmluZCIpOyBleGl0KDEpOwogIH0KICBsaXN0
-ZW4ocywgMTApOwogIHN5bmMoKTsgc2xlZXAoMSk7CgogIGlmKGZvcmsoKSA9PSAwKXsKICAgIGNs
-b3NlKHMpOwogICAgLy8gLW8gLi4uLGRlYnVnPTB4MTBmCiAgICBpZihzeXN0ZW0oImVjaG8gLW4g
-bW91bnQ6IDsgbW91bnQgLXQgOXAgLW8gdHJhbnM9dGNwLGNhY2hlPWxvb3NlLGFjY2Vzcz1hbnks
-ZGVidWc9MHgwIDEyNy4wLjAuMSAvbW50IikgPT0gMCl7CiAgICAgIHN5c3RlbSgiZWNobyAtbiBs
-czogOyBscyAtbCAvbW50Ly4gL21udC96Iik7CiAgICAgIHN5c3RlbSgiZWNobyAtbiBlY2hvOiA7
-IGVjaG8gaGkgPiAvbW50L2EiKTsKICAgICAgc3lzdGVtKCJlY2hvIC1uIG1rZGlyOiA7IG1rZGly
-IC9tbnQvZCIpOwoKICAgICAgLy8gc3lzdGVtKCJlY2hvIC1uIG12OiA7IG12IC9tbnQveCAvbW50
-L2QveSIpOwogICAgICBwcmludGYoIm12OiAiKTsgZmZsdXNoKHN0ZG91dCk7IHVzbGVlcCg1MDAw
-MCk7CiAgICAgIGlmKHJlbmFtZSgiL21udC94IiwgIi9tbnQvZC95IikgPCAwKSBwZXJyb3IoInJl
-bmFtZSIpOwoKICAgICAgcHJpbnRmKCJvcGVuOiAiKTsgZmZsdXNoKHN0ZG91dCk7IHVzbGVlcCg1
-MDAwMCk7CiAgICAgIGludCBmZCA9IG9wZW4oIi9tbnQveCIsIDApOwogICAgICBpZihmZCA8IDAp
-IHBlcnJvcigib3BlbiIpOwoKICAgICAgcHJpbnRmKCJyZWFkOiAiKTsgZmZsdXNoKHN0ZG91dCk7
-IHVzbGVlcCg1MDAwMCk7CiAgICAgIHsgY2hhciBqdW5rWzJdOyBpZihyZWFkKGZkLCBqdW5rLCAy
-KSA8IDApIHBlcnJvcigicmVhZCIpOyB9CiAgICAgIGNsb3NlKGZkKTsKCiAgICAgIHN5c3RlbSgi
-ZWNobyAtbiBybTogOyBybSAtZiAvbW50L2QveSIpOwogICAgICBzeXN0ZW0oImVjaG8gLW4gcm06
-IDsgcm0gLWYgL21udC9kL3giKTsKICAgICAgc3lzdGVtKCJlY2hvIC1uIHVtb3VudDogOyB1bW91
-bnQgL21udCIpOwogICAgfQogICAgZXhpdCgwKTsKICB9CgogIGlmKDEpewogICAgc29ja2xlbl90
-IHNpbmxlbiA9IHNpemVvZihzaW4pOwogICAgaW50IHMxID0gYWNjZXB0KHMsIChzdHJ1Y3Qgc29j
-a2FkZHIgKikgJnNpbiwgJnNpbmxlbik7CiAgICBpZihzMSA8IDApIHsgcGVycm9yKCJhY2NlcHQi
-KTsgZXhpdCgxKTsgfQogICAgY2xvc2Uocyk7CiAgCiAgICBpbnQgb3BubyA9IDA7CiAgICB3aGls
-ZSgxKXsKICAgICAgY2hhciBpYnVmWzEwMjRdOwogICAgICBpZihyZWFkbihzMSwgaWJ1ZiwgNCkg
-PCAwKSBicmVhazsKICAgICAgaW50IGlsZW4gPSAqKGludCopKGlidWYrMCk7CiAgICAgIGlmKHJl
-YWRuKHMxLCBpYnVmKzQsIGlsZW4gLSA0KSA8IDApIGJyZWFrOwoKICAgICAgcHJpbnRmKCIlZDog
-Iiwgb3Bubyk7CiAgICAgIGZmbHVzaChzdGRvdXQpOwoKICAgICAgY2hhciBvYnVmW3NpemVvZihp
-YnVmKV07CiAgICAgIG1lbXNldChvYnVmLCAweGZmLCBzaXplb2Yob2J1ZikpOwogICAgICAqKGlu
-dCopKG9idWYrMCkgPSBpbGVuOyAvLyBsZW5ndGgKICAgICAgaWYoaWJ1Zls0XSA9PSAxMDApeyAv
-LyBUdmVyc2lvbgogICAgICAgIHByaW50ZigidmVyc2lvbiAlZCAlc1xuIiwgKihpbnQqKShpYnVm
-KzcpLCBnZXRzdHIoaWJ1ZisxMSkpOwogICAgICAgIG1lbWNweShvYnVmLCBpYnVmLCBpbGVuKTsK
-ICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gMjQpeyAvLyBUZ2V0YXR0ciAoZGlmZmVyZW50IGZy
-b20gVHN0YXQhKQogICAgICAgIHByaW50ZigiZ2V0YXR0clxuIik7CiAgICAgICAgLy8gaHR0cHM6
-Ly9naXRodWIuY29tL2NoYW9zL2Rpb2QvYmxvYi9tYXN0ZXIvcHJvdG9jb2wubWQKICAgICAgICBp
-bnQgc3ogPSAxNjE7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gc3ogKyA3OwogICAgICAgICoo
-aW50Kikob2J1ZiszMikgPSAwOyAvLyB1aWQKICAgICAgICAqKGludCopKG9idWYrMzYpID0gMDsg
-Ly8gZ2lkCiAgICAgICAgaWYob3BubyA9PSAyNSB8fCBvcG5vID09IDM0KXsKICAgICAgICAgICoo
-aW50Kikob2J1ZisyOCkgPSAwMTAwNzc3OyAvLyBTX0lGUkVHLCByd3hyd3hyd3gKICAgICAgICB9
-IGVsc2UgewogICAgICAgICAgKihpbnQqKShvYnVmKzI4KSA9IDAwNDA3Nzc7IC8vIFNfSUZESVIs
-IHJ3eHJ3eHJ3eAogICAgICAgIH0KICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gMTEwKXsgLy8g
-VHdhbGsKICAgICAgICBpbnQgbndxaWQgPSAqKHNob3J0KikoaWJ1ZisxNSk7CiAgICAgICAgcHJp
-bnRmKCJ3YWxrICVkICVzXG4iLCBud3FpZCwgbndxaWQ/Z2V0c3RyKGlidWYrMTcpOiItIik7CiAg
-ICAgICAgaWYoMCAmJiBvcG5vID09IDI0KXsKICAgICAgICAgIC8vIGVycm9yLi4uCiAgICAgICAg
-ICBpYnVmWzRdID0gMTA2OyAvLyBUZXJyb3IKICAgICAgICAgICooaW50Kikob2J1ZiswKSA9IDEx
-OwogICAgICAgICAgKihpbnQqKShvYnVmKzcpID0gRU5PRU5UOwogICAgICAgIH0gZWxzZSB7CiAg
-ICAgICAgICAqKHNob3J0Kikob2J1Zis3KSA9IG53cWlkOwogICAgICAgICAgKihpbnQqKShvYnVm
-KzApID0gOSArIG53cWlkKjEzOwogICAgICAgICAgaWYob3BubyA9PSAyNCl7CiAgICAgICAgICAg
-ICooY2hhciopKG9idWYrMjEpID0gMTsKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0gZWxz
-ZSBpZihpYnVmWzRdID09IDEwNCl7IC8vIFRhdHRhY2gKICAgICAgICBwcmludGYoImF0dGFjaFxu
-Iik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gMjA7CiAgICAgIH0gZWxzZSBpZihpYnVmWzRd
-ID09IDEyMCl7IC8vIFRjbHVuawogICAgICAgIHByaW50ZigiY2x1bmtcbiIpOwogICAgICAgICoo
-aW50Kikob2J1ZiswKSA9IDc7CiAgICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDMwKXsgLy8gVHhh
-dHRyd2FsawogICAgICAgIHByaW50ZigieGF0dHJ3YWxrXG4iKTsKICAgICAgICAqKGludCopKG9i
-dWYrMCkgPSAxNTsKICAgICAgICAqKGxvbmcqKShvYnVmKzcpID0gMjsgLy8gc2l6ZQogICAgICB9
-IGVsc2UgaWYoaWJ1Zls0XSA9PSAxMTYpeyAvLyBUcmVhZAogICAgICAgIHVuc2lnbmVkIGxvbmcg
-b2Zmc2V0ID0gKihsb25nKikoaWJ1ZisxMSk7CiAgICAgICAgdW5zaWduZWQgaW50IGNvdW50ID0g
-KihpbnQqKShpYnVmKzE5KTsKICAgICAgICBwcmludGYoInJlYWQgJWxkICVkXG4iLCBvZmZzZXQs
-IGNvdW50KTsgZmZsdXNoKHN0ZG91dCk7CiAgICAgICAgaW50IG4gPSAwOwogICAgICAgIGlmKG9m
-ZnNldCA9PSAwICYmIGNvdW50ID4gMil7CiAgICAgICAgICB1bnNpZ25lZCBjaGFyICpwID0gb2J1
-ZisxMTsKICAgICAgICAgIHVuc2lnbmVkIGNoYXIgKnAwID0gcDsKCiAgICAgICAgICBwICs9IDI7
-IC8vIHNpemU7CiAgICAgICAgICBwICs9IDI7IC8vIHR5cGUKICAgICAgICAgIHAgKz0gNDsgLy8g
-ZGV2CiAgICAgICAgICBwICs9IDE7IC8vIHFpZC50eXBlCiAgICAgICAgICBwICs9IDQ7IC8vIHFp
-ZC52ZXJzCiAgICAgICAgICBwICs9IDg7IC8vIHFpZC5wYXRoCiAgICAgICAgICBwICs9IDQ7IC8v
-IHBlcm1pc3Npb25zCiAgICAgICAgICBwICs9IDQ7IC8vIGF0aW1lCiAgICAgICAgICBwICs9IDQ7
-IC8vIG10aW1lCiAgICAgICAgICBwICs9IDg7IC8vIGxlbmd0aAogICAgICAgICAgKihzaG9ydCop
-cCA9IDE7IC8vIG5hbWUgbGVuZ3RoCiAgICAgICAgICBwKys7CiAgICAgICAgICAqcCsrID0gJ3gn
-OwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIG93bmVyIG5hbWUgbGVuZ3RoCiAgICAgICAg
-ICAqcCsrID0gJ3gnOwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIGdyb3VwIG5hbWUgbGVu
-Z3RoCiAgICAgICAgICAqcCsrID0gJ3gnOwogICAgICAgICAgKihzaG9ydCopcCA9IDE7IC8vIGxh
-c3QgbW9kaWZ5IHVzZXIgbmFtZSBsZW5ndGgKICAgICAgICAgICpwKysgPSAneCc7CiAgICAgICAg
-ICAgIAogICAgICAgICAgbiA9IHAgLSBwMDsKICAgICAgICAgIHByaW50ZigiID4+PiBuPSVkIDw8
-PCAiLCBuKTsgZmZsdXNoKHN0ZG91dCk7CiAgICAgICAgICAqKHNob3J0KikocDApID0gbjsKICAg
-ICAgICB9CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gbiArIDExOwogICAgICAgICooaW50Kiko
-b2J1Zis3KSA9IG47CiAgICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDEyKXsgLy8gVGxvcGVuCiAg
-ICAgICAgcHJpbnRmKCJsb3BlblxuIik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0gMjQ7CiAg
-ICAgIH0gZWxzZSBpZihpYnVmWzRdID09IDQwKXsgLy8gVHJlYWRkaXIKICAgICAgICBwcmludGYo
-InJlYWRkaXJcbiIpOwogICAgICAgIC8vIGVhY2ggZGlyZW50IGlzIDI1IGJ5dGVzCiAgICAgICAg
-dW5zaWduZWQgbG9uZyBvZmZzZXQgPSAqKGxvbmcqKShpYnVmKzExKTsKICAgICAgICB1bnNpZ25l
-ZCBpbnQgY291bnQgPSAqKGludCopKGlidWYrMTkpOwogICAgICAgIGludCBuID0gMDsKICAgICAg
-ICBpZihvZmZzZXQgPT0gMCl7CiAgICAgICAgICBuID0gMTsKICAgICAgICAgIHVuc2lnbmVkIGNo
-YXIgKnAwID0gb2J1ZiArIDExOwogICAgICAgICAgdW5zaWduZWQgY2hhciAqcCA9IHAwOwogICAg
-ICAgICAgcCArPSAxMzsgLy8gcWlkCiAgICAgICAgICBwICs9IDg7IC8vIG9mZnNldAogICAgICAg
-ICAgcCArPSAxOyAvLyB0eXBlCiAgICAgICAgICAqKHNob3J0KilwID0gMTsKICAgICAgICAgIHAg
-Kz0gMjsKICAgICAgICAgICpwKysgPSAneCc7CiAgICAgICAgfQogICAgICAgICooaW50Kikob2J1
-ZiswKSA9IDExICsgbioyNTsKICAgICAgfSBlbHNlIGlmKGlidWZbNF0gPT0gOCl7IC8vIFRzdGF0
-ZnMKICAgICAgICBwcmludGYoInN0YXRmc1xuIik7CiAgICAgICAgKihpbnQqKShvYnVmKzApID0g
-Njc7CiAgICAgIH0gZWxzZSB7CiAgICAgICAgcHJpbnRmKCIlZCA/Pz9cbiIsIGlidWZbNF0gJiAw
-eGZmKTsKICAgICAgfQogICAgICBmZmx1c2goc3Rkb3V0KTsKICAgICAgb2J1Zls0XSA9IGlidWZb
-NF0gKyAxOyAvLyBjb252ZXJ0IFR4eHggdG8gUnh4eAogICAgICAqKHNob3J0Kikob2J1Zis1KSA9
-ICooc2hvcnQqKShpYnVmKzUpOyAvLyB0YWcKCiAgICAgIGlmKHdyaXRlKHMxLCBvYnVmLCAqKGlu
-dCopKG9idWYrMCkpPD0wKSBwZXJyb3IoIndyaXRlIik7CgogICAgICBvcG5vICs9IDE7CiAgICB9
-CiAgfQogIGNsb3NlKHMpOwp9Cg==
---=-=-=--
+The patch is trivial so would you like to send it?
+If you don't want to (or there is no reply in a while) then I'll send a
+patch this weekend crediting you as reported-by.
+-- 
+Dominique
