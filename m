@@ -1,44 +1,44 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB8723244B
-	for <v9fs@lists.linux.dev>; Tue, 14 Jan 2025 21:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F421487E2
+	for <v9fs@lists.linux.dev>; Wed, 15 Jan 2025 15:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736890351; cv=none; b=bYj92Ox/YmI3FhdOJV3VBV4IhgCnPjU6O9p4dvrGomIoCstaiT+E0YLvcQE1joTcZl5zuTMIHhXe3qspg2WqZipf5LBpwTO5+mLJfc8O7laaNEzdIf7pWX8ZzK+pbnEC1iy7BfZ0qgubivdBggZUsUIWfy6NF2kOtLXGgiwgtkE=
+	t=1736956019; cv=none; b=asSgulrkQMUrhp1u9A9UwLOkEA22Ja6ZA2rD/5BYV3bXzLQcgukeUpQy9oQFSGRMtczFDF8ylPPl0ffMas0AzN6F4wNB9lL4hbA3kY9s7MpoKW4kDKwuwKaWqYCrY99kRl9Rmj8ahvGPHLda8SHEitLuL2+DgCUz8RVVNSJBGvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736890351; c=relaxed/simple;
-	bh=ADA5oCHs78OuwQ4RF+o+OI9i4WZ5jXrWM4/kZdxXlfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KxZRNJMvEUSVKVOn/9PJL4u03m5GH+NyHrPbAgonr/NyxeHQuHM6WIv6kVJ78CFOrR5qt/E7ZzmZQD8JB6EjPZ7hSOO+y9x/vPZ0Un1cBKn8zgOkKD5uijM674rS7z894rnvDrGORIPlBTjdNoKjGXoSrt/0Fwzpb6rphd3sv3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=sBwEws3z; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1736956019; c=relaxed/simple;
+	bh=+yTvbnS+ys59Fl+qbMqPce+r4Tq8wEeDaJ1ZILDgdaw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
+	 Content-Type; b=oTJr54z9sDsRpoiXIJi5ZREB1x2PvtgQpRK7HOB5X6wtI3nD+fbu7lExccWbRqIpQrkGIjkmai7DRzgNQadepRYo+iyEc1bJ/ruhwITl3tmEEpH1d9UR+PqtsknLv7O7VSda+qq4Yj1Jefn2NjYV9cnk6dGcLiymOTbjuYr4Qhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=KkZvAyRM; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="sBwEws3z"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 971DA14C1E1;
-	Tue, 14 Jan 2025 22:24:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1736889861;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESDv8yFsH4FZV7GOvZw29gwBNFMFNwHKFsEMqUuriDg=;
-	b=sBwEws3ztYoBlAD+7MkmVO9GRHT/13K72ywxEuqCkSUgXb1lAXCe72xEPET49hII1Hi0YU
-	S6pgRZg2iDW5Rp2EXb7NNacn5CyQqSkNk90p3y84WSVyA6WC9bD/hkxI8wB7d33pHTC/G5
-	73rGFTo9rBpfhIUmDboKwp6dLZbefLP22Sb4mueUre3sxRsX5FlYoyVzOoE2DNj9BVNOu9
-	Ubjpe8GaF+sFWqBLfgwrYyuF3/nQOyHtza6dNdjN6DV3TtkgUFY+9jYkxfqNFT1umxB+V1
-	dN2cRsM6smFuDeoPIBkre2g9vx/oXkpr14UQMS1WVnE0AgRmxSI/l7+BYYBUBA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 875711ae;
-	Tue, 14 Jan 2025 21:24:18 +0000 (UTC)
-Date: Wed, 15 Jan 2025 06:24:03 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Joshua Murphy <joshuamurphy@posteo.net>
-Cc: v9fs@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="KkZvAyRM"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id EF21E240101
+	for <v9fs@lists.linux.dev>; Wed, 15 Jan 2025 16:46:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1736956008; bh=+yTvbnS+ys59Fl+qbMqPce+r4Tq8wEeDaJ1ZILDgdaw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=KkZvAyRMp6ePVhICi1A1m6gNSagM1ly1nh428d2UBcTIGAQo+U0VgdREC9F/48uc7
+	 TZ42GLafhhdotR1kjLhszGIvd1t9IXSkJUzQUpFcdVmKVNvdKDmITE/SLIf2zSU8aR
+	 KhOhljjwcnAzP9/OERnu9fH4GKjIlsk1NSab4hNryOWzbPd7CCyP1Gxlb7DQcQjfMH
+	 5ry9Uv0x+BwtZ6xxubkez8QwwS/xgwmfX2jdefy9TdJ+0UjD8HClOrv2kWaApTgBOi
+	 K5odJSMkI/z75SK53y4umserwEK3ekbvLIWDh7B1+UV3Xo1iGbYO3mUSbm85d/nB6f
+	 EWRQQcOoeE58A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YY9N80rp1z6txY;
+	Wed, 15 Jan 2025 16:46:47 +0100 (CET)
+From: Joshua Murphy <joshuamurphy@posteo.net>
+To: asmadeus@codewreck.org
+Cc: joshuamurphy@posteo.net,v9fs@lists.linux.dev
 Subject: Re: -otrans=tcp with IPv6 address?
-Message-ID: <Z4bV8_e_gZUgG7Et@codewreck.org>
-References: <87ikqhcdpr.fsf@posteo.net>
+In-Reply-To: <Z4bV8_e_gZUgG7Et@codewreck.org>
+Date: Wed, 15 Jan 2025 15:46:46 +0000
+Message-ID: <874j20qduh.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -46,22 +46,15 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87ikqhcdpr.fsf@posteo.net>
+Content-Transfer-Encoding: quoted-printable
 
-Joshua Murphy wrote on Tue, Jan 14, 2025 at 09:01:04PM +0000:
-> It seems like it isn’t currently possible to mount using an IPv6 address
-> and -otrans=tcp.
+> I haven't had time to do anything about this for ages, but patches are
+> welcome!
 
-Right, the current workaround is to open a socket before calling mount
-and pass that socket with trans=fd
+I haven=E2=80=99t done kernel development before, but I=E2=80=99ll see if I=
+ can put
+something together.
 
-> I think the issue is in p9_fd_create_tcp in net/9p/trans_fd.c as it only
-> validates IPv4 addresses and returns EINVAL otherwise.
-
-I haven't had time to do anything about this for ages, but patches are
-welcome!
-
--- 
-Dominique Martinet | Asmadeus
+--
+Joshua Murphy
+joshuamurphy@posteo.net
