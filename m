@@ -1,44 +1,48 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D7818FC8F
-	for <v9fs@lists.linux.dev>; Thu, 16 Jan 2025 19:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E935618734F
+	for <v9fs@lists.linux.dev>; Fri, 17 Jan 2025 17:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737056818; cv=none; b=B/Y92O7qfxG4zGH1SLpOzME8ZWKzZ+nqcW3OvzpGicnRkX/xylIugVllh8PU4/zsaabAhYYkZusd2dXY7A7G+gswDLq7hq2B1VMpwVzsf+rlOAbXv7wdYDO42eng0349KRgXlNVdALpOAkKy4+gH6j2NoLNpEjaIgiPAu3yhkr0=
+	t=1737136019; cv=none; b=BGHLj3oM7zC+OY/4Z4mmD93b3ST8IwwvFE6PHHW5cljaQ++S8bRNId65BE5yrUd9IHB4EmKwLJWMAKFz6OMLuiu24X9Ujz91+vVPdhT7acHiaH4AbwFga1IyOiS5wJwseEf3zALTslvbtslEZCrKPQr4BneDS328av6bgIKIpqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737056818; c=relaxed/simple;
-	bh=1yndz/0IJx6eVmKW5OrNx+dBe4DGHK3wij1/OX3kiCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R2P7/4VWSoESGTi3FTnHRbeDuxzusqKbv1tfte2JM4nHiQfgvwnOZu2AIY9ZCZNhtrS7RH9CRTGk2NPdgjf4LG9kloUoX+/734W0KaAl4vhWhW6oMoQrK9hUuztr3oQjOzYkM7dnoHg8nIo6SW3g6ohFnCEDAXRMQ8HbJxGNF18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xvooJbva; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1737136019; c=relaxed/simple;
+	bh=PW3AyOFpbV+M9k/gGrHGTVQSWvBcQjABQGUEXr8Az1U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=n7jOyx7VOHxhsO502FSA+3TMnm/bUL0v8ECwZlH79CGX9/sMwPFyn7oHduElMU459/1jiXEnenBI1vI7JK4a944vuaJF5EgPk/6H8RE2PcSKLL7pUqIQTEAIqDHSQApJZ27Qg3bVOOGJVMqK2vMjUVC3oML9dHrVqwvXJbWYC/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=Hc2lHDyJ; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xvooJbva"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id DC58114C1E1;
-	Thu, 16 Jan 2025 20:46:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1737056806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RmXprdE2GFAYWCznubaJa3px04qMAl2W32bQ8ZQRd1c=;
-	b=xvooJbvaylftrx/Vq5H568/cRpU746LxZCAFgKgZ+4fjju8oTGCka9bK7w4f4L9qPiJiY9
-	k2gylu4t9w0i6aixmOfIbrG64MPh3IBgvhsdZx5Up2GWJTQyJu7V5E1umKBJTjeZGiNuEG
-	of+tIDsht7/LIdDcdOHBo1hjkebEUJUOdXuVjFO3aTmybszg/iYNTqsXs4LTKmkrYYwOdS
-	x3kL2MhVvVkyh+y6sLaAF2n/mYP3w6IHcm8Ye0xY84rEwCBM+e5VzOoq+yiAb20UyaJ6JV
-	zpr7r54fDOz1U9TKCOC/cPx829lseqHO+zuQG0EgHqreGO9dc0yZM8qSlRE6uQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c3cb4163;
-	Thu, 16 Jan 2025 19:46:43 +0000 (UTC)
-Date: Fri, 17 Jan 2025 04:46:28 +0900
-From: asmadeus@codewreck.org
-To: Joshua Murphy <joshuamurphy@posteo.net>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="Hc2lHDyJ"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id E1683240027
+	for <v9fs@lists.linux.dev>; Fri, 17 Jan 2025 18:46:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1737136008; bh=PW3AyOFpbV+M9k/gGrHGTVQSWvBcQjABQGUEXr8Az1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=Hc2lHDyJWKlHkmqv8+Q+K3Hc6lj0IyHIGyKWans4AYLD28M22VRqRi2RrCGqQ1ME3
+	 25nxYyeAo2Tlv+DQU8inAKI/WJncAJQoXUESQDP8565biBftUVDwk5BQfkkS4h4Wsf
+	 DGBpQIo6iynb4FSbPZw9XHe0BzwIlGk7P9Uw+t1hsF2NBxkefm6DPDH+lCbaItk/th
+	 sNaM4sEhlnITL0XIQXxI6DGWKhfhJIi9yjrqHY8T4TelZMtuOrQ3VIWFHjWv+CsyYW
+	 nB/zE6Fdxq4+tdTwBwgP16Lhlg9OPWbJ6sDmjlxL9ekE5uT5WMz4ZXwuGV2Uws9ETy
+	 yo0LduQVfTSbw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YZRxg3MdLz6tyr;
+	Fri, 17 Jan 2025 18:46:47 +0100 (CET)
+From: Joshua Murphy <joshuamurphy@posteo.net>
+To: asmadeus@codewreck.org
+Cc: ericvh@kernel.org,  lucho@ionkov.net,  linux_oss@crudebyte.com,
+  v9fs@lists.linux.dev
 Subject: Re: [PATCH] net/9p/fd: support ipv6 for trans=tcp
-Message-ID: <Z4liFG9zHHHslkp6@codewreck.org>
+In-Reply-To: <Z4liFG9zHHHslkp6@codewreck.org> (asmadeus@codewreck.org's
+	message of "Fri, 17 Jan 2025 04:46:28 +0900")
 References: <20250116160701.8024-3-joshuamurphy@posteo.net>
+	<Z4liFG9zHHHslkp6@codewreck.org>
+Date: Fri, 17 Jan 2025 17:46:45 +0000
+Message-ID: <87jzatl4e2.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -46,150 +50,29 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250116160701.8024-3-joshuamurphy@posteo.net>
+Content-Transfer-Encoding: quoted-printable
 
-Joshua Murphy wrote on Thu, Jan 16, 2025 at 04:07:03PM +0000:
-> Allows specifying an IPv6 address when mounting a remote 9p file system.
 
-That was fast! Thank you!
+> That memset is for sockaddr size, should it be for sockaddr_storage?
 
-A few comments below; I'll try to find time to test shortly once
-addressed.
+Yeah, it probably should be.
+Do you think it would make more sense to only initialize the
+sockaddr_storage as later suggested instead of using the memset?
 
-> Signed-off-by: Joshua Murphy <joshuamurphy@posteo.net>
-> ---
->  net/9p/trans_fd.c | 50 ++++++++++++++++++++++++++++++++---------------
->  1 file changed, 34 insertions(+), 16 deletions(-)
-> 
-> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-> index 196060dc6..effd0261d 100644
-> --- a/net/9p/trans_fd.c
-> +++ b/net/9p/trans_fd.c
-> @@ -11,6 +11,7 @@
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->  
->  #include <linux/in.h>
-> +#include <linux/in6.h>
->  #include <linux/module.h>
->  #include <linux/net.h>
->  #include <linux/ipv6.h>
-> @@ -971,17 +972,24 @@ static inline int valid_ipaddr4(const char *buf)
->  	return 0;
->  }
->  
-> -static int p9_bind_privport(struct socket *sock)
-> +static int p9_bind_privport(struct socket *sock, int family)
->  {
-> -	struct sockaddr_in cl;
-> +	struct sockaddr_storage stor;
-> +	struct sockaddr *cl = (struct sockaddr *) &stor;
->  	int port, err = -EINVAL;
->  
->  	memset(&cl, 0, sizeof(cl));
+> not a new problem but I don't see this being initialized to zero either,
+> I'm not sure if there are cases where that can cause problems but it
+> might be just as well to init `stor =3D { 0 };` or equivalent just in
+> case?
 
-That memset is for sockaddr size, should it be for sockaddr_storage?
+Makes sense, will do.
 
-> -	cl.sin_family = AF_INET;
-> -	cl.sin_addr.s_addr = htonl(INADDR_ANY);
-> +	cl->sa_family = family;
-> +	if (cl->sa_family == AF_INET)
-> +		((struct sockaddr_in *) cl)->sin_addr.s_addr = htonl(INADDR_ANY);
-> +	else
-> +		((struct sockaddr_in6 *) cl)->sin6_addr = in6addr_any;
->  	for (port = p9_ipport_resv_max; port >= p9_ipport_resv_min; port--) {
-> -		cl.sin_port = htons((ushort)port);
-> -		err = kernel_bind(sock, (struct sockaddr *)&cl, sizeof(cl));
-> +		if (cl->sa_family == AF_INET)
-> +			((struct sockaddr_in *)cl)->sin_port = htons((ushort)port);
-> +		else
-> +			((struct sockaddr_in6 *)cl)->sin6_port = htons((ushort)port);
-> +		err = kernel_bind(sock, cl, sizeof(cl));
->  		if (err != -EADDRINUSE)
->  			break;
->  	}
-> @@ -994,24 +1002,34 @@ p9_fd_create_tcp(struct p9_client *client, const char *addr, char *args)
->  {
->  	int err;
->  	struct socket *csocket;
-> -	struct sockaddr_in sin_server;
-> +	struct sockaddr_storage stor;
-> +	struct sockaddr *sin_server = (struct sockaddr *) &stor;
+> Could you try to get rid of valid_ipaddr4 and call inet_pton_with_scope
+> with AF_UNSPEC directly?
 
-not a new problem but I don't see this being initialized to zero either,
-I'm not sure if there are cases where that can cause problems but it
-might be just as well to init `stor = { 0 };` or equivalent just in
-case?
+That would definitely be the more correct solution, I think.
+Originally, I was trying not to change the code too much, but I guess if
+I=E2=80=99m changing it I might as well go all the way :D.
 
->  	struct p9_fd_opts opts;
->  
->  	err = parse_opts(args, &opts);
->  	if (err < 0)
->  		return err;
->  
-> -	if (addr == NULL || valid_ipaddr4(addr) < 0)
-> +	if (addr == NULL)
-> +		return -EINVAL;
-> +
-> +	if (valid_ipaddr4(addr) == 0) {
-
-Hmmm, I wonder if we could just move rpc_pton somewhere and reuse
-that... It's not that complex but it's certainly pure duplication...
-But then I found `int_pton_with_scope`, that sounds like an even better
-match as we probaly want inet6_pton more than in6_pton for local scope
-identifiers:
-Could you try to get rid of valid_ipaddr4 and call inet_pton_with_scope
-with AF_UNSPEC directly? That should do Just What We Want (e.g. try v4
-first and fallback to v6), up till filling sa_family and port directly
-in the right field or failing if neither was valid.
-
-(yes, sorry, give a hand and I'll grab the whole arm!)
-
-> +		sin_server->sa_family = AF_INET;
-> +		((struct sockaddr_in *) sin_server)->sin_addr.s_addr = in_aton(addr);
-> +		((struct sockaddr_in *) sin_server)->sin_port = htons(opts.port);
-> +	}
-> +	else if (in6_pton(addr, -1, ((struct sockaddr_in6 *) sin_server)->sin6_addr.s6_addr, -1, NULL)) {
-> +		sin_server->sa_family = AF_INET6;
-> +		((struct sockaddr_in6 *) sin_server)->sin6_port = htons(opts.port);
-> +	}
-> +	else
->  		return -EINVAL;
->  
->  	csocket = NULL;
->  
->  	client->trans_opts.tcp.port = opts.port;
->  	client->trans_opts.tcp.privport = opts.privport;
-> -	sin_server.sin_family = AF_INET;
-> -	sin_server.sin_addr.s_addr = in_aton(addr);
-> -	sin_server.sin_port = htons(opts.port);
-> -	err = __sock_create(current->nsproxy->net_ns, PF_INET,
-> +	err = __sock_create(current->nsproxy->net_ns, sin_server->sa_family,
->  			    SOCK_STREAM, IPPROTO_TCP, &csocket, 1);
->  	if (err) {
->  		pr_err("%s (%d): problem creating socket\n",
-> @@ -1020,7 +1038,7 @@ p9_fd_create_tcp(struct p9_client *client, const char *addr, char *args)
->  	}
->  
->  	if (opts.privport) {
-> -		err = p9_bind_privport(csocket);
-> +		err = p9_bind_privport(csocket, sin_server->sa_family);
->  		if (err < 0) {
->  			pr_err("%s (%d): problem binding to privport\n",
->  			       __func__, task_pid_nr(current));
-> @@ -1029,9 +1047,9 @@ p9_fd_create_tcp(struct p9_client *client, const char *addr, char *args)
->  		}
->  	}
->  
-> -	err = READ_ONCE(csocket->ops)->connect(csocket,
-> -				    (struct sockaddr *)&sin_server,
-> -				    sizeof(struct sockaddr_in), 0);
-> +	err = READ_ONCE(csocket->ops)->connect(csocket, sin_server,
-> +					       sizeof(stor), 0);
-> +
->  	if (err < 0) {
->  		pr_err("%s (%d): problem connecting socket to %s\n",
->  		       __func__, task_pid_nr(current), addr);
-
--- 
-Dominique Martinet | Asmadeus
+--=20
+Joshua Murphy
+joshuamurphy@posteo.net
