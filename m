@@ -1,48 +1,44 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E733C9
-	for <v9fs@lists.linux.dev>; Sat, 18 Jan 2025 01:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5C1A32
+	for <v9fs@lists.linux.dev>; Sat, 18 Jan 2025 07:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737163440; cv=none; b=tsT3TkPzi4K/t8kZt40nouu/ypWHaPHVaztTvtxR04fH/yVav4w9dCgP/vajUEj0h7yQ5MzMR9uTK81juiNKW9CgJKDy5OCuMtQUxhZpKzJPmIRN40BpOJpLn4D3ujqdVgaFogtsJwfAa8xSokdNSV4xhLnPG6PNmMcEgPzx+rc=
+	t=1737185295; cv=none; b=udzjAf3zs7S6jEUbUd1+eZxBRjzX0viPRs0iOREJDRIhfPZpPtanCt3hqlkw4oGT0eXkHxfTqoanVsa3zNFvnrTDl4JBMDADG0un2aWDAXBe6R3dczFQSMU74m2X1ta0TiUw3wQRt1o1tfnO0RMOeWe/NcX7XmhWKLb5RqzTiYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737163440; c=relaxed/simple;
-	bh=9gqVEpozSxbgw4/KmrfUkciIFu8U1Fsb9eFovJJKkn0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cnnBy6dEL+mAG0YtHuf0VfSMQ/O0F3J0WePIAAlm7FGEqP2vSBRfl1/+xTEyTFYSu/91+FmdghbmQsJYEF5Jw+8wsBXnjO5OHvenYX/6kJFR2vEF9EuBB4ZIRYzpGm2rh8Cw25RLwEt7/l9fPWIxzgI61fmZ3HPfhBSKOAq51yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=cwnTaSmF; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1737185295; c=relaxed/simple;
+	bh=5cTli6ryIbKwBUU3SybmUVAv6fdBDoGwN7aeYz61+ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eI8nt/LatC15tHkzRcuu0lxjgrbpy5E/ktR4PMaVc/6i6Gk3S5WzThFJWejyQ5kVH8JYbxTBrLUU6KB62owxXrJqjrTCYE4eTTwpau8gKcgT+7Vhiulb+Na8DqmJSaeBh4ob4TJ2vqRVG8fKNejSOGoJNuoyGIyPVfAMcFC4HbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=1gZA0qWs; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="cwnTaSmF"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 25DF3240027
-	for <v9fs@lists.linux.dev>; Sat, 18 Jan 2025 02:23:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1737163436; bh=9gqVEpozSxbgw4/KmrfUkciIFu8U1Fsb9eFovJJKkn0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=cwnTaSmFA0fClDH7DJAwnTAAPsxST7uYwRhtNkf1FLC5KBPgooP8WHoa6F8+w42pI
-	 SH2nxB6kmaOLw9PIsceUg2mMKtEQmN3v6UQHvFCfidBpW/8jY0lfj5iwvD/nRfVefu
-	 FEVDfws64LmgWC0KgKwOws+fezcb7MC9y/CWBLPCmvnvJghbPJm9RJsjMNzIMlp0ny
-	 lfLtyS0JYQ2c7pjL0gmHnJwvkghsT+DBsQpJwaibLf6Xt4QvfvkPBMxa0tF4oO0doC
-	 hAu0ZgVPzPacxZCBUrZlFGuBRr79sejla7S9c8Po39J5woN/iUSWlyWf70wvdP3dqb
-	 y7NcOCi2gVsOg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YZf566094z6tn4;
-	Sat, 18 Jan 2025 02:23:54 +0100 (CET)
-From: Joshua Murphy <joshuamurphy@posteo.net>
-To: Daniel Verkamp <dverkamp@chromium.org>
-Cc: ericvh@kernel.org,  lucho@ionkov.net,  asmadeus@codewreck.org,
-  linux_oss@crudebyte.com,  v9fs@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="1gZA0qWs"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 52F6114C1E1;
+	Sat, 18 Jan 2025 08:28:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1737185284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wr7dac1zmqnrzqkesUpUOaL/a2glUcTSDtgEtcvSxag=;
+	b=1gZA0qWsFc8evqVeAHhrmM0OGUL9ARJsocRhms52+RcUEhdE5P/6O4cLJnmKC5QaBwf/BB
+	6uHPjFTQxIIaJi38GThWAJqRolxLoZiY0l4nI6KDmFYiNsMivYIdk47pK6yOzTLx2BcEj2
+	LTI52b4rxnR5XluYw0LsdjyuRIEpY4TC/nTxTJ5UOVGFjerIjb6HsnRCdBguBJaJUsDPRx
+	bJDcFQafnaTYccEO7/2PUtDuRlTGs1MOV2paCfZXI6Gs5IN/BaB6cGgrQhftVe5KP6VInX
+	ioR95RrqlbESgu5h8YiYVEE/lVNNQ5kwQF6wJqd5xnkmlun2P0NIPNu1XXHdiQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 667a2b61;
+	Sat, 18 Jan 2025 07:28:01 +0000 (UTC)
+Date: Sat, 18 Jan 2025 16:27:46 +0900
+From: asmadeus@codewreck.org
+To: Joshua Murphy <joshuamurphy@posteo.net>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev
 Subject: Re: [PATCH v2] net/9p/fd: support ipv6 for trans=tcp
-In-Reply-To: <CABVzXAmxVAe-9wEy3QD6iZtA+pXj5_cVcDob06WNTC5conmmWw@mail.gmail.com>
-	(Daniel Verkamp's message of "Fri, 17 Jan 2025 14:50:47 -0800")
+Message-ID: <Z4tX8nnJAO8zw9c1@codewreck.org>
 References: <20250117214943.6368-2-joshuamurphy@posteo.net>
-	<CABVzXAmxVAe-9wEy3QD6iZtA+pXj5_cVcDob06WNTC5conmmWw@mail.gmail.com>
-Date: Sat, 18 Jan 2025 01:23:52 +0000
-Message-ID: <87jzasgbiv.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,24 +46,34 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20250117214943.6368-2-joshuamurphy@posteo.net>
 
-> It looks like inet_addr_is_any() checks the current sin_addr/sin6_addr
-> of a sockaddr, but does not change it, so this doesn't seem quite
-> right (its only effect is to return a bool, which is discarded here).
+Joshua Murphy wrote on Fri, Jan 17, 2025 at 09:44:46PM +0000:
+> Allows specifying an IPv6 address when mounting a remote 9p file system.
 
-Huh, I=E2=80=99ll definitely fix that.
-For some reason I must=E2=80=99ve thought it changed the addresses rather t=
-han
-checking them.
+Thanks for the v2!
 
-> inet_pton_with_scope() appears to unconditionally dereference its
-> `src` parameter (`addr` in the call above), so the `addr =3D=3D NULL`
-> check is too late.
+Daniel beat me to the important bits, just a couple more.
 
-I=E2=80=99ll put it in a separate check before the inet one.
+> -	if (addr == NULL || valid_ipaddr4(addr) < 0)
 
-Thanks,
---=20
-Joshua Murphy
-joshuamurphy@posteo.net
+valid_ipaddr4 is no longer used so please also remove the function
+definition just above as well
+
+> -		return -EINVAL;
+> +	sprintf(port_str, "%u", opts.port);
+
+Oh, I hadn't realized this takes a string..
+
+The previous string -> u16 conversion into opts.port happens in the same
+file (parse_opts), and trans_opts is only used to print options in
+/proc/mount later so can be made a char * as well, but that is code
+cleanup that can (and probably should) be done in a separate patch.
+Let's keep the sprintf here and I'll try to find time for that later
+unless you want to do it.
+
+
+Cheers,
+-- 
+Dominique Martinet | Asmadeus
