@@ -1,74 +1,74 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47772219A80
-	for <v9fs@lists.linux.dev>; Fri, 24 Jan 2025 09:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1E2207A03
+	for <v9fs@lists.linux.dev>; Fri, 24 Jan 2025 10:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737711531; cv=none; b=DS9t0eNc+UODFOxS0Vl++j3q7jNyDUP6+q1NEvadG0vWQzWsdlSIYejY/UsJB25laWc9TTOaesQK5la+XhrXm6dVIZQNFJ8EzoRZxxhvOukp3F0ekBzxGCjDHdzJZWYYed9NY4rjD93IYvU8NjABhC4aYZwP76i6XwgqrWZwYYw=
+	t=1737712865; cv=none; b=oDWFDYRAEPalCXvGMXW84pR5HOXPb499vlfjmjQi6iOGts6ZKzJUD2NRLA8azUKUEcUB0sOxtW35UDfWYJaIcYqlHpA/kNzmN+qtOvcKM57pES5H2t4XVSPE39biSWdtIMysoa1oaH5CohKEaPhg4FQ5plRyf3/QbuGO70rlbQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737711531; c=relaxed/simple;
-	bh=heMykMP84HxglhMvRYTotO8Dy18zau3k/Uc8oZ452rI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=pd1ysKxpZTAhmXhgPqPopyZUKvUMu7dECy1U16VwX9O6RANIejj5wC8bWXBgjZuZ/nrcxQTPDZ6b57pTZEFxKOpIP3if9yCMSh3VujC7z9OhcbiOset/5blRW3CMnNO99spuCGBxxGeTzTUWvfgC5CXIzw8FXsy+DcYfXtx5qcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fsOyB+I6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fsOyB+I6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737711528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=heMykMP84HxglhMvRYTotO8Dy18zau3k/Uc8oZ452rI=;
-	b=fsOyB+I6cOWC9OaNpFAwuWegm1mowa47YAJ2SdVNHoEnT7QYuYYvefqmUdaxGrBmFWeFag
-	zGPS6dMmgwIcadKHbcP0JiJKfuDvhBi3GZAN4psRFCEK8tT/BX731fwfGnvZa5L+9qZiAX
-	SjR87P3FmZWUA4XP9ny9OsAUFpaZQRY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-_npeT4EEO_CS74jm8UolHw-1; Fri,
- 24 Jan 2025 04:38:44 -0500
-X-MC-Unique: _npeT4EEO_CS74jm8UolHw-1
-X-Mimecast-MFC-AGG-ID: _npeT4EEO_CS74jm8UolHw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47D1119560B2;
-	Fri, 24 Jan 2025 09:38:41 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E5FBA30001BE;
-	Fri, 24 Jan 2025 09:38:36 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <6792ffb7.050a0220.3ab881.0005.GAE@google.com>
-References: <6792ffb7.050a0220.3ab881.0005.GAE@google.com>
-To: syzbot <syzbot+1f18c9b1bb51239d82f2@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, akpm@linux-foundation.org,
-    asmadeus@codewreck.org, brauner@kernel.org, ericvh@kernel.org,
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-    linux_oss@crudebyte.com, lucho@ionkov.net,
-    syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [v9fs?] BUG: stack guard page was hit in sys_openat
+	s=arc-20240116; t=1737712865; c=relaxed/simple;
+	bh=noKCdvM0WlEE+MchLoX3l9C6xw5NueqLYuvYwwJLCUo=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=U1YYFFZ9LMw1vF3sWefHsKQOaPLi8WzEWvMK+tUUej1EfwPAe4+uiixNT5nIExA3+hkWB26zCcwvLEFotDbtE8tL3hbW3giozwF1bg3NpIAYZr1TOKutQtuYvtJVLrbI0ouFvrSW8oeSsVvLJTYjC4hH3oXYF5syvVvSr35NUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-844eac513efso120135639f.2
+        for <v9fs@lists.linux.dev>; Fri, 24 Jan 2025 02:01:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737712862; x=1738317662;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gyg5A+pSRl/9vrMhTDV9sQnVz/Fz8nOwR9hSfvBXT2c=;
+        b=S8CCCn9OzvFAsKa3Yt9AVg3OmOXdXl0OYM63wHEOB4o2zgTH3zKEzAEKvwpP1jWljX
+         C2AMmv434sGnTqXkoseHyF9/qKecOfwfBbCIX+pQWfZG4nedKPFWEfCtFK9dGo8FZp0e
+         rB5xlDLI6se6VsSZaZd9ppJHB5tQQE1wgqotliVIBxcgJfy3H19oP2YxmGv55VlIyc5n
+         XuQslq03SwZUp1BYdmWipzXOWJfEXJhQRye2xnB5XbmuvQVMXQfGst4e27k/Oz7HyvNP
+         CU5ByhrLSucRUMyPvl21wg6pk7UiKuKoWPCSXBj6YPBmnhiUITZG0kSCrCl3jslRheTH
+         pYWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVR70XINqGpVPe2NyDc6k4wZ/XsUhQ40qSeszKXLW6Y/Z5l8j9ZSr1fg36tUkBApj07unEQ@lists.linux.dev
+X-Gm-Message-State: AOJu0YxAJScdrmdcoqbRDt4uRKNyG1uZ6kS86mmy8e6jZA2r08HPkezh
+	JiLr3I/KZfYxkgEh7oX7M7nP223Dwq3DS6Ie2CMMQZU+8/E9h92kT3XbfSg+UZ8v0jlxUELQEOl
+	2jT+MMgmsm6xHlcPEG908yKbWQJ3GYSYlFulakgKFr0FSBq2wURhSa14=
+X-Google-Smtp-Source: AGHT+IHNmbYX4pwyDvn2ssqUMiKuKllezhf3IxwA7NgwxNVsoz53NgR5eNMtzqywrwPyfORjdzG1DiqJiBHPvglWzLK4IFIrM6XQ
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2479146.1737711515.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jan 2025 09:38:35 +0000
-Message-ID: <2479147.1737711515@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Received: by 2002:a05:6e02:4409:b0:3cf:ad21:b7bc with SMTP id
+ e9e14a558f8ab-3cfad21b9b7mr111298545ab.8.1737712862604; Fri, 24 Jan 2025
+ 02:01:02 -0800 (PST)
+Date: Fri, 24 Jan 2025 02:01:02 -0800
+In-Reply-To: <2479147.1737711515@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <679364de.050a0220.2eae65.0018.GAE@google.com>
+Subject: Re: [syzbot] [v9fs?] BUG: stack guard page was hit in sys_openat
+From: syzbot <syzbot+1f18c9b1bb51239d82f2@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, asmadeus@codewreck.org, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t ca56a74a31e26d81a481304ed2f631e65883372b
+Hello,
 
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+
+Reported-by: syzbot+1f18c9b1bb51239d82f2@syzkaller.appspotmail.com
+Tested-by: syzbot+1f18c9b1bb51239d82f2@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         ca56a74a Merge tag 'vfs-6.14-rc1.netfs' of git://git.k..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=12b53ab0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=20efd0735e510e1c
+dashboard link: https://syzkaller.appspot.com/bug?extid=1f18c9b1bb51239d82f2
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
