@@ -1,83 +1,90 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB881FA859
-	for <v9fs@lists.linux.dev>; Mon,  3 Feb 2025 08:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06A320459B
+	for <v9fs@lists.linux.dev>; Mon,  3 Feb 2025 18:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738571728; cv=none; b=QqfX3BL+lfKsSbqAlw1omxMJXbKYt2VwqmanUsnYF/jr053hTeIYwfpRmUW5TnH5fjEW71WqmfkCc57e1CEfcMSMBf5vSAj1bbp/YOrLJqj2YxHKVlwLR/JWoVebMwFZySZDoW2JoiVGpqs17RtbJxKRm/SmleolqOlnYYGTAZI=
+	t=1738605688; cv=none; b=tAB+YhXo7Dmf9TTm34hZH73at+PzXCCq3rN0WmLF3MeFddGmm1nGYUqmYQetrhrGsK/auCRxwKTXiA7XkIShiwT6M4ei0MZlZmfbOHsYbCcRNTNAGrpKAh2tzq6L/8EGH2pmLutZzExat1a3D3jXxANHqUuYdENlHY8U/KcIwug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738571728; c=relaxed/simple;
-	bh=uKECRRl+vcMvkGiTzs8RadTWJIWycLn2uAJt759QzSQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lkN5nfLkqOtQ5Y623KDYIwnyYrui93DwaFpmkE9SvmtbCq4ucOcdv/75LYnPQqfHfdrIvlVGo3Kdx5qAcFmKpyKH6c/wljpaWt68VbP4GptVoZDi0DbbA0NVuuc2XbCLJNHMdeoM/ntYCT1RQVv/m/dVHQCCb4yGpMzNhSM4Xg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3ce7a0ec1easo29497655ab.0
-        for <v9fs@lists.linux.dev>; Mon, 03 Feb 2025 00:35:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738571725; x=1739176525;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uefJHPqwW/k0s53Um/WT0lNmLYvpG6tzG8f34dffdig=;
-        b=NKsJ53OHmqjvb7C4zCcl7MQSal2mRkADENm9ue7zneu7HiXJr7phvy8ap13zNE5Eou
-         nWJ9BrdjmMHYMYOFDPX/v4fVZi2BUmzbj80xAYRGusPZ9t/EEzNvFteL780Cnc8xbFCd
-         EL2c0u7JjCwQweLNBqkypYJH9hw2lVCfZL17LdlD0vBGbk49UjSJh28LoY6kcuR8yJ9O
-         lTCFiXv1vzpwbK+tL/qkuIOAhVt1yjrTHGv5fJxirjilUkXczl1y2FOFjtPLiIJDI2rv
-         cIbNHVrvU4FYzbLIBZqVP7VpkIr0AQ6c6MmXng1SAYJ89H6XolDZlTKp0hVSN/4iYQnd
-         ME8w==
-X-Forwarded-Encrypted: i=1; AJvYcCU4xHHhZmTQt+h+FHPx+FeNYIBJEYSzUfh0ctT4Bn10i/z6nbqb+Vvc9az2kvsO1tjCFSPH@lists.linux.dev
-X-Gm-Message-State: AOJu0YxSBvnoCZIwhaTuunO/B3tQbFiJhtJ1y3pOg3XRsIcPgl5DzNps
-	F/NpBqvzn1fJakiA2dtyDVe+EyUNGQpFF/D5iXWJn9J1ZiOa8xkb/hBRclfJItX9XOJNeEC93/K
-	y08uEr17pfDADQ9M+5ug8Dj/rU3LvOz+EkcFGitlcJ/oIVFelMaDuhkU=
-X-Google-Smtp-Source: AGHT+IEqNkNDXqar5hD8yvF68NwnmwNPXwb8h7lA97jt68wxcVkNpJGf2yKvIv1MGTZcuIKfXu2qTrBOwtRzQ2BnRbdjuhyW7R2o
+	s=arc-20240116; t=1738605688; c=relaxed/simple;
+	bh=iVzkS+UvCFYYeZQR+44TT1VsP//ByWueNSPjiUEP1zc=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=Crq+KK+kmycEPaP/7LCyoDnOSKCEgQaXzZw526kCFUVfg9o6aoL/DqALVZ4ePQN6mLEmn6xami1tpgODN+Nm9ZKGMhNVMBeZmfJW7529uTezoJydH9NVeJ6PIe/ezclDH7agBGSPEWn8bzMsHqEOjj1NkPVg5wYnzArwj2Wm6rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QFDqLwM5; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QFDqLwM5"
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c0a:b0:3cf:c82f:586c with SMTP id
- e9e14a558f8ab-3cffe3ff802mr180221205ab.4.1738571725719; Mon, 03 Feb 2025
- 00:35:25 -0800 (PST)
-Date: Mon, 03 Feb 2025 00:35:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67a07fcd.050a0220.163cdc.003d.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Feb 2025)
-From: syzbot <syzbot+list0c3c74d5f9522e8a5463@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738605669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iVzkS+UvCFYYeZQR+44TT1VsP//ByWueNSPjiUEP1zc=;
+	b=QFDqLwM5revA9ovdbD5YThoHNMIef2ZRejuQsAxZmDhc5QygWfkKMs1XkXhy/ZwdqR7uma
+	PfhyxdcR2QBwJHfdPNQxnG1G+oz79guTdHxhtLM5lM0eLZYveJJ4GTdu2GvaMLDA6t1bwl
+	bdBYGXoi36nq1f/PNnsQ15sUL2hbg5Q=
+Date: Mon, 03 Feb 2025 18:01:05 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
+Message-ID: <8fdc14d72d9c43867e31d620945b46aad035515e@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] netfs: Add retry stat counters
+To: "David Howells" <dhowells@redhat.com>, "Marc Dionne"
+ <marc.dionne@auristor.com>, "Steve French" <stfrench@microsoft.com>
+Cc: dhowells@redhat.com, "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>, "Dominique Martinet"
+ <asmadeus@codewreck.org>, "Christian Schoenebeck"
+ <linux_oss@crudebyte.com>, "Paulo Alcantara" <pc@manguebit.com>, "Jeff 
+ Layton" <jlayton@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
+ v9fs@lists.linux.dev, linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ast@kernel.org, bpf@vger.kernel.org
+In-Reply-To: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
+References: <3173328.1738024385@warthog.procyon.org.uk>
+ <3187377.1738056789@warthog.procyon.org.uk>
+ <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-Hello v9fs maintainers/developers,
+On 1/28/25 11:11 AM, Ihor Solodrai wrote:
+> January 28, 2025 at 1:33 AM, "David Howells" <dhowells@redhat.com> wrot=
+e:
+>
+>> Here's an additional patch to allow stats on the number of retries to =
+be
+>> obtained. This isn't a fix per se.
+>> David
+>>
+>> [...]
+>
+> Hi David, Marc.
+>
+> I regret to report that this patch didn't fix the hanging in
+> v9fs_evict_inode when running selftests/bpf.
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+David, Marc,
 
-During the period, 3 new issues were detected and 0 were fixed.
-In total, 11 issues are still open and 34 have already been fixed.
+Were you able to reproduce the hanging?
 
-Some of the still happening issues:
+We're still using the revert of the original patch [1] in BPF CI as a
+mitigation.
 
-Ref Crashes Repro Title
-<1> 4418    Yes   WARNING in v9fs_fid_get_acl
-                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
-<2> 178     Yes   WARNING in __alloc_frozen_pages_noprof
-                  https://syzkaller.appspot.com/bug?extid=03fb58296859d8dbab4d
-<3> 62      Yes   WARNING in p9pdu_vwritef
-                  https://syzkaller.appspot.com/bug?extid=94b73a3e8ea625efcd05
+If there is other pending work that may be relevant, please share.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+[1] https://lore.kernel.org/all/20241216204124.3752367-28-dhowells@redhat=
+.com/
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+>
+> [...]
