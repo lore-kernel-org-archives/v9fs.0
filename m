@@ -1,221 +1,83 @@
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E2C1DE8A5
-	for <v9fs@lists.linux.dev>; Tue, 28 Jan 2025 19:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB881FA859
+	for <v9fs@lists.linux.dev>; Mon,  3 Feb 2025 08:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738091481; cv=none; b=M43qIOFsJAcRUXnYCkTR1lUwrPnx4QnNxrsZjDfFvWpXQCDtkF0SzHTBOvlJ5+hVrjLiHV1sGg7AmsbGqQ840OLj0bDaqRYNxdecrMmzRw+sTKZJeQktDEeDnRGbhu38dAdzbL+Q+cmp64qd3qx5RneA8EtQ+f6DPnHe/Zi5llE=
+	t=1738571728; cv=none; b=QqfX3BL+lfKsSbqAlw1omxMJXbKYt2VwqmanUsnYF/jr053hTeIYwfpRmUW5TnH5fjEW71WqmfkCc57e1CEfcMSMBf5vSAj1bbp/YOrLJqj2YxHKVlwLR/JWoVebMwFZySZDoW2JoiVGpqs17RtbJxKRm/SmleolqOlnYYGTAZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738091481; c=relaxed/simple;
-	bh=+hzuBfFg7K6TqkJXl//PSTrUF4nd/QIbA4vDwZ41wOU=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=Hqk5imFr1TE4bRe7zUCusYmZjEiYSS5RgQFEiVPfMhvg8JSAQIFMnmF2QsOqp2rEDxgwzoWAdtuGrzM1SruQe/zYXbDBMVgpJCjPbM0LtAx4P45akVLcVdVefALhE1RC6Zcg82TZ1uXgUuMLwb3Ivf35au9bMxobFzpAWBwDF7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DVWx3TJs; arc=none smtp.client-ip=95.215.58.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DVWx3TJs"
+	s=arc-20240116; t=1738571728; c=relaxed/simple;
+	bh=uKECRRl+vcMvkGiTzs8RadTWJIWycLn2uAJt759QzSQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lkN5nfLkqOtQ5Y623KDYIwnyYrui93DwaFpmkE9SvmtbCq4ucOcdv/75LYnPQqfHfdrIvlVGo3Kdx5qAcFmKpyKH6c/wljpaWt68VbP4GptVoZDi0DbbA0NVuuc2XbCLJNHMdeoM/ntYCT1RQVv/m/dVHQCCb4yGpMzNhSM4Xg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3ce7a0ec1easo29497655ab.0
+        for <v9fs@lists.linux.dev>; Mon, 03 Feb 2025 00:35:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738571725; x=1739176525;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uefJHPqwW/k0s53Um/WT0lNmLYvpG6tzG8f34dffdig=;
+        b=NKsJ53OHmqjvb7C4zCcl7MQSal2mRkADENm9ue7zneu7HiXJr7phvy8ap13zNE5Eou
+         nWJ9BrdjmMHYMYOFDPX/v4fVZi2BUmzbj80xAYRGusPZ9t/EEzNvFteL780Cnc8xbFCd
+         EL2c0u7JjCwQweLNBqkypYJH9hw2lVCfZL17LdlD0vBGbk49UjSJh28LoY6kcuR8yJ9O
+         lTCFiXv1vzpwbK+tL/qkuIOAhVt1yjrTHGv5fJxirjilUkXczl1y2FOFjtPLiIJDI2rv
+         cIbNHVrvU4FYzbLIBZqVP7VpkIr0AQ6c6MmXng1SAYJ89H6XolDZlTKp0hVSN/4iYQnd
+         ME8w==
+X-Forwarded-Encrypted: i=1; AJvYcCU4xHHhZmTQt+h+FHPx+FeNYIBJEYSzUfh0ctT4Bn10i/z6nbqb+Vvc9az2kvsO1tjCFSPH@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSBvnoCZIwhaTuunO/B3tQbFiJhtJ1y3pOg3XRsIcPgl5DzNps
+	F/NpBqvzn1fJakiA2dtyDVe+EyUNGQpFF/D5iXWJn9J1ZiOa8xkb/hBRclfJItX9XOJNeEC93/K
+	y08uEr17pfDADQ9M+5ug8Dj/rU3LvOz+EkcFGitlcJ/oIVFelMaDuhkU=
+X-Google-Smtp-Source: AGHT+IEqNkNDXqar5hD8yvF68NwnmwNPXwb8h7lA97jt68wxcVkNpJGf2yKvIv1MGTZcuIKfXu2qTrBOwtRzQ2BnRbdjuhyW7R2o
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738091466;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mmZT8PaXoi/HunjOtQbjefqQfnCV71OuFQe94XCRs20=;
-	b=DVWx3TJs2soTZpBNemucvFacnryUUHga12rgZBxAaTOhcYj1iFJyC/YOMue+8tUTZF7bxa
-	t4RNum65n2ZPreOB+DqRztoXAr33zSlnnqYrfOL0nikI8PmfwlpZ0Cq3wJB8yH9ucFBPnz
-	ezKiXyQ+O4wSq08poCTOcU41RlpGK5o=
-Date: Tue, 28 Jan 2025 19:11:04 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
-Message-ID: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH] netfs: Add retry stat counters
-To: "David Howells" <dhowells@redhat.com>, "Marc Dionne"
- <marc.dionne@auristor.com>, "Steve French" <stfrench@microsoft.com>
-Cc: dhowells@redhat.com, "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>, "Dominique Martinet"
- <asmadeus@codewreck.org>, "Christian Schoenebeck"
- <linux_oss@crudebyte.com>, "Paulo Alcantara" <pc@manguebit.com>, "Jeff
- Layton" <jlayton@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- v9fs@lists.linux.dev, linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- ast@kernel.org, bpf@vger.kernel.org
-In-Reply-To: <3187377.1738056789@warthog.procyon.org.uk>
-References: <3173328.1738024385@warthog.procyon.org.uk>
- <3187377.1738056789@warthog.procyon.org.uk>
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6e02:1c0a:b0:3cf:c82f:586c with SMTP id
+ e9e14a558f8ab-3cffe3ff802mr180221205ab.4.1738571725719; Mon, 03 Feb 2025
+ 00:35:25 -0800 (PST)
+Date: Mon, 03 Feb 2025 00:35:25 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67a07fcd.050a0220.163cdc.003d.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Feb 2025)
+From: syzbot <syzbot+list0c3c74d5f9522e8a5463@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-January 28, 2025 at 1:33 AM, "David Howells" <dhowells@redhat.com> wrote:
+Hello v9fs maintainers/developers,
 
->=20
->=20Here's an additional patch to allow stats on the number of retries to=
- be
->=20
->=20obtained. This isn't a fix per se.
->=20
->=20David
->
-> [...]
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-Hi David, Marc.
+During the period, 3 new issues were detected and 0 were fixed.
+In total, 11 issues are still open and 34 have already been fixed.
 
-I regret to report that this patch didn't fix the hanging in
-v9fs_evict_inode when running selftests/bpf.
+Some of the still happening issues:
 
-Here is what I tried to test:
-
-  * Checked out latest bpf-next source tree (0fc5dddb9409)
-  * Applied patch: https://lore.kernel.org/netfs/3173328.1738024385@warth=
-og.procyon.org.uk/
-  * Applied retry stats patch: https://lore.kernel.org/netfs/3187377.1738=
-056789@warthog.procyon.org.uk/
-  * Modified tools/testing/selftests/bpf/config to enable /proc/fs/netfs/=
-stats
-  * Modified CI scripts to collect the stats
-  * Ran the shell script reproducing the CI testing pipeline
-
-Bash piece starting a process collecting /proc/fs/netfs/stats:
-
-    function tail_netfs {
-        echo -n > /mnt/vmtest/netfs-stats.log
-        while true; do
-            echo >> /mnt/vmtest/netfs-stats.log
-            cat /proc/fs/netfs/stats >> /mnt/vmtest/netfs-stats.log
-            sleep 1
-        done
-    }
-    export -f tail_netfs
-    nohup bash -c 'tail_netfs' & disown
-
-Last recored /proc/fs/netfs/stats (note 0 retries):
-
-    Reads  : DR=3D0 RA=3D15184 RF=3D5 RS=3D0 WB=3D0 WBZ=3D0
-    Writes : BW=3D488 WT=3D0 DW=3D0 WP=3D488 2C=3D0
-    ZeroOps: ZR=3D7964 sh=3D0 sk=3D0
-    DownOps: DL=3D15189 ds=3D15189 df=3D0 di=3D0
-    CaRdOps: RD=3D0 rs=3D0 rf=3D0
-    UpldOps: UL=3D488 us=3D488 uf=3D0
-    CaWrOps: WR=3D0 ws=3D0 wf=3D0
-    Retries: rq=3D0 rs=3D0 wq=3D0 ws=3D0
-    Objs   : rr=3D2 sr=3D1 foq=3D1 wsc=3D0
-    WbLock : skip=3D0 wait=3D0
-    -- FS-Cache statistics --
-    Cookies: n=3D0 v=3D0 vcol=3D0 voom=3D0
-    Acquire: n=3D0 ok=3D0 oom=3D0
-    LRU    : n=3D0 exp=3D0 rmv=3D0 drp=3D0 at=3D0
-    Invals : n=3D0
-    Updates: n=3D0 rsz=3D0 rsn=3D0
-    Relinqs: n=3D0 rtr=3D0 drop=3D0
-    NoSpace: nwr=3D0 ncr=3D0 cull=3D0
-    IO     : rd=3D0 wr=3D0 mis=3D0
-
-The stack on hung task hasn't changed:
-
-    [  184.375149] INFO: task modprobe:2759 blocked for more than 20 seco=
-nds.
-    [  184.376149]       Tainted: G           OE      6.13.0-gbb67a65a921=
-c-dirty #3
-    [  184.376593] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" dis=
-ables this message.
-    [  184.377119] task:modprobe        state:D stack:0     pid:2759  tgi=
-d:2759  ppid:455    flags:0x00004002
-    [  184.377701] Call Trace:
-    [  184.377886]  <TASK>
-    [  184.378039]  __schedule+0xa91/0xe80
-    [  184.378282]  schedule+0x41/0xb0
-    [  184.378490]  v9fs_evict_inode+0xfe/0x170
-    [  184.378754]  ? __pfx_var_wake_function+0x10/0x10
-    [  184.379070]  evict+0x1ef/0x360
-    [  184.379288]  __dentry_kill+0xb0/0x220
-    [  184.379528]  ? dput+0x3a/0x1d0
-    [  184.379736]  dput+0x114/0x1d0
-    [  184.379946]  __fput+0x136/0x2b0
-    [  184.380158]  task_work_run+0x89/0xc0
-    [  184.380396]  do_exit+0x2c6/0x9c0
-    [  184.380617]  do_group_exit+0xa4/0xb0
-    [  184.380870]  __x64_sys_exit_group+0x17/0x20
-    [  184.381137]  x64_sys_call+0x21a0/0x21a0
-    [  184.381386]  do_syscall_64+0x79/0x120
-    [  184.381630]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-    [  184.381969] RIP: 0033:0x7f817bf7c21d
-    [  184.382202] RSP: 002b:00007fff92c8d148 EFLAGS: 00000206 ORIG_RAX: =
-00000000000000e7
-    [  184.382676] RAX: ffffffffffffffda RBX: 00007f817c092fa8 RCX: 00007=
-f817bf7c21d
-    [  184.383138] RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 00000=
-00000000001
-    [  184.383582] RBP: 00007fff92c8d1a0 R08: 00007fff92c8d0e8 R09: 00000=
-00000000000
-    [  184.384042] R10: 00007fff92c8d05f R11: 0000000000000206 R12: 00000=
-00000000001
-    [  184.384486] R13: 0000000000000000 R14: 0000000000000001 R15: 00007=
-f817c092fc0
-    [  184.384963]  </TASK>
-    [  184.385112]
-    [  184.385112] Showing all locks held in the system:
-    [  184.385499] 1 lock held by khungtaskd/32:
-    [  184.385793]  #0: ffffffff9d195d90 (rcu_read_lock){....}-{1:3}, at:=
- debug_show_all_locks+0x2e/0x180
-    [  184.386366] 2 locks held by kworker/u8:10/455:
-    [  184.386649]  #0: ffffa1a240104d48 ((wq_completion)events_unbound){=
-+.+.}-{0:0}, at: process_scheduled_works+0x23a/0x600
-    [  184.387357]  #1: ffffb06380a23e20 ((work_completion)(&sub_info->wo=
-rk)){+.+.}-{0:0}, at: process_scheduled_works+0x25a/0x600
-    [  184.388076]
-    [  184.388183] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-I pushed full logs to github:
-https://github.com/kernel-patches/bpf/commit/88c0d0e1692b04c0d54b7c194100=
-3758d23e0d6a
-
-I recommend trying to reproduce with steps I shared in my initial report:
-https://lore.kernel.org/bpf/a7x33d4dnMdGTtRivptq6S1i8btK70SNBP2XyX_xwDAhL=
-vgQoPox6FVBOkifq4eBinfFfbZlIkMZBe3QarlWTxoEtHZwJCZbNKtaqrR7PvI=3D@pm.me/
-
-I know it may not be very convenient due to all the CI stuff, but you
-should be able to use it to iterate on the kernel source locally and
-narrow down the problem.
-
-I have everything set up, so you also might share some debugging code
-for me to run if you prefer.
-
-Thanks.
+Ref Crashes Repro Title
+<1> 4418    Yes   WARNING in v9fs_fid_get_acl
+                  https://syzkaller.appspot.com/bug?extid=a83dc51a78f0f4cf20da
+<2> 178     Yes   WARNING in __alloc_frozen_pages_noprof
+                  https://syzkaller.appspot.com/bug?extid=03fb58296859d8dbab4d
+<3> 62      Yes   WARNING in p9pdu_vwritef
+                  https://syzkaller.appspot.com/bug?extid=94b73a3e8ea625efcd05
 
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Not directly related, but it took me a while to figure out how to
-collect the netfs stats.
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-I first added:
-    CONFIG_NETFS_DEBUG=3Dy
-    CONFIG_NETFS_STATS=3Dy
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-But that didn't work, because /proc/fs/netfs/stats is created only
-with CONFIG_FSCACHE_STATS (fs/netfs/main.c):
-
-    #ifdef CONFIG_FSCACHE_STATS
-            if (!proc_create_single("fs/netfs/stats", S_IFREG | 0444, NUL=
-L,
-                                    netfs_stats_show))
-                    goto error_procfile;
-    #endif
-
-And that depends on CONFIG_FSCACHE=3Dy, so I ended up with:
-
-    CONFIG_FSCACHE=3Dy
-    CONFIG_FSCACHE_STATS=3Dy
-    CONFIG_NETFS_SUPPORT=3Dy
-    CONFIG_NETFS_DEBUG=3Dy
-    CONFIG_NETFS_STATS=3Dy
+You may send multiple commands in a single email message.
