@@ -1,90 +1,188 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06A320459B
-	for <v9fs@lists.linux.dev>; Mon,  3 Feb 2025 18:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C061D95B4
+	for <v9fs@lists.linux.dev>; Mon,  3 Feb 2025 19:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738605688; cv=none; b=tAB+YhXo7Dmf9TTm34hZH73at+PzXCCq3rN0WmLF3MeFddGmm1nGYUqmYQetrhrGsK/auCRxwKTXiA7XkIShiwT6M4ei0MZlZmfbOHsYbCcRNTNAGrpKAh2tzq6L/8EGH2pmLutZzExat1a3D3jXxANHqUuYdENlHY8U/KcIwug=
+	t=1738612109; cv=none; b=CJod9Ck+RXTFcKynrmS9Mnjw5WbJVHL2NXj2dADnWg0q+kRoF1NeN55t30oZJdM1mh0zhvqczYaAA93BM9CicyGtc4q6off6Mf47HyuKFuU7rYB5p2DOntJSS1R858KA/37icCgHDdFcwZkRz9ASSPQ0vETuwPFTqqt25VKJPYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738605688; c=relaxed/simple;
-	bh=iVzkS+UvCFYYeZQR+44TT1VsP//ByWueNSPjiUEP1zc=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=Crq+KK+kmycEPaP/7LCyoDnOSKCEgQaXzZw526kCFUVfg9o6aoL/DqALVZ4ePQN6mLEmn6xami1tpgODN+Nm9ZKGMhNVMBeZmfJW7529uTezoJydH9NVeJ6PIe/ezclDH7agBGSPEWn8bzMsHqEOjj1NkPVg5wYnzArwj2Wm6rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QFDqLwM5; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QFDqLwM5"
+	s=arc-20240116; t=1738612109; c=relaxed/simple;
+	bh=VBKeXvVpxzsbDD2gzQOz5enbyWOMnGBYHhlsZ2Gq4z4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FR/mdDZUSechweBl3EArgYfvVCuecqesrxJkI+h32+nFtzi0QzQEKWXCBnjpTwnPQfwWbA/bhV69jck3G5IX+W1B/6LEaJ3F2YS72Jg5VB6pk4nO7Rm7gP63ys9n678P4Zs/MDWHFwD9wzJWIZNnXZxu8EWwY/V+C5zmqQIuDrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3cfba354f79so107800605ab.1
+        for <v9fs@lists.linux.dev>; Mon, 03 Feb 2025 11:48:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738612106; x=1739216906;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D5u+KEwvUiQ1R4lQW9YeruG6CDtjvrWJJAfql7IrJ7c=;
+        b=s7vfp7uwBFw4/rW/Wt2L+sxcoyrxSIy6qKhcTokLqerMcmahoxzqCKcx/YCuAnbqTT
+         eodUoyJcZSDh3NL/5qq3uI337MypNpF+QWyVHX1HvMLcAq0ev9ms29Xybl9cTGNHdoKj
+         T2rs8291L8uMz/MXQ3sZMuVPF6pHbz1fsnRuuleqHhLJA9RgFDXAlFrKKUkFpWwS4gHO
+         il30dr/TUNwuv1HarXNYkXZbubEgVX2hRMdUIdnGXJrwOeoz+1i7feuhR+ZlIBv+nhVl
+         ZV+hOyjd7XWqWCk/JB4gW2AnPPfDbZ1zJtbrZLhI78A/maTlKjEmJ9PpGi3fCQsfkyAV
+         HeKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlkmISiMWP3T/5MrRWi7WoEfBhSAR2F9JY4ZF8xalnTC9R/eqsxXIqDa9OHyewsya3XG+d@lists.linux.dev
+X-Gm-Message-State: AOJu0YxShxjz3XQhPRarZfnZj6yLSam2JV1IU8PIuJGzXN6wF9dBQBjQ
+	aUUGU6LXhn03G+PEIOQmzY0b1wy25T/PP1h1jdhPHgjn6Iy48fFNkrTOKmv/zCsROfgFVadzCHr
+	4ScI7hqTMbF9d60FWLgu/o4nKq45mQrA1eqbQYqUNh1540xHkZwetK0k=
+X-Google-Smtp-Source: AGHT+IEmqLf94zcO652pUFeOrh1ZTBYTJK0PxvISMseIvYGnAdBDOLiaFM71kpMY2kxdhp8E2R0as2E2Zl0PXZRQ+Z2OUHHVx25V
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738605669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iVzkS+UvCFYYeZQR+44TT1VsP//ByWueNSPjiUEP1zc=;
-	b=QFDqLwM5revA9ovdbD5YThoHNMIef2ZRejuQsAxZmDhc5QygWfkKMs1XkXhy/ZwdqR7uma
-	PfhyxdcR2QBwJHfdPNQxnG1G+oz79guTdHxhtLM5lM0eLZYveJJ4GTdu2GvaMLDA6t1bwl
-	bdBYGXoi36nq1f/PNnsQ15sUL2hbg5Q=
-Date: Mon, 03 Feb 2025 18:01:05 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
-Message-ID: <8fdc14d72d9c43867e31d620945b46aad035515e@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH] netfs: Add retry stat counters
-To: "David Howells" <dhowells@redhat.com>, "Marc Dionne"
- <marc.dionne@auristor.com>, "Steve French" <stfrench@microsoft.com>
-Cc: dhowells@redhat.com, "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>, "Dominique Martinet"
- <asmadeus@codewreck.org>, "Christian Schoenebeck"
- <linux_oss@crudebyte.com>, "Paulo Alcantara" <pc@manguebit.com>, "Jeff 
- Layton" <jlayton@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- v9fs@lists.linux.dev, linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- ast@kernel.org, bpf@vger.kernel.org
-In-Reply-To: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
-References: <3173328.1738024385@warthog.procyon.org.uk>
- <3187377.1738056789@warthog.procyon.org.uk>
- <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6e02:221e:b0:3d0:239a:c46f with SMTP id
+ e9e14a558f8ab-3d0239acd38mr94298665ab.12.1738612106568; Mon, 03 Feb 2025
+ 11:48:26 -0800 (PST)
+Date: Mon, 03 Feb 2025 11:48:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67a11d8a.050a0220.163cdc.0051.GAE@google.com>
+Subject: [syzbot] [udf?] general protection fault in d_splice_alias
+From: syzbot <syzbot+a9c0867e4d1dd0c7ab19@syzkaller.appspotmail.com>
+To: amir73il@gmail.com, asmadeus@codewreck.org, brauner@kernel.org, 
+	corbet@lwn.net, ericvh@kernel.org, jack@suse.com, jack@suse.cz, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	mjguzik@gmail.com, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/28/25 11:11 AM, Ihor Solodrai wrote:
-> January 28, 2025 at 1:33 AM, "David Howells" <dhowells@redhat.com> wrot=
-e:
->
->> Here's an additional patch to allow stats on the number of retries to =
-be
->> obtained. This isn't a fix per se.
->> David
->>
->> [...]
->
-> Hi David, Marc.
->
-> I regret to report that this patch didn't fix the hanging in
-> v9fs_evict_inode when running selftests/bpf.
+Hello,
 
-David, Marc,
+syzbot found the following issue on:
 
-Were you able to reproduce the hanging?
+HEAD commit:    69e858e0b8b2 Merge tag 'uml-for-linus-6.14-rc1' of git://g..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=11bfc518580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d1a6d4df5fcc342f
+dashboard link: https://syzkaller.appspot.com/bug?extid=a9c0867e4d1dd0c7ab19
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125d0eb0580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13a595f8580000
 
-We're still using the revert of the original patch [1] in BPF CI as a
-mitigation.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/a4b4612f419c/disk-69e858e0.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/07abf7c78a98/vmlinux-69e858e0.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/085b44906cce/bzImage-69e858e0.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/0e8d208f30b1/mount_0.gz
 
-If there is other pending work that may be relevant, please share.
+The issue was bisected to:
 
-Thanks.
+commit 30d61efe118cad1a73ad2ad66a3298e4abdf9f41
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Mon Jan 6 02:33:17 2025 +0000
 
-[1] https://lore.kernel.org/all/20241216204124.3752367-28-dhowells@redhat=
-.com/
+    9p: fix ->rename_sem exclusion
 
->
-> [...]
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1050fddf980000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1250fddf980000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1450fddf980000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a9c0867e4d1dd0c7ab19@syzkaller.appspotmail.com
+Fixes: 30d61efe118c ("9p: fix ->rename_sem exclusion")
+
+UDF-fs: INFO Mounting volume 'LinuxUDF', timestamp 2022/11/22 14:59 (1000)
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000d: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
+CPU: 0 UID: 0 PID: 5832 Comm: syz-executor165 Not tainted 6.13.0-syzkaller-09760-g69e858e0b8b2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
+RIP: 0010:__d_unalias fs/dcache.c:2969 [inline]
+RIP: 0010:d_splice_alias+0x9cd/0xf30 fs/dcache.c:3037
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 4e 05 00 00 49 8b 85 70 ff ff ff 48 ba 00 00 00 00 00 fc ff df 48 8d 78 68 48 89 f9 48 c1 e9 03 <80> 3c 11 00 0f 85 14 05 00 00 48 8b 40 68 48 85 c0 74 31 48 89 44
+RSP: 0018:ffffc90003667c18 EFLAGS: 00010212
+RAX: 0000000000000000 RBX: ffff88807dbd7318 RCX: 000000000000000d
+RDX: dffffc0000000000 RSI: ffffffff82348f0c RDI: 0000000000000068
+RBP: ffff8880754107b8 R08: 0000000000000000 R09: ffffed100f23d67a
+R10: ffff8880791eb3d3 R11: 0000000000000032 R12: ffff8880791eb318
+R13: ffff8880791eafd8 R14: ffff8880791eaeb0 R15: ffff8880791eaf48
+FS:  0000555581642380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe875be000 CR3: 0000000076b7a000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ udf_lookup+0x191/0x240 fs/udf/namei.c:130
+ lookup_one_qstr_excl+0x120/0x190 fs/namei.c:1693
+ do_rmdir+0x247/0x410 fs/namei.c:4444
+ __do_sys_rmdir fs/namei.c:4474 [inline]
+ __se_sys_rmdir fs/namei.c:4472 [inline]
+ __x64_sys_rmdir+0xc5/0x110 fs/namei.c:4472
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9ee0142d99
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe875bd248 EFLAGS: 00000246 ORIG_RAX: 0000000000000054
+RAX: ffffffffffffffda RBX: 6f72746e6f632f2e RCX: 00007f9ee0142d99
+RDX: 00007f9ee0142d99 RSI: 00007f9ee0142d99 RDI: 0000000020000100
+RBP: 00007f9ee01b75f0 R08: 00005555816434c0 R09: 00005555816434c0
+R10: 00005555816434c0 R11: 0000000000000246 R12: 00007ffe875bd270
+R13: 00007ffe875bd498 R14: 431bde82d7b634db R15: 00007f9ee018c03b
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__d_unalias fs/dcache.c:2969 [inline]
+RIP: 0010:d_splice_alias+0x9cd/0xf30 fs/dcache.c:3037
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 4e 05 00 00 49 8b 85 70 ff ff ff 48 ba 00 00 00 00 00 fc ff df 48 8d 78 68 48 89 f9 48 c1 e9 03 <80> 3c 11 00 0f 85 14 05 00 00 48 8b 40 68 48 85 c0 74 31 48 89 44
+RSP: 0018:ffffc90003667c18 EFLAGS: 00010212
+RAX: 0000000000000000 RBX: ffff88807dbd7318 RCX: 000000000000000d
+RDX: dffffc0000000000 RSI: ffffffff82348f0c RDI: 0000000000000068
+RBP: ffff8880754107b8 R08: 0000000000000000 R09: ffffed100f23d67a
+R10: ffff8880791eb3d3 R11: 0000000000000032 R12: ffff8880791eb318
+R13: ffff8880791eafd8 R14: ffff8880791eaeb0 R15: ffff8880791eaf48
+FS:  0000555581642380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe875be000 CR3: 0000000076b7a000 CR4: 0000000000350ef0
+----------------
+Code disassembly (best guess):
+   0:	48 c1 ea 03          	shr    $0x3,%rdx
+   4:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   8:	0f 85 4e 05 00 00    	jne    0x55c
+   e:	49 8b 85 70 ff ff ff 	mov    -0x90(%r13),%rax
+  15:	48 ba 00 00 00 00 00 	movabs $0xdffffc0000000000,%rdx
+  1c:	fc ff df
+  1f:	48 8d 78 68          	lea    0x68(%rax),%rdi
+  23:	48 89 f9             	mov    %rdi,%rcx
+  26:	48 c1 e9 03          	shr    $0x3,%rcx
+* 2a:	80 3c 11 00          	cmpb   $0x0,(%rcx,%rdx,1) <-- trapping instruction
+  2e:	0f 85 14 05 00 00    	jne    0x548
+  34:	48 8b 40 68          	mov    0x68(%rax),%rax
+  38:	48 85 c0             	test   %rax,%rax
+  3b:	74 31                	je     0x6e
+  3d:	48                   	rex.W
+  3e:	89                   	.byte 0x89
+  3f:	44                   	rex.R
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
