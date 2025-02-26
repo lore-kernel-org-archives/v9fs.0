@@ -1,85 +1,117 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D02220DD4E
-	for <v9fs@lists.linux.dev>; Fri, 21 Feb 2025 13:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8089A21B9CC
+	for <v9fs@lists.linux.dev>; Wed, 26 Feb 2025 13:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740144005; cv=none; b=SWvC0Q+R1s1egRhe/W6KynaFNkr7d55eroBUsvbkXBYq+TMO0mTIp11ItL/BpL629g2fUvDd0+3u809Gqg7jE1hGKDm6yu/jecOFcNpIbfv2kTbBobhaHa4D59r3vgn20aiaAV1OAd5nOZ1YY717qZYCwwoEY8hx2DU0vBn/1cU=
+	t=1740576062; cv=none; b=DEeBeyKrcX7OvEbkE2ozujewkF+OmVF7E1l7Y1Yptu3I6tlShnC8hf2v84jduuwydSIPMvlHGIp8swSCD4aRjD+8xCsLjaWYhirnvXl8HnSwB70mMoKKpZFIE+ggbXI+xOl8mS+I2KE/0ZI3885csst7HJMevki6kUQ1dF1LuRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740144005; c=relaxed/simple;
-	bh=4vCKVNEsEgWIs64ubjYODu9ezwCabVqJz8/9mUMtinc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=O6vYExR6uNmOmq40fsPM5QD02kbukanmLFAAWoN7OyXzllYiSeWq2RkNJYmPA+GBibp9gCXywckvTWJV2nEP+B9USkSA41AXQvjKyi49f62qMbaeQPcXddPExM4Pz+Hh8gw6sVq1E9zyWnbPUoAtj/gfTVXOKi0XYmYJZoDQoZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3d2b6d933acso16249715ab.3
-        for <v9fs@lists.linux.dev>; Fri, 21 Feb 2025 05:20:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740144002; x=1740748802;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TKOeUNmgFq9mGFTlFKpVDLkAHhwJwc1BYdbAZYlmsac=;
-        b=RFqbXYzgzMrJJwyQ1UBP77q8b33pwNub5tm3eTrqjfIg7IpTspzrxHI77hodpFsoot
-         C3RKF2SJnFWx/KorW/SOjJPgZpCmX7TClQw1piGhJFvNm3Gpr3zNRRaPQtXEINEp/aXi
-         8k3UJaimkZvXBFw5+8DdBjYtWeYTdeiO2EjL/P/LCuUyPgWwm8ylswO4qZrI/SoCG9RX
-         meh7h43OeZsouglovEd+plNWGHiqU0A9wwpHSI28oiCC44PbZIrjbpzqGsA3IvSh7e95
-         Jyl4JjqNS2vivar6P+aTvwuP3ou9tgluIV1X9QQRIypFfvUKHO10cmZfaiWh8o7wNbfS
-         45NA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOvVLvNXF8pMM4RYNQWaWuDEzwUoKocZXm7b/rnnMj7DvqkUIXRDg+qhynkC5wQI4OiCs4@lists.linux.dev
-X-Gm-Message-State: AOJu0YzUjmwlqolJ3Z6UK7zHwOE676krEmIyu8yo1mGK4Rpkwg8mfJ8G
-	90T/k8b8T0HQUd/FRdUKmRrzgbnQOW49mP9o4SyYVetGWCVg2vYYgA3IZrqwmWNRnstQrYpJI9W
-	wYQ2qcQWbbkE8DXAaQ5eyq9FCzTbUc9fFguovmJcmZzb8NxIGbBkuqWE=
-X-Google-Smtp-Source: AGHT+IFk7iXIGjPM3Cd4yMSgfW4vr1fE96DRJ9EACQSHU1A21Wn9X6x85b6VG+vkzitZxJM+02ayoLSehtNh39Na0i/XwqFmq+M9
+	s=arc-20240116; t=1740576062; c=relaxed/simple;
+	bh=Qnm2hG1KnsQDqXnZ7Ak67qCxfQakLBBxso81jVcduA0=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=QQeDPTW8sTzNmA1613YuGZDzydUH2oxGte5A2e1PiUxvOwph50Ui1kQ965PrJSaqIRXxk995Cd4M24mQ9iHjCKgfHuA62CYaheDcyM0oYIQvMdFIW4BlG1O4oyMw/+knJKXsXyFK/8vrIQnLlUCw7vAQnh9jxOiIUng30EjijL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AN2L/8Qc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AN2L/8Qc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740576059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pOKQylrR35KbXG+jocGUv5N9FH8CHHirEUON+cGjZNs=;
+	b=AN2L/8QcZ2eXo6v6UgkD1OzUs1vwx17PXvsm7DHu1rw2xbVgecGpXquo6hoMgfDVARPW6Q
+	8eH75Acl276HlTWuqtNT2kIXMCFLZfTYD/XTZns+rgDuhmFzXXhIHqLOyYxiMzuJ14eD9R
+	YI6oGHcnC9CKVhMhh5DRWdGzp7NpcYw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-Cd6NdM0AOWCNDV3PSSOq0g-1; Wed,
+ 26 Feb 2025 08:20:54 -0500
+X-MC-Unique: Cd6NdM0AOWCNDV3PSSOq0g-1
+X-Mimecast-MFC-AGG-ID: Cd6NdM0AOWCNDV3PSSOq0g_1740576052
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A516918EB2CE;
+	Wed, 26 Feb 2025 13:20:51 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.9])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 49C0F1800358;
+	Wed, 26 Feb 2025 13:20:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>,
+    Steve French <stfrench@microsoft.com>,
+    Dominique Martinet <asmadeus@codewreck.org>
+cc: dhowells@redhat.com, Ihor Solodrai <ihor.solodrai@pm.me>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
+    v9fs@lists.linux.dev, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix unbuffered writes
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12c5:b0:3d2:5a0a:7227 with SMTP id
- e9e14a558f8ab-3d2cb48229dmr21416275ab.13.1740144002400; Fri, 21 Feb 2025
- 05:20:02 -0800 (PST)
-Date: Fri, 21 Feb 2025 05:20:02 -0800
-In-Reply-To: <6792ffb7.050a0220.3ab881.0005.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67b87d82.050a0220.14d86d.04d4.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [v9fs?] BUG: stack guard page was hit in sys_openat
-From: syzbot <syzbot+1f18c9b1bb51239d82f2@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, asmadeus@codewreck.org, bharathsm@microsoft.com, 
-	brauner@kernel.org, ceph-devel@vger.kernel.org, dhowells@redhat.com, 
-	ericvh@kernel.org, idryomov@gmail.com, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, marc.dionne@auristor.com, 
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, netfs@lists.linux.dev, 
-	pc@manguebit.com, ronniesahlberg@gmail.com, rostedt@goodmis.org, 
-	samba-technical@lists.samba.org, sfrench@samba.org, sprasad@microsoft.com, 
-	syzkaller-bugs@googlegroups.com, tom@talpey.com, v9fs@lists.linux.dev, 
-	xiubli@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2602344.1740576046.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 26 Feb 2025 13:20:46 +0000
+Message-ID: <2602345.1740576046@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-syzbot suspects this issue was fixed by commit:
+Fix netfs_wait_for_request() so that it doesn't check the outcome of a
+synchronous unbuffered write and emit error -EIO and a netfs_failure trace
+line if the write appears to be short.  This will affect both 9p and cifs,
+depending on the mount options; it does not affect DIO writes.
 
-commit e2d46f2ec332533816417b60933954173f602121
-Author: David Howells <dhowells@redhat.com>
-Date:   Mon Dec 16 20:41:17 2024 +0000
+This check is a problem because the write side doesn't set rreq->submitted=
+,
+but rather ->issued_to (the two ought to be merged as one is superfluous).
+This now occurs because the code was generalised from just the read side t=
+o
+the write side as well.
 
-    netfs: Change the read result collector to only use one work item
+Fixes: 9dc06eff2097 ("netfs: Fix wait/wake to be consistent about the wait=
+queue used")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <stfrench@microsoft.com>
+cc: Ihor Solodrai <ihor.solodrai@pm.me>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: v9fs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/misc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15cb3ae4580000
-start commit:   9528d418de4d Merge tag 'x86_urgent_for_v6.13' of git://git..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d7f05e16f48c5834
-dashboard link: https://syzkaller.appspot.com/bug?extid=1f18c9b1bb51239d82f2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17808824580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=129252b0580000
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 6a5a7704e983..77e7f7c79d27 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -461,6 +461,7 @@ static ssize_t netfs_wait_for_request(struct netfs_io_=
+request *rreq,
+ 		case NETFS_DIO_READ:
+ 		case NETFS_DIO_WRITE:
+ 		case NETFS_READ_SINGLE:
++		case NETFS_UNBUFFERED_WRITE:
+ 			break;
+ 		default:
+ 			if (rreq->submitted < rreq->len) {
 
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: netfs: Change the read result collector to only use one work item
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
