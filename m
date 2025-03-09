@@ -1,133 +1,128 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F561991B8;
-	Sat,  8 Mar 2025 22:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2B318C008
+	for <v9fs@lists.linux.dev>; Sun,  9 Mar 2025 07:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741472282; cv=none; b=NoBhpgdwdIcxKLGpVHAT8kKQV6zk0gYjZmXE/3xbiMXVQgyXHeZvdPJdmwy45JUQfVPulM5cXRZrerJq5mWKEghG29hmt8Pg5LAhrHEDuCIUJLJCSa21H+TsAy+OH1YQkDKfUA7GVQ5BpnfdKgQgziAw6hcc9ppIhc+MuKzvvJM=
+	t=1741505741; cv=none; b=Ug30OCWIQb4QvB2aiW0HPEg1R2MmWL2/x6l+OoVimeaxutw0XfLe5zaICIjWX4lYqoYJqgr7HGrAS28guY1sAy/4GtVQb1N2MSJNjnNqralai8J6RfTIu9M7T5aNauLtDsf+xuZRdXdtDvwaTkFKXWcbLM7tpTXCFOHQXGtn5DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741472282; c=relaxed/simple;
-	bh=kZv6LxTH/6n2vTyi1JUBq+dNjhqKNCxYk40ly0nOxpk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8lPM5BkJo2GiF4cDtkHiCorh9jIunVbxAeTnLBrobk8NwB14T3wx3VuRudY8EPAWL4mglcKOt/C8b3LIdlYpQydiYHhI98Ya3URtumuZSA6aye6cJDNBJn5MDZr/EnDXLneJFcN++vU+OIYEP3XftkGLjeYS2hPI2vx6S8wK1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=OmO4Cfyb; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1741505741; c=relaxed/simple;
+	bh=3HXNrJC1YJgYhVbPSukVAuN3sS3FuIuuddwY6xtgHCs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Dl1XnW7SuujQjxJ23TSIs6HyQGLhzidrS4lbYKO2FDpvjnef+9XbDP4Ze8+eWjw+WG0vVaSNUgGOSGU2YCy7cH7cGu8kmGPQurFHoUc6+W3lEwJRpS5AOdHwmc9BS05O3BrMO1XKWm8GMx0WblpbE2HCMqjgIIWhI3UY2N3/jVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=qmrBH+BH; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="OmO4Cfyb"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 280EC14C2D3;
-	Sat,  8 Mar 2025 23:09:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1741471753;
+	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="qmrBH+BH"
+Message-ID: <c4517e43-b2e2-485c-b727-7e5d47930ba0@iencinas.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
+	s=key1; t=1741505727;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qkRfR5iIp370h0vHcYYkHnqzKAOlLr+Ap7PNgEbI9dQ=;
-	b=OmO4Cfybste8NJsXHK1eL6LkHTRvzadMRu8tTWuUIiN5IHy3YlsjrvzciUgw5JM8Lsp7uD
-	e1icptW5PgNBXaSF6uH01kbYQDmnQT3pe/QvplEpXbnX9Ys9dDvut7naD4vrtNKPDZHaue
-	51YMzar8z+1zHUOXLhUM4VXyr3F+4zZP/KPn5hu91qWjN9ssGgV98QBFUCg2b97H3kzeEN
-	E8R7fHhg6NbF0goNPB3RzF5y+W5YOXmIXUO9gbOswGEC4vmXF5WTzT/yOv828HZ7FKA6b3
-	7UyD8fKi9h7nVzLZmh8JZCHixacbOe26iYbVlRs+ksJKIYQJgqXHO46G50pn/A==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 65d45deb;
-	Sat, 8 Mar 2025 22:09:08 +0000 (UTC)
-Date: Sun, 9 Mar 2025 07:08:53 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Ignacio Encinas <ignacio@iencinas.com>
-Cc: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Sishuai Gong <sishuai.system@gmail.com>,
-	Marco Elver <elver@google.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
-	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-Subject: Re: [PATCH] 9p/trans_fd: mark concurrent read and writes to
- p9_conn->err
-Message-ID: <Z8y_9b6RFZASviUs@codewreck.org>
-References: <20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com>
+	bh=6w89DGn0N8dEcklqSYy76PaYnkGxYFWAY1mpJJ/Sqbo=;
+	b=qmrBH+BHtDuEHGLvw1pAQm35Pbuqqe01jM4GXUFMtIZ7Igqx/uT2j+KksQvC9OcQdKPjcX
+	7dJI3h7KsxFYcWcpayY2e80ni63zzcfRSZHVl/N/f1mUuJbZHieAYWqiRJG8U1lKSn9FCk
+	AE+al8OCsWSOOb9b7gQsAYpLmOB/XuNRx1Gjz2FURuOj5bCiZU9D8bgNDM87z8fFb0f5zy
+	zNGbSMQz4vItCVPoVAAd0Mm4OpsVWnZR36fn6VlKrJUYmdB5qInvLmeKmfdm0vHJKsw1NF
+	VK7oXjAowTuT4w22WtRyaYfyGrrVSrACFaYGBXRPPV+3w7xB+luaZFglM0EtfA==
+Date: Sun, 9 Mar 2025 08:35:22 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ignacio Encinas Rubio <ignacio@iencinas.com>
+Subject: Re: [PATCH] 9p/trans_fd: mark concurrent read and writes to
+ p9_conn->err
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+ Sishuai Gong <sishuai.system@gmail.com>, Marco Elver <elver@google.com>,
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
+ syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+References: <20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com>
+ <Z8y_9b6RFZASviUs@codewreck.org>
+Content-Language: en-US
+In-Reply-To: <Z8y_9b6RFZASviUs@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Ignacio Encinas wrote on Sat, Mar 08, 2025 at 06:47:38PM +0100:
-> Writes for the error value of a connection are spinlock-protected inside
-> p9_conn_cancel, but lockless reads are present elsewhere to avoid
-> performing unnecessary work after an error has been met.
+
+
+On 8/3/25 23:08, Dominique Martinet wrote:
+> Thank for looking into it, I wasn't aware this could be enough to please
+> the KCSAN gods.
+
+Thank you for reviewing it!
+
+> I've just gone over read/write work and I think overall the logic
+> doesn't look too bad as the checks for m->err are just optimizations
+> that could be skipped entierly.
+
+That was my impression too. Thanks for confirming! 
+As far as I know, this is as non-problematic as it gets. 
+
+> So, sure, they could recheck but I don't see the point; if syzbot is
+> happy with this patch I think that's good enough.
+
+I think KCSAN shouldn't complain anymore. However, let me send a v2:
+
+>> [1] https://lore.kernel.org/all/ZTZtHdqifXlWG8nN@codewreck.org/
+
+I last-minute edited this snippet because it looks like it should be
+like the rest of them (just a READ_ONCE, no spinlock) 
+
+@@ -673,7 +674,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+ 
+ 	spin_lock(&m->req_lock);
+ 
+-	if (m->err < 0) {
++	if (READ_ONCE(m->err) < 0) {
+ 		spin_unlock(&m->req_lock);
+ 		return m->err;
+ 	}
+
+but as I left it, it doesn't make any sense. It's either a racy read +
+READ_ONCE to make KCSAN happy or a protected read which shouldn't be a
+problem. I'll just drop this hunk and leave it as it was.
+
+>> ---
+>>  net/9p/trans_fd.c | 11 ++++++-----
+>>  1 file changed, 6 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+>> index 196060dc6138af10e99ad04a76ee36a11f770c65..5458e6530084cabeb01d13e9b9a4b1b8f338e494 100644
+>> --- a/net/9p/trans_fd.c
+>> +++ b/net/9p/trans_fd.c
+>> @@ -194,9 +194,10 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
+>>        if (m->err) {
 > 
-> Mark the write and lockless reads to make KCSAN happy. Mark the write as
-> exclusive following the recommendation in "Lock-Protected Writes with
-> Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
-> while we are at it.
+> This is under spin lock and I don't see the compiler reordering this
+> read and write, but should this also get READ_ONCE?
 
-Thank for looking into it, I wasn't aware this could be enough to please
-the KCSAN gods.
+It wouldn't hurt, but I don't think it would do anything. spin_lock and
+spin_unlock both emit compiler barriers so that code can't be moved out
+of critical sections (apart from doing actual locking, release-acquire
+ordering ...). I guess the only function of a READ_ONCE here would be to
+ensure atomicity of the read, but 
 
-Unfortunately neither have a repro so will be hard to test but I guess
-it can't hurt, so will pick this up after a bit.
+  1) There are no concurrent writes when this read is happening due to
+  the spinlock being locked
 
-> Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
-> Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-> Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
-> ---
-> Hello! I noticed these syzbot reports that seem to repeat periodically
-> and figured I should send a patch. 
-> 
-> The read-paths look very similar to the one changed here [1]. Perhaps it
-> would make sense to make them the same?
+  2) Getting the load teared is almost impossible(?) as it is an aligned
+  4 byte read. Even if the load got garbage, we would just return
+  without reading the actual value.
 
-I've just gone over read/write work and I think overall the logic
-doesn't look too bad as the checks for m->err are just optimizations
-that could be skipped entierly.
+I'll wait a couple of days to send the v2 in case there is any more
+feedback. 
 
-For example, even if read work misses the check and recv some data, the
-p9_tag_lookup is what actually protects the "req", so either cancel
-didn't cancel yet and it'll get two status updates but it's valid
-memory and the refcounting is also correct, or the cancel was finished
-and read won't find the request.
-(I guess one could argue that two status updates could be a problem in
-the p9_client_rpc path, but the data actually has been received and the
-mount is busted anyway so I don't think any bad bug would happen..
-Famous last words, yes)
-
-Write likewise will just find itself with nothing to do as the list had
-been emptied (and p9_fd_request does check m->err under lock so can't
-add new items)
-
-So, sure, they could recheck but I don't see the point; if syzbot is
-happy with this patch I think that's good enough.
-
-
-> [1] https://lore.kernel.org/all/ZTZtHdqifXlWG8nN@codewreck.org/
-> ---
->  net/9p/trans_fd.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-> index 196060dc6138af10e99ad04a76ee36a11f770c65..5458e6530084cabeb01d13e9b9a4b1b8f338e494 100644
-> --- a/net/9p/trans_fd.c
-> +++ b/net/9p/trans_fd.c
-> @@ -194,9 +194,10 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
->        if (m->err) {
-
-This is under spin lock and I don't see the compiler reordering this
-read and write, but should this also get READ_ONCE?
-
->                spin_unlock(&m->req_lock);
->  		return;
->  	}
->  
-> -	m->err = err;
-> +	WRITE_ONCE(m->err, err);
-> +	ASSERT_EXCLUSIVE_WRITER(m->err);
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+Thanks again!
