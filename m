@@ -1,124 +1,141 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A7E537FF
-	for <v9fs@lists.linux.dev>; Thu, 13 Mar 2025 13:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68471E9B26
+	for <v9fs@lists.linux.dev>; Thu, 13 Mar 2025 18:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741872851; cv=none; b=GgjgQ3Bwxr/hUmTQuxMbH8yFqOYOr549xUTXG0zScgh86w+snl0wlbeXEBHTA0hBaD907SaN/1qKWLJSzwz1l8K2xDX0ppMaY5fT+Smi2+ZWBIdfNbGVQvd8XcH9gwarE2YXv9Gvr1B/b1rayCCMa8CXg9tMjl03ts/wojElUT8=
+	t=1741889325; cv=none; b=AhZDfJnnERaw0IpbPyjpU2wbrxvyGkJ5/YiPHsT1hkADdC4pFZ53RvMzw0p6eaCoYUxlPrUSKmWasXpOqMn59Ezdgvj5QfYEtqj7YyeroUZRJ2P0v6Ih/BW49Z/5yUq1iHaWBXpx+/WmCq+OLsJBbF5nzz+tBJ6DEx3dU0MdDPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741872851; c=relaxed/simple;
-	bh=p9pO1Dh5i1mI+kxl7fBF0Z2buokBUlPWYzwtIDs2ZSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bEAeE0ME2XT54sVaK9mOuWtXCEnSvqc7kGrl3Ut0FKxuj0/psyQsLgzircrGQjLpicvUXCpOKoP8GETbTQ5THfOwHSWXfTbBCsdp+9PhrEz6CSuaLHnSa3JcpG6OLKtFcT6QjPw+eavx24xOtWrKFZlH4KIxryZ2oODTLosKjQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=27yAvhoh; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1741889325; c=relaxed/simple;
+	bh=MXtePF6repqds/x6JPCzOwKs4bPaXnVnBSNXtX5OfIc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MfWcvEHXrH9z2WQSduShKi48TT7ZLxqXFvBTmDkg8nzp/01/2e8DHHekNCb4FZs70uzBWaBPXDCvfYM/2zMNSsJigRlEUCXLoKIrgC0Mv9LhA+kKgJBJkxqR/BzgGtue1xT9kYYeEKp246tZw0xYVpfbfx9Tx8o3to2Ppm4Hqvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=Ao39xEo/; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="27yAvhoh"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 7D8E714C2D3;
-	Thu, 13 Mar 2025 14:34:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1741872842;
+	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="Ao39xEo/"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
+	s=key1; t=1741889320;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjTF37SNnxkBpB2MiFl8F1xIEEcE091gYhI+2+SrGcU=;
-	b=27yAvhohID0fWiXqSYo3Za072nv27URh9jKoVEbwbnAN7jZfClvR3DaNVtJpuZMPCs5VKG
-	uO457qloTAPYXSxXDyIm4Ps2sJTaO3PbOnGoy36sQhc4AhlVo6VAtt7qLsenqXDIhGYn+Q
-	QD1aF9MYziobyfQCjzeEmSCrXFQR1RTA/3KuqCtu/IHfXpIglExj2D6Bpis6h808C2wr58
-	8NNlgUX3KlNavcPYR8PK9+H8xDSAphovSqNQJwZ5I7k25MPXwL879KpMBIy2nsEIRCBTRz
-	Xi48ChTaIWio4BkrfbQr9iJtMxLWb4i1p3oE4PgIYLxsNZL0e2xQKmMC1mMMuQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d99e76a3;
-	Thu, 13 Mar 2025 13:33:58 +0000 (UTC)
-Date: Thu, 13 Mar 2025 22:33:43 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot <syzbot+5b667f9a1fee4ba3775a@syzkaller.appspotmail.com>
-Subject: Re: [PATCH] fs/9p: fix NULL pointer dereference on mkdir
-Message-ID: <Z9Let2cdA4dB7tTe@codewreck.org>
-References: <E1tsiI6-002iMG-Kh@kylie.crudebyte.com>
- <4597443.VRNSQfLuZI@silver>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oWH7hszwO9I5RYZpht/nXn68Y2cBdPRRedslDcO5mD8=;
+	b=Ao39xEo/pSp/j5tAL4U5bRkiqX/8hAJD2h5Q3TQYeoM2KfRkAZOXysg68TccSm87i+b8UV
+	kiREpjW7qU6Qz5NKsUVUQSnyPRUNScPmTvRmGLrA0zOQMJD51uK13Ub6Bq8SXcopsvd1VE
+	7p3Zn+BdFU4Rjarkxrw6vR2AaFmrOwPBr8UlVsv32H+n6YPJ04zzwb7xuKMCLJB9l4PWdZ
+	yBjQeWsgIXA8Fjn6KqCNIcpPA+5z0Y4LVRZ40AMGel90Z5xTXaDVtGl8rqS+TEXPS+AHHF
+	K4lghj57TDh/oo+B50iD8d9RL/q4sqoc1cB84Av2UH7VZRWeFsP3gjRg8Pw/UA==
+From: Ignacio Encinas <ignacio@iencinas.com>
+Date: Thu, 13 Mar 2025 19:08:19 +0100
+Subject: [PATCH v2] 9p/trans_fd: mark concurrent read and writes to
+ p9_conn->err
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4597443.VRNSQfLuZI@silver>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com>
+X-B4-Tracking: v=1; b=H4sIABIf02cC/43NTQqDMBCG4atI1k2JkWDsqvcoEvIz6iw6KRORF
+ vHuTT1Bl8+3eL9dFGCEIm7NLhg2LJipQl8aERdPM0hM1UIrbVSnrHwNLmYiB8wuAOFMLvnVO/Y
+ RpO6NncCGAEmJmngxTPg+84+xesGyZv6cb1v7W/8Mb61sZa8HMH0yttPhjkARyZdrzE8xHsfxB
+ eL3bFzLAAAA
+X-Change-ID: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
+To: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
+ Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Sishuai Gong <sishuai.system@gmail.com>, Marco Elver <elver@google.com>, 
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com, 
+ syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com, 
+ Ignacio Encinas <ignacio@iencinas.com>
+X-Migadu-Flow: FLOW_OUT
 
-Christian Schoenebeck wrote on Thu, Mar 13, 2025 at 02:29:42PM +0100:
-> On Thursday, March 13, 2025 1:59:32 PM CET Christian Schoenebeck wrote:
-> > When a 9p tree was mounted with option 'posixacl', parent directory had a
-> > default ACL set for its subdirectories, e.g.:
-> > 
-> >   setfacl -m default:group:simpsons:rwx parentdir
-> > 
-> > then creating a subdirectory crashed 9p client, as v9fs_fid_add() call in
-> > function v9fs_vfs_mkdir_dotl() sets the passed 'fid' pointer to NULL
-> > (since dafbe689736) even though the subsequent v9fs_set_create_acl() call
-> > expects a valid non-NULL 'fid' pointer:
-> > 
-> >   [   37.273191] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >   ...
-> >   [   37.322338] Call Trace:
-> >   [   37.323043]  <TASK>
-> >   [   37.323621]  ? __die+0x1f/0x60
-> >   [   37.324448]  ? page_fault_oops+0x158/0x470
-> >   [   37.325532]  ? search_module_extables+0x4a/0x80
-> >   [   37.326742]  ? p9_client_walk+0x1c/0x2c0 [9pnet]
-> >   [   37.328006]  ? search_bpf_extables+0x5b/0x80
-> >   [   37.329142]  ? exc_page_fault+0x72/0x190
-> >   [   37.330196]  ? asm_exc_page_fault+0x22/0x30
-> >   [   37.331330]  ? p9_client_walk+0x1c/0x2c0 [9pnet]
-> >   [   37.332562]  ? v9fs_fid_xattr_get+0x59/0x120 [9p]
-> >   [   37.333824]  v9fs_fid_xattr_set+0x6f/0x130 [9p]
-> >   [   37.335077]  v9fs_set_acl+0x82/0xc0 [9p]
-> >   [   37.336112]  v9fs_set_create_acl+0x41/0x60 [9p]
-> >   [   37.337326]  v9fs_vfs_mkdir_dotl+0x20d/0x2e0 [9p]
-> >   [   37.338590]  vfs_mkdir+0x192/0x250
-> >   [   37.339535]  do_mkdirat+0x135/0x160
-> >   [   37.340465]  __x64_sys_mkdir+0x42/0x60
-> >   [   37.341455]  do_syscall_64+0x4b/0x110
-> >   [   37.342447]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> Oops, forgot to decode the trace back:
-> 
-> [   37.322338] Call Trace:
-> [   37.323043]  <TASK>
-> [   37.323621] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434) 
-> [   37.324448] ? page_fault_oops (arch/x86/mm/fault.c:714) 
-> [   37.325532] ? search_module_extables (kernel/module/main.c:3733) 
-> [   37.326742] ? p9_client_walk (net/9p/client.c:1165) 9pnet 
-> [   37.328006] ? search_bpf_extables (kernel/bpf/core.c:804) 
-> [   37.329142] ? exc_page_fault (./arch/x86/include/asm/paravirt.h:686 arch/x86/mm/fault.c:1488 arch/x86/mm/fault.c:1538) 
-> [   37.330196] ? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:574) 
-> [   37.331330] ? p9_client_walk (net/9p/client.c:1165) 9pnet 
-> [   37.332562] ? v9fs_fid_xattr_get (fs/9p/xattr.c:30) 9p 
-> [   37.333824] v9fs_fid_xattr_set (fs/9p/fid.h:23 fs/9p/xattr.c:121) 9p 
-> [   37.335077] v9fs_set_acl (fs/9p/acl.c:276) 9p 
-> [   37.336112] v9fs_set_create_acl (fs/9p/acl.c:307) 9p 
-> [   37.337326] v9fs_vfs_mkdir_dotl (fs/9p/vfs_inode_dotl.c:411) 9p 
-> [   37.338590] vfs_mkdir (fs/namei.c:4313) 
-> [   37.339535] do_mkdirat (fs/namei.c:4336) 
-> [   37.340465] __x64_sys_mkdir (fs/namei.c:4354) 
-> [   37.341455] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83) 
-> [   37.342447] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-> 
-> Dominique, do you want me to send a v2 or would you update the commit log on
-> your end?
+Writes for the error value of a connection are spinlock-protected inside
+p9_conn_cancel, but lockless reads are present elsewhere to avoid
+performing unnecessary work after an error has been met.
 
-Thank you for the quick patch!
-I can update the message on my end unless there's another reason to send
-a v2
+Mark the write and lockless reads to make KCSAN happy. Mark the write as
+exclusive following the recommendation in "Lock-Protected Writes with
+Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
+while we are at it.
 
-Looks good to me, I'll test a bit over the weekend and send to Linus in
-the merge window in a couple of weeks (I guess it could be sent right
-away...)
+Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
+Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
+---
+Changes in v2:
+
+Drop unnecessary READ_ONCE in p9_fd_request (that I added in v1)
+
+-@@ net/9p/trans_fd.c: static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+- 
+-   spin_lock(&m->req_lock);
+- 
+--  if (m->err < 0) {
+-+  if (READ_ONCE(m->err) < 0) {
+-           spin_unlock(&m->req_lock);
+-           return m->err;
+-   }
+
+- Link to v1: https://lore.kernel.org/r/20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com
+---
+ net/9p/trans_fd.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 196060dc6138af10e99ad04a76ee36a11f770c65..758eaeddf32b480e0a88914da66f923f7021e608 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -196,7 +196,8 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
+ 		return;
+ 	}
+ 
+-	m->err = err;
++	WRITE_ONCE(m->err, err);
++	ASSERT_EXCLUSIVE_WRITER(m->err);
+ 
+ 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
+ 		list_move(&req->req_list, &cancel_list);
+@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
+ 
+ 	m = container_of(work, struct p9_conn, rq);
+ 
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
+ 
+ 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
+@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
+ 
+ 	m = container_of(work, struct p9_conn, wq);
+ 
+-	if (m->err < 0) {
++	if (READ_ONCE(m->err) < 0) {
+ 		clear_bit(Wworksched, &m->wsched);
+ 		return;
+ 	}
+@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
+ 	__poll_t n;
+ 	int err = -ECONNRESET;
+ 
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
+ 
+ 	n = p9_fd_poll(m->client, NULL, &err);
+
+---
+base-commit: 2a520073e74fbb956b5564818fc5529dcc7e9f0e
+change-id: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
+
+Best regards,
 -- 
-Dominique
+Ignacio Encinas <ignacio@iencinas.com>
+
