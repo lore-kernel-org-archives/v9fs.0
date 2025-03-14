@@ -1,141 +1,103 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68471E9B26
-	for <v9fs@lists.linux.dev>; Thu, 13 Mar 2025 18:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BBB20371B
+	for <v9fs@lists.linux.dev>; Fri, 14 Mar 2025 16:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741889325; cv=none; b=AhZDfJnnERaw0IpbPyjpU2wbrxvyGkJ5/YiPHsT1hkADdC4pFZ53RvMzw0p6eaCoYUxlPrUSKmWasXpOqMn59Ezdgvj5QfYEtqj7YyeroUZRJ2P0v6Ih/BW49Z/5yUq1iHaWBXpx+/WmCq+OLsJBbF5nzz+tBJ6DEx3dU0MdDPc=
+	t=1741970539; cv=none; b=rlJA01LCFSQJ4GclreC1As7/Xkr4Ni7DqqBR8XT7CPe1Fi/ZNEXgFYft9k88InND+A/MvAm5xTNNiiNJP97fN7cLqIYyGl7Yz6TQZHInWq1OdjGZJ+2Za0TRapaHWyAKbx/WSAXUQaMqpxHn2QlzugOGPBOyYw88sIORf/3H22k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741889325; c=relaxed/simple;
-	bh=MXtePF6repqds/x6JPCzOwKs4bPaXnVnBSNXtX5OfIc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MfWcvEHXrH9z2WQSduShKi48TT7ZLxqXFvBTmDkg8nzp/01/2e8DHHekNCb4FZs70uzBWaBPXDCvfYM/2zMNSsJigRlEUCXLoKIrgC0Mv9LhA+kKgJBJkxqR/BzgGtue1xT9kYYeEKp246tZw0xYVpfbfx9Tx8o3to2Ppm4Hqvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=Ao39xEo/; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
+	s=arc-20240116; t=1741970539; c=relaxed/simple;
+	bh=2+DwG16QMBDPEwdUhdPr1yjqYgoqnj3ZTWCkDR5/ffk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mirwCGmwz2qFA8k79kmbgvAcszVCvuIo39x5mtLDkxA9D2S8IP9pVcH84AiKFNTgfW2wlEdY8gUrfjXjNrUFJvUT4uW868RPmI9+ClFsuaYzb1NW8PcKGu1Q5G3CD7DUQZOCxpjoUd0KswQQhpRZIBMfOLSTrqaofH1L6XuoKk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNLXJqA9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="Ao39xEo/"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
-	s=key1; t=1741889320;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNLXJqA9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741970534;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=oWH7hszwO9I5RYZpht/nXn68Y2cBdPRRedslDcO5mD8=;
-	b=Ao39xEo/pSp/j5tAL4U5bRkiqX/8hAJD2h5Q3TQYeoM2KfRkAZOXysg68TccSm87i+b8UV
-	kiREpjW7qU6Qz5NKsUVUQSnyPRUNScPmTvRmGLrA0zOQMJD51uK13Ub6Bq8SXcopsvd1VE
-	7p3Zn+BdFU4Rjarkxrw6vR2AaFmrOwPBr8UlVsv32H+n6YPJ04zzwb7xuKMCLJB9l4PWdZ
-	yBjQeWsgIXA8Fjn6KqCNIcpPA+5z0Y4LVRZ40AMGel90Z5xTXaDVtGl8rqS+TEXPS+AHHF
-	K4lghj57TDh/oo+B50iD8d9RL/q4sqoc1cB84Av2UH7VZRWeFsP3gjRg8Pw/UA==
-From: Ignacio Encinas <ignacio@iencinas.com>
-Date: Thu, 13 Mar 2025 19:08:19 +0100
-Subject: [PATCH v2] 9p/trans_fd: mark concurrent read and writes to
- p9_conn->err
+	bh=ZhpC7Em79XhLPABL01d5PWBwRTBpeD4EFKa0TLLjn5w=;
+	b=gNLXJqA9eqYHhWIi3Z54bVj2ZHc+ksPjbSllPpbBA5j0To74Gn+KMdp2MFxYyaYYWmonBE
+	D1QScmMxHBb1a+m0AoUapqi7snPft0rjCFfKrIu5s/jX+1c4rJxeWFRUn2aqa0wJ8DDiXH
+	fLQFlqC3RzKrrrjztOBbLZY7n3ScoHw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-R5nNYq_EPR67xztwtHa9MQ-1; Fri,
+ 14 Mar 2025 12:42:09 -0400
+X-MC-Unique: R5nNYq_EPR67xztwtHa9MQ-1
+X-Mimecast-MFC-AGG-ID: R5nNYq_EPR67xztwtHa9MQ_1741970528
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7578B180AB16;
+	Fri, 14 Mar 2025 16:42:07 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.61])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 083141828A83;
+	Fri, 14 Mar 2025 16:42:03 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] netfs: Miscellaneous fixes
+Date: Fri, 14 Mar 2025 16:41:55 +0000
+Message-ID: <20250314164201.1993231-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com>
-X-B4-Tracking: v=1; b=H4sIABIf02cC/43NTQqDMBCG4atI1k2JkWDsqvcoEvIz6iw6KRORF
- vHuTT1Bl8+3eL9dFGCEIm7NLhg2LJipQl8aERdPM0hM1UIrbVSnrHwNLmYiB8wuAOFMLvnVO/Y
- RpO6NncCGAEmJmngxTPg+84+xesGyZv6cb1v7W/8Mb61sZa8HMH0yttPhjkARyZdrzE8xHsfxB
- eL3bFzLAAAA
-X-Change-ID: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
-To: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Sishuai Gong <sishuai.system@gmail.com>, Marco Elver <elver@google.com>, 
- v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com, 
- syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com, 
- Ignacio Encinas <ignacio@iencinas.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Writes for the error value of a connection are spinlock-protected inside
-p9_conn_cancel, but lockless reads are present elsewhere to avoid
-performing unnecessary work after an error has been met.
+Hi Christian,
 
-Mark the write and lockless reads to make KCSAN happy. Mark the write as
-exclusive following the recommendation in "Lock-Protected Writes with
-Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
-while we are at it.
+Here are some miscellaneous fixes and changes for netfslib, if you could
+pull them:
 
-Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
-Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
----
-Changes in v2:
+ (1) Fix the collection of results during a pause in transmission.
 
-Drop unnecessary READ_ONCE in p9_fd_request (that I added in v1)
+ (2) Call ->invalidate_cache() only if provided.
 
--@@ net/9p/trans_fd.c: static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
-- 
--   spin_lock(&m->req_lock);
-- 
---  if (m->err < 0) {
--+  if (READ_ONCE(m->err) < 0) {
--           spin_unlock(&m->req_lock);
--           return m->err;
--   }
+ (3) Fix the rolling buffer to not hammer atomic bit clears when loading
+     from readahead.
 
-- Link to v1: https://lore.kernel.org/r/20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com
----
- net/9p/trans_fd.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ (4) Fix netfs_unbuffered_read() to return ssize_t.
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 196060dc6138af10e99ad04a76ee36a11f770c65..758eaeddf32b480e0a88914da66f923f7021e608 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -196,7 +196,8 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
- 		return;
- 	}
- 
--	m->err = err;
-+	WRITE_ONCE(m->err, err);
-+	ASSERT_EXCLUSIVE_WRITER(m->err);
- 
- 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
- 		list_move(&req->req_list, &cancel_list);
-@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, rq);
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
-@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, wq);
- 
--	if (m->err < 0) {
-+	if (READ_ONCE(m->err) < 0) {
- 		clear_bit(Wworksched, &m->wsched);
- 		return;
- 	}
-@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
- 	__poll_t n;
- 	int err = -ECONNRESET;
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	n = p9_fd_poll(m->client, NULL, &err);
+The patches can also be found here:
 
----
-base-commit: 2a520073e74fbb956b5564818fc5529dcc7e9f0e
-change-id: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
 
-Best regards,
--- 
-Ignacio Encinas <ignacio@iencinas.com>
+Thanks,
+David
+
+David Howells (3):
+  netfs: Fix collection of results during pause when collection
+    offloaded
+  netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
+  netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
+
+Max Kellermann (1):
+  netfs: Call `invalidate_cache` only if implemented
+
+ fs/netfs/direct_read.c    |  6 +++---
+ fs/netfs/read_collect.c   | 18 ++++++++++--------
+ fs/netfs/rolling_buffer.c |  4 ----
+ fs/netfs/write_collect.c  |  3 ++-
+ 4 files changed, 15 insertions(+), 16 deletions(-)
 
