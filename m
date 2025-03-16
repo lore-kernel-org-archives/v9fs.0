@@ -1,90 +1,127 @@
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA980183CA6;
-	Fri, 14 Mar 2025 20:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBFC18C332;
+	Sun, 16 Mar 2025 21:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741985071; cv=none; b=sjKuoJxxS5W9OkzIjnv23Q7BsxkpjOQW99Yx5RmjaorcKYjShZ8DyxTggvDbvS7QUTlD2IcbgLflaSr5d3RzqLr7YPXdgBwL+RFzl4qfHu/l9146gmHyAOMiahYT/eZmrwuVx2IvRoxPDunxW7XwiTaFTczAL++YZ0nwCVMG7mY=
+	t=1742160283; cv=none; b=LuwrqT2uOO25uwh0dWrWezQm6gYaGzRCAqVDckaSVCyEiDBnqy05yO8zjt1GZOKlhEZgl7PyGc4GyjuhCkZfTo19j15gSTjOILW8AD1idav77RuyF/ubCZfc5VhCP8Myjw0R5n6hSO+nO7pjDxuh/oktchOaZobIZV96BOFpdMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741985071; c=relaxed/simple;
-	bh=JyG22rQanR20rroHpv7WbHnkxDMN0Sl/fGM84V0PFu8=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=BxTmchgmnOaMN/mubB/TZJYGD/9wGqBzbm2qxYkWvrJfdU+bO6Ka+/51WR3bJfdgJY8NYMjKoJ19V/UxoQSlZVQm7XnaEw+LO1uOHc6KVt1xQr0SEYDaTjlbGjLluzHoQiYWQsSUsApZdOlZZylW12fq2Ku9+9oBRNNVPTDwTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=tFIgDYdA; arc=none smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+	s=arc-20240116; t=1742160283; c=relaxed/simple;
+	bh=ELgUU3NlKYeZRSc73AiMF+kP/N4Hb6nF2/wYDGzXXMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XEE0qe5lIofiNf3QNr6iwi1ayBL/djCeFLzv0BJzilxjZoOp11R1+gSJSok0CbrFOMD0l7SrhiZ38gGepA1AgIoLttWSI53V6Xb6vIu3cAgyLd8MHBgoZ/bNtS26PE9+/r8ESHGnIYqT6rz8Paa1ZHuuVvugcs5LkzsEOVzueL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=QqrG2dxG; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="tFIgDYdA"
-Message-ID: <9a3639ed95490e40b62d364c09c24e3b@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1741985062;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="QqrG2dxG"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id ABE1A14C2D3;
+	Sun, 16 Mar 2025 22:24:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1742160273;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6lOZkNdUaYMusY2QeOlezuCxMiABAc9kVpuc6FXYat0=;
-	b=tFIgDYdAsoNcnjS3dkr1KhlaZYrnBfwnB7kuLEFjpk6j5sw9hEBSMUs9U4HXMXoAnVO2Pc
-	THVyUetr1klfBZwTEld/u6PkRVmXHG2uA1ta6CejWl2n4dv/7hguOB2Prjm8i1d/C5NfGo
-	O0VfMw0v9AiBr4ZfcdlLjtmYFNEdV4u6HWnxH7l+02PcbXGkl4TExaRB1lvDSbENQbm4Lx
-	wWyj2hTvFuP/5tl4s/jeDPkckHkp7CJgaN3gC5Za/vCg/22KRPBhOpW0IKr0TBmxI4KmjR
-	UhYLmFRhZ9oZYSMIng6M0dfvUp+IRfLOISjgOjApm/JWdprEJ+h+rTL/JT/2SA==
-From: Paulo Alcantara <pc@manguebit.com>
-To: David Howells <dhowells@redhat.com>, Christian Brauner
- <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>, Max Kellermann
- <max.kellermann@ionos.com>, Jeff Layton <jlayton@kernel.org>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] netfs: Miscellaneous fixes
-In-Reply-To: <20250314164201.1993231-1-dhowells@redhat.com>
-References: <20250314164201.1993231-1-dhowells@redhat.com>
-Date: Fri, 14 Mar 2025 17:44:17 -0300
+	bh=hLUDOqXtw4gqTBMsEkmL5NysZ/9QGbLvuf1DQUOyuH0=;
+	b=QqrG2dxGNY78946uMzb7yj7QiDYUDkWsomzMbTBXsLmX+ab2qhxJL4K8ZjQVvwL9QEt0O4
+	TZdF3FlvW0rB8XqsxgPz/F5a609GH8hU2meMDSCxQRlQYxz4z7x9Aqmmv0qTdtdn2MAapS
+	IPrlJRtRvE2EiTWC2HKYXKJv0PepMyOKTw4SRkTne/j95FElSQGTvmjmkf2Ux7Jzro3LNt
+	8Wv6sNV7wgIjfLWBj5uleddOvoxE6fND6dU3ib5M1hSWMmz6zJtoMSulmoM9uHeN32xX2j
+	nzlYc139vIxX8Wnw5nR9bRIIBkMzFgWyCPZy/419ecfKICbMFGQOItM2uoxbfg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ab19b731;
+	Sun, 16 Mar 2025 21:24:27 +0000 (UTC)
+Date: Mon, 17 Mar 2025 06:24:12 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Ignacio Encinas <ignacio@iencinas.com>
+Cc: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Sishuai Gong <sishuai.system@gmail.com>,
+	Marco Elver <elver@google.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
+	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2] 9p/trans_fd: mark concurrent read and writes to
+ p9_conn->err
+Message-ID: <Z9dBfEf0naCsNrNv@codewreck.org>
+References: <20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com>
 
-David Howells <dhowells@redhat.com> writes:
+Ignacio Encinas wrote on Thu, Mar 13, 2025 at 07:08:19PM +0100:
+> Writes for the error value of a connection are spinlock-protected inside
+> p9_conn_cancel, but lockless reads are present elsewhere to avoid
+> performing unnecessary work after an error has been met.
+> 
+> Mark the write and lockless reads to make KCSAN happy. Mark the write as
+> exclusive following the recommendation in "Lock-Protected Writes with
+> Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
+> while we are at it.
+> 
+> Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
+> Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+> Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
+> ---
+> Changes in v2:
+> 
+> Drop unnecessary READ_ONCE in p9_fd_request (that I added in v1)
 
-> Hi Christian,
->
-> Here are some miscellaneous fixes and changes for netfslib, if you could
-> pull them:
->
->  (1) Fix the collection of results during a pause in transmission.
->
->  (2) Call ->invalidate_cache() only if provided.
->
->  (3) Fix the rolling buffer to not hammer atomic bit clears when loading
->      from readahead.
->
->  (4) Fix netfs_unbuffered_read() to return ssize_t.
->
-> The patches can also be found here:
->
-> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
->
-> Thanks,
-> David
->
-> David Howells (3):
->   netfs: Fix collection of results during pause when collection
->     offloaded
->   netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
->   netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
->
-> Max Kellermann (1):
->   netfs: Call `invalidate_cache` only if implemented
->
->  fs/netfs/direct_read.c    |  6 +++---
->  fs/netfs/read_collect.c   | 18 ++++++++++--------
->  fs/netfs/rolling_buffer.c |  4 ----
->  fs/netfs/write_collect.c  |  3 ++-
->  4 files changed, 15 insertions(+), 16 deletions(-)
+Ah, sorry; I think you misread my comment for v1 (or perhaps you
+disagreed in the response and I misread that!)
 
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+I was thinking that style-wise it's better to access the err field
+through READ/WRITE_ONCE everywhere, even if it's locked; so suggested
+this diff from v1:
+----
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index f163f6fc7354..65270c028f52 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -192,7 +192,7 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
+ 
+        spin_lock(&m->req_lock);
+ 
+-       if (m->err) {
++       if (READ_ONCE(m->err)) {
+                spin_unlock(&m->req_lock);
+                return;
+        }
+----
+
+OTOH, looking at this again:
+> --  if (m->err < 0) {
+> -+  if (READ_ONCE(m->err) < 0) {
+> -           spin_unlock(&m->req_lock);
+> -           return m->err;
+
+There's this access out of the lock so perhaps this should look like
+this instead (with or without the READ_ONCE)
+
++       err = READ_ONCE(m->err);
++       if (err < 0) {
+                spin_unlock(&m->req_lock);
+-               return m->err;
++               return err;
+
+
+Anyway, m->err is only written exactly once so it doesn't matter the
+least in practice, and it looks like gcc generates exactly the same
+thing (... even if I make that `return READ_ONCE(m->err)` which
+surprises me a bit..), so this is just yak shaving.
+
+I don't care all that much so I'll just pick this v2 as it's more
+consistent, but feel free to send a v3 if you have an opinion, or if
+someone else chips in.
+
+Thanks!
+-- 
+Dominique
