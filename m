@@ -1,91 +1,64 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462BA185B4C;
-	Tue, 18 Mar 2025 22:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C7C2066F9
+	for <v9fs@lists.linux.dev>; Tue, 18 Mar 2025 22:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742335295; cv=none; b=QhpVtrTU97ouq52WNiAwPqznZzmwTU1df7oZ8i56HX81RG26f2c4Tkt3Ytu9xAhUk6Dk1vLmwHw8kycWrGrDHG0JdGr5oZ/Icu0haMO0uNVy1OrxkYtOJihmrUxf9Dxx9OBvx2b6y1v0jswYeum09LV4rFAzf4dD6TcQLk3JJaA=
+	t=1742335972; cv=none; b=QctNuuHcYuwVJTff/7BW/VeHcHK+tUFe8NNrcczaDePJ2bZii04Op/oilV3HcRI+MftIcJwc4+Ky95PqUkGcBvbHaw3h9SfBJYGULzQy+l2Qt3ROKJOUbeCQBck8IAHD21AzDHzwMpH74DbZxLx+92dq6pjJCt3cB1NNiJ2PNnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742335295; c=relaxed/simple;
-	bh=YIUKm66kfHr0h8IKYA07cF6554QtrV077D8t9dWmvag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VRod0op+8MDYEUwoLJFIBAJ68hFOVhX9f8BBNTvJIS/zFMxODcO1ACwxaq31HQXo+P17uTk2E32gfdNv8rHozJj2JXsuuqhHQJcsUrSkz9bEAs2vpeNWBNfSq3/kA+AB2zfBd7ws07Sc6OzcfAsURkZVLsfNQcFHqvEiYlBbR78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=CgxyC/gm; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1742335972; c=relaxed/simple;
+	bh=OwwsgwQ2Izw3x1y2MMKUm4iHOo1nsQ9SMS4vXK/5DpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k3/6a2QfrvG1SGjIjqOPJarhZmUwc6a3vZQa5UUV98/8zOElTrw0ie9n04MFpn8JG/Jl3a7ZyjOp1sbWot8wZSKZuBsF4epEC55FUpr+auZEPcXTXiNdmbL8kupnFT9UXzMkHEKkn6AFqFb6kD5YQFXmNSOVogMiZzA91MAha/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=XL+Vb47D; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="CgxyC/gm"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 102CD14C2D3;
-	Tue, 18 Mar 2025 23:01:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1742335291;
+	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="XL+Vb47D"
+Message-ID: <ee98477c-38c6-41b7-ab94-294fa438bbe9@iencinas.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
+	s=key1; t=1742335967;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pv9fNmE/cWD6i+iJ7xO+TvGlhYF5oWWIi+8zg1cXvrY=;
-	b=CgxyC/gmf0pNvInNbF4/+MgKnpuG4Of8YJAp6a3zhPtJzmc2i7YDR5FEriEOYz2Hp3iw4k
-	Tx7bpFTSFgnNQ12J3GfcSNRvoNyHEN45pTfdkS87iiehTeOUTYhJJQc4P3HCYbtYIdNvnk
-	4qAbhnfZippNbJw0EUfwL2gK7Jvq9A9C5NM8XY22WLleInv9jCe7RUMl//aOi23kPMRcrE
-	OYt0rKLnU/QcMKx+z5HWv79jyKsBmaFMelZ0ofY4NZPB5SUud9mJRm0ClJYynt1SIFo93v
-	S4p01yH2s1x9m3YHI1EQzhRnygnllvIHvrANSevqVWF9jgxaqZVo9CzKIyXEXA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b2d8b517;
-	Tue, 18 Mar 2025 22:01:26 +0000 (UTC)
-Date: Wed, 19 Mar 2025 07:01:11 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Ignacio Encinas <ignacio@iencinas.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Sishuai Gong <sishuai.system@gmail.com>,
-	Marco Elver <elver@google.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
-	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-Subject: Re: [PATCH v3] 9p/trans_fd: mark concurrent read and writes to
- p9_conn->err
-Message-ID: <Z9ntJxTCg2Y0fcRc@codewreck.org>
-References: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
+	bh=mEZdAofGncLSq8KXP8xzdxsPJOAVYd6GsrKysQDd3nE=;
+	b=XL+Vb47DLZm8hAczVvTY3dDAv/Aj4WzxBQcPBi0WGgwpfUi0qrWRI89PixKCmca5c02XiS
+	V2TKJYwTYGk2PaNX1u/lvCZMxrUsPN18k/Y4NxVTyIz698OVTWkIZTAeWzHpMifjs9itPU
+	ee0aeR4L928uYbdEKBiQ5wGw6i/omtaBnu++jRd1Jp9ZgESrNuklAsfen6aL3rwB6LCA0f
+	2ni/CmJRvW/2Bso8QS6tj76SovPsFzwxC0EYio6U+wygrE6UbuqZhlniVKgmmJxKKlPj2f
+	Uxbkgn3h/ooEOTirIzgW2LVwz9v2OFvwIgL4hOV1F27vukfWjyRi2OnItojEYA==
+Date: Tue, 18 Mar 2025 23:12:43 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
+Subject: Re: [PATCH v3] 9p/trans_fd: mark concurrent read and writes to
+ p9_conn->err
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: v9fs@lists.linux.dev
+References: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
+ <Z9ntJxTCg2Y0fcRc@codewreck.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ignacio Encinas Rubio <ignacio@iencinas.com>
+In-Reply-To: <Z9ntJxTCg2Y0fcRc@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Ignacio Encinas wrote on Tue, Mar 18, 2025 at 10:39:02PM +0100:
-> Writes for the error value of a connection are spinlock-protected inside
-> p9_conn_cancel, but lockless reads are present elsewhere to avoid
-> performing unnecessary work after an error has been met.
-> 
-> Mark the write and lockless reads to make KCSAN happy. Mark the write as
-> exclusive following the recommendation in "Lock-Protected Writes with
-> Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
-> while we are at it.
-> 
-> Mark p9_fd_request and p9_conn_cancel m->err reads despite the fact that
-> they do not race with concurrent writes for stylistic reasons.
-> 
-> Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
-> Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-> Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
-> ---
-> Changes in v3:
-> 
-> - Introduce a couple of extra READ_ONCEs to maintain consistency across
->   m->err reads (noted in the commit message too for future reference)
-> - Remove racy read from p9_fd_request by reusing the previously read
->   error (arguably, the lock was never of much use)
 
-Thank you!
+On 18/3/25 23:01, Dominique Martinet wrote:
+> Thank you!
+> 
+> I've updated the patch in my -next branch, and it'll go to Linus in a
+> couple of weeks with the 6.15 merge window
 
-I've updated the patch in my -next branch, and it'll go to Linus in a
-couple of weeks with the 6.15 merge window
+Thank you! 
 
-(our mails crossed, feel free to ignore the other one)
--- 
-Dominique
+> (our mails crossed, feel free to ignore the other one)
+
+How ironic... it seems we had a race condition! :)
