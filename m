@@ -1,165 +1,128 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC7A205E0E
-	for <v9fs@lists.linux.dev>; Tue, 18 Mar 2025 21:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5992F202C5C;
+	Tue, 18 Mar 2025 21:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742333998; cv=none; b=WBhXs53U0LZAFUgwEIGOjYW54TjN3pNlXfj0GfwCAGLspqbzVueDNz9p32mA0SxJ1GO2/DnuCJsPhby+aCkq/FhLgyUeVF++OOaitgtTTKEIR1gjtcMM2TcoHTGAPy1wJOm/t/pbu9Z6SN63GPc9JSQtpAYe+F86C0uQBlJRyO0=
+	t=1742334195; cv=none; b=Xv6tDWhYz/DTO7ZU5XOe7NC1YE3NsNwEbfbWN1zwjnJg7LJSpXYPKtd9fwNjg9U7fZvvQdwl3dMwXAHA3XNMtvv0FBBAtHj6zr4l4BAwquNhgNO3alZjRdmGqTnzocI4tu+B/0fLUTOyJtgi4Su5PR9vydFxddrdcIO/L7mznUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742333998; c=relaxed/simple;
-	bh=svKDdvW9PxA2BAq1vnizll3MRYiwphrpq4h+SIM66ko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T6kh9yBZ9ZVL/F2K6EQT1SBPWd9tCm4ZXcUipLg88+zGIpBsNDItHsTkAN1KavBBa6EgEbUgzIWi3TYekXJv7NsSJOx+UoaK32nVg0DAySNatF7s2cG6MOoAosRPH258QDKNAVO0GzYKqNdb/RoZdXu1VHF7vE6pPsrQvQjlzp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=TLFcM4E4; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
+	s=arc-20240116; t=1742334195; c=relaxed/simple;
+	bh=4dED7hVpq6gqnyJY9EEsncwP5zvCmbRoN0mpyCdZkYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BCO5yvlQvmzuLjY16YofY51lygZPJ5alO1b7Jvq573mG7CuMb/GWz70pV3KnNTfA0liywRzg7m0GeZujN4yjcPJYequamlFmsk8B4B1bSS/di1FU6qYLaK/3qI6kIdpuPIX3Gi6OJtj7vWVaQAKroa16gqZBNdS9olYTlRtl5dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=zBrOpuDq; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="TLFcM4E4"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
-	s=key1; t=1742333991;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="zBrOpuDq"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 1E04714C2D3;
+	Tue, 18 Mar 2025 22:43:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1742334191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tcdRdc/J1ZCSv1ssITMDV1GQ06l6DuoiBSFRfa6vlnE=;
-	b=TLFcM4E4/5yRfPZDEayxjJjSwi8HWNVKgSemCzRAtwtcgEgg2bKB62AhNvuf84JkOCPC46
-	sCpdmCduaxroe/GvZqjqyIdH3vsx1nvh7cBLF/41JOsW1ly5QC1zujbalE6U+r+61YKxpJ
-	hokkMBVnLM67EnQsYBL1j8QsqUAs6nOZLHFiU1yECayfCcqdXJVsihHA3hjKGrGLupDVHf
-	RaXaqkp5/Hdarg9JRXFccyt+6eSsP/jbDJ9QiTs7O/7wBAjQioI52gjgEGTxf7iq+StxMv
-	0k0BJGjv7X3iJxrkp76//79l08Q8Sch2RmGGttWkJMjOuSUS5fBr1T1p7kGCag==
-From: Ignacio Encinas <ignacio@iencinas.com>
-Date: Tue, 18 Mar 2025 22:39:02 +0100
-Subject: [PATCH v3] 9p/trans_fd: mark concurrent read and writes to
+	 in-reply-to:in-reply-to:references:references;
+	bh=LTUYU9liPUrdPI70A5WeQvjUdz06iAyhiJ219fE6h24=;
+	b=zBrOpuDqTavkvjhQyTFaBgB+74ujwo6psdMCJb5JSuuNFEgDJ+6JsUjuyBKu4OlBihbiSH
+	6ZNtNJiMeewh00IbwXcrXvssRhoffbf9qO/nJLdHwzYkE32/wApnLwp711zyRlZ09ERtCP
+	Yk7x/N+bngTjRG+XB5rcFCnpnJt4e3byiNEtlyaqvcitenl229PfTYCI2iFvs0my49AcRe
+	KfwFycZvQt9pBRlCVnCQ2Ix3SNLMkqi3U1ZxdZIOBsK7JZE2i+jo1sVF2zp71HbcOpBHsQ
+	Iq8tcBYtVHyVry25smDZHEUj14Ijm6l1MEvcs06Tkucljak8VVNOVq8dViu/nQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 6693bcdb;
+	Tue, 18 Mar 2025 21:43:08 +0000 (UTC)
+Date: Wed, 19 Mar 2025 06:42:53 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Ignacio Encinas Rubio <ignacio@iencinas.com>
+Cc: Ignacio Encinas Rubio <ignacio.encinas@semidynamics.com>,
+	linux-kernel-mentees@lists.linux.dev, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org
+Subject: Re: [PATCH v2] 9p/trans_fd: mark concurrent read and writes to
  p9_conn->err
+Message-ID: <Z9no3dnDt2mkd2MJ@codewreck.org>
+References: <20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com>
+ <Z9dBfEf0naCsNrNv@codewreck.org>
+ <0807e0cc-457b-49bd-bce5-a961ad7f0ffb@semidynamics.com>
+ <fd13d2e0-1ed2-4b63-ab3a-4cb650b45a2c@iencinas.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
-X-B4-Tracking: v=1; b=H4sIAPXn2WcC/43NsQ6CMBSF4Vchna0pxQo4+R7GNL3lAnewJS1pN
- IR3tzAZFx3/M3xnYREDYWSXYmEBE0XyLkd1KJgdjRuQU5ebSSGVqETDp1Zb75zGEDSgo8Hpzsx
- GB2ORy1o1PTYA2AmWiSlgT8+dv91zjxRnH177Wyq39U84lbzktWxR1Z1qKglXQmfJmXi0/sE2O
- 8kPr6x+eDJ7AqDtT6o/A8gvb13XN+1HcPQbAQAA
-X-Change-ID: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
-To: Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Sishuai Gong <sishuai.system@gmail.com>, Marco Elver <elver@google.com>, 
- v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
- syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com, 
- syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com, 
- Ignacio Encinas <ignacio@iencinas.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <fd13d2e0-1ed2-4b63-ab3a-4cb650b45a2c@iencinas.com>
 
-Writes for the error value of a connection are spinlock-protected inside
-p9_conn_cancel, but lockless reads are present elsewhere to avoid
-performing unnecessary work after an error has been met.
+Ignacio Encinas Rubio wrote on Tue, Mar 18, 2025 at 10:21:52PM +0100:
+> Trimming CC to avoid spamming people (I hope that's ok)
 
-Mark the write and lockless reads to make KCSAN happy. Mark the write as
-exclusive following the recommendation in "Lock-Protected Writes with
-Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
-while we are at it.
+Probably fine :)
 
-Mark p9_fd_request and p9_conn_cancel m->err reads despite the fact that
-they do not race with concurrent writes for stylistic reasons.
+> > This is weird... I'll double check because it shouldn't generate the
+> > same code as far as I know.
+> 
+> I had a bit of time to check this. I understood you said that (A)
+> 
+> 	err = READ_ONCE(m->err);
+> 	if (err < 0) {
+> 		spin_unlock(&m->req_lock);
+> 		return READ_ONCE(m->err);
+> 	}
+> 
+> compiles to the same thing as (B)
+> 
+> 	err = READ_ONCE(m->err);
+> 	if (err < 0) {
+> 		spin_unlock(&m->req_lock);
+> 		return err;
+> 	}
+> 
+> if you didn't say this, just ignore this email :).
 
-Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
-Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
----
-Changes in v3:
+Right, I checked by looking at `objdump -D` output after rebuilding the
+.o.
+I've just double-checked and these two are identical:
+```
+err = READ_ONCE(m->err);
+if (err < 0) {
+    spin_unlock(&m->req_lock);
+    return m->err;
+}
+```
+```
+err = READ_ONCE(m->err);
+if (err < 0) {
+    spin_unlock(&m->req_lock);
+    return READ_ONCE(m->err);
+}
+```
+but now I'm double-checking returning the local variable
+```
+```
+err = READ_ONCE(m->err);
+if (err < 0) {
+    spin_unlock(&m->req_lock);
+    return err;
+}
+```
+is properly different (and is the right thing to do), so I must have
+checked the wrong .o, sorry for the confusion.
+(that or the minor gcc upgrade I did this morning change this, but I'd
+rather inclined to think I screwed up...)
 
-- Introduce a couple of extra READ_ONCEs to maintain consistency across
-  m->err reads (noted in the commit message too for future reference)
-- Remove racy read from p9_fd_request by reusing the previously read
-  error (arguably, the lock was never of much use)
+> With gcc (GCC) 14.2.1 20250110 (Red Hat 14.2.1-7) I'm seeing a difference:
+> (A) performs another memory read after the spinlock has been unlocked
+> while (B) reuses the value from the register. If you're using an old GCC
+> it might have bugs. I can't recall where exactly but I have seen links
+> to GCC bugs regarding this issues somewhere (LWN posts or kernel docs?)
 
-- Link to v2: https://lore.kernel.org/r/20250313-p9_conn_err_benign_data_race-v2-1-0bb9f45f6bb2@iencinas.com
-- Link to v1: https://lore.kernel.org/r/20250308-p9_conn_err_benign_data_race-v1-1-729e57d5832b@iencinas.com
----
- net/9p/trans_fd.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Right, I'm seeing one less mov as well
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 196060dc6138af10e99ad04a76ee36a11f770c65..791e4868f2d4e16b87bfc6038132b4e8a2a5fb9d 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -191,12 +191,13 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
- 
- 	spin_lock(&m->req_lock);
- 
--	if (m->err) {
-+	if (READ_ONCE(m->err)) {
- 		spin_unlock(&m->req_lock);
- 		return;
- 	}
- 
--	m->err = err;
-+	WRITE_ONCE(m->err, err);
-+	ASSERT_EXCLUSIVE_WRITER(m->err);
- 
- 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
- 		list_move(&req->req_list, &cancel_list);
-@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, rq);
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
-@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, wq);
- 
--	if (m->err < 0) {
-+	if (READ_ONCE(m->err) < 0) {
- 		clear_bit(Wworksched, &m->wsched);
- 		return;
- 	}
-@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
- 	__poll_t n;
- 	int err = -ECONNRESET;
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	n = p9_fd_poll(m->client, NULL, &err);
-@@ -665,6 +666,7 @@ static void p9_poll_mux(struct p9_conn *m)
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
- 	__poll_t n;
-+	int err;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
- 
-@@ -673,9 +675,10 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 
- 	spin_lock(&m->req_lock);
- 
--	if (m->err < 0) {
-+	err = READ_ONCE(m->err);
-+	if (err < 0) {
- 		spin_unlock(&m->req_lock);
--		return m->err;
-+		return err;
- 	}
- 
- 	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
+So, yeah, v3 with this would be great :)
+I don't have a strong opinion on the READ_ONCE within the lock, so if
+you think it's clearer without it then I'm fine with that.
 
----
-base-commit: 2a520073e74fbb956b5564818fc5529dcc7e9f0e
-change-id: 20250308-p9_conn_err_benign_data_race-2758fe8bbed0
-
-Best regards,
+Thanks for taking the time to check!
 -- 
-Ignacio Encinas <ignacio@iencinas.com>
-
+Dominique Martinet | Asmadeus
