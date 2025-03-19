@@ -1,64 +1,91 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C7C2066F9
-	for <v9fs@lists.linux.dev>; Tue, 18 Mar 2025 22:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA107E1;
+	Wed, 19 Mar 2025 09:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742335972; cv=none; b=QctNuuHcYuwVJTff/7BW/VeHcHK+tUFe8NNrcczaDePJ2bZii04Op/oilV3HcRI+MftIcJwc4+Ky95PqUkGcBvbHaw3h9SfBJYGULzQy+l2Qt3ROKJOUbeCQBck8IAHD21AzDHzwMpH74DbZxLx+92dq6pjJCt3cB1NNiJ2PNnU=
+	t=1742375121; cv=none; b=jeAVRkwdn/j6Vl9SPOTpZygT2HgzPEDErGMsCN4Vjk4wVq85skSmkLx+4ca89nZGoWOFOryLL95kgP0sAb5oUgcj3IWf0xQan+qmv04xjKiF4raocJ9HQri5z3RTmrZJCkh6mtT/gsUwYIBpAXOMiwqaLcpdtBOaRactqG87sfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742335972; c=relaxed/simple;
-	bh=OwwsgwQ2Izw3x1y2MMKUm4iHOo1nsQ9SMS4vXK/5DpU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k3/6a2QfrvG1SGjIjqOPJarhZmUwc6a3vZQa5UUV98/8zOElTrw0ie9n04MFpn8JG/Jl3a7ZyjOp1sbWot8wZSKZuBsF4epEC55FUpr+auZEPcXTXiNdmbL8kupnFT9UXzMkHEKkn6AFqFb6kD5YQFXmNSOVogMiZzA91MAha/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com; spf=pass smtp.mailfrom=iencinas.com; dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b=XL+Vb47D; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iencinas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iencinas.com
+	s=arc-20240116; t=1742375121; c=relaxed/simple;
+	bh=bXnZjD1d8BpnpSDGZ7PXRYoYUW3sSnyhUDxMEY8RcMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AB3QChx5kPlHuKrrPrhcAonDohryQvaDV9AuLZn3NxO4OVBjMp9mgc2MWHH7iZycpcopZLn07X/rZQarYpOrNI21Cm3j3O3kZfeDQp28kCPAQGiPVDsc/gES6IWHG+2oVdJAvvnoIblthFsMGs2fwK4ggHeztJeOd0g26RryUVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8EMGTVC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iencinas.com header.i=@iencinas.com header.b="XL+Vb47D"
-Message-ID: <ee98477c-38c6-41b7-ab94-294fa438bbe9@iencinas.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iencinas.com;
-	s=key1; t=1742335967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mEZdAofGncLSq8KXP8xzdxsPJOAVYd6GsrKysQDd3nE=;
-	b=XL+Vb47DLZm8hAczVvTY3dDAv/Aj4WzxBQcPBi0WGgwpfUi0qrWRI89PixKCmca5c02XiS
-	V2TKJYwTYGk2PaNX1u/lvCZMxrUsPN18k/Y4NxVTyIz698OVTWkIZTAeWzHpMifjs9itPU
-	ee0aeR4L928uYbdEKBiQ5wGw6i/omtaBnu++jRd1Jp9ZgESrNuklAsfen6aL3rwB6LCA0f
-	2ni/CmJRvW/2Bso8QS6tj76SovPsFzwxC0EYio6U+wygrE6UbuqZhlniVKgmmJxKKlPj2f
-	Uxbkgn3h/ooEOTirIzgW2LVwz9v2OFvwIgL4hOV1F27vukfWjyRi2OnItojEYA==
-Date: Tue, 18 Mar 2025 23:12:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8EMGTVC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8005FC4CEE9;
+	Wed, 19 Mar 2025 09:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742375121;
+	bh=bXnZjD1d8BpnpSDGZ7PXRYoYUW3sSnyhUDxMEY8RcMo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U8EMGTVCsGmA9E/Y5ffsQX1MF8qRe7eL8phI40mmyONzvr7y+0BbZmEiDT7101YMQ
+	 f8rqbAKl8zvKKIeeiNogKW7QLtDELJIXxGXpNYiiC0FGBOR2nRzgaHYD2Q4xlcatWG
+	 c4/BbTx1YKxbtdVZlwy/yAlKlx74V1NEiDTReGKrS9GFZUQjpyUFWjrLHDVV+fqiTr
+	 qEAc/BhEQgEYH5xspvF29NvbHZfC6CkLHPYg5MiXb2lkf/MsExQi+yjFkTcYsY1hd3
+	 ARxKhcB85BL/kKB8egQYAJLcPjF06lGeB2xiZt5smlDP/2e2VnyYIcwK74USB/x1Hf
+	 ajyZH01AMWVsg==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] netfs: Miscellaneous fixes
+Date: Wed, 19 Mar 2025 10:04:58 +0100
+Message-ID: <20250319-umgerechnet-adrenalin-25ba75043ee2@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250314164201.1993231-1-dhowells@redhat.com>
+References: <20250314164201.1993231-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] 9p/trans_fd: mark concurrent read and writes to
- p9_conn->err
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev
-References: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
- <Z9ntJxTCg2Y0fcRc@codewreck.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ignacio Encinas Rubio <ignacio@iencinas.com>
-In-Reply-To: <Z9ntJxTCg2Y0fcRc@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1441; i=brauner@kernel.org; h=from:subject:message-id; bh=bXnZjD1d8BpnpSDGZ7PXRYoYUW3sSnyhUDxMEY8RcMo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTf6jg5u6tQLtg+4ozetYraLxLM83bNvJgvYnO2pKikX lsp2n1DRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwET4uBkZWmZZWedKHNcUlF8+ /RRHV5tzwtcfD35ufbytQ8zdXZx7EsN/t3Sh1UxXxMQC3upNt7999V6OTXRN+hTj9PMnHkXsZef mBwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-
-On 18/3/25 23:01, Dominique Martinet wrote:
-> Thank you!
+On Fri, 14 Mar 2025 16:41:55 +0000, David Howells wrote:
+> Here are some miscellaneous fixes and changes for netfslib, if you could
+> pull them:
 > 
-> I've updated the patch in my -next branch, and it'll go to Linus in a
-> couple of weeks with the 6.15 merge window
+>  (1) Fix the collection of results during a pause in transmission.
+> 
+>  (2) Call ->invalidate_cache() only if provided.
+> 
+> [...]
 
-Thank you! 
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-> (our mails crossed, feel free to ignore the other one)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-How ironic... it seems we had a race condition! :)
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/4] netfs: Fix collection of results during pause when collection offloaded
+      https://git.kernel.org/vfs/vfs/c/f298e3765528
+[2/4] netfs: Call `invalidate_cache` only if implemented
+      https://git.kernel.org/vfs/vfs/c/344b7ef248f4
+[3/4] netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
+      https://git.kernel.org/vfs/vfs/c/15e9aaf9fc49
+[4/4] netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
+      https://git.kernel.org/vfs/vfs/c/07c574eb53d4
