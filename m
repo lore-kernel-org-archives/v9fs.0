@@ -1,86 +1,124 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E71E1E0C;
-	Wed, 19 Mar 2025 11:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31F01DED47;
+	Thu, 20 Mar 2025 14:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742385455; cv=none; b=FNUDkB9a6bmv9NvdJF8IVAqGlR2hf1mTKTTFYfolhFZg4u9UjpZ9k/B5bVtOP4mYmGT616vpQ0X+wteRm3LrGef1ZRz6VQcQms3NQ2dn7FklMTInFjPNFQSjZldufqmYGv8dPMthbiRaqy4IzOPUHFtocbECEEh/h/jx5UwBiIs=
+	t=1742482334; cv=none; b=pv0dnjgbp6BDF+K6VXrmVMxEotVpT4AIKG0BribvEsD2IHK4HjsQj8T8Uc1BU5jC0fPwYzCMT7D6GHcfENrKWowllvssz6l4KxJBdlMLYWRAE/Ddba2xt3ZBvwjyzJ/KTs87KK5EFKnlBafSpmrLwoVCw3dhGCrkgXsyHMUiQw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742385455; c=relaxed/simple;
-	bh=+GcmxnegzF4HxRw5Iin980YT+JpN7xF+a36qW+enIr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CW9tfbwSpzG11z1mRks6a1mksxfJmN5IhY4Fd1Uxi+nfy7VMgeXfr+z3XeKtagvMQRfznZGDfJ7ty1UaXTZ4IaM+lED3Gttmax7cV8s/hygvgiV7bfpa5snJCE1BolgAKiCUIXKPDn3BLs1GbbGg4KKgkAd3167N85UB3xPunc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=KalEKvvx; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1742482334; c=relaxed/simple;
+	bh=GICyxcRx3/pVhs6pTz7UKNZiPZK/RiZuJgS7cozIW34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nsJWNnopOdwXAC4VhTwpv7MAFamm52dKsOrrCUHFOU0d3FrcQumgco1Fqjv/pbOvvEBY3FLzM0BUf/pc7ycUFLc8Gc+PefEPbinew+uINuqIYlITDmkyTefiL4sj6+4W6dZNQC8hndpgW7qr+v7Z9OHKRo1r1kXZydT7sqYxxVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EO/dktcO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="KalEKvvx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=e54Sn09BVp7/KKqTaPTDv8dKNEjZmVWfgmTI2brbebg=; b=KalEKvvxHEgYej6g5YkNPGPj9h
-	5CwtJ/Wq80V5BOCCtOTXeQRT0gIZ0mThUBO+J77pTQC+Y8P0tkZTy3hpAcGiom3CyET2qjsEeVbsM
-	HuUya6q/0PyrxyvLjcv3fUF5wvDH9nSbYVm6ZMhEQ6yoB3hktzjPWFENoS8HRLVZX3z+zq5AvERDR
-	GZ7i4Hrjo0eLTaOyWzSOtyO4oDbjuKQ2t0Cttq4cqv8ogiteVQxphL6Mnk2x/Ccv7Uz9dlgED0YSY
-	ZoL7zUeW1AStMLv2tb2emH4zxUb0gfS+QXDZgyIIHxIsHKn0FZbwIOz8Z5jR5ATDhF+G1cTY6DA+T
-	Lqr1g/bM3iYafMR33SD2uMtLyXj5oYk09zzgcKdzwUpGtiacohObofeuy20KOatBJUKQmbKzS5aCa
-	KyHMJ4HEgEObAR0JNNmLahVql68ZIaVzrDuIUOXYWsc6ddliVCgWyi0xuE0SZ6qMLmqdqOLmnL0+e
-	KyWOx5eu7Dxo3UpqzJLZgizNWxLaFcpRgPx0joDr2CemL53CjhhyBmLc2vjc5kFOt6bSzbuFnfG4R
-	3CxsywdFIvXq0bvkddnhrUClub6uvfjgHnxawJ2B8ru3CQzbuX1RxQiaREFYuJQWemRb7ArhGAzxI
-	zJ5v3oPZWePSxfPbh551ASCX8oRavRZJX2L7dgdnI=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- Robert Morris <rtm@mit.edu>
-Subject:
- Re: [PATCH v3] 9p/net: fix improper handling of bogus negative read/write
- replies
-Date: Wed, 19 Mar 2025 12:57:23 +0100
-Message-ID: <2428194.19GxUa3r0a@silver>
-In-Reply-To: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
-References: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EO/dktcO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54052C4CEDD;
+	Thu, 20 Mar 2025 14:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742482334;
+	bh=GICyxcRx3/pVhs6pTz7UKNZiPZK/RiZuJgS7cozIW34=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EO/dktcORDSeTi3XS7WwUI0rnCkuZcDhAgCzt1WJwEEnsjZDW7WAUfFmNI1bsvM97
+	 d9oI+1nn5RNeWziBr6fRX5IShI52KZ3jLOnkmTBxbyR3svdgDmJhS+4yxPXhI189kR
+	 fC4urMnUdvv7KCQblrzJD0RMFRq4ZN4MvAEZagi1kHD14M/4h+efmTqjHj1NAg3I69
+	 CEjR+nSHIQcz79EXk/60HXdQZw4Tqh3mYxQc+/1feoLXcFHJ8vUSP505iy9odYQOcX
+	 qqJDY6d055qKfEp3HsZoKbdj3Q9xCYizSAhz44LZ+EPMdQpDr87pBPVk+nQQZRK8Ud
+	 y0oKerTIIRwVg==
+From: Sasha Levin <sashal@kernel.org>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org
+Cc: linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH] 9p: Use hashtable.h for hash_errmap
+Date: Thu, 20 Mar 2025 10:52:00 -0400
+Message-Id: <20250320145200.3124863-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On Wednesday, March 19, 2025 12:20:15 PM CET Dominique Martinet wrote:
-> In p9_client_write() and p9_client_read_once(), if the server
-> incorrectly replies with success but a negative write/read count then we
-> would consider written (negative) <= rsize (positive) because both
-> variables were signed.
-> 
-> Make variables unsigned to avoid this problem.
-> 
-> The reproducer linked below now fails with the following error instead
-> of a null pointer deref:
-> 9pnet: bogus RWRITE count (4294967295 > 3)
-> 
-> Reported-by: Robert Morris <rtm@mit.edu>
-> Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
-> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Convert hash_errmap in error.c to use the generic hashtable
+implementation from hashtable.h instead of the manual hlist_head array
+implementation.
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+This simplifies the code and makes it more maintainable by using the
+standard hashtable API and removes the need for manual hash table
+management.
 
-> ---
-> Changes in v3:
-> - fix bad print formats
-> - Link to v2: https://lore.kernel.org/r/20250317-9p_unsigned_rw-v2-1-9d7a94a916ae@codewreck.org
-> 
-> Changes in v2:
-> - fixed rsize to be u32 instead of size_t
-> - Link to v1: https://lore.kernel.org/r/20241222-9p_unsigned_rw-v1-1-3ea971d200cb@codewreck.org
-> ---
->  net/9p/client.c | 30 ++++++++++++++++--------------
->  1 file changed, 16 insertions(+), 14 deletions(-)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/9p/error.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-
+diff --git a/net/9p/error.c b/net/9p/error.c
+index 8da744494b683..8ba8afc91482d 100644
+--- a/net/9p/error.c
++++ b/net/9p/error.c
+@@ -16,6 +16,7 @@
+ #include <linux/list.h>
+ #include <linux/jhash.h>
+ #include <linux/errno.h>
++#include <linux/hashtable.h>
+ #include <net/9p/9p.h>
+ 
+ /**
+@@ -33,8 +34,8 @@ struct errormap {
+ 	struct hlist_node list;
+ };
+ 
+-#define ERRHASHSZ		32
+-static struct hlist_head hash_errmap[ERRHASHSZ];
++#define ERRHASH_BITS 5
++static DEFINE_HASHTABLE(hash_errmap, ERRHASH_BITS);
+ 
+ /* FixMe - reduce to a reasonable size */
+ static struct errormap errmap[] = {
+@@ -176,18 +177,14 @@ static struct errormap errmap[] = {
+ int p9_error_init(void)
+ {
+ 	struct errormap *c;
+-	int bucket;
+-
+-	/* initialize hash table */
+-	for (bucket = 0; bucket < ERRHASHSZ; bucket++)
+-		INIT_HLIST_HEAD(&hash_errmap[bucket]);
++	u32 hash;
+ 
+ 	/* load initial error map into hash table */
+ 	for (c = errmap; c->name; c++) {
+ 		c->namelen = strlen(c->name);
+-		bucket = jhash(c->name, c->namelen, 0) % ERRHASHSZ;
++		hash = jhash(c->name, c->namelen, 0);
+ 		INIT_HLIST_NODE(&c->list);
+-		hlist_add_head(&c->list, &hash_errmap[bucket]);
++		hash_add(hash_errmap, &c->list, hash);
+ 	}
+ 
+ 	return 1;
+@@ -205,12 +202,12 @@ int p9_errstr2errno(char *errstr, int len)
+ {
+ 	int errno;
+ 	struct errormap *c;
+-	int bucket;
++	u32 hash;
+ 
+ 	errno = 0;
+ 	c = NULL;
+-	bucket = jhash(errstr, len, 0) % ERRHASHSZ;
+-	hlist_for_each_entry(c, &hash_errmap[bucket], list) {
++	hash = jhash(errstr, len, 0);
++	hash_for_each_possible(hash_errmap, c, list, hash) {
+ 		if (c->namelen == len && !memcmp(c->name, errstr, len)) {
+ 			errno = c->val;
+ 			break;
+-- 
+2.39.5
 
