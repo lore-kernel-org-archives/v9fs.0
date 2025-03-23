@@ -1,88 +1,78 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B634F1DE2DC
-	for <v9fs@lists.linux.dev>; Sat, 22 Mar 2025 21:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7B54C8F;
+	Sun, 23 Mar 2025 13:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742678884; cv=none; b=Iuw5zhS8ID0bb9FlJxgz8n3LNaI8SH+/nX3EcoiBVFKS4eF2FjaNvPLVkmj5khjNfxvaOcpGT1XGNaw4dpmbISPVlDTLHzuLghT0jWM70P9+nYEt4gn5Zfmk5gRIxV7Z5DZQTTM4haccfwiVxEMPQJgYqvR9Jnu8gK4OXXCMACA=
+	t=1742735140; cv=none; b=QQg+WLNzfwsM1rZJPAgr3bb+/vuYbBbxui6E4giLX0mZSSLXdYH7lr2Megb9B5JcfPlATkqGrj0kDDNZZ0jYnkyREGCaBZO4mnQLtRvfNkW3q2gDWrNhFVfdRvRMkQT7d8+CgxfoGPUmtMYqWsKwjxuQ6IEJ7vEVRJY/xhztKpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742678884; c=relaxed/simple;
-	bh=20yCmNw+QyfnwkRDsX+TL+ca4UDmjCz3rrUZ4a8soRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQBZMU0LUBd1st7P80LcjbeKQrDS/N1+nEkWxYNzp9qEzPPz1Oino1ceVSTWFWMQQbf15qXOkQAtaq4LPDbF7z13IShY7J4JAr/AINJsmq8ve9+Sb7x1YmLN/AkMIRTr38H47DFQzGdWrY/VQ4IDnYcfK3LPUEMOB3yRoprX6yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=D4BDkLai; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1742735140; c=relaxed/simple;
+	bh=FnGnuH4v5LYu5NfrVRzYb2uuwWRU8dSBPh3Ax4G6XLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=osZ2W4f8N/eC2p2H2J19L9XiQkLQ7UwyvBBZCTUq2l//MGdMHqgrcKUssfKCj5TKJ7Bc5bKrvpszTlMUuMxoHO9IAoAjZjk6VRvN99s1z80KpRinLFLfIiF3deibV7QyLvT+NdNut20c+BoiLZEJS68fnG8AKcIHg5ETIVmU4SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=LgZ3XWvn; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="D4BDkLai"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 493F614C2DB;
-	Sat, 22 Mar 2025 22:27:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1742678881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9u1yOfLqG6Yy5TZ+cq9/fOzYgeoaRmP3HAHZBaFpqhY=;
-	b=D4BDkLaiESkGogJCUHlQYUwOZkVYFzY65sAhqz/GOak63aUtKlYo8XpAR/UhBVQnoavBsr
-	sXF1OGryOPpH+/1zKIsRkSq8XIl0C0u9OYBtU3xSAGBwyjbQUnN09+XT33HLoCR08QbPOH
-	alBFTwCATq8hd4jtCo+eUHR1eIdPLhOTzDC6n0K2RqG2dycBBIiOEGjnab+Fo6TyTmO+rC
-	lvRBTDSV3WxhdY9k8IwD3IbGAHQMEe+hBqNvtoEf3wm09CWD41HCWuRZUn10N6wQUtf2PR
-	UtJNPFsdPEWaA3VSAihcO/W+ZW8oGwZoSD73f55B7tCYqdjbc8YyVHPD1TOXqA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f7bd787b;
-	Sat, 22 Mar 2025 21:27:57 +0000 (UTC)
-Date: Sun, 23 Mar 2025 06:27:42 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Tuomas Ahola <taahol@utu.fi>
-Cc: v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH] Documentation/fs/9p: fix broken link
-Message-ID: <Z98rTkLrIq5wEw1a@codewreck.org>
-References: <20250322153639.4917-1-taahol@utu.fi>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="LgZ3XWvn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=SG1PT6YtdkULD0AZzNIe+VWal3k+5o9YRVrkxQYxhWs=; b=LgZ3XWvnqxrpc5fhKk3FOKtNAw
+	XJw06zNjZTNeHSXBkG8Fit5Tz9+fvfxaO2NayqIKokCfyYxKqdGS1EukMMtiCIXGKQjLe2C0rnooB
+	zEo+F62NRP5S8zQiqdLNgvMZ3U6Adqum+wZ2nPGAxuWJ6iELYR4yvSuYfVM9P+sPk9Yak6vKSGitS
+	FTzJpoNY0NaiO/+PHqcpKMUiJf7URQ278e4u1K3bEDJDbWQkDB8dIlNUglDiJf1yjroEo7kz7tPGa
+	/CH65rYA3sRo8rk2500tlzedncsXxZ/J+GNQooTc02YrZ2sxw8CusPsLlziWy722ze0LqrvwSMGcy
+	mVYoQ4MeqNvZuqYSeIchOk0sDiz3AzCTlASH4BE5YoqGudNdTCsxluo1GzZFjUpVp9cHifsKtvsg0
+	ToBeHpJmH6DODOaY8J0fD5NKwxoQPpCfUHov6JhigorOEdONakIPtwWUxXRtEs0Pb+pQfYhzcTxXC
+	IlC+4gCsx7tceixZDsa6Un59iTDlV6MVP84wh3onzw2ujtItW25mPCebvy6+dA+44TRq1h0lVciIh
+	L5a5fxsOFXRcTYUcVaZfq1BWqyrjPratj6Y4dSeVKHJX6hvYz9zaiLmjVXjYCFmWIkkBSrtSy9Q3z
+	KYf8nLmesx14jocP6ycCVCbsaxLecI519tZ1Dcbj4=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Sasha Levin <sashal@kernel.org>, asmadeus@codewreck.org
+Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: Use hashtable.h for hash_errmap
+Date: Sun, 23 Mar 2025 14:05:21 +0100
+Message-ID: <2699178.Jt51f5JuzZ@silver>
+In-Reply-To: <Z98q_K71xueitBeB@codewreck.org>
+References:
+ <20250320145200.3124863-1-sashal@kernel.org> <Z98q_K71xueitBeB@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250322153639.4917-1-taahol@utu.fi>
-X-Spam: Yes
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Tuomas Ahola wrote on Sat, Mar 22, 2025 at 05:36:39PM +0200:
-> In b529c06f9dc7 (Update the documentation referencing Plan 9 from User
-> Space., 2020-04-26), another instance of the link was left unfixed.
-> Fix that as well.
-
-Thank you, applied to 9p's -next
-(sorry for double reply Tuomas, I had apparently missed the reply-all
-key...)
-
-> Signed-off-by: Tuomas Ahola <taahol@utu.fi>
-> ---
->  Documentation/filesystems/9p.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Saturday, March 22, 2025 10:26:20 PM CET asmadeus@codewreck.org wrote:
+> Sasha Levin wrote on Thu, Mar 20, 2025 at 10:52:00AM -0400:
+> > Convert hash_errmap in error.c to use the generic hashtable
+> > implementation from hashtable.h instead of the manual hlist_head array
+> > implementation.
+> > 
+> > This simplifies the code and makes it more maintainable by using the
+> > standard hashtable API and removes the need for manual hash table
+> > management.
 > 
-> diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
-> index 2bbf68b56b0d..28871200e87c 100644
-> --- a/Documentation/filesystems/9p.rst
-> +++ b/Documentation/filesystems/9p.rst
-> @@ -40,7 +40,7 @@ For remote file server::
->  
->  	mount -t 9p 10.10.1.2 /mnt/9
->  
-> -For Plan 9 From User Space applications (http://swtch.com/plan9)::
-> +For Plan 9 From User Space applications (https://9fans.github.io/plan9port/)::
->  
->  	mount -t 9p `namespace`/acme /mnt/9 -o trans=unix,uname=$USER
->  
+> I'm not entierly convinced this is simpler from my little island (that's
+> one more API to learn about vs code that doesn't look all that
+> different), but I guess I can see the point from an overall perspective.
 > 
-> base-commit: 88d324e69ea9f3ae1c1905ea75d717c08bdb8e15
+> I see no problem with this, I'll pick it up for -next
+> Note this code is not used for 9p2000l iirc so I currently don't have
+> any test for it :/
+> (but it's simple enough that I'm willing to take the risk)
 
--- 
-Dominique Martinet | Asmadeus
+Correct, that code is only used for legacy 9p2000 and 9p2000.u protocol
+versions, but not for the default 9p2000.L version which is transmitting
+numeric (Linux) error codes only (i.e. error strings are never transmitted
+with 9p2000.L, hence no translation via hash map needed).
+
+/Christian
+
+
