@@ -1,44 +1,56 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E3F25C6E4;
-	Tue, 25 Mar 2025 12:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1F72561D7
+	for <v9fs@lists.linux.dev>; Tue, 25 Mar 2025 13:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906192; cv=none; b=r5RCs+tRkWWk0HTOUiIQZV13alsyDTgR8zChg4Gtdl1IPoBadzVkXVwF5v00j2o94ztK0/DMH/b1RFe0aqpC89JlEGae2MSKNPc/prk1F64n4jdI0S6JhuAfQl8FH3EPn4+EVb3xdol17+NtGyDwHbiXCiFPRf7+REGGemXR/1I=
+	t=1742907901; cv=none; b=MKyw3Q/ISrcXSphthD2lhnqW1DfARJxEoiG78cL+23OQrG9/9HojRGAdYi0LqmcMrWQ6k3QZsVimQn90XKUMkQV6J6/2B68aef1PidOxg0zmPb5QMrQDzLRC5u/kunM2rcb+QntUHE7k8TEkGem98mKYLDsAcm6OuBZhmTMvd4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906192; c=relaxed/simple;
-	bh=2UlbQzwJ0TGvc1B6KjjApIAPc4og6KLs/E2BXmKzIFI=;
+	s=arc-20240116; t=1742907901; c=relaxed/simple;
+	bh=KtXukF7zS507yXC0bV3Lgtc0k1fuYoFUyPiii35Srw4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oe1BjRI8mzCD+N4j6wmTidw3dasOl2CXIdD3uPpFf9u2Hmd7gpeDW1zDAUoROZZzbsmPkgmhQcf9pJbbYDaam17OgfHHCWF31rpqKhAUMr7NQ3ZCCBE2+iANF1z+clO/SwPeREwHvNNoBkT1GUhCC4KcfQiAHarM2Ib+HUvh50c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=O5CWBoq4; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jhq4KWTPWk9AHAU10e9Rs9Seum4Z1f4/qRbQ3nIPCFzJMdYqfHYOFw5ZhSTq4Pr6E8wpnvF0CCz091u1pEL0/CGbjMGIO1hDUkG+z1WhSRmQTEdUg3Ym9bx7UTa6VOusIocXDaCW9yEyvdXfXFWy2rieWwAAJF4Wfj8ga5YxB1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WUQL2t3f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="O5CWBoq4"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 4E17714C2D3;
-	Tue, 25 Mar 2025 13:36:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1742906182;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WUQL2t3f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742907899;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fhnoa2DjGfYLI5fp/EEFgTAJMpRgEkHcRWbC4261OTk=;
-	b=O5CWBoq4VffukBT/JS0fum6G9wxKHvtTa5qWUwP3ugx93dIL9YfZ60izX5AjqRXqQtMWhC
-	NKCrr5guHNvErJ+En/S11rj0LNo/iU5Q4sZZtG/q9MUnI6bSVQ9D5DenJ5aqIYrdofu7v9
-	fmPqgUNnqPocyccEavwBvXup+S/f8r6tDyrZKx7ky/xBXSN5ahQV4y5bQiIHEbFFdht2Y0
-	z0WLQdS9BUanDVE9TkZaYre4bv7kFvfvwdV4lbbAphVIcEGwjOtb4dqWmPqnZtktK0eqcS
-	6QoKVeu3cB/GB6d0zfV5OI59TwNs8ceZYdVKpYUf8je/FAWQJ5e6rv/lukTVTw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c1272fae;
-	Tue, 25 Mar 2025 12:36:15 +0000 (UTC)
-Date: Tue, 25 Mar 2025 21:36:00 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
+	bh=a717aorAR0FFD6ZXSPKWzRFsANFSqFlPrG/xcqr9NTM=;
+	b=WUQL2t3fHBzpdTIWsy+4S14oRQY7JR1Oxld2hSBnumeLgDu+SzA/6Xt/adsIIMiYI5XCQH
+	fGrZA2BiLmBMlyAlkSoZInHczKrsVZQH9MxMxUxyK1gEGxZhGLlLTniZ8XBkL/blyHC43J
+	tjq494Pr30BVnz+D64xl7J01vfRRDc0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-ONqfwzWAMceN_6i1pbI_rA-1; Tue,
+ 25 Mar 2025 09:04:54 -0400
+X-MC-Unique: ONqfwzWAMceN_6i1pbI_rA-1
+X-Mimecast-MFC-AGG-ID: ONqfwzWAMceN_6i1pbI_rA_1742907891
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E66D21956067;
+	Tue, 25 Mar 2025 13:04:50 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.42])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 719BF19541A5;
+	Tue, 25 Mar 2025 13:04:44 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 25 Mar 2025 14:04:17 +0100 (CET)
+Date: Tue, 25 Mar 2025 14:04:10 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>,
 	syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
 	brauner@kernel.org, dhowells@redhat.com, jack@suse.cz,
 	jlayton@kernel.org, linux-fsdevel@vger.kernel.org,
@@ -46,7 +58,7 @@ Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
 	swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com,
 	viro@zeniv.linux.org.uk, v9fs@lists.linux.dev
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <Z-KjMEokv_Hs6qGh@codewreck.org>
+Message-ID: <20250325130410.GA10828@redhat.com>
 References: <67e05e30.050a0220.21942d.0003.GAE@google.com>
  <20250323194701.GC14883@redhat.com>
  <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
@@ -63,55 +75,40 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250325121526.GA7904@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Thanks for the Cc
+On 03/25, K Prateek Nayak wrote:
+>
+> I chased this down to p9_client_rpc() net/9p/client.c specifically:
+>
+>         err = c->trans_mod->request(c, req);
+>         if (err < 0) {
+>                 /* write won't happen */
+>                 p9_req_put(c, req);
+>                 if (err != -ERESTARTSYS && err != -EFAULT)
+>                         c->status = Disconnected;
+>                 goto recalc_sigpending;
+>         }
+>
+> c->trans_mod->request() calls p9_fd_request() in net/9p/trans_fd.c
+> which basically does a p9_fd_poll().
 
-Just replying quickly without looking at anything
+Again, I know nothing about 9p... but if p9_fd_request() returns
+an err < 0, then it comes from p9_conn->err and p9_fd_request()
+does nothing else.
 
-Oleg Nesterov wrote on Tue, Mar 25, 2025 at 01:15:26PM +0100:
-> All I can say right now is that the "sigpending" logic in p9_client_rpc()
-> looks wrong. If nothing else:
-> 
-> 	- clear_thread_flag(TIF_SIGPENDING) is not enough, it won't make
-> 	  signal_pending() false if TIF_NOTIFY_SIGNAL is set.
-> 
-> 	- otoh, if signal_pending() was true because of pending SIGKILL,
-> 	  then after clear_thread_flag(TIF_SIGPENDING) wait_event_killable()
-> 	  will act as uninterruptible wait_event().
+> Previously, the above would fail with err as -EIO which would
+> cause the client to "Disconnect" and the retry logic would make
+> progress. Now however, the err returned is -ERESTARTSYS
 
-Yeah, this is effectively an unkillable event loop once a flush has been
-sent; this is a known issue.
-I've tried to address this with async rpc (so we could send the flush
-and forget about it), but that caused other regressions and I never had
-time to dig into these...
+OK... So p9_conn->err = -ERESTARTSYS was set by p9_conn_cancel()
+called by p9_write_work() because pipe_write() returns ERESTARTSYS?
 
-The patches date back 2018 and probably won't even apply cleanly
-anymore, but if anyone cares they are here:
-https://lore.kernel.org/all/1544532108-21689-3-git-send-email-asmadeus@codewreck.org/T/#u
+But I don't understand -EIO with the reverted commit aaec5a95d59615
 
-(the hard work of refcounting was done just before that in order to kill
-this pattern, I just pretty much ran out of free time at that point,
-hobbies are hard...)
+Oleg.
 
-So: sorry, it's probably possible to improve this, but it won't be easy
-nor immediate.
-
-> > c->trans_mod->request() calls p9_fd_request() in net/9p/trans_fd.c
-> > which basically does a p9_fd_poll().
-> >
-> > Previously, the above would fail with err as -EIO which would
-> > cause the client to "Disconnect" and the retry logic would make
-> > progress. Now however, the err returned is -ERESTARTSYS which
-> > will not cause a disconnect and the retry logic will hang
-> > somewhere in p9_client_rpc() later.
-
-Now, if you got this far I think it'll be easier to make whatever
-changed error out with EIO again instead; I'll try to check the rest of
-the thread later this week as I didn't follow this thread at all.
-
-Thanks,
--- 
-Dominique
