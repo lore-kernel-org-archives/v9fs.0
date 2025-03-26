@@ -1,40 +1,52 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E105CA2D;
-	Tue, 25 Mar 2025 14:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBF31DFE12
+	for <v9fs@lists.linux.dev>; Wed, 26 Mar 2025 12:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742914762; cv=none; b=DnpF4+qCt+jfw2Kw/Lp0vxEvSe4qkw1+3mkaH6P9rhCSCb7z8jqHfquAB0Ecevvowk1kioMmOwE2XuGXRJRY4ax64T3tjCgkPHKDfV8Wt0Q+3XWckSMASLXK1/VRCnvXUPojlTDzXv6i/NqpY1PHbtxljNW+jY+Lf8GcEglSezk=
+	t=1742991637; cv=none; b=iP+XCixSdyLppq2PfDRO79VCyJ1l/6mpOm6aTL1QwV6dq4LFgVNPhRayxi8XqlbjjOsHiD/OM1Juwr11nGHaDRN29LEG/2c4nevxcozpEPT3Jy48jdOeMjdqbyJyCDxe0UX9E/ibKsk2A4S/QEqmycQ+W+2PZLKIdk0DKjgYhho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742914762; c=relaxed/simple;
-	bh=jFKEhjNjq9tWLi1tufH12YoYuLncNqbR/nzyYY8yoFc=;
+	s=arc-20240116; t=1742991637; c=relaxed/simple;
+	bh=oB97UR995YJidx7mdQ24ry8ekUxJMV2kMRCZzk3UHwI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NGLFVkiCOiHzA4Bsg/ZvvgR2Euwg2WGw9qdKsoC1JT58k99EEkANMUcw/iX6RYlenJLUqpO/jeK2czJ5Y1uSLaSakP5FDcp7CxyvrfY2v5gozSnUlywpjUNPe85e0OcLCLo1pT0+Yot1GxHyKJQIdPY/xYVnvdMsnWOzakxGvCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=W3/5436i; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=q2mLhD4DlnW9tgmBu0xYloYVEYJ3MHA6PGP3/tCFe8buOB+wm1DcM51omGvb7Vg7d5anfQcg0y8fFQejlMrboFCtTSNvSrCnZSE1XQS5Dp2MaGPQ6kvCDkZXzrLGMuQY3Nzb5ZCob3JSEUBR0/NYQ9nH16EySlW2g4L8US4bJN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iFMfo7Hj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="W3/5436i"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 494BD14C2D3;
-	Tue, 25 Mar 2025 15:59:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1742914758;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iFMfo7Hj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742991635;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LA2ZWfipp543V5Octm+YivgRf31pm38h6sG4nFoFVL4=;
-	b=W3/5436ielp+x8Mg+ylaT1KwQLXmybgWQDRFANia1QIR5etK8+gW7Dk4fWWTQlCrj6Tkad
-	vgLy5gZ/5N8CvbH+NS29LwIEi23qDuWlaxtwdi8nV8zNAN8L0Ztf0cUYdpEIPrYOvKrtL0
-	nKtHroMZM9HTu/lCxJ7sBGryNeMS1iRjuWs2kl7o1BM6Pg1FkZkhBBAwWCpBVnvNcGzq3s
-	rVAXnUzgy8K1U3e/Qn6FeFY4w8hcycOuxZKajjueOVaqnN0z4ieDQOQEqh70519uT/MjvE
-	cWZOqiDjql//4x7MeXIQ9UiRxAtbG0VD4DWlRRn0JeRy5uelCkgZgtw/6cgWlg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ad07f38a;
-	Tue, 25 Mar 2025 14:59:11 +0000 (UTC)
-Date: Tue, 25 Mar 2025 23:58:56 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Oleg Nesterov <oleg@redhat.com>,
+	bh=i8x6UfLnUw1upoXZy33JkZov0HjgV0Ec52Fp2dvYxrg=;
+	b=iFMfo7Hjhb730tOkyxz0eVNjC56OtesCmCf56BIquMQXvnEbuKbgLSGJ0fSgGsPksPAtCD
+	h+I5ZNh4nSIRIbeTScgikhWpaMaCbta17hwQBXyx8fNdsCGGK/YK/f1BJ+NNGDVnETOWPL
+	VcnUsKsjrTWp3/8lBx79ZG/2E91eHyM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-nNCzR81EOFiT5AIR52ennA-1; Wed,
+ 26 Mar 2025 08:20:31 -0400
+X-MC-Unique: nNCzR81EOFiT5AIR52ennA-1
+X-Mimecast-MFC-AGG-ID: nNCzR81EOFiT5AIR52ennA_1742991629
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DCE3180025A;
+	Wed, 26 Mar 2025 12:20:28 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.42])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 0782C180A803;
+	Wed, 26 Mar 2025 12:20:21 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Wed, 26 Mar 2025 13:19:55 +0100 (CET)
+Date: Wed, 26 Mar 2025 13:19:47 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
@@ -46,9 +58,8 @@ Cc: Oleg Nesterov <oleg@redhat.com>,
 	swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com,
 	viro@zeniv.linux.org.uk, v9fs@lists.linux.dev
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <Z-LEsPFE4e7TTMiY@codewreck.org>
-References: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
- <20250323210251.GD14883@redhat.com>
+Message-ID: <20250326121946.GC30181@redhat.com>
+References: <20250323210251.GD14883@redhat.com>
  <af0134a7-6f2a-46e1-85aa-c97477bd6ed8@amd.com>
  <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
  <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
@@ -57,38 +68,86 @@ References: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
  <20250325121526.GA7904@redhat.com>
  <20250325130410.GA10828@redhat.com>
  <f855a988-d5e9-4f5a-8b49-891828367ed7@amd.com>
+ <Z-LEsPFE4e7TTMiY@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f855a988-d5e9-4f5a-8b49-891828367ed7@amd.com>
+In-Reply-To: <Z-LEsPFE4e7TTMiY@codewreck.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Thanks for the traces.
+On 03/25, Dominique Martinet wrote:
+>
+> Thanks for the traces.
+>
+> w/ revert
+> K Prateek Nayak wrote on Tue, Mar 25, 2025 at 08:19:26PM +0530:
+> >    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_poll rd poll
+> >    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_request wr poll
+> >    kworker/100:1-1803    [100] .....   286.618823: p9_read_work: Data read wait 7
+>
+> new behavior
+> >            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_poll rd poll
+> >            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_request wr poll
+> >            repro-4076    [031] .....    99.731970: p9_client_rpc: Wait event killable (-512)
+>
+> For me the problem isn't so much that this gets ERESTARTSYS but that it
+> nevers gets to read the 7 bytes that are available?
 
-w/ revert
-K Prateek Nayak wrote on Tue, Mar 25, 2025 at 08:19:26PM +0530:
->    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_poll rd poll
->    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_request wr poll
->    kworker/100:1-1803    [100] .....   286.618823: p9_read_work: Data read wait 7
+Yes...
 
-new behavior
->            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_poll rd poll
->            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_request wr poll
->            repro-4076    [031] .....    99.731970: p9_client_rpc: Wait event killable (-512)
+OK, lets first recall what the commit aaec5a95d59615523 ("pipe_read:
+don't wake up the writer if the pipe is still full") does.
+It simply removes the unnecessary/spurious wakeups when the writer
+can't add more data to the pipe.
 
-For me the problem isn't so much that this gets ERESTARTSYS but that it
-nevers gets to read the 7 bytes that are available?
+See the "stupid test-cas" in
+https://lore.kernel.org/all/20250120144338.GC7432@redhat.com/
 
-If the repro has already written the bytes in both cases then there's no
-reason to wait 5 seconds here...
+In particular this note:
 
-OTOH syzbot 9p code is silly and might have been depending on something
-that's not supposed to work e.g. they might be missing a flush or
-equivalent for all I know (I still haven't looked at the repro)
+	As you can see, without this patch pipe_read() wakes the writer up
+	4095 times for no reason, the writer burns a bit of CPU and blocks
+	again after wakeup until the last read(fd[0], &c, 1).
 
--- 
-Dominique
+in this test-case the writer sleeps in pipe_write(), but the same is true
+for the task sleeping in poll( { .fd = pipe_fd, .events = POLLOUT}, ...).
+
+Now, after some grepping I have found
+
+	static void p9_conn_create(struct p9_client *client)
+	{
+		...
+	
+		init_poll_funcptr(&m->pt, p9_pollwait);
+
+		n = p9_fd_poll(client, &m->pt, NULL);
+
+		...
+	}
+
+So, iiuc, in this case p9_fd_poll(&m->pt /* != NULL */) -> p9_pollwait()
+paths will add the "dummy" pwait->wait entries with ->func = p9_pollwake
+to pipe_inode_info.rd_wait and pipe_inode_info.wr_wait.
+
+Hmm... I don't understand why the 2nd vfs_poll(ts->wr) depends on the
+ret from vfs_poll(ts->rd), but I assume this is correct.
+
+This means that every time pipe_read() does wake_up(&pipe->wr_wait)
+p9_pollwake() is called. This function kicks p9_poll_workfn() which
+calls p9_poll_mux() which calls p9_fd_poll() again with pt == NULL.
+
+In this case the conditional vfs_poll(ts->wr) looks more understandable...
+
+So. Without the commit above, p9_poll_mux()->p9_fd_poll() can be called
+much more often and, in particular, can report the "additional" EPOLLIN.
+
+Can this somehow explain the problem?
+
+Oleg.
+
