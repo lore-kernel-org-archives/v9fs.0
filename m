@@ -1,117 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32C81C4A2D
-	for <v9fs@lists.linux.dev>; Fri, 28 Mar 2025 14:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40E41CD208
+	for <v9fs@lists.linux.dev>; Fri, 28 Mar 2025 15:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743173422; cv=none; b=sA5ZmvFly6yB5NLu7xniCjYyAwrJ+kkTGcwkMTFHLzwo/bH8R1LrXmmyroJs5gtcsCs/GozZlIxdwjOVvN+u96qDYB9CGJnYbDbFGSPO8tsNgSpys1qHTajjVOFJhfTj+xPx4TXNk+kUVQVrafm2aWQNTTcO83meZmcMST8Bb44=
+	t=1743175325; cv=none; b=q2N0DvxSjpZXa7RkIc1jpdnMwuvygdqjmF5coUALdwHwo1xCAfxokcx9Fg7KPC8QFCFK5msPE0OaGmrMF1/e1+dp1mfw++o4SzRWnV8WLNcU5Q2sEPHgYr6ZQH2mxhT87DRmT0JtCvM6qfpDYGaIPZ98J7RbVjd34vIOKsh4v50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743173422; c=relaxed/simple;
-	bh=RpZwkFsJMVj3IgV4ResMHNR65Ry7yNtxeYsBHyLQ+os=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hz+mcDc40xZ+KLNGrAfdp7afvjbcjlwIUdiYHWiXXT6WGXS8ocp64fSfcme3As/QPPVBtz9LASKFq+OEzd/RuAo01I57sLr0LcI2t6/3PNUT1sSXw+STqPeYJXWmpQ6dCAVE/hHl1QOSTmw6BUjI+YklNKk1gtZtmQSvMNfe9/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cnBYQ55R; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cnBYQ55R"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743173419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/9LyAVE5c7oB3rEdELb5gAK+dBdPA0z3HyLPL0kUCo=;
-	b=cnBYQ55RlI26Kc55Z19ImwSy3qfe4VL39BpqxI6m52TctRMS0BlK5zVExKumnq4I/V071W
-	NDH6oJO7C5FK0vWPlREakfuOwBu09uR5soPIkrcq2WcRyOOkiDm60I+WBXknS+jxJz0Iqc
-	1BPj3PsLbXZ3RbtNrOxh+akBefCTCgo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-hUzKdYtWM92KFOntriwGMQ-1; Fri,
- 28 Mar 2025 10:50:14 -0400
-X-MC-Unique: hUzKdYtWM92KFOntriwGMQ-1
-X-Mimecast-MFC-AGG-ID: hUzKdYtWM92KFOntriwGMQ_1743173412
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42A451956078;
-	Fri, 28 Mar 2025 14:50:11 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.33.25])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 0BF671801A6D;
-	Fri, 28 Mar 2025 14:50:03 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 28 Mar 2025 15:49:37 +0100 (CET)
-Date: Fri, 28 Mar 2025 15:49:28 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
-Cc: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com,
-	ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org,
-	kprateek.nayak@amd.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-	lucho@ionkov.net, mjguzik@gmail.com, netfs@lists.linux.dev,
-	swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com,
-	v9fs@lists.linux.dev, viro@zeniv.linux.org.uk
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <20250328144928.GC29527@redhat.com>
-References: <20250328132557.GB29527@redhat.com>
- <67e6a8ce.050a0220.2f068f.0077.GAE@google.com>
+	s=arc-20240116; t=1743175325; c=relaxed/simple;
+	bh=9u95qfVKYEZf6M88dSEifsWoCD8sVYPu1+QrOe8tpdY=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=f3nJgEmkMYg0rk97htRvBNRtlCjsjRtfycpkgiXyorY6l4sXJZNbivqumggFCvSXD+J6EVHz2kMlNgmmpX8sB33Qk4pvmhyAhyCftHiMkpdxBLXAzKlhesvQJsqFDlsIFnAEfhjKs8iEk53FNtG+VtYPmnPacE/KNmo+CNOx7JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-85d9a52717aso211901639f.1
+        for <v9fs@lists.linux.dev>; Fri, 28 Mar 2025 08:22:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743175323; x=1743780123;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jR1mo/hCOtE3isFlkNzr3KUW3jS8AIZP6mXHPyq23eY=;
+        b=H6RNDsLSinzWhDcuUGsF0evyWNfy6hkOzjkzrodLmWA99Fnzn+s5paPMI9PkFaAZqH
+         SG8stFn84bS9PetoSxv+OH+nLZE5xQ/03JjOyhTfxAiWTf8fWVtWnpFTYtQav+jeM690
+         1HFIz9dfMefg3w7XF9QdHaVQoNoITbvbe6RWYMhiu2h6g43nZiVON//U3k+KPofjOLIf
+         0SF4GeVsYpIMvKHku7UHn1DwdyPsWMxUZ6GLxT/9LS5EJBG8fNzBZ690EM/nkfkM9yte
+         NCaLyh6tdIRmnBullkYajSp6nOjn5PrLNMiBeUQEFqwKZ9gn8fZK8RIFbMtDjYTmkBt/
+         jbXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcxGHXGtkSBarxPM1XGtxTEp3ttKPhjpu2rSP003Pf9pgmqvla8iK1A6Tkzn1crFTfTXSo@lists.linux.dev
+X-Gm-Message-State: AOJu0YwnogC02CyU2QRaT9lwoYY+WDVZZo5U3UhAWcwktkVgcTeOuvDR
+	FWhJyYrUrCDfYbFUzZ4O2vC/Q8GvyzI3hS3OQtYUMU5zFedXFbOfQh+l4kuRbCuhuFAeTy5F10w
+	SFnZX8gXybCVhxwcl02X1PQM6UCWVr+onJAFFWYGM7YtQxrK+2xR2FGk=
+X-Google-Smtp-Source: AGHT+IElOaU5aRIupz74EKbuSIxjuKtTVjRX81gJc0lcI6gjdITkNBPpSaXxPL8+zRjuYGJj3QnRTP8hXZNuoJpP4xv0FZKbVDAc
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67e6a8ce.050a0220.2f068f.0077.GAE@google.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Received: by 2002:a05:6e02:17c7:b0:3d1:79a1:5b85 with SMTP id
+ e9e14a558f8ab-3d5cce290e8mr94000855ab.21.1743175322807; Fri, 28 Mar 2025
+ 08:22:02 -0700 (PDT)
+Date: Fri, 28 Mar 2025 08:22:02 -0700
+In-Reply-To: <20250328144928.GC29527@redhat.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67e6be9a.050a0220.2f068f.007f.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
+From: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
+	ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org, kprateek.nayak@amd.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, mjguzik@gmail.com, 
+	netfs@lists.linux.dev, oleg@redhat.com, swapnil.sapkal@amd.com, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-On 03/28, syzbot wrote:
->
-> Hello,
->
-> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-> unregister_netdevice: waiting for DEV to become free
->
-> unregister_netdevice: waiting for batadv0 to become free. Usage count = 3
+Hello,
 
-Looks "obviously unrelated", but I'm not sure about anything anymore.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-In any case I leave this to 9p maintainers.
+Reported-by: syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com
+Tested-by: syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com
 
-Okay, just out of curiosity:
+Tested on:
 
-#syz test: upstream aaec5a95d59615523db03dd53c2052f0a87beea7
+commit:         aaec5a95 pipe_read: don't wake up the writer if the pi..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=1598064c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8d5a2956e94d7972
+dashboard link: https://syzkaller.appspot.com/bug?extid=62262fdc0e01d99573fc
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=16682a4c580000
 
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 56e62978e502..aa9cd248a243 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -669,7 +669,6 @@ static void p9_poll_mux(struct p9_conn *m)
- 
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
--	__poll_t n;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
- 
-@@ -687,13 +686,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 	list_add_tail(&req->req_list, &m->unsent_req_list);
- 	spin_unlock(&m->req_lock);
- 
--	if (test_and_clear_bit(Wpending, &m->wsched))
--		n = EPOLLOUT;
--	else
--		n = p9_fd_poll(m->client, NULL, NULL);
--
--	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
--		schedule_work(&m->wq);
-+	p9_poll_mux(m);
- 
- 	return 0;
- }
-
+Note: testing is done by a robot and is best-effort only.
