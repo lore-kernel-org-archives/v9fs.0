@@ -1,99 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D516B1D7994
-	for <v9fs@lists.linux.dev>; Fri, 28 Mar 2025 18:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CA61B87D9;
+	Sat, 29 Mar 2025 00:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743186063; cv=none; b=YGXo2qcU0iQooCwpSbOCVPDF3nSsqR1F2uPsIlLKvay06M5npcxXw8+Js0eKbv0RSt5QJvKwD5/dMrzchVVkKO1CYaCf1vZOZR/wbPlWJi+54PYI4XoOAnqLZE3OPXM9TxwAOyV62YWCoyjgVVmUOAnDI4wTmGy3Ai8rrFd4BWo=
+	t=1743206439; cv=none; b=hQRdCznzzhEX73SPufJcon6TUl0Alr0i0Fdu7U8ZRunXGayShbOBVzOpRIME8SnB2IfkBZuOLhDmFbjpGbeaRecPpBMWhlXODZpE1K5DLM+8YyNDd4FjVTMLzq5q7UR15r8q3ledZoUL7RJPfa0SEmbpEqEvJDs8V3giLCHK7pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743186063; c=relaxed/simple;
-	bh=RflAqQK0UiKASqVIdkZflxaWM7HtW92Gh/JZzSfUr6M=;
+	s=arc-20240116; t=1743206439; c=relaxed/simple;
+	bh=fT67FrQej/+ZYovLEOVgqKXz1l/vshEY1c55YfXzjrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBikeJakoargzpa43hVmdt3TY7IFfq+KhfS2k9oXu5TwyxAj5VIcxAhjfoOkX7RVUWbKCxqCA4+q/wHpYq4ac7dNVzLj1Ai8auO6T0qHzcobavn8RALeAYip7u/wXexlhEWErkqMYZUNACNWDkzzXdonr9YMs4cqf+HBSGiwBHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hmTQgc/+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=eJEzFzbJTQAG67sZ8LCx9OJ9h1VNnCcvrYJLs319KliqR4c6hCRKHMECCqo7TKnIW1dKkW7CAckD0dWQKuVMQR3ZCv+7ztR3mYEYHaETuy9PsBUapcn8Rk52HWn7HtHQ2BTIQDO/OVPkQJYlwon2NFIqi6z2ia0odYF/jvNb4lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=dRH3IKf/; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hmTQgc/+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743186060;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="dRH3IKf/"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 55C6714C2DB;
+	Sat, 29 Mar 2025 01:00:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1743206429;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RflAqQK0UiKASqVIdkZflxaWM7HtW92Gh/JZzSfUr6M=;
-	b=hmTQgc/+zMbynmgA+PPBZDKprkjxot+MsPgdWwslKvYiWPoCnu+9IPbu8a5Vvbwxhfj2Z/
-	L8KZjEe2zvmhACvpsKMp/Dl7qhQNN3KIZIQj8B8KJc0lytQAT6+U7VSPx+68jvwzZPzMqg
-	B9R1y2Nsau0yATxxq+GGHicvWd4We9Q=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-Dw06vJc5P6KLU9A2zMXTdQ-1; Fri,
- 28 Mar 2025 14:20:57 -0400
-X-MC-Unique: Dw06vJc5P6KLU9A2zMXTdQ-1
-X-Mimecast-MFC-AGG-ID: Dw06vJc5P6KLU9A2zMXTdQ_1743186055
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2029C19560B1;
-	Fri, 28 Mar 2025 18:20:54 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.33.25])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 21A4E30001A1;
-	Fri, 28 Mar 2025 18:20:46 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 28 Mar 2025 19:20:20 +0100 (CET)
-Date: Fri, 28 Mar 2025 19:20:12 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
+	bh=+SWJObZEgFLwJrdpTWZD73anQoqylNb1/+kC0CAjO+o=;
+	b=dRH3IKf/EjZP4pzYmtyLNkDAAW7ujhYHO+kRFu3au9m/HmNCQfhXdw9AwyfQrkvPkuFOBA
+	zJ2FfIwZgjNHMFWzeEVj72wpw+ykJGFBI8YiGnKmfOHSzFD5/8dcLDCZ+0T4Eh1nwQp0sc
+	BZdVa9LDOxY6I9g2jhWT407QDTA9e/6lAHLxmJvzV8/5SauzuhqX9paucXmbH1RiF/30og
+	Y3wU+yvZeM7Ml5vD3DWgYvkW57JYSl/CIxK29soMzUkKBKQYf2ub1OqFpLvi3cDv90CfPs
+	WK84rQdAV2n49H1KhM9KzCUPEphI8UD/uBJ79d4KUh8f8tY76iWAUsdCFdGldw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 782df18d;
+	Sat, 29 Mar 2025 00:00:22 +0000 (UTC)
+Date: Sat, 29 Mar 2025 09:00:07 +0900
+From: asmadeus@codewreck.org
+To: Oleg Nesterov <oleg@redhat.com>
 Cc: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
-	asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com,
-	ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org,
+	brauner@kernel.org, dhowells@redhat.com, ericvh@kernel.org,
+	jack@suse.cz, jlayton@kernel.org, kprateek.nayak@amd.com,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux_oss@crudebyte.com, lucho@ionkov.net, mjguzik@gmail.com,
 	netfs@lists.linux.dev, swapnil.sapkal@amd.com,
 	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev,
 	viro@zeniv.linux.org.uk
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <20250328182011.GE29527@redhat.com>
+Message-ID: <Z-c4B7NbHM3pgQOa@codewreck.org>
 References: <20250328144928.GC29527@redhat.com>
  <67e6be9a.050a0220.2f068f.007f.GAE@google.com>
  <20250328170011.GD29527@redhat.com>
- <314522ae-05a4-4dfb-af99-6bb3901a5522@amd.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <314522ae-05a4-4dfb-af99-6bb3901a5522@amd.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+In-Reply-To: <20250328170011.GD29527@redhat.com>
 
-Hi Prateek,
+Oleg Nesterov wrote on Fri, Mar 28, 2025 at 06:00:12PM +0100:
+> As for the patches from me or Prateek (thanks again!), I think that
+> the maintainers should take a look.
+> 
+> But at this point I am mostly confident that the bisected commit aaec5a95d5961
+> ("pipe_read: don't wake up the writer if the pipe is still full") is innocent,
+> it just reveals yet another problem.
+> 
+> I guess (I hope ;) Prateek agrees.
 
-On 03/28, K Prateek Nayak wrote:
->
-> Yours is the right approach.
+Right, so your patch sounds better than Prateek's initial blowing
+up workaround, but it's a bit weird anyway so let me recap:
+- that syz repro has this unnatural pattern where the replies are all
+written before the requests are sent
+- 9p_read_work() (read worker) has an optimization that if there is no
+in fly request then there obviously must be nothing to read (9p is 100%
+client initiated, there's no way the server should send something
+first), so at this point the reader task is idle
+(OTOH, we're checking for rx right at p9_conn_create() before anything
+is sent, so it's not like we're consistent on this...)
+- p9_fd_request() (sending a new request) has another optimization that
+only checks for tx: at this point if another request was already in
+flight then the rx task should have a poll going on for rx, and if there
+were no in flight request yet then there should be no point in checking
+for rx, so p9_fd_request() only kick in the tx worker if there is room
+to send
+- at this point I don't really get the logic that'll wake the rx thread
+up either... p9_pollwake() will trigger p9_poll_workfn() (through
+p9_poll_work) which will call p9_poll_mux() and get the reader kicking
+again, but I don't know how the waitqueue mechanism is supposed to work
+(see p9_pollwait())
+I'd have expected the tx task to somehow nudge this on, but it
+doesn't?...
+- due to the new optimization (aaec5a95d59615 "pipe_read: don't wake up
+the writer if the pipe is still full"), that 'if there is room to send'
+check started failing and tx thread doesn't start? Because syzbot passed
+us a pipe that was already full, or they messed with it after mount?
+I'm not clear about this point, but I think it's the key here -- the 9p
+"mount by fd" is great for local pseudo filesystems and things like that
+but it's been abused by syzbot too much, and I don't want to spend too
+much time making sure that any unholy things they do with these fd
+works. If possible I'd like to mark that fd unusable by userspace but
+I'm honestly doubtful it's possible (if e.g. it was dup'd or something
+before mount for example...)
 
-OK, thank you, but lets wait for 9p maintainers.
+So, yeah, well, okay I don't mind the patch even if it doesn't make
+sense with a regular server.
+We don't really care about trans fd performance either so it's fine if
+it's a bit slower, and the error Prateek added might happen in a real
+case if tx queue is full of real requests so I think your approach is
+good enough.
 
-but...
+If we understand what's happening here I think it's as good as anything
+else, but I'd just like it clear in the commit message what syzbot is
+doing and why the regression happened
 
-> If this gets picked, feel free to add:
->
-> Reviewed-and-tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-
-No!
-
-My version is just a slightly updated version of your initial patch.
-It was you who (unless we both are wrong) actually pinpointed the
-problem.
-
-So. If this is acked by maintainers, please-please send the updated patch
-with the changelog, and feel free to add my Reviewed-by or Acked-by.
-
-Oleg.
-
+Thank you both for the thorough analysis and follow ups!
+-- 
+Dominique Martinet | Asmadeus
