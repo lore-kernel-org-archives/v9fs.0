@@ -1,82 +1,84 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EFD23C8AD;
-	Wed,  2 Apr 2025 15:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B7E18DF80
+	for <v9fs@lists.linux.dev>; Wed,  2 Apr 2025 17:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743606016; cv=none; b=ShimyzcyVvpHKvgz4XitjPyDkt5tP/1oi1kG+nm7D5ogUvNw6HI4vpSEkaZmGG3NK3e18KWM96BI2OubxYGxhjG7omewI4rRiGpHBPVQpJuHQyYdYItIPOtcKrq2JsQ4vFRtwWys1IO6imt8TpFU/YYW1Jb68Hl3elbCvpFlN5g=
+	t=1743613858; cv=none; b=CKIdWUeKppVGg8AcNImQmNvpxVGrECCA8eGFSXAH/NTf1btSKB9rmcoD9iedOYUYQGuyDwIhqhQHHM0CYY6bZDaFG4OLJzIlGC5QI7ugbwGmN5a7AcwNvDw0yuiGW4iXCZv9OXOtQgYdapnqX1y9jRNHiMUoxXiKLujO4BgPpuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743606016; c=relaxed/simple;
-	bh=isEtce1XzbwTB4+VX7772Pt07KMqxmVCirBGrNO7B/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNKZi/By3ydh56pcU0JYCU9KH/w747zmnNfqwf+h7OoctyDNbJnvCYCzkLH2coCRUiicH5XLdsyiSzkgN5DAYtr43xGqrquMzp0Ra8VkJZPEIf1XdElp59KfJ+WDdBC2uR52DADfTeyNhCfSGQwfvNE6w8h64P37opEsPYFWc4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DFlhRkJZ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1743613858; c=relaxed/simple;
+	bh=xEaasgmA8rD+DB8VhcWCdrDZeQhRBH1jjbOX1u8DirQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=QyYJtHHs0obU+ow498R0ntefkvuaxp+6gfXkiGVKXr8rSZKgnF0xL4FSgoliD4EBag8Bnj/6hLgZ7uJQcXOAnT3g9rW1du1E8dWrlpK4uvCBxZ7T12GpctFsvPZ3eNvKbsTrP9lPfMJm6iOLVCiK9INyEinmg7FIHCsosl5Joh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PoUtQoiH; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DFlhRkJZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=H/LzOSBZMJnPa9n+hJhMKcetVnuAU/qb1xOh1kNA3po=; b=DFlhRkJZvk0FxUhTFpLMVcqGW6
-	xG1V3XXL/3wXAn/c2FOYw2EQMYqW/olCsErvNjPUKfLGXt+KADdT2YskzUX3BUzbnyAagDDYzB/fm
-	ZR4Q9IpNbzkJL3GnwtfzS0XcEfD/32j2Dfmitv5ap5a8XrmQ8JcS7Kf2QXPDc3sqfLLqaVqVAynw3
-	SVXXASaClM2+3ASDNUleyBPQi3HXCWxVaxx8xZiTEgWj5/FavNMrcjK/FGXAxKgWhUbSiBa86JP8X
-	ULsI58AmQLxczl1eK++kle8TpZzr4ssoKT0HwbiRLd+lve1N9BIfdY9N8jDECSQ2yYLh8qLlIA9Mb
-	nT2UhlgQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzzZX-00000009gs7-0PTo;
-	Wed, 02 Apr 2025 15:00:07 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	v9fs@lists.linux.dev
-Subject: [PATCH v2 1/9] 9p: Add a migrate_folio method
-Date: Wed,  2 Apr 2025 15:59:55 +0100
-Message-ID: <20250402150005.2309458-2-willy@infradead.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250402150005.2309458-1-willy@infradead.org>
-References: <20250402150005.2309458-1-willy@infradead.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PoUtQoiH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743613854;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XiTG0FByjC9Rs16rt52doAGprRUtZJNgSviOZz6x1o8=;
+	b=PoUtQoiHfQMZv/UQgVZwa+p3hXnrw4bszBL8ETO1CjnqBNM64v7tGfWR3Xr0ty9g3uADDf
+	WexN6NZ0bVIq3tAAlE6I8lK5MlMWDstACuCFi/dB4LVCb0e3rtEH9j0eUSGPhnN5/IY7ba
+	AusxTcR0LiEzc/0vL+13ySgX/ASpoVc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-2p6AgTrvMp695wiKCVs6Iw-1; Wed,
+ 02 Apr 2025 13:10:48 -0400
+X-MC-Unique: 2p6AgTrvMp695wiKCVs6Iw-1
+X-Mimecast-MFC-AGG-ID: 2p6AgTrvMp695wiKCVs6Iw_1743613843
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47E8E180AF52;
+	Wed,  2 Apr 2025 17:10:43 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EB43D195DF85;
+	Wed,  2 Apr 2025 17:10:40 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250402150005.2309458-2-willy@infradead.org>
+References: <20250402150005.2309458-2-willy@infradead.org> <20250402150005.2309458-1-willy@infradead.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
+    intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+    dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+    v9fs@lists.linux.dev
+Subject: Re: [PATCH v2 1/9] 9p: Add a migrate_folio method
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <803464.1743613839.1@warthog.procyon.org.uk>
+Date: Wed, 02 Apr 2025 18:10:39 +0100
+Message-ID: <803465.1743613839@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The migration code used to be able to migrate dirty 9p folios by writing
-them back using writepage.  When the writepage method was removed,
-we neglected to add a migrate_folio method, which means that dirty 9p
-folios have been unmovable ever since.  This reduced our success at
-defragmenting memory on machines which use 9p heavily.
+Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
 
-Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
-Cc: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>
-Cc: v9fs@lists.linux.dev
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- fs/9p/vfs_addr.c | 1 +
- 1 file changed, 1 insertion(+)
+> The migration code used to be able to migrate dirty 9p folios by writing
+> them back using writepage.  When the writepage method was removed,
+> we neglected to add a migrate_folio method, which means that dirty 9p
+> folios have been unmovable ever since.  This reduced our success at
+> defragmenting memory on machines which use 9p heavily.
+> 
+> Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
+> Cc: stable@vger.kernel.org
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: v9fs@lists.linux.dev
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 32619d146cbc..1286d96a29bc 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -164,4 +164,5 @@ const struct address_space_operations v9fs_addr_operations = {
- 	.invalidate_folio	= netfs_invalidate_folio,
- 	.direct_IO		= noop_direct_IO,
- 	.writepages		= netfs_writepages,
-+	.migrate_folio		= filemap_migrate_folio,
- };
--- 
-2.47.2
+Reviewed-by: David Howells <dhowells@redhat.com>
 
