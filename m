@@ -1,82 +1,106 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1262581;
-	Thu,  3 Apr 2025 03:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD41126C1E
+	for <v9fs@lists.linux.dev>; Thu,  3 Apr 2025 05:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743652421; cv=none; b=MuW7oSwPowvS9TWQUqr2KUm42dGVQQYHyk9B7XxvzOx9MzXXFDKsknqpnPNkrqzAHvZnaz+Opz4FasSabRaz0Bgg7ZMiJdNscSniC9sxtYXXnwJClYR2pZoKXo0ho5ycec+Hs1jZhw+JyOzEmOZQ9jlKFV+Ao/JU0uD+050ET/k=
+	t=1743656421; cv=none; b=m5zTfkj4HdPF7jk86NxSZj9kf2p2E+rdPWAfbVAMsrVIRyI2o3EM/UlIN1+TmBAg094KQUzV84hJ2K/os2maIJ+wF0jTy8Caxr9QYbp69hP5Ly58yOiUZc+ja76wzMQHyhl1DTsPx7aQPx487GYvjhTQfalCT4WdNoOy0kAp5zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743652421; c=relaxed/simple;
-	bh=KsxRYSkadP8sKUIJYSpYSNBgBpJHnNbRA1oUJqF+TxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XPRN4bo3X71xP4+H/SufN2QKdIrBr/6uh6q5gxASX4B+Zls7NMzRwX40fZPxXuq/SwCMImNfiCcD/nVjeC0x0qePZpa7OO9HPt1SdMkvQH7jd+AS11KbmhQry9YrivZ1HLEfyRDwi8iLVEpr2uG9hMN1zGB6GftmV57DXieOj4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZXf9CJuv; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1743656421; c=relaxed/simple;
+	bh=9W9fICorWCVVP8Tt2aX6G1O4+4v+o1wA9LyrbmM+Pz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=jHju5AEXWExNAKgg3l24F6CD8NySHxGg9XXFKFRLpF50Bg9VNQhDqRTN4umwAqcWFhwEq2x73+1oFCYRmqq6C6jNBtDf3jq2mnWMH5ZE2bMz66sR/LIgYy8+61GNXUdagE/iF+nGjnPDK46YZ+ovPPzrODa/c+fuiTvdW5BPVBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Xoi2pgvQ; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZXf9CJuv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=j98rwQL7G8di/BtMjoHWfEqONBrRzM9ADm8HabBJsPs=; b=ZXf9CJuvoUH/YE50tXTG4O7y7B
-	rgnnIdzHH4ih+uy9q+Zxo+7Bycoq/fP9k7VVNa89ePhRcOL6u3/fY/0qMnMssb+xaTLwHZgMR7e6h
-	tEzEDVFicwQVGYeucAIE2BgpVdl/BcTayDpYZYejpY4HgBrrT/PLkoS3ED4PbzhupuG8PrkfYXJxG
-	7IH30YgiWnEqITe6xTrx6b6fNflMNeHp3uBRsfLxd/7u+hcQ/gFnxD/lZp8k53eAf42bm51EDsrgf
-	Cj88ngx2F139E/LMxJ4YlS1/vMQZ8WWC9AE52UurF+GhIU1CZvYHdkahDQNrcfyee89PBN7aPll4k
-	qY+38SkQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u0Be4-0000000Aw2v-1G9j;
-	Thu, 03 Apr 2025 03:53:36 +0000
-Date: Thu, 3 Apr 2025 04:53:36 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: linux-fsdevel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	v9fs@lists.linux.dev
-Subject: Re: [PATCH v2 1/9] 9p: Add a migrate_folio method
-Message-ID: <Z-4GQO_HcmcRqWnD@casper.infradead.org>
-References: <20250402150005.2309458-1-willy@infradead.org>
- <20250402150005.2309458-2-willy@infradead.org>
- <Z-4EiVQ6klHkkMoy@codewreck.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Xoi2pgvQ"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 3608E14C2DB;
+	Thu,  3 Apr 2025 07:00:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1743656416;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=bz8pkuiCVevLhJcEPyvjJnCOcx3k3QvKU0VYjJOuDeY=;
+	b=Xoi2pgvQlphtyCNpv9oKdEZPYPtT0GQup4TctzrCWcTPPOMZyJoCWn8sUhaioALofBnjMF
+	AhvPzZwWkt7ffHXEA63P0q2aMu2dIsELdXr5UbrApPOs6wn4hAtNw6mdc9W2OD2j+1NKqE
+	IHsAJqIpQLzpAnE1zkajNyzf9S/+HC8Kmi3Ie+xii0Tde4TclGE9wpYkzCmZDVN93poMqT
+	pv2m3hpppkbKXdXmEuUgeGcIolpFshsYEmgDeuKsC2kKj6xmgTs5wKHy4QsLfclCnmRlCm
+	7jjfg05bGdK8G0L72tsF02EdN+nEs/zYcm5ThsztMmnflkuKFmW0zRwnOQeO1w==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f2b81bce;
+	Thu, 3 Apr 2025 05:00:13 +0000 (UTC)
+Date: Thu, 3 Apr 2025 13:59:58 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p fixes for 6.15-rc1
+Message-ID: <Z-4Vzhdi_3XZDFfV@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z-4EiVQ6klHkkMoy@codewreck.org>
 
-On Thu, Apr 03, 2025 at 12:46:17PM +0900, Dominique Martinet wrote:
-> Matthew Wilcox (Oracle) wrote on Wed, Apr 02, 2025 at 03:59:55PM +0100:
-> > The migration code used to be able to migrate dirty 9p folios by writing
-> > them back using writepage.  When the writepage method was removed,
-> > we neglected to add a migrate_folio method, which means that dirty 9p
-> > folios have been unmovable ever since.  This reduced our success at
-> > defragmenting memory on machines which use 9p heavily.
-> 
-> Given I'm not in Cc of the whole series I'm lacking context but I assume
-> that means I'm not supposed to take this in.
+The following changes since commit ffd294d346d185b70e28b1a28abe367bbfe53c04:
 
-Right; I'm routing this whole series via Christian.  There's various
-bits of the VFS that need to be touched as part of this series, and
-it'd take forever to get it all merged by going through individual
-maintainer trees.
+  Linux 6.13 (2025-01-19 15:51:45 -0800)
 
-> I won't pretend I understand folios anyway, but commit messages makes
-> sense to me:
-> Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+are available in the Git repository at:
 
-Thanks!  Folios aren't really that hard a concept for a filesystem
-developer to understand, but dhowells has done a great job of insulating
-you from even having to understand them with netfs.  All they are is
-a container of one-or-more pages which maintain all the filesystem
-state which used to be managed per-page.  eg dirty, writeback, locked,
-offset-in-file, number-of-mappings.
+  https://github.com/martinetd/linux tags/9p-for-6.15-rc1
 
-There's more to it from a MM point of view, but as a filesystem
-developer, that's all you really need to understand.
+for you to fetch changes up to 4210030d8bc4834fcb774babc458d02a2432ee76:
+
+  docs: fs/9p: Add missing "not" in cache documentation (2025-04-03 12:31:11 +0900)
+
+(^ sorry for the recent date here, I just pulled the last documentation
+fix and no code changed with that)
+
+----------------------------------------------------------------
+9p update for 6.15-rc1
+
+- fix handling of bogus (negative/too long) replies
+- fix crash on mkdir with ACLs
+(... looks like nobody is using ACLs with semi-recent kernels...)
+- ipv6 support for trans=tcp
+- minor concurrency fix to make syzbot happy
+- minor cleanup
+
+----------------------------------------------------------------
+Christian Schoenebeck (1):
+      fs/9p: fix NULL pointer dereference on mkdir
+
+Dominique Martinet (2):
+      9p/net: fix improper handling of bogus negative read/write replies
+      9p/net: return error on bogus (longer than requested) replies
+
+Ignacio Encinas (1):
+      9p/trans_fd: mark concurrent read and writes to p9_conn->err
+
+Joshua Murphy (1):
+      net/9p/fd: support ipv6 for trans=tcp
+
+Sasha Levin (1):
+      9p: Use hashtable.h for hash_errmap
+
+Tingmao Wang (1):
+      docs: fs/9p: Add missing "not" in cache documentation
+
+Tuomas Ahola (1):
+      Documentation/fs/9p: fix broken link
+
+ Documentation/filesystems/9p.rst |  6 +++---
+ fs/9p/vfs_inode_dotl.c           |  2 +-
+ net/9p/client.c                  | 44 ++++++++++++++++++++++++++------------------
+ net/9p/error.c                   | 21 +++++++++------------
+ net/9p/trans_fd.c                | 73 ++++++++++++++++++++++++++++++++++---------------------------------------
+ 5 files changed, 73 insertions(+), 73 deletions(-)
+
+-- 
+Dominique Martinet | Asmadeus
