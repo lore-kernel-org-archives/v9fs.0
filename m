@@ -1,73 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B7E18DF80
-	for <v9fs@lists.linux.dev>; Wed,  2 Apr 2025 17:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3912E339D
+	for <v9fs@lists.linux.dev>; Thu,  3 Apr 2025 03:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743613858; cv=none; b=CKIdWUeKppVGg8AcNImQmNvpxVGrECCA8eGFSXAH/NTf1btSKB9rmcoD9iedOYUYQGuyDwIhqhQHHM0CYY6bZDaFG4OLJzIlGC5QI7ugbwGmN5a7AcwNvDw0yuiGW4iXCZv9OXOtQgYdapnqX1y9jRNHiMUoxXiKLujO4BgPpuc=
+	t=1743652007; cv=none; b=kVWH4wdaGOz7ZTqC8KkIq7IT/BiRX85bzaIdXU1B4cJdr1BEkb0eV0mRBm/fY1BO85bMDOmlykFdvSP4RH88/RJ/AL5GFv1dfIqVHTrZ+bGa9YdXBBdltf+OjBjmKRASIUu24s/Wb9nA3VBGp5qINrg2BIEdoYL5vgf1cGZm6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743613858; c=relaxed/simple;
-	bh=xEaasgmA8rD+DB8VhcWCdrDZeQhRBH1jjbOX1u8DirQ=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=QyYJtHHs0obU+ow498R0ntefkvuaxp+6gfXkiGVKXr8rSZKgnF0xL4FSgoliD4EBag8Bnj/6hLgZ7uJQcXOAnT3g9rW1du1E8dWrlpK4uvCBxZ7T12GpctFsvPZ3eNvKbsTrP9lPfMJm6iOLVCiK9INyEinmg7FIHCsosl5Joh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PoUtQoiH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743652007; c=relaxed/simple;
+	bh=qst9VgxRGd0q8EAb17usxcFzrBpJMSqzamr6wE60npA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T6PSsNdH/0EKJIjwZ9OaQ8R+233y99NpSboKpsWXw3Ifw++RI5MxLRzDPzG1pDbvznrlfNLQkdYGRjE0npbVHyKMROLrG3OR+RaERnbPdNJS1lHs83m+k3LsSFcpQFMSKcK3KuzYJvGQLB5ti9OHvrz68j3AMjk3VPodbZjoPzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=0HBoscdF; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PoUtQoiH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743613854;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="0HBoscdF"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 67B0E14C2DB;
+	Thu,  3 Apr 2025 05:46:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1743651996;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XiTG0FByjC9Rs16rt52doAGprRUtZJNgSviOZz6x1o8=;
-	b=PoUtQoiHfQMZv/UQgVZwa+p3hXnrw4bszBL8ETO1CjnqBNM64v7tGfWR3Xr0ty9g3uADDf
-	WexN6NZ0bVIq3tAAlE6I8lK5MlMWDstACuCFi/dB4LVCb0e3rtEH9j0eUSGPhnN5/IY7ba
-	AusxTcR0LiEzc/0vL+13ySgX/ASpoVc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-2p6AgTrvMp695wiKCVs6Iw-1; Wed,
- 02 Apr 2025 13:10:48 -0400
-X-MC-Unique: 2p6AgTrvMp695wiKCVs6Iw-1
-X-Mimecast-MFC-AGG-ID: 2p6AgTrvMp695wiKCVs6Iw_1743613843
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47E8E180AF52;
-	Wed,  2 Apr 2025 17:10:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EB43D195DF85;
-	Wed,  2 Apr 2025 17:10:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250402150005.2309458-2-willy@infradead.org>
-References: <20250402150005.2309458-2-willy@infradead.org> <20250402150005.2309458-1-willy@infradead.org>
+	bh=ITcMLIFP5tKAjz41ehoKWCF5eQQiDYMOb1fN5yVdzj8=;
+	b=0HBoscdFpgxuQgZl92opSENbMA9Pk+zXKbOYbpRJnb2fOIuhEQ1bwZ5rGPvmlYb+8wVHw8
+	wHc2273ChihnbkPMTZ1/DAooFHD2hJ+0yffsGhHC9Cy9veCKiE8j7cW1KdfmCPrBKGxCoy
+	Qn3m8QJ0MYx70hWGhV57dz2ZTADFzPnA6CZqQO0W6iJCwIBiDSjDSOwrvW/d4+WTVhVAcH
+	g6HcnkJSY+HEZzS8B0uR8bH0QBVA+A0ZU2VyhxlEvsqXe3FXAMaHh6g4yHfkceyrco8IVL
+	7ipXZTHnksTxDqR7U3ceJDpBoPzzk84gVw3dN7X3aD3CMOZtc1b/HQqenuVM/Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 72519fa4;
+	Thu, 3 Apr 2025 03:46:32 +0000 (UTC)
+Date: Thu, 3 Apr 2025 12:46:17 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
-    intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
-    dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
-    v9fs@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	v9fs@lists.linux.dev
 Subject: Re: [PATCH v2 1/9] 9p: Add a migrate_folio method
+Message-ID: <Z-4EiVQ6klHkkMoy@codewreck.org>
+References: <20250402150005.2309458-1-willy@infradead.org>
+ <20250402150005.2309458-2-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <803464.1743613839.1@warthog.procyon.org.uk>
-Date: Wed, 02 Apr 2025 18:10:39 +0100
-Message-ID: <803465.1743613839@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250402150005.2309458-2-willy@infradead.org>
 
-Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
-
+Matthew Wilcox (Oracle) wrote on Wed, Apr 02, 2025 at 03:59:55PM +0100:
 > The migration code used to be able to migrate dirty 9p folios by writing
 > them back using writepage.  When the writepage method was removed,
 > we neglected to add a migrate_folio method, which means that dirty 9p
@@ -80,5 +65,13 @@ Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
 > Cc: v9fs@lists.linux.dev
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Reviewed-by: David Howells <dhowells@redhat.com>
+Given I'm not in Cc of the whole series I'm lacking context but I assume
+that means I'm not supposed to take this in.
 
+I won't pretend I understand folios anyway, but commit messages makes
+sense to me:
+Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+
+Thanks,
+-- 
+Dominique Martinet | Asmadeus
