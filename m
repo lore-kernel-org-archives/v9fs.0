@@ -1,77 +1,82 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3912E339D
-	for <v9fs@lists.linux.dev>; Thu,  3 Apr 2025 03:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1262581;
+	Thu,  3 Apr 2025 03:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743652007; cv=none; b=kVWH4wdaGOz7ZTqC8KkIq7IT/BiRX85bzaIdXU1B4cJdr1BEkb0eV0mRBm/fY1BO85bMDOmlykFdvSP4RH88/RJ/AL5GFv1dfIqVHTrZ+bGa9YdXBBdltf+OjBjmKRASIUu24s/Wb9nA3VBGp5qINrg2BIEdoYL5vgf1cGZm6EQ=
+	t=1743652421; cv=none; b=MuW7oSwPowvS9TWQUqr2KUm42dGVQQYHyk9B7XxvzOx9MzXXFDKsknqpnPNkrqzAHvZnaz+Opz4FasSabRaz0Bgg7ZMiJdNscSniC9sxtYXXnwJClYR2pZoKXo0ho5ycec+Hs1jZhw+JyOzEmOZQ9jlKFV+Ao/JU0uD+050ET/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743652007; c=relaxed/simple;
-	bh=qst9VgxRGd0q8EAb17usxcFzrBpJMSqzamr6wE60npA=;
+	s=arc-20240116; t=1743652421; c=relaxed/simple;
+	bh=KsxRYSkadP8sKUIJYSpYSNBgBpJHnNbRA1oUJqF+TxM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6PSsNdH/0EKJIjwZ9OaQ8R+233y99NpSboKpsWXw3Ifw++RI5MxLRzDPzG1pDbvznrlfNLQkdYGRjE0npbVHyKMROLrG3OR+RaERnbPdNJS1lHs83m+k3LsSFcpQFMSKcK3KuzYJvGQLB5ti9OHvrz68j3AMjk3VPodbZjoPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=0HBoscdF; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XPRN4bo3X71xP4+H/SufN2QKdIrBr/6uh6q5gxASX4B+Zls7NMzRwX40fZPxXuq/SwCMImNfiCcD/nVjeC0x0qePZpa7OO9HPt1SdMkvQH7jd+AS11KbmhQry9YrivZ1HLEfyRDwi8iLVEpr2uG9hMN1zGB6GftmV57DXieOj4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZXf9CJuv; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="0HBoscdF"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 67B0E14C2DB;
-	Thu,  3 Apr 2025 05:46:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1743651996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ITcMLIFP5tKAjz41ehoKWCF5eQQiDYMOb1fN5yVdzj8=;
-	b=0HBoscdFpgxuQgZl92opSENbMA9Pk+zXKbOYbpRJnb2fOIuhEQ1bwZ5rGPvmlYb+8wVHw8
-	wHc2273ChihnbkPMTZ1/DAooFHD2hJ+0yffsGhHC9Cy9veCKiE8j7cW1KdfmCPrBKGxCoy
-	Qn3m8QJ0MYx70hWGhV57dz2ZTADFzPnA6CZqQO0W6iJCwIBiDSjDSOwrvW/d4+WTVhVAcH
-	g6HcnkJSY+HEZzS8B0uR8bH0QBVA+A0ZU2VyhxlEvsqXe3FXAMaHh6g4yHfkceyrco8IVL
-	7ipXZTHnksTxDqR7U3ceJDpBoPzzk84gVw3dN7X3aD3CMOZtc1b/HQqenuVM/Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 72519fa4;
-	Thu, 3 Apr 2025 03:46:32 +0000 (UTC)
-Date: Thu, 3 Apr 2025 12:46:17 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZXf9CJuv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=j98rwQL7G8di/BtMjoHWfEqONBrRzM9ADm8HabBJsPs=; b=ZXf9CJuvoUH/YE50tXTG4O7y7B
+	rgnnIdzHH4ih+uy9q+Zxo+7Bycoq/fP9k7VVNa89ePhRcOL6u3/fY/0qMnMssb+xaTLwHZgMR7e6h
+	tEzEDVFicwQVGYeucAIE2BgpVdl/BcTayDpYZYejpY4HgBrrT/PLkoS3ED4PbzhupuG8PrkfYXJxG
+	7IH30YgiWnEqITe6xTrx6b6fNflMNeHp3uBRsfLxd/7u+hcQ/gFnxD/lZp8k53eAf42bm51EDsrgf
+	Cj88ngx2F139E/LMxJ4YlS1/vMQZ8WWC9AE52UurF+GhIU1CZvYHdkahDQNrcfyee89PBN7aPll4k
+	qY+38SkQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1u0Be4-0000000Aw2v-1G9j;
+	Thu, 03 Apr 2025 03:53:36 +0000
+Date: Thu, 3 Apr 2025 04:53:36 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
 Cc: linux-fsdevel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
 	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
 	stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev
 Subject: Re: [PATCH v2 1/9] 9p: Add a migrate_folio method
-Message-ID: <Z-4EiVQ6klHkkMoy@codewreck.org>
+Message-ID: <Z-4GQO_HcmcRqWnD@casper.infradead.org>
 References: <20250402150005.2309458-1-willy@infradead.org>
  <20250402150005.2309458-2-willy@infradead.org>
+ <Z-4EiVQ6klHkkMoy@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250402150005.2309458-2-willy@infradead.org>
+In-Reply-To: <Z-4EiVQ6klHkkMoy@codewreck.org>
 
-Matthew Wilcox (Oracle) wrote on Wed, Apr 02, 2025 at 03:59:55PM +0100:
-> The migration code used to be able to migrate dirty 9p folios by writing
-> them back using writepage.  When the writepage method was removed,
-> we neglected to add a migrate_folio method, which means that dirty 9p
-> folios have been unmovable ever since.  This reduced our success at
-> defragmenting memory on machines which use 9p heavily.
+On Thu, Apr 03, 2025 at 12:46:17PM +0900, Dominique Martinet wrote:
+> Matthew Wilcox (Oracle) wrote on Wed, Apr 02, 2025 at 03:59:55PM +0100:
+> > The migration code used to be able to migrate dirty 9p folios by writing
+> > them back using writepage.  When the writepage method was removed,
+> > we neglected to add a migrate_folio method, which means that dirty 9p
+> > folios have been unmovable ever since.  This reduced our success at
+> > defragmenting memory on machines which use 9p heavily.
 > 
-> Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
-> Cc: stable@vger.kernel.org
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: v9fs@lists.linux.dev
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Given I'm not in Cc of the whole series I'm lacking context but I assume
+> that means I'm not supposed to take this in.
 
-Given I'm not in Cc of the whole series I'm lacking context but I assume
-that means I'm not supposed to take this in.
+Right; I'm routing this whole series via Christian.  There's various
+bits of the VFS that need to be touched as part of this series, and
+it'd take forever to get it all merged by going through individual
+maintainer trees.
 
-I won't pretend I understand folios anyway, but commit messages makes
-sense to me:
-Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+> I won't pretend I understand folios anyway, but commit messages makes
+> sense to me:
+> Acked-by: Dominique Martinet <asmadeus@codewreck.org>
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+Thanks!  Folios aren't really that hard a concept for a filesystem
+developer to understand, but dhowells has done a great job of insulating
+you from even having to understand them with netfs.  All they are is
+a container of one-or-more pages which maintain all the filesystem
+state which used to be managed per-page.  eg dirty, writeback, locked,
+offset-in-file, number-of-mappings.
+
+There's more to it from a MM point of view, but as a filesystem
+developer, that's all you really need to understand.
