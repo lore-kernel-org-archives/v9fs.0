@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FB9279341;
-	Mon,  7 Apr 2025 18:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6548B27C84B;
+	Mon,  7 Apr 2025 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049866; cv=none; b=qobIuAH40FZmb3bqtAqu47Q5mEU4/QaFjVnWg8s46xjnZt5fBeCkicgx7uGPl1xgtt1NdKgVFT7lAcbz2St9oIYgkTNV/pTLAiIitXYzScifVjyieVZj2Hp+keKmwtG1X+030XO2LhNHTaeAuBinSUBOqg1CTwLU43KRq2Dh7XA=
+	t=1744049880; cv=none; b=MUKM2lUo1rBP3Ye7klb5IiRvDTy6Pua/1TE729zSokI/zKWoVc/iCNou0n7B0MrMVY9nOZNm+Us2wv3RfsBDLITXT7W0G0GQfd55xJsjU9Nn21+3R6H1narUy9K0sFGR+VW77Ve3lXPj+hyfOOzx0oE8sCOsyprZgVY3mooz+Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049866; c=relaxed/simple;
-	bh=UTrwtAiD6jeemugwjEZFJxxv2vTyVDLAq/SF3RheH/E=;
+	s=arc-20240116; t=1744049880; c=relaxed/simple;
+	bh=+dWzFkVLvVDjxRYgoxd6x5KIzcgXftF36JcDbe4CzLE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kNcNtS24+pTE7p/KQX+pV3+/HYIdwkEjfgsuSBrQvSCJBYSwrfLGXlcz+79dVFb6PAjnVV5ezeF/a6/icSV6VDVKosI4JxSvbqwqUzoyYp7q2ZvGQr7YOFuVcBn13km46p+CN/4o1YM1D6CnQ9B2WakuyguTtbifPltpd+xbwnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mx/0ZQVK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=gi4hVBdjh7hb4fBqUx6qdAsW509nsIWdWh8ZCsje2Y8YL4pME6ErqAxSSb33L2wTN57y/e5wmSF7sYiQhWGPuV1EgFcBD0jvlTXOphdPbSbRp2lz/mL9b7XNjvLGzZICuScpcn6LhFoIT3CabWmf4kfVaRVhiHmsuNJSRfQkhyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6COatKK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mx/0ZQVK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9244C4CEEA;
-	Mon,  7 Apr 2025 18:17:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6COatKK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E301C4CEDD;
+	Mon,  7 Apr 2025 18:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049865;
-	bh=UTrwtAiD6jeemugwjEZFJxxv2vTyVDLAq/SF3RheH/E=;
+	s=k20201202; t=1744049880;
+	bh=+dWzFkVLvVDjxRYgoxd6x5KIzcgXftF36JcDbe4CzLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mx/0ZQVKyfkDay8leQNh+oVBbWPT+984hsF7I3gYZnMKWWc60VxxPZ6UuVH5T6u2Q
-	 7297PejNqLoxwBBGMmDXVxCaHQ3u9vfzmXcGppC1lvX/7q19lIcGbRoYE+mITRyNoD
-	 VuNL3yah4z5fbU0DCMF1otGpo/jnJL69kxj747s1ZUgiLjUe5hIeRrL6/s4KPo0Rh/
-	 ChTvAP4I9J6reiuOshvdD4Xvi76W7E04x+pDzN8MERFwg2864ZT6CKuELxNR7gqaJx
-	 T/UILCiAh6ASGdCuO914/UWNzmSMV65wsgL1Vxg4GJ0gBy02pyTJbvq54fs2ukxOgj
-	 ozqcE7kR9FSWw==
+	b=J6COatKKpJ7bMDP4wz9ylz8ohMigoKakK9Fe4fr6nPykMplLCEUq0MrzUEZC0GIc9
+	 n0soqYZTep2HWXVE29d5Q2ZXfLZNmuczJd07CNNXEy6rwVG+a1EkpL+OX8NEzIcYmK
+	 KkmmEp/0oI+KJpMCc7dSEdGWAlLT5uSupYZy11cMia1ECRex02Q3vIig42cQ0ts4Cu
+	 7f7BGCcZguQAVMZQzxpPFinsS40Plh7KaNSe0jXrSiNZtd6KmEhYTwcscbtcpswED4
+	 kswGVKL03naVs1G5dW2is21rF9S8Ktue40OMWjIvbsjjgfdDCPE9/J+MrGihE1O7gs
+	 zOp5lqgQ3KgVg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,12 +36,12 @@ Cc: Dominique Martinet <asmadeus@codewreck.org>,
 	ericvh@kernel.org,
 	lucho@ionkov.net,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 4/6] 9p/net: fix improper handling of bogus negative read/write replies
-Date: Mon,  7 Apr 2025 14:17:32 -0400
-Message-Id: <20250407181734.3184450-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 4/5] 9p/net: fix improper handling of bogus negative read/write replies
+Date: Mon,  7 Apr 2025 14:17:47 -0400
+Message-Id: <20250407181749.3184538-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181734.3184450-1-sashal@kernel.org>
-References: <20250407181734.3184450-1-sashal@kernel.org>
+In-Reply-To: <20250407181749.3184538-1-sashal@kernel.org>
+References: <20250407181749.3184538-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.86
+X-stable-base: Linux 6.1.133
 Content-Transfer-Encoding: 8bit
 
 From: Dominique Martinet <asmadeus@codewreck.org>
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 14 deletions(-)
 
 diff --git a/net/9p/client.c b/net/9p/client.c
-index d841d82e908fe..cf73fe306219a 100644
+index e876d6fea2fc4..e89a91802e038 100644
 --- a/net/9p/client.c
 +++ b/net/9p/client.c
-@@ -1547,7 +1547,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+@@ -1545,7 +1545,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
  	struct p9_client *clnt = fid->clnt;
  	struct p9_req_t *req;
  	int count = iov_iter_count(to);
@@ -92,7 +92,7 @@ index d841d82e908fe..cf73fe306219a 100644
  	char *dataptr;
  
  	*err = 0;
-@@ -1570,7 +1571,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+@@ -1568,7 +1569,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
  				       0, 11, "dqd", fid->fid,
  				       offset, rsize);
  	} else {
@@ -101,7 +101,7 @@ index d841d82e908fe..cf73fe306219a 100644
  		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
  				    rsize);
  	}
-@@ -1591,11 +1592,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+@@ -1589,11 +1590,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
  		return 0;
  	}
  	if (rsize < received) {
@@ -115,7 +115,7 @@ index d841d82e908fe..cf73fe306219a 100644
  
  	if (non_zc) {
  		int n = copy_to_iter(dataptr, received, to);
-@@ -1622,9 +1623,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+@@ -1620,9 +1621,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
  	*err = 0;
  
  	while (iov_iter_count(from)) {
@@ -128,7 +128,7 @@ index d841d82e908fe..cf73fe306219a 100644
  
  		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
  			rsize = clnt->msize - P9_IOHDRSZ;
-@@ -1632,7 +1633,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+@@ -1630,7 +1631,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
  		if (count < rsize)
  			rsize = count;
  
@@ -137,7 +137,7 @@ index d841d82e908fe..cf73fe306219a 100644
  			 fid->fid, offset, rsize, count);
  
  		/* Don't bother zerocopy for small IO (< 1024) */
-@@ -1658,11 +1659,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+@@ -1656,11 +1657,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
  			break;
  		}
  		if (rsize < written) {
@@ -151,7 +151,7 @@ index d841d82e908fe..cf73fe306219a 100644
  
  		p9_req_put(clnt, req);
  		iov_iter_revert(from, count - written - iov_iter_count(from));
-@@ -2049,7 +2050,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
+@@ -2056,7 +2057,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
  
  int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
  {
@@ -161,7 +161,7 @@ index d841d82e908fe..cf73fe306219a 100644
  	struct p9_client *clnt;
  	struct p9_req_t *req;
  	char *dataptr;
-@@ -2058,7 +2060,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+@@ -2065,7 +2067,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
  
  	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
  
@@ -169,8 +169,8 @@ index d841d82e908fe..cf73fe306219a 100644
 +	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
  		 fid->fid, offset, count);
  
- 	clnt = fid->clnt;
-@@ -2093,11 +2095,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 	err = 0;
+@@ -2101,11 +2103,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
  		goto free_and_error;
  	}
  	if (rsize < count) {
