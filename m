@@ -1,83 +1,72 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081FD25D204
-	for <v9fs@lists.linux.dev>; Mon, 14 Apr 2025 10:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589E21BD9C8
+	for <v9fs@lists.linux.dev>; Mon, 14 Apr 2025 21:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744625846; cv=none; b=AokQzwU70tiZJoEYn76A2T5WWyGm7MjC/7AoP2DzCxfeEg+CQqhGfRVOqayqxgenUaSzcv9bPXR2m1MgeOeqsk18DNzOXRUjuMJKW00Cby9sp3tv8o5H0PelXLvB6Npw6gr9aa1vVANeyYtKlzYKwAUJwpP+cMH2wANHfQ2dDNs=
+	t=1744665004; cv=none; b=GdaMOKls/pG9QFu/8dCSL5glTDXLvnsfpTZjohSXK0MBvduXfmI0jtm+vPB1RMDqx0HiVOfiTn8rfIKYifheOxYoXMmaMYLQ5BJhiF4htovd1S98I+seO2yupsOE9YCEjBXJqvGVoHxhjpbuCSUJR1Jub581WECD+lQ2Ld0FzsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744625846; c=relaxed/simple;
-	bh=odDTN9VcBvmH7lQXsEvK8NZdfyWLsCw1Cm4NEalN4NM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=bwqHRafGNpQeURJ08PEA7ftmeXhlREMsPYdNIeOAzrY/AnbxsIqApfLTahE/wRpYdo+ybnEhCu/eXZmK1IcjyLMACMHnGrXhwnMRPDqwSwRm3Veq5zDqVIZPd2AjjkBnoE+Z4Ftq+sr/X/QOHM8ySxRQtVshcVfDAkUk+5fQzEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3d6e10f8747so39062095ab.3
-        for <v9fs@lists.linux.dev>; Mon, 14 Apr 2025 03:17:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744625844; x=1745230644;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CzxcOMrq7SJpJks5dmooTkk/gac1NbvMuS7VOMpo8ww=;
-        b=Ok+cSv+zndXIRK8Fuc9jkIHjnULA8eqRWM/4gPEobvePSMhQesEeU64fMjjtBEMdFN
-         +Kd0Na5XFoV2uEBvIb2cWeq89kNJ55tDyPkQN8h53ae8VyA66U9n06o5nied0R1CwgS4
-         vj4iPEK8Lpsl/EjYNEttzRaVuDtpaEfl3SkkCQ0XuyxXdnW9EktBK9kO85JFk9YIL5IV
-         Pqzf2hsXGxE9k3oXBP179qhGhSLlpGYiYWlQNRAVBUlvWpVi3lv+T6Hr5bHBY858zx51
-         Z5EbJwgseRX70snHNU00rnbNKZduibZl/xFXp0XEfxiZpA+OoDA/uUKc/mW0hWHdjX/Y
-         Ka/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXCKXnJZkziIOCATEC6U5Bb6ru6o2oSW3syPPMT5NBvIjSFWp5XCiY7OyEzscw8u/JQcNAa@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwNAAWD3g7YkH+gSwmClPTtwcywa7hWtHlcF+b2mz4vdRKzDru
-	nyc47dNKECQSxoSi5D0jUxhmN63JSWXCv4tmICjQl6Ur2F3vnTr6vUlV/KLNdT8EN9SQnhY0UX+
-	KZMABeTJQxWlbnqg9Yg+hnPq21OHfBMYW2gwdv6He+9kK78ucb/IOqo0=
-X-Google-Smtp-Source: AGHT+IGf9PRtEClTFUKjlKcxvI4JF70SyZhF/6GSG/6VkEWT1i78GYcupudoQvMaErONMddpM64JxBwosJGxDFJ30Y9juOS82XL4
+	s=arc-20240116; t=1744665004; c=relaxed/simple;
+	bh=2UPO3yHI7yqwqn+4C1KTEtSMtGW6rSFJ2UYLJOY0p0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cuG7iMR2FD2e+Jj/CRZG0zUlNUkAsqJWKm9QbnQx8jvLjXZPuTCWsHzRYdxCErhODiZT02WKDP9O9qQ5lNfqhVruQ3cIgh9MytudoJD0plZPY/Vi759AbF5AHXjNbjMOcGJ9g6A6T+j7AftQHDgtwHyUiIzZHIaC5VWJNWU0wAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=jJeWdD6p; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="jJeWdD6p"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 2488C14C2D3;
+	Mon, 14 Apr 2025 23:01:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1744664490;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OaZI5Eed2dE/mW769+1TQewrzljsqbdj/kq7EaXDvdE=;
+	b=jJeWdD6pvfKbwkjXPTb4Lkqc454CJLxd6cpr/psrcmgLI8hBb2ZL7W2iHIrKvpNIjzlwb3
+	mj+j4mpEJJIN0QbiWo9B3D0mMooLNccfcF7TAg02lrOhWxIQ+tmxH8roAmcvepDC5/waxm
+	iu2W5htGch6BKQFpW+/f79IjHU6K02ynHcuElz7Lgj+R0Oa70hr3ifSPNrEeTkcnHCc/aL
+	CMGL6JJDuPRrN1l8wMCjTNRnzicTDEZwjQZQfk9BedwpW1dBheRq8uRsjFyouopZsLvZUE
+	rRp3glBkIhDTW7WOALCvoaT313Hu9FIaFzj47re2efIb85CKQd6XMbzouWHBFg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5484be5c;
+	Mon, 14 Apr 2025 21:01:26 +0000 (UTC)
+Date: Tue, 15 Apr 2025 06:01:11 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Tingmao Wang <m@maowtm.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+Subject: Re: [PATCH 0/3] fs/9p: d_revalidate changes and using it for
+ uncached mode
+Message-ID: <Z_13l9hPolrDrEnj@codewreck.org>
+References: <cover.1743956147.git.m@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3b82:b0:3d5:890b:8db with SMTP id
- e9e14a558f8ab-3d7ec1f3dd9mr122784015ab.8.1744625844006; Mon, 14 Apr 2025
- 03:17:24 -0700 (PDT)
-Date: Mon, 14 Apr 2025 03:17:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67fce0b3.050a0220.3483fc.0025.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Apr 2025)
-From: syzbot <syzbot+list433fdab3607fdab30f2f@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1743956147.git.m@maowtm.org>
 
-Hello v9fs maintainers/developers,
+Hi,
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+Thanks for the patches; I think it makes sense overall. We've had
+problems with files modifiede on host while guest was looking at it
+semi-recently and I thought it was fixed but it either came back or I
+missed something...
 
-During the period, 0 new issues were detected and 3 were fixed.
-In total, 8 issues are still open and 37 have already been fixed.
+Just a note so you don't wonder what's happening that I won't be able to
+give them a proper look for ~a month with real life getting in the way.
 
-Some of the still happening issues:
+If someone else gives it a fair review I can probably pick up this
+thread up for 6.16 but otherwise it probably won't make it, the landlock
+part will probably come even later...
 
-Ref Crashes Repro Title
-<1> 48      Yes   WARNING: refcount bug in p9_req_put (3)
-                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
-<2> 27      Yes   INFO: task hung in v9fs_evict_inode
-                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
-<3> 13      No    BUG: corrupted list in p9_fd_cancelled (3)
-                  https://syzkaller.appspot.com/bug?extid=15a08eabe3d3838fb641
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+Sorry for the delay,
+-- 
+Dominique
