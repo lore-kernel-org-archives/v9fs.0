@@ -1,189 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6548B27C84B;
-	Mon,  7 Apr 2025 18:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081FD25D204
+	for <v9fs@lists.linux.dev>; Mon, 14 Apr 2025 10:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049880; cv=none; b=MUKM2lUo1rBP3Ye7klb5IiRvDTy6Pua/1TE729zSokI/zKWoVc/iCNou0n7B0MrMVY9nOZNm+Us2wv3RfsBDLITXT7W0G0GQfd55xJsjU9Nn21+3R6H1narUy9K0sFGR+VW77Ve3lXPj+hyfOOzx0oE8sCOsyprZgVY3mooz+Qc=
+	t=1744625846; cv=none; b=AokQzwU70tiZJoEYn76A2T5WWyGm7MjC/7AoP2DzCxfeEg+CQqhGfRVOqayqxgenUaSzcv9bPXR2m1MgeOeqsk18DNzOXRUjuMJKW00Cby9sp3tv8o5H0PelXLvB6Npw6gr9aa1vVANeyYtKlzYKwAUJwpP+cMH2wANHfQ2dDNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049880; c=relaxed/simple;
-	bh=+dWzFkVLvVDjxRYgoxd6x5KIzcgXftF36JcDbe4CzLE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gi4hVBdjh7hb4fBqUx6qdAsW509nsIWdWh8ZCsje2Y8YL4pME6ErqAxSSb33L2wTN57y/e5wmSF7sYiQhWGPuV1EgFcBD0jvlTXOphdPbSbRp2lz/mL9b7XNjvLGzZICuScpcn6LhFoIT3CabWmf4kfVaRVhiHmsuNJSRfQkhyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6COatKK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6COatKK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E301C4CEDD;
-	Mon,  7 Apr 2025 18:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049880;
-	bh=+dWzFkVLvVDjxRYgoxd6x5KIzcgXftF36JcDbe4CzLE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6COatKKpJ7bMDP4wz9ylz8ohMigoKakK9Fe4fr6nPykMplLCEUq0MrzUEZC0GIc9
-	 n0soqYZTep2HWXVE29d5Q2ZXfLZNmuczJd07CNNXEy6rwVG+a1EkpL+OX8NEzIcYmK
-	 KkmmEp/0oI+KJpMCc7dSEdGWAlLT5uSupYZy11cMia1ECRex02Q3vIig42cQ0ts4Cu
-	 7f7BGCcZguQAVMZQzxpPFinsS40Plh7KaNSe0jXrSiNZtd6KmEhYTwcscbtcpswED4
-	 kswGVKL03naVs1G5dW2is21rF9S8Ktue40OMWjIvbsjjgfdDCPE9/J+MrGihE1O7gs
-	 zOp5lqgQ3KgVg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Dominique Martinet <asmadeus@codewreck.org>,
-	Robert Morris <rtm@mit.edu>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Sasha Levin <sashal@kernel.org>,
-	ericvh@kernel.org,
-	lucho@ionkov.net,
-	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 4/5] 9p/net: fix improper handling of bogus negative read/write replies
-Date: Mon,  7 Apr 2025 14:17:47 -0400
-Message-Id: <20250407181749.3184538-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181749.3184538-1-sashal@kernel.org>
-References: <20250407181749.3184538-1-sashal@kernel.org>
+	s=arc-20240116; t=1744625846; c=relaxed/simple;
+	bh=odDTN9VcBvmH7lQXsEvK8NZdfyWLsCw1Cm4NEalN4NM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=bwqHRafGNpQeURJ08PEA7ftmeXhlREMsPYdNIeOAzrY/AnbxsIqApfLTahE/wRpYdo+ybnEhCu/eXZmK1IcjyLMACMHnGrXhwnMRPDqwSwRm3Veq5zDqVIZPd2AjjkBnoE+Z4Ftq+sr/X/QOHM8ySxRQtVshcVfDAkUk+5fQzEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3d6e10f8747so39062095ab.3
+        for <v9fs@lists.linux.dev>; Mon, 14 Apr 2025 03:17:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744625844; x=1745230644;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CzxcOMrq7SJpJks5dmooTkk/gac1NbvMuS7VOMpo8ww=;
+        b=Ok+cSv+zndXIRK8Fuc9jkIHjnULA8eqRWM/4gPEobvePSMhQesEeU64fMjjtBEMdFN
+         +Kd0Na5XFoV2uEBvIb2cWeq89kNJ55tDyPkQN8h53ae8VyA66U9n06o5nied0R1CwgS4
+         vj4iPEK8Lpsl/EjYNEttzRaVuDtpaEfl3SkkCQ0XuyxXdnW9EktBK9kO85JFk9YIL5IV
+         Pqzf2hsXGxE9k3oXBP179qhGhSLlpGYiYWlQNRAVBUlvWpVi3lv+T6Hr5bHBY858zx51
+         Z5EbJwgseRX70snHNU00rnbNKZduibZl/xFXp0XEfxiZpA+OoDA/uUKc/mW0hWHdjX/Y
+         Ka/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXCKXnJZkziIOCATEC6U5Bb6ru6o2oSW3syPPMT5NBvIjSFWp5XCiY7OyEzscw8u/JQcNAa@lists.linux.dev
+X-Gm-Message-State: AOJu0YwwNAAWD3g7YkH+gSwmClPTtwcywa7hWtHlcF+b2mz4vdRKzDru
+	nyc47dNKECQSxoSi5D0jUxhmN63JSWXCv4tmICjQl6Ur2F3vnTr6vUlV/KLNdT8EN9SQnhY0UX+
+	KZMABeTJQxWlbnqg9Yg+hnPq21OHfBMYW2gwdv6He+9kK78ucb/IOqo0=
+X-Google-Smtp-Source: AGHT+IGf9PRtEClTFUKjlKcxvI4JF70SyZhF/6GSG/6VkEWT1i78GYcupudoQvMaErONMddpM64JxBwosJGxDFJ30Y9juOS82XL4
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.133
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:3b82:b0:3d5:890b:8db with SMTP id
+ e9e14a558f8ab-3d7ec1f3dd9mr122784015ab.8.1744625844006; Mon, 14 Apr 2025
+ 03:17:24 -0700 (PDT)
+Date: Mon, 14 Apr 2025 03:17:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67fce0b3.050a0220.3483fc.0025.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Apr 2025)
+From: syzbot <syzbot+list433fdab3607fdab30f2f@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+Hello v9fs maintainers/developers,
 
-[ Upstream commit d0259a856afca31d699b706ed5e2adf11086c73b ]
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-In p9_client_write() and p9_client_read_once(), if the server
-incorrectly replies with success but a negative write/read count then we
-would consider written (negative) <= rsize (positive) because both
-variables were signed.
+During the period, 0 new issues were detected and 3 were fixed.
+In total, 8 issues are still open and 37 have already been fixed.
 
-Make variables unsigned to avoid this problem.
+Some of the still happening issues:
 
-The reproducer linked below now fails with the following error instead
-of a null pointer deref:
-9pnet: bogus RWRITE count (4294967295 > 3)
+Ref Crashes Repro Title
+<1> 48      Yes   WARNING: refcount bug in p9_req_put (3)
+                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
+<2> 27      Yes   INFO: task hung in v9fs_evict_inode
+                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
+<3> 13      No    BUG: corrupted list in p9_fd_cancelled (3)
+                  https://syzkaller.appspot.com/bug?extid=15a08eabe3d3838fb641
 
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
-Message-ID: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index e876d6fea2fc4..e89a91802e038 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1545,7 +1545,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 	struct p9_client *clnt = fid->clnt;
- 	struct p9_req_t *req;
- 	int count = iov_iter_count(to);
--	int rsize, received, non_zc = 0;
-+	u32 rsize, received;
-+	bool non_zc = false;
- 	char *dataptr;
- 
- 	*err = 0;
-@@ -1568,7 +1569,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 				       0, 11, "dqd", fid->fid,
- 				       offset, rsize);
- 	} else {
--		non_zc = 1;
-+		non_zc = true;
- 		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
- 				    rsize);
- 	}
-@@ -1589,11 +1590,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 		return 0;
- 	}
- 	if (rsize < received) {
--		pr_err("bogus RREAD count (%d > %d)\n", received, rsize);
-+		pr_err("bogus RREAD count (%u > %u)\n", received, rsize);
- 		received = rsize;
- 	}
- 
--	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
-+	p9_debug(P9_DEBUG_9P, "<<< RREAD count %u\n", received);
- 
- 	if (non_zc) {
- 		int n = copy_to_iter(dataptr, received, to);
-@@ -1620,9 +1621,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 	*err = 0;
- 
- 	while (iov_iter_count(from)) {
--		int count = iov_iter_count(from);
--		int rsize = fid->iounit;
--		int written;
-+		size_t count = iov_iter_count(from);
-+		u32 rsize = fid->iounit;
-+		u32 written;
- 
- 		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
- 			rsize = clnt->msize - P9_IOHDRSZ;
-@@ -1630,7 +1631,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 		if (count < rsize)
- 			rsize = count;
- 
--		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
-+		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %u (/%zu)\n",
- 			 fid->fid, offset, rsize, count);
- 
- 		/* Don't bother zerocopy for small IO (< 1024) */
-@@ -1656,11 +1657,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 			break;
- 		}
- 		if (rsize < written) {
--			pr_err("bogus RWRITE count (%d > %d)\n", written, rsize);
-+			pr_err("bogus RWRITE count (%u > %u)\n", written, rsize);
- 			written = rsize;
- 		}
- 
--		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
-+		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %u\n", written);
- 
- 		p9_req_put(clnt, req);
- 		iov_iter_revert(from, count - written - iov_iter_count(from));
-@@ -2056,7 +2057,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
- 
- int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- {
--	int err, rsize, non_zc = 0;
-+	int err, non_zc = 0;
-+	u32 rsize;
- 	struct p9_client *clnt;
- 	struct p9_req_t *req;
- 	char *dataptr;
-@@ -2065,7 +2067,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- 
- 	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
- 
--	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
-+	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
- 		 fid->fid, offset, count);
- 
- 	err = 0;
-@@ -2101,11 +2103,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- 		goto free_and_error;
- 	}
- 	if (rsize < count) {
--		pr_err("bogus RREADDIR count (%d > %d)\n", count, rsize);
-+		pr_err("bogus RREADDIR count (%u > %u)\n", count, rsize);
- 		count = rsize;
- 	}
- 
--	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %d\n", count);
-+	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %u\n", count);
- 
- 	if (non_zc)
- 		memmove(data, dataptr, count);
--- 
-2.39.5
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
