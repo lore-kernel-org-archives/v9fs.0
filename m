@@ -1,105 +1,125 @@
-Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B08236445
-	for <v9fs@lists.linux.dev>; Fri, 16 May 2025 11:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3127E35957
+	for <v9fs@lists.linux.dev>; Mon, 19 May 2025 09:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747395755; cv=none; b=AMLCYoV25zZucPJ+jtHxnkkKYwzKxyCGtEF1AmwLbMe+xg7lsRpMVAC/j/Rx/Dwmn0JlB49QAOZ6QmpEpyE1KBn3iemrpAt60uQ+aKfq9miM3lUC90mwYOku1BY8SmZCvFlgVeZu/0ww0TM6reEC/K0+XVSfZjhM7OU9JwdTTRo=
+	t=1747645649; cv=none; b=hvvsAqx59iZ21Yy+UfDohNFzJIQN/7afkH7Tx6P3BE49Ei7xNFPbp7Izb6kfnHTXfrPDZHDhuEX64VktrQ5e4aLV3MD3kgCPnvc2Se4unhDPU3TxoPoUaL6qikmSPQQ6PjgPp6cT3yo1XgRbhK/TtWBxJbWgk+aa/3mAkzIxsHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747395755; c=relaxed/simple;
-	bh=qiMV3dMi+9DlhdCTYBcFKYMBvMxUD3LJ1STAMRmHlO8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=mcdl/gttZYQv6RVsklrDM4+3fT9OhAsUzFrMyprdjPw6s4VpOyW7p0MS249rAEADjbkZkDteLh+BUeD1vWYxv0Fhg7Xwxu8um04HycWR8PpxyGHCf4a7Udhv+sgUssoRAurCeXygOGFoxk7T2aLaPZZM8QUQwRsF4pWXbg7b0Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hqe41yA3; arc=none smtp.client-ip=209.85.219.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747645649; c=relaxed/simple;
+	bh=4rBX6YspVYCIDPNLZKRc2wJwrp2OYC47FhKHqNl0FwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NxHXJvad0Kr4QSyat6KDJz9CJWwbozFifK2GuPzr0O97k/ZV2dRQ8a7NybgeTBeoBzHIsIgYq0z+HGZEzdRRskIVnmdJLrnn3oLFYsIvorNsqHQheKwcIlwO4hbwBVah0GQHhgng7mYtaVCDbjd6Q+UmnWpE17dhcAm/R9uW1/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=axUJtfXP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hqe41yA3"
-Received: by mail-yb1-f196.google.com with SMTP id 3f1490d57ef6-e7b52ef9dc6so1718793276.1
-        for <v9fs@lists.linux.dev>; Fri, 16 May 2025 04:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747395753; x=1748000553; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qiMV3dMi+9DlhdCTYBcFKYMBvMxUD3LJ1STAMRmHlO8=;
-        b=Hqe41yA3Pc0Yxh0uKRv2Zbdr9L7+6OIj9m9HOb+tOVPP70aSIxzDlOC1m+0/ouOVFv
-         8k11wjO/FVg62RUTlF7OPBqtxb2k2gdwKncUeX2LeHlZUckWXypR60s3SUCA27m6hqsf
-         eq75SJgng+RmVPK+6L5WPawtKsfyVAy2KgVOvkzvFsaVnI+lek5NeEAn78kLzqOuRyWO
-         P27s4NWAOiJ5+Y0UyHS8fFdPhN5Ms1CUPt0hPHmASySBHwE1Lb5K8Znihp4x1L8XTAME
-         Wtlu6w5hsjZR8yz/OawRRSKZ/K8KMjk+rSUz55H7G60SH/4khKCP58asJQNTky5e2jay
-         BHiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747395753; x=1748000553;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qiMV3dMi+9DlhdCTYBcFKYMBvMxUD3LJ1STAMRmHlO8=;
-        b=iP8oyQ1csyI8vUfEgOewhrf+lo+8shjDgOh8vEi9DQ2RCW2vOgz169mwVQnlox5ttL
-         FA19ERNnncYr+MGiOK5GZZoFaamcB09vnxP1Fz1E2hWPKbgtA1IB39HCxQ6Sr6kKu5jd
-         qs4Iyua78k/4gvtpxa+NNZOw4GcSKJ5R4jkvAiXtNJbQc14RA9GGlb1N0ErMijGdkiuD
-         +GG0APBOhD3DwvvTE/4JKgTJaikSOF4u7hW8KaI5Q5UMsJLzhrxoY1N3BhoeViGPiz9A
-         LZpZeuJCp9MVo8sqvCl/n3rnrtolZUW8xNqdG7Nqpt2J2zwhS/7+NtfsGPAy9ZZO+dlZ
-         PZyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXWx3aJAmWbbxU477Kt4V2WAxEO5yaNJxvGfDyzG3T1TYM9ynMygEAZWk1H8Zs7eainQRzN@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz52S8bI40nuooMmxJiKA1xIyOgtwQryM6sru9oW9VtCTGxnVQ6
-	aN5CyX/mgK74mIewCI7s8P50VCqTsDFeOvaxX+2GjhVx/vCNoRdmA3ZpfR0fK0fVmXD+WXhBs2/
-	r8oapiK8l8UzDelqZHMC1Bjnajdjz7KA=
-X-Gm-Gg: ASbGncva8eY2iMn7dTxrdWHcD2fJQAdTPisTK9ThJp6wTZzGqrQezsaNosCLXy4e207
-	oqQF8QU0Yv6Y8AvhSj4HeUsEqe2AKCCioX6TNwjUHvgOGF0qEQ1aI6QOyn05/8JoGJzxILbsOr6
-	E5UOwUFvi4npLvGCgUA7Xqs5Ee2u7nh9iw2Jk=
-X-Google-Smtp-Source: AGHT+IEqOHRPI9mMx9Iw5eaBYbZdEYeRPHy72IJwKVqT09nHXqCoGVb4KDCzuftFzMlgMWjU6O9shtHe9RpoQvqfBL0=
-X-Received: by 2002:a05:6902:2b86:b0:e78:f196:5d48 with SMTP id
- 3f1490d57ef6-e7b6b18c7d4mr3667234276.13.1747395753173; Fri, 16 May 2025
- 04:42:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="axUJtfXP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747645643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DkN9GuwbtueXsDOI2wUEzNlSJ5jf3RNLBFIQXl+y3I0=;
+	b=axUJtfXPkihIGITPHpJYk9NiP4RXDA5rSiWeUR4tEt6lnXc4Q0AEh+lzswvuYUECJNefXT
+	iTpGjtlTo3cxKOhvJgRYDSY001ZS3xaf231aoKFRiPwN3CVoh4EXDwb0uA7X8kzSk8dzAA
+	/NlvxFA90lNxyBNpsmBILN8n+q+1Oc4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-1IDUbA_mOAWUFZRkcSDKlg-1; Mon,
+ 19 May 2025 05:07:19 -0400
+X-MC-Unique: 1IDUbA_mOAWUFZRkcSDKlg-1
+X-Mimecast-MFC-AGG-ID: 1IDUbA_mOAWUFZRkcSDKlg_1747645638
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80BD41800447;
+	Mon, 19 May 2025 09:07:17 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.188])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CEBE9195608D;
+	Mon, 19 May 2025 09:07:13 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] netfs: Miscellaneous fixes
+Date: Mon, 19 May 2025 10:07:00 +0100
+Message-ID: <20250519090707.2848510-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Guoyu Yin <y04609127@gmail.com>
-Date: Fri, 16 May 2025 19:42:22 +0800
-X-Gm-Features: AX0GCFtdxDf5MJAWdsDhhE1EdqPM7pPra-wvzgCAWWruf6VBGH0_LqXshVq0ZUM
-Message-ID: <CAJNGr6vHrsSZ4QrRbRrN8-+tTb7ks8+xY9W7iE2VLsdgZe-eFQ@mail.gmail.com>
-Subject: [BUG]INFO: Slab ADDR objects=NUM used=NUM fp=ADDR flags=ADDR
-To: ericvh@kernel.org
-Cc: lucho@ionkov.net, asmadeus@codewreck.org, linux_oss@crudebyte.com, 
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi,
+Hi Christian,
 
-I encountered a kernel crash on linux5.10 described as "INFO: Slab
-ADDR objects=NUM used=NUM fp=ADDR." The issue occurs when shutting
-down the 9p-fcall-cache slab cache, with the dmesg log indicating that
-objects remain in the cache, triggering kernel warnings and errors.
+Here are some miscellaneous fixes and changes for netfslib, if you could
+pull them:
 
-According to the dmesg log, the crash occurs in kmem_cache_destroy,
-with the call path p9_client_destroy -> kmem_cache_destroy. This
-happens during resource cleanup after a failed 9P filesystem mount.
-The log shows that the 9p-fcall-cache slab cache still contains
-objects (e.g., "objects=3 used=1"), indicating incomplete cleanup.
+ (1) Fix an oops in write-retry due to mis-resetting the I/O iterator.
 
-I suspect that p9_client_destroy fails to properly release all fcall
-objects in the cleanup path after a mount failure, possibly due to
-reference count errors or a memory leak. I recommend reviewing the
-p9_client_destroy function in net/9p/client.c to ensure all fcall
-objects are freed before the slab cache is destroyed.
+ (2) Fix the recording of transferred bytes for short DIO reads.
 
-This can be reproduced on:
+ (3) Fix a request's work item to not require a reference, thereby avoiding
+     the need to get rid of it in BH/IRQ context.
 
-HEAD commit:
+ (4) Fix waiting and waking to be consistent about the waitqueue used.
 
-2c85ebc57b3e1817b6ce1a6b703928e113a90442
+The patches can also be found here:
 
-console output : https://pastebin.com/raw/4CieLjqM
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
 
-kernel config : https://pastebin.com/raw/gPbJY2Bq
+Thanks,
+David
 
-C reproducer : https://pastebin.com/raw/EanQb7c
+David Howells (3):
+  netfs: Fix oops in write-retry from mis-resetting the subreq iterator
+  netfs: Fix the request's work item to not require a ref
+  netfs: Fix wait/wake to be consistent about the waitqueue used
 
-The C reproducer may take a few minutes to trigger this crash, please
-wait for a while.
+Paulo Alcantara (1):
+  netfs: Fix setting of transferred bytes with short DIO reads
 
-Best regards,
+ fs/9p/vfs_addr.c             |   2 +-
+ fs/afs/write.c               |   8 +-
+ fs/cachefiles/io.c           |  16 +--
+ fs/ceph/addr.c               |   2 +-
+ fs/erofs/fscache.c           |   6 +-
+ fs/netfs/buffered_read.c     |  32 +++--
+ fs/netfs/buffered_write.c    |   2 +-
+ fs/netfs/direct_read.c       |  10 +-
+ fs/netfs/direct_write.c      |  12 +-
+ fs/netfs/fscache_io.c        |  10 +-
+ fs/netfs/internal.h          |  42 +++++--
+ fs/netfs/misc.c              | 218 +++++++++++++++++++++++++++++++++++
+ fs/netfs/objects.c           |  47 ++++----
+ fs/netfs/read_collect.c      | 178 ++++------------------------
+ fs/netfs/read_pgpriv2.c      |   4 +-
+ fs/netfs/read_retry.c        |  26 +----
+ fs/netfs/read_single.c       |   6 +-
+ fs/netfs/write_collect.c     |  81 +++++--------
+ fs/netfs/write_issue.c       |  38 +++---
+ fs/netfs/write_retry.c       |  19 ++-
+ fs/smb/client/cifsproto.h    |   3 +-
+ fs/smb/client/cifssmb.c      |   4 +-
+ fs/smb/client/file.c         |   7 +-
+ fs/smb/client/smb2pdu.c      |   4 +-
+ include/linux/fscache.h      |   2 +-
+ include/linux/netfs.h        |  14 +--
+ include/trace/events/netfs.h |   7 +-
+ net/9p/client.c              |   6 +-
+ 28 files changed, 427 insertions(+), 379 deletions(-)
 
-Guoyu
