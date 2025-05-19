@@ -1,45 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0DD27FD54
-	for <v9fs@lists.linux.dev>; Mon, 19 May 2025 13:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92282281372
+	for <v9fs@lists.linux.dev>; Mon, 19 May 2025 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747662513; cv=none; b=P//EIhMObSUZ66xHMmVuA6K/QDJUTFwyMaCLc9ReJlSKT7POQVpAhOF0rqkH5qZwF45VbMwbgq2PZJSS+XQ2ktmugLSaeafbfpun8PmjlViX389hxpR22sPMrP8Dj6cqWveXud+t62m6ckJfRQtQyciaBfXFpcyN3OnTwWvsAks=
+	t=1747662525; cv=none; b=LwFrKlCGyLiKLOxAXz737gk5xkG9IjijnFjXXy4EmHZUR5wWKIG4VkKOfpGhRohH5v0o9KYFe5nwUhvD5qk+kVVU+PBtbSoUeGkCZyNdNdhcmAaspfmlLzAoY1d0FPB36H+/5laFIsgqeUaw2qoNBIvAOJ/aqB44Ou5WNyxYo+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747662513; c=relaxed/simple;
-	bh=0kFUN0Bb4ZQZ98YAUM8AzAOqvp9BJdqBdqhGWpmyTRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gq87RAlaF5whzCSqBPOGJVbQGdM9DBZOooT7yGXpwJbZcFwJsk3WevDuBPk1F5eAU4eB2DhBCJUruRO24NL4A1dXtTvt03VnkDqtPVr720VHGtTR9ANIjWTDxKpbvnA6fWQ+fNOjDA8xCLToGPH/Q5TjymyYoJ0SyIQzoRqPF5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PRUr7YKl; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1747662525; c=relaxed/simple;
+	bh=z/2NQrpZU7XHMd73sVYXyM1s0LI4RxI1UroY+nJgPY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qk1I7k5Wt9nX1pkOkrAbE1SC1AT96kWvUhUocjvQGjbYoRl9aZoBKryqsMVhjaqaa4ypolYKGG//wvSTJNgUKjNNn1VcPE/tvStwa5/0UTv7BzJy3tIqFKkKkHM5KxmDDZovC8FTnEk9Rm3UnEXxp/gizeFHO3rA2OGxRPoageE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=enCAeuAg; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PRUr7YKl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="enCAeuAg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747662510;
+	s=mimecast20190719; t=1747662521;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OoTF+qmsx6IE6mLtdNrrcrScQMVpnF3mNudHwgneH7s=;
-	b=PRUr7YKlMquhPw/vCfXUqwJ6oXf79awXuQP44g+YhJLPbg6douW3rXzc9ApCOS0+Yvp+7c
-	tZvLh9rP0vc56Ir+UnUDPJLFuh+Y+G4yZurKmxSaAwH1RNswcKe35gT9O9pJ0cdtESoF2M
-	ckb8wTxLrpMfoIpK3Kmc6akmwT3ybPQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMsLiP3XGQV7eXcZqnf/CvDaoUPHhrXnSqmgsY7y1Vw=;
+	b=enCAeuAglNMQy2DH3p6ljs2Z2/EgvemoqNWCIBcwjm88TsqX2K4DfnynrKlLw6jNsycDgv
+	HmHyCB2EpcJiYjSyPseOYPRLfS8wmmbfb+IWxSpvahVrScSTDSPYZsBWL1VXQ4I2iYmEy+
+	2dyiVtqVbwRUtcShFWD3cx9E6JAUgJY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-s83dwMDsNoWSP8UzoDUabg-1; Mon,
- 19 May 2025 09:48:28 -0400
-X-MC-Unique: s83dwMDsNoWSP8UzoDUabg-1
-X-Mimecast-MFC-AGG-ID: s83dwMDsNoWSP8UzoDUabg_1747662506
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-fuzhTDqrOYKUh0siHdF2vA-1; Mon,
+ 19 May 2025 09:48:40 -0400
+X-MC-Unique: fuzhTDqrOYKUh0siHdF2vA-1
+X-Mimecast-MFC-AGG-ID: fuzhTDqrOYKUh0siHdF2vA_1747662518
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 410F518004A7;
-	Mon, 19 May 2025 13:48:26 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38D3D195608B;
+	Mon, 19 May 2025 13:48:38 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.188])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6CA1A18003FC;
-	Mon, 19 May 2025 13:48:22 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A22F01956095;
+	Mon, 19 May 2025 13:48:34 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,9 +55,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 00/11] netfs: Miscellaneous cleanups
-Date: Mon, 19 May 2025 14:47:56 +0100
-Message-ID: <20250519134813.2975312-1-dhowells@redhat.com>
+Subject: [PATCH 02/11] fs/netfs: remove unused flag NETFS_SREQ_SEEK_DATA_READ
+Date: Mon, 19 May 2025 14:47:58 +0100
+Message-ID: <20250519134813.2975312-3-dhowells@redhat.com>
+In-Reply-To: <20250519134813.2975312-1-dhowells@redhat.com>
+References: <20250519134813.2975312-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -63,69 +67,50 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hi Christian,
+From: Max Kellermann <max.kellermann@ionos.com>
 
-Here are some miscellaneous very minor cleanups for netfslib for the next
-merge window, primarily from Max Kellermann, if you could pull them.
+This flag was added by commit 3d3c95046742 ("netfs: Provide readahead
+and readpage netfs helpers") but its only user was removed by commit
+86b374d061ee ("netfs: Remove fs/netfs/io.c").
 
- (0) Update the netfs docs.  This is already in the VFS tree, but it's a
-     dependency for other patches here.
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ Documentation/filesystems/netfs_library.rst | 5 -----
+ include/linux/netfs.h                       | 1 -
+ 2 files changed, 6 deletions(-)
 
- (1) Remove NETFS_SREQ_SEEK_DATA_READ.
-
- (2) Remove NETFS_INVALID_WRITE.
-
- (3) Remove NETFS_ICTX_WRITETHROUGH.
-
- (4) Remove NETFS_READ_HOLE_CLEAR.
-
- (5) Reorder structs to eliminate holes.
-
- (6) Remove netfs_io_request::ractl.
-
- (7) Only provide proc_link field if CONFIG_PROC_FS=y.
-
- (8) Remove folio_queue::marks3.
-
- (9) Remove NETFS_RREQ_DONT_UNLOCK_FOLIOS.
-
-(10) Remove NETFS_RREQ_BLOCKED.
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next
-
-Thanks,
-David
-
-David Howells (1):
-  netfs: Update main API document
-
-Max Kellermann (10):
-  fs/netfs: remove unused flag NETFS_SREQ_SEEK_DATA_READ
-  fs/netfs: remove unused source NETFS_INVALID_WRITE
-  fs/netfs: remove unused flag NETFS_ICTX_WRITETHROUGH
-  fs/netfs: remove unused enum choice NETFS_READ_HOLE_CLEAR
-  fs/netfs: reorder struct fields to eliminate holes
-  fs/netfs: remove `netfs_io_request.ractl`
-  fs/netfs: declare field `proc_link` only if CONFIG_PROC_FS=y
-  folio_queue: remove unused field `marks3`
-  fs/netfs: remove unused flag NETFS_RREQ_DONT_UNLOCK_FOLIOS
-  fs/netfs: remove unused flag NETFS_RREQ_BLOCKED
-
- Documentation/core-api/folio_queue.rst      |    3 -
- Documentation/filesystems/netfs_library.rst | 1013 ++++++++++++++-----
- fs/netfs/buffered_read.c                    |   24 +-
- fs/netfs/buffered_write.c                   |    3 +-
- fs/netfs/direct_read.c                      |    3 -
- fs/netfs/objects.c                          |    2 -
- fs/netfs/read_collect.c                     |   14 +-
- fs/netfs/write_collect.c                    |    2 -
- include/linux/folio_queue.h                 |   42 -
- include/linux/fscache.h                     |    3 -
- include/linux/netfs.h                       |   30 +-
- include/trace/events/netfs.h                |    3 +-
- 12 files changed, 767 insertions(+), 375 deletions(-)
+diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+index 939b4b624fad..ddd799df6ce3 100644
+--- a/Documentation/filesystems/netfs_library.rst
++++ b/Documentation/filesystems/netfs_library.rst
+@@ -712,11 +712,6 @@ handle falling back from one source type to another.  The members are:
+      at a boundary with the filesystem structure (e.g. at the end of a Ceph
+      object).  It tells netfslib not to retile subrequests across it.
+ 
+-   * ``NETFS_SREQ_SEEK_DATA_READ``
+-
+-     This is a hint from netfslib to the cache that it might want to try
+-     skipping ahead to the next data (ie. using SEEK_DATA).
+-
+  * ``error``
+ 
+    This is for the filesystem to store result of the subrequest.  It should be
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index c86a11cfc4a3..d315d86d0ad4 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -191,7 +191,6 @@ struct netfs_io_subrequest {
+ 	unsigned long		flags;
+ #define NETFS_SREQ_COPY_TO_CACHE	0	/* Set if should copy the data to the cache */
+ #define NETFS_SREQ_CLEAR_TAIL		1	/* Set if the rest of the read should be cleared */
+-#define NETFS_SREQ_SEEK_DATA_READ	3	/* Set if ->read() should SEEK_DATA first */
+ #define NETFS_SREQ_MADE_PROGRESS	4	/* Set if we transferred at least some data */
+ #define NETFS_SREQ_ONDEMAND		5	/* Set if it's from on-demand read mode */
+ #define NETFS_SREQ_BOUNDARY		6	/* Set if ends on hard boundary (eg. ceph object) */
 
