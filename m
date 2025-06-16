@@ -1,137 +1,83 @@
-Received: from kurisu.lahfa.xyz (kurisu.lahfa.xyz [163.172.69.160])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2910522F;
-	Thu, 12 Jun 2025 22:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.69.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484812750F1
+	for <v9fs@lists.linux.dev>; Mon, 16 Jun 2025 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749767509; cv=none; b=aTBcH+boqbNNFOEGDCvu02HNtlOsc/A9uDYJKe6iYEVed1gXP6icic5OSZHfFDu02BN/MtLxC/FC5jA25hxuusvxHIxgy+Hjga61hFakTyO87Y0RFI1rcFQQwXg5zQAnmlm8wDE4yr6NEh0cLpkfA+bgMdcRNMCqQ+MMG4bDI7Y=
+	t=1750067963; cv=none; b=bgOWK/2bAlAVDVjlP2oCXFkSHNC3EEISNPDUC2d5la7C0st9TqGIwakBIW4iUpbHCRfwDPsR94aQz+T8vNWKG3zFMCd4cfmidDeCNnAsUEou9RG+Ig7DZTebn7bbXgYxPNdej3TtD9HHli3QDOd8kqUfiOF6KflJzu6XeZ7sP8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749767509; c=relaxed/simple;
-	bh=cH2TJaPhP16q+O7GZ4mzgek1QfkFEQdXgNxSfT/q03M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UrSSVhaBsIqm9Dlwfbk3D3ktir4lI/98bCcMQkHgeQMKLsvc+ZtkEDQMmZtaP6IX+Lkm609MoR8p3+QJ/b58zlBHMv0fJxX3RPZkFtsWUhIMuDnP2le0QlmbmOo1clNrtadMrhblmuafJBhJIvjIsrIt3eEilGFM6+1tQvgJQEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lahfa.xyz; spf=pass smtp.mailfrom=lahfa.xyz; dkim=pass (1024-bit key) header.d=lahfa.xyz header.i=@lahfa.xyz header.b=hyWwVe6y; arc=none smtp.client-ip=163.172.69.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lahfa.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lahfa.xyz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lahfa.xyz header.i=@lahfa.xyz header.b="hyWwVe6y"
-Date: Fri, 13 Jun 2025 00:24:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lahfa.xyz; s=kurisu;
-	t=1749767060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k5CSy6NPtlYW+SywnOyyYPKFA5kG/64nLhhD3+nTO/Q=;
-	b=hyWwVe6yQIc8ayyl5ZJszKksBtIr6039zYA9qoofbPidbru0i7jkgdhUcBiXBa0zQluBhK
-	guYuK5Mf9JXhJv1BL+10mTDU9Br0lttTKel/wunz+eBzSCA6r6mc2D0kXGOitNPpEEQF8k
-	tlOqIr++/TR3ACEaM8sZCrDbn7OJ/v4=
-From: Ryan Lahfa <ryan@lahfa.xyz>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: David Howells <dhowells@redhat.com>, 
-	Antony Antony <antony@phenome.org>, Christian Brauner <brauner@kernel.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Sedat Dilek <sedat.dilek@gmail.com>, Maximilian Bosch <maximilian@mbosch.me>, 
-	regressions@lists.linux.dev, v9fs@lists.linux.dev, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
-Message-ID: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
-References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
- <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
- <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
- <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me>
- <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com>
- <3327438.1729678025@warthog.procyon.org.uk>
- <ZxlQv5OXjJUbkLah@moon.secunet.de>
+	s=arc-20240116; t=1750067963; c=relaxed/simple;
+	bh=+G6cA1eoPE5yUEpvUgaEYQFhvUsFGDyIorb889FsJ24=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Bs9Os/XUyMkLd7mFooBZRZ8WAWTE5TVpt65bNUH31E+T0CUTthzylLYeo+ItFEMSThZYwWRse3doUTgwa5qSUvlcP/tKXuYOx7V8HS/hWO3vZROe6xK8tGE3GYvR3J1/KlX8/osooZayYRK5Xe+4A025JefZ1G3MPwPE7SV2NdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-873fd6e896bso348174139f.3
+        for <v9fs@lists.linux.dev>; Mon, 16 Jun 2025 02:59:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750067961; x=1750672761;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sZdGWPFUAn9yrC9BQVibxcmCvDvTE7yLyusDrl1BjnU=;
+        b=hzheh3iHQISqw7j0Z/UC3PBcwLnAHxs0z1IIWx+Ge7gPDjG69pWnZrFSItB+vif1Zn
+         l1aHOGqmziKTj2r7jhZRhcTAgrKj0EwF30RfvlGf8u6pjOmYWfCJ1ZZXIdnzxcvCBLhE
+         HqzMgfe2HhQSvPXh+HQI6TDgLz3SLhsgF2QYMnKxZLcfSee19iabfXAj0H5rHA5XrE8b
+         mNJRSG8XmEob3FlfzvvJIxc/JYa8qYDi9k5t7EQbEtmYHn8+rnc1B/1nUnk2sdane/zN
+         t325QaoJpgdrYJJcIvwWD53rIWayac03Mh6AudO4goVxAjYUNEIum2WohBaiZcG1Eyhn
+         TBoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWL7OTYFJPcXLmbECNqFnRLIcAAL8tMWSm6niH7nrx+IirHc6kzxoXp82BvKvk+uBMsgsRK@lists.linux.dev
+X-Gm-Message-State: AOJu0YykDf7rYqmZQkQ92ksVLcjWrB9MGSItWLkVDx/eEq+3LpfltjhG
+	yQ/MD8ZsKRCxdoOe5IykIW0Vrwy+ay8T3MjSM1zaHeArqVTkQiVUGlnPp8fYrgKpyLK///6VGwK
+	ySaTz87npFnpxrHS4my9OuAHwEOugITd27IzMI/63uKGhqPSDQMdG+YH6ycE=
+X-Google-Smtp-Source: AGHT+IGSHY4smmsVXnxGL4aswr/oNdPMG+eiqWmOTkox/DNcsFbNYE+3vSPkrdQ9QXwIuhgu4vB/YW9gfMLheAp1bllU5DIOY1ah
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxlQv5OXjJUbkLah@moon.secunet.de>
+X-Received: by 2002:a05:6e02:3786:b0:3dc:8423:5440 with SMTP id
+ e9e14a558f8ab-3de07c4506emr81834735ab.0.1750067961473; Mon, 16 Jun 2025
+ 02:59:21 -0700 (PDT)
+Date: Mon, 16 Jun 2025 02:59:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <684feaf9.050a0220.3aca5c.000d.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Jun 2025)
+From: syzbot <syzbot+list398904ba9851c202b09d@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi everyone,
+Hello v9fs maintainers/developers,
 
-Le Wed, Oct 23, 2024 at 09:38:39PM +0200, Antony Antony a écrit :
-> On Wed, Oct 23, 2024 at 11:07:05 +0100, David Howells wrote:
-> > Hi Antony,
-> > 
-> > I think the attached should fix it properly rather than working around it as
-> > the previous patch did.  If you could give it a whirl?
-> 
-> Yes this also fix the crash.
-> 
-> Tested-by: Antony Antony <antony.antony@secunet.com>
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-I cannot confirm this fixes the crash for me. My reproducer is slightly
-more complicated than Max's original one, albeit, still on NixOS and
-probably uses 9p more intensively than the automated NixOS testings
-workload.
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 7 issues are still open and 37 have already been fixed.
 
-Here is how to reproduce it:
+Some of the still happening issues:
 
-$ git clone https://gerrit.lix.systems/lix
-$ cd lix
-$ git fetch https://gerrit.lix.systems/lix refs/changes/29/3329/8 && git checkout FETCH_HEAD
-$ nix-build -A hydraJobs.tests.local-releng
+Ref Crashes Repro Title
+<1> 357     Yes   INFO: task hung in v9fs_evict_inode
+                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
+<2> 166     Yes   INFO: task hung in __iterate_supers
+                  https://syzkaller.appspot.com/bug?extid=b10aefdd9ef275e9368d
+<3> 66      Yes   WARNING: refcount bug in p9_req_put (3)
+                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
 
-I suspect the reason for why Antony considers the crash to be fixed is
-that the workload used to test it requires a significant amount of
-chance and retries to trigger the bug.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-On my end, you can see our CI showing the symptoms:
-https://buildkite.com/organizations/lix-project/pipelines/lix/builds/2357/jobs/019761e7-784e-4790-8c1b-f609270d9d19/log.
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-We retried probably hundreds of times and saw different corruption
-patterns, Python getting confused, ld.so getting confused, systemd
-sometimes too. Python had a much higher chance of crashing in many of
-our tests. We reproduced it over aarch64-linux (Ampere Altra Q80-30) but
-also Intel and AMD CPUs (~5 different systems).
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-As soon as we reverted to Linux 6.6 series, the bug went away.
-
-We bisected but we started to have weirder problems, this is because we
-encountered the original regression mentioned in October 2024 and for a
-certain range of commits, we were unable to bisect anything further.
-
-So I switched my bisection strategy to understand when the bug was
-fixed, this lead me on the commit
-e65a0dc1cabe71b91ef5603e5814359451b74ca7 which is the proper fix
-mentioned here and on this discussion.
-
-Reverting this on the top of 6.12 cause indeed a massive amount of
-traces, see this gist [1] for examples.
-
-Applying the "workaround patch" aka "[PATCH] 9p: Don't revert the I/O
-iterator after reading" after reverting e65a0dc1cabe makes the problem
-go away after 5 tries (5 tries were sufficient to trigger with the
-proper fix).
-
-If this can be helpful, the nature of the test above is to copy a
-significant amount of assets to an S3 implementation (Garage) running
-inside of the VM. Many of these assets comes from the Nix store which
-sits over 9p.
-
-Anyhow, I see three patterns:
-
-- Kernel panic when starting the /init, this is the crash Max reported
-  back in October 2024 and the one we started to encounter while
-  bisecting this problem in the range between v6.11 and v6.12.
-- systemd crashing very quickly, 
-  this is what we see when reverting e65a0dc1cabe71b91ef5603e5814359451b74ca7
-  on the top of v6.12 *OR* when we are around v6.12rc5.
-- what the CI above shows which are userspace programs crashing after
-  some serious I/O exercising has been done, which happens on the top of
-  v6.12, v6.14, v6.15 (incl. stable kernels).
-
-If you need me to test things, please let me know.
-
-[1]: https://gist.dgnum.eu/raito/3d1fa61ebaf642218342ffe644fb6efd
--- 
-Ryan Lahfa
+You may send multiple commands in a single email message.
