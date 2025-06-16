@@ -1,128 +1,118 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525FD205AB6
-	for <v9fs@lists.linux.dev>; Mon, 16 Jun 2025 23:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE19205AB6;
+	Mon, 16 Jun 2025 23:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750115418; cv=none; b=CpPRNAVPPYKODT67eZ2lH31NxcWS3slHguGER4O+LXmlk3eJrJ7JQTY5yAlbreN9frpIEVelRn7oTU+E6VBdflCBn1gHn5cMIKne77to/WXk49GNf/jdLxSBGIEr2hNWgid0sNlxfbvhYfGoDnbp6eXvNr3/BPL3Pq+C9SWI04w=
+	t=1750115476; cv=none; b=GncoBJRdHtDu5X4cJGfuGoB2zMc4WXxC86VfJEG7dtpgcTaU2Su9knIEw2uMe/oK2TOzkqjx05dOZqYaJTurzWh3+6LJvrHqGHoszw7qAp1uevwWVyaTMg75CH0ekNN4R4QCdPMtfQP841IB1lUYbQTpirIpz+2DO3DCJkNHaBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750115418; c=relaxed/simple;
-	bh=l/dsEKZik8069kBgbRAsR0tcPdM8xcTYaQmnuK2tb18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fHUpxi8Ayd5RI6/Jiwhq/bDCi/dKUfrCWd/KBri4wpbn9OpzDKQtXr8r5wiQN5i39TJTo1Eh5o3O9xRyuLwJ/NWqGF+GKDsc6aCYttesMulbRK6++WUZhUO+gUN4scvOUE5WVDSNvr+Uav6i1saOjhkr6P8KsjI/ISCzT5e8B+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ba1Vh+Nr; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1750115476; c=relaxed/simple;
+	bh=f92kylcTcgjxPjPuigrD0gWIhxIBT4jMyjAYbJx2fgU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=t7b+OkJcPMiEQGDhqz9AqiWiS6Q0qYtmxphteaWcxrXDyt4S0Iyo9kxmTVX3EgXT4sHI7SQsJN3g6+3kKoySsr4Q1GmeepUlRYn2geSieCQRJaBn/zXFz6s6BKB4Yi13C66ghrXjKhEQFuavQjak38gRCQeXdso9C9SUGCpfR1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZWFIShO/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ba1Vh+Nr"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 45E3014C2D3;
-	Tue, 17 Jun 2025 01:00:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1750114827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LSj4gXCyHisTwhB2BQnYcgpL/7V+l81OjPQ3XMozPiY=;
-	b=ba1Vh+NrSIjd7dsdd0+OHQAo7kEOIiMCbiZJITasBMpb06v5GCKFJzfa1Q00oZ7ppDVJYG
-	V+JsgYIurMccniqSrkVZn6QnSlVESpbxMFZPC8sfVKmKZ+D3eo+daYi/ML7Vs8MJu4t/cR
-	1BtXctHoYjA4lz1+e8LJvfTLuJIMFlCmmGvQXCcVMABgSNMwml7IPYNukXzENuyJR/XK7w
-	LIkPx8oP95IJ7trvfZ/myMEkKZumsIBRyJr+knK01jJeJ8WRyBrEAcGxgk9x92o3cIZwfM
-	mlxTijTq0BCrtF6ANKmdm/PJN/2PMo81dXOiCXGii/KvVky1ARmGdwrB/hSKmw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ffc07ee8;
-	Mon, 16 Jun 2025 23:00:23 +0000 (UTC)
-Date: Tue, 17 Jun 2025 08:00:08 +0900
-From: asmadeus@codewreck.org
-To: Yuhao Jiang <danisjiang@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	security@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net/9p: Fix buffer overflow in USB transport layer
-Message-ID: <aFCh-JXnifNXTgSt@codewreck.org>
-References: <20250616132539.63434-1-danisjiang@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZWFIShO/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210E3C4CEEA;
+	Mon, 16 Jun 2025 23:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1750115475;
+	bh=f92kylcTcgjxPjPuigrD0gWIhxIBT4jMyjAYbJx2fgU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZWFIShO/XryFzSpjTSsOpPReKk7MGg3LaJS+8VXbd/Sv0l3pkMferPDaEDw5h7t/5
+	 TXCAWyMhImwvLfVbY+RFN3BVnPd8HICJ3ykvMXc1pH9OWRmJr7YNN1rWZZcClmJua5
+	 wc8/ODhsb5I7ekSoYglMpTbL4//+BGhwsrmpxvDU=
+Date: Mon, 16 Jun 2025 16:11:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe
+ <axboe@kernel.dk>, Jani Nikula <jani.nikula@linux.intel.com>, Joonas
+ Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Eric Van
+ Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
+ <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, David Howells
+ <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Benjamin LaHaise <bcrl@kvack.org>, Miklos Szeredi
+ <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, "Tigran A . Aivazian"
+ <aivazian.tigran@gmail.com>, Kees Cook <kees@kernel.org>, Chris Mason
+ <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, Xiubo Li
+ <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>, Gao
+ Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Namjae
+ Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>,
+ Yuezhang Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>, Andreas
+ Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA
+ Hirofumi <hirofumi@mail.parknet.co.jp>, Viacheslav Dubeyko
+ <slava@dubeyko.com>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, Richard
+ Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Mikulas Patocka
+ <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse <dwmw2@infradead.org>,
+ Dave Kleikamp <shaggy@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Ryusuke Konishi
+ <konishi.ryusuke@gmail.com>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ Bob Copeland <me@bobcopeland.com>, Mike Marshall <hubcap@omnibond.com>,
+ Martin Brandenburg <martin@omnibond.com>, Steve French <sfrench@samba.org>,
+ Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg
+ <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, Tom
+ Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, Zhihao Cheng
+ <chengzhihao1@huawei.com>, Hans de Goede <hdegoede@redhat.com>, Carlos
+ Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Naohiro
+ Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Dan
+ Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-aio@kvack.org, linux-unionfs@vger.kernel.org,
+ linux-bcachefs@vger.kernel.org, linux-mm@kvack.org,
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-um@lists.infradead.org,
+ linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-xfs@vger.kernel.org, nvdimm@lists.linux.dev
+Subject: Re: [PATCH 00/10] convert the majority of file systems to
+ mmap_prepare
+Message-Id: <20250616161111.74e10321c4c421674f78d689@linux-foundation.org>
+In-Reply-To: <cover.1750099179.git.lorenzo.stoakes@oracle.com>
+References: <cover.1750099179.git.lorenzo.stoakes@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250616132539.63434-1-danisjiang@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Yuhao Jiang wrote on Mon, Jun 16, 2025 at 09:25:39PM +0800:
-> A buffer overflow vulnerability exists in the USB 9pfs transport layer
-> where inconsistent size validation between packet header parsing and
-> actual data copying allows a malicious USB host to overflow heap buffers.
-> 
-> The issue occurs because:
-> - usb9pfs_rx_header() validates only the declared size in packet header
-> - usb9pfs_rx_complete() uses req->actual (actual received bytes) for memcpy
-> 
-> This allows an attacker to craft packets with small declared size (bypassing
-> validation) but large actual payload (triggering overflow in memcpy).
-> 
-> Add validation in usb9pfs_rx_complete() to ensure req->actual does not
-> exceed the buffer capacity before copying data.
+On Mon, 16 Jun 2025 20:33:19 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Thanks for this check!
+> I am basing this on the mm-new branch in Andrew's tree, so let me know if I
+> should rebase anything here. Given the mm bits touched I did think perhaps
+> we should take it through the mm tree, however it may be more sensible to
+> take it through an fs tree - let me know!
 
-Did you reproduce this or was this static analysis found?
-(to knowi if you tested wrt question below)
+It's more fs/ than mm/ purely from a footprint point of view.  But is
+there any expectation that there will be additional patches which build
+on this?
 
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-> ---
->  net/9p/trans_usbg.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-> index 6b694f117aef..047a2862fc84 100644
-> --- a/net/9p/trans_usbg.c
-> +++ b/net/9p/trans_usbg.c
-> @@ -242,6 +242,15 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
->  	if (!p9_rx_req)
->  		return;
->  
-> +	/* Validate actual received size against buffer capacity */
-> +	if (req->actual > p9_rx_req->rc.capacity) {
-> +		dev_err(&cdev->gadget->dev,
-> +			"received data size %u exceeds buffer capacity %zu\n",
-> +			req->actual, p9_rx_req->rc.capacity);
-> +		p9_req_put(usb9pfs->client, p9_rx_req);
+I'll scoop it into mm-new for now, see what happens.
 
-I still haven't gotten around to setting up something to test this, and
-even less the error case, but I'm not sure a single put is enough --
-p9_client_cb does another put.
-Conceptually I think it's better to mark the error and move on
-e.g. (not even compile tested)
-```
-	int status = REQ_STATUS_RCVD;
-
-	[...]
-
-	if (req->actual > p9_rx_req->rc.capacity) {
-		dev_err(...)
-		req->actual = 0;
-		status = REQ_STATUS_ERROR;
-	}
-	
-	memcpy(..)
-
-        p9_rx_req->rc.size = req->actual;
-
-        p9_client_cb(usb9pfs->client, p9_rx_req, status);
-        p9_req_put(usb9pfs->client, p9_rx_req);
-
-	complete(&usb9pfs->received);
-```
-(I'm not sure overriding req->actual is allowed, might be safer to use
-an intermediate variable like status instead)
-
-What do you think?
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+Minus all the cc's.  Sorry ;)
