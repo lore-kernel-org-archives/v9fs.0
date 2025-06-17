@@ -1,207 +1,211 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6613A21B91F
-	for <v9fs@lists.linux.dev>; Tue, 17 Jun 2025 09:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406D32951C8
+	for <v9fs@lists.linux.dev>; Tue, 17 Jun 2025 10:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750152855; cv=none; b=rp3vAe9n/p9vcpG7+4M/A0Bi8MFOquyJgu0hFxTwiWkw8UkE7IVpbdu6YYI7rd0SCJmcjhoqE0gIwI4KmX0HAh/SA6aYnHucy7/3jMsQUwC11Ukvowmq3pENATQDab6ZjMmSyMkaeQeVR3/7NtCA7ZZm2itiRHf3wI13mL3ncdc=
+	t=1750154745; cv=none; b=X8rKInMSGf+NJLz8g8g6h8Invj8dm66m0Dvnw6l8ZrAeZKo9qdiVaDVUWC2GMjErumfpe9NnxQgZvLa6PYhdT/t+R5RacM67v03/GK977vQEzSO5ehjIO30fgVfnqwWfR76X/hqcIcQR3B1XWgX5LQExSTdpA+BAt/bbEkB4usQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750152855; c=relaxed/simple;
-	bh=G5eezadzLBW93ru6voapn97o+0muFg8uZIO6GHGGoCg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lPqKw+GJs0doQW0zMC+xutjeau6Xx8awToNg0ZSLT7TYNSYAepYsAqoiMFRJZRdMTQC2q+YosMWsdSNgQS45Xl5S/tCQ4oNh5ObAVjpMGaleH1ACoGfBrIXfWaAr605Y5a3I7bw0BweC8K1nzNMgD/pMWqhg7VsmuDWER3O1FzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LIGtoXAL; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750154745; c=relaxed/simple;
+	bh=rPStzkCl6qwemTB+6mSst/YjbOm5vkQaiQ5G3hNJ1WQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVMs7/l0xHWd9/jjj+A1hc5/8OQJbN++UhbFgONG+ZLMTA2XsmIM5vy7XCwroEwv7JTY8H8gJ4ss7ra3+ebpDvs7LsRQgvhuSa/qPTXX36b+uqNyyaRm4kXJs1Dt6Tw0wEYvhIA0lKHl6oI5t2PEzAajEyUFniZd2bCeJ/3NlaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=WQDfhpwm; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NrBo2tY1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=WQDfhpwm; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NrBo2tY1; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LIGtoXAL"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-313910f392dso4944546a91.2
-        for <v9fs@lists.linux.dev>; Tue, 17 Jun 2025 02:34:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750152852; x=1750757652; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iy9ozREwXM6yajfHwp8sB5SkUjs9u/5sdv2yga+HurE=;
-        b=LIGtoXALJoFBELjrvP8WYdNnV+f3EXrE7e9y6A68ahPRNYW7nMjbzLUYcritnIrh3z
-         qM1ZuKAoSAKn1QotUhEqgR2xank2725VOJbIV+/JXZHwlQ/jdQoqrSXAZ4GYNJ+fNp/b
-         juRUoZtCSksv1u/vaVVim+9yPoXQYfyggYqaEdf231YA3iHgOROZQATWQcN6okxqtNyd
-         Wh5Kwlu7nsWv3ZJUMcwqtYgiA9gVeTt2QOV6rVeABrTkKAFAwOrtQIsA53ZH52KMDlw5
-         p2Y+opAde4XjF2n9z00DdmwNywf/EfKnk3j5IV+U2MYRTRAu5KN9+mTf8yJ1mESfA9+4
-         7zYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750152852; x=1750757652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iy9ozREwXM6yajfHwp8sB5SkUjs9u/5sdv2yga+HurE=;
-        b=gI86BAk2UdAl1P0eemjqPm5K+aiQysRin/Skc9x6nVHablKaIbQfOvruY9qknMXxoT
-         xxXjw3dVr/kROqt+d4oJ56Ef/oHLVzvwhT+3+ySJaHBEX4IGM8dzQBygWIDByv8PHZDn
-         74GHBli1kenynvh4RAuVCZA5pWgrPZtJlMT75cN0vsELtxCUgPNDNBQe2GMC7IcGoqvH
-         9R0WDxEQc253Rc5TVU8a2Tpd7J1UlqXuLk8TGJ33wB7XSIiQ8tmH3RrwUFl0bl8eYKvl
-         4GAPDsCvMoQAR34NOLQ7TqwkNkvwE8CT7GuP9G238Dq0qP4DA1rHEWvWgUvZYofJ7kbB
-         6wtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWDPpxuZpwUmpYY+GRw/inukAO408zqysdcLk+DKf4oCpMS/ZJ/AyU5LwItB6CM76p0xpZ4@lists.linux.dev
-X-Gm-Message-State: AOJu0YzGXOpcRwj6tUWaW97ge2Dwa2yVOADAPJ6vBMdvgOkFIg65Vk3E
-	B5tr8eIF7MCjsgL1ZcD+W19XIgish+5TDfmJH2i5Rxy9fJZKw6HfKS9rGxxtv426QYq/RouJlcJ
-	EdIkyulCry4r2CCAUBG1RVORPuo2dXuLwzazGVhXF
-X-Gm-Gg: ASbGncvjTZTC10YDlpX1VYXucuXxK74NExHvOdV6z3JXDOhQrNv+TUvmIvZGEanblX2
-	SL8JMSabYYe1WKRBaC2+U8cTdo7ebirDlpLQnYIFkdX8ft15QA5GcTZXQKKsXP1ryhdhiz/T8OG
-	iFa19WeyVIX9cPkBWvbAzdW4cKaBlJHh3bCImCiG/QbSZ/JXGCidNC69DQheqPDX1L4U6k6Ti5
-X-Google-Smtp-Source: AGHT+IGmEOYrE0DsdOuE8bNLBAUcGIGtWS0fLaxdWfeUWjsCOySE0e4ca0Wc/AhJzhXC0KwRwmQwOczpGP+O7aLEQL8=
-X-Received: by 2002:a17:90b:35ce:b0:311:d670:a10d with SMTP id
- 98e67ed59e1d1-313f1d96b23mr16599599a91.26.1750152852309; Tue, 17 Jun 2025
- 02:34:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="WQDfhpwm";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NrBo2tY1";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="WQDfhpwm";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NrBo2tY1"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0C73A1F766;
+	Tue, 17 Jun 2025 10:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1750154740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/1izpnjb4TYfec4R1JpDo8StS/h7UWyf7xuC9Z4Hyw=;
+	b=WQDfhpwm6V87NT9z/A204y/3daztxVfitFICfHOJXVLDwuByiO2e6vsTYBDE6FG4qqCUJX
+	3HzGzjWxaQtyqKsXL+IvjDNtRiiJiJLsgvCFneuBuoU1vbXUzQkZ8tq3BMjIC8HSg5ocP3
+	Gay+RGH2nYC05chnnbilbsgAdzN2LlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1750154740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/1izpnjb4TYfec4R1JpDo8StS/h7UWyf7xuC9Z4Hyw=;
+	b=NrBo2tY17T6YGKPQqIdgrtSHngXWXYF5et4lwD2HsUZ61mZfDbx42vWdF6Fc5le8jO5HvC
+	BvGwhDZ7rlXldwCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1750154740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/1izpnjb4TYfec4R1JpDo8StS/h7UWyf7xuC9Z4Hyw=;
+	b=WQDfhpwm6V87NT9z/A204y/3daztxVfitFICfHOJXVLDwuByiO2e6vsTYBDE6FG4qqCUJX
+	3HzGzjWxaQtyqKsXL+IvjDNtRiiJiJLsgvCFneuBuoU1vbXUzQkZ8tq3BMjIC8HSg5ocP3
+	Gay+RGH2nYC05chnnbilbsgAdzN2LlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1750154740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/1izpnjb4TYfec4R1JpDo8StS/h7UWyf7xuC9Z4Hyw=;
+	b=NrBo2tY17T6YGKPQqIdgrtSHngXWXYF5et4lwD2HsUZ61mZfDbx42vWdF6Fc5le8jO5HvC
+	BvGwhDZ7rlXldwCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA00B13AE1;
+	Tue, 17 Jun 2025 10:05:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rKyOOPM9UWi3FgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 17 Jun 2025 10:05:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9891DA29F0; Tue, 17 Jun 2025 12:05:39 +0200 (CEST)
+Date: Tue, 17 Jun 2025 12:05:39 +0200
+From: Jan Kara <jack@suse.cz>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	David Sterba <dsterba@suse.com>, David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Benjamin LaHaise <bcrl@kvack.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, "Tigran A . Aivazian" <aivazian.tigran@gmail.com>, 
+	Kees Cook <kees@kernel.org>, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Yangtao Li <frank.li@vivo.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse <dwmw2@infradead.org>, 
+	Dave Kleikamp <shaggy@kernel.org>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Bob Copeland <me@bobcopeland.com>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Zhihao Cheng <chengzhihao1@huawei.com>, Hans de Goede <hdegoede@redhat.com>, 
+	Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-afs@lists.infradead.org, linux-aio@kvack.org, linux-unionfs@vger.kernel.org, 
+	linux-bcachefs@vger.kernel.org, linux-mm@kvack.org, linux-btrfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-um@lists.infradead.org, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org, 
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org, linux-xfs@vger.kernel.org, nvdimm@lists.linux.dev
+Subject: Re: [PATCH 02/10] mm/nommu: use file_has_valid_mmap_hooks() helper
+Message-ID: <gtjkxyljepqjjahbxic5xulqdxqresuuyfdr2i2vcc4tewy5yp@ziyb3wcdlvyw>
+References: <cover.1750099179.git.lorenzo.stoakes@oracle.com>
+ <5f120b644b5890d1b50202d0f0d4c9f0d6b62873.1750099179.git.lorenzo.stoakes@oracle.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <68512333.a70a0220.395abc.0207.GAE@google.com>
-In-Reply-To: <68512333.a70a0220.395abc.0207.GAE@google.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Tue, 17 Jun 2025 11:33:59 +0200
-X-Gm-Features: AX0GCFt3-7Tensh_rDRvxoQAm3XeFrHhfv0OAVC0DXQfsgghdTDrMcup7qn11gs
-Message-ID: <CANp29Y5oXu0WN79EOvCLAYy7-ThWQoz8vswCo0OTuS+5bhJkzQ@mail.gmail.com>
-Subject: Re: [syzbot] [v9fs?] WARNING: mm/page_alloc.c:LINE at
- __alloc_frozen_pages_noprof, CPU: syz.NUM.NUM/NUM
-To: syzbot <syzbot+c44c80c9d28ec68d1c06@syzkaller.appspotmail.com>
-Cc: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f120b644b5890d1b50202d0f0d4c9f0d6b62873.1750099179.git.lorenzo.stoakes@oracle.com>
+X-Spamd-Result: default: False [-0.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	FORGED_RECIPIENTS(2.00)[m:akpm@linux-foundation.org,m:axboe@kernel.dk,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:ericvh@kernel.org,m:lucho@ionkov.net,m:asmadeus@codewreck.org,m:linux_oss@crudebyte.com,m:marc.dionne@auristor.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:bcrl@kvack.org,m:amir73il@gmail.com,m:aivazian.tigran@gmail.com,m:kees@kernel.org,m:clm@fb.com,m:idryomov@gmail.com,m:jaharkes@cs.cmu.edu,m:coda@cs.cmu.edu,m:xiang@kernel.org,m:chao@kernel.org,m:zbestahu@gmail.com,m:dhavale@google.com,m:lihongbo22@huawei.com,m:linkinjeon@kernel.org,m:adilger.kernel@dilger.ca,m:jaegeuk@kernel.org,m:slava@dubeyko.com,m:frank.li@vivo.com,m:anton.ivanov@cambridgegreys.com,m:mikulas@artax.karlin.mff.cuni.cz,m:dwmw2@infradead.org,m:shaggy@kernel.org,m:trondmy@kernel.org,m:anna@kernel.org,m:konishi.ryusuke@gmail.com,m:mark@fasheh.com,m:jlbec@evilplan.org,m:me@bobcopeland.com,m:ronniesahlberg@gmail.com,m:chengzhihao1@huawei.com,m:cem@kernel.org,m:dlemoal@kernel.or
+ g,m:naohiro.aota@wdc.com,m:jth@kernel.org,m:dan.j.williams@intel.com,m:willy@infradead.org,m:jannh@google.com,m:linux-aio@kvack.org,m:linux-mm@kvack.org,m:codalist@coda.cs.cmu.edu,s:linux-mtd@lists.infradead.org,s:linux-um@lists.infradead.org,s:ntfs3@lists.linux.dev,s:nvdimm@lists.linux.dev,s:ocfs2-devel@lists.linux.dev,s:devel@lists.orangefs.org,s:samba-technical@lists.samba.org,s:jfs-discussion@lists.sourceforge.net,s:linux-f2fs-devel@lists.sourceforge.net,s:linux-karma-devel@lists.sourceforge.net];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,oracle.com,kernel.dk,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,kernel.org,ionkov.net,codewreck.org,crudebyte.com,suse.com,redhat.com,auristor.com,zeniv.linux.org.uk,suse.cz,kvack.org,szeredi.hu,linux.dev,fb.com,toxicpanda.com,cs.cmu.edu,tyhicks.com,linux.alibaba.com,google.com,huawei.com,samsung.com,sony.com,mit.edu,dilger.ca,mail.parknet.co.jp,dubeyko.com,physik.fu-berlin.de,vivo.com,nod.at,cambridgegreys.com,sipsolutions.net,artax.karlin.mff.cuni.cz,infradead.org,paragon-software.com,fasheh.com,evilplan.org,bobcopeland.com,omnibond.com,samba.org,manguebit.org,microsoft.com,talpey.com,wdc.com,suse.de,vger.kernel.org,lists.freedesktop.org,lists.linux.dev,lists.infradead.org,coda.cs.cmu.edu,lists.ozlabs.org,lists.sourceforge.net,lists.orangefs.org,lists.samba.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLb58ib84xst5oy51ju4zaburj)];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[113];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -0.30
 
-#syz dup: WARNING in __alloc_frozen_pages_noprof
+On Mon 16-06-25 20:33:21, Lorenzo Stoakes wrote:
+> Since commit c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file
+> callback"), the f_op->mmap() hook has been deprecated in favour of
+> f_op->mmap_prepare().
+> 
+> Therefore, update the check for file operations supporting mmap() by using
+> the file_has_valid_mmap_hooks() helper function, which checks for either
+> f_op->mmap or f_op->mmap_prepare rather than checking only for f_op->mmap
+> directly.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
+Looks good. Feel free to add:
 
-On Tue, Jun 17, 2025 at 10:11=E2=80=AFAM syzbot
-<syzbot+c44c80c9d28ec68d1c06@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    050f8ad7b58d Add linux-next specific files for 20250616
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D17949e8258000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dd2efc7740224b=
-93a
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc44c80c9d28ec68=
-d1c06
-> compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e0775=
-7-1~exp1~20250514183223.118), Debian LLD 20.1.6
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D14fd95d4580=
-000
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/49faa18d2f53/dis=
-k-050f8ad7.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/7c6f9cd7fe5d/vmlinu=
-x-050f8ad7.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/84a08d6403ee/b=
-zImage-050f8ad7.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+c44c80c9d28ec68d1c06@syzkaller.appspotmail.com
->
-> ------------[ cut here ]------------
-> WARNING: mm/page_alloc.c:4935 at __alloc_frozen_pages_noprof+0x2c8/0x370 =
-mm/page_alloc.c:4935, CPU#1: syz.0.16/6030
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 6030 Comm: syz.0.16 Not tainted 6.16.0-rc2-next-202506=
-16-syzkaller #0 PREEMPT(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 05/07/2025
-> RIP: 0010:__alloc_frozen_pages_noprof+0x2c8/0x370 mm/page_alloc.c:4935
-> Code: 74 10 4c 89 e7 89 54 24 0c e8 d4 12 0d 00 8b 54 24 0c 49 83 3c 24 0=
-0 0f 85 a5 fe ff ff e9 a6 fe ff ff c6 05 f3 c0 73 0d 01 90 <0f> 0b 90 e9 18=
- ff ff ff a9 00 00 08 00 48 8b 4c 24 10 4c 8d 44 24
-> RSP: 0018:ffffc90003cdf9c0 EFLAGS: 00010246
-> RAX: ffffc90003cdfa00 RBX: 000000000000002a RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90003cdfa28
-> RBP: ffffc90003cdfaa8 R08: ffffc90003cdfa27 R09: 0000000000000000
-> R10: ffffc90003cdfa00 R11: fffff5200079bf45 R12: 0000000000000000
-> R13: 1ffff9200079bf3c R14: 0000000000040d40 R15: dffffc0000000000
-> FS:  000055557e5fb500(0000) GS:ffff888125d40000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fff1db25138 CR3: 00000000762fa000 CR4: 00000000003526f0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> Call Trace:
->  <TASK>
->  __alloc_pages_noprof+0xa/0x30 mm/page_alloc.c:4993
->  __alloc_pages_node_noprof include/linux/gfp.h:284 [inline]
->  alloc_pages_node_noprof include/linux/gfp.h:311 [inline]
->  ___kmalloc_large_node+0x85/0x210 mm/slub.c:4272
->  __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:4300
->  __do_kmalloc_node mm/slub.c:4316 [inline]
->  __kmalloc_noprof+0x36f/0x4f0 mm/slub.c:4340
->  kmalloc_noprof include/linux/slab.h:909 [inline]
->  kzalloc_noprof include/linux/slab.h:1039 [inline]
->  v9fs_fid_get_acl+0x4f/0x100 fs/9p/acl.c:32
->  __v9fs_get_acl fs/9p/acl.c:66 [inline]
->  v9fs_get_acl+0x9a/0x360 fs/9p/acl.c:92
->  v9fs_qid_iget_dotl fs/9p/vfs_inode_dotl.c:131 [inline]
->  v9fs_inode_from_fid_dotl+0x221/0x2b0 fs/9p/vfs_inode_dotl.c:154
->  v9fs_get_new_inode_from_fid fs/9p/v9fs.h:251 [inline]
->  v9fs_mount+0x6eb/0xa50 fs/9p/vfs_super.c:144
->  legacy_get_tree+0xfa/0x1a0 fs/fs_context.c:666
->  vfs_get_tree+0x92/0x2b0 fs/super.c:1802
->  do_new_mount+0x24a/0xa40 fs/namespace.c:3885
->  do_mount fs/namespace.c:4222 [inline]
->  __do_sys_mount fs/namespace.c:4433 [inline]
->  __se_sys_mount+0x317/0x410 fs/namespace.c:4410
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f87d618e929
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f=
-7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff=
- ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffe32d1a898 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-> RAX: ffffffffffffffda RBX: 00007f87d63b5fa0 RCX: 00007f87d618e929
-> RDX: 0000200000000b80 RSI: 00002000000003c0 RDI: 0000000000000000
-> RBP: 00007f87d6210b39 R08: 0000200000000580 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f87d63b5fa0 R14: 00007f87d63b5fa0 R15: 0000000000000005
->  </TASK>
->
->
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+Maybe Fixes tag would be appropriate here?
+
+								Honza
+
 > ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
->
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
->
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
->
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
->
-> If you want to undo deduplication, reply with:
-> #syz undup
->
-> --
-> You received this message because you are subscribed to the Google Groups=
- "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion visit https://groups.google.com/d/msgid/syzkaller=
--bugs/68512333.a70a0220.395abc.0207.GAE%40google.com.
+>  mm/nommu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index b624acec6d2e..38c22ea0a95c 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -719,7 +719,7 @@ static int validate_mmap_request(struct file *file,
+>  
+>  	if (file) {
+>  		/* files must support mmap */
+> -		if (!file->f_op->mmap)
+> +		if (!file_has_valid_mmap_hooks(file))
+>  			return -ENODEV;
+>  
+>  		/* work out if what we've got could possibly be shared
+> -- 
+> 2.49.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
