@@ -1,100 +1,91 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDED18132A
-	for <v9fs@lists.linux.dev>; Sun, 22 Jun 2025 21:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B423D1F875A;
+	Sun, 22 Jun 2025 21:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750628254; cv=none; b=Og+gS8pzCcCdP19vHybb3mkEyupDAZjTx3rr1ohCweoS1xk6I1xIU/FZS+qnnix5MYc8PzjwOgYRS3XytU5eFPjxZBUo1ZCdKURuY6noh1MGP92mlG1atQX0mu+U93lgcztMscANcZCFlOS5omuV7jLwn/aqXEM7cyi02QsNSuY=
+	t=1750629549; cv=none; b=pruHQVVYcEny6phdtMGbjVv+frJgQEFTuO8g9csO79IUQziyMz5hlpCGjVIhIArLPy1UIyT1Ifkb8VtuwIxwClWSzIkzIQ/DjGcf29h3Rd/dYhTvxZh8vU7SZWRh0Z5HsfRiFkYOlroQxLiZHRJ+zHPyVJ4DltjoAwDd7q9t9+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750628254; c=relaxed/simple;
-	bh=PiyYx0D7DHp1i6I7LGyVpcGHij0gzpGiuLrfKazlgOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kQtFLDyDmNHchrY7r3CZUzwFjOfNJh/4mwyTY6ahJggADXWI/7fkJUliw+hG8/95ClPBAIYjpDCOeFx/FmDrdECNxKRflORQHqADgYn95NXdN146lR/4C3nnM1a3tZ1bR9W+iLq8y2ykV5IHvdUtb5hZYxT7nnFQvOS/DVXV++s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xdbX21Mh; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1750629549; c=relaxed/simple;
+	bh=2OABZ5Aau9KbgR1Zm+cB9UU2hHSzuwXcK9yvNTrNohU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jPcFPqrIC7z//KJwDBhZ70QdgVXWqRniHwv+mdbdr42UixAXSLt12fCRi+qV2st+zj5KR7j0VnJv3TSMk/WXVQh6iE+0vTb3HC01y2EzXZbKZnL1Uw2ZRn4NZ5/qJXeNJHzw4w/xCnSjBEbKq7fcYcQ38tT/RBWss5by6vyJ8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=mJYQMNfa; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xdbX21Mh"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 98E7F14C2D3;
-	Sun, 22 Jun 2025 23:37:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1750628250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gXfWwuvWIHMt3iwfHv8lluOXP7T6x/8Jx+lA4Z3eTtA=;
-	b=xdbX21MhbwhJpEGOoJ4ypwZ/5icCaQ/l63bipBrGLcSYHhZ3/ed3/C+zH1hTuj1K7/uoMQ
-	DIWQoYsWkZ+7I06eVHGzOSnoXaCTUHSgFx/OFRu8sKYSdof86IJATFUBbWhbF1T3yKt/6L
-	CVvYji5kYfdsYI+ciQ5qiLgd+ODviNW/joEjsYg3khD9jNT5PAficgcLx3cOOQPDuHQH5o
-	5b6Q8lHzqzQ+rdRPN3UgfNiutQl8bLzldjCqUsnr4ctwp2MAzkY41XW4Ua0UVAOuK8R7hu
-	biSGvEwK9CsRIyk3gfDSvqATq/hiG/5n4lIkO+/rJZNdQvXhfV8hC/ksD0Q7YA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f9ee9073;
-	Sun, 22 Jun 2025 21:37:25 +0000 (UTC)
-Date: Mon, 23 Jun 2025 06:37:10 +0900
-From: asmadeus@codewreck.org
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="mJYQMNfa"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=pKwgu71A+gqWy3XaAtAsQgfZgUfP6EO1C/JNbWXZpdQ=; b=mJYQMNfazdYdrhU6fsqcc9pJkr
+	ZMTjB3bZrpa4YZuawBirr5X73xMo3cJy4Raz1AAm/SsDWDxRLPBW75g12fA3Eivbgez+AOuEFudxD
+	HFz1zaIXPSBXXu4JQIb1UcrWmSXR7SVayg8MpLoKQGeyCknhWJChf6zZWesbjee8emHW3LPtCJC7B
+	lWklikeu+O6o4z/I6Fnza534h+xPMQYicGF8Uh4Mtx3JbbBLqzMEvUAFbnwOEj6u8d93Vbl6yyxtB
+	yM3bf6M9JJzrD8KoPpF5YchEtGqoDu1i1K2rn/WjtifgfyG8DK/9TUsgV+rNcK8klosf3PNQruNEP
+	qK3pm7uFp6WK2pGTVDx7NjwUbqfyYNjoEoi/3mf0kJY0cIb25+9y8YAxV7sl9XqlSunqdJewTA9Bi
+	YMA54MYUJJe/SohLUOKv5ZG/Ormy/sApm/mizPUzyqgBAyDA3RPLXOe5NZz1mjMJP1wkML7YYP2Hq
+	EmoGn2eoXveWWydSdzjd6zDfZI7J2rAMd765bQ9znOnqlWXJUrkOzuQBxnp89cLbG/IE5gOq13sO2
+	WUYijHXfyGAEdtpfbyiy6Ps5X1aRFr5YuAYqCCtlL6BPodCGZwXzC4WmU0FwfTGSU5gefy8Yl85QB
+	S2F2XQ4oXLLSKypN9whWapn+fM7Hes2Zl7cnSqcMc=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: asmadeus@codewreck.org
 Cc: Kees Cook <kees@kernel.org>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
-	security@kernel.org, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
+ Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Michael Grzeschik <m.grzeschik@pengutronix.de>, stable@vger.kernel.org,
+ Yuhao Jiang <danisjiang@gmail.com>, security@kernel.org,
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3] net/9p: Fix buffer overflow in USB transport layer
-Message-ID: <aFh3hqGbzC-K3ylo@codewreck.org>
-References: <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
+Date: Sun, 22 Jun 2025 23:20:21 +0200
+Message-ID: <2332540.nosMkMiWtC@silver>
+In-Reply-To: <aFhqAergj6LowmyE@codewreck.org>
+References:
+ <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
  <659844BA-48EF-47E1-8D66-D4CA98359BBF@kernel.org>
  <aFhqAergj6LowmyE@codewreck.org>
- <2332540.nosMkMiWtC@silver>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2332540.nosMkMiWtC@silver>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Christian Schoenebeck wrote on Sun, Jun 22, 2025 at 11:20:21PM +0200:
-> On Sunday, June 22, 2025 10:39:29 PM CEST asmadeus@codewreck.org wrote:
-> [...]
-> > (... And this made me realize commit 60ece0833b6c ("net/9p: allocate
-> > appropriate reduced message buffers") likely broke everything for
-> > 9p/rdma 3 years ago, as rdma is swapping buffers around...
-> > I guess it doesn't have (m)any users...)
-> 
-> That patch contains an RDMA exception:
+On Sunday, June 22, 2025 10:39:29 PM CEST asmadeus@codewreck.org wrote:
+[...]
+> (... And this made me realize commit 60ece0833b6c ("net/9p: allocate
+> appropriate reduced message buffers") likely broke everything for
+> 9p/rdma 3 years ago, as rdma is swapping buffers around...
+> I guess it doesn't have (m)any users...)
 
-Oh, thanks for pointing that out!
+That patch contains an RDMA exception:
+
+@@ -645,9 +664,18 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
+        int sigpending, err;
+        unsigned long flags;
+        struct p9_req_t *req;
++       /* Passing zero for tsize/rsize to p9_client_prepare_req() tells it to
++        * auto determine an appropriate (small) request/response size
++        * according to actual message data being sent. Currently RDMA
++        * transport is excluded from this response message size optimization,
++        * as it would not cope with it, due to its pooled response buffers
++        * (using an optimized request size for RDMA as well though).
++        */
++       const uint tsize = 0;
++       const uint rsize = c->trans_mod->pooled_rbuffers ? c->msize : 0;
+ 
+        va_start(ap, fmt);
+-       req = p9_client_prepare_req(c, type, c->msize, c->msize, fmt, ap);
++       req = p9_client_prepare_req(c, type, tsize, rsize, fmt, ap);
+        va_end(ap);
+        if (IS_ERR(req))
+                return req;
+
+/Christian
 
 
-BTW I just tried __counted_by and it's not obvious because it's not
-allocated with the fcall (fcall structs themselves are allocated in the
-req, and each fcall gets a data buffer)
-
-For everything other than RDMA it shouldn't be too difficult to bubble
-the allocation up (fcall+data as a flexible array as a pointer in req),
-but then with large "round" msizes we'd get into the next power of two
-buckets so I think it's probably better to keep as is.
-(.. that and I wouldn't look forward to rework the buffer swapping logic
-with RDMA, even if it should be straightforward enough with a couple of
-container_of()s...)
-
-Perhaps when/if counted_by learns to apply to pointers:
----
-.../include/net/9p/9p.h:558:13: error: ‘counted_by’ attribute is not allowed for a non-array field
-  558 |         u8 *sdata __counted_by(capacity);
-      |             ^~~~~
-make[3]: *** [.../scripts/Makefile.build:287: trans_xen.o] Error 1
-In file included from client.c:22:
----
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
