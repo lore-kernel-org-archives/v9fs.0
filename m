@@ -1,91 +1,156 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B423D1F875A;
-	Sun, 22 Jun 2025 21:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5FA248F56
+	for <v9fs@lists.linux.dev>; Mon, 23 Jun 2025 12:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750629549; cv=none; b=pruHQVVYcEny6phdtMGbjVv+frJgQEFTuO8g9csO79IUQziyMz5hlpCGjVIhIArLPy1UIyT1Ifkb8VtuwIxwClWSzIkzIQ/DjGcf29h3Rd/dYhTvxZh8vU7SZWRh0Z5HsfRiFkYOlroQxLiZHRJ+zHPyVJ4DltjoAwDd7q9t9+g=
+	t=1750682930; cv=none; b=BH5Dci50kLjOL5vSUWtI/KFMBjjABJN/hnP+lASzgioizwl2IZPuF5dRzast4wgsJRjlLp6uIQozSeeK3Gz+kMe9d6v04DrnChAab2e0vaT6Olv2+SBDzPOdy1cWf4vmLUgOIWynvMZQnlIBYhLd5edbYf1GwwmzhZ7i9YPW+iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750629549; c=relaxed/simple;
-	bh=2OABZ5Aau9KbgR1Zm+cB9UU2hHSzuwXcK9yvNTrNohU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jPcFPqrIC7z//KJwDBhZ70QdgVXWqRniHwv+mdbdr42UixAXSLt12fCRi+qV2st+zj5KR7j0VnJv3TSMk/WXVQh6iE+0vTb3HC01y2EzXZbKZnL1Uw2ZRn4NZ5/qJXeNJHzw4w/xCnSjBEbKq7fcYcQ38tT/RBWss5by6vyJ8Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=mJYQMNfa; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1750682930; c=relaxed/simple;
+	bh=qhC8jPNT2nWZNs9eWmfYrP6gdoWYMghlzeI9XdjlnSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FBWP6v88Cl/0YUsU83gdHEqxJdd1Bn+mgidnoguiK+WAEdfssljl+T5jgYZx4gby7pn4T56X2tr7YapNGfyJmC0qajS8d1r8n61FaeMc9+bzUCFC9vNKlpZ+uQLZYshvWLNg+zMDL22Dj8yKlbQTkEIdEpWfzsPnSXRqinFSFcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JKFqkQxc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="mJYQMNfa"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=pKwgu71A+gqWy3XaAtAsQgfZgUfP6EO1C/JNbWXZpdQ=; b=mJYQMNfazdYdrhU6fsqcc9pJkr
-	ZMTjB3bZrpa4YZuawBirr5X73xMo3cJy4Raz1AAm/SsDWDxRLPBW75g12fA3Eivbgez+AOuEFudxD
-	HFz1zaIXPSBXXu4JQIb1UcrWmSXR7SVayg8MpLoKQGeyCknhWJChf6zZWesbjee8emHW3LPtCJC7B
-	lWklikeu+O6o4z/I6Fnza534h+xPMQYicGF8Uh4Mtx3JbbBLqzMEvUAFbnwOEj6u8d93Vbl6yyxtB
-	yM3bf6M9JJzrD8KoPpF5YchEtGqoDu1i1K2rn/WjtifgfyG8DK/9TUsgV+rNcK8klosf3PNQruNEP
-	qK3pm7uFp6WK2pGTVDx7NjwUbqfyYNjoEoi/3mf0kJY0cIb25+9y8YAxV7sl9XqlSunqdJewTA9Bi
-	YMA54MYUJJe/SohLUOKv5ZG/Ormy/sApm/mizPUzyqgBAyDA3RPLXOe5NZz1mjMJP1wkML7YYP2Hq
-	EmoGn2eoXveWWydSdzjd6zDfZI7J2rAMd765bQ9znOnqlWXJUrkOzuQBxnp89cLbG/IE5gOq13sO2
-	WUYijHXfyGAEdtpfbyiy6Ps5X1aRFr5YuAYqCCtlL6BPodCGZwXzC4WmU0FwfTGSU5gefy8Yl85QB
-	S2F2XQ4oXLLSKypN9whWapn+fM7Hes2Zl7cnSqcMc=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: asmadeus@codewreck.org
-Cc: Kees Cook <kees@kernel.org>,
- Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michael Grzeschik <m.grzeschik@pengutronix.de>, stable@vger.kernel.org,
- Yuhao Jiang <danisjiang@gmail.com>, security@kernel.org,
- v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] net/9p: Fix buffer overflow in USB transport layer
-Date: Sun, 22 Jun 2025 23:20:21 +0200
-Message-ID: <2332540.nosMkMiWtC@silver>
-In-Reply-To: <aFhqAergj6LowmyE@codewreck.org>
-References:
- <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
- <659844BA-48EF-47E1-8D66-D4CA98359BBF@kernel.org>
- <aFhqAergj6LowmyE@codewreck.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JKFqkQxc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750682927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eqjVeD04dYJeEvbD+6Wgl5HMPrxzLy2Qh89o6pQx3jY=;
+	b=JKFqkQxcwZfaKcEiIIQ4iUupR/JUR0+hIazba2GeCInbbnHfCjovSmuQzFEkdUz2B1tTyG
+	VX1qq8roa4Sen7gAFGQsOOsoey88YWmpvyI3YCEG0PzmXwKW+EhoGrAo1xFZx9+popWbla
+	11wq+qdKkxJGAcwOrrIz9ij7/gAKR/U=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-KUDryShdN8Og-mXpwXXWtw-1; Mon,
+ 23 Jun 2025 08:48:44 -0400
+X-MC-Unique: KUDryShdN8Og-mXpwXXWtw-1
+X-Mimecast-MFC-AGG-ID: KUDryShdN8Og-mXpwXXWtw_1750682922
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36BE519560BB;
+	Mon, 23 Jun 2025 12:48:42 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.81])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8456B180045B;
+	Mon, 23 Jun 2025 12:48:38 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <sfrench@samba.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/11] netfs, cifs: Fixes to retry-related code
+Date: Mon, 23 Jun 2025 13:48:20 +0100
+Message-ID: <20250623124835.1106414-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Sunday, June 22, 2025 10:39:29 PM CEST asmadeus@codewreck.org wrote:
-[...]
-> (... And this made me realize commit 60ece0833b6c ("net/9p: allocate
-> appropriate reduced message buffers") likely broke everything for
-> 9p/rdma 3 years ago, as rdma is swapping buffers around...
-> I guess it doesn't have (m)any users...)
+Hi Christian, Steve,
 
-That patch contains an RDMA exception:
+Here are some miscellaneous fixes and changes for netfslib and cifs, if you
+could consider pulling them.  Some or all of them might be better going
+through the cifs tree as the effects were most noticeable there.  These
+were primarily found because a bug in Samba was causing smbd to crash and
+restart after about 1-2s and this was vigorously and abruptly exercising
+the netfslib retry paths.
 
-@@ -645,9 +664,18 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
-        int sigpending, err;
-        unsigned long flags;
-        struct p9_req_t *req;
-+       /* Passing zero for tsize/rsize to p9_client_prepare_req() tells it to
-+        * auto determine an appropriate (small) request/response size
-+        * according to actual message data being sent. Currently RDMA
-+        * transport is excluded from this response message size optimization,
-+        * as it would not cope with it, due to its pooled response buffers
-+        * (using an optimized request size for RDMA as well though).
-+        */
-+       const uint tsize = 0;
-+       const uint rsize = c->trans_mod->pooled_rbuffers ? c->msize : 0;
- 
-        va_start(ap, fmt);
--       req = p9_client_prepare_req(c, type, c->msize, c->msize, fmt, ap);
-+       req = p9_client_prepare_req(c, type, tsize, rsize, fmt, ap);
-        va_end(ap);
-        if (IS_ERR(req))
-                return req;
+First, there are some netfs fixes:
 
-/Christian
+ (1) Fix a hang due to missing case in final DIO read result collection
+     not breaking out of a loop if the request finished, but there were no
+     subrequests being processed and NETFS_RREQ_ALL_QUEUED wasn't yet set.
 
+ (2) Fix a double put of the netfs_io_request struct if completion happened
+     in the pause loop.
+
+ (3) Provide some helpers to abstract out NETFS_RREQ_IN_PROGRESS flag
+     wrangling.
+
+ (4) Fix infinite looping in netfs_wait_for_pause/request() which wa caused
+     by a loop waiting for NETFS_RREQ_ALL_QUEUED to get set - but which
+     wouldn't get set until the looping function returned.  This uses patch
+     (3) above.
+
+ (5) Fix a ref leak on an extra subrequest inserted into a request's list
+     of subreqs because more subreq records were needed for retrying than
+     were needed for the original request (say, for instance, that the
+     amount of cifs credit available was reduced and, subsequently, the ops
+     had to be smaller).
+
+Then a bunch of cifs fixes:
+
+ (6) cifs: Fix missing wsize negotiation.
+
+ (7-9) cifs: Fix various RPC callbacks to set NETFS_SREQ_NEED_RETRY if a
+     subrequest fails retriably.
+
+And finally a couple of patches to improve tracing output, but that should
+otherwise not affect functionality:
+
+ (10) Renumber the NETFS_RREQ_* flags to make the hex values easier to
+     interpret by eye, including moving the main status flags down to the
+     lowest bits, with IN_PROGRESS in bit 0.
+
+ (11) Update the tracepoints in a number of ways, including adding more
+     tracepoints into the cifs read/write RPC callback so that differend
+     MID_RESPONSE_* values can be differentiated.
+
+Those last two could wait for the next merge window.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+David Howells (8):
+  netfs: Fix hang due to missing case in final DIO read result
+    collection
+  netfs: Put double put of request
+  netfs: Provide helpers to perform NETFS_RREQ_IN_PROGRESS flag wangling
+  netfs: Fix looping in wait functions
+  netfs: Fix ref leak on inserted extra subreq in write retry
+  cifs: Fix prepare_write to negotiate wsize if needed
+  netfs: Renumber the NETFS_RREQ_* flags to make traces easier to read
+  netfs: Update tracepoints in a number of ways
+
+Paulo Alcantara (3):
+  smb: client: set missing retry flag in smb2_writev_callback()
+  smb: client: set missing retry flag in cifs_readv_callback()
+  smb: client: set missing retry flag in cifs_writev_callback()
+
+ fs/netfs/direct_write.c      |  1 -
+ fs/netfs/internal.h          | 20 ++++++++++++++-
+ fs/netfs/main.c              |  6 ++---
+ fs/netfs/misc.c              | 50 ++++++++++++++++++++++--------------
+ fs/netfs/read_collect.c      | 16 ++++++++----
+ fs/netfs/write_collect.c     |  8 +++---
+ fs/netfs/write_retry.c       |  3 +--
+ fs/smb/client/cifssmb.c      | 22 ++++++++++++++++
+ fs/smb/client/file.c         |  8 ++++--
+ fs/smb/client/smb2pdu.c      | 27 ++++++++++++++++---
+ include/linux/netfs.h        | 20 +++++++--------
+ include/trace/events/netfs.h | 29 ++++++++++++++-------
+ 12 files changed, 151 insertions(+), 59 deletions(-)
 
