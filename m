@@ -1,186 +1,375 @@
-Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
+Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAE1DD0C7
-	for <v9fs@lists.linux.dev>; Fri,  4 Jul 2025 17:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939A919F48D
+	for <v9fs@lists.linux.dev>; Fri,  4 Jul 2025 18:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751649254; cv=none; b=OplCC+3qycU7Z23p3X69sUKRs/q2hN6UOkf2RUUigIFxDOD52NCt/oiLvfwqJxrT8xL1M9Xv02aOfKdV5CaPLgX2REpAlBCaE3nzUGajw8B/PkZktUPuRYNFFoiS3L9gsZ4o9GB4MywqGiliILdCqlIs9R1kw2mEXU8GtHhpDmc=
+	t=1751654238; cv=none; b=BnLJkCNMYiIWOPPVpwyHcXcwFoI80Jq5rbJzioFalJoVI0TR5T2qWTRrsZQITRXlEk4PsLLfSHZpmiPeMC50t4mSgc9MODoDOHbfcvimVMfkmwIKYiOWrbNMN01uSoQxtHgaFyzDbQY1NNASgNOSvOfK5LkOhR4Dy3QU5JdjBt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751649254; c=relaxed/simple;
-	bh=mF0Ld24Ox8jElEpW8jFQ9uimGtaO+xA1ABV+LLyeOKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mQ0+T4sBiRoVTZEv8/e6L3O75jfO9hfQtVezQcK9XTNWgWXFmCOXpjqnHlUbi6QYlhIq4w4SyWGLqD2w1z+BllEK0hssyhOIzkPI47p4NWm3GErQcycKHCACvd+bnUYeRFt/IU3RULjH6wO4drFTb1yegQ4CMfcQfdc/y+GwELc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=E8yL3vGh; arc=none smtp.client-ip=185.125.25.12
+	s=arc-20240116; t=1751654238; c=relaxed/simple;
+	bh=5HtNG0MSeW1BujCOgklQGjz5Xi+ba1D+X41TBjJvCAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ta48OfECUJGi7y5+iZiF/DC0xCiOrq7mPGZBptovm0ss7yQ0mvTTBSmuxzUtWsxfALqDb1kE9RP+rCwLXt8Bds7VXpTKxjhsE77PkvvfB0Pu9QsZuM5I3dM7Sf/9NyvW1mvOIYZf1QnDQgwCzXhbnFaZWG1DG3MlZfUXag1bxLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=mMxAqAoV; arc=none smtp.client-ip=83.166.143.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="E8yL3vGh"
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4bYgGN6cGbzXhC;
-	Fri,  4 Jul 2025 19:14:04 +0200 (CEST)
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="mMxAqAoV"
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4bYj6H3rrqztKJ;
+	Fri,  4 Jul 2025 20:37:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1751649244;
-	bh=K4ElhYNB/0QwQ65XpwoZgfAHS/upJtR69NR6tzwtv98=;
-	h=From:To:Cc:Subject:Date:From;
-	b=E8yL3vGhSNpAeI+IFC6N09PiVrBYCyT0irRxVWtqHnfenL/XPVNaU9ydKy6mm1Sw7
-	 1GFhH83MNibS0rOcut2bzq27qOC44c6Td5zoTDZPBGFj4PWJBGtjaNIbHq6P/Djksm
-	 qQCuuzEhZu4QlzNmRq1djFRSfEFXBMXwHvKvGxfw=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4bYgGN0WcKzYVZ;
-	Fri,  4 Jul 2025 19:14:03 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	linux-security-module@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Tingmao Wang <m@maowtm.org>
-Subject: [PATCH v1] selftests/landlock: Add 9p and FUSE filesystem tests
-Date: Fri,  4 Jul 2025 19:13:42 +0200
-Message-ID: <20250704171345.1393451-1-mic@digikod.net>
+	s=20191114; t=1751654231;
+	bh=T7orxL5CYqwGPp8kSYq7Zk6BqxK+a3hm4Qvvl9BrI8E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mMxAqAoV9eiYVyGwIh1CdPZ+8pauk047d3KcViFe7irmxofZI/EzB3C+PK9FaY7Oe
+	 jX4qUrZO4CHS+wvCnLalhk1Hfc7qqlMWga5ZVDT/xUf8lAX2D/tJVGvJfIByCBhoSL
+	 Q3QX0uroWlrIYQyLeWv2tKNdxxZLJAQplFv/pRxw=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4bYj6F6Y1wzkvT;
+	Fri,  4 Jul 2025 20:37:09 +0200 (CEST)
+Date: Fri, 4 Jul 2025 20:37:06 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Tingmao Wang <m@maowtm.org>, v9fs@lists.linux.dev, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>, 
+	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [RFC PATCH 0/6] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <20250704.eek1caeveC0c@digikod.net>
+References: <cover.1743971855.git.m@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1743971855.git.m@maowtm.org>
 X-Infomaniak-Routing: alpha
 
-FUSE is already supported but v9fs requires some fixes [1].
+Hi,
 
-These tests require /mnt/test-v9fs and /mnt/test-fuse to be already
-mounted.  It would be too complex to set up such mount points with the
-test fixtures because of the related daemons' lifetime, but it is easy
-to run these tests with check-linux.sh from landlock-test-tools [2].
+I tested this patch series and I confirm that it fixes the issue for
+Landlock.  Tingmao explained that it also fixes other subsystems such as
+fanotify, and 9p itself.  I sent a patch to test this fix with Landlock
+and I'll merge it once 9p is fixed:
+https://lore.kernel.org/all/20250704171345.1393451-1-mic@digikod.net/
 
-Add new kernel configurations to support these two new filesystems.
+Could you please give it a try in linux-next and consider it for the
+next merge window?
 
-Rename and update path_is_fs() to take a path as argument.
+Regards,
+ Mickaël
 
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Latchesar Ionkov <lucho@ionkov.net>
-Cc: Tingmao Wang <m@maowtm.org>
-Link: https://lore.kernel.org/r/cover.1743971855.git.m@maowtm.org [1]
-Link: https://github.com/landlock-lsm/landlock-test-tools/pull/21 [2]
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
----
- tools/testing/selftests/landlock/config    |  5 +++
- tools/testing/selftests/landlock/fs_test.c | 45 ++++++++++++++++++----
- 2 files changed, 43 insertions(+), 7 deletions(-)
+On Sun, Apr 06, 2025 at 09:43:01PM +0100, Tingmao Wang wrote:
+> Hi 9p-fs maintainers,
+> 
+> (CC'ing Landlock and Fanotify/inotify people as this affects both use
+> cases, although most of my investigation has been on Landlock)
+> 
+> Previously [1], I noticed that when using 9pfs filesystems, the Landlock
+> LSM is blocking access even for files / directories allowed by rules, and
+> that this has something to do with 9pfs creating new inodes despite
+> Landlock holding a reference to the existing one.  Because Landlock uses
+> inodes' in-memory state (i_security) to identify allowed fs
+> objects/hierarchies, this causes Landlock to partially break on 9pfs, at
+> least in uncached mode, which is the default:
+> 
+>     # mount -t 9p -o trans=virtio test /mnt
+>     # env LL_FS_RO=/etc:/usr:/bin:/lib:/mnt/readme LL_FS_RW= /sandboxer bash
+>     Executing the sandboxed command...
+>     bash: cannot set terminal process group (164): Inappropriate ioctl for device
+>     bash: no job control in this shell
+>     # cat /mnt/readme
+>     cat: /mnt/readme: Permission denied
+> 
+> This, however, works if somebody is holding onto the dentry (and it also
+> works with cache=loose), as in both cases the inode is reused:
+> 
+>     # tail -f /mnt/readme &
+>     [1] 196
+>     # env LL_FS_RO=/etc:/usr:/bin:/lib:/mnt/readme LL_FS_RW= /sandboxer bash
+>     Executing the sandboxed command...
+>     bash: cannot set terminal process group (164): Inappropriate ioctl for device
+>     bash: no job control in this shell
+>     # cat /mnt/readme
+>     aa
+> 
+> It also works on directories if one have a shell that cd into the
+> directory.  Note that this means only certain usage of Landlock are
+> affected - for example, sandboxing applications that takes a list of files
+> to allow, landlocks itself, then evecve.  On the other hand, this does not
+> affect applications that opens a file, then Landlocks itself while keeping
+> the file it needs open.
+> 
+> While the above is a very simple example, this is problematic in
+> real-world use cases if Landlock is used to sandox applications on system
+> that has files mounted via 9pfs, or use 9pfs as the root filesystem.  In
+> addition, this also affects fanotify / inotify when using inode mark (for
+> local access):
+> 
+>     root@d8c28a676d72:/# ./fanotify-basic-open /readme & # on virtiofs
+>     [1] 173
+>     root@d8c28a676d72:/# cat readme
+>     aa
+>     FAN_OPEN: File /readme
+>     root@d8c28a676d72:/# mount -t 9p -o trans=virtio test /mnt
+>     root@d8c28a676d72:/# ./fanotify-basic-open /mnt/readme & # on 9pfs
+>     [2] 176
+>     root@d8c28a676d72:/# cat /mnt/readme
+>     aa
+>     root@d8c28a676d72:/#
+> 
+> Same can be demonstrated with inotifywait.  The source code for
+> fanotify-basic-open, adopted from the fanotify man page, is available at
+> the end of this email.
+> 
+> Note that this is not a security bug for Landlock since it can only cause
+> legitimate access to be denied, but might be a problem for fanotify perm
+> (although I do recognize that using perm on individual inodes is already
+> perhaps a bit unreliable?)
+> 
+> It seems that there was an attempt at making 9pfs reuse inodes, based on
+> qid.path, however it was reverted [2] due to issues with servers that
+> present duplicate qids, for example on a QEMU host that has multiple
+> filesystems mounted under a single 9pfs export without multidevs=remap, or
+> in the case of other servers that doesn't necessarily support remapping
+> qids ([3] and more).  I've done some testing on v6.12-rc4 which has the
+> simplified 9pfs inode code before it was reverted, and found that Landlock
+> works (however, we of course then have the issue demonstrated in [2]).
+> 
+> Unrelated to the above problem, it also seems like even with the revert in
+> [2], because in cached mode inode are still reused based on qid (and type,
+> version (aka mtime), etc), the setup mentioned in [2] still causes
+> problems in th latest kernel with cache=loose:
+> 
+>     host # cd /tmp/linux-test
+>     host # mkdir m1 m2
+>     host # mount -t tmpfs tmpfs m1
+>     host # mount -t tmpfs tmpfs m2
+>     host # mkdir m1/dir m2/dir  # needs to be done together so that they have the same mtime
+>     host # echo foo > m1/dir/foo
+>     host # echo bar > m2/dir/bar
+> 
+>     guest # mount -t 9p -o trans=virtio,cache=loose test /mnt
+>     guest # cd /mnt/m1/dir
+>     qemu-system-x86_64: warning: 9p: Multiple devices detected in same VirtFS export, which might lead to file ID collisions and severe misbehaviours on guest! You should either use a separate export for each device shared from host or use virtfs option 'multidevs=remap'!
+>     guest # ls
+>     foo
+>     guest # ls /mnt/m2/dir
+>     foo # <- should be bar
+>     guest # uname -a
+>     Linux d8c28a676d72 6.14.0-dev #92 SMP PREEMPT_DYNAMIC Sun Apr  6 18:47:54 BST 2025 x86_64 GNU/Linux
+> 
+> With the above in mind, I have a proposal for 9pfs to:
+> 1. Reuse inodes even in uncached mode
+> 2. However, reuse them based on qid.path AND the actual pathname, by doing
+>    the appropriate testing in v9fs_test(_new)?_inode(_dotl)?
+> 
+> The main problem here is how to store the pathname in a sensible way and
+> tie it to the inode.  For now I opted with an array of names acquired with
+> take_dentry_name_snapshot, which reuses the same memory as the dcache to
+> store the actual strings, but doesn't tie the lifetime of the dentry with
+> the inode (I thought about holding a reference to the dentry in the
+> v9fs_inode, but it seemed like a wrong approach and would cause dentries
+> to not be evicted/released).
+> 
+> Maybe ideally there could be a general way for filesystems to tell
+> VFS/dcache to "pin" a dentry as long as the inode is alive, but still
+> allows the dentry and inode to be evicted based on memory pressure?  In
+> fact, if the dentry is alive, we might not even need to do this in 9pfs,
+> as we will automatically get the same inode pointed to by the dentry.
 
-diff --git a/tools/testing/selftests/landlock/config b/tools/testing/selftests/landlock/config
-index 8fe9b461b1fd..02427db3cb7b 100644
---- a/tools/testing/selftests/landlock/config
-+++ b/tools/testing/selftests/landlock/config
-@@ -1,13 +1,18 @@
-+CONFIG_9P_FS=y
- CONFIG_AF_UNIX_OOB=y
- CONFIG_AUDIT=y
- CONFIG_CGROUPS=y
- CONFIG_CGROUP_SCHED=y
-+CONFIG_FUSE_FS=y
- CONFIG_INET=y
- CONFIG_IPV6=y
- CONFIG_KEYS=y
- CONFIG_MPTCP=y
- CONFIG_MPTCP_IPV6=y
- CONFIG_NET=y
-+CONFIG_NETWORK_FILESYSTEMS=y
-+CONFIG_NET_9P=y
-+CONFIG_NET_9P_FD=y
- CONFIG_NET_NS=y
- CONFIG_OVERLAY_FS=y
- CONFIG_PROC_FS=y
-diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
-index 73729382d40f..788fa030cbe3 100644
---- a/tools/testing/selftests/landlock/fs_test.c
-+++ b/tools/testing/selftests/landlock/fs_test.c
-@@ -176,15 +176,19 @@ static bool supports_filesystem(const char *const filesystem)
- 	return res;
- }
- 
--static bool cwd_matches_fs(unsigned int fs_magic)
-+static bool path_is_fs(const char *path, unsigned int fs_magic)
- {
- 	struct statfs statfs_buf;
- 
--	if (!fs_magic)
-+	if (!fs_magic || !path)
- 		return true;
- 
--	if (statfs(".", &statfs_buf))
--		return true;
-+	/* Hack for the hostfs test because TMP_DIR doesn't exist yet. */
-+	if (strcmp(path, TMP_DIR) == 0)
-+		path = ".";
-+
-+	if (statfs(path, &statfs_buf))
-+		return false;
- 
- 	return statfs_buf.f_type == fs_magic;
- }
-@@ -5294,7 +5298,7 @@ FIXTURE_VARIANT(layout3_fs)
- {
- 	const struct mnt_opt mnt;
- 	const char *const file_path;
--	unsigned int cwd_fs_magic;
-+	unsigned int fs_magic;
- };
- 
- /* clang-format off */
-@@ -5342,7 +5346,34 @@ FIXTURE_VARIANT_ADD(layout3_fs, hostfs) {
- 		.flags = MS_BIND,
- 	},
- 	.file_path = TMP_DIR "/dir/file",
--	.cwd_fs_magic = HOSTFS_SUPER_MAGIC,
-+	.fs_magic = HOSTFS_SUPER_MAGIC,
-+};
-+
-+/*
-+ * This test requires a mounted 9p filesystem e.g., with:
-+ * diod -n -l 127.0.0.1:564 -e /mnt/test-v9fs-src
-+ * mount.diod -n 127.0.0.1:/mnt/test-v9fs-src /mnt/test-v9fs
-+ */
-+FIXTURE_VARIANT_ADD(layout3_fs, v9fs) {
-+	.mnt = {
-+		.source = "/mnt/test-v9fs",
-+		.flags = MS_BIND,
-+	},
-+	.file_path = TMP_DIR "/dir/file",
-+	.fs_magic = V9FS_MAGIC,
-+};
-+
-+/*
-+ * This test requires a mounted FUSE filesystem e.g., with:
-+ * bindfs /mnt/test-fuse-src /mnt/test-fuse
-+ */
-+FIXTURE_VARIANT_ADD(layout3_fs, fuse) {
-+	.mnt = {
-+		.source = "/mnt/test-fuse",
-+		.flags = MS_BIND,
-+	},
-+	.file_path = TMP_DIR "/dir/file",
-+	.fs_magic = FUSE_SUPER_MAGIC,
- };
- 
- static char *dirname_alloc(const char *path)
-@@ -5365,7 +5396,7 @@ FIXTURE_SETUP(layout3_fs)
- 	char *dir_path = dirname_alloc(variant->file_path);
- 
- 	if (!supports_filesystem(variant->mnt.type) ||
--	    !cwd_matches_fs(variant->cwd_fs_magic)) {
-+	    !path_is_fs(variant->mnt.source, variant->fs_magic)) {
- 		self->skip_test = true;
- 		SKIP(return, "this filesystem is not supported (setup)");
- 	}
--- 
-2.50.0
+Christian, any though?
 
+> 
+> Currently this pathname is immutable once attached to an inode, and
+> therefore it is not protected by locks or RCU, but this might have to
+> change for us to support renames that preserve the inode on next access.
+> This is not in this patchset yet.  Also let me know if I've missed any
+> locks etc (I'm new to VFS, or for that matter, the kernel).
+> 
+> Storing one pathname per inode also means we don't reuse the same inode
+> for hardlinks -- maybe this can be fixed as well in a future version, if
+> this approach sounds good?
+> 
+> From some QEMU documentation I read [4] it seems like there is a plan to
+> resolve these kind of problems in a new version of the protocol, by
+> expanding the qid to include the filesystem identifier of a file on the
+> host, so maybe this can be disabled after a successful protocol version
+> check with the host?  For now this is implemented as a default option,
+> inodeident=path, which can be set to 'none' to instead get the previous
+> behaviour.
+> 
+> This patchset is still a bit of a work in progress, and I've not tested
+> the performance impact.  It currently uses strncmp to compare paths but
+> this might be able to be optimized into a hash comparison first.  It
+> should also normally only need to do it for one pair of filenames, as the
+> test is only done if qid.path matches in the first place.
+> 
+> Also, currently the inode is not reused in cached mode if mtime changed
+> AND the dentry was evicted -- I considered removing the qid.version test
+> in v9fs_test_inode_dotl but I think perhaps care needs to be taken to
+> ensure we can refresh an inode that potentially has data cached?  This is
+> a TODO for this patchset.
+> 
+> Another TODO is to maybe add support for case-insensitive matching?
+> 
+> For this patch series I've tested modifying files on both host and guest,
+> changing a file from regular file to dir then back while preserving ino,
+> keeping a file open in the guest with a fd, and using Landlock (which
+> results in an ihold but does not keep the dentry) then trying to access
+> the file from both inside and outside the Landlocked shell.
+> 
+> Let me know what's your thought on this -- if this is a viable approach
+> I'm happy to work on it more and do more testing.  The main motivation
+> behind this is getting Landlock to work "out of the box" on 9pfs.
+> 
+> This patch series was based on, and tested on v6.14 + [5]
+> 
+> Kind regards,
+> Tingmao
+> 
+> [1]: https://github.com/landlock-lsm/linux/issues/45
+> [2]: https://lore.kernel.org/all/20241024-revert_iget-v1-4-4cac63d25f72@codewreck.org/
+> [3]: https://lore.kernel.org/all/20240923100508.GA32066@willie-the-truck/
+> [4]: https://wiki.qemu.org/Documentation/9p#Protocol_Plans
+> [5]: https://lore.kernel.org/all/cover.1743956147.git.m@maowtm.org/
+> 
+> fanotify-basic-open.c:
+> 
+>     #define _GNU_SOURCE /* Needed to get O_LARGEFILE definition */
+>     #include <errno.h>
+>     #include <fcntl.h>
+>     #include <limits.h>
+>     #include <poll.h>
+>     #include <stdio.h>
+>     #include <stdlib.h>
+>     #include <sys/fanotify.h>
+>     #include <unistd.h>
+> 
+>     /* Read all available fanotify events from the file descriptor 'fd'. */
+> 
+>     static void handle_events(int fd)
+>     {
+>         const struct fanotify_event_metadata *metadata;
+>         struct fanotify_event_metadata buf[200];
+>         ssize_t size;
+>         char path[PATH_MAX];
+>         ssize_t path_len;
+>         char procfd_path[PATH_MAX];
+>         struct fanotify_response response;
+> 
+>         for (;;) {
+>             size = read(fd, buf, sizeof(buf));
+>             if (size == -1 && errno != EAGAIN) {
+>                 perror("read");
+>                 exit(EXIT_FAILURE);
+>             }
+> 
+>             /* Check if end of available data reached. */
+> 
+>             if (size <= 0)
+>                 break;
+> 
+>             /* Point to the first event in the buffer. */
+> 
+>             metadata = buf;
+> 
+>             /* Loop over all events in the buffer. */
+> 
+>             while (FAN_EVENT_OK(metadata, size)) {
+>                 if (metadata->fd >= 0) {
+>                     if (metadata->mask & FAN_OPEN) {
+>                         printf("FAN_OPEN: ");
+>                     }
+> 
+>                     /* Retrieve and print pathname of the accessed file. */
+> 
+>                     snprintf(procfd_path, sizeof(procfd_path),
+>                         "/proc/self/fd/%d", metadata->fd);
+>                     path_len = readlink(procfd_path, path,
+>                                 sizeof(path) - 1);
+>                     if (path_len == -1) {
+>                         perror("readlink");
+>                         exit(EXIT_FAILURE);
+>                     }
+> 
+>                     path[path_len] = '\0';
+>                     printf("File %s\n", path);
+> 
+>                     /* Close the file descriptor of the event. */
+> 
+>                     close(metadata->fd);
+>                 }
+> 
+>                 /* Advance to next event. */
+> 
+>                 metadata = FAN_EVENT_NEXT(metadata, size);
+>             }
+>         }
+>     }
+> 
+>     int main(int argc, char *argv[])
+>     {
+>         char buf;
+>         int fd, poll_num;
+>         nfds_t nfds;
+>         struct pollfd fds[2];
+> 
+>         /* Check mount point is supplied. */
+> 
+>         if (argc != 2) {
+>             fprintf(stderr, "Usage: %s FILE\n", argv[0]);
+>             exit(EXIT_FAILURE);
+>         }
+> 
+>         fd = fanotify_init(0, O_RDONLY | O_LARGEFILE);
+>         if (fd == -1) {
+>             perror("fanotify_init");
+>             exit(EXIT_FAILURE);
+>         }
+> 
+>         if (fanotify_mark(fd, FAN_MARK_ADD | FAN_MARK_INODE, FAN_OPEN, AT_FDCWD,
+>                 argv[1]) == -1) {
+>             perror("fanotify_mark");
+>             exit(EXIT_FAILURE);
+>         }
+> 
+>         while (1) {
+>             handle_events(fd);
+>         }
+>     }
+> 
+> Tingmao Wang (6):
+>   fs/9p: Add ability to identify inode by path for .L
+>   fs/9p: add default option for path-based inodes
+>   fs/9p: Hide inodeident=path from show_options as it is the default
+>   fs/9p: Add ability to identify inode by path for non-.L
+>   fs/9p: .L: Refresh stale inodes on reuse
+>   fs/9p: non-.L: Refresh stale inodes on reuse
+> 
+>  fs/9p/Makefile         |   3 +-
+>  fs/9p/ino_path.c       | 114 ++++++++++++++++++++++++++++++++++++++
+>  fs/9p/v9fs.c           |  33 ++++++++++-
+>  fs/9p/v9fs.h           |  63 +++++++++++++++------
+>  fs/9p/vfs_inode.c      | 122 +++++++++++++++++++++++++++++++++++------
+>  fs/9p/vfs_inode_dotl.c | 108 +++++++++++++++++++++++++++++++++---
+>  fs/9p/vfs_super.c      |  10 +++-
+>  7 files changed, 406 insertions(+), 47 deletions(-)
+>  create mode 100644 fs/9p/ino_path.c
+> 
+> 
+> base-commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557
+> prerequisite-patch-id: 12dc6676db52ff32eed082b1e5d273f297737f61
+> prerequisite-patch-id: 93ab54c52a41fa44b8d0baf55df949d0ad27e99a
+> prerequisite-patch-id: 5f558bf969e6eaa3d011c98de0806ca8ad369efe
+> --
+> 2.39.5
+> 
