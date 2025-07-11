@@ -1,240 +1,311 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7323D2EFDA1
-	for <v9fs@lists.linux.dev>; Thu, 10 Jul 2025 16:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E952F2363
+	for <v9fs@lists.linux.dev>; Fri, 11 Jul 2025 19:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752165113; cv=none; b=acd2G85x4NuADDhEjL7eQWNWumm7LW8Qenh3xoA6Umz0LGPe4ak4RwIUgkesmVg4RT9DhgdcaZLhmVduOTL5HBBUQ/GCkr7QdxAnU4KrSkx1arqTidQAJBnAqlxYdijSxbH7fTuokOjeTQ7/tSeRzt7WGUuKownkj/53DvTLSKc=
+	t=1752261111; cv=none; b=F1a1FxkY39OBXT02ri+6Ni0ifrCSNi+hy7ksKKYPs+jaSUhGqMxpkCrOlJiiuvEIoeJptyr29CBml9bVPJ1CqBj28BhKJf/6yOP5ggv4XQDaoy1ED/u1axArQdeNLyAmL+EYy1y6IMmiudOrmPjyYp7mWWUSAKh3b+L1UADyaaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752165113; c=relaxed/simple;
-	bh=0/7e0fhDD+nhfhomUm5QCNroWeBizuBJN14rsfB0VjY=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=oRAt2CSLXKXTFUrQTC/K3gxfLcYU/lALFbHxatCo8n4f8DkrJb59zjNg9JLGsgxJoh5BQzAbC/oMni1AFL/5mcVjFAnqDW0z9CdAsvULoKUxue1RXxbwyWP3BBJxOZC5PEmigOdrrczLSJ/jnoMGXQCs9oD+6+3dFCAVcnCL+OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ul3tr9jH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752261111; c=relaxed/simple;
+	bh=IIg3URYmv6xWYI14i1THAS7URsoobYG/rgtasZkZ9OQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T+JpRTIAUiVlqEM8FW6AQwBvXSAnOoFDE37URY7EEa0593IVsGuvj+hu0BnTOSrtmxbwhOBZKvn+DNHUtMJLXpSA0p5aYqHS2gHx41DACtgShkXrqp9Y45Q4Ld3ewhfu7d/mDFR7Xqcps4N3WeZuI7BIDcACJ2dG/OKbCL2z0qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=TIbcL63m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=entiRvvW; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ul3tr9jH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752165110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XbVgBYU1j7RlLF0+RFun00uhaSaH2KoCdahv4lEZ8ho=;
-	b=Ul3tr9jH4D5VabAtI3RCfCzix6HEwzrXKsoJ6iAruGTQorGG0QgiRZofyhZg58ODXHn2KY
-	EMReKpbaF0F50EWYyCGEt6TianBlqbgCOUYHA5MG2QIuyRRrqKka1tNMPPc4rdNyW/uEsD
-	Y6VjEuGIvpFrvLqsNzF/bk9pQDR+AZI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-77Io-M4CMMG3K5g-BpBdDw-1; Thu,
- 10 Jul 2025 12:31:46 -0400
-X-MC-Unique: 77Io-M4CMMG3K5g-BpBdDw-1
-X-Mimecast-MFC-AGG-ID: 77Io-M4CMMG3K5g-BpBdDw_1752165099
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F8AF18001D1;
-	Thu, 10 Jul 2025 16:31:39 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6CC423000221;
-	Thu, 10 Jul 2025 16:31:35 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <2904424.1752161530@warthog.procyon.org.uk>
-References: <2904424.1752161530@warthog.procyon.org.uk> <CAKPOu+9TN4hza48+uT_9W5wEYhZGLc2F57xxKDiyhy=pay5XAw@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <2738562.1752092552@warthog.procyon.org.uk> <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com> <2807750.1752144428@warthog.procyon.org.uk>
-Cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
-    Christian Brauner <christian@brauner.io>,
-    Viacheslav Dubeyko <slava@dubeyko.com>,
-    Alex Markuze <amarkuze@redhat.com>, Steve French <sfrench@samba.org>,
-    Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="TIbcL63m";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="entiRvvW"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CE0DF14000BA;
+	Fri, 11 Jul 2025 15:11:48 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 11 Jul 2025 15:11:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1752261108;
+	 x=1752347508; bh=zVqXbJMyuYU/2MbDexMJAmbazqSopFPwjDQCJvXjDSs=; b=
+	TIbcL63m4VSaBnN3C60VDQT+NlcNNA6nunXsxXM63w+wHOsw5n5/Q4MQfTxbLKHG
+	FMAegqxnvKYlt1t0FEkXZOTl7CVBMTPGhi9SJzzLETPWxGEmJeFYgP/+WwFzgAHi
+	XjWTP0F3Sl1eKU69lNCU+4TU2IZv5BWZlP3/sIJJmHqbr4tBEeT9NcrQygJh4RHk
+	e2f/pPcJ9Zt6iUL/rCQa2/UhDgQsARgetTVE2t6SZzZ8Is78o5x+8PV8gL2gEK2i
+	GdoZaLu4ZwNgff4iNPnst9tY7GNPworsIdIMzigQEJ3Fzv+lKIPQu01DtfBEcTJJ
+	3gGSsmiMKZIUBsu4iD9URA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1752261108; x=
+	1752347508; bh=zVqXbJMyuYU/2MbDexMJAmbazqSopFPwjDQCJvXjDSs=; b=e
+	ntiRvvWup2vYHXmq1f5P/DM8XAlJcNZfTkbKTFTxU/Lygko0jcVWJDnp+i3mX6tR
+	eIXjW90D7jlZjpwspusx32U1Cb/GfJ+UtD5hqIn4EiZj0UZKG/NFgDcuIlu6YLmO
+	bjW5uDyHuFynPKJPEzbVv7p/lIXY8NgZ5BTHZN+NCvs+M4WStm8Bs3gF6dwxzzSf
+	R+oPlTKl2NnxsRnWKgMMYBgYz63/dDMhqb4LzDVEE7cfcGqwJYbtnkthTzTe8i+S
+	I6r0zPDd3FNUoBDep0q0kC4J0Dmu9Q7ilcroWAQAfZT4YXcEpvlcfPzFUUQZlH66
+	Na/PX6JtXfSxWOVfGZ9bQ==
+X-ME-Sender: <xms:82FxaES5_AN-I-b8mIybwkqLsJVN2yXB6B41vbZ1NYziHlIYEVE1MQ>
+    <xme:82FxaASCKKOJUeCIcDNdOO11Hb6c7k8S2jzzn9MXXmGXSxHfaRlgGhoC-zupJisUw
+    gMAuEp6HDX5IhH75p8>
+X-ME-Received: <xmr:82FxaNUy3c62v67MiJCuOnpEG8q4XBjUH9c5CXUVJuGCxGA1r8sxLSjOmGcW0znT1YB9bc8_UsEoTs5b6LfwGHCb>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeggeduvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepvfhinhhgmhgr
+    ohcuhggrnhhguceomhesmhgrohifthhmrdhorhhgqeenucggtffrrghtthgvrhhnpeefvd
+    ehleeutdfhlefgvedvgfeklefgleekgedtvdehvdfgtdefieelhfdutefgudenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmsehmrghofihtmh
+    drohhrghdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepvg
+    hrihgtvhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrshhmrgguvghushestgho
+    uggvfihrvggtkhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvth
+    dprhgtphhtthhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghp
+    thhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepmhhitg
+    esughighhikhhougdrnhgvthdprhgtphhtthhopehgnhhorggtkhesghhoohhglhgvrdgt
+    ohhmpdhrtghpthhtoheplhhinhhugidqshgvtghurhhithihqdhmohguuhhlvgesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:82FxaCKWsUSLcdIxnvdy-hZo8ep_vf1iCNMrglKRCw9txHNRQKQH-w>
+    <xmx:82FxaGj4t_CGr_kNoJy3SwyRAXsx0JdKJZOJSEOzRKzT97IcFX07DA>
+    <xmx:82FxaHLFHToADESeSdAwu1LyemwAjPFZpVYWM2YM5XJLQfjaRpRN3Q>
+    <xmx:82FxaFiSXuZY2Ki2KG282lPnaM-h1-gy8QUf0N3ZXyvxmNMatk3Xug>
+    <xmx:9GFxaCDF018BJZDYmjfCR_IJjuN5VQfQs-kCHx1VZ-2sNGQb5fAFIXKy>
+Feedback-ID: i580e4893:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 11 Jul 2025 15:11:45 -0400 (EDT)
+Message-ID: <b32e2088-92c0-43e0-8c90-cb20d4567973@maowtm.org>
+Date: Fri, 11 Jul 2025 20:11:44 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2919958.1752165094.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Jul 2025 17:31:34 +0100
-Message-ID: <2919959.1752165094@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] fs/9p: Add ability to identify inode by path for
+ .L
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
+ =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
+ linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
+ linux-fsdevel@vger.kernel.org
+References: <cover.1743971855.git.m@maowtm.org>
+ <e839a49e0673b12eb5a1ed2605a0a5267ff644db.1743971855.git.m@maowtm.org>
+ <20250705002536.GW1880847@ZenIV>
+Content-Language: en-US
+From: Tingmao Wang <m@maowtm.org>
+In-Reply-To: <20250705002536.GW1880847@ZenIV>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-David Howells <dhowells@redhat.com> wrote:
+Hi Al, thanks for the review :)  I haven't had the chance to properly
+think about this until today, so apologies for the delay.
 
-> Depending on what you're doing on ceph, you might need the attached patc=
-h as
-> well.  I managed to reproduce it by doing a git clone and kernel build o=
-n a
-> ceph mount with cachefiles active.
+On 7/5/25 01:19, Al Viro wrote:
+> On Sun, Apr 06, 2025 at 09:43:02PM +0100, Tingmao Wang wrote:
+> 
+>> +struct v9fs_ino_path *make_ino_path(struct dentry *dentry)
+>> +{
+>> +	struct v9fs_ino_path *path;
+>> +	size_t path_components = 0;
+>> +	struct dentry *curr = dentry;
+>> +	ssize_t i;
+>> +
+>> +	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+>> +
+>> +	rcu_read_lock();
+>> +
+>> +    /* Don't include the root dentry */
+>> +	while (curr->d_parent != curr) {
+>> +		path_components++;
+>> +		curr = curr->d_parent;
+>> +	}
+>> +	if (WARN_ON(path_components > SSIZE_MAX)) {
 
-Here's a version of the patch that conditionally does the needed wakeup.  =
-I
-don't want to force processing if there's no need.
+(Looking at this again I think this check is a bit bogus.  I don't know
+how would it be possible at all for us to have > SSIZE_MAX deep
+directories especially since each level requires a dentry allocation, but
+even if this check is actually useful, it should be in the while loop,
+before each path_components++)
 
-David
----
-commit 1fe42a9a7f0b2f51107574f0b8e151d13dc766cc
-Author: David Howells <dhowells@redhat.com>
-Date:   Thu Jul 10 15:02:57 2025 +0100
+>> +		rcu_read_unlock();
+>> +		return NULL;
+>> +	}
+>> +
+>> +	path = kmalloc(struct_size(path, names, path_components),
+>> +		       GFP_KERNEL);
+> 
+> Blocking allocation under rcu_read_lock().
 
-    netfs: Fix race between cache write completion and ALL_QUEUED being se=
-t
-    =
+I think my first instinct of how to fix this, if the original code is
+correct barring this allocation issue, would be to take rcu read lock
+twice (first walk to calculate how much to allocate, then second walk to
+actually take the snapshots).  We should be safe to rcu_read_unlock() in
+the middle as long as caller has a reference to the target dentry (this
+needs to be true even if we just do one rcu_read_lock() anyway), and we
+can start a parent walk again.  The v9fs rename_sem should ensure we see
+the same path again.
 
-    When netfslib is issuing subrequests, the subrequests start processing
-    immediately and may complete before we reach the end of the issuing
-    function.  At the end of the issuing function we set NETFS_RREQ_ALL_QU=
-EUED
-    to indicate to the collector that we aren't going to issue any more su=
-breqs
-    and that it can do the final notifications and cleanup.
-    =
+Alternatively, we can use dget_parent to do the walk, and not lock RCU at
+all.  We still need to walk twice tho, to know how much to allocate.  But
+for now I will keep the current approach.
 
-    Now, this isn't a problem if the request is synchronous
-    (NETFS_RREQ_OFFLOAD_COLLECTION is unset) as the result collection will=
- be
-    done in-thread and we're guaranteed an opportunity to run the collecto=
-r.
-    =
+New version:
 
-    However, if the request is asynchronous, collection is primarily trigg=
-ered
-    by the termination of subrequests queuing it on a workqueue.  Now, a r=
-ace
-    can occur here if the app thread sets ALL_QUEUED after the last subreq=
-uest
-    terminates.
-    =
+/*
+ * Must hold rename_sem due to traversing parents.  Caller must hold
+ * reference to dentry.
+ */
+struct v9fs_ino_path *make_ino_path(struct dentry *dentry)
+{
+	struct v9fs_ino_path *path;
+	size_t path_components = 0;
+	struct dentry *curr = dentry;
+	ssize_t i;
 
-    This can happen most easily with the copy2cache code (as used by Ceph)
-    where, in the collection routine of a read request, an asynchronous wr=
-ite
-    request is spawned to copy data to the cache.  Folios are added to the
-    write request as they're unlocked, but there may be a delay before
-    ALL_QUEUED is set as the write subrequests may complete before we get
-    there.
-    =
+	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+	might_sleep(); /* Allocation below might block */
 
-    If all the write subreqs have finished by the ALL_QUEUED point, no fur=
-ther
-    events happen and the collection never happens, leaving the request
-    hanging.
-    =
+	rcu_read_lock();
 
-    Fix this by queuing the collector after setting ALL_QUEUED.  This is a=
- bit
-    heavy-handed and it may be sufficient to do it only if there are no ex=
-tant
-    subreqs.
-    =
+	/* Don't include the root dentry */
+	while (curr->d_parent != curr) {
+		if (WARN_ON(path_components >= SSIZE_MAX)) {
+			rcu_read_unlock();
+			return NULL;
+		}
+		path_components++;
+		curr = curr->d_parent;
+	}
 
-    Also add a tracepoint to cross-reference both requests in a copy-to-re=
-quest
-    operation and add a trace to the netfs_rreq tracepoint to indicate the
-    setting of ALL_QUEUED.
-    =
+	/*
+	 * Allocation can block so don't do it in RCU (and because the
+	 * allocation might be large, since name_snapshot leaves space for
+	 * inline str, not worth trying GFP_ATOMIC)
+	 */
+	rcu_read_unlock();
 
-    Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only =
-use one work item")
-    Reported-by: Max Kellermann <max.kellermann@ionos.com>
-    Link: https://lore.kernel.org/r/CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=3DshxyGLw=
-fe-L7AV3DhebS3w@mail.gmail.com/
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Paulo Alcantara <pc@manguebit.org>
-    cc: Viacheslav Dubeyko <slava@dubeyko.com>
-    cc: Alex Markuze <amarkuze@redhat.com>
-    cc: Ilya Dryomov <idryomov@gmail.com>
-    cc: netfs@lists.linux.dev
-    cc: ceph-devel@vger.kernel.org
-    cc: linux-fsdevel@vger.kernel.org
-    cc: stable@vger.kernel.org
+	path = kmalloc(struct_size(path, names, path_components), GFP_KERNEL);
+	if (!path) {
+		rcu_read_unlock();
+		return NULL;
+	}
 
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 080d2a6a51d9..8097bc069c1d 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -111,6 +111,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_co=
-py_to_cache(
- 		goto cancel_put;
- =
+	path->nr_components = path_components;
+	curr = dentry;
 
- 	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &creq->flags);
-+	trace_netfs_copy2cache(rreq, creq);
- 	trace_netfs_write(creq, netfs_write_trace_copy_to_cache);
- 	netfs_stat(&netfs_n_wh_copy_to_cache);
- 	rreq->copy_to_cache =3D creq;
-@@ -155,6 +156,9 @@ void netfs_pgpriv2_end_copy_to_cache(struct netfs_io_r=
-equest *rreq)
- 	netfs_issue_write(creq, &creq->io_streams[1]);
- 	smp_wmb(); /* Write lists before ALL_QUEUED. */
- 	set_bit(NETFS_RREQ_ALL_QUEUED, &creq->flags);
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_end_copy_to_cache);
-+	if (list_empty_careful(&creq->io_streams[1].subrequests))
-+		netfs_wake_collector(creq);
- =
+	rcu_read_lock();
+	for (i = path_components - 1; i >= 0; i--) {
+		take_dentry_name_snapshot(&path->names[i], curr);
+		curr = curr->d_parent;
+	}
+	WARN_ON(curr != curr->d_parent);
+	rcu_read_unlock();
+	return path;
+}
 
- 	netfs_put_request(creq, netfs_rreq_trace_put_return);
- 	creq->copy_to_cache =3D NULL;
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 73e96ccbe830..64a382fbc31a 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -55,6 +55,7 @@
- 	EM(netfs_rreq_trace_copy,		"COPY   ")	\
- 	EM(netfs_rreq_trace_dirty,		"DIRTY  ")	\
- 	EM(netfs_rreq_trace_done,		"DONE   ")	\
-+	EM(netfs_rreq_trace_end_copy_to_cache,	"END-C2C")	\
- 	EM(netfs_rreq_trace_free,		"FREE   ")	\
- 	EM(netfs_rreq_trace_ki_complete,	"KI-CMPL")	\
- 	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
-@@ -559,6 +560,35 @@ TRACE_EVENT(netfs_write,
- 		      __entry->start, __entry->start + __entry->len - 1)
- 	    );
- =
+How does this look?
 
-+TRACE_EVENT(netfs_copy2cache,
-+	    TP_PROTO(const struct netfs_io_request *rreq,
-+		     const struct netfs_io_request *creq),
-+
-+	    TP_ARGS(rreq, creq),
-+
-+	    TP_STRUCT__entry(
-+		    __field(unsigned int,		rreq)
-+		    __field(unsigned int,		creq)
-+		    __field(unsigned int,		cookie)
-+		    __field(unsigned int,		ino)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    struct netfs_inode *__ctx =3D netfs_inode(rreq->inode);
-+		    struct fscache_cookie *__cookie =3D netfs_i_cookie(__ctx);
-+		    __entry->rreq	=3D rreq->debug_id;
-+		    __entry->creq	=3D creq->debug_id;
-+		    __entry->cookie	=3D __cookie ? __cookie->debug_id : 0;
-+		    __entry->ino	=3D rreq->inode->i_ino;
-+			   ),
-+
-+	    TP_printk("R=3D%08x CR=3D%08x c=3D%08x i=3D%x ",
-+		      __entry->rreq,
-+		      __entry->creq,
-+		      __entry->cookie,
-+		      __entry->ino)
-+	    );
-+
- TRACE_EVENT(netfs_collect,
- 	    TP_PROTO(const struct netfs_io_request *wreq),
- =
+On 7/5/25 01:25, Al Viro wrote:
+> On Sun, Apr 06, 2025 at 09:43:02PM +0100, Tingmao Wang wrote:
+>> +bool ino_path_compare(struct v9fs_ino_path *ino_path,
+>> +			     struct dentry *dentry)
+>> +{
+>> +	struct dentry *curr = dentry;
+>> +	struct qstr *curr_name;
+>> +	struct name_snapshot *compare;
+>> +	ssize_t i;
+>> +
+>> +	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+>> +
+>> +	rcu_read_lock();
+>> +	for (i = ino_path->nr_components - 1; i >= 0; i--) {
+>> +		if (curr->d_parent == curr) {
+>> +			/* We're supposed to have more components to walk */
+>> +			rcu_read_unlock();
+>> +			return false;
+>> +		}
+>> +		curr_name = &curr->d_name;
+>> +		compare = &ino_path->names[i];
+>> +		/*
+>> +		 * We can't use hash_len because it is salted with the parent
+>> +		 * dentry pointer.  We could make this faster by pre-computing our
+>> +		 * own hashlen for compare and ino_path outside, probably.
+>> +		 */
+>> +		if (curr_name->len != compare->name.len) {
+>> +			rcu_read_unlock();
+>> +			return false;
+>> +		}
+>> +		if (strncmp(curr_name->name, compare->name.name,
+>> +			    curr_name->len) != 0) {
+> 
+> ... without any kind of protection for curr_name.  Incidentally,
+> what about rename()?  Not a cross-directory one, just one that
+> changes the name of a subdirectory within the same parent?
+
+As far as I can tell, in v9fs_vfs_rename, v9ses->rename_sem is taken for
+both same-parent and different parent renames, so I think we're safe here
+(and hopefully for any v9fs dentries, nobody should be causing d_name to
+change except for ourselves when we call d_move in v9fs_vfs_rename?  If
+yes then because we also take v9ses->rename_sem, in theory we should be
+fine here...?)
+
+(Let me know if I missed anything.  I'm assuming only the filesystem
+"owning" a dentry should d_move/d_exchange the dentry.)
+
+However, I see that there is a d_same_name function in dcache.c which is
+slightly more careful (but still requires the caller to check the dentry
+seqcount, which we do not need to because of the reasoning above), and in
+hindsight I think that is probably the more proper way to do this
+comparison (and will also handle case-insensitivity, although I've not
+explored if this is applicable to 9pfs).
+
+New version:
+
+/*
+ * Must hold rename_sem due to traversing parents
+ */
+bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
+{
+	struct dentry *curr = dentry;
+	struct name_snapshot *compare;
+	ssize_t i;
+
+	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+
+	rcu_read_lock();
+	for (i = ino_path->nr_components - 1; i >= 0; i--) {
+		if (curr->d_parent == curr) {
+			/* We're supposed to have more components to walk */
+			rcu_read_unlock();
+			return false;
+		}
+		compare = &ino_path->names[i];
+		if (!d_same_name(curr, curr->d_parent, &compare->name)) {
+			rcu_read_unlock();
+			return false;
+		}
+		curr = curr->d_parent;
+	}
+	rcu_read_unlock();
+	if (curr != curr->d_parent) {
+		/* dentry is deeper than ino_path */
+		return false;
+	}
+	return true;
+}
+
+If you think this is not enough, can you suggest what would be needed?
+I'm thinking maybe we can check dentry seqcount to be safe, but from
+earlier discussion in "bpf path iterator" my impression is that that is
+VFS internal data - can we use it here (if needed)?
+
+(I assume, from looking at the code, just having a reference does not
+prevent d_name from changing)
 
