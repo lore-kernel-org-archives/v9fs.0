@@ -1,49 +1,45 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4722718B47E
-	for <v9fs@lists.linux.dev>; Wed, 30 Jul 2025 22:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A8419F13F
+	for <v9fs@lists.linux.dev>; Wed, 30 Jul 2025 22:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753913847; cv=none; b=nSl3MQnvq+EvUp+qIseHzA2wFvOVU/kOrniXrRm+tYqNyb3tb+g58iX29/tH9MnH4g9tM8jqe87VDjaKhYj9Em8+csGZmbeXGZzt/QJ4N+I+FHkMwUeait7aANx+/+xW3h7chr8qTq8udV4z+mq1mmr05F9Mymjc0IuxhQWekQ0=
+	t=1753914099; cv=none; b=QxIMV08j7pPY0yhE5jDiKpA9KO8qZeN0DYkfrvynwX/HqQ3W6g71BLf0u3DxUOkdaZsS1LC+wY+xybvKVUJh/JAv19gmM7ysc8O9oAnsVR6cvWkc9umx54om9Swq2vIQHBG+vxqOr0z7RcsKa9RftAP1w32Mm0XCn8XfdAyHE0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753913847; c=relaxed/simple;
-	bh=ddVPTpr4vlJtmcH42Kyjnj4MF0i/bfMojR6IIfEnIpc=;
+	s=arc-20240116; t=1753914099; c=relaxed/simple;
+	bh=gPV/fgmzSN1XFnlZAHxb9pvfXXEMpz0osDLD/6DJ3W8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KKKjQySZU1y328Xp6t5Ya5Viv1zg3pjXU3UZ6PNpkRiy3XfnzGtOTcQX4ONdap2biH4wQua9Yzis5yUuIguM+a41XdH6NNrAxEf4XRXQkH791QwZ4VEnNGqt7srT3XLkT5Hej2EUH8+B/fA7+gi0Udr3P9JzIgi/yKB+aSHtUUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=O77M/fGU; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=bH35BBjglY1nVmGj25mYJ9jOktbo+7CvVS7bnEAxCCKzkz70TgWcZjDwYwOdfTeHy1I7ecqaIkbZxHvRWr6uE2wBCdD7alUQJcNxZYOl0gn2kilvXq9xIrQW81eZmcgK2JPqKB0hXKi60KEDt9H+9EsbTIE7lFbz4jm/Sj+B5kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=FX6EG+Iy; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="O77M/fGU"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="FX6EG+Iy"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id EED7314C2D3;
-	Thu, 31 Jul 2025 00:07:23 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 9D97C14C2D3;
+	Thu, 31 Jul 2025 00:21:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1753913246;
+	s=2; t=1753914096;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iiZLDAfEF+WO6c2mW5XQmquEWbHBp4FM+aN7ari3muw=;
-	b=O77M/fGUAz+iPaahe8hEHDJjg2yUndSGGQ/smAnVJMQ48f5miEliYFGzYAFHsS5A+3zVwB
-	PJJq1eKzISfZlPPQwDVf8lSlL+ef2fRNsSJCrMWyF6Juxk6ocaVg9Jw+Lt/c3mMmHv5/TM
-	w7SFUKGctTxDl2f+RU122UqrKrBKU8ruMH72NRuD/PII1nDZHFnthvzw95rt2jaW1WDbun
-	rJMFlHkWvDJOz3ynK0bFflHtGqYrgZAM1b7AvTcgih79s95MnCMJC6qjJskA8HAQtoebxR
-	lNU9k37E2hzUeBR5vJj7Eq9awPjTnobvWrel4mNq9BJ6yGOoA54gNhsDH+w9vQ==
+	bh=D6JhiF7KoKNgSPD3zCt9p8g2uKhJH9FPFoUMsjdvKB4=;
+	b=FX6EG+IyhJiM2RBZ/KS+3Jz+TsegqLOZXiLNApe+3/CuS68KAz+BdeCjNcQIOioo3eDx0h
+	46POYyy2gWBw30aDw88dEg4Y25ArxKMDI+rO6olMTmAKLcgzvAgFrRPAbaFfpX8MQRriA1
+	zrURvN5QcfKNJtCavzEOqtcdYf8Uv69A2yB/AF2UeODOEBBU0NdAsK1QctGqb/4owV/fQh
+	OROGCfSJGmTli7Jrt6uk7TDV3EQDtuUPcHcG+0Dvb0WfxCnZYQ6il9e27p6oZH9Bk7Dsrh
+	8WHB6QD/IS7ifZnIrbamYVs7y0/t7hZEh4YLuw5x+eSjWdy9FcPl7z0tyRuBfw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d224c4b4;
-	Wed, 30 Jul 2025 22:07:22 +0000 (UTC)
-Date: Thu, 31 Jul 2025 07:07:07 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ad4612f5;
+	Wed, 30 Jul 2025 22:21:32 +0000 (UTC)
+Date: Thu, 31 Jul 2025 07:21:17 +0900
 From: asmadeus@codewreck.org
-To: Pierre Barre <pierre@barre.sh>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
-	ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: Use kvmalloc for message buffers
-Message-ID: <aIqXi6uBaWXtvgm3@codewreck.org>
-References: <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
- <2989343.ydHz1Oe0dO@silver>
- <1fcc97fd-bf32-4ea1-82c1-74a8efb6359b@app.fastmail.com>
- <2026737.7mX0AZtNi0@silver>
- <bbf2ae2f-d0e6-4f8f-b359-128cd8d5539f@app.fastmail.com>
+To: Eric Sandeen <sandeen@redhat.com>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
+	linux_oss@crudebyte.com, dhowells@redhat.com
+Subject: Re: [PATCH V2 0/4] 9p: convert to the new mount API
+Message-ID: <aIqa3cdv3whfNhfP@codewreck.org>
+References: <20250730192511.2161333-1-sandeen@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,65 +48,38 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bbf2ae2f-d0e6-4f8f-b359-128cd8d5539f@app.fastmail.com>
+In-Reply-To: <20250730192511.2161333-1-sandeen@redhat.com>
 
-(Added Willy in To, if you have time to advise on what's appropriate
-wrt. memory allocation here to use either as a contiguous virtual memory
-buffer or a scatterlist for various kind of dma used by transports
-that'd be appreciated)
+Hi Eric,
 
+Eric Sandeen wrote on Wed, Jul 30, 2025 at 02:18:51PM -0500:
+> This is an updated attempt to convert 9p to the new mount API. 9p is
+> one of the last conversions needed, possibly because it is one of the
+> trickier ones!
 
-First - thanks for starting this thread, large contiguous allocations
-has been a problem reported regularly in the past, and no-one has had
-the energy to address it yet, but it's definitely something worth
-tackling.
+Thanks for this work!
 
+I think the main contention point here is that we're moving some opaque
+logic that was in each transport into the common code, so e.g. an out of
+tree transport can no longer have its own options (not that I'm aware of
+such a transport existing anyway, so we probably don't have to worry
+about this)
 
-Pierre Barre wrote on Wed, Jul 30, 2025 at 10:16:13PM +0200:
-> As a middle-ground, would it be acceptable to add a transport
-> capability flag indicating whether the transport requires contiguous
-> memory for DMA?
+OTOH this is also a blessing because 9p used to silently ignore unknown
+options, and will now properly refuse them (although it'd still silently
+ignore e.g. rdma options being set for a virtio mount -- I guess there's
+little harm in that as long as typos are caught?)
 
-I think such a flag will be needed even if we do what Christian suggested:
->> So a more reasonable solution instead might be using kvmalloc(), as suggested
->> by you, and adjusting the individual transports such that they translate a
->> virtual memory address to a list of physical addresses via e.g.
->> vmalloc_to_page() if needed.
+So I think I'm fine with the approach.
 
-Start with a requires contiguous flag set for all transports except
-trans_fd (I'm not sure about usb, but I'm pretty sure all the rest need
-it); then each transport can figure out how to get a scatterlist or
-something they need from the allocation, so we don't need to have a big
-bang that breaks everything at the same time.
+> I was able to test this to some degree, but I am not sure how to test
+> all transports; there may well be bugs here. It would be great to get
+> some feedback on whether this approach seems reasonable, and of course
+> any further review or testing would be most welcome.
 
-I'm sure virtio's implem will come soon enough, but I don't see anyone
-working on RDMA or xen so fast.
+I still want to de-dust my test setup with rdma over siw for lack of
+supported hardware, so I'll try to give it a try, but don't necessarily
+wait for me as I don't know when that'll be..
 
-> 1. Add a P9_TRANS_REQUIRES_CONTIGUOUS flag to struct p9_trans_module
-> 2. Set this flag for virtio, xen, and rdma transports
-
-This is a nit but I'd rather the flag go the other way around, e.g. no
-flag means requires contiguous and it's only set after confirming the
-transport works
-(I just looked at usb and struct usb_request makes me think some drivers
-use dma, so, yeah..)
-
-We can always turn it around later if the majority of transports handle
-it.
-
-
-> 3. Modify p9_fcall_init to check the flag:
->      if (c->trans_mod->caps & P9_TRANS_REQUIRES_CONTIGUOUS)
->         fc->sdata = kmalloc(alloc_msize, GFP_NOFS);
->      else
->         fc->sdata = kvmalloc(alloc_msize, GFP_NOFS);
-
-I'm also curious if there's something more appropriate than kvmalloc wrt
-using either as a contiguous virtual memory buffer or a scatterlist, but
-I think this is fine for now unless someone knows of something more
-appropriate.
-
-
-Thanks,
 -- 
 Dominique Martinet | Asmadeus
