@@ -1,80 +1,183 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C7A20A5EB
-	for <v9fs@lists.linux.dev>; Sun,  3 Aug 2025 12:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1210295DBC
+	for <v9fs@lists.linux.dev>; Wed,  6 Aug 2025 15:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754222944; cv=none; b=cpQIJJoDGSNe2wGSWmM0cnxl91B3fmjPFeXjkRRRWwLBVr1MLdZvRwXDZCG+/OLLYXkK2sU5zh8XtQPfDq0v9F134DPwWwT4fbBC8yb51kmAqln2BwB3gIEOHdoxmqXUBC0nSXXgrghUutpERFSw4Ekyo0Ts3v5KB4GdFwDajik=
+	t=1754495471; cv=none; b=fwJgJcRqTf+829Gdb5KXHQIvowoRUrsJbvkv55p+LsUNzgM2coKB9mTFAUUxDOCHaN9khYl7CWAe/swjZ/mqwIrdGAi+UkxY/Z+SIWYB+q9zHh4bu26lR9MGH68uGlT774Yk6mHEP+LfX073gtB7rbVOc0JT5TNgurASbk1Bo2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754222944; c=relaxed/simple;
-	bh=+BxCQVXtTe+xoz4eJ9sHAveL3+qt5++cybtEn1AaG/w=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=l0UJweqXPXCuFM/k4G2gkuyOWVXchBElNuGT5JCm4FjiiQAmBoWa+08sRv3X8OB1aMMtUn2/NyWFkaF92Yy7PW/NzSSkN5j+L9SGGD7MvAiP8Bm6tugsZO7bLj+Lic0wFwvsBc058g1MxzqcTv02pNTrwy0pCuGkp8M/RgtmBuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-87c056ae7c0so663693439f.2
-        for <v9fs@lists.linux.dev>; Sun, 03 Aug 2025 05:09:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754222942; x=1754827742;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v5+xCIY68eQod8HShjZie1OqXUWvIMyxZ5G/valhey4=;
-        b=CP77nItcPaFsph8a3DvWYNc1lrRRE6STPrQCxUbCv7oAC9zim1n2owTS1JgxjoK3+u
-         YRvlBMNXnCFl0bwN/+JOh1i7iCFNgMLT2zghAMMMj5CI72WFwoJ5aUWyY87sYGBoW8HH
-         LBXW9kfDFj6b320n9SFgVZc+nCSy8JT5t3rzlq5Zqctj9dWaQFe7UiecVj/vJ1T4VXau
-         LWKuBjtxnC9Zs2XSDf7u7SFuIWs7M8aYNjiGYfOqFueC2m8Zv/CmQN6wmA8cVfyqER1i
-         yQQvi5hZ6HUeE74aBFEl6Zer3ajxvE1dsPIsxeSNTXXn9JXibKSxMC9SSBDnJpuKFlth
-         VM0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVP4ib0qKHTSG9CBWj96mleDTp6bSCx0RsEtLlaldfTfRHeTc7fv3g8T1s5JboYgwcbh6wh@lists.linux.dev
-X-Gm-Message-State: AOJu0YxdBN5f4+4ndhnO0v0vCtofFvyMvbOwvzifTcUEiNjWB/X1/rM/
-	b5SJFWEClBPIDpd/DazQM5i5MFo5uGE3OnHCUSlTDy5BtVgXuTOTZUKFqjkWFWwkONXWFKySIDI
-	XVKAjlhbTBwDXiYUmDNJj/SZcqeZsh15r932YUB81Cx2XfySKaaxz5d+jCBU=
-X-Google-Smtp-Source: AGHT+IEI73yOX7LuYSonRTZStd7VDhDxkqzJkzexmNHlJCJ1YhLhqOvcqAg6Qh64hhfeEztD7/M6cYE5zqbG4QmcfI8nTwAfsPR1
+	s=arc-20240116; t=1754495471; c=relaxed/simple;
+	bh=IDSlojlj/P5UhxYr7GGWRqRIZthRZrEWCqxkGAawL8E=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=PfZfvYAzgAQhhfUU6OLE/WD3jO7BgCHqG8qjhd1jgd6Q5uvz2wCS1EbOEPvQXOH2LVtOMRyNcW6OxGBaPFUl47vA77KgMD3CCp4OTgAjKAM5mUnye7ozKMXseg66elkCdwYI8t6ObISPc/+W/MvIC2u3ste6zZWX4FssKkxwV1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=feGCiIK3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NG3Ziujv; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="feGCiIK3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NG3Ziujv"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id BF3CC1D001A1;
+	Wed,  6 Aug 2025 11:51:04 -0400 (EDT)
+Received: from phl-imap-04 ([10.202.2.82])
+  by phl-compute-01.internal (MEProxy); Wed, 06 Aug 2025 11:51:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1754495464;
+	 x=1754581864; bh=IaqvCFRZQRnYawxKT71RrgJ5OBa2wbh5jJ2w0t8ChIo=; b=
+	feGCiIK360Zpqd0eAJf8NX2qNY0v5AL76y2uCyunAuCuTPUZXdOcRrAf/ROsf8EK
+	yK7mNIlEY6sTMUR98GpFFSSxB9pHM+yDTFGaJl7XW+Po+tGvvFJljQTunbXjR3Lq
+	e9nO41lM9mOdgw6tG78seyuEsQeHwbf19TUqkO0BAmD1SsoT7cx+eHggqaWutUee
+	IQoBkySp3hZcrJbOeXQuVWWVWw6c0PRqWKZZwVg/Ij69vj6NGGOr+72OEwIJYAtz
+	DDnl5PFhhXxiMSBLVIPCFbj9AqXKqV4rB+4KfvS1mMhBFfL2yWgcCraYjBMzAS+U
+	+uXI6Qx184DfnLoVpkHs/Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1754495464; x=
+	1754581864; bh=IaqvCFRZQRnYawxKT71RrgJ5OBa2wbh5jJ2w0t8ChIo=; b=N
+	G3Ziujv+5eD/Ra3kFjb5cBm7sTSXWfVQgstU4kgqL8HLjsazeL+btasDUU0/gLZG
+	gPI54QNlLzTUchl5SZXARu/cS0eQWR6q7pyljy5Ej30B5CpQFwz7dcPCBm031AQa
+	5F/Bq3KSPom6conr+uAOKSG7XSg2jhbLOLVX/jzAvK7qttbFWcpYmqsCGw5FmQ9c
+	7hS60J6UtlXn/RPTM+VpILqVKhfv9apEid5mQNzEdnMaob+tIRQ1oC/nXiaZ0X5x
+	y/NlWms7sO92Q7E+lCMKBZ/9ADC3KF/k5opxpR8v50yWv0/lbbh1XWWV4BgQVK2d
+	Nuz0B/czSBnbeFUU4nOdA==
+X-ME-Sender: <xms:53mTaLhZSP8p0w6qPLzTZXzoAM9UAembYJu7A3HxOoIzhIym7XqfUQ>
+    <xme:53mTaICf_z9OqFAfYlE_uay_zGqMWJ8sw0nrQruN1Y6lUUQixK6H3ucJz-hMIMWTT
+    ipXgGK6l1I_po-vhUE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudekgeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefoggffhffvvefkjghfufgtgfesthejre
+    dtredttdenucfhrhhomhepfdfrihgvrhhrvgcuuegrrhhrvgdfuceophhivghrrhgvsegs
+    rghrrhgvrdhshheqnecuggftrfgrthhtvghrnhepteegiedvfffhieehvdekfeeukeegie
+    dvkeehkeejueeijeeitdfftdejtedvffejnecuvehluhhsthgvrhfuihiivgeptdenucfr
+    rghrrghmpehmrghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtg
+    hpthhtohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghsmhgruggvuhhs
+    segtohguvgifrhgvtghkrdhorhhgpdhrtghpthhtoheplhhinhhugigpohhsshestghruh
+    guvggshihtvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdho
+    rhhgpdhrtghpthhtoheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtohepvg
+    hrihgtvhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrd
+    hkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:53mTaD7OpPyOSxepSYcUwIt4n-qBw4jkRNd3XX9aIvEX6xRacSDaNA>
+    <xmx:53mTaAjgefxWSKGEO6ds2HnYeZL2rTn3eHu7Q8f_O5y_uPgkkblOiw>
+    <xmx:53mTaIGO9ATzSiTgcfWzf2BFGOEpprRHrmCdlq66Z5iBN5QuaebKKA>
+    <xmx:53mTaORQoaRPUZ4e4fuWiWo-q1uPKbncOK9QnP4RnNXrG9DDT1l5xQ>
+    <xmx:6HmTaL7eYZ4NkdtfqX1n5Nj3_pnkXwMsAQEFZR0b1-nSm1qFpcvD9brm>
+Feedback-ID: i97614980:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D0B2EB6006B; Wed,  6 Aug 2025 11:51:03 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3303:b0:3e2:81d9:cbbc with SMTP id
- e9e14a558f8ab-3e41611a082mr111370915ab.2.1754222942254; Sun, 03 Aug 2025
- 05:09:02 -0700 (PDT)
-Date: Sun, 03 Aug 2025 05:09:02 -0700
-In-Reply-To: <67dedd2f.050a0220.31a16b.003f.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <688f515e.050a0220.13f73d.0000.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-From: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
-	eadavis@qq.com, ericvh@kernel.org, hdanton@sina.com, jack@suse.cz, 
-	jlayton@kernel.org, kprateek.nayak@amd.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	mjguzik@gmail.com, netfs@lists.linux.dev, oleg@redhat.com, pc@manguebit.org, 
-	sfrench@samba.org, swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: Tea62be34c8f8a220
+Date: Wed, 06 Aug 2025 17:50:42 +0200
+From: "Pierre Barre" <pierre@barre.sh>
+To: asmadeus <asmadeus@codewreck.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Christian Schoenebeck" <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
+ ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org
+Message-Id: <f08d5585-0a26-4c98-be1a-c0fd89ccd916@app.fastmail.com>
+In-Reply-To: <e42edd55-2559-437b-a2e3-2773b18d0cc5@app.fastmail.com>
+References: <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
+ <2989343.ydHz1Oe0dO@silver>
+ <1fcc97fd-bf32-4ea1-82c1-74a8efb6359b@app.fastmail.com>
+ <2026737.7mX0AZtNi0@silver>
+ <bbf2ae2f-d0e6-4f8f-b359-128cd8d5539f@app.fastmail.com>
+ <aIqXi6uBaWXtvgm3@codewreck.org>
+ <e42edd55-2559-437b-a2e3-2773b18d0cc5@app.fastmail.com>
+Subject: Re: [PATCH] 9p: Use kvmalloc for message buffers
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-syzbot suspects this issue was fixed by commit:
+Hi Everyone,
 
-commit da8cf4bd458722d090a788c6e581eeb72695c62f
-Author: David Howells <dhowells@redhat.com>
-Date:   Tue Jul 1 16:38:36 2025 +0000
+If I submit a patch based on what has been discussed above, is it likely to be accepted? Unfortunately, in my current setup, I am encountering this issue quite frequently, and users of my servers are having a hard time making sense of the error.
 
-    netfs: Fix hang due to missing case in final DIO read result collection
+Thank you.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=14cfbcf0580000
-start commit:   66701750d556 Merge tag 'io_uring-6.16-20250630' of git://g..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e29b8115bf337f53
-dashboard link: https://syzkaller.appspot.com/bug?extid=62262fdc0e01d99573fc
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1400348c580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17b2048c580000
+Best,
+Pierre
 
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: netfs: Fix hang due to missing case in final DIO read result collection
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+On Thu, Jul 31, 2025, at 02:36, Pierre Barre wrote:
+>> First - thanks for starting this thread, large contiguous allocations
+>> has been a problem reported regularly in the past, and no-one has had
+>> the energy to address it yet, but it's definitely something worth
+>> tackling.
+>
+> Glad that I didn't just create noise. I implemented 9P in addition to 
+> NFS in my server because fsyncing on NFS didn't give me what I wanted 
+> (fsync doesn't call commit when write is communicated to be "durable" 
+> by the server, but that's a story for an other day...). 
+>
+> I am very grateful that this client implementation exists.
+>
+> On Thu, Jul 31, 2025, at 00:07, asmadeus@codewreck.org wrote:
+>> (Added Willy in To, if you have time to advise on what's appropriate
+>> wrt. memory allocation here to use either as a contiguous virtual memory
+>> buffer or a scatterlist for various kind of dma used by transports
+>> that'd be appreciated)
+>>
+>>
+>> First - thanks for starting this thread, large contiguous allocations
+>> has been a problem reported regularly in the past, and no-one has had
+>> the energy to address it yet, but it's definitely something worth
+>> tackling.
+>>
+>>
+>> Pierre Barre wrote on Wed, Jul 30, 2025 at 10:16:13PM +0200:
+>>> As a middle-ground, would it be acceptable to add a transport
+>>> capability flag indicating whether the transport requires contiguous
+>>> memory for DMA?
+>>
+>> I think such a flag will be needed even if we do what Christian suggested:
+>>>> So a more reasonable solution instead might be using kvmalloc(), as suggested
+>>>> by you, and adjusting the individual transports such that they translate a
+>>>> virtual memory address to a list of physical addresses via e.g.
+>>>> vmalloc_to_page() if needed.
+>>
+>> Start with a requires contiguous flag set for all transports except
+>> trans_fd (I'm not sure about usb, but I'm pretty sure all the rest need
+>> it); then each transport can figure out how to get a scatterlist or
+>> something they need from the allocation, so we don't need to have a big
+>> bang that breaks everything at the same time.
+>>
+>> I'm sure virtio's implem will come soon enough, but I don't see anyone
+>> working on RDMA or xen so fast.
+>>
+>>> 1. Add a P9_TRANS_REQUIRES_CONTIGUOUS flag to struct p9_trans_module
+>>> 2. Set this flag for virtio, xen, and rdma transports
+>>
+>> This is a nit but I'd rather the flag go the other way around, e.g. no
+>> flag means requires contiguous and it's only set after confirming the
+>> transport works
+>> (I just looked at usb and struct usb_request makes me think some drivers
+>> use dma, so, yeah..)
+>>
+>> We can always turn it around later if the majority of transports handle
+>> it.
+>>
+>>
+>>> 3. Modify p9_fcall_init to check the flag:
+>>>      if (c->trans_mod->caps & P9_TRANS_REQUIRES_CONTIGUOUS)
+>>>         fc->sdata = kmalloc(alloc_msize, GFP_NOFS);
+>>>      else
+>>>         fc->sdata = kvmalloc(alloc_msize, GFP_NOFS);
+>>
+>> I'm also curious if there's something more appropriate than kvmalloc wrt
+>> using either as a contiguous virtual memory buffer or a scatterlist, but
+>> I think this is fine for now unless someone knows of something more
+>> appropriate.
+>>
+>>
+>> Thanks,
+>> -- 
+>> Dominique Martinet | Asmadeus
