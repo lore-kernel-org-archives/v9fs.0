@@ -1,48 +1,51 @@
 Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FFC145329;
-	Fri,  8 Aug 2025 11:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE21242D6E;
+	Fri,  8 Aug 2025 11:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754651542; cv=none; b=ahVl66FaGvLq6u4E+L/eNpGiKB/DlJDbPIZgdFbVR5S2XG8dm5tlg6x24EE/zh3MFhc671wDwdDn1+zgvFeIv/RQp2aY+cWFdW15NqzJbvok68FKRLZvKu6STJ3k7yEn1K8obQz5wmslTBLXeS1HAFHF+uAZlnn/kkyU7QpvDH0=
+	t=1754653066; cv=none; b=OLNQMZ1cD9SycgH8cKT2SnpW+U17lKbJeYCEXCxIVVgw/Rqc8s+/zuRgrC+H/bvMxIDPWMqfulK+/G3StuOGsIzoHsBxTW8n1i6nMs9HDkTx9YB2V5V4pWwTtuY6EHFFj7/p7066srzes0Wjib/PZ7TKPmCvdzfWPAEaygp0txY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754651542; c=relaxed/simple;
-	bh=mY/wL9UIkAIFI1mNLPqGbgPa914Wg+wkGjj7JcSW9Y8=;
+	s=arc-20240116; t=1754653066; c=relaxed/simple;
+	bh=q86u2q3E0J9VVCxDEgPxY2X12X8ilwraUch8EX+MS8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p96x+K4BmwqDOPFnXz5gANoWAfuORiVk6ljkS6WPXw4qJ0z3xtJIbpHRGaBL5aMHnuqoe5IZXVxJ/ILYbSagvy2qtC7mteXDuG6Z0PYwqkfTuq7MdeLHqtLXi16x52dwPVTGvjNsw0IwMUYLpxKDQU2LlPkwvCow6/SvL9IUEdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=H9G9Kl4O; arc=none smtp.client-ip=5.189.157.229
+	 MIME-Version:Content-Type; b=CdS56FwEaD/4IMK6tOfMszcZytw7Us2dkIZHVejwvOtJXi++lwGGT2LmZZYQCAEbJcgHsxR2EsTVj9K/rw4T4EgWlrTi0kFpCnA6jE5E98N+ZebIT/l+s0oOFM6yZwzlnFHTFvwFVkPsHa0BOEqu+YlrRmENko2WNIuR23JRTvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=v57oPpag; arc=none smtp.client-ip=5.189.157.229
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="H9G9Kl4O"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="v57oPpag"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Content-ID:Content-Description;
-	bh=KZyAoLIDCCNjDR5EyXkaxLElgk1EdKIqDrVQYIfIUE0=; b=H9G9Kl4Oj29A/TIE5qngLE3AlE
-	uVtI9UTr5njjm89yLLoFIfgxRRgCtYy0xZogq45kqHzMwGDq0aTwoyrSOuNsciZtbxu2FfBv2yyn+
-	MbT81EJyruz9GBaaQ8CsUZvFEhWef1zZqsbyV7TF7kgRPgM3MfN+CInuM/f/PL4bYxJbizMpg44aA
-	ylzDHdhNxEGYQeDvOHsJQ5+zElPTaM1IQPowvjci6EehEU5IEHw39V/MDBKBzFLACyUlKI7zXl5//
-	Q/5bc6Jq9BVNJCD3tREhxYYRRRpDysf1UUPaCbaygKlmgF+kLijOp8tlKSGWhZzKbpsdmR2vFmWUr
-	enY9GTEJMWV77k1Cxc8rPoSTJzxmQfseak7SWL22WV5KhiXCboa0EbzCyYbtEbNUzMlmi4qUkVEBg
-	RdF6wdZ4u+hbG2FYD3vSElbG9D4B/OO0Co2PnfvkOWZsW92NwLnQ+fMjbz/CXv6zhIf792UJ7Li29
-	NvAs0H2I6/mX7XI5MaDnqUAwASKBQqMPyGWThjHclt0iKJr0MAEg6JdX6vzIt0/qLYIQN6xdAr4sp
-	utf2Tpi7kmNH267jBlNWQWsbA0Ehfg3alioMxf/8kl6LtZL+oRrmojrR+BTjkjDojrqO/Mf8qu+vy
-	Ds+8ntyvLwOY+TnSgsqLFbVSZ6GnbN5fXQnH1Azm8=;
+	bh=2qBntLxlZ49ZMmoDuyXBV++1xNmyGAoNPONRB31R6QY=; b=v57oPpaghOOCrtFx39Vet4uGwu
+	Ij9hUaWJ2CHHln+l+fvTrpzwIfS4nruPcDPVuDkhwS3lo1tmZjqNUxrDOdVHp2Ec68uI3Tm8Z6+lr
+	JXvIpuw/btvuznFF6RaP4NYlUSShQw82TN0fkmcy90i/h/6xwzxo0smBzxS4Kh9uJ/IG39BTdzZdk
+	Y1GNaxWz2rAT+6E4LM03eUDWa7hYwRe0q0V2W9AvsuPCH+n7mhsfcJnjXLimZI54Ig0JSaeEnYkyG
+	/N4mp6GABgvCTICGQPK2Od33JkdWG36WXQavVXusiDln9UB3yDwN97EFCfV+PL8Ti7708yBGJtJXU
+	CRlogAqBOWenyZ21inBGPbwXyIqbWeSwR53bt2TqvHrzrjbjZTYmUBIHGLr/xQe8pCa0v7rQK2zbo
+	OUMmS0zvi0VtBe4FXRSHcz2nQm6TINsWdyJA73rtqLyrY4dhlmJDOZ7DLLYbHrTzyvHDVKrFVtLdo
+	ep/O6i+aSs+oEhXZiScvVUMzSExbA/Uoz7H1nU8B8OPJtF8lig5XidOKBhBeS+zpLmwCCi8334JCQ
+	v+FMVJDroTEKu9yFYa8Ueq3AvdJQ1qL6BMw9zExpa18U/3GvWGwtGn+6QgEi1QwUCaGkhg9h3vbM2
+	kergTBKoT0fEzzA12BerWlmNFaiD4h2VlNKj2cKKo=;
 From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Pierre Barre <pierre@barre.sh>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, v9fs@lists.linux.dev,
- ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: Use kvmalloc for message buffers
-Date: Fri, 08 Aug 2025 13:12:08 +0200
-Message-ID: <8602724.2ttRNpPraX@silver>
-In-Reply-To: <aJPMwqqchOaZFSqn@codewreck.org>
+To: Tingmao Wang <m@maowtm.org>, Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+ =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+ =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+ linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
+ linux-fsdevel@vger.kernel.org
+Subject:
+ Re: [RFC PATCH 0/6] fs/9p: Reuse inode based on path (in addition to qid)
+Date: Fri, 08 Aug 2025 12:52:38 +0200
+Message-ID: <13395769.lPas3JvW2k@silver>
+In-Reply-To: <aJXRAzCqTrY4aVEP@codewreck.org>
 References:
- <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
- <f08d5585-0a26-4c98-be1a-c0fd89ccd916@app.fastmail.com>
- <aJPMwqqchOaZFSqn@codewreck.org>
+ <cover.1743971855.git.m@maowtm.org> <aJXRAzCqTrY4aVEP@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,29 +55,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 
-On Wednesday, August 6, 2025 11:44:34 PM CEST Dominique Martinet wrote:
+On Friday, August 8, 2025 12:27:15 PM CEST Dominique Martinet wrote:
+> Sorry for the delay...
 > 
-> Pierre Barre wrote on Wed, Aug 06, 2025 at 05:50:42PM +0200:
-> > If I submit a patch based on what has been discussed above, is it
-> > likely to be accepted? Unfortunately, in my current setup, I am
-> > encountering this issue quite frequently, and users of my servers are
-> > having a hard time making sense of the error.
+> Tingmao Wang wrote on Sun, Apr 06, 2025 at 09:43:01PM +0100:
+> > Unrelated to the above problem, it also seems like even with the revert in
+> > [2], because in cached mode inode are still reused based on qid (and type,
+> > version (aka mtime), etc), the setup mentioned in [2] still causes
+> > problems in th latest kernel with cache=loose:
 > 
-> Yes, sorry it wasn't clear.
-> 
-> I still have no idea what's the "best" allocation method that we'll be
-> able to use as either a vmalloc buffer or split into a scatterlist, but
-> there's little point in worrying too much about it, so please go ahead.
-> 
-> If it's restricted to trans_fd and there's a chance we can make use of
-> it with (at least) virtio later I think everyone will be happy :)
+> cache=loose is "you're on your own", I think it's fine to keep as is,
+> especially given qemu can handle it with multidevs=remap if required
 
-Yes, sounds like a viable plan.
+As of QEMU 10.0, multidevs=remap (i.e. remapping inodes from host to guest) is
+now the default behaviour, since inode collisions were constantly causing
+issues and confusion among 9p users.
 
-Pierre, one more thing to note: kmem_cache_alloc() might still fail though. So
-maybe it would make sense to add a separate patch that would check the result
-of kmem_cache_alloc() and if it fails, falling back to your kvmalloc() call
-(if enabled by the discussed transport mechanism of course).
+And yeah, cache=loose means 9p client is blind for whatever changes on 9p
+server side.
 
 /Christian
 
