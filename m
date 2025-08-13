@@ -1,55 +1,51 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A1A2C9A
-	for <v9fs@lists.linux.dev>; Wed, 13 Aug 2025 05:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590062DCF5A
+	for <v9fs@lists.linux.dev>; Wed, 13 Aug 2025 08:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755063070; cv=none; b=UH4rgVRGMSLZNCu4viDCeZB9LJM+qRoNPVLoCtUj7eNmJpkWeMHr7bLjnL/ZksOMcDSkLfr1hg0b6rfTfgyIIzQ1qVXbToexJaoMYvDbdctFhP/X7lkT8e/boYkBzkoxoGHx6c6n2Mw2VvnYgYpY5t6t67OlVkCaz1PNbE9vFBA=
+	t=1755075595; cv=none; b=pNRjgN4I/SRvAIOzyPU4/K9olj0xmzjFdv9aZOYrt2azS7iBvpBHGfiGWmM8yIiAPoza9FLeALHJaB1eHObvArPWxs4z7aBA2iBO3hkrEvwEElsUQj274cRvmvGQXz/2QoYwZ/j0eqlxPpFTO0MgcguJBxfSLsah5GPQrKJNYpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755063070; c=relaxed/simple;
-	bh=wk+Ry59ozajRb11mml7d+mqIc7hIAdiG95aMkeRWrWI=;
+	s=arc-20240116; t=1755075595; c=relaxed/simple;
+	bh=nhmeHZzqroCvs7ulB28xjaiWqbSDAQeSQWycbTLLpD4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S7EzYvReYvZYqyWJAmnaQoYbzhZ/rIpizTS+D6lCLMxokjFfYjaVTPwmdR0lGVYFWwGsDTizUE73sre84dvhOsNpLH/wV/tz4HngpXUgPKl5BJshU935TKjGjB/6iCe8EAG7qGhMdXkwmiML7V+AHeUtKIixPpXW6jypiqrtX/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=a1ZrL/NS; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=MIkFpzuw8jgZBGJkRVP5VHPNmGo/rhph/ymIJ8v6i0mHo69rodArtAxNQ6bOcodHftGcP5FeCyV6ftKQu64c0iIMJ4V/AqxCLnWis1ar397nm4iqT8JBcfuFCExzwldCR1DBZRYfzOT8tCBPOQS73oM7O687TwdeiIa44AZwHSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=zSX0e3HN; arc=none smtp.client-ip=45.157.188.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="a1ZrL/NS"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 5551614C2D3;
-	Wed, 13 Aug 2025 07:31:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1755063066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z6p+t+U0uSYJuGzWiD0mLYL0NMl5d9rOTOk0vTUbJIg=;
-	b=a1ZrL/NSwL62Q1J5z0AvDADFy4CD5PsZVEkrtkLA1gLnfOEss1bEgOZuSu0W670CajZosF
-	DFoKoEcc5aBVj9YeTyhPPSFaS/NF3gY3XiN26YwSTY8rwoYs5sIn45A7hC4gJevK5Nuoho
-	hf3X++L+prHSrNk+kkkqKZKjNxJRBBcoFuN9kjtg/fFRCuc7DI1n3hFGagtBpPvYoojTvJ
-	025P6IYLTZCp7+tHJrejUIPRUNRWUHWZ1yoz20k8MNVi81tWxeEXR9qVRnTAXZ0qc6HIts
-	nLLPzVAV7IDRHC4UCSgzSYhyJvRwd5y8ZvlWNSNvq4nQuznRsxNEqe8Ek7gg2A==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 126c71f3;
-	Wed, 13 Aug 2025 05:31:01 +0000 (UTC)
-Date: Wed, 13 Aug 2025 14:30:46 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="zSX0e3HN"
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4c20p45mmJzYTn;
+	Wed, 13 Aug 2025 09:47:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1755071244;
+	bh=kiYuZJB2YsWQDkZMPyAoNj5aBOt/37ctd8+2F4wCRdk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zSX0e3HNonQS4B90zVb9aRW3SYtNmR0KTfjhrSR25eWnG9ML3hB2N46KXhJUfIOKS
+	 2Q07fGgBWP4Si/2CRscB21x5K4gduiOhf4c6Gy2FUvtz5CGZ5n3u14+q/S/TEVC8Mu
+	 9uFq35qoK4XnIyqxrWr9z/N8GuaqnccIU5MoI1QE=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4c20p36NYVzM9Z;
+	Wed, 13 Aug 2025 09:47:23 +0200 (CEST)
+Date: Wed, 13 Aug 2025 09:47:21 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
 To: Tingmao Wang <m@maowtm.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
-	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Matthew Bobrowski <repnop@google.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/6] fs/9p: Reuse inode based on path (in addition to
- qid)
-Message-ID: <aJwjBgzu2ZLdA0jg@codewreck.org>
+Cc: Dominique Martinet <asmadeus@codewreck.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	v9fs@lists.linux.dev, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
+	Matthew Bobrowski <repnop@google.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/6] fs/9p: Add ability to identify inode by path for
+ .L
+Message-ID: <20250813.dei7hooKa2ie@digikod.net>
 References: <cover.1743971855.git.m@maowtm.org>
- <aJXRAzCqTrY4aVEP@codewreck.org>
- <13395769.lPas3JvW2k@silver>
- <b9aa9f6f-483f-41a5-a8d7-a3126d7e4b8f@maowtm.org>
+ <e839a49e0673b12eb5a1ed2605a0a5267ff644db.1743971855.git.m@maowtm.org>
+ <20250705002536.GW1880847@ZenIV>
+ <b32e2088-92c0-43e0-8c90-cb20d4567973@maowtm.org>
+ <20250808.oog4xee5Pee2@digikod.net>
+ <df6cb208-cb14-4ca5-bd25-cb0f05bfc6a1@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -58,87 +54,149 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b9aa9f6f-483f-41a5-a8d7-a3126d7e4b8f@maowtm.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <df6cb208-cb14-4ca5-bd25-cb0f05bfc6a1@maowtm.org>
+X-Infomaniak-Routing: alpha
 
-Tingmao Wang wrote on Wed, Aug 13, 2025 at 12:53:37AM +0100:
-> My understanding of cache=loose was that it only assumes that the server
-> side can't change the fs under the client, but otherwise things like
-> inodes should work identically, even though currently it works differently
-> due to (only) cached mode re-using inodes - was this deliberate?
-
-Right, generally speaking I agree things should work as long as the
-mount is exclusive (can't change server side/no other client); but
-I think it's fine to extend this to server being "sane" (as in,
-protocol-wise we're supposed to be guaranteed that two files are
-identical if and only if qid is identical)
-
-> > I think that's fine for cache=none, but it breaks hardlinks on
-> > cache=loose so I think this ought to only be done without cache
-> > (I haven't really played with the cache flag bits, not check pathname if
-> > any of loose, writeback or metadata are set?)
+On Wed, Aug 13, 2025 at 12:57:49AM +0100, Tingmao Wang wrote:
+> Thanks for the review :)  I will try to send a v2 in the coming weeks with
+> the two changes you suggested and the changes to cached mode as suggested
+> by Dominique (plus rename handling).  (will also try to figure out how to
+> test with xfstests)
 > 
-> I think currently 9pfs reuse inodes if cache is either loose or metadata
-> (but not writeback), given:
+> On 8/8/25 09:32, Mickaël Salaün wrote:
+> > [...]
+> >> On 7/5/25 01:25, Al Viro wrote:
+> >>> On Sun, Apr 06, 2025 at 09:43:02PM +0100, Tingmao Wang wrote:
+> >>>> +bool ino_path_compare(struct v9fs_ino_path *ino_path,
+> >>>> +			     struct dentry *dentry)
+> >>>> +{
+> >>>> +	struct dentry *curr = dentry;
+> >>>> +	struct qstr *curr_name;
+> >>>> +	struct name_snapshot *compare;
+> >>>> +	ssize_t i;
+> >>>> +
+> >>>> +	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+> >>>> +
+> >>>> +	rcu_read_lock();
+> >>>> +	for (i = ino_path->nr_components - 1; i >= 0; i--) {
+> >>>> +		if (curr->d_parent == curr) {
+> >>>> +			/* We're supposed to have more components to walk */
+> >>>> +			rcu_read_unlock();
+> >>>> +			return false;
+> >>>> +		}
+> >>>> +		curr_name = &curr->d_name;
+> >>>> +		compare = &ino_path->names[i];
+> >>>> +		/*
+> >>>> +		 * We can't use hash_len because it is salted with the parent
+> >>>> +		 * dentry pointer.  We could make this faster by pre-computing our
+> >>>> +		 * own hashlen for compare and ino_path outside, probably.
+> >>>> +		 */
+> >>>> +		if (curr_name->len != compare->name.len) {
+> >>>> +			rcu_read_unlock();
+> >>>> +			return false;
+> >>>> +		}
+> >>>> +		if (strncmp(curr_name->name, compare->name.name,
+> >>>> +			    curr_name->len) != 0) {
+> >>>
+> >>> ... without any kind of protection for curr_name.  Incidentally,
+> >>> what about rename()?  Not a cross-directory one, just one that
+> >>> changes the name of a subdirectory within the same parent?
+> >>
+> >> As far as I can tell, in v9fs_vfs_rename, v9ses->rename_sem is taken for
+> >> both same-parent and different parent renames, so I think we're safe here
+> >> (and hopefully for any v9fs dentries, nobody should be causing d_name to
+> >> change except for ourselves when we call d_move in v9fs_vfs_rename?  If
+> >> yes then because we also take v9ses->rename_sem, in theory we should be
+> >> fine here...?)
+> > 
+> > A lockdep_assert_held() or similar and a comment would make this clear.
 > 
-> 	else if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
-> 		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb);
-> 	else
-> 		inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
+> I can add a comment, but there is already a lockdep_assert_held_read of
+> the v9fs rename sem at the top of this function.
+
+I wrote this comment before reading your new version beneath, which
+already have this lockdep, so no need to change anything. :)
+
 > 
-> in v9fs_vfs_lookup, so maybe we keep this pattern and not check pathname
-> if (loose|metadata) is set (but not writeback)?
-
-This makes sense, let's stick to loose/metadata for this as well.
-
-> >> The main problem here is how to store the pathname in a sensible way and
-> >> tie it to the inode.  For now I opted with an array of names acquired with
-> >> take_dentry_name_snapshot, which reuses the same memory as the dcache to
-> >> store the actual strings
+> > [...]
+> >> /*
+> >>  * Must hold rename_sem due to traversing parents
+> >>  */
+> >> bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
+> >> {
+> >> 	struct dentry *curr = dentry;
+> >> 	struct name_snapshot *compare;
+> >> 	ssize_t i;
+> >>
+> >> 	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+> >>
+> >> 	rcu_read_lock();
+> >> 	for (i = ino_path->nr_components - 1; i >= 0; i--) {
+> >> 		if (curr->d_parent == curr) {
+> >> 			/* We're supposed to have more components to walk */
+> >> 			rcu_read_unlock();
+> >> 			return false;
+> >> 		}
+> >> 		compare = &ino_path->names[i];
+> >> 		if (!d_same_name(curr, curr->d_parent, &compare->name)) {
+> >> 			rcu_read_unlock();
+> >> 			return false;
+> >> 		}
+> >> 		curr = curr->d_parent;
+> >> 	}
+> >> 	rcu_read_unlock();
+> >> 	if (curr != curr->d_parent) {
 > 
-> (Self correction: technically, the space is only shared if they are long
-> enough to not be inlined, which is DNAME_INLINE_LEN = 40 for 64bit or 20
-> for 32bit, so in most cases the names would probably be copied.  Maybe it
-> would be more compact in terms of memory usage to just store the path as a
-> string, with '/' separating components?  But then the code would be more
-> complex and we can't easily use d_same_name anymore, so maybe it's not
-> worth doing, unless this will prove useful for other purposes, like the
-> re-opening of fid mentioned below?)
-
-I think it's better to keep things simple first and check the actual
-impact with a couple of simple benchmarks (re-opening a file in a loop
-with cache=none should hit this path?)
-
-If we want to improve this, rather than keeping the full string it might
-make sense to carry a partial hash in each dentry so we can get away
-with checking only the parent's dentry + current dentry, or something
-like that?
-But, simple and working is better than fast and broken, so let's have a
-simple v1 first.
-
-> > Frankly the *notify use-case is difficult to support properly, as files
-> > can change from under us (e.g. modifying the file directly on the host
-> > in qemu case, or just multiple mounts of the same directory), so it
-> > can't be relied on in the general case anyway -- 9p doesn't have
-> > anything like NFSv4 leases to get notified when other clients write a
-> > file we "own", so whatever we do will always be limited...
-> > But I guess it can make sense for limited monitoring e.g. rebuilding
-> > something on change and things like that?
+> Looking at this again I think this check probably needs to be done inside
+> RCU, will fix as below:
 > 
-> One of the first use case I can think of here is IDE/code editors
-> reloading state (e.g. the file tree) on change, which I think didn't work
-> for 9pfs folders opened with vscode if I remembered correctly (but I
-> haven't tested this recently).  Even though we can't monitor for remote
-> changes, having this work for local changes would still be nice.
+> >> 		/* dentry is deeper than ino_path */
+> >> 		return false;
+> >> 	}
+> >> 	return true;
+> >> }
+> 
+> diff --git a/fs/9p/ino_path.c b/fs/9p/ino_path.c
+> index 0000b4964df0..7264003cb087 100644
+> --- a/fs/9p/ino_path.c
+> +++ b/fs/9p/ino_path.c
+> @@ -77,13 +77,15 @@ void free_ino_path(struct v9fs_ino_path *path)
+>  }
+>  
+>  /*
+> - * Must hold rename_sem due to traversing parents
+> + * Must hold rename_sem due to traversing parents.  Returns whether
+> + * ino_path matches with the path of a v9fs dentry.
+>   */
+>  bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
+>  {
+>  	struct dentry *curr = dentry;
+>  	struct name_snapshot *compare;
+>  	ssize_t i;
+> +	bool ret;
+>  
+>  	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
+>  
+> @@ -101,10 +103,8 @@ bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
+>  		}
+>  		curr = curr->d_parent;
+>  	}
+> +	/* Comparison fails if dentry is deeper than ino_path */
+> +	ret = (curr == curr->d_parent);
+>  	rcu_read_unlock();
+> -	if (curr != curr->d_parent) {
+> -		/* dentry is deeper than ino_path */
+> -		return false;
+> -	}
+> -	return true;
+> +	return ret;
+>  }
 
-Yeah, I also do this manually with entr[1], and git's fsmonitor (with
-watchman) does that too -- so I guess people living in a 9p mount would
-see it..
-[1] https://github.com/eradman/entr
+Looks good
 
-But I think 9p is just slow in general so such setups can probably be
-improved more drastically by using something else :P
-
-Anyway, thank you for your time/work, I'll try to be more timely in
-later reviews.
--- 
-Dominique Martinet | Asmadeus
+> 
+> > 
+> > I like this new version.
+> > 
+> 
