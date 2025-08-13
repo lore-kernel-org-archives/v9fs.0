@@ -1,240 +1,144 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C642EA741
-	for <v9fs@lists.linux.dev>; Tue, 12 Aug 2025 23:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A1A2C9A
+	for <v9fs@lists.linux.dev>; Wed, 13 Aug 2025 05:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755043075; cv=none; b=OijpBFycHxHpfllKSkYA5tveuA5O30qYLng/EiPp1CSxtAc9UjzIpxy6LP5zyVPpZqE2jmMT6sm7bS52Nw1n2TdBOUlQBsS+8oBZqlBgaUqlvFDAwdySC6drs1/VUATfYu/a2fFiSInGbR8IzRXXflVoYeNXcpCFBH2BBaJT/ms=
+	t=1755063070; cv=none; b=UH4rgVRGMSLZNCu4viDCeZB9LJM+qRoNPVLoCtUj7eNmJpkWeMHr7bLjnL/ZksOMcDSkLfr1hg0b6rfTfgyIIzQ1qVXbToexJaoMYvDbdctFhP/X7lkT8e/boYkBzkoxoGHx6c6n2Mw2VvnYgYpY5t6t67OlVkCaz1PNbE9vFBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755043075; c=relaxed/simple;
-	bh=sMvhu4TdkpgakOTSi4x1spk9QG2rt6czlkpdGjm+6yw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k9yIL4w7IMQGsVBZPaFbO0engPreI+nSpy+rBH/k80UqlikhLDvpGp8acyUu5TyePUlTXtK3hQALD87x94OY5uMvGne1SIqz3Iyhhk/82KWQwBqKNWVoYY73bvp49z6NoFXihJhESFw4/YHs3mJv7f0cLcH3c+ecUpnRcRSQdGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=tv5tSeLQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HjktL8i4; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
+	s=arc-20240116; t=1755063070; c=relaxed/simple;
+	bh=wk+Ry59ozajRb11mml7d+mqIc7hIAdiG95aMkeRWrWI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S7EzYvReYvZYqyWJAmnaQoYbzhZ/rIpizTS+D6lCLMxokjFfYjaVTPwmdR0lGVYFWwGsDTizUE73sre84dvhOsNpLH/wV/tz4HngpXUgPKl5BJshU935TKjGjB/6iCe8EAG7qGhMdXkwmiML7V+AHeUtKIixPpXW6jypiqrtX/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=a1ZrL/NS; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="tv5tSeLQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HjktL8i4"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6C4DB1400064;
-	Tue, 12 Aug 2025 19:57:52 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Tue, 12 Aug 2025 19:57:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1755043072;
-	 x=1755129472; bh=h3el4ckOyJ37LXsuVeXcfC9YiExy+og4FR7WaG0k+tE=; b=
-	tv5tSeLQTi3ROiFlCDegxgVrLKTEF31aHc0r9ANZDr5RABM6wVNydE7cnolK3zv1
-	2XEnHI07wRY5QCAUWSLVIpFHCasxVBUX6lpkFBfe+We2FX5FDvd/8I18LarjmDus
-	AvQghHgpe55XLz3B815NjBjTqgZqU0kxUEhw8LwzQinG59Y2d40HaASM5KCEbTf/
-	0vW72tHeDv07BnCBfvqK+WP8g+dNiNW+Pact3CSSvRi4gLbt2fCqYT2GZO5tX5j2
-	n1z+sKVq0yr5f9zXBI7CUmywZRHHaFlGTrgbALfBteFSQhG9mMnKJu81h/HX08gg
-	GYutiZSfiLha1wyu4RVygQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755043072; x=
-	1755129472; bh=h3el4ckOyJ37LXsuVeXcfC9YiExy+og4FR7WaG0k+tE=; b=H
-	jktL8i4Zs0V1aAyODb5W9xLG1ZUxSuvUFji+kRBZQ7njiVc6rmxUB4qOO1LX+gtB
-	JAhtoTuB/HbLK8VeDZY6k1H7rHUdD4/jrSv7nfx57VEkVcSb+8S3bgiVEaoTBOyt
-	Z8g1npSgC2GsHTugK7rQQeAHaOxsswpONt6y767sQGo1dt7JEy6HWzUag2An4W1t
-	XtHJUVTEPwbPyf7BCckL8bfUDZlhlE+jt/6Zy2vWmy1IKsYXtWIGq4ei4xkXF7nt
-	DiMakigaMSuI5EkwqYtUojaM00sS/amhzJDrKFiZqu3WfxWguw5UCyfnIk1VkSV2
-	WeFJzPoOboUPzYiIgqEQg==
-X-ME-Sender: <xms:_9SbaO5B6I0s6fH2WEiEVFGUHnpma_BNm5Ccx3nJFd57XDAfwvYy0A>
-    <xme:_9SbaGZu8mFia7mvU9pDBkWc7IYyiY4OtSvO88w34iDVFvvFIJOtHR2cc1nWmtLPX
-    Weo0e6dq26EkIHcyuU>
-X-ME-Received: <xmr:_9SbaI_kjlsLjAfQ-x677gGDMM9U5b6e_pkymdOGp-Me1HNovzerB5QPs5zDapXeAXmH2-4pjQhSUhKGcHTEBkWB>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeeijeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefvihhnghhm
-    rghoucghrghnghcuoehmsehmrghofihtmhdrohhrgheqnecuggftrfgrthhtvghrnhepud
-    ekvefhgeevvdevieehvddvgefhgeelgfdugeeftedvkeeigfeltdehgeeghffgnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhesmhgrohifth
-    hmrdhorhhgpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepmhhitgesughighhikhhougdrnhgvthdprhgtphhtthhopegrshhmrgguvghush
-    estghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhi
-    nhhugidrohhrghdruhhkpdhrtghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphhtthhopehlihhn
-    uhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepvhelfhhssehlih
-    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepghhnohgrtghksehgohhoghhlvgdr
-    tghomhdprhgtphhtthhopehlihhnuhigqdhsvggtuhhrihhthidqmhhoughulhgvsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:_9SbaFRef_URq3Yo26rqICcr0m1hrRGph9F-qrmUucip0o0JGyiG9A>
-    <xmx:_9SbaLIhSwQj4cpOArbxP13zM1WOwiq8EaDUDuPL6TzV_YVRiSCooA>
-    <xmx:_9SbaPTVFgPrcFvU-dj90N24WDQW_hJBfnvEGXthkJAVWH-R_Ns7SA>
-    <xmx:_9SbaLJlFzGJPupctVKgai8-DGflxEj1M4xkZcZM21HKbYeMTmjoPw>
-    <xmx:ANWbaELsTLqGaC9v3TDZ9yuOVrot9bjT-1ITv5ZHumUNKj8GZU-s6CZg>
-Feedback-ID: i580e4893:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Aug 2025 19:57:50 -0400 (EDT)
-Message-ID: <df6cb208-cb14-4ca5-bd25-cb0f05bfc6a1@maowtm.org>
-Date: Wed, 13 Aug 2025 00:57:49 +0100
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="a1ZrL/NS"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 5551614C2D3;
+	Wed, 13 Aug 2025 07:31:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1755063066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z6p+t+U0uSYJuGzWiD0mLYL0NMl5d9rOTOk0vTUbJIg=;
+	b=a1ZrL/NSwL62Q1J5z0AvDADFy4CD5PsZVEkrtkLA1gLnfOEss1bEgOZuSu0W670CajZosF
+	DFoKoEcc5aBVj9YeTyhPPSFaS/NF3gY3XiN26YwSTY8rwoYs5sIn45A7hC4gJevK5Nuoho
+	hf3X++L+prHSrNk+kkkqKZKjNxJRBBcoFuN9kjtg/fFRCuc7DI1n3hFGagtBpPvYoojTvJ
+	025P6IYLTZCp7+tHJrejUIPRUNRWUHWZ1yoz20k8MNVi81tWxeEXR9qVRnTAXZ0qc6HIts
+	nLLPzVAV7IDRHC4UCSgzSYhyJvRwd5y8ZvlWNSNvq4nQuznRsxNEqe8Ek7gg2A==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 126c71f3;
+	Wed, 13 Aug 2025 05:31:01 +0000 (UTC)
+Date: Wed, 13 Aug 2025 14:30:46 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Tingmao Wang <m@maowtm.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
+	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Matthew Bobrowski <repnop@google.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/6] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <aJwjBgzu2ZLdA0jg@codewreck.org>
+References: <cover.1743971855.git.m@maowtm.org>
+ <aJXRAzCqTrY4aVEP@codewreck.org>
+ <13395769.lPas3JvW2k@silver>
+ <b9aa9f6f-483f-41a5-a8d7-a3126d7e4b8f@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/6] fs/9p: Add ability to identify inode by path for
- .L
-To: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen
- <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
- linux-fsdevel@vger.kernel.org
-References: <cover.1743971855.git.m@maowtm.org>
- <e839a49e0673b12eb5a1ed2605a0a5267ff644db.1743971855.git.m@maowtm.org>
- <20250705002536.GW1880847@ZenIV>
- <b32e2088-92c0-43e0-8c90-cb20d4567973@maowtm.org>
- <20250808.oog4xee5Pee2@digikod.net>
-Content-Language: en-US
-From: Tingmao Wang <m@maowtm.org>
-In-Reply-To: <20250808.oog4xee5Pee2@digikod.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b9aa9f6f-483f-41a5-a8d7-a3126d7e4b8f@maowtm.org>
 
-Thanks for the review :)  I will try to send a v2 in the coming weeks with
-the two changes you suggested and the changes to cached mode as suggested
-by Dominique (plus rename handling).  (will also try to figure out how to
-test with xfstests)
+Tingmao Wang wrote on Wed, Aug 13, 2025 at 12:53:37AM +0100:
+> My understanding of cache=loose was that it only assumes that the server
+> side can't change the fs under the client, but otherwise things like
+> inodes should work identically, even though currently it works differently
+> due to (only) cached mode re-using inodes - was this deliberate?
 
-On 8/8/25 09:32, Mickaël Salaün wrote:
-> [...]
->> On 7/5/25 01:25, Al Viro wrote:
->>> On Sun, Apr 06, 2025 at 09:43:02PM +0100, Tingmao Wang wrote:
->>>> +bool ino_path_compare(struct v9fs_ino_path *ino_path,
->>>> +			     struct dentry *dentry)
->>>> +{
->>>> +	struct dentry *curr = dentry;
->>>> +	struct qstr *curr_name;
->>>> +	struct name_snapshot *compare;
->>>> +	ssize_t i;
->>>> +
->>>> +	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
->>>> +
->>>> +	rcu_read_lock();
->>>> +	for (i = ino_path->nr_components - 1; i >= 0; i--) {
->>>> +		if (curr->d_parent == curr) {
->>>> +			/* We're supposed to have more components to walk */
->>>> +			rcu_read_unlock();
->>>> +			return false;
->>>> +		}
->>>> +		curr_name = &curr->d_name;
->>>> +		compare = &ino_path->names[i];
->>>> +		/*
->>>> +		 * We can't use hash_len because it is salted with the parent
->>>> +		 * dentry pointer.  We could make this faster by pre-computing our
->>>> +		 * own hashlen for compare and ino_path outside, probably.
->>>> +		 */
->>>> +		if (curr_name->len != compare->name.len) {
->>>> +			rcu_read_unlock();
->>>> +			return false;
->>>> +		}
->>>> +		if (strncmp(curr_name->name, compare->name.name,
->>>> +			    curr_name->len) != 0) {
->>>
->>> ... without any kind of protection for curr_name.  Incidentally,
->>> what about rename()?  Not a cross-directory one, just one that
->>> changes the name of a subdirectory within the same parent?
->>
->> As far as I can tell, in v9fs_vfs_rename, v9ses->rename_sem is taken for
->> both same-parent and different parent renames, so I think we're safe here
->> (and hopefully for any v9fs dentries, nobody should be causing d_name to
->> change except for ourselves when we call d_move in v9fs_vfs_rename?  If
->> yes then because we also take v9ses->rename_sem, in theory we should be
->> fine here...?)
+Right, generally speaking I agree things should work as long as the
+mount is exclusive (can't change server side/no other client); but
+I think it's fine to extend this to server being "sane" (as in,
+protocol-wise we're supposed to be guaranteed that two files are
+identical if and only if qid is identical)
+
+> > I think that's fine for cache=none, but it breaks hardlinks on
+> > cache=loose so I think this ought to only be done without cache
+> > (I haven't really played with the cache flag bits, not check pathname if
+> > any of loose, writeback or metadata are set?)
 > 
-> A lockdep_assert_held() or similar and a comment would make this clear.
-
-I can add a comment, but there is already a lockdep_assert_held_read of
-the v9fs rename sem at the top of this function.
-
-> [...]
->> /*
->>  * Must hold rename_sem due to traversing parents
->>  */
->> bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
->> {
->> 	struct dentry *curr = dentry;
->> 	struct name_snapshot *compare;
->> 	ssize_t i;
->>
->> 	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
->>
->> 	rcu_read_lock();
->> 	for (i = ino_path->nr_components - 1; i >= 0; i--) {
->> 		if (curr->d_parent == curr) {
->> 			/* We're supposed to have more components to walk */
->> 			rcu_read_unlock();
->> 			return false;
->> 		}
->> 		compare = &ino_path->names[i];
->> 		if (!d_same_name(curr, curr->d_parent, &compare->name)) {
->> 			rcu_read_unlock();
->> 			return false;
->> 		}
->> 		curr = curr->d_parent;
->> 	}
->> 	rcu_read_unlock();
->> 	if (curr != curr->d_parent) {
-
-Looking at this again I think this check probably needs to be done inside
-RCU, will fix as below:
-
->> 		/* dentry is deeper than ino_path */
->> 		return false;
->> 	}
->> 	return true;
->> }
-
-diff --git a/fs/9p/ino_path.c b/fs/9p/ino_path.c
-index 0000b4964df0..7264003cb087 100644
---- a/fs/9p/ino_path.c
-+++ b/fs/9p/ino_path.c
-@@ -77,13 +77,15 @@ void free_ino_path(struct v9fs_ino_path *path)
- }
- 
- /*
-- * Must hold rename_sem due to traversing parents
-+ * Must hold rename_sem due to traversing parents.  Returns whether
-+ * ino_path matches with the path of a v9fs dentry.
-  */
- bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
- {
- 	struct dentry *curr = dentry;
- 	struct name_snapshot *compare;
- 	ssize_t i;
-+	bool ret;
- 
- 	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
- 
-@@ -101,10 +103,8 @@ bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
- 		}
- 		curr = curr->d_parent;
- 	}
-+	/* Comparison fails if dentry is deeper than ino_path */
-+	ret = (curr == curr->d_parent);
- 	rcu_read_unlock();
--	if (curr != curr->d_parent) {
--		/* dentry is deeper than ino_path */
--		return false;
--	}
--	return true;
-+	return ret;
- }
-
+> I think currently 9pfs reuse inodes if cache is either loose or metadata
+> (but not writeback), given:
 > 
-> I like this new version.
+> 	else if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
+> 		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb);
+> 	else
+> 		inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
 > 
+> in v9fs_vfs_lookup, so maybe we keep this pattern and not check pathname
+> if (loose|metadata) is set (but not writeback)?
+
+This makes sense, let's stick to loose/metadata for this as well.
+
+> >> The main problem here is how to store the pathname in a sensible way and
+> >> tie it to the inode.  For now I opted with an array of names acquired with
+> >> take_dentry_name_snapshot, which reuses the same memory as the dcache to
+> >> store the actual strings
+> 
+> (Self correction: technically, the space is only shared if they are long
+> enough to not be inlined, which is DNAME_INLINE_LEN = 40 for 64bit or 20
+> for 32bit, so in most cases the names would probably be copied.  Maybe it
+> would be more compact in terms of memory usage to just store the path as a
+> string, with '/' separating components?  But then the code would be more
+> complex and we can't easily use d_same_name anymore, so maybe it's not
+> worth doing, unless this will prove useful for other purposes, like the
+> re-opening of fid mentioned below?)
+
+I think it's better to keep things simple first and check the actual
+impact with a couple of simple benchmarks (re-opening a file in a loop
+with cache=none should hit this path?)
+
+If we want to improve this, rather than keeping the full string it might
+make sense to carry a partial hash in each dentry so we can get away
+with checking only the parent's dentry + current dentry, or something
+like that?
+But, simple and working is better than fast and broken, so let's have a
+simple v1 first.
+
+> > Frankly the *notify use-case is difficult to support properly, as files
+> > can change from under us (e.g. modifying the file directly on the host
+> > in qemu case, or just multiple mounts of the same directory), so it
+> > can't be relied on in the general case anyway -- 9p doesn't have
+> > anything like NFSv4 leases to get notified when other clients write a
+> > file we "own", so whatever we do will always be limited...
+> > But I guess it can make sense for limited monitoring e.g. rebuilding
+> > something on change and things like that?
+> 
+> One of the first use case I can think of here is IDE/code editors
+> reloading state (e.g. the file tree) on change, which I think didn't work
+> for 9pfs folders opened with vscode if I remembered correctly (but I
+> haven't tested this recently).  Even though we can't monitor for remote
+> changes, having this work for local changes would still be nice.
+
+Yeah, I also do this manually with entr[1], and git's fsmonitor (with
+watchman) does that too -- so I guess people living in a 9p mount would
+see it..
+[1] https://github.com/eradman/entr
+
+But I think 9p is just slow in general so such setups can probably be
+improved more drastically by using something else :P
+
+Anyway, thank you for your time/work, I'll try to be more timely in
+later reviews.
+-- 
+Dominique Martinet | Asmadeus
