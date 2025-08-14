@@ -1,202 +1,140 @@
-Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590062DCF5A
-	for <v9fs@lists.linux.dev>; Wed, 13 Aug 2025 08:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3124819067C
+	for <v9fs@lists.linux.dev>; Thu, 14 Aug 2025 16:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755075595; cv=none; b=pNRjgN4I/SRvAIOzyPU4/K9olj0xmzjFdv9aZOYrt2azS7iBvpBHGfiGWmM8yIiAPoza9FLeALHJaB1eHObvArPWxs4z7aBA2iBO3hkrEvwEElsUQj274cRvmvGQXz/2QoYwZ/j0eqlxPpFTO0MgcguJBxfSLsah5GPQrKJNYpc=
+	t=1755190524; cv=none; b=YYPErdCplhFjnp7dSfpDCc1ndGZtf0LOeX2wFE6OH8ml9dzrg5XA0M4NQog9tvGk7N6A8u56DhPpe494OvC6nye6sl4wophvLwf6agLah1wtEK2wX5pRSC/eZUc8Wnr3liNYquLPz5t2zDHhFc3OOe+AeCAKdJ2Yv1vjmGsXl+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755075595; c=relaxed/simple;
-	bh=nhmeHZzqroCvs7ulB28xjaiWqbSDAQeSQWycbTLLpD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MIkFpzuw8jgZBGJkRVP5VHPNmGo/rhph/ymIJ8v6i0mHo69rodArtAxNQ6bOcodHftGcP5FeCyV6ftKQu64c0iIMJ4V/AqxCLnWis1ar397nm4iqT8JBcfuFCExzwldCR1DBZRYfzOT8tCBPOQS73oM7O687TwdeiIa44AZwHSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=zSX0e3HN; arc=none smtp.client-ip=45.157.188.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	s=arc-20240116; t=1755190524; c=relaxed/simple;
+	bh=C1zyM9JboEL1dq8fts6x0fFqBZMYuVpZG5QoyF45iS0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=npwHnIkFNjrDeD7V/Uf5p+tDDbXYv6ziJlj3W5iYHlUAK0mh8HLe1IVfa14BB4hiQXJQka+KjM5qV8OcfYxm714nCJUExS4BuTyakLP/WunDEmGiOBiIkntV0wR1QNaY4KIeIXPpRq6BBT340Hd7+gFCIy3q4HbfH3gv5fbh+yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=m9CBxGQB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TdpR2zJg; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="zSX0e3HN"
-Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4c20p45mmJzYTn;
-	Wed, 13 Aug 2025 09:47:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1755071244;
-	bh=kiYuZJB2YsWQDkZMPyAoNj5aBOt/37ctd8+2F4wCRdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zSX0e3HNonQS4B90zVb9aRW3SYtNmR0KTfjhrSR25eWnG9ML3hB2N46KXhJUfIOKS
-	 2Q07fGgBWP4Si/2CRscB21x5K4gduiOhf4c6Gy2FUvtz5CGZ5n3u14+q/S/TEVC8Mu
-	 9uFq35qoK4XnIyqxrWr9z/N8GuaqnccIU5MoI1QE=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4c20p36NYVzM9Z;
-	Wed, 13 Aug 2025 09:47:23 +0200 (CEST)
-Date: Wed, 13 Aug 2025 09:47:21 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Tingmao Wang <m@maowtm.org>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	v9fs@lists.linux.dev, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
-	Matthew Bobrowski <repnop@google.com>, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/6] fs/9p: Add ability to identify inode by path for
- .L
-Message-ID: <20250813.dei7hooKa2ie@digikod.net>
-References: <cover.1743971855.git.m@maowtm.org>
- <e839a49e0673b12eb5a1ed2605a0a5267ff644db.1743971855.git.m@maowtm.org>
- <20250705002536.GW1880847@ZenIV>
- <b32e2088-92c0-43e0-8c90-cb20d4567973@maowtm.org>
- <20250808.oog4xee5Pee2@digikod.net>
- <df6cb208-cb14-4ca5-bd25-cb0f05bfc6a1@maowtm.org>
+	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="m9CBxGQB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TdpR2zJg"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6931A1400141;
+	Thu, 14 Aug 2025 12:55:22 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 14 Aug 2025 12:55:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1755190522;
+	 x=1755276922; bh=SQdSFE3oYuJi6nGLbaOS61HME2o+m/ap/i/7e01/+Wo=; b=
+	m9CBxGQBfyDJ6aczgpzjsN5GG9uLqJV/ogyIDZut1KofCpxeBYJpEdHRLUFYSWJm
+	ZFX6djtz2JyRM+s6bHzwHV9kAFkqKQ/+7jtoTBAo1Cx77BH5++aZ/0LtHq1Y6ife
+	/joccRcPkEjRVByRYW3egdPzwMh1Ycx17onw2Jbtelk1Uf0zMvH5bjtHX0u3Ismd
+	PK0cF38eyszkVFwisyQsnteSvHKqe6OG38FAvv1NqZrFcOCT2u8YW0agRl2ZbZht
+	bKq6TW65+9+odVitqDgDdcojGUQ2VYaldFjxIGiM7WIz0SI6s56R7ig+1lD72+Vn
+	SD9ly8m7ejgC4aWK2b6x4Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755190522; x=
+	1755276922; bh=SQdSFE3oYuJi6nGLbaOS61HME2o+m/ap/i/7e01/+Wo=; b=T
+	dpR2zJgq0eTCIwoXFbSFvDuiEVnBs+MYOm9+chs26lZyInEEo3q/bZKOULsOW27D
+	Yfuq8DLu1jGhW5l6Vb4Lytm/cB/hJHUpT5aBSRWtYKG73usk89O0dOkKZoDEChcZ
+	0FRQiRBHxra7hG+/Qr/M+QfSp4odRgkC5sAQFiSNqWt8ac6akWsHRiC6Il+dN2pt
+	7azdsPa6mIHyZNLcL7wdm15Z9VQWIyQ5+SgYRhIm2KZdiDU4OwWxXZXRU89BqQDT
+	Sf9hs4h+x/2aq9GMW9/s4Db79POb9pJhqUh5bdfdyeKLVLtpaE3usrxqQJi+QxE7
+	N9SfN14CH4dAxReEZ3ZzQ==
+X-ME-Sender: <xms:-RSeaIWSqwlbx1ybZDEGnJrQPiZzj9v53acRwkcqYfH2Ij9wHYH7UA>
+    <xme:-RSeaJ9JDUAG8i2hNNgKyHE-KBCJEFNcMS3uB8eMngmdCbkruRccmawP-WYjQmO67
+    PJCW89UNw66jzkF-R0>
+X-ME-Received: <xmr:-RSeaF5D07jrn5YNwQ119WB-7yhNqMNwql7Xi7g1P6Rh4KMffcf8I0NR0TIW5OaiBytK0QrLcF2YDWVEgu1h2Ne8eg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduieduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpefgrhhitgcu
+    ufgrnhguvggvnhcuoehsrghnuggvvghnsehsrghnuggvvghnrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeevieekueetfeeujedtheeffedvgeffiedvjeejleffhfeggeejuedtjeeu
+    lefhvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsrghnuggvvghnsehsrghnuggvvghnrdhnvghtpdhnsggprhgtphhtthhopedutddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghsmhgruggvuhhssegtohguvgifrhgvtg
+    hkrdhorhhgpdhrtghpthhtohepshgrnhguvggvnhesrhgvughhrghtrdgtohhmpdhrtghp
+    thhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinh
+    hugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    gvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhutghhohesihhonhhk
+    ohhvrdhnvghtpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshihtvgdrtg
+    homhdprhgtphhtthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:-RSeaCnlnKguemqyiDuE1pG0FIAlPKou-uBb8VdUeDcDJIcKkWQ8VA>
+    <xmx:-RSeaIHu9PJ3uSZYvBIONnVQy7h8eOaPOlDgHmxznm218BtemWpEpQ>
+    <xmx:-RSeaJ-2yzT1Pw6VkLQTkavN1cjDMoyAWnVhbOjiNbs7YwnDl4LddA>
+    <xmx:-RSeaJluSLTN9wMFOZwbbS63WbPBl0VfYXC7K5vLIvo2vDdOot_PcA>
+    <xmx:-hSeaMQZGJb8CBKbSG9B5u-XK5WDpHvX27qq0ra1hCeElephilPsxVJp>
+Feedback-ID: i2b59495a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 14 Aug 2025 12:55:20 -0400 (EDT)
+Message-ID: <6e965060-7b1b-4bbf-b99b-fc0f79b860f8@sandeen.net>
+Date: Thu, 14 Aug 2025 11:55:20 -0500
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <df6cb208-cb14-4ca5-bd25-cb0f05bfc6a1@maowtm.org>
-X-Infomaniak-Routing: alpha
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 0/4] 9p: convert to the new mount API
+To: asmadeus@codewreck.org, Eric Sandeen <sandeen@redhat.com>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
+ linux_oss@crudebyte.com, dhowells@redhat.com,
+ Christian Brauner <brauner@kernel.org>
+References: <20250730192511.2161333-1-sandeen@redhat.com>
+ <aIqa3cdv3whfNhfP@codewreck.org>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@sandeen.net>
+In-Reply-To: <aIqa3cdv3whfNhfP@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 13, 2025 at 12:57:49AM +0100, Tingmao Wang wrote:
-> Thanks for the review :)  I will try to send a v2 in the coming weeks with
-> the two changes you suggested and the changes to cached mode as suggested
-> by Dominique (plus rename handling).  (will also try to figure out how to
-> test with xfstests)
+On 7/30/25 5:21 PM, asmadeus@codewreck.org wrote:
+> Hi Eric,
 > 
-> On 8/8/25 09:32, Mickaël Salaün wrote:
-> > [...]
-> >> On 7/5/25 01:25, Al Viro wrote:
-> >>> On Sun, Apr 06, 2025 at 09:43:02PM +0100, Tingmao Wang wrote:
-> >>>> +bool ino_path_compare(struct v9fs_ino_path *ino_path,
-> >>>> +			     struct dentry *dentry)
-> >>>> +{
-> >>>> +	struct dentry *curr = dentry;
-> >>>> +	struct qstr *curr_name;
-> >>>> +	struct name_snapshot *compare;
-> >>>> +	ssize_t i;
-> >>>> +
-> >>>> +	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
-> >>>> +
-> >>>> +	rcu_read_lock();
-> >>>> +	for (i = ino_path->nr_components - 1; i >= 0; i--) {
-> >>>> +		if (curr->d_parent == curr) {
-> >>>> +			/* We're supposed to have more components to walk */
-> >>>> +			rcu_read_unlock();
-> >>>> +			return false;
-> >>>> +		}
-> >>>> +		curr_name = &curr->d_name;
-> >>>> +		compare = &ino_path->names[i];
-> >>>> +		/*
-> >>>> +		 * We can't use hash_len because it is salted with the parent
-> >>>> +		 * dentry pointer.  We could make this faster by pre-computing our
-> >>>> +		 * own hashlen for compare and ino_path outside, probably.
-> >>>> +		 */
-> >>>> +		if (curr_name->len != compare->name.len) {
-> >>>> +			rcu_read_unlock();
-> >>>> +			return false;
-> >>>> +		}
-> >>>> +		if (strncmp(curr_name->name, compare->name.name,
-> >>>> +			    curr_name->len) != 0) {
-> >>>
-> >>> ... without any kind of protection for curr_name.  Incidentally,
-> >>> what about rename()?  Not a cross-directory one, just one that
-> >>> changes the name of a subdirectory within the same parent?
-> >>
-> >> As far as I can tell, in v9fs_vfs_rename, v9ses->rename_sem is taken for
-> >> both same-parent and different parent renames, so I think we're safe here
-> >> (and hopefully for any v9fs dentries, nobody should be causing d_name to
-> >> change except for ourselves when we call d_move in v9fs_vfs_rename?  If
-> >> yes then because we also take v9ses->rename_sem, in theory we should be
-> >> fine here...?)
-> > 
-> > A lockdep_assert_held() or similar and a comment would make this clear.
+> Eric Sandeen wrote on Wed, Jul 30, 2025 at 02:18:51PM -0500:
+>> This is an updated attempt to convert 9p to the new mount API. 9p is
+>> one of the last conversions needed, possibly because it is one of the
+>> trickier ones!
 > 
-> I can add a comment, but there is already a lockdep_assert_held_read of
-> the v9fs rename sem at the top of this function.
+> Thanks for this work!
+> 
+> I think the main contention point here is that we're moving some opaque
+> logic that was in each transport into the common code, so e.g. an out of
+> tree transport can no longer have its own options (not that I'm aware of
+> such a transport existing anyway, so we probably don't have to worry
+> about this)
+> 
+> OTOH this is also a blessing because 9p used to silently ignore unknown
+> options, and will now properly refuse them (although it'd still silently
+> ignore e.g. rdma options being set for a virtio mount -- I guess there's
+> little harm in that as long as typos are caught?)
+> 
+> So I think I'm fine with the approach.
+> 
+>> I was able to test this to some degree, but I am not sure how to test
+>> all transports; there may well be bugs here. It would be great to get
+>> some feedback on whether this approach seems reasonable, and of course
+>> any further review or testing would be most welcome.
+> 
+> I still want to de-dust my test setup with rdma over siw for lack of
+> supported hardware, so I'll try to give it a try, but don't necessarily
+> wait for me as I don't know when that'll be..
+> 
 
-I wrote this comment before reading your new version beneath, which
-already have this lockdep, so no need to change anything. :)
+Any news on testing? :)
 
-> 
-> > [...]
-> >> /*
-> >>  * Must hold rename_sem due to traversing parents
-> >>  */
-> >> bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
-> >> {
-> >> 	struct dentry *curr = dentry;
-> >> 	struct name_snapshot *compare;
-> >> 	ssize_t i;
-> >>
-> >> 	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
-> >>
-> >> 	rcu_read_lock();
-> >> 	for (i = ino_path->nr_components - 1; i >= 0; i--) {
-> >> 		if (curr->d_parent == curr) {
-> >> 			/* We're supposed to have more components to walk */
-> >> 			rcu_read_unlock();
-> >> 			return false;
-> >> 		}
-> >> 		compare = &ino_path->names[i];
-> >> 		if (!d_same_name(curr, curr->d_parent, &compare->name)) {
-> >> 			rcu_read_unlock();
-> >> 			return false;
-> >> 		}
-> >> 		curr = curr->d_parent;
-> >> 	}
-> >> 	rcu_read_unlock();
-> >> 	if (curr != curr->d_parent) {
-> 
-> Looking at this again I think this check probably needs to be done inside
-> RCU, will fix as below:
-> 
-> >> 		/* dentry is deeper than ino_path */
-> >> 		return false;
-> >> 	}
-> >> 	return true;
-> >> }
-> 
-> diff --git a/fs/9p/ino_path.c b/fs/9p/ino_path.c
-> index 0000b4964df0..7264003cb087 100644
-> --- a/fs/9p/ino_path.c
-> +++ b/fs/9p/ino_path.c
-> @@ -77,13 +77,15 @@ void free_ino_path(struct v9fs_ino_path *path)
->  }
->  
->  /*
-> - * Must hold rename_sem due to traversing parents
-> + * Must hold rename_sem due to traversing parents.  Returns whether
-> + * ino_path matches with the path of a v9fs dentry.
->   */
->  bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
->  {
->  	struct dentry *curr = dentry;
->  	struct name_snapshot *compare;
->  	ssize_t i;
-> +	bool ret;
->  
->  	lockdep_assert_held_read(&v9fs_dentry2v9ses(dentry)->rename_sem);
->  
-> @@ -101,10 +103,8 @@ bool ino_path_compare(struct v9fs_ino_path *ino_path, struct dentry *dentry)
->  		}
->  		curr = curr->d_parent;
->  	}
-> +	/* Comparison fails if dentry is deeper than ino_path */
-> +	ret = (curr == curr->d_parent);
->  	rcu_read_unlock();
-> -	if (curr != curr->d_parent) {
-> -		/* dentry is deeper than ino_path */
-> -		return false;
-> -	}
-> -	return true;
-> +	return ret;
->  }
+As for "waiting for you," I assume that's more for your maintainer peers
+than for me? I'm not sure if this would go through Christian (cc'd) or
+through you?
 
-Looks good
-
-> 
-> > 
-> > I like this new version.
-> > 
-> 
+Thanks,
+-Eric
