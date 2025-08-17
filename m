@@ -1,96 +1,65 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFE199949
-	for <v9fs@lists.linux.dev>; Sun, 17 Aug 2025 16:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045EC224FA
+	for <v9fs@lists.linux.dev>; Sun, 17 Aug 2025 22:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755448930; cv=none; b=UCgItI+9s8yug0Lw4loZsik1an7iZ4f8yjfADrdXjIWRB3SCm6n+OjgUCIeMfySF+hS9iIr8gjgWDXhaFqZJsg0qodb8O3PMWHm2KfTaf7iMIU/cTBkEK/fW7GX8Om0hn+bFO3MksWyLHP+5IsYgU9oBwa6UIyW4heQXb8stJiY=
+	t=1755469838; cv=none; b=h/WS1T09mzlLVk29ffhclg+RsRoFKKBBOGZkk+O+ML+wSrBfytJcaztRd2f/qVmGcd9Dq6gFcaOptWvWDttfx4++jVW50KriCuZzq45C659PIsyVmd4bEi8SOVP4EfgmFDBP/6OkWyrlWmj8RiJPz80X5TadkCuUgWwc7fYZrF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755448930; c=relaxed/simple;
-	bh=+QBR3qdBitT3XtY+qZlKbkh355Xw2vzLzsBzq+IArns=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Q9iCBmHt1jsvz3zDpsPmspwrDlpWxpqpC1j2OnNxkgf4DQnCx/HO659Lj0X+r29Z3f20lfzkT5tFrVjDLwSwcE7Tr8QTdPC1J4nLTQIw9kJXj+KoudtNMm/gmiQ3eNCTdyCr8Qd6p7eEimtfTCrp9VER/tynJBlI4n636KTGcz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=d1WQYdCI; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1755469838; c=relaxed/simple;
+	bh=/TUfM962kdROIwk2J5PfYpkRjQs1eJudmCNbGQ6CtnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nqNQjGEP+9GmIm9LNOgBbkqMfijQKhXXXgERPFrGLSWDty6dKl14K97Mdx8u2M72vHgduRomXltqHEwXHiokRHKQdH3W+SEw78Qnw4CzMJHlawsjYPy9Wc9JSY3yMEHL0z5i2/JRrOzzDTh/CksfcBwUhp1d3Q7AmWt8riTQySA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Jozw2Wi3; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="d1WQYdCI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=INlWQUuAbHwdBT51OHQ/0w7vh6GhtzwyAto6IvUx6Qs=; b=d1WQYdCIH9TOIoydQljSeXsHoW
-	rUB7ZNdxeKKvM1wTxUL0Pc3uajKR5eyHa9dF470If7mOSsV0SXCDtcR5wzdKAUDhJndZav+Mhv74v
-	4Xxqp1OJ9ZQuTT4fdyzvgffLk2ej1smzlY2PV9rXZkB4fWq81BXaBXRYVMlMALXtMlM9pmw3yhmhB
-	jFPamTgeerow1CJuMfNtFNEfHKHTI3xMVrfmgl0xcrGVU3iFs03hkxCW18i6f+5WXvhUyHl//f1SR
-	hgYG1Nf1Jj8TuwTtr/h9FvmJEiLKquXpWml8ql8zOTNTmd2RCCl0Ew0x5d6r/CsCOZSWStABTdD+E
-	lOQCyGug==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ungSM-0000000Ak1C-1eG9
-	for v9fs@lists.linux.dev;
-	Sun, 17 Aug 2025 16:42:06 +0000
-Date: Sun, 17 Aug 2025 17:42:06 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: v9fs@lists.linux.dev
-Subject: [PATCH] spin_lock_irqsave() in p9_client{,_zc}_rpc() is bogus
-Message-ID: <20250817164206.GW222315@ZenIV>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Jozw2Wi3"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 030E514C2D3;
+	Mon, 18 Aug 2025 00:30:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1755469826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EC7ZeeynHbV5dR2gW02CLGkM8DkCtxZ+fq3gICAka3E=;
+	b=Jozw2Wi3E9/O6ER5AUlm2xOH2OFpE3j4JXA68GJyRuPbyubvSa2PEbdh66SWO/y+mTGJk4
+	vdzDK+g7w5bkN0Xr6yLB+2emFkl0rd968/XSztI8mOe1TqdA3W8hKh9pL38sfIPsr9QRN8
+	raCYKrvNNrpY43nDCkRm5Z23t/FMGP4X0pJvCA4LS9QJhg7N8V1s/ya4GLL1X1kSRfuw+M
+	KctGhtYZY24imbOhsMcU5g5oFD1qUD4FdTTyakN+eZQHy0z2XWAGxhLMz+ejSEZ6YmUelv
+	28tLzQhLsMZX07f77t3aKqlMw7p915Sw/+cYzTC9IG6ah2eR0k1IUSj9XjIqRw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d0708c0d;
+	Sun, 17 Aug 2025 22:30:24 +0000 (UTC)
+Date: Mon, 18 Aug 2025 07:30:09 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: v9fs@lists.linux.dev
+Subject: Re: [PATCH] spin_lock_irqsave() in p9_client{,_zc}_rpc() is bogus
+Message-ID: <aKJX8Q7AH6ax2qYy@codewreck.org>
+References: <20250817164206.GW222315@ZenIV>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Sender: Al Viro <viro@ftp.linux.org.uk>
+In-Reply-To: <20250817164206.GW222315@ZenIV>
 
-	Both of those are blocking; they can't be (and are not) called
-with irqs disabled.  So these spin_lock_irqsave() should be spin_lock_irq().
+Al Viro wrote on Sun, Aug 17, 2025 at 05:42:06PM +0100:
+> 	Both of those are blocking; they can't be (and are not) called
+> with irqs disabled.  So these spin_lock_irqsave() should be spin_lock_irq().
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 5c1ca57ccd28..b708c6ba6b98 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -675,7 +675,6 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
- {
- 	va_list ap;
- 	int sigpending, err;
--	unsigned long flags;
- 	struct p9_req_t *req;
- 	/* Passing zero for tsize/rsize to p9_client_prepare_req() tells it to
- 	 * auto determine an appropriate (small) request/response size
-@@ -746,9 +745,9 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
- 	}
- recalc_sigpending:
- 	if (sigpending) {
--		spin_lock_irqsave(&current->sighand->siglock, flags);
-+		spin_lock_irq(&current->sighand->siglock);
- 		recalc_sigpending();
--		spin_unlock_irqrestore(&current->sighand->siglock, flags);
-+		spin_unlock_irq(&current->sighand->siglock);
- 	}
- 	if (err < 0)
- 		goto reterr;
-@@ -783,7 +782,6 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
- {
- 	va_list ap;
- 	int sigpending, err;
--	unsigned long flags;
- 	struct p9_req_t *req;
- 
- 	va_start(ap, fmt);
-@@ -831,9 +829,9 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
- 	}
- recalc_sigpending:
- 	if (sigpending) {
--		spin_lock_irqsave(&current->sighand->siglock, flags);
-+		spin_lock_irq(&current->sighand->siglock);
- 		recalc_sigpending();
--		spin_unlock_irqrestore(&current->sighand->siglock, flags);
-+		spin_unlock_irq(&current->sighand->siglock);
- 	}
- 	if (err < 0)
- 		goto reterr;
+Makes sense.
+
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+
+If you want to take it:
+Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+
+Otherwise I'll pick it up for 6.18 tomorrow-ish
+
+-- 
+Dominique
