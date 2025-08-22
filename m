@@ -1,102 +1,98 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC5723C506
-	for <v9fs@lists.linux.dev>; Thu, 21 Aug 2025 04:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA84136349
+	for <v9fs@lists.linux.dev>; Fri, 22 Aug 2025 14:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755749168; cv=none; b=iijUXa0eYYRtAJ8vQlmUEZfZkj3QsIc/XzruYaX4WxtzkbWuDqM7ABl6DEASPutoW1JG1tPCteQfpA7V24wHSkqlYEAta4oUbbaXV74CDulM0/tRvReqWOqUlTHCJyKbcVbj6ycIXJSlorJPszIQMHKjsFOIfZLwKBqHdz4sRSo=
+	t=1755873991; cv=none; b=O/1LMhBEZhAQz8kppEcJJZbhHU3+CNtXeOO7iIJ03EknxeBXfhKcQcE9bMRD8qPQy5HFMjA7R4MlH7EuYddQcZr2fTF+iRQBt5PEqxC1w8zDDt5lIdfZeLA94DfzwRol85pvcWNH5vdp4CvEXHM4uQF1dzcehN/QfgchW+5VjLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755749168; c=relaxed/simple;
-	bh=CzX3JaJ7NwONLAn2TTeNBMK6lIbHD9i+uC1AXEIdOFg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=FGSTamnYDmDwqavcuv2SL0dx5Tn4pr7Jq8oroMKhZA0B5vB4Q2JxWE4ghtQsNQh82N0UbPcP7JX3ktfIpuPUvb9NcCkrfkv/8cVPBSuoD1Ra7Vm2u3idJytjjjfgEI/OVhjHpltvfN96mC/t3qykpGHtJvGi94vpuwwNFxK9DIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3e67189ba24so6802445ab.2
-        for <v9fs@lists.linux.dev>; Wed, 20 Aug 2025 21:06:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755749165; x=1756353965;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rcPZ7h1w38XKs5IO8/ha7JNh4WrNn3KTQrDcAx81ZOg=;
-        b=kHikZlFEsG3gD2EAEeSqLpe67f9FxEzfwBnZJcRXHG7BH2t7XUPi8FoAWFID5ZfRRT
-         /7Ngu7yx6RegjAX/8hMGym96ac0FtgmBG4f4pcIjLV+omUYyQgwlJQp47ZrfbTovF1rS
-         wvXIgR+XE68MxoTiDcunxZn8pv5IphTiNSb8sGdIGZCZr+4Qu+xEroC6qGz5j4xuuJBg
-         n9mhDePbEotLTHhvoAa9M3tL9zIB8hYdvl3wT7ha+8Ctn7AEjtgJ8eGkQCpx6TWPcO1l
-         CpMr1AiW/a04E9BNkCnU30Q8ZyBgEo64gPeNz6Cb+VQaGcCv+FS4MUSQpjlSfBL8zE83
-         SmwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDQt4Lv+8iVlJcUe/BrCBfrvrGkwu38Jt2bFyqqnEnISaf4suUouOUhZkkHy2w4RlV3MkG@lists.linux.dev
-X-Gm-Message-State: AOJu0YxM80oi39Sxqgj0qeeznfLYrukX6k6IqN3RTQ5O5bjp9V1GSv3A
-	wuKVk0w9iCRYwuA6oy3GvNW0w5PMVn37VgPzcGi4gQeD7MnqtIjLdc3RBYp0xqEyQ1G1BthG769
-	Zvt4M7LStZWi489vUpzAXmejV7zocCcEKKGLXNzOJdcBNbzuET/OB/TjWWmk=
-X-Google-Smtp-Source: AGHT+IGhvQdQ1rnNUg7em2QGQiFzvqEhT3LwDf6es0ungmVDt4/JphxGZD7eCFZIEomXzEnT23TdbSP+cmIP2cVrADIEKOeFTSIe
+	s=arc-20240116; t=1755873991; c=relaxed/simple;
+	bh=wrqna0sZ6RMPU8gTT3h+3xAxYsH60khbZNhU4KLyBMo=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=aM2EDOXVDm/1ahamWkh47aNqEO8x8BGEREMM//UI+s/A/2RDccn0K0cK0G8frf6JjrWS8CWNxqL7ByWA6KFU6ebJyQbYO94wlBJzhmAko51UXJ6YkUXH48KbymxECAPQcAkDmkV5dRPNfnyU1KE/rrFrf8jX4p11KII5esFtvKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=h9VcjKIh; arc=none smtp.client-ip=203.205.221.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="h9VcjKIh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1755873674; bh=AXtNgOCqWlXjJdTGIg/SbLr8Fg0oT7SoDt9nlF0FA/g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=h9VcjKIhDFof0UpTm7x75ZEdJIeR7mshNt0X8MXdqtvddplu0c+DYhPhTte3B29Ju
+	 S0Lhoc3MsYmjwBa1llqLJUptPmQMfM5299IdlueXLqH6G0mW/8UaJ9Kw9Y8jjwQuem
+	 8QKcPk2RSLYZ0bsd06Qg57e9qwvAXDJtjDq1WPeM=
+Received: from pek-lxu-l1.corp.ad.wrs.com ([111.198.230.220])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id A4812659; Fri, 22 Aug 2025 22:41:08 +0800
+X-QQ-mid: xmsmtpt1755873668tq8zjx9lz
+Message-ID: <tencent_074BFE748F778366103D0B36E0971837E809@qq.com>
+X-QQ-XMAILINFO: NAuAIaytDrXpvt3VlSnxhCwwyEuILRU9s99sYUUY10cqaSBidHw7OgAT7VZ6/C
+	 oIKGWH7S4O7gdFiqDoV90uTYbfsmJAEckQdyAhLNgb2itk3KsG+OaBgActIDxPMI3Bl36tMpoSbQ
+	 enuNwb9nQf1+TrpT35vXKrkny3jytaWoXyFou32BIptza9kPKpuoqcsEQC9Xf4a2DSDphqnvshES
+	 I85vJPLQvz6j3dVgeuf+UPk3dTaxB+y7tKRemfbfUhFm6kyEwWOLPL0hFl2bhdIVHibCBnoBmN8Y
+	 /VvlSp1bfUP1J274u5+3E+lOj0V0ev4RQgrvWS10OSqgDAAFi76XzDy1pz3bqv0xI21w1JstMtv3
+	 JqAXVSY1juTyuGS5eEXtEA2RN/yZsoBTxt0Tjv8BXAFgSJVdj0OMTOoChWa+9e5DHOOmUztPqOPt
+	 Q52xerPK6lnQjbL4TtOvrtSP9SaLrOpGluV7lELEJttDxncc/pHaMn9F2N44C9yuapqCASDnsfHB
+	 E6jw3nKRn/qh+X9wZdDVxwdW6K+liVeG5LilK7L49QUYlsVWkAIU9IT+q00MbgxOTAUMLviMyCdd
+	 FIzsgZQT9y58XyUil2cFtUdcdnTw4Zi7UvD8N6N0B+TdNCl7TAxzBynJRG17gWjf8KHC6zItC7eJ
+	 PUK5dj70UzEsv82nhsB2rlPqrFR1DdzcaayIpNEgSdiLPoEhpNOnd7bIA1ILNPbf62D6unjOwg/g
+	 rG1eGzrK/gyu7TXBXn/1M2+JHEyjhRQAm8MQ2b4uhFKnnTl+QiI4UVM4lH75/K8LIaQnl4nONoDY
+	 budczJgbtrmhsozpYh5towqS3UGhFQLkB8KjLkRMbs6eMLtvSk5nxmtFZQQO+Aa+tzrVF9StEgyj
+	 JalrNoV4IUDHEqpw9iSx5Miknmbf6/5L1gty/7d2K17OADZM2ILHr+08XHD49CvrmDHIed1hukWH
+	 1PZHEZx8gOiMzi/EnDQRX0amQcAcCMK7I25tT6hyhZLXnJxlaZZk9vzdwPVfqj
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com
+Cc: asmadeus@codewreck.org,
+	ericvh@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	syzkaller-bugs@googlegroups.com,
+	v9fs@lists.linux.dev
+Subject: [PATCH next] 9p: Correct the session info
+Date: Fri, 22 Aug 2025 22:41:06 +0800
+X-OQ-MSGID: <20250822144105.2424847-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <68a68b57.050a0220.3d78fd.0012.GAE@google.com>
+References: <68a68b57.050a0220.3d78fd.0012.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:b49:b0:3e3:cc1b:2b5e with SMTP id
- e9e14a558f8ab-3e6d6acf0c9mr19983935ab.15.1755749165619; Wed, 20 Aug 2025
- 21:06:05 -0700 (PDT)
-Date: Wed, 20 Aug 2025 21:06:05 -0700
-In-Reply-To: <aKaW9bi5INq7OwGy@codewreck.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a69b2d.050a0220.3d78fd.0016.GAE@google.com>
-Subject: Re: [syzbot] [v9fs?] UBSAN: shift-out-of-bounds in v9fs_get_tree
-From: syzbot <syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, sandeen@redhat.com, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+syz report a shift-out-of-bounds in v9fs_get_tree.
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-UBSAN: shift-out-of-bounds in v9fs_get_tree
+This is because the maxdata value is 0, causing fls to return 32, meaning
+the s_blocksize_bits value is 32, which causes an out of bounds error.
+The root cause of this is incorrect session information obtained during
+fill super. Since v9ses is stored in sb, it is used directly.
 
-------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in fs/9p/vfs_super.c:57:22
-shift exponent 32 is too large for 32-bit type 'int'
-CPU: 1 UID: 0 PID: 6530 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x40 lib/ubsan.c:233
- __ubsan_handle_shift_out_of_bounds+0x386/0x410 lib/ubsan.c:494
- v9fs_fill_super fs/9p/vfs_super.c:57 [inline]
- v9fs_get_tree+0x957/0xa90 fs/9p/vfs_super.c:125
- vfs_get_tree+0x92/0x2b0 fs/super.c:1752
- do_new_mount+0x2a2/0xa30 fs/namespace.c:3810
- do_mount fs/namespace.c:4138 [inline]
- __do_sys_mount fs/namespace.c:4349 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4326
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6fe798ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6fe87a7038 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007f6fe7bb5fa0 RCX: 00007f6fe798ebe9
-RDX: 00002000000000c0 RSI: 00002000000025c0 RDI: 0000000000000000
-RBP: 00007f6fe7a11e19 R08: 0000200000000280 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f6fe7bb6038 R14: 00007f6fe7bb5fa0 R15: 00007ffebc4cd908
- </TASK>
----[ end trace ]---
+Fixes: 4d18c32a395d ("9p: convert to the new mount API")
+Reported-by: syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=30c83da54e948f6e9436
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ fs/9p/vfs_super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Tested on:
-
-commit:         5303936d Add linux-next specific files for 20250820
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=156cb3bc580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2619a6495a03d773
-dashboard link: https://syzkaller.appspot.com/bug?extid=30c83da54e948f6e9436
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=17fcd442580000
+diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
+index f6065b5e0e5d..cc2056dd0bef 100644
+--- a/fs/9p/vfs_super.c
++++ b/fs/9p/vfs_super.c
+@@ -50,7 +50,7 @@ static int v9fs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	int ret;
+ 	struct v9fs_context	*ctx = fc->fs_private;
+-	struct v9fs_session_info *v9ses = &ctx->v9ses;
++	struct v9fs_session_info *v9ses = sb->s_fs_info;
+ 
+ 	sb->s_maxbytes = MAX_LFS_FILESIZE;
+ 	sb->s_blocksize_bits = fls(v9ses->maxdata - 1);
+-- 
+2.43.0
 
