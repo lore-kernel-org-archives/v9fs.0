@@ -1,62 +1,64 @@
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA84136349
-	for <v9fs@lists.linux.dev>; Fri, 22 Aug 2025 14:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385B619E7E2
+	for <v9fs@lists.linux.dev>; Fri, 22 Aug 2025 23:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755873991; cv=none; b=O/1LMhBEZhAQz8kppEcJJZbhHU3+CNtXeOO7iIJ03EknxeBXfhKcQcE9bMRD8qPQy5HFMjA7R4MlH7EuYddQcZr2fTF+iRQBt5PEqxC1w8zDDt5lIdfZeLA94DfzwRol85pvcWNH5vdp4CvEXHM4uQF1dzcehN/QfgchW+5VjLg=
+	t=1755905775; cv=none; b=D/FkopbCF9enZJdr5E+2I8AiyPVlj/tyqQH1sOEqYodYmrwKTLeCCl+8kigmLYEolBpulwpCClKhsV6FQdtJQgCHxrS6ZYP6RFLkMxwlAM6Xm9d/lo3pRwWnWZlT9jwjjLcLQWQ2g7yK6eLfgn+gfQE3ywCisgl7zbYw0xy/knE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755873991; c=relaxed/simple;
-	bh=wrqna0sZ6RMPU8gTT3h+3xAxYsH60khbZNhU4KLyBMo=;
+	s=arc-20240116; t=1755905775; c=relaxed/simple;
+	bh=ii86TnDCd+ZIV87XXjkVSoBMDUfbe4FTWbWEPqLXqqA=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=aM2EDOXVDm/1ahamWkh47aNqEO8x8BGEREMM//UI+s/A/2RDccn0K0cK0G8frf6JjrWS8CWNxqL7ByWA6KFU6ebJyQbYO94wlBJzhmAko51UXJ6YkUXH48KbymxECAPQcAkDmkV5dRPNfnyU1KE/rrFrf8jX4p11KII5esFtvKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=h9VcjKIh; arc=none smtp.client-ip=203.205.221.239
+	 MIME-Version; b=lwSUURX5SSzqIwCaDv3Y3lL0q60n6u3a2u91WCXp5jw1FuyYkDF+R3VRNWKLvgY76UzGv6iW38P480RLDa3bGuyfIOVOw7lxowOJT5h21URNLQES7h+KyJvAy7Mum834IQR5ly85T+gOddUQXCpGpQJ1sEcpq6uWc+6vuK2lIx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=mzt7ILwe; arc=none smtp.client-ip=162.62.57.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="h9VcjKIh"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="mzt7ILwe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1755873674; bh=AXtNgOCqWlXjJdTGIg/SbLr8Fg0oT7SoDt9nlF0FA/g=;
+	t=1755905762; bh=+ddHY+2CoVEakzQVjnb8qjEqZkiCxH+nSriB8oJuLz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h9VcjKIhDFof0UpTm7x75ZEdJIeR7mshNt0X8MXdqtvddplu0c+DYhPhTte3B29Ju
-	 S0Lhoc3MsYmjwBa1llqLJUptPmQMfM5299IdlueXLqH6G0mW/8UaJ9Kw9Y8jjwQuem
-	 8QKcPk2RSLYZ0bsd06Qg57e9qwvAXDJtjDq1WPeM=
+	b=mzt7ILweOBWyMWUC8+0Or9EMP5i8tULbMu8EHzKWb7aBQdNItIoxodNvqkUCFC/DL
+	 L8nlLYLm8NxWD4VKiz29HRBUl4SELsa3081G26N+ZQo2w/wcgLCZs74KSqn4r+4z23
+	 23/M1lcY7rtEWTqfkRwPPu0e6Cv8mYTX/Lh6JiVY=
 Received: from pek-lxu-l1.corp.ad.wrs.com ([111.198.230.220])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id A4812659; Fri, 22 Aug 2025 22:41:08 +0800
-X-QQ-mid: xmsmtpt1755873668tq8zjx9lz
-Message-ID: <tencent_074BFE748F778366103D0B36E0971837E809@qq.com>
-X-QQ-XMAILINFO: NAuAIaytDrXpvt3VlSnxhCwwyEuILRU9s99sYUUY10cqaSBidHw7OgAT7VZ6/C
-	 oIKGWH7S4O7gdFiqDoV90uTYbfsmJAEckQdyAhLNgb2itk3KsG+OaBgActIDxPMI3Bl36tMpoSbQ
-	 enuNwb9nQf1+TrpT35vXKrkny3jytaWoXyFou32BIptza9kPKpuoqcsEQC9Xf4a2DSDphqnvshES
-	 I85vJPLQvz6j3dVgeuf+UPk3dTaxB+y7tKRemfbfUhFm6kyEwWOLPL0hFl2bhdIVHibCBnoBmN8Y
-	 /VvlSp1bfUP1J274u5+3E+lOj0V0ev4RQgrvWS10OSqgDAAFi76XzDy1pz3bqv0xI21w1JstMtv3
-	 JqAXVSY1juTyuGS5eEXtEA2RN/yZsoBTxt0Tjv8BXAFgSJVdj0OMTOoChWa+9e5DHOOmUztPqOPt
-	 Q52xerPK6lnQjbL4TtOvrtSP9SaLrOpGluV7lELEJttDxncc/pHaMn9F2N44C9yuapqCASDnsfHB
-	 E6jw3nKRn/qh+X9wZdDVxwdW6K+liVeG5LilK7L49QUYlsVWkAIU9IT+q00MbgxOTAUMLviMyCdd
-	 FIzsgZQT9y58XyUil2cFtUdcdnTw4Zi7UvD8N6N0B+TdNCl7TAxzBynJRG17gWjf8KHC6zItC7eJ
-	 PUK5dj70UzEsv82nhsB2rlPqrFR1DdzcaayIpNEgSdiLPoEhpNOnd7bIA1ILNPbf62D6unjOwg/g
-	 rG1eGzrK/gyu7TXBXn/1M2+JHEyjhRQAm8MQ2b4uhFKnnTl+QiI4UVM4lH75/K8LIaQnl4nONoDY
-	 budczJgbtrmhsozpYh5towqS3UGhFQLkB8KjLkRMbs6eMLtvSk5nxmtFZQQO+Aa+tzrVF9StEgyj
-	 JalrNoV4IUDHEqpw9iSx5Miknmbf6/5L1gty/7d2K17OADZM2ILHr+08XHD49CvrmDHIed1hukWH
-	 1PZHEZx8gOiMzi/EnDQRX0amQcAcCMK7I25tT6hyhZLXnJxlaZZk9vzdwPVfqj
+	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
+	id 593A2482; Sat, 23 Aug 2025 07:22:19 +0800
+X-QQ-mid: xmsmtpt1755904939t5beu3wyr
+Message-ID: <tencent_85467F89852EDEEEF58C8F67D446F592F106@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5p2BLjS1xnyNkr7ag8qcgO4mgCZswWjeIqfXOzCa7OD4+Pk0qFt
+	 kejpobgY8pVY++whmLMVc3orbwG580/HJaI0oRB95vWm2/klre+hBAvL2e6KmL53d6eWbhbHpVHr
+	 Wr9TNUABC4oO3PXSieF1vKmA07SHPyPvGOI1C+mOQDt6CE+LODE9e4sFHBBAfGayQ+C9D3WXMLwW
+	 M+7j0VzZBC4Nz0hTMqTxCfcZ7vAnHzM0uSnz47j2fVuZsE2O8qWNotExr6zjP1JW/zXGMiNTWT4H
+	 Vcf1Ewge4Ru84eEnQgQeayFS3WYIEusOtqMoRsjOfbo16+GIZs5XkWOBJhmlHGLFoKzqLeMF9zQc
+	 ic7GXYq2KOcROkpeLNS4wSjW76amJa7yiyY5xlpzXsBA6UqM/wTHfHfgz+K/G6Pye29gexLdE1qX
+	 FWcYSC4MIv2YI/Wh9c44DalsJeOX5W037W9oApZu8vddTY8xXfy6KaUCct4UWJHztBW5p9mtuvnB
+	 qEG/iebhu0AXHlRdLerpPNeLFLspbS4Msvl66wFUNXXvH4KyKLAKX3tAm8E6lAT054geA2xwzmIV
+	 cBYIaofArQp0hhcXzxH8BGgtshfaaH93L4R2O3TttyIgk2Dg6GwZq3DE+KwSgZQ5rqnWU7fdjV7c
+	 B6OfrGJlJdFgFMULtRHmr1PL2tYuY28bHcNAKu4xmvT95ozFanO8+R0P39/O95pP5thpxlk7eKXS
+	 MUxVY2TP/ldM21xacKI/V6hKgIWYPwpWgdr4XweedvcxftE1ezosrOuejAXenXC7ads3kGWk+MWz
+	 tboU7ssEd5cTKw2ImJl4B4zEvEG4obzY1qxkSwhCpqPV+0fC3On0fduxrZYbFW25hStb8JFHhjlE
+	 DhBNA49YGJPBRdAYDdwiBWYLcz2bKtf40QAgtCunQstjNA+//KkCO8c+Xi6th7gSH2Db9B1OBPUj
+	 GD8QHEhYD++pJNsc1dH9XpHfmSW43BI3Q498i0RUi/8YyoDrDqDqKTMopOIXmvSsCprK8zgwqK9Q
+	 b6ET6da++ArkUcCEd9xxNi1fI2ZUodNghT2wKjBw==
 X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
 From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com
+To: eadavis@qq.com
 Cc: asmadeus@codewreck.org,
 	ericvh@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux_oss@crudebyte.com,
 	lucho@ionkov.net,
+	syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com,
 	syzkaller-bugs@googlegroups.com,
 	v9fs@lists.linux.dev
-Subject: [PATCH next] 9p: Correct the session info
-Date: Fri, 22 Aug 2025 22:41:06 +0800
-X-OQ-MSGID: <20250822144105.2424847-2-eadavis@qq.com>
+Subject: [PATCH next V2] 9p: Correct the session info
+Date: Sat, 23 Aug 2025 07:22:13 +0800
+X-OQ-MSGID: <20250822232212.2513676-2-eadavis@qq.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <68a68b57.050a0220.3d78fd.0012.GAE@google.com>
-References: <68a68b57.050a0220.3d78fd.0012.GAE@google.com>
+In-Reply-To: <tencent_074BFE748F778366103D0B36E0971837E809@qq.com>
+References: <tencent_074BFE748F778366103D0B36E0971837E809@qq.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -77,17 +79,20 @@ Reported-by: syzbot+30c83da54e948f6e9436@syzkaller.appspotmail.com
 Closes: https://syzkaller.appspot.com/bug?extid=30c83da54e948f6e9436
 Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
- fs/9p/vfs_super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+V1 -> V2: remove the unused ctx
+
+ fs/9p/vfs_super.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index f6065b5e0e5d..cc2056dd0bef 100644
+index f6065b5e0e5d..bcb6ebdb8037 100644
 --- a/fs/9p/vfs_super.c
 +++ b/fs/9p/vfs_super.c
-@@ -50,7 +50,7 @@ static int v9fs_fill_super(struct super_block *sb, struct fs_context *fc)
+@@ -49,8 +49,7 @@ static int v9fs_set_super(struct super_block *s, struct fs_context *fc)
+ static int v9fs_fill_super(struct super_block *sb, struct fs_context *fc)
  {
  	int ret;
- 	struct v9fs_context	*ctx = fc->fs_private;
+-	struct v9fs_context	*ctx = fc->fs_private;
 -	struct v9fs_session_info *v9ses = &ctx->v9ses;
 +	struct v9fs_session_info *v9ses = sb->s_fs_info;
  
