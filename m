@@ -1,169 +1,110 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC9EC8F0
-	for <v9fs@lists.linux.dev>; Thu,  4 Sep 2025 00:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D0E19E98C
+	for <v9fs@lists.linux.dev>; Sun, 14 Sep 2025 12:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756944335; cv=none; b=jJ46btWBgbUcst9b0GkHb8zSx9jcz1uHksu9ON2xIAgygfHb7TW7fj7lQYuwtHGc9u6MXMtkSjqHMb2gxW13Pasc/We795rGZV4RKTEGBZFAkxB7fsOvDZFK0QnxRGnqM6cc6aRBBNQs5f+LH6ATg7XQi+BIoLsnNQwbQL8qmLs=
+	t=1757853280; cv=none; b=JqiSRYEnLWggJaH94kHFw4ZRzUGx5gzP1GjE1Ttnxj79STLsNhigfySAchESYSbbvNIUrt1m5xsOMfRbwc82DVEJM4HnnK7oqYA5BevITRBLCu5WGtzzPkkTYnlv1TLGZdVULjjB01iPFKi9KJCKb3OVR5bdaysqVphRp+2QyPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756944335; c=relaxed/simple;
-	bh=HeyVWVmdu2Gnz28ip5qk5OaQRBY3QWrBK9+gCmnExwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEC7IR/SUOdAqrrxHJRjeHjLStnOfNjX/BgtP5M4z9hgssS+40TuiNoprUTX9mUrT1OOzBVkxQeRIZKBAaX12LlS3CfBc5R0v9sZIBKB+x1i3/9BOAqgMylQmXqcb5Q0kUawiTJBvTtCeuJ7JzD+yA7AemnD6XDU2hAHbZpHXl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=LnDVFotn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EFUUTY19; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
+	s=arc-20240116; t=1757853280; c=relaxed/simple;
+	bh=8iABwI2C5d5wA5EN6xiW+XM3Ij/JuAeh7KwDh27HM2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ldgq0SlqUUjbj9GBmxEY1YaNVjEVo40xWEdiRBY4I6nkVAXgRCssjdTss/NXz7KR652eikdAAZBXqrqaowLc5cMA4vWEGeQh6jwCfBS4fljAD/GsEzzD+2rCxPfR0Q5kaZdWC6TeE/f6M1A/60mqk2ebSr4Rr1Gjuu5ntWi/M9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ZHnFQ9WV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="LnDVFotn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EFUUTY19"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8470D14005D3;
-	Wed,  3 Sep 2025 20:05:32 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 03 Sep 2025 20:05:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1756944332; x=
-	1757030732; bh=bi6KFMXLXw2rU6KRbsDWud5jypdQj8humwHJMDHqoIU=; b=L
-	nDVFotn7xZCCJxewHV7u64KbU7AxedsycyXaqfwZ6V54JeCfNozjEQ8GaBVVlOtB
-	WhFKZ+svsR1/YRwDTOsQknV6vDTwVjREsOEzXDGhin9X356caFOk4alNzlFzbUfu
-	40rFssnUErCGZiZ4h7n0mFvaY8ak3FU078m1Xs0SNb/iiKa//XR5msN/4xrtSchU
-	cw04Jez6qkSm0/RiABWdwASrg+Ci2ZWrmIKQdoX/MHLFWoJa7116B/LQOtWEhMIx
-	0stG/PqSBv8s1lo8Ub29GSJKmVMp1JyOrRq8KT19EjqV0a83v6vLhJe4aeBl24bH
-	8kWD9QF6ZRQJT8qIr0P4A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1756944332; x=1757030732; bh=b
-	i6KFMXLXw2rU6KRbsDWud5jypdQj8humwHJMDHqoIU=; b=EFUUTY19BIdcHV/y6
-	dDG6T5NYEuFRD/InW560C9yoS6XcCTaKMLZMMlA8tbAGqX2pa6a3qlIc18Y8lypL
-	/oyIVA9X8MkplviDfTYWRrySTnOfbu+ZXwsHPiBgd5ROzVpoetwjNPWT8yk2EId1
-	jL9/iiwzmel8WWtymXJGzC1FofJaVSWwoKsUo3E3hT2ahAJvq4MpjGMwb2GDviU0
-	wUVk8bSKajgLJGIn0BXXjeTRtdnqwAEEXD4V9TSU+N5tYNktw0p95C8r86Eme2O1
-	eKYIsccYr2EqJjCL3ZICw/5GboeTXLr05yKHPhsWOIl8wxPrMi1JcmxGM5j/KoJu
-	cIZog==
-X-ME-Sender: <xms:zNe4aG3u1VsE7asFuWb3bZuew181SuGR9B-FQt9t0oBh6L2y3_DjWQ>
-    <xme:zNe4aE4Sj02eR5tIUVkAd4DEVsBrASPA4YuAVliMSG92m2FHuI55q0YRkXOiLMeYp
-    3c3JSMSAlrrQb-_00E>
-X-ME-Received: <xmr:zNe4aFUDrC_XiBlgiJfU6jlsnjwFEHE4ESiYPtiVMtsDNHejihdSQ7fPGW-yFbnz75CZGeqwdpli8ZmVcJzPOUZaQGGU66acqNmNe9kdPgju3fEU4ngeMk1o8A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegheefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    ephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepvfhinhhgmhgrohcu
-    hggrnhhguceomhesmhgrohifthhmrdhorhhgqeenucggtffrrghtthgvrhhnpeeuuddthe
-    fhhefhvdejteevvddvteefffegteetueegueeljeefueekjeetieeuleenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmsehmrghofihtmhdroh
-    hrghdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopegvrhhitg
-    hvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhutghhohesihhonhhkohhvrdhn
-    vghtpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshihtvgdrtghomhdprh
-    gtphhtthhopehmihgtseguihhgihhkohgurdhnvghtpdhrtghpthhtohepmhesmhgrohif
-    thhmrdhorhhgpdhrtghpthhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrdguvghvpd
-    hrtghpthhtohepghhnohgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehlihhn
-    uhigqdhsvggtuhhrihhthidqmhhoughulhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:zNe4aEjOwjM_OdO6Od803c7lCu4mfWwjM9l-r8KeP6wqdEGKI5YSSA>
-    <xmx:zNe4aNf3UN14ECoUPqtCXIDZyqbvfmujUi0itjqbNXfvO2WPRlkBzQ>
-    <xmx:zNe4aL0gPEeuIogDJER2gqPpWemEXZpJP_BpTadq_AzVAuIu7P1kiQ>
-    <xmx:zNe4aBqO0cQ3S4W5nXWBEVnYtPXtfoDagTbyKV-hVjWERmhiuZ3NIQ>
-    <xmx:zNe4aOFY9PcwPVB4KEdZWryeKqB7XqV7uyktFJN3w_yrJlMXF6MgyOB9>
-Feedback-ID: i580e4893:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Sep 2025 20:05:30 -0400 (EDT)
-From: Tingmao Wang <m@maowtm.org>
-To: Dominique Martinet <asmadeus@codewreck.org>,
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ZHnFQ9WV"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 3336F14C2D3;
+	Sun, 14 Sep 2025 14:34:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1757853270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jsU2AE2o9h39I/bC+6REsgHkBZzgTz+eEtU5Pz4oB3M=;
+	b=ZHnFQ9WVH7uQ7JXSaJgSdCwGPWEZeOAULgp+YfZaQOyBWL0r//EvgB0uLCrDe5ZqeNAyQq
+	BBuSWtP91z9MYE6EqQmIOVndtjXW581sYCxDbiPTpXp5A00gbrISdjrOXIULuuHW3nPPP5
+	9h9GtQPdeo+c+wZBJ+e6nE8BEAzevKKxo20Hcses+KxzeSB8JI+c/lrfyIzh+fjQwYJ8LW
+	uQq1S8Snlg8jRSdO12JaCVms+ic5oReXoMKjcCaVMc7JSuYkyMg6dWx11YNf2mhGZZim4L
+	Pvo479pRFWyDJLelnVGs2IdgLsbxVGXppkJ+pkQgjDpry7jify9yXyQ+Qcdy2g==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a8ee2d0a;
+	Sun, 14 Sep 2025 12:34:26 +0000 (UTC)
+Date: Sun, 14 Sep 2025 21:34:11 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Remi Pommarel <repk@triplefau.lt>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Cc: Tingmao Wang <m@maowtm.org>,
-	v9fs@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	linux-security-module@vger.kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Matthew Bobrowski <repnop@google.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 7/7] docs: fs/9p: Document the "inodeident" option
-Date: Thu,  4 Sep 2025 01:04:17 +0100
-Message-ID: <7ef55d4b0541108e367e547cf3b87825f05a68c9.1756935780.git.m@maowtm.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1756935780.git.m@maowtm.org>
-References: <cover.1756935780.git.m@maowtm.org>
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: Re: [RFC PATCH 0/5] 9p: Performance improvements for build workloads
+Message-ID: <aMa2Q_BUNonUSOjA@codewreck.org>
+References: <cover.1756635044.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1756635044.git.repk@triplefau.lt>
 
-Add a row for this option in the Options table.
+Remi Pommarel wrote on Sun, Aug 31, 2025 at 09:03:38PM +0200:
+> This patchset introduces several performance optimizations for the 9p
+> filesystem when used with cache=loose option (exclusive or read only
+> mounts). These improvements particularly target workloads with frequent
+> lookups of non-existent paths and repeated symlink resolutions.
 
-Signed-off-by: Tingmao Wang <m@maowtm.org>
+Sorry for slow reply, I think a negative cache and symlink cache make
+sense.
+I haven't tested these yet, and there's a conversion to the "new" mount
+API that's brewing and will conflict with 2nd patch, but I'll be happy
+to take these patches as time allows.
+What was the reason this was sent as RFC, does something require more work?
 
----
-New patch in v2
+I can't comment on io_wait_event_killable, it makes sense to me as well
+but it's probably more appropriate to send through the scheduler tree.
 
- Documentation/filesystems/9p.rst | 42 ++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
 
-diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
-index be3504ca034a..8b570a7ae698 100644
---- a/Documentation/filesystems/9p.rst
-+++ b/Documentation/filesystems/9p.rst
-@@ -238,6 +238,48 @@ Options
-   cachetag	cache tag to use the specified persistent cache.
- 		cache tags for existing cache sessions can be listed at
- 		/sys/fs/9p/caches. (applies only to cache=fscache)
-+
-+  inodeident	this setting controls how inodes work on this filesystem.
-+		More specifically, how they are "reused".  This is most
-+		relevant when used with features like Landlock and
-+		fanotify (in inode mark mode).  These features rely on
-+		holding a specific inode and identifying further access to
-+		the same file (as identified by that inode).
-+
-+		There are 2 possible values:
-+			qid
-+				This is the default and the only possible
-+				option if loose or metadata cache is
-+				enabled.  In this mode, 9pfs assumes that
-+				the server will not present different
-+				files with the same inode number, and will
-+				use the presented inode number to lookup
-+				inodes.  For QEMU users, this can be
-+				ensured by setting multidevs=remap.  If
-+				the server does present inode number
-+				collisions, this may lead to unpredictable
-+				behaviour when both files are accessed.
-+			path
-+				This is the default if neither loose nor
-+				metadata cache bits are enabled.  This
-+				option causes 9pfs to internally track the
-+				file path that an inode originated from,
-+				and will only use an existing inode
-+				(instead of allocating a new one) if the
-+				path matches, even if the file's inode
-+				number matches that of an existing inode.
-+
-+		.. note::
-+			For inodeident=path, when a directory is renamed
-+			or moved, inodeident=path mode currently does not
-+			update its children's inodes to point to the new
-+			path, and thus further access to them via the new
-+			location will use newly allocated inodes, and
-+			existing inode marks placed by Landlock and
-+			fanotify on them will no longer work.
-+
-+			The inode path for the target being renamed itself
-+			(not its children) *is* updated, however.
-   ============= ===============================================================
- 
- Behavior
+> The third patch extends page cache usage to symlinks by allowing
+> p9_client_readlink() results to be cached. Resolving symlink is
+> apparently something done quite frequently during the build process and
+> avoiding the cost of a 9P RPC call round trip for already known symlinks
+> helps reduce the build time to 1m26.602s, outperforming the virtiofs
+> setup.
+
+That's rather impressive!
+(I assume virtiofs does not have such negative lookup or symlink cache so
+they'll catch up soon enough if someone cares? But that's no reason to
+refuse this with cache=loose)
+
+> Further investigation may be needed to address the remaining gap with
+> native build performance. Using the last two patches it appears there is
+> still a fair amount of time spent waiting for I/O, though. This could be
+> related to the two systematic RPC calls made when opening a file (one to
+> clone the fid and another one to open the file). Maybe reusing fids or
+> openned files could potentially reduce client/server transactions and
+> bring performance even closer to native levels ? But that are just
+> random thoughs I haven't dig enough yet.
+
+Another thing I tried ages ago was making clunk asynchronous,
+but that didn't go well;
+protocol-wise clunk errors are ignored so I figured it was safe enough
+to just fire it in the background, but it caused some regressions I
+never had time to look into...
+
+As for reusing fids, I'm not sure it's obvious because of things like
+locking that basically consider one open file = one fid;
+I think we're already re-using fids when we can, but I guess it's
+technically possible to mark a fid as shared and only clone it if an
+operation that requires an exclusive fid is done...?
+I'm not sure I want to go down that hole though, sounds like an easy way
+to mess up and give someone access to data they shouldn't be able to
+access by sharing a fid opened by another user or something more
+subtle..
+
 -- 
-2.51.0
+Dominique Martinet | Asmadeus
