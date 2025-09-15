@@ -1,107 +1,177 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D330C347;
-	Mon, 15 Sep 2025 14:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7448C15746F
+	for <v9fs@lists.linux.dev>; Mon, 15 Sep 2025 23:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757947860; cv=none; b=oTo81Yv37OSk7wemsYnEas/9VZZFexXU3n6B3qReSS9ZTMJO9aoE7cotdunnQcciB4CudFOBQjOblKtZRS9PKsx7znfhcNpD6wbSQynOUg8b/dU2uxFNBAGrt4dtNbKjtogZdQIepilTAqk6FO/3bjbo7cBs4g/I/u/ldako5go=
+	t=1757979134; cv=none; b=jIZ7/yeoBqwfgUw4LEv+QjJ/YSHoZoEEEN31QjxSNH0B/2IU26Y+yYeoJL/X1PurzuQiPNuSwWe8+70i0VO7jJiwwHPLI7B+Yo474OZ25IobIWMDV7B6cs/gdQgQy7hYlxJzp5+97O90KArfopJ7bSqKOBtzPJlEchncjP7SM0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757947860; c=relaxed/simple;
-	bh=Y+PNaf1gaLlN/lJujMJdcSqSWuyrJH89S2pZODpFWD4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jhqZSqCT7u/M1ReOctdyqWzDBbg1Jnznh7dw6BFf4KxP5QZ2blrlmnhj/fy46NMcw3Ewr2pRZbswa/7/kdQsxMjQ7LIQgMhK9pl8o2dtqsqXhkSUGig/TFWBTNzy4ltH8/XFcEK4pfkMKNGOiHHGJ3zvrMozZBC6TGzi/bpc0hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=oRQlaXvX; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1757979134; c=relaxed/simple;
+	bh=WHU2CxZRa2g5EFKpbNfzwYfa90eDm6qyaP8bTKks+VQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=HJQBqnjTjJdOUi3Zus3fXK/GdDIGW3PgzL85Xg2mZHkwrTf7Y71N+lMgCLJ1tzniBvxUTd197AHsUod+eiurGpFcXEkWTRMSjr6/ySRSsSy50iet3K5sMddVOuMfcoLrcxdno462l+79KxtHNXtpgr/ltC5BbKJXau58jVP24RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=1ElrqUR1; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="oRQlaXvX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=3jkOVW4UeMu2h/64thZ8lLTfUx9zG1iEi3pX48Qe014=; b=oRQlaXvXWcyVDew8Y8gV2aL6T/
-	y5yLg04UjWJK9x6QleWQskJJDo+YM7XdRKnxcTuuZq7Pti0i2PotnrCbc3RsPhnpG+fQ0z80pdygS
-	E4AafemYOUvKbFgO52FwVPp2JNAP8KK+uNX6S+zHOq+ZEaahXa9lMjxuxcHWHYmHyOJcEcLuLyrz1
-	ioLMZWpjU6pmA6Ss6mhz2MQRdxNtH5SBuCx0LI6vESbS06+1hPoL7DDFeMbYEYCbxgih0WmPKoXEN
-	6eq7lKzGl1HS8sLHAL82RFp25u/EyYg7ywSpAOSDYxV4s9yRDzaSpr3jHIhhpPAbwCnXMX5x+66Js
-	E3ZOypkPV03sTaGMpK21dNyjWGB+m6svP44N7JMjK565UM8I/hcV0aPXebCua7s+yjla5iAZqU0xt
-	XLaHeg1mNCOxVVNjVf287qSn33tizgOCPdpXVKhygn78frYkodPMFAJ8I+rrnemo3FA7WODnJeTnr
-	9uN7yapbLbwVgkZzgQrWNKGcEHNn42Y0uvz6IYc6yC0mMgzzu6WP66Ga6mK7a7tVwDZp+LPy/bun2
-	Z7LPZFaMC+6Vu1kJoI0dZELKSthhOVRs94Tn/uV7Vz5MbcVksMIc2u07vBjqID1+d2JDsvD3YBm2h
-	rrpApdtml982tzK59fgTDhh15buFGugooJ19hmIYs=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Tingmao Wang <m@maowtm.org>, Dominique Martinet <asmadeus@codewreck.org>
-Cc: =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- v9fs@lists.linux.dev, =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
- linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- linux-fsdevel@vger.kernel.org
-Subject:
- Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to qid)
-Date: Mon, 15 Sep 2025 16:10:07 +0200
-Message-ID: <14530343.U1M6xoFM3Z@silver>
-In-Reply-To: <aMgMOnrAOrwQyVbp@codewreck.org>
-References:
- <cover.1756935780.git.m@maowtm.org>
- <2acd6ae7-caf5-4fe7-8306-b92f5903d9c0@maowtm.org>
- <aMgMOnrAOrwQyVbp@codewreck.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="1ElrqUR1"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 1305A14C2D3;
+	Tue, 16 Sep 2025 01:32:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1757979129;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:  in-reply-to:in-reply-to;
+	bh=zoWYUdNi4Raj9EAnFQq01pnwxMPu7jm7FnNods9uys4=;
+	b=1ElrqUR1IuWPrWWofFu+WWUSwR/WsroYsLK3RMV2eMVtI7m+uqED1Pm9IPGlTPeeGg1Vj6
+	6wBFUHGTJylveAk80uFTFl4PAAqpuKn/tNKLv9pUMsXClpvTkQkUPwSW6oZz22DeTRWiSQ
+	U/zIFxYyj0XSYYvgE8dU/ucRU4AYXahXAyv67Vs74alHy98/Cuubhhd+ADwthAZ7IylTCE
+	tHgMrMpOIls7wARa88eukiJw0b1Ckf+707Viz3jM/UFMJSSaYQjPAKssMu6yu0DvMEsDJX
+	328cex7smJ0JPpAPylZ/KqurtGwiYo/BDzcgaMMrdFPDx0E3JE9kBV4kI+Yjrg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 9511c87d;
+	Mon, 15 Sep 2025 23:32:04 +0000 (UTC)
+Date: Tue, 16 Sep 2025 08:31:49 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Tingmao Wang <m@maowtm.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
+	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Matthew Bobrowski <repnop@google.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <aMih5XYYrpP559de@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <41d761e6-d826-4c29-b673-1fb2b0af77b9@maowtm.org>
 
-On Monday, September 15, 2025 2:53:14 PM CEST Dominique Martinet wrote:
-[...]
-> > 1. The qid is 9pfs internal data, and we may need extra API for 9pfs to
-> > 
-> >    expose this to Landlock.  On 64bit, this is easy as it's just the inode
-> >    number (offset by 2), which we can already get from the struct inode.
-> >    But perhaps on 32bit we need a way to expose the full 64bit server-sent
-> >    qid to Landlock (or other kernel subsystems), if we're going to do
-> >    this.
+(Thanks Christian, replying just once but your reply was helpful)
+
+Tingmao Wang wrote on Mon, Sep 15, 2025 at 02:44:44PM +0100:
+> > I'm fuzzy on the details but I don't see how inode pointers would be
+> > stable for other filesystems as well, what prevents
+> > e.g. vm.drop_caches=3 to drop these inodes on ext4?
 > 
-> I'm not sure how much effort we want to spend on 32bit: as far as I
-> know, if we have inode number collision on 32 bit we're already in
-> trouble (tools like tar will consider such files to be hardlink of each
-> other and happily skip reading data, producing corrupted archives);
-> this is not a happy state but I don't know how to do better in any
-> reasonable way, so we can probably keep a similar limitation for 32bit
-> and use inode number directly...
+> Landlock holds a reference to the inode in the ruleset, so they shouldn't
+> be dropped.  On security_sb_delete Landlock will iput those inodes so they
+> won't cause issue with unmounting.  There is some special mechanism
+> ("landlock objects") to decouple the ruleset themselves from the actual
+> inodes, so that previously Landlocked things can keep running even after
+> the inode has disappeared as a result of unmounting.
 
-I agree, on 32-bit the game is lost.
+Thank you for the explanation, that makes more sense.
+iirc even in cacheless mode 9p should keep inode arounds if there's an
+open fd somewhere
 
-One way that would come to my mind though: exposing the full qid path as xattr 
-on 32-bit, e.g. via "system.9pfs_qid" or something like that.
-
-> > 2. Even though qids are supposed to be unique across the lifetime of a
-> > 
-> >    filesystem (including deleted files), this is not the case even for
-> >    QEMU in multidevs=remap mode, when running on ext4, as tested on QEMU
-> >    10.1.0.
+> > Although looking at the patches what 9p seems to need isn't a new stable
+> > handle, but "just" not allocating new inodes in iget5...
+> > This was attempted in 724a08450f74 ("fs/9p: simplify iget to remove
+> > unnecessary paths"), but later reverted in be2ca3825372 ("Revert "fs/9p:
+> > simplify iget to remove unnecessary paths"") because it broke too many
+> > users, but if you're comfortable with a new mount option for the lookup
+> > by path I think we could make a new option saying
+> > "yes_my_server_has_unique_qids"... Which I assume would work for
+> > landlock/fsnotify?
 > 
-> I'm not familiar with the qid remap implementation in qemu, but I'm
-> curious in what case you hit that.
-> Deleting and recreating files? Or as you seem to say below the 'qid' is
-> "freed" when fd is closed qemu-side and re-used by later open of other
-> files?
+> I noticed that, but assumed that simply reverting them without additional
+> work (such as tracking the string path) would be a no go given the reason
+> why they are reverted.
 
-The inode remap algorithm in QEMU's 9p server was designed to prevent inode 
-number collisions of equally numbered inodes of *different* *devices* on host, 
-exposed to guest via the same 9p mount (which appears as only one 9pfs device 
-on guest). Basis for this however is still the underlying filesystem's inode 
-number on host.
+Yes, just reverting and using that as default broke too much things, so
+this is unfortunately not acceptable... And 9p has no "negotiation"
+phase on mount to say "okay this is qemu with remap mode so we can do
+that" to enable to disable the behaviour automatically; which has been
+annoying in the past too.
 
-So yes, ext4 re-uses inode numbers of deleted files, and when that happens, a 
-new file appears with the same qid path as the previously deleted file with 
-QEMU.
+I understand you'd prefer something that works by default.
 
-/Christian
+> > I'm not sure how much effort we want to spend on 32bit: as far as I
+> > know, if we have inode number collision on 32 bit we're already in
+> > trouble (tools like tar will consider such files to be hardlink of each
+> > other and happily skip reading data, producing corrupted archives);
+> > this is not a happy state but I don't know how to do better in any
+> > reasonable way, so we can probably keep a similar limitation for 32bit
+> > and use inode number directly...
+> 
+> I think if 9pfs export a handle it can be the full 64bit qid.path on any
+> platform, right?
 
+yes, file handle can be an arbitrary size.
 
+> > I'm not familiar with the qid remap implementation in qemu, but I'm
+> > curious in what case you hit that.
+> > Deleting and recreating files? Or as you seem to say below the 'qid' is
+> > "freed" when fd is closed qemu-side and re-used by later open of other
+> > files?
+> 
+> I tried mounting a qemu-exported 9pfs backed on ext4, with
+> multidevs=remap, and created a file, used stat to note its inode number,
+> deleted the file, created another file (of the same OR different name),
+> and that new file will have the same inode number.
+> 
+> (If I don't delete the file, then a newly created file would of course
+> have a different ext4 inode number, and in that case QEMU exposes a
+> different qid)
+
+Ok so from Christian's reply this is just ext4 reusing the same inode..
+I briefly hinted at this above, but in this case ext4 will give the
+inode a different generation number (so the ext4 file handle will be
+different, and accessing the old one will get ESTALE); but that's not
+something qemu currently tracks and it'd be a bit of an overhaul...
+In theory qemu could hash mount_id + file handle to get a properly
+unique qid, if we need to improve that, but that'd be limited to root
+users (and to filesystems that support name_to_handle_at) so I don't
+think it's really appropriate either... hmm..
+
+(I also thought of checking if nlink is 0 when getting a new inode, but
+that's technically legimitate from /proc/x/fd opens so I don't think we
+can do that either)
+
+And then there's also all the servers that don't give unique qids at
+all, so we'll just get weird landlock/fsnotify behaviours for them if we
+go that way...
+
+-----------------
+
+Okay, you've convinced me something like path tracking seems more
+appropriate; I'll just struggle one last time first with a few more open
+questions:
+ - afaiu this (reusing inodes) work in cached mode because the dentry is
+kept around; I don't understand the vfs well enough but could the inodes
+hold its dentry and dentries hold their parent dentry alive somehow?
+So in cacheless mode, if you have a tree like this:
+a
+└── b
+    ├── c
+    └── d
+with c 'open' (or a reference held by landlock), then dentries for a/b/c
+would be kept, but d could be droppable?
+
+My understanding is that in cacheless mode we're dropping dentries
+aggressively so that things like readdir() are refreshed, but I'm
+thinking this should work even if we keep some dentries alive when their
+inode is held up.
+
+ - if that doesn't work (or is too complicated), I'm thinking tracking
+path is probably better than qid-based filtering based on what we
+discussed as it only affects uncached mode.. I'll need to spend some
+time testing but I think we can move forward with the current patchset
+rather than try something new.
+
+Thanks!
+-- 
+Dominique Martinet | Asmadeus
