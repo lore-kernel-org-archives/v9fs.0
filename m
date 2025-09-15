@@ -1,221 +1,178 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CA02DE6F1
-	for <v9fs@lists.linux.dev>; Sun, 14 Sep 2025 21:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2422A30B514
+	for <v9fs@lists.linux.dev>; Mon, 15 Sep 2025 12:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757885111; cv=none; b=ggn59VTv+huJJsgwcx6QNV0AJAsRSwokjHNEV2P7ldbNKnYu8MJxxtowigOWlvSnk2EezyrDamDIpQRW8NJW6y5x0uVAevqYR6YUBgTJweBuzWQ6NjFE8SLcPh8iQutuR+302HL+pf9ZIUQYpMpvFrt8kDG5PvIZAX9jayA+Xfw=
+	t=1757940826; cv=none; b=o38qtZZgswcCrTslikT/JIX79PjMrQ9+3iKZl+fF+EFG9WWYb9xfbPPRFkr5I+a4Fx8iyqxwd7ecv2VBlwbBnRL5yq+aA25nM4Egj63lJnFLR+Ts6NnqM0FKvI3xWjAro6RuS7Dmh8hmBwx+SZuDE+imRryQq1aun4YRaEJ6WYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757885111; c=relaxed/simple;
-	bh=R+3pfshVT1lSGsyaLxJi/4XIjqo6zl+0e/pcO0vSeLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=udrHuxoxF5MSzlT0rT1ANbPNbU+xB2kbY0IjhqDpSt45NhnXIQZePjbxjk8xyObpZHUt4f6+SflbeTX8KPAasR4LZ5XUGe5vYThKCzpYY1yOBbAsLLoPETGFGgI4bcBpiJuAwUDwzmFAgV667epKaDfUoAKyOelAjUxf9ZbSd7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=o4y5fW7x; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HrInNQFK; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
+	s=arc-20240116; t=1757940826; c=relaxed/simple;
+	bh=hSQtf2xZ9VZMBMIMCULgMm7F4vxjQpzd06Vkz1GnatM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ol9J94wM0T7QwdUarLOonvnc3x24xPbs4kg7zcmWxCBnl9HLQnz14Wa/AxMbbzRk+BX+6tz7ctfgz8e2b5dbvP9Is3t+xntXrCUd9+Im7chLhyNpC8VwWmKrsUJ1LiTNAbknPKYze+2DZS/VP2LnvAqtJlgqQGVsjXUMcjugB90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hcO1pnFt; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="o4y5fW7x";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HrInNQFK"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 879EF1D00104;
-	Sun, 14 Sep 2025 17:25:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sun, 14 Sep 2025 17:25:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1757885107;
-	 x=1757971507; bh=OXNfFITD0Z2WLNrlGuGJH8lsgEiqKtnk1fe1/UjtTYc=; b=
-	o4y5fW7xS7sTP3ASBxGhhpgq9O/cEq9HsybOPwgc3xgqzHAajds8Q2sJx9wwr6wt
-	d82xbiKdCO7TidoOgpoVQ0c0qNcC4c/IOYBCGU5B5vZiM3CyaEHc6BPFPerYyfg3
-	5dix6vXHRa0/ZcCri0HQTyu9x1pgcYqo3OT3bfkcEa0tkYfHLWZ2XkkMuiL8FSwK
-	lB6XkolL0zFY0PiFufsUPNNwKEzoXqc497aznopHmZLNWwLHRVGAWAC/DB+s+MlI
-	YXBSlE7/87h34/wvqrYDCSVkcOYB9lLqSaRourb6OUuorlfJHvUQtnzB1sJqVQHT
-	90ztsLiziAB2P4uv2N08zg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757885107; x=
-	1757971507; bh=OXNfFITD0Z2WLNrlGuGJH8lsgEiqKtnk1fe1/UjtTYc=; b=H
-	rInNQFKxJBTLKxNkU5H+OOI0ZqZiwIQ1YOi5lcEGx9zPW4keDGEZxebYRg0b1vx4
-	gpcvI3/jLUHybrZBBR0ysGhChSmbfh5SKRF/PEe+IARieXjbXDWjItrSxO8OL3Uh
-	iGMVwwf+khvkxDDuP8xNOc6aLhd4BQRQpbzwVg+zIIy8HUUnKYdjU1DZdBggn+p3
-	YvqKCl3J9n4UKk7SgkSMfpPUnchxYmCMiDP5SA+0zq58BLu17o0hfzVi8W07sjE4
-	KepWBxa04j43nhs8xeIAPBSO0hMosfzCJOKigAZ4EmFGiUEfwUz2Y+g7hhukPktt
-	tia2+lyVttTePGQYnfbUA==
-X-ME-Sender: <xms:sjLHaG5sxU8lbcviElxnwZQ3FOzZpv8fTbuCj-uOtw0i4c9iSbMHkg>
-    <xme:sjLHaPUiSctmGP-q5_9DwS29XyLnJYXF_yAvX3-d-ug-4QWGCNru41lnU9mt1QhJ-
-    wLKrCtiHvqhZbffVHQ>
-X-ME-Received: <xmr:sjLHaGgFk4fhxjSwwe0oYffE0xip4HUFZPETEZWQIWd7xeOQEbAtgMC3ddS0GN6O_W-w_pinzEdz4bV8S1sMW3QE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdefheeklecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuuh
-    hsphgvtghtffhomhgrihhnucdlgeelmdenucfjughrpefkffggfgfuvfevfhfhjggtgfes
-    thekredttddvjeenucfhrhhomhepvfhinhhgmhgrohcuhggrnhhguceomhesmhgrohifth
-    hmrdhorhhgqeenucggtffrrghtthgvrhhnpeetueejjeelleduuefhvdeuhedvffeivdfh
-    teektdettdegudfhgeetfeelvedtffenucffohhmrghinhepghhithhhuhgsrdhiohenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmsehmrgho
-    fihtmhdrohhrghdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthho
-    pehmihgtseguihhgihhkohgurdhnvghtpdhrtghpthhtohepvghrihgtvhhhsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphht
-    thhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepvh
-    elfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepghhnohgrtghksehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhsvggtuhhrihhthidqmhhoug
-    hulhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghksehsuhhs
-    vgdrtgii
-X-ME-Proxy: <xmx:sjLHaHcw_y87jd_aWaVxIS4iQXfjlsQvBehUiZklvIeC05p7ZMhc3g>
-    <xmx:sjLHaN38yfXFqE7qp2EaBVYH-LKGE0tjg6S980NvxO3lWgZj2R4j9Q>
-    <xmx:sjLHaLoHfTjunrnBOVVyJ7QLZhqMmmTmOXjs8A94NM18-bSXzxcnew>
-    <xmx:sjLHaNhwUOjE2c3Fa3zLPXJzvTN3yJpnqNJdRAA7UskFN-YWgDjuZg>
-    <xmx:szLHaEUlPvC7f5808YY5K0Z7lk2hQ4nyu7bsuWsiao0nHnRNqPFRwcjF>
-Feedback-ID: i580e4893:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 14 Sep 2025 17:25:04 -0400 (EDT)
-Message-ID: <2acd6ae7-caf5-4fe7-8306-b92f5903d9c0@maowtm.org>
-Date: Sun, 14 Sep 2025 22:25:02 +0100
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hcO1pnFt"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 1F28614C2D3;
+	Mon, 15 Sep 2025 14:53:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1757940815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A3eQubYbU03SDvmqC/cwpB/svZp0T/fBlcYKKr0v3+0=;
+	b=hcO1pnFtfnahPJjEVqG8XBEUztGYBKj6orke8pTJqyHW2kGZXwyurBe6ag0JRV5LGn9GnI
+	Aq8slkexoD8rnTuLfswB/4zZ97jAgYTa00OZ7qRcYzWzHVL6CdaUeeQWVK36g413HCbKYc
+	U2IskcILYzDbCXIDBR0Xcs40uBT86pmptVXZYufWYLe7ThryRrFVYCYyB3e48KbCopG4cE
+	J1o546mAmBjWhauwIEWFToZibqSYqxQ900XGNFpmKeU5tvW8mXrinokScguQeu0CG8xan9
+	mVBMFmFukW0jmca8eaj1DDdiavqc52DtM3D0h6E3pCIupDR0rwbeDoTJGZja4Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id bdece2e9;
+	Mon, 15 Sep 2025 12:53:29 +0000 (UTC)
+Date: Mon, 15 Sep 2025 21:53:14 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Tingmao Wang <m@maowtm.org>
+Cc: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
+	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Matthew Bobrowski <repnop@google.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <aMgMOnrAOrwQyVbp@codewreck.org>
+References: <cover.1756935780.git.m@maowtm.org>
+ <2acd6ae7-caf5-4fe7-8306-b92f5903d9c0@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
- qid)
-To: Dominique Martinet <asmadeus@codewreck.org>,
- =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- linux-fsdevel@vger.kernel.org
-References: <cover.1756935780.git.m@maowtm.org>
-Content-Language: en-US
-From: Tingmao Wang <m@maowtm.org>
-In-Reply-To: <cover.1756935780.git.m@maowtm.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2acd6ae7-caf5-4fe7-8306-b92f5903d9c0@maowtm.org>
 
-Hi Dominique and others,
+Hi Tingmao,
 
-I had a chat with Mickaël earlier this week and some discussion following
-that, and we thought of a potential alternative to what I was proposing
-here that might work for Landlock: using the inode number (or more
-correctly, qid.path) directly as the keys for Landlock rules when
-accessing 9p files.  I'm not sure how sound this is from the perspective
-of 9pfs (there are pros and caveats), and I would like to gather some
-thoughts on this idea.
+thanks for pushing this forward, I still have very little time so
+haven't been able to review this properly
 
-Technically a 9pfs server is not supposed to return colliding qid.paths
-for different files.  In fact, according to [1], the qid must not be the
-same even for files which are deleted then recreated using the same name
-(whereas for e.g. ext4, inode number is reused if a file is deleted and
-recreated, possibly with a different name, in the same directory).
-However, this is in practice not the case for many actual 9pfs server
-implementations (thus the reason for this patch series in the first
-place).
+Tingmao Wang wrote on Sun, Sep 14, 2025 at 10:25:02PM +0100:
+> I had a chat with Mickaël earlier this week and some discussion following
+> that, and we thought of a potential alternative to what I was proposing
+> here that might work for Landlock: using the inode number (or more
+> correctly, qid.path) directly as the keys for Landlock rules when
+> accessing 9p files.  I'm not sure how sound this is from the perspective
+> of 9pfs (there are pros and caveats), and I would like to gather some
+> thoughts on this idea.
 
-This is a bad problem for the 9pfs client in Linux as it can lead to data
-corruption if the wrong inode is used, but for Landlock, the only effect
-of this is allowing access to more files then the sandboxing application
-intended (and only in the presence of an "erroneous" 9pfs server).  Any
-other alternative, including this patch series, has the opposite risk -
-files that should be allowed might be denied (even if the server
-implementation is fully correct in terms of no reusing of qids).  In
-particular, this patch cannot correctly handle server-side renames of an
-allowed file, or rename of a directory with children in it from the client
-(although this might be solved, with the expense of adding more
-complicated code in the rename path to rewrite all the struct ino_paths).
+I'm honestly split on this:
+- I really don't like tracking the full path of each file around;
+there are various corner cases with files being removed (possibly server
+side!) or hard links; and it's potentially slowing down all operations a
+bit...
+- OTOH as you pointed out qid isn't as reliable, and having file paths
+around opens the way to rebuilding fids on reconnect for non-local
+servers, which could potentially be interesting (not that I ever see
+myself having time to work on this as I no longer have any stake there,
+I just know that would have interested my previous employer when they
+were still using 9p/rdma...)
 
-In discussion with Mickaël he thought that it would be acceptable for
-Landlock to assume that the server is well-behaved, and Landlock could
-specialize for 9pfs to allow access if the qid matches what's previously
-seen when creating the Landlock ruleset (by using the qid as the key of
-the rule, instead of a pointer to the inode).
+> In discussion with Mickaël he thought that it would be acceptable for
+> Landlock to assume that the server is well-behaved, and Landlock could
+> specialize for 9pfs to allow access if the qid matches what's previously
+> seen when creating the Landlock ruleset (by using the qid as the key of
+> the rule, instead of a pointer to the inode).
 
-There are, however, several immediate issues with this approach:
+I'm not familiar at all with landlock so forgive this question: what is
+this key about exactly?
+When a program loads a ruleset, paths referred in that ruleset are
+looked up by the kernel and the inodes involved kept around in some hash
+table for lookup on further accesses?
 
-1. The qid is 9pfs internal data, and we may need extra API for 9pfs to
-   expose this to Landlock.  On 64bit, this is easy as it's just the inode
-   number (offset by 2), which we can already get from the struct inode.
-   But perhaps on 32bit we need a way to expose the full 64bit server-sent
-   qid to Landlock (or other kernel subsystems), if we're going to do
-   this.
+I'm fuzzy on the details but I don't see how inode pointers would be
+stable for other filesystems as well, what prevents
+e.g. vm.drop_caches=3 to drop these inodes on ext4?
 
-2. Even though qids are supposed to be unique across the lifetime of a
-   filesystem (including deleted files), this is not the case even for
-   QEMU in multidevs=remap mode, when running on ext4, as tested on QEMU
-   10.1.0.  And thus in practice a Landlock ruleset would need to hold a
-   reference to the file to keep it open, so that the server will not
-   re-use the qid for other files (having a reference to the struct inode
-   alone doesn't seem to do that).
+In general I'd see the file handle (as exposed to userspace by
+name_to_handle_at) as a stable key, that works for all filesystems
+supporting fhandles (... so, not 9p, right... But in general it's
+something like inode number + generation, and we could expose that as
+handle and "just" return ENOTSUP on open_by_handle_at if that helps)
 
-   Unfortunately, holding a dentry in Landlock prevents the filesystem
-   from being unmounted (causes WARNs), with no (proper) chance for
-   Landlock to release those dentries.  We might do it in
-   security_sb_umount, but then at that point it is not guaranteed that
-   the unmount will happen - perhaps we would need a new security_ hooks
-   in the umount path?
+Although looking at the patches what 9p seems to need isn't a new stable
+handle, but "just" not allocating new inodes in iget5...
+This was attempted in 724a08450f74 ("fs/9p: simplify iget to remove
+unnecessary paths"), but later reverted in be2ca3825372 ("Revert "fs/9p:
+simplify iget to remove unnecessary paths"") because it broke too many
+users, but if you're comfortable with a new mount option for the lookup
+by path I think we could make a new option saying
+"yes_my_server_has_unique_qids"... Which I assume would work for
+landlock/fsnotify?
 
-   Alternatively, I think if we could somehow tell 9pfs to keep a fid open
-   (until either the Landlock domain is closed, or the filesystem is
-   unmounted), it could also work.
+If you'd like to try, you can re-revert these 4 patches:
+Fixes: be2ca3825372 ("Revert "fs/9p: simplify iget to remove unnecessary paths"")
+Fixes: 26f8dd2dde68 ("Revert "fs/9p: fix uaf in in v9fs_stat2inode_dotl"")
+Fixes: fedd06210b14 ("Revert "fs/9p: remove redundant pointer v9ses"")
+Fixes: f69999b5f9b4 ("Revert " fs/9p: mitigate inode collisions"")
 
-   I'm not sure what's the best way to do this, it seems like unless we
-   can get a new pre_umount / pre_sb_delete hook in which we can free
-   dentries, 9pfs would need to expose some new API, or alternatively, in
-   uncached mode, have the v9fs inode itself hold a (strong) reference to
-   the fid, so that if Landlock has a reference to the inode, the file is
-   kept open server-side.
+If that works, and having this only work when a non-default option is
+set is acceptable, I think that's as good a way forward as we'll find.
 
-The advantage of doing this is that, for a server with reasonable
-behaviour, Landlock users would not get incorrect denials (i.e. things
-"just work"), while still maintaining security if the 9p server is
-"reasonable" (in particular, an application sandboxed under Landlock would
-not get access to unrelated files if it does not have a way to somehow get
-those files to be recreated with an allowed inode number), whereas the
-current patch has the problem with server side renames and directory
-renames (server or client side), and also can't deal with hard links.
+> 1. The qid is 9pfs internal data, and we may need extra API for 9pfs to
+>    expose this to Landlock.  On 64bit, this is easy as it's just the inode
+>    number (offset by 2), which we can already get from the struct inode.
+>    But perhaps on 32bit we need a way to expose the full 64bit server-sent
+>    qid to Landlock (or other kernel subsystems), if we're going to do
+>    this.
 
-I'm not sure how attractive this solution is to various people here -
-Mickaël is happy with special-casing 9pfs in Landlock, and in fact he
-suggested this idea in the first place, but I think this has the potential
-to be quite complicated (but technically more correct).  It would also
-only work for Landlock, and if e.g. fsnotify wants to have the same
-behaviour, that would need its own changes too.
+I'm not sure how much effort we want to spend on 32bit: as far as I
+know, if we have inode number collision on 32 bit we're already in
+trouble (tools like tar will consider such files to be hardlink of each
+other and happily skip reading data, producing corrupted archives);
+this is not a happy state but I don't know how to do better in any
+reasonable way, so we can probably keep a similar limitation for 32bit
+and use inode number directly...
 
-Apologies for the long-winded explanation, any thoughts on this?
+> 2. Even though qids are supposed to be unique across the lifetime of a
+>    filesystem (including deleted files), this is not the case even for
+>    QEMU in multidevs=remap mode, when running on ext4, as tested on QEMU
+>    10.1.0.
+
+I'm not familiar with the qid remap implementation in qemu, but I'm
+curious in what case you hit that.
+Deleting and recreating files? Or as you seem to say below the 'qid' is
+"freed" when fd is closed qemu-side and re-used by later open of other
+files?
+
+If this is understood I think this can be improved, reusing the qid on
+different files could yield problems with caching as well so I think
+it's something that warrants investigations.
+
+>    Unfortunately, holding a dentry in Landlock prevents the filesystem
+>    from being unmounted (causes WARNs), with no (proper) chance for
+>    Landlock to release those dentries.  We might do it in
+>    security_sb_umount, but then at that point it is not guaranteed that
+>    the unmount will happen - perhaps we would need a new security_ hooks
+>    in the umount path?
+
+Hmm yeah that is problematic, I don't see how to take "weak" refs that
+wouldn't cause a warning for the umount to free yet still prevent
+recycling the inode, so another hook to free up resources when really
+umounting sounds appropriate if we go that way... At least umount isn't
+usually performance sensitive so it would probably be acceptable?
 
 
-[1]: https://ericvh.github.io/9p-rfc/rfc9p2000.html#msgs
-     "If a file is deleted and recreated with the same name in the same
-     directory, the old and new path components of the qids should be
-     different."
-
----
-
-Note: Even with the above, there's another potential problem - QEMU does
-not, for some reason (I've not really investigated this very deeply, but
-it's observation from /proc/.../fd), keep a directory open when the guest
-has a fid to it.  This means that if a directory is deleted while we have
-an active Landlock rule on it, a new file or directory may get the same
-qid.  (However, at least this still correctly handles directory renames,
-and the only effect is Landlock allowing more files than intended in the
-presence of a buggy server.)
-
-(The Hyper-V 9p server, used by WSL, seems to have the same problem, and a
-bit worse since even client-side renames breaks opened dir fds on the
-WSL-to-Windows 9pfs (/mnt/c/...))
-
-(Another challenge is that Landlock would have to know when a file is on a
-9pfs in uncached mode - we probably don't need this behaviour for cached
-mode filesystems, as we assume no server changes in that case and the
-inode is reused already.  We can certainly determine the FS of a file, but
-not sure about specific 9pfs cache options)
+-- 
+Dominique Martinet | Asmadeus
