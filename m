@@ -1,102 +1,113 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from smtp-42ab.mail.infomaniak.ch (smtp-42ab.mail.infomaniak.ch [84.16.66.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A726B2DB;
-	Wed, 17 Sep 2025 09:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425322D9EF9
+	for <v9fs@lists.linux.dev>; Wed, 17 Sep 2025 15:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758102775; cv=none; b=hmmcJVoeZGh6FVNHZcG+8wSG36H25M10EFbjXNdgVKntG1DcLi4k7iiIyHyD/L+FPxzcG2drDATeWW1T44+hfrKaKOIztT6t3QluOAkihPdYiucXn0jLy/tguYgQwvSS/NL9dqoDsrzrx1ckXesLUcQ7Ku+KZNQyGk7m+0Qn3lc=
+	t=1758121814; cv=none; b=eFcVocwX2Ib4uurzRMJv4bcCGNHvzDJZcCDlJLaW+/ONqOjF44CFY5oqhTfqUV/x3Nsqix3/B+Sid2P5wLTg1HpgkvqVOJXpCc9tVWGuSPWqqbW7K3n3506PMfNaWKsJJnE5Gfw+9Jny7IkXXvjKzs3qe2+00FdqamCaGEUJeqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758102775; c=relaxed/simple;
-	bh=jek3eQCrIIKVzpBPRXKe0t3upClBCOumFZr1JgMJHUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Knto+d545hM78xyvvYPKF7p0NLua5CSTk/06jfUQevOjRaYWbVTy0mbpfKnvKWmL7SUZv1aTtZG8G+Kw9+72sNvqtCf8l1Bldm5kyKfZqRC9RNji+/mrfSCOgiMv3eA+QJqFvziIOxEXlgVtf3e9hCY4CElYnXuzYFWPw+SiHN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=BAH2dwGU; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1758121814; c=relaxed/simple;
+	bh=hEeziQot0vBjqaii0OlztAOOx169xCFGd3aiQcDgMVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JTgjiacjDEIOQyrl4pHN3HnOqDhn+3ekHRt8fPERrcBfdP68fMPocQrORbfe/jVLaSKh7G5DD2Bso4734+2oNbMT0RF2n3GypSUap5ezmRx9JdgSkjeiE9NBQIel4Sg5VzYCvsRKCAMuNEMXaZmuyKMUvgsUMx8x1cevknASm+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=y7dfMZII; arc=none smtp.client-ip=84.16.66.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="BAH2dwGU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=+cQHhW6VGH2OlTG9Et3G2MQsI3hAr+1+N7KUvAYnrXs=; b=BAH2dwGUm/DjXtwQPcfCNawXwX
-	Cj8dXfc52wp5b4PAS6MYGk9f0lJ0k5/8G+MyWmJs/DBeZel165Y/Sq4bndiZJRb8X6P2D/6GUZw34
-	oezHJ55H369eonRjjrRbLFGfOEsrHAIstTLnpxA+ALyJIzZyYOkWhqhrT51bmxKAT9BHWhQN5Qgo+
-	5PIaCqFTrDl9FA3yAbhd/uqyV7chjkgvSCaUktnAEb/TXDg6FG6SodxrrF5Bs3tWy9E/JJF0WnqA5
-	Wrd1VJRrOMomr8pSg+TTJXwU0Vd0aIbnyVioMpFtoylEh6aKXdJaUVnD2T4JXJjcBOTBQVn4w+ay2
-	1kj6gYD+aPs091TphSqzOBfkkkjQcNrjmEIi87SVxbJD4W1FhvQMpkgUwePpmOM3OoBsmLenk7VUX
-	sCWGH+DNPq0J5UIbvlW6l9ImOtti/ZpouFbvsgvVQTCznHyencl14tQIMVcaBo74kC5uz1jxWkr/I
-	lY6+DDGLzoY8gKgJ7JfRbA/osSMN2y+mxTCPNOez/FW2IYqdYau/hlhSH4jfb+v/u0gdiwk7IsbNi
-	VXoyB0qqY4JxOkJR6JNCyUOFNFNtIDx00YweILrczqZulo7Hzy6Ushopwh4Bh+8fzUVRZPB2PUgj0
-	2BB/FSqNi9o+Ycd2m+vx5K9Wz/GKxU9qX59TeYYa0=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Dominique Martinet <asmadeus@codewreck.org>, Tingmao Wang <m@maowtm.org>
-Cc: =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- v9fs@lists.linux.dev, =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
- linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- linux-fsdevel@vger.kernel.org
-Subject:
- Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to qid)
-Date: Wed, 17 Sep 2025 11:52:35 +0200
-Message-ID: <3774641.iishnSSGpB@silver>
-In-Reply-To: <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org>
-References:
- <aMih5XYYrpP559de@codewreck.org> <3070012.VW4agfvzBM@silver>
- <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org>
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="y7dfMZII"
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4cRhl72X5bzC9h;
+	Wed, 17 Sep 2025 17:00:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1758121203;
+	bh=rL7Wz/OzT+h4BNs1HqM2gnwP58YKoyxzpcyYZtg3OCc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=y7dfMZIIs/M7kUdhPB/zCQ3CtUyfYRCZ3SdMHWhiFUFPMETzMoLSqMCw3BwYtKu83
+	 db529S2qHb+Zbtzkl62qOoVb1xJmsBF1iO5Q2tyf7mtCg4RXqdl+mD6nUailw7BEg0
+	 f3XnWjetxQIRJjAhlr4jCd6YkklsdleOOC5KqXDE=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4cRhl60h5fzW6c;
+	Wed, 17 Sep 2025 17:00:02 +0200 (CEST)
+Date: Wed, 17 Sep 2025 17:00:00 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Tingmao Wang <m@maowtm.org>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <20250917.Ung8aukeiz9i@digikod.net>
+References: <cover.1756935780.git.m@maowtm.org>
+ <2acd6ae7-caf5-4fe7-8306-b92f5903d9c0@maowtm.org>
+ <aMgMOnrAOrwQyVbp@codewreck.org>
+ <14530343.U1M6xoFM3Z@silver>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <14530343.U1M6xoFM3Z@silver>
+X-Infomaniak-Routing: alpha
 
-On Wednesday, September 17, 2025 1:59:21 AM CEST Tingmao Wang wrote:
-> On 9/16/25 20:22, Christian Schoenebeck wrote:
-> > On Tuesday, September 16, 2025 4:01:40 PM CEST Tingmao Wang wrote:
-[...]
-> > I see that you are proposing an option for your proposed qid based
-> > re-using of dentries. I don't think it should be on by default though,
-> > considering what we already discussed (e.g. inodes recycled by ext4, but
-> > also not all 9p servers handling inode collisions).
-> 
-> Just to be clear, this approach (Landlock holding a fid reference, then
-> using the qid as a key to search for rules when a Landlocked process
-> accesses the previously remembered file, possibly after the file has been
-> moved on the server) would only be in Landlock, and would only affect
-> Landlock, not 9pfs (so not sure what you meant by "re-using of dentries").
-> 
-> The idea behind holding a fid reference within Landlock is that, because
-> we have the file open, the inode would not get recycled in ext4, and thus
-> no other file will reuse the qid, until we close that reference (when the
-> Landlock domain terminates, or when the 9p filesystem is unmounted)
-
-So far I only had a glimpse on your kernel patches and had the impression that 
-they are changing behaviour for all users, since you are touching dentry 
-lookup.
-
-> > For all open FIDs QEMU retains a descriptor to the file/directory.
+On Mon, Sep 15, 2025 at 04:10:07PM +0200, Christian Schoenebeck wrote:
+> On Monday, September 15, 2025 2:53:14 PM CEST Dominique Martinet wrote:
+> [...]
+> > > 1. The qid is 9pfs internal data, and we may need extra API for 9pfs to
+> > > 
+> > >    expose this to Landlock.  On 64bit, this is easy as it's just the inode
+> > >    number (offset by 2), which we can already get from the struct inode.
+> > >    But perhaps on 32bit we need a way to expose the full 64bit server-sent
+> > >    qid to Landlock (or other kernel subsystems), if we're going to do
+> > >    this.
 > > 
-> > Which 9p message do you see sent to server, Trename or Trenameat?
-> > 
-> > Does this always happen to you or just sometimes, i.e. under heavy load?
+> > I'm not sure how much effort we want to spend on 32bit: as far as I
+> > know, if we have inode number collision on 32 bit we're already in
+> > trouble (tools like tar will consider such files to be hardlink of each
+> > other and happily skip reading data, producing corrupted archives);
+> > this is not a happy state but I don't know how to do better in any
+> > reasonable way, so we can probably keep a similar limitation for 32bit
+> > and use inode number directly...
 > 
-> Always happen, see log: (no Trename since the rename is done on the host)
-[...]
-> Somehow if I rename in the guest, it all works, even though it's using the
-> same fid 2 (and it didn't ask QEMU to walk the new path)
+> I agree, on 32-bit the game is lost.
+> 
+> One way that would come to my mind though: exposing the full qid path as xattr 
+> on 32-bit, e.g. via "system.9pfs_qid" or something like that.
 
-Got it. Even though QEMU *should* hold a file descriptor (or a DIR* stream, 
-which should imply a file descriptor), there is still a path string stored at 
-V9fsFidState and that path being processed at some places, probably because 
-there are path based and FID based variants (e.g Trename vs. Trenameat). Maybe 
-that clashes somewhere, not sure. So I fear you would need to debug this.
+Another way to always deal with 64-bit values, even on 32-bit
+architectures, would be to implement inode->i_op->getattr(), but that
+could have side effects for 9p users expecting the current behavior.
 
-/Christian
-
-
+> 
+> > > 2. Even though qids are supposed to be unique across the lifetime of a
+> > > 
+> > >    filesystem (including deleted files), this is not the case even for
+> > >    QEMU in multidevs=remap mode, when running on ext4, as tested on QEMU
+> > >    10.1.0.
+> > 
+> > I'm not familiar with the qid remap implementation in qemu, but I'm
+> > curious in what case you hit that.
+> > Deleting and recreating files? Or as you seem to say below the 'qid' is
+> > "freed" when fd is closed qemu-side and re-used by later open of other
+> > files?
+> 
+> The inode remap algorithm in QEMU's 9p server was designed to prevent inode 
+> number collisions of equally numbered inodes of *different* *devices* on host, 
+> exposed to guest via the same 9p mount (which appears as only one 9pfs device 
+> on guest). Basis for this however is still the underlying filesystem's inode 
+> number on host.
+> 
+> So yes, ext4 re-uses inode numbers of deleted files, and when that happens, a 
+> new file appears with the same qid path as the previously deleted file with 
+> QEMU.
+> 
+> /Christian
+> 
+> 
+> 
