@@ -1,145 +1,85 @@
-Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089792BEC59
-	for <v9fs@lists.linux.dev>; Wed, 17 Sep 2025 15:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C4B31159B;
+	Wed, 17 Sep 2025 23:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758121814; cv=none; b=YH/dq16dDxdY0PQcch7NdBcLKRxlAxTKOz++mfUEtDUXAXz0EURDNLgIq8oXysrGrVASwPGaMSVa9C6ox/7olwVu76iW59ZFTojdMpVLuGLPA+pG+a3f+RtwztgbmK101CpCfvIgm7zi3oowY7X6AZqYWg4r1NrBos73lzc4xzc=
+	t=1758151462; cv=none; b=ezEgcgK0QaM/oSk4BXyEoniM7oBxdCbs1lehpY6GrF2i0egu9KzKcgQ01j4LCRAiasC+j/eFmTPlszVlTcgmTmsaV+GZLIpOWjPMObVu/SOGjVDcNpNv/xAqr4WkLTQEbesYKz9Cksx6yl27kwgKTZJO0AHjkkbV8yfys9Gns/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758121814; c=relaxed/simple;
-	bh=kUknV5WKpxqxen6YllO7EndW/9+UBC/114j9r0F6OAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h9fU5n78+Pwx/mpHgJCneS7BwPC89eeRSRWvWhxy192guwnE5i9AW8az9Bf1Bt4MnVDVOh7jL+5LIKj1nS8r65YIl3YL0PM1YzqQB1YKZCbZe+dJ8zTKdWbzaA/rT9NxbhYZ2diSF4A4gdjTWwOf9ryOtoy7ZribEkPlNpy9Kzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=UDRF/3Sf; arc=none smtp.client-ip=45.157.188.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	s=arc-20240116; t=1758151462; c=relaxed/simple;
+	bh=YM3yM4l9IIzBxjoiCEQJhj1kpanbeywCkOJ4RX/KfrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=H2Yrnx3GQ3StqgmPAcZSSJo+TI0bjjE+UmWnFCpVsu90dvc7FPd8mrUaJeW14OuM1IXmSnNY93vY2LSjkw4cBo5cDCqoGcA4CMdBRTHY1jiI01NtzwvHDd6OttbVZBnfwwIZXX1/FVq16mwe1paPpRXuwUr5Jp7Aqn682eoIVYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=WhCNIFG6; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="UDRF/3Sf"
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4cRhlW6rTTzC01;
-	Wed, 17 Sep 2025 17:00:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1758121223;
-	bh=+45b6a8YTAEI9zyXy5cY7AS59XYHHDZqWbTvbxo1FxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UDRF/3SffXxjKytOWxXm3JgK/CZgebWXr5PGhgWjJr9lLyIoQuHbCGfbv7PAXlHXP
-	 FB6QX8qmHVjKGzCz4GgyR/PbQm4ioGTyyA1wkBxYqgoC0gjqSi8lL6nsbRR3JC3xoZ
-	 e7bJGu2tWSKQERvIFGRqgoGtJdryMVZCZ9IWgTSc=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4cRhlW1wt0zBcl;
-	Wed, 17 Sep 2025 17:00:23 +0200 (CEST)
-Date: Wed, 17 Sep 2025 17:00:22 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, 
-	Tingmao Wang <m@maowtm.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
- qid)
-Message-ID: <20250917.Eip1ahj6neij@digikod.net>
-References: <aMih5XYYrpP559de@codewreck.org>
- <3070012.VW4agfvzBM@silver>
- <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org>
- <3774641.iishnSSGpB@silver>
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="WhCNIFG6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=jWilkYe7g21NIHIHAtbQPOEBltqSw+Y7j7Ah85sQBEo=; b=WhCNIFG6FNRWmjjbeIaAlRSize
+	mEFtXr7zYgvhFggUgkafFM+7xHnRnQR4kG6idh0a3dmfKUwH1sYNGPkw5PUD7AFfrGeoVbwnUQzst
+	Vucg+04hBpZh1AZPlNFqmetqW5aO/lhTX+NwGg4b/9X/Rd1fqDFQC7XzaWpeeJN2Fox3m6MhNJUH6
+	OGVD9LwLtlWL4yqSjU9q+FwHXNyZUpnzCj+ARo2jF6N7cF8fIbyxfQAngVcIpgPG+3aS1HuRPSOPb
+	EAJ0/wFMmd7fzqDa8VynOWqsi37TJ5Xz/FUPy/5hMghpf6hGGZ/wQzYrgeyp0VMf70N4I/MNej30R
+	vII67SEQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uz1VY-0000000AhYr-2WSg;
+	Wed, 17 Sep 2025 23:24:16 +0000
+Date: Thu, 18 Sep 2025 00:24:16 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: v9fs@lists.linux.dev, Miklos Szeredi <miklos@szeredi.hu>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	linux-nfs@vger.kernel.org, Hans de Goede <hansg@kernel.org>,
+	linux-cifs@vger.kernel.org
+Subject: [PATCHES] finish_no_open() calling conventions change
+Message-ID: <20250917232416.GG39973@ZenIV>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3774641.iishnSSGpB@silver>
-X-Infomaniak-Routing: alpha
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Wed, Sep 17, 2025 at 11:52:35AM +0200, Christian Schoenebeck wrote:
-> On Wednesday, September 17, 2025 1:59:21 AM CEST Tingmao Wang wrote:
-> > On 9/16/25 20:22, Christian Schoenebeck wrote:
-> > > On Tuesday, September 16, 2025 4:01:40 PM CEST Tingmao Wang wrote:
-> [...]
-> > > I see that you are proposing an option for your proposed qid based
-> > > re-using of dentries. I don't think it should be on by default though,
-> > > considering what we already discussed (e.g. inodes recycled by ext4, but
-> > > also not all 9p servers handling inode collisions).
-> > 
-> > Just to be clear, this approach (Landlock holding a fid reference, then
-> > using the qid as a key to search for rules when a Landlocked process
-> > accesses the previously remembered file, possibly after the file has been
-> > moved on the server) would only be in Landlock, and would only affect
-> > Landlock, not 9pfs (so not sure what you meant by "re-using of dentries").
-> > 
-> > The idea behind holding a fid reference within Landlock is that, because
-> > we have the file open, the inode would not get recycled in ext4, and thus
-> > no other file will reuse the qid, until we close that reference (when the
-> > Landlock domain terminates, or when the 9p filesystem is unmounted)
-> 
-> So far I only had a glimpse on your kernel patches and had the impression that 
-> they are changing behaviour for all users, since you are touching dentry 
-> lookup.
+	finish_no_open() dentry argument has the same conventions as
+->lookup() return value - NULL for "use the dentry we expected to open",
+pointer to dentry - "consume a reference to this preexisting alias".
+What it does not accept is the third variant of ->lookup() - ERR_PTR(err).
+Making finish_no_open() accept that as well (returning err in that case)
+simplifies life in ->atomic_open(), especially since the "got a preexisting
+alias" is exactly the case when we end up with a positive dentry.
 
-I think we should not hold dentries because:
-- they reference other dentries (i.e. a file hierarchy),
-- they block umount and I'm convinced the VFS (and users) are not going
-  to like long-lived dentries,
-- Landlock and inotify don't need dentries, just inodes.
+	Branch (-rc5-based) is in
+git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git work.finish_no_open
+Individual patches in followups.
 
-I'm wondering why fid are referenced by dentries instead of inodes.
+	Please, review - if there's no objections, to -next it goes.
 
-The need for Landlock is to be able to match an inode with a previously
-seen one.  Not all LSM hooks (nor VFS internals) always have access to
-dentries, but they do have access to inodes.
+	Shortlog:
+allow finish_no_open(file, ERR_PTR(-E...))
+9p: simplify v9fs_vfs_atomic_open()
+9p: simplify v9fs_vfs_atomic_open_dotl()
+simplify cifs_atomic_open()
+simplify vboxsf_dir_atomic_open()
+simplify nfs_atomic_open_v23()
+simplify fuse_atomic_open()
+simplify gfs2_atomic_open()
+slightly simplify nfs_atomic_open()
 
-> 
-> > > For all open FIDs QEMU retains a descriptor to the file/directory.
-> > > 
-> > > Which 9p message do you see sent to server, Trename or Trenameat?
-> > > 
-> > > Does this always happen to you or just sometimes, i.e. under heavy load?
-> > 
-> > Always happen, see log: (no Trename since the rename is done on the host)
-> [...]
-> > Somehow if I rename in the guest, it all works, even though it's using the
-> > same fid 2 (and it didn't ask QEMU to walk the new path)
-> 
-> Got it. Even though QEMU *should* hold a file descriptor (or a DIR* stream, 
-
-It's reasonable to assume that QEMU and other should hold opened fid In
-practice, this might not always be the case, but let's move on and
-consider that a 9p server bug.
-
-Landlock and fanotify need some guarantees on opened files, and we
-cannot consider every server bug.  For Landlock, inode may get an
-"ephemeral tag" (with the Landlock object mechanism) to match previously
-seen inodes.  In a perfect world, Landlock could keep a reference on 9p
-inodes (as for other filesystems) and these inodes would always match
-the same file.  In practice this is not the case, but the 9p client
-requirements and the Landlock requirements are not exactly the same.
-
-A 9p client (the kernel) wants to safely deal with duplicated qid, which
-should not happen but still happen in practice as explained before.
-On the other side, Landlock wants to not deny access to allowed files
-(currently identified by their inodes), but I think it would be
-reasonable to allow access theoretically denied (i.e. not allowed to be
-precise, because of the denied by default mechanism) files because of a
-9p server bug mishandling qid (e.g. mapping them to recycled ext4
-inodes).
-
-All that to say that it looks reasonable for Landlock to trust the
-filesystem, and by that I mean all its dependencies, including the 9p
-server, to not have bugs.
-
-Another advantage to rely on qid and server-side opened files is that we
-get (in theory) the same semantic as when Landlock is used with local
-filesystems (e.g. files moved on the server should still be correctly
-identified by Landlock on the client).
-
-> which should imply a file descriptor), there is still a path string stored at 
-> V9fsFidState and that path being processed at some places, probably because 
-> there are path based and FID based variants (e.g Trename vs. Trenameat). Maybe 
-> that clashes somewhere, not sure. So I fear you would need to debug this.
-
-Good to know that it is not a legitimate behavior for a 9p client.
+	Diffstat:
+ fs/9p/vfs_inode.c      | 34 ++++++++++++----------------------
+ fs/9p/vfs_inode_dotl.c | 15 +++++----------
+ fs/fuse/dir.c          | 21 +++++++--------------
+ fs/gfs2/inode.c        | 26 +++++++++-----------------
+ fs/nfs/dir.c           | 18 +++++-------------
+ fs/open.c              | 10 ++++++----
+ fs/smb/client/dir.c    |  8 +-------
+ fs/vboxsf/dir.c        | 25 +++++++++----------------
+ 8 files changed, 54 insertions(+), 103 deletions(-)
