@@ -1,85 +1,102 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689B81E32B9
-	for <v9fs@lists.linux.dev>; Wed, 17 Sep 2025 08:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A726B2DB;
+	Wed, 17 Sep 2025 09:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758097767; cv=none; b=h08Vx1Xwv0XPzvYUUxVJhovkoyV5N0lH+4fIEnWUWNKRmEKLAw2BT7fzp/ZW2gwmp3WRJPnSDQrvliDWcHivf8jPOSTPZW/WDCcrhD2XQGtOFe0wKDzFAIm+gQknc+oCF1y3YI7BTlKzEJhepem9hUpqOilbB8lsQAL+p8ZLdkY=
+	t=1758102775; cv=none; b=hmmcJVoeZGh6FVNHZcG+8wSG36H25M10EFbjXNdgVKntG1DcLi4k7iiIyHyD/L+FPxzcG2drDATeWW1T44+hfrKaKOIztT6t3QluOAkihPdYiucXn0jLy/tguYgQwvSS/NL9dqoDsrzrx1ckXesLUcQ7Ku+KZNQyGk7m+0Qn3lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758097767; c=relaxed/simple;
-	bh=FJoNQqJXtj60g8gDv8cC2YfO+mxHB1pkxAFUcjx2IJ0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Lt2jvdWLD2yAC8sp8CkSs4XL5EHdhZ9z2JWN21rJfisvFv/ra30wxjptGTdAC2mde/MgFaV+drxjuWP7sYv4pE+YVrwbHbATZUXbERr4RbAHcc7VfTa8etchLsfYodWDq2pR5E9nldQktxTJWJ3EyNfwV5B4XuAXgspxEOuTy3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-42408b2d55dso35838695ab.2
-        for <v9fs@lists.linux.dev>; Wed, 17 Sep 2025 01:29:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758097765; x=1758702565;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=afF6BUTjlVKGcIJLBLkX3PZzyc+3FYOu+Z3WhK+U/9k=;
-        b=DAf6618L783HsFN0D4oKjgP024peKdmn408gOnGRzEohN0UVagCeRrzHjIT2ruIx+e
-         1kJ6xSKtKnjZLWthXzyNhiZ7OTt1kfSh7LaT1TvqirZXdRcxJkvgKc6smt7SImc6ngUe
-         jJ+P8I6X06RFUR6lzyK1v8r5sUCq7yzDRMIkSB9IcY3iMoyyOnDoX+aQDV9+VeTFgDWF
-         SdFUesuxOVOjpUgzfctAFRxXxyyllpoV6UjhZgzDTB0VKrbYLQVMgQr66UVmK9QxI0MQ
-         5vKae4Ay8mF/hkbF3SM5J0Vge79LkxhSluRWxukbSvD+L8nZ35MlBpyv3fpnMoKtmxGe
-         qWBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/uHY1gxuQ1u/pcfa2FHljo1KtBm6KS6g49Eji06g9cDO5arWF/8idGfjG5H/ATJbfbLSW@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw226REfiW/ka8h9hQq1DHJNne2D2pSsIpRL2O8ycNo6mJej3UY
-	hO9BZSMXIiy1OQLjMv8DF+Hrons3KcgN/xsBUjlII9N0YOWz+18UMFdkyO6gzbbDftfvBqRhAz8
-	SA42ibhB30OTxTc8A3gR1kmZZWJaqRFxXEsaW1aXehDCdQPOec7GLXiI6Ewc=
-X-Google-Smtp-Source: AGHT+IENoyFHrbAFtIiyOa0rWXLUOGHpgkw1GOGepibxcENjQfgSJHiqen3fhMb/WEuYTutvhf50XGFrYWbDYBScIk7Rj4Y4MWwW
+	s=arc-20240116; t=1758102775; c=relaxed/simple;
+	bh=jek3eQCrIIKVzpBPRXKe0t3upClBCOumFZr1JgMJHUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Knto+d545hM78xyvvYPKF7p0NLua5CSTk/06jfUQevOjRaYWbVTy0mbpfKnvKWmL7SUZv1aTtZG8G+Kw9+72sNvqtCf8l1Bldm5kyKfZqRC9RNji+/mrfSCOgiMv3eA+QJqFvziIOxEXlgVtf3e9hCY4CElYnXuzYFWPw+SiHN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=BAH2dwGU; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="BAH2dwGU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=+cQHhW6VGH2OlTG9Et3G2MQsI3hAr+1+N7KUvAYnrXs=; b=BAH2dwGUm/DjXtwQPcfCNawXwX
+	Cj8dXfc52wp5b4PAS6MYGk9f0lJ0k5/8G+MyWmJs/DBeZel165Y/Sq4bndiZJRb8X6P2D/6GUZw34
+	oezHJ55H369eonRjjrRbLFGfOEsrHAIstTLnpxA+ALyJIzZyYOkWhqhrT51bmxKAT9BHWhQN5Qgo+
+	5PIaCqFTrDl9FA3yAbhd/uqyV7chjkgvSCaUktnAEb/TXDg6FG6SodxrrF5Bs3tWy9E/JJF0WnqA5
+	Wrd1VJRrOMomr8pSg+TTJXwU0Vd0aIbnyVioMpFtoylEh6aKXdJaUVnD2T4JXJjcBOTBQVn4w+ay2
+	1kj6gYD+aPs091TphSqzOBfkkkjQcNrjmEIi87SVxbJD4W1FhvQMpkgUwePpmOM3OoBsmLenk7VUX
+	sCWGH+DNPq0J5UIbvlW6l9ImOtti/ZpouFbvsgvVQTCznHyencl14tQIMVcaBo74kC5uz1jxWkr/I
+	lY6+DDGLzoY8gKgJ7JfRbA/osSMN2y+mxTCPNOez/FW2IYqdYau/hlhSH4jfb+v/u0gdiwk7IsbNi
+	VXoyB0qqY4JxOkJR6JNCyUOFNFNtIDx00YweILrczqZulo7Hzy6Ushopwh4Bh+8fzUVRZPB2PUgj0
+	2BB/FSqNi9o+Ycd2m+vx5K9Wz/GKxU9qX59TeYYa0=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Dominique Martinet <asmadeus@codewreck.org>, Tingmao Wang <m@maowtm.org>
+Cc: =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ v9fs@lists.linux.dev, =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+ linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ linux-fsdevel@vger.kernel.org
+Subject:
+ Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to qid)
+Date: Wed, 17 Sep 2025 11:52:35 +0200
+Message-ID: <3774641.iishnSSGpB@silver>
+In-Reply-To: <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org>
+References:
+ <aMih5XYYrpP559de@codewreck.org> <3070012.VW4agfvzBM@silver>
+ <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2786:b0:423:fd85:eafc with SMTP id
- e9e14a558f8ab-4241a4ce3ccmr16474755ab.6.1758097764677; Wed, 17 Sep 2025
- 01:29:24 -0700 (PDT)
-Date: Wed, 17 Sep 2025 01:29:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68ca7164.050a0220.3c6139.0f9f.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Sep 2025)
-From: syzbot <syzbot+list5a3a7425b8f8e7ef252b@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Hello v9fs maintainers/developers,
+On Wednesday, September 17, 2025 1:59:21 AM CEST Tingmao Wang wrote:
+> On 9/16/25 20:22, Christian Schoenebeck wrote:
+> > On Tuesday, September 16, 2025 4:01:40 PM CEST Tingmao Wang wrote:
+[...]
+> > I see that you are proposing an option for your proposed qid based
+> > re-using of dentries. I don't think it should be on by default though,
+> > considering what we already discussed (e.g. inodes recycled by ext4, but
+> > also not all 9p servers handling inode collisions).
+> 
+> Just to be clear, this approach (Landlock holding a fid reference, then
+> using the qid as a key to search for rules when a Landlocked process
+> accesses the previously remembered file, possibly after the file has been
+> moved on the server) would only be in Landlock, and would only affect
+> Landlock, not 9pfs (so not sure what you meant by "re-using of dentries").
+> 
+> The idea behind holding a fid reference within Landlock is that, because
+> we have the file open, the inode would not get recycled in ext4, and thus
+> no other file will reuse the qid, until we close that reference (when the
+> Landlock domain terminates, or when the 9p filesystem is unmounted)
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+So far I only had a glimpse on your kernel patches and had the impression that 
+they are changing behaviour for all users, since you are touching dentry 
+lookup.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 8 issues are still open and 37 have already been fixed.
+> > For all open FIDs QEMU retains a descriptor to the file/directory.
+> > 
+> > Which 9p message do you see sent to server, Trename or Trenameat?
+> > 
+> > Does this always happen to you or just sometimes, i.e. under heavy load?
+> 
+> Always happen, see log: (no Trename since the rename is done on the host)
+[...]
+> Somehow if I rename in the guest, it all works, even though it's using the
+> same fid 2 (and it didn't ask QEMU to walk the new path)
 
-Some of the still happening issues:
+Got it. Even though QEMU *should* hold a file descriptor (or a DIR* stream, 
+which should imply a file descriptor), there is still a path string stored at 
+V9fsFidState and that path being processed at some places, probably because 
+there are path based and FID based variants (e.g Trename vs. Trenameat). Maybe 
+that clashes somewhere, not sure. So I fear you would need to debug this.
 
-Ref Crashes Repro Title
-<1> 10888   Yes   UBSAN: shift-out-of-bounds in v9fs_get_tree
-                  https://syzkaller.appspot.com/bug?extid=30c83da54e948f6e9436
-<2> 3010    Yes   INFO: task hung in __iterate_supers
-                  https://syzkaller.appspot.com/bug?extid=b10aefdd9ef275e9368d
-<3> 2497    Yes   INFO: task hung in v9fs_evict_inode
-                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
-<4> 88      Yes   WARNING: refcount bug in p9_req_put (3)
-                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
+/Christian
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
