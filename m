@@ -1,110 +1,133 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F94312830;
-	Wed, 17 Sep 2025 23:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EFD29E0F7;
+	Thu, 18 Sep 2025 07:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758151694; cv=none; b=dIvEcFy0dC/xtGGctN8RBKrZEWGEtr+JKOzKr8YYZJwuVldqMWpSy/9pr+8SBFZma1aDCQVL7P1FqIMAvhfPSFgf8MRBMBp71yvl8gpxBBdK4RNi7Z2et5T9hZod2fJbtc1oFslRvnRIlrIH2Skxqg9T83GqwPEbDRADb/OA5NY=
+	t=1758180883; cv=none; b=qNXgKDI5COfnyn0fvVg5kP/8uD8LG8MHUNgIlH67w9PPkQT6HNd0H0rp0e/A3hRJlQNkM/Xwsw+v2xQZm7+2d8GPlIXTH03GQauF3pBAtMNQcSxIZWH0vz2fpRBk74rwDHvqdYJ7PGofc528Zzm2agk16aa5umaa5PI3C8kn198=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758151694; c=relaxed/simple;
-	bh=/XKll5c+qsqnTvwojllXwSeICv4xLDaE9SJBOYtVd1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/SI/OfCb5kqb/VMkBfZmnzLxSUyXtao3z9eJZTwfFEcQcp+Hp0/vfggxfaTyb23QxyoBTFNHfaXbkYPTcOcy5D4WrKh8qQ+7UMlWrJs/pQmINetvc7B+m8GCiQZdaGop0wcDdFBP+wcCq+hQ/AaCTjHwrgpJzJFtLAyC1cju+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=u9X8vV3s; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1758180883; c=relaxed/simple;
+	bh=iFyl1v+R5r8mqqXN1vgFO7dGvg1TVlgShJSyPTUstxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cOs5HC6hycxFZPtahydUr91DwdltvTHqtjPUmK7J+IN+2wnYytjVPhm0nhpR7klJgiS9j+ITTrzVouzokVTtolqb/xcYGMh4Q4RWJj+SRY4WkT8kGX0MPVkf/YjDe+vLUfrs5pRBB82vhKvwQHTatPnJun4TVu/HGlYXNxWCy1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phtoj2Cx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="u9X8vV3s"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=B7EZDTd3Xyq75vW4Am5AueSjn4s60K0ngq6gL7hkvHI=; b=u9X8vV3svWkLbkRQ5kIW8+RBlb
-	sBIVOGxk8ub4RsdOBSQ5z9vbW2aAg5txHboPUhVKD0Y7O7ipjCfNM0e16dNFJRgOeNYsoEDFsX2jU
-	/TNvF+bKj7J8ZHEcdrEVRB1B5zvHXAA6HlGuTfrj7c7PhrB7KyFEqW9U3rFXDCrA+z7lghiv0SBDl
-	9KkiGC0Xkv44JqTBmky9cwlmjiiJKbkf72E5oJ+1ayoHOwdLAAseKUsU/Bhjw16O9P2eJii9msCvL
-	4jtqCBFwXCnBRgLR76azkjYd2I+54QDAZK5YPLTa1TNKRoVOMB4lx5O4sEl4ZP5IYo5KiyjKedseZ
-	wJHNeGMw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uz1Yn-0000000Aj6X-39iO;
-	Wed, 17 Sep 2025 23:27:37 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: v9fs@lists.linux.dev,
-	miklos@szeredi.hu,
-	agruenba@redhat.com,
-	linux-nfs@vger.kernel.org,
-	hansg@kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH 8/9] simplify gfs2_atomic_open()
-Date: Thu, 18 Sep 2025 00:27:35 +0100
-Message-ID: <20250917232736.2556586-8-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250917232736.2556586-1-viro@zeniv.linux.org.uk>
-References: <20250917232416.GG39973@ZenIV>
- <20250917232736.2556586-1-viro@zeniv.linux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phtoj2Cx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0550FC4CEE7;
+	Thu, 18 Sep 2025 07:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758180882;
+	bh=iFyl1v+R5r8mqqXN1vgFO7dGvg1TVlgShJSyPTUstxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=phtoj2CxJPgt5vlwgTN7FnjIQJ+OT78j87ABMY8vPHEow8JDNeDYUmGsE0e8555rC
+	 /o9X3zw9P6cjDhVh0+KUdQ3X2U9KuoOAuAtfs5l86ewubTk0Vo8eLvBU6KbfjC1L/z
+	 gFYxCE7voIAu9TqJ9/blXGUWYCjbXVVuwMD657mnWPpdX+ff9VGS5Lg0m1tp1gDTNr
+	 0k+WKo1DKSQVtZdnWaVeM6THYvacQUQUACPn/NNwGRAQas4dKY6/WMYtnQGRa7fs2M
+	 m2SFtGKk8uCE+nsvOGBF8TL5TGEhJGjP+CcIw70cDPD1gQ3yyFntHhlOpeEiXp424l
+	 wqOuckTojiYEg==
+Message-ID: <eb729729-c7cf-4a15-ab97-27ec21c0891a@kernel.org>
+Date: Thu, 18 Sep 2025 09:34:39 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Al Viro <viro@ftp.linux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] simplify vboxsf_dir_atomic_open()
+To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
+Cc: v9fs@lists.linux.dev, miklos@szeredi.hu, agruenba@redhat.com,
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org
+References: <20250917232416.GG39973@ZenIV>
+ <20250917232736.2556586-1-viro@zeniv.linux.org.uk>
+ <20250917232736.2556586-5-viro@zeniv.linux.org.uk>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20250917232736.2556586-5-viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-the difference from 9p et.al. is that on gfs2 the lookup side might
-end up opening the file.  That's what the FMODE_OPENED check there
-is about - and it might actually be seen with finish_open() having
-failed, if it fails late enough.
+Hi,
 
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/gfs2/inode.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+On 18-Sep-25 1:27 AM, Al Viro wrote:
+> similar to 9p et.al.
+> 
+> Reviewed-by: NeilBrown <neil@brown.name>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 8760e7e20c9d..8a7ed80d9f2d 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1368,27 +1368,19 @@ static int gfs2_atomic_open(struct inode *dir, struct dentry *dentry,
- 			    struct file *file, unsigned flags,
- 			    umode_t mode)
- {
--	struct dentry *d;
- 	bool excl = !!(flags & O_EXCL);
- 
--	if (!d_in_lookup(dentry))
--		goto skip_lookup;
--
--	d = __gfs2_lookup(dir, dentry, file);
--	if (IS_ERR(d))
--		return PTR_ERR(d);
--	if (d != NULL)
--		dentry = d;
--	if (d_really_is_positive(dentry)) {
--		if (!(file->f_mode & FMODE_OPENED))
-+	if (d_in_lookup(dentry)) {
-+		struct dentry *d = __gfs2_lookup(dir, dentry, file);
-+		if (file->f_mode & FMODE_OPENED) {
-+			if (IS_ERR(d))
-+				return PTR_ERR(d);
-+			dput(d);
-+			return excl && (flags & O_CREAT) ? -EEXIST : 0;
-+		}
-+		if (d || d_really_is_positive(dentry))
- 			return finish_no_open(file, d);
--		dput(d);
--		return excl && (flags & O_CREAT) ? -EEXIST : 0;
- 	}
--
--	BUG_ON(d != NULL);
--
--skip_lookup:
- 	if (!(flags & O_CREAT))
- 		return -ENOENT;
- 
--- 
-2.47.3
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  fs/vboxsf/dir.c | 25 +++++++++----------------
+>  1 file changed, 9 insertions(+), 16 deletions(-)
+> 
+> diff --git a/fs/vboxsf/dir.c b/fs/vboxsf/dir.c
+> index 770e29ec3557..42bedc4ec7af 100644
+> --- a/fs/vboxsf/dir.c
+> +++ b/fs/vboxsf/dir.c
+> @@ -315,46 +315,39 @@ static int vboxsf_dir_atomic_open(struct inode *parent, struct dentry *dentry,
+>  {
+>  	struct vboxsf_sbi *sbi = VBOXSF_SBI(parent->i_sb);
+>  	struct vboxsf_handle *sf_handle;
+> -	struct dentry *res = NULL;
+>  	u64 handle;
+>  	int err;
+>  
+>  	if (d_in_lookup(dentry)) {
+> -		res = vboxsf_dir_lookup(parent, dentry, 0);
+> -		if (IS_ERR(res))
+> -			return PTR_ERR(res);
+> -
+> -		if (res)
+> -			dentry = res;
+> +		struct dentry *res = vboxsf_dir_lookup(parent, dentry, 0);
+> +		if (res || d_really_is_positive(dentry))
+> +			return finish_no_open(file, res);
+>  	}
+>  
+>  	/* Only creates */
+> -	if (!(flags & O_CREAT) || d_really_is_positive(dentry))
+> -		return finish_no_open(file, res);
+> +	if (!(flags & O_CREAT))
+> +		return finish_no_open(file, NULL);
+>  
+>  	err = vboxsf_dir_create(parent, dentry, mode, false, flags & O_EXCL, &handle);
+>  	if (err)
+> -		goto out;
+> +		return err;
+>  
+>  	sf_handle = vboxsf_create_sf_handle(d_inode(dentry), handle, SHFL_CF_ACCESS_READWRITE);
+>  	if (IS_ERR(sf_handle)) {
+>  		vboxsf_close(sbi->root, handle);
+> -		err = PTR_ERR(sf_handle);
+> -		goto out;
+> +		return PTR_ERR(sf_handle);
+>  	}
+>  
+>  	err = finish_open(file, dentry, generic_file_open);
+>  	if (err) {
+>  		/* This also closes the handle passed to vboxsf_create_sf_handle() */
+>  		vboxsf_release_sf_handle(d_inode(dentry), sf_handle);
+> -		goto out;
+> +		return err;
+>  	}
+>  
+>  	file->private_data = sf_handle;
+>  	file->f_mode |= FMODE_CREATED;
+> -out:
+> -	dput(res);
+> -	return err;
+> +	return 0;
+>  }
+>  
+>  static int vboxsf_dir_unlink(struct inode *parent, struct dentry *dentry)
 
