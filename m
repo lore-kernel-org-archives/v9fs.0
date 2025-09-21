@@ -1,83 +1,245 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C086F264A72
-	for <v9fs@lists.linux.dev>; Fri, 19 Sep 2025 09:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8165134BA47
+	for <v9fs@lists.linux.dev>; Sun, 21 Sep 2025 16:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758273395; cv=none; b=UnP2awX9t476Heu/C1j9qWO1ONltPCA2qyHVLjBw/gBbtKWHYzxFfWcEMs5Su2g3gijf3Sh86aUfJqEmEwVwRqeuGaHZkhKHMlkbcb4MldQh0/0cc3i3n6nhpGYMYXrDBYQqAWxaiJ+71rXhINepG567O9Tcqtz4iVbmb1VMpxI=
+	t=1758471898; cv=none; b=ho40bs67fjIdZOf7/RW6xvOhzgOZcpoxwt5uU4OJ2MGWxvV7jDsIsjuIk7kZcvt6cpGevukBRuDoryVF7DPV7X7osDUS4J06Kpb5QPGMnzv/tDlXeo9RwmE7N5bsaUWS96f7VrvWahvLXAbY5ZwuVMBXGqTllES5CIDjtyfbKxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758273395; c=relaxed/simple;
-	bh=3NSAuKg48kDucBl+lQY28yZrJW6O+JKtv/vQq7ZLJw4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pwn1k2wSJ7PnlhbJs6AGK/BHy60etUbbEnX/Gdc/k5JWppxKh1zouwSvAaUGtDxSbatdnQ4Rl2YUc/C/8s9FWQ9IYm5MMTU8hA/aTzZUNKpocDalE+hh+7GOBrniwvlRbqzjClVJx+Blr9rUv8CuufK23nEY/yJKzTSNorciE6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=VlwZusdB; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+	s=arc-20240116; t=1758471898; c=relaxed/simple;
+	bh=vofvVqIwEXXUJakzj5j7rwP9RPw89yZQ+UZ8CoeIav4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZjYnKYwrA5+VY0sut02JQphNEXr5j+Kk50ox3ZpRvQMDYRG83dH65b3LWuFLJ9Ak06ePqwyyWnEMK3lEyRwC6q+pB8aR+tiq9re9oaY986AaocZWiAQ9lJ4kPrAcRma+xD+TrG1cipB5g6uIwTJSOFpFJV5MMTY8qA5FeIEjrvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=XKwnksBr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jkVD54yU; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="VlwZusdB"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b38d4de61aso26653151cf.0
-        for <v9fs@lists.linux.dev>; Fri, 19 Sep 2025 02:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1758273393; x=1758878193; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3NSAuKg48kDucBl+lQY28yZrJW6O+JKtv/vQq7ZLJw4=;
-        b=VlwZusdBt9d6me0uW3bDwjUTaKWUysJmHL2q7EM9mrchyIMJgEJZPBqwYUcSbtd/vN
-         0myBjZlbhN+npoaveHbsf08XOM+tnftSjos5h2PIR7sMhRoTARu6Vv7qGMVxLz+SJf8h
-         3jgB2OQmQ38mg8K63CJcCt2GqsEIII/fioxo0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758273393; x=1758878193;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3NSAuKg48kDucBl+lQY28yZrJW6O+JKtv/vQq7ZLJw4=;
-        b=e06nrQF++pL9KRAsjmxAoAV6fbXR4u2bdFnW7lfbFZ7mdI/hA9YiRsPnYh/+iyVYoG
-         /jDB0F+Y9FZn6kCrSqTqTQjtzDicveIfPfm+vTHQNmkZaub8jSxShxRnQQ++6/E/A7Pb
-         CLXQEKEKfcrdkHpSQksXpKF42bBQYEsCLYN2yoU37ImkXx70ZOKzvo2y0MHkJDzKRmcv
-         92nVUSoNXtJJCxEzNl7ADIUIR62czfgEx+beWv4MH2BXH1KznwFnGM8B+o4pc/+BxvRy
-         B//kx6de1XyE5AN5ArSu4irViPGluYMwyaRGZGWkSXoPC5MTFf2yqLHjlZW/RA0xM7M+
-         x2gw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/nwVB3fhW9yF5i96YDIHRhJ5KBI0KTq7QlvcsG5X8W2edGNf+Kf7hasYD3A19IOtvhpQ0@lists.linux.dev
-X-Gm-Message-State: AOJu0YyInOrfDydYvquix5YEu7Ws/SIN+dCneUCOzTKYqndZWVkjWomc
-	qmVHqpnAErMmf5WSBu88vhQXxx3HvbD0PcrxuzIz//wJD7qmHEiygaGCY9LGJTKdX2vnLXznFXO
-	nUWbQ+BVH3MJm6CX7nXmGUh9+qqOrLanJ9/ByVy4hMQ==
-X-Gm-Gg: ASbGncsi9ktKW3eYlfcQpBLwqUXR6AeWkxA4YPPhwuYMKvJz73HyFMPBT4AOud3/kzz
-	MxUzzP6bTYwRGqmhmoLpX9omUq69tuSjG3hYQI1K3uZdWyaDeIgDMs4ME5zqcvD7MToQ5ugCHK7
-	gE4EtQSzNxYPm1awP2ZkXxUT3Na5RvfbZJ9nnLmBMakqLvhKaEulx/c6gl80ltAhz9cxw8+xvoP
-	FjkRI+3YO3cKaUY8PS8UVqYh6RntYrsKV0brgk=
-X-Google-Smtp-Source: AGHT+IEC7DaOiqsDhZ6el+nJAXMCR2LZLpubNGOPgEov0Yiqge6V0MP8FIeK9NIu4a3q26iz/ROtYZA/OmdKQK0CbyY=
-X-Received: by 2002:a05:622a:1189:b0:4b5:ee26:5371 with SMTP id
- d75a77b69052e-4c06e7cec5emr25872751cf.26.1758273392530; Fri, 19 Sep 2025
- 02:16:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="XKwnksBr";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jkVD54yU"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4D4F41D000A9;
+	Sun, 21 Sep 2025 12:24:54 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Sun, 21 Sep 2025 12:24:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758471894;
+	 x=1758558294; bh=4eL43QlVEchwrR99hYuuh9qOZvowspMF0C2vAQGQJF0=; b=
+	XKwnksBrWk2Sg12kuShfGuyNCaDOK+WTQf8peBwkmX4EbsHXzEOmdiPNDdHJ77s6
+	1Ki+veEMPWpAJJDLuSqYx9gLvjfNuZ5bKbgxXsL96clTisawHmweXNF0lReYefvf
+	/AHuDZs47I3Hf5FQ2AEbwqbEzDiqI6aKk0rADjPxi7WAdbVAehmZmsFw7wxGZY3X
+	XRGnReZ4QYjQ3FJQrXr7T6EX7R94CR6XRQWnP3Sm8ttNmD/Y5/1d5k7LLhpfGz12
+	QjechboMS1mZLd67xkxf+fwLe1n2qDv2mx/ybwr/Z1pnQDZpdRR7vG7DGMxub1QK
+	GUrpvFMxmY4O/SBIRWhttA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758471894; x=
+	1758558294; bh=4eL43QlVEchwrR99hYuuh9qOZvowspMF0C2vAQGQJF0=; b=j
+	kVD54yUn9RjtYkPscv8FdUaziPtbNHg5+gpT9q1wNiXcmY4U4A2wHyTmnuWJAhgJ
+	LcBYhDnYNhF/P+XoeFoO84Y1m0g3WVdcVvYYk9ErQMbHB578wY8wTUxEmlPQKWy9
+	jtDz/x1DUQVQx+0DIaMofFTuiemWsXrl6eLryx8vQVdP7kJMclZ/kuRFITZHO24p
+	OhRAsTAI6DVlxtzBhj/IoRZ9PQM/VVI5w1zOz5y4Z5Ys6Ufu+66os8SBUOMYZiK8
+	Cg1o6Sol75qUUZCM0mSTX+hxGjfprnSgJDg6FsnMU+ri4Z47K879qNWZLhG7bmsu
+	k5numXpZj342P8y1l/eDA==
+X-ME-Sender: <xms:1CbQaFCnR_Yxk0zFVAoaHV5voz_g3cB9o3IytAs3BWxGIF9LDxnugA>
+    <xme:1CbQaLYnP_VLvG-OKmcDZTllDieir_2sJxTxl41y1LegyY1QEendaGDU31h0FiUdY
+    RcZtqGNvnQ46iLFIIE>
+X-ME-Received: <xmr:1CbQaP_LDE0nTtYc2i_fO15GoOQ5GDRPfWuQMcR3p4ExrmK2akozsndg9yig1wpU33MWMjCpeC9DCizTvbepKuuj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehheeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepvfhinhhgmhgr
+    ohcuhggrnhhguceomhesmhgrohifthhmrdhorhhgqeenucggtffrrghtthgvrhhnpeetie
+    evfeeifefgtdeikeegfeffteeiffetieeffeeiffekieekgeejlefhhefhhfenucffohhm
+    rghinhepghhithhlrggsrdgtohhmpdhmrghofihtmhdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmsehmrghofihtmhdrohhrghdp
+    nhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlih
+    hnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepmhhitgesughi
+    ghhikhhougdrnhgvthdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkh
+    drohhrghdprhgtphhtthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtohepvhelfhhssehlihhsth
+    hsrdhlihhnuhigrdguvghvpdhrtghpthhtohepghhnohgrtghksehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdhsvggtuhhrihhthidqmhhoughulhgvsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:1CbQaHh9H5NveD9HuZPGMvD6y1U4RDzx3LjOeWxmVjTYc8Q0YrA4ng>
+    <xmx:1CbQaCh6SImBUq__lNR0gAwMUQKeAnCLFA6w1EIqk7zzPK2G4ixdVA>
+    <xmx:1CbQaN4OeFSgIS3eiw6DCDCO79_hJgGXCBsBe0kd2edELaBbg8IU9g>
+    <xmx:1CbQaEQUiN4mnmjj9TDmLkXoxq9EXvdV0pW_oVM2O4iuP13jFd1iSQ>
+    <xmx:1ibQaJgXPVXMmg1WWkLOp-MJphg3qYzsBpOMn3tZTW2uubpWQ_nRDaVF>
+Feedback-ID: i580e4893:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 21 Sep 2025 12:24:51 -0400 (EDT)
+Message-ID: <f1228978-dac0-4d1a-a820-5ac9562675d0@maowtm.org>
+Date: Sun, 21 Sep 2025 17:24:49 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250917232416.GG39973@ZenIV> <20250917232736.2556586-1-viro@zeniv.linux.org.uk>
- <20250917232736.2556586-7-viro@zeniv.linux.org.uk>
-In-Reply-To: <20250917232736.2556586-7-viro@zeniv.linux.org.uk>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Fri, 19 Sep 2025 11:16:21 +0200
-X-Gm-Features: AS18NWBdR2wSIkWeUQEoOiuG4V2oEtZ00-2g_l56ym-IbHqMpDho5hZu73hYZtE
-Message-ID: <CAJfpegsxUQzZaXKFAOBmThP6e5F=XT=oDn1BDBUO0R35D39P=Q@mail.gmail.com>
-Subject: Re: [PATCH 7/9] simplify fuse_atomic_open()
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, v9fs@lists.linux.dev, agruenba@redhat.com, 
-	linux-nfs@vger.kernel.org, hansg@kernel.org, linux-cifs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
+ qid)
+To: Christian Schoenebeck <linux_oss@crudebyte.com>,
+ =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+ =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
+ linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ linux-fsdevel@vger.kernel.org, qemu-devel@nongnu.org
+References: <aMih5XYYrpP559de@codewreck.org> <3070012.VW4agfvzBM@silver>
+ <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org> <3774641.iishnSSGpB@silver>
+ <20250917.Eip1ahj6neij@digikod.net>
+Content-Language: en-US
+From: Tingmao Wang <m@maowtm.org>
+In-Reply-To: <20250917.Eip1ahj6neij@digikod.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 18 Sept 2025 at 01:27, Al Viro <viro@zeniv.linux.org.uk> wrote:
+On 9/17/25 16:00, Mickaël Salaün wrote:
+> On Wed, Sep 17, 2025 at 11:52:35AM +0200, Christian Schoenebeck wrote:
+>> On Wednesday, September 17, 2025 1:59:21 AM CEST Tingmao Wang wrote:
+>>> On 9/16/25 20:22, Christian Schoenebeck wrote:
+>>>> On Tuesday, September 16, 2025 4:01:40 PM CEST Tingmao Wang wrote:
+>> [...]
+>>>> I see that you are proposing an option for your proposed qid based
+>>>> re-using of dentries. I don't think it should be on by default though,
+>>>> considering what we already discussed (e.g. inodes recycled by ext4, but
+>>>> also not all 9p servers handling inode collisions).
+>>>
+>>> Just to be clear, this approach (Landlock holding a fid reference, then
+>>> using the qid as a key to search for rules when a Landlocked process
+>>> accesses the previously remembered file, possibly after the file has been
+>>> moved on the server) would only be in Landlock, and would only affect
+>>> Landlock, not 9pfs (so not sure what you meant by "re-using of dentries").
+>>>
+>>> The idea behind holding a fid reference within Landlock is that, because
+>>> we have the file open, the inode would not get recycled in ext4, and thus
+>>> no other file will reuse the qid, until we close that reference (when the
+>>> Landlock domain terminates, or when the 9p filesystem is unmounted)
+>>
+>> So far I only had a glimpse on your kernel patches and had the impression that 
+>> they are changing behaviour for all users, since you are touching dentry 
+>> lookup.
+> 
+> I think we should not hold dentries because:
+> - they reference other dentries (i.e. a file hierarchy),
+> - they block umount and I'm convinced the VFS (and users) are not going
+>   to like long-lived dentries,
+> - Landlock and inotify don't need dentries, just inodes.
+> 
+> I'm wondering why fid are referenced by dentries instead of inodes.
+> 
+> The need for Landlock is to be able to match an inode with a previously
+> seen one.  Not all LSM hooks (nor VFS internals) always have access to
+> dentries, but they do have access to inodes.
+> 
+>>
+>>>> For all open FIDs QEMU retains a descriptor to the file/directory.
+>>>>
+>>>> Which 9p message do you see sent to server, Trename or Trenameat?
+>>>>
+>>>> Does this always happen to you or just sometimes, i.e. under heavy load?
+>>>
+>>> Always happen, see log: (no Trename since the rename is done on the host)
+>> [...]
+>>> Somehow if I rename in the guest, it all works, even though it's using the
+>>> same fid 2 (and it didn't ask QEMU to walk the new path)
+>>
+>> Got it. Even though QEMU *should* hold a file descriptor (or a DIR* stream, 
+> 
+> It's reasonable to assume that QEMU and other should hold opened fid In
+> practice, this might not always be the case, but let's move on and
+> consider that a 9p server bug.
+> 
+> Landlock and fanotify need some guarantees on opened files, and we
+> cannot consider every server bug.  For Landlock, inode may get an
+> "ephemeral tag" (with the Landlock object mechanism) to match previously
+> seen inodes.  In a perfect world, Landlock could keep a reference on 9p
+> inodes (as for other filesystems) and these inodes would always match
+> the same file.  In practice this is not the case, but the 9p client
+> requirements and the Landlock requirements are not exactly the same.
+> 
+> A 9p client (the kernel) wants to safely deal with duplicated qid, which
+> should not happen but still happen in practice as explained before.
+> On the other side, Landlock wants to not deny access to allowed files
+> (currently identified by their inodes), but I think it would be
+> reasonable to allow access theoretically denied (i.e. not allowed to be
+> precise, because of the denied by default mechanism) files because of a
+> 9p server bug mishandling qid (e.g. mapping them to recycled ext4
+> inodes).
+> 
+> All that to say that it looks reasonable for Landlock to trust the
+> filesystem, and by that I mean all its dependencies, including the 9p
+> server, to not have bugs.
+> 
+> Another advantage to rely on qid and server-side opened files is that we
+> get (in theory) the same semantic as when Landlock is used with local
+> filesystems (e.g. files moved on the server should still be correctly
+> identified by Landlock on the client).
+> 
+>> which should imply a file descriptor), there is still a path string stored at 
+>> V9fsFidState and that path being processed at some places, probably because 
+>> there are path based and FID based variants (e.g Trename vs. Trenameat). Maybe 
+>> that clashes somewhere, not sure. So I fear you would need to debug this.
+> 
+> Good to know that it is not a legitimate behavior for a 9p client.
 
-Some explanation about the dput() removal would be useful, e.g.:
+So I did some quick debugging and realized that I had a wrong
+understanding of how fids relates to opened files on the host, under QEMU.
+It turns out that in QEMU's 9p server implementation, a fid does not
+actually correspond to any opened file descriptors - it merely represents
+a (string-based) path that QEMU stores internally.  It only opens the
+actual file if the client actually does an T(l)open, which is in fact
+separate from acquiring the fid with T(l)walk.  The reason why renaming
+file/dirs from the client doesn't break those fids is because QEMU will
+actually fix those paths when a rename request is processed - c.f.
+v9fs_fix_fid_paths [1].
 
-Non-null res implies either an error or a positive dentry, hence the
-dput(res) cleanup is unnecessary, since at that point res will always
-be NULL.
+It turns out that even if a guest process opens the file with O_PATH, that
+file descriptor does not cause an actual Topen, and therefore QEMU does
+not open the file on the host, and later on reopening that fd with another
+mode (via e.g. open("/proc/self/fd/...", O_RDONLY)) will fail if the file
+has moved on the host without QEMU's knowledge.  Also, openat will fail if
+provided with a dir fd that "points" to a moved directory, regardless of
+whether the fd is opened with O_PATH or not, since path walk in QEMU is
+completely string-based and does not actually issue openat on the host fs
+[2].
 
-> Reviewed-by: NeilBrown <neil@brown.name>
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+I'm not sure if this was is intentional in QEMU - it would seem to me that
+a fid should translate to a fd (maybe opened with just O_PATH) on the
+host, and path walks based on that fid should be done via openat with this
+fd, which will also "automatically" handle renames without QEMU needing to
+fixup the string paths?
 
-Reviewed-by: Miklos Szeredi <mszeredi@redhat.com>
+In any case, this probably means that even if Landlock were to hold a fid
+reference, and QEMU does qid remapping, that's still not enough to
+guarantees that we won't have a different, unrelated file ending up with
+the same qid, at least under ext4.
+
+I'm not sure what's the way forward - would Landlock need to actually
+"open" the files (or do something that will cause a Topen to be issued by
+v9fs)?  Alternatively if we believe this to be a QEMU issue, maybe
+Landlock don't need to work around it and should just hold fids (and use
+QIDs to key the rules) anyway despite server quirks like these.  This can
+perhaps then be fixed in QEMU?
+
+(I guess the fact that QEMU is doing path tracking in the first place does
+gives more precedent for justifying doing path tracking in v9fs as well,
+but maybe that's the wrong way to think about it)
+
+Test programs: openat.c [3], open_procselffd.c [4]
+
+
+[1]: https://gitlab.com/qemu-project/qemu/-/blob/44f51c1a3cf435daa82eb757740b59b1fd4fe71c/hw/9pfs/9p.c#L3403
+[2]: https://gitlab.com/qemu-project/qemu/-/blob/371a269ff8ce561c28e4fa03bb49e4940f990637/hw/9pfs/9p-local.c#L1243
+[3]: https://fileshare.maowtm.org/9pfs-landlock-fix/20250921/openat.c
+[4]: https://fileshare.maowtm.org/9pfs-landlock-fix/20250921/open_procselffd.c
