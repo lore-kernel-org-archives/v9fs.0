@@ -1,81 +1,122 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569E82D838E
-	for <v9fs@lists.linux.dev>; Tue, 23 Sep 2025 19:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F1D2AE68
+	for <v9fs@lists.linux.dev>; Tue, 23 Sep 2025 22:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758657544; cv=none; b=NsB/vYvN9jgt63f7t+KfLrzFeyH5UwSsSAzCnIKieCKGxpSuxFvPe5Vyjs42Zj/+NS7Ew2QPVp2L3nM7YlEOFLGLSY329WbX1T31m0ZQ6aXVuqdPlUkd2v9mkFrnORoZWiMbEPrQT69LprqO4n3ArQDAr43DSfb5LAhT1qsEvHg=
+	t=1758666078; cv=none; b=JWZuf45QE2QHswzHVkGNWIWuwIfTHf3ZPTDa2abK2vqKL34ivRRE1x8pHVBIVfsG9Q59A9bTM/d/At5J1uLcU5qvqcnzsuzeVIDnbU1hj+UaGx1K17exoV6iJ+LinuahimRYHY8f1oEpv9gGVRvFXxZIfieP3aTysHd5lx7rodc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758657544; c=relaxed/simple;
-	bh=WbRxxvPu2PII9+tVZPTYHIku5xjnJJfqpOzcsOGOcTg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=GxmZXzqMyplCvNX9vOYBZGxrurFEpJXngxq98Ab7A/pwDN16ln2pBzC1bgUdYc9CkKGoLgykUDXzqyoXmqPIR1R5OCLe0OcMYTmKPMsdb0wMKXSQNvLgoOVfAtBoAr/rZKJgeRBTpXtnwWd8IfHlvamtDaYQlmMyHGkECk+p1EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-42575c5c876so33916715ab.3
-        for <v9fs@lists.linux.dev>; Tue, 23 Sep 2025 12:59:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758657542; x=1759262342;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bcaaZPCV5Qrgwa3vKDEUNa/ct40/p9wKCLJtyWA+kyQ=;
-        b=EnXfg1eWmb68ke4CgXtyWyCdZJG7lfKyTohgSiz4MXMPrHRVwRER9nyONqj8ApQagv
-         hszlENSE7UDwxhDkXqAzcmThAxowCLrGfn9FP8ThrX5vwBfsarVD8yiPBt27LxVpCAt3
-         sPuyYcCfR2zIzTTgsbB8u+tNGmfUzQFa4iUcUuj7h7swk3tcGZ492rK2kAmF9KheZ8hX
-         2FS66aM9dF5IiPCr+U2Ve4Lmr2O5gYO3tGJgLJUS6jdf0H6Yf8KKgwv4Kinls5LhCY2o
-         QrigilyuplealCj3ZfMCXJoNdmoq57Y9lc9f/sLbGbxrN+OuFnCBbdLwzEpqtH0Oj+yb
-         S8QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkQLUgmuRPBDvVtTdnDLRZjO0bfG42ZkhjJqiRbg46Dfwgbq/4UHeQrRQl+ZXhYBz+ZwCz@lists.linux.dev
-X-Gm-Message-State: AOJu0YwH6+wXo1lxvqW8ghvxs4iT5s0eUoHoiHw+it35w1XO0kNAb8/6
-	Lnhh2pucw4ooJZG2sqiAbO4MJZXXfsfQSVkzQhyEpPiLVgJv5NEgrs0yP96VY1on51+6aJr2EY0
-	G8GGR96NbH4FZlVwOBwiGxLuUYQluZJZO4l+85r5C3rvn2bxK5qBBmlXVE0c=
-X-Google-Smtp-Source: AGHT+IH4ryecd7+jD4K6kYGAIwNEyzeiCtIWaDcMQ3DqckIrtsaX5FHyU9Wx/aV8dwEqItA12eZFVdFCQBiegXhWf5yf0gEyZVTH
+	s=arc-20240116; t=1758666078; c=relaxed/simple;
+	bh=Ik7YM5Q/FmmiZ1L/zyrrXdT0vMvQm7wIQuGJxxDp3VU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BGW9/85dE5J1OmxzwC1tIcRMQoanwJTZ80DSSdarDT4mUQ1Yz1KU7b0gA2NBh+1KkOcyNsF8ya+Utl4Un3KRi+rHQK1zXgr+LarQdMIFnq05knY+cUhT521Phu2WxJngqphRJvAlXqxW+5HXC2GmbEoFIP6gKfDUZX2q9Dp9cgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=FBHKuC7Y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VlKRxgAJ; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="FBHKuC7Y";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VlKRxgAJ"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2D55EEC0122;
+	Tue, 23 Sep 2025 18:21:16 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Tue, 23 Sep 2025 18:21:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758666076;
+	 x=1758752476; bh=3nkMXYsQNPOfJyMM2epA6ZJ4KP4ztuWbczd1cO9jXWc=; b=
+	FBHKuC7YvPP1A0aKHGXlQx6H7dRJfuklX0Va64ptRJZjgjUGHt5au5lhM29t/ZbL
+	alNIDOk2Laz6iX4OLQ9KMYp8JRm3sTPJ4YlDlx/Jma6v6f4wjtQABjAKhzUuB2z8
+	MOiuUDZcvWAiT/mbQ0lkOSn7rJfFCMyrglbCLTZNlBPArv8MLlWLaiarUG8Ok/GQ
+	AUaO2UZkgS4frzjUjf9rUOaM4dGYt2a+F0u6abf4wFOhTPNl/lm1Ri1fPoXfhvG9
+	tXQ3kJ6pRHuGqend0/pkENQC8y6/TQMX9brIARSIISU27WsIWgDx3rVOvCjx4EdB
+	igBZkvrXJcbuTK94JtT6GQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758666076; x=
+	1758752476; bh=3nkMXYsQNPOfJyMM2epA6ZJ4KP4ztuWbczd1cO9jXWc=; b=V
+	lKRxgAJ7dYtQej9YMB5hqAIZAFn0EjdkDsLEMWQB8mwaMcI2r/g+MiSOR6h4a6L1
+	rhexDqV0UvuydO7WlmZkZqJyLUFXmOvm3RZ1KBcKNZjRAvfN+n+HHPaY02VBuAgS
+	DJr1+QP0Im4feovRIzdh/XpdszQWrLXAKFkFzBke6EhmNT2JGUEnhLDwGzB1jWjj
+	QxT74SdL2fdd18AMNIh+JhNFk/bNTfK4cfbu8FLo7bBm+w+JFkmi7HluFxCeRqNM
+	XmYtnzxzhOlafSRw/Eb7l2AemCXCAYEhPgAyMhNURaCtlzbZYbvYMBBJvpdIqtTS
+	UBm08E2mTeib/VkeEUSlQ==
+X-ME-Sender: <xms:Wx3TaF1zy_diO-dBaFSd_HN9kFj2vtLyg5iX6aNLwaykmXPHnStaRA>
+    <xme:Wx3TaCEkBCS3xXKmkmJ5GVwMS92jwMS8N-a1BW1lJYMbSUOY8qkJW7dBiRanqbNtm
+    cI1-44R1vxmCrRtJcblkBnRU7eIadJSmwCMcU1s3ZT5MaLVc3y84D0>
+X-ME-Received: <xmr:Wx3TaAtxZY411aTC7INIzKfDKyznzkWqms_8mZEJ_T1d826u4YR4Wn5irwaXyu2nmT54RBW_sDAawh3OwE9Nj8A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeiudeludcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepgfhrihgtucfu
+    rghnuggvvghnuceoshgrnhguvggvnhesshgrnhguvggvnhdrnhgvtheqnecuggftrfgrth
+    htvghrnhepveeikeeuteefueejtdehfeefvdegffeivdejjeelfffhgeegjeeutdejueel
+    hfdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsh
+    grnhguvggvnhesshgrnhguvggvnhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkh
+    drohhrghdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehsrghnuggvvghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehvlehfsheslh
+    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghl
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
+    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvghrihgtvhhhsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtph
+    htthhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhm
+X-ME-Proxy: <xmx:Wx3TaFoUV0d9T1VUoU3TrOW1_gPVHI335AcNk_qHubZHcmYRuuaQnA>
+    <xmx:Wx3TaHVIz_TQVJK5OhzdSQc-UrIYSBb4AkO2QdOY36p08zrZEnsOyA>
+    <xmx:Wx3TaN19rxvtPeE62WJNqvQ6PiwBbwGuete9CCckqq_O3h938przkQ>
+    <xmx:Wx3TaMto1xlI216iWHc2L-tm6mjiM8138FWzkSB0pkl9QjzPxdGUrw>
+    <xmx:XB3TaDINo6u7AVJ9MjgO-EOkFvSD77mEhy8FTk_Z1QZOF_MBMmSpKlGD>
+Feedback-ID: i2b59495a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Sep 2025 18:21:14 -0400 (EDT)
+Message-ID: <fe6ecd47-2c6d-45b4-a210-230a162b39b2@sandeen.net>
+Date: Tue, 23 Sep 2025 17:21:14 -0500
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:160f:b0:423:fcd6:5487 with SMTP id
- e9e14a558f8ab-42581e28b8emr65860075ab.14.1758657542574; Tue, 23 Sep 2025
- 12:59:02 -0700 (PDT)
-Date: Tue, 23 Sep 2025 12:59:02 -0700
-In-Reply-To: <0000000000002fd2de0618de2e65@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d2fc06.a70a0220.4f78.000d.GAE@google.com>
-Subject: Re: [syzbot] [fs?] general protection fault in iter_file_splice_write
-From: syzbot <syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, danielyangkang@gmail.com, 
-	dhowells@redhat.com, eadavis@qq.com, ericvh@kernel.org, jack@suse.cz, 
-	jlayton@kernel.org, linux-afs@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lizhi.xu@windriver.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, netfs@lists.linux.dev, pc@manguebit.org, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 0/4] 9p: convert to the new mount API
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+ dhowells@redhat.com
+References: <20250730192511.2161333-1-sandeen@redhat.com>
+ <aIqa3cdv3whfNhfP@codewreck.org>
+ <6e965060-7b1b-4bbf-b99b-fc0f79b860f8@sandeen.net>
+ <aJ6SPLaYUEtkTFWc@codewreck.org>
+ <20250815-gebohrt-stollen-b1747c01ce40@brauner>
+ <aJ-eNBtjEuYidHiu@codewreck.org>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@sandeen.net>
+In-Reply-To: <aJ-eNBtjEuYidHiu@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot suspects this issue was fixed by commit:
+On 8/15/25 3:53 PM, Dominique Martinet wrote:
+> Christian Brauner wrote on Fri, Aug 15, 2025 at 03:55:13PM +0200:
+>> Fyi, Eric (Sandeen) is talking about me, Christian Brauner, whereas you
+>> seem to be thinking of Christian Schoenebeck...
+> 
+> Ah, yes.. (He's also in cc, although is name doesn't show up in his
+> linux_oss@crudebyte mail)
+> 
+> Well, that makes more sense; I've picked up the patches now so I think
+> it's fine as it is but happy to drop the set if you have any reason to
+> want them, just let me know.
 
-commit a3de58b12ce074ec05b8741fa28d62ccb1070468
-Author: David Howells <dhowells@redhat.com>
-Date:   Thu Aug 14 21:45:50 2025 +0000
+Hi Dominique - not to be pushy, but any chance for this in the current
+merge window, if it's had enough soak time? If not it's not really urgent,
+I just don't want it to get lost.
 
-    netfs: Fix unbuffered write error handling
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=162dc142580000
-start commit:   5189dafa4cf9 Merge tag 'nfsd-6.11-1' of git://git.kernel.o..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e8a2eef9745ade09
-dashboard link: https://syzkaller.appspot.com/bug?extid=d2125fcb6aa8c4276fd2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16828c5d980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103c7805980000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: netfs: Fix unbuffered write error handling
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Thanks,
+-Eric
