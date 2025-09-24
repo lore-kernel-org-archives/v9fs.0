@@ -1,122 +1,94 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F1D2AE68
-	for <v9fs@lists.linux.dev>; Tue, 23 Sep 2025 22:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893A54317D
+	for <v9fs@lists.linux.dev>; Wed, 24 Sep 2025 02:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758666078; cv=none; b=JWZuf45QE2QHswzHVkGNWIWuwIfTHf3ZPTDa2abK2vqKL34ivRRE1x8pHVBIVfsG9Q59A9bTM/d/At5J1uLcU5qvqcnzsuzeVIDnbU1hj+UaGx1K17exoV6iJ+LinuahimRYHY8f1oEpv9gGVRvFXxZIfieP3aTysHd5lx7rodc=
+	t=1758682523; cv=none; b=dFUj6o4WRYe/wLZPrU8cvWlCftokbxnf0VJj7g1Aqi9gtXXRaFw/+v+VqR0o/NL2VZv1Z0l62UzyO+izyxzXRs+LFEjpDFT4obYuGDLUY/iqUHmkXU75mTqbgq5CBaQhwwHz8Due7k5j2j0o6iIuVsbJKwz6TDswcv2kSc8ZWEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758666078; c=relaxed/simple;
-	bh=Ik7YM5Q/FmmiZ1L/zyrrXdT0vMvQm7wIQuGJxxDp3VU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BGW9/85dE5J1OmxzwC1tIcRMQoanwJTZ80DSSdarDT4mUQ1Yz1KU7b0gA2NBh+1KkOcyNsF8ya+Utl4Un3KRi+rHQK1zXgr+LarQdMIFnq05knY+cUhT521Phu2WxJngqphRJvAlXqxW+5HXC2GmbEoFIP6gKfDUZX2q9Dp9cgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=FBHKuC7Y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VlKRxgAJ; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
+	s=arc-20240116; t=1758682523; c=relaxed/simple;
+	bh=5USoQlt1ooy6nsU5wNWS0UuXPfJFYjaLYXbt2w23uRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ujxaJzigfaR6zSWfuIFfYEsXxsvMUk2Qc6bMjX9H0as/4bo8ogkvL09ZPQ6hKGKY3dH8vOY9S+vlX4z/9WUSwD13/LV5axeqjZoUS9tCCHdqkdgH458Ie1euCOhd6okyaQtzXXcS//fJTLlo+m3W7yC6Fzy4WgJPcpTs2xsS+KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hJ5sdKPV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="FBHKuC7Y";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VlKRxgAJ"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2D55EEC0122;
-	Tue, 23 Sep 2025 18:21:16 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 23 Sep 2025 18:21:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758666076;
-	 x=1758752476; bh=3nkMXYsQNPOfJyMM2epA6ZJ4KP4ztuWbczd1cO9jXWc=; b=
-	FBHKuC7YvPP1A0aKHGXlQx6H7dRJfuklX0Va64ptRJZjgjUGHt5au5lhM29t/ZbL
-	alNIDOk2Laz6iX4OLQ9KMYp8JRm3sTPJ4YlDlx/Jma6v6f4wjtQABjAKhzUuB2z8
-	MOiuUDZcvWAiT/mbQ0lkOSn7rJfFCMyrglbCLTZNlBPArv8MLlWLaiarUG8Ok/GQ
-	AUaO2UZkgS4frzjUjf9rUOaM4dGYt2a+F0u6abf4wFOhTPNl/lm1Ri1fPoXfhvG9
-	tXQ3kJ6pRHuGqend0/pkENQC8y6/TQMX9brIARSIISU27WsIWgDx3rVOvCjx4EdB
-	igBZkvrXJcbuTK94JtT6GQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758666076; x=
-	1758752476; bh=3nkMXYsQNPOfJyMM2epA6ZJ4KP4ztuWbczd1cO9jXWc=; b=V
-	lKRxgAJ7dYtQej9YMB5hqAIZAFn0EjdkDsLEMWQB8mwaMcI2r/g+MiSOR6h4a6L1
-	rhexDqV0UvuydO7WlmZkZqJyLUFXmOvm3RZ1KBcKNZjRAvfN+n+HHPaY02VBuAgS
-	DJr1+QP0Im4feovRIzdh/XpdszQWrLXAKFkFzBke6EhmNT2JGUEnhLDwGzB1jWjj
-	QxT74SdL2fdd18AMNIh+JhNFk/bNTfK4cfbu8FLo7bBm+w+JFkmi7HluFxCeRqNM
-	XmYtnzxzhOlafSRw/Eb7l2AemCXCAYEhPgAyMhNURaCtlzbZYbvYMBBJvpdIqtTS
-	UBm08E2mTeib/VkeEUSlQ==
-X-ME-Sender: <xms:Wx3TaF1zy_diO-dBaFSd_HN9kFj2vtLyg5iX6aNLwaykmXPHnStaRA>
-    <xme:Wx3TaCEkBCS3xXKmkmJ5GVwMS92jwMS8N-a1BW1lJYMbSUOY8qkJW7dBiRanqbNtm
-    cI1-44R1vxmCrRtJcblkBnRU7eIadJSmwCMcU1s3ZT5MaLVc3y84D0>
-X-ME-Received: <xmr:Wx3TaAtxZY411aTC7INIzKfDKyznzkWqms_8mZEJ_T1d826u4YR4Wn5irwaXyu2nmT54RBW_sDAawh3OwE9Nj8A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeiudeludcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepgfhrihgtucfu
-    rghnuggvvghnuceoshgrnhguvggvnhesshgrnhguvggvnhdrnhgvtheqnecuggftrfgrth
-    htvghrnhepveeikeeuteefueejtdehfeefvdegffeivdejjeelfffhgeegjeeutdejueel
-    hfdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsh
-    grnhguvggvnhesshgrnhguvggvnhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkh
-    drohhrghdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehsrghnuggvvghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehvlehfsheslh
-    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvghrihgtvhhhsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtph
-    htthhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhm
-X-ME-Proxy: <xmx:Wx3TaFoUV0d9T1VUoU3TrOW1_gPVHI335AcNk_qHubZHcmYRuuaQnA>
-    <xmx:Wx3TaHVIz_TQVJK5OhzdSQc-UrIYSBb4AkO2QdOY36p08zrZEnsOyA>
-    <xmx:Wx3TaN19rxvtPeE62WJNqvQ6PiwBbwGuete9CCckqq_O3h938przkQ>
-    <xmx:Wx3TaMto1xlI216iWHc2L-tm6mjiM8138FWzkSB0pkl9QjzPxdGUrw>
-    <xmx:XB3TaDINo6u7AVJ9MjgO-EOkFvSD77mEhy8FTk_Z1QZOF_MBMmSpKlGD>
-Feedback-ID: i2b59495a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Sep 2025 18:21:14 -0400 (EDT)
-Message-ID: <fe6ecd47-2c6d-45b4-a210-230a162b39b2@sandeen.net>
-Date: Tue, 23 Sep 2025 17:21:14 -0500
-Precedence: bulk
-X-Mailing-List: v9fs@lists.linux.dev
-List-Id: <v9fs.lists.linux.dev>
-List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hJ5sdKPV"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 71D2214C2D3;
+	Wed, 24 Sep 2025 04:55:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1758682512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MX1GFon4vtGfl3JPV2segkelrrqe31tGsosMdNjHGMA=;
+	b=hJ5sdKPVVMSh4D/n8dTonzlrtP9kYbkiC+NljV5Ye4WJVBEtf8fQ51NS3nZDVsYQo4f9ze
+	5HlbesLSqt6FCIxAltkg9pb1rx+4hFPF2tE4oZLvsUUL73pK+ddjoOJJXxBgNy081snmtY
+	2+l2BZINztx6tZgdKen37vO0B2LFSheezsCaXVyR3nnTvsamyq+eDzhWt9i0x859Q4I8Af
+	Kg2uDDkxS/V7gmKfHX1077yxz3TNFZ3uCjXHQNAgSWk8VC/3dCOV2bU2GnI6U0RdCNENSE
+	9EFSoZsLJqA6ozrpjTPsn+re8N+q26buYZvjEw1KhV94Mg24J433Fq6dF1sBDw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 35aa545c;
+	Wed, 24 Sep 2025 02:55:07 +0000 (UTC)
+Date: Wed, 24 Sep 2025 11:54:52 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Sandeen <sandeen@sandeen.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	dhowells@redhat.com
 Subject: Re: [PATCH V2 0/4] 9p: convert to the new mount API
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Christian Brauner <brauner@kernel.org>
-Cc: Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
- dhowells@redhat.com
+Message-ID: <aNNdfO4WIJmBQ2uO@codewreck.org>
 References: <20250730192511.2161333-1-sandeen@redhat.com>
  <aIqa3cdv3whfNhfP@codewreck.org>
  <6e965060-7b1b-4bbf-b99b-fc0f79b860f8@sandeen.net>
  <aJ6SPLaYUEtkTFWc@codewreck.org>
  <20250815-gebohrt-stollen-b1747c01ce40@brauner>
  <aJ-eNBtjEuYidHiu@codewreck.org>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@sandeen.net>
-In-Reply-To: <aJ-eNBtjEuYidHiu@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <fe6ecd47-2c6d-45b4-a210-230a162b39b2@sandeen.net>
+Precedence: bulk
+X-Mailing-List: v9fs@lists.linux.dev
+List-Id: <v9fs.lists.linux.dev>
+List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <fe6ecd47-2c6d-45b4-a210-230a162b39b2@sandeen.net>
 
-On 8/15/25 3:53 PM, Dominique Martinet wrote:
-> Christian Brauner wrote on Fri, Aug 15, 2025 at 03:55:13PM +0200:
->> Fyi, Eric (Sandeen) is talking about me, Christian Brauner, whereas you
->> seem to be thinking of Christian Schoenebeck...
+Eric Sandeen wrote on Tue, Sep 23, 2025 at 05:21:14PM -0500:
+> On 8/15/25 3:53 PM, Dominique Martinet wrote:
+> > Christian Brauner wrote on Fri, Aug 15, 2025 at 03:55:13PM +0200:
+> >> Fyi, Eric (Sandeen) is talking about me, Christian Brauner, whereas you
+> >> seem to be thinking of Christian Schoenebeck...
+> > 
+> > Ah, yes.. (He's also in cc, although is name doesn't show up in his
+> > linux_oss@crudebyte mail)
+> > 
+> > Well, that makes more sense; I've picked up the patches now so I think
+> > it's fine as it is but happy to drop the set if you have any reason to
+> > want them, just let me know.
 > 
-> Ah, yes.. (He's also in cc, although is name doesn't show up in his
-> linux_oss@crudebyte mail)
-> 
-> Well, that makes more sense; I've picked up the patches now so I think
-> it's fine as it is but happy to drop the set if you have any reason to
-> want them, just let me know.
+> Hi Dominique - not to be pushy, but any chance for this in the current
+> merge window, if it's had enough soak time? If not it's not really urgent,
+> I just don't want it to get lost.
 
-Hi Dominique - not to be pushy, but any chance for this in the current
-merge window, if it's had enough soak time? If not it's not really urgent,
-I just don't want it to get lost.
+Thanks for the mail;
 
-Thanks,
--Eric
+This ran into a syzbot bug a while ago and I've been meaning to check
+the v9ses setup as I wrote here:
+https://lkml.kernel.org/r/aKlg5Ci4WC11GZGz@codewreck.org
+
+Unfortunately I still haven't gotten around to it; my feeling is that
+Edward's patch only papers over the issue and there's a problem with two
+sessions hanging around when we really only should have one to avoid
+such "woops I'm looking at the wrong one" errors.
+
+If we can clear that up this week I'll happily retake the patches and I
+think it can still make it this window, but I honestly don't think I'll
+have time to look on my end sorry
+
+-- 
+Dominique
