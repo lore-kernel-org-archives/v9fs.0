@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C22741A0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D394D1A9FA4;
 	Fri, 26 Sep 2025 09:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758878859; cv=none; b=i3hSNF0036VDj3CTjkvTwf1vT7z+ZqWBZUEaS8qyhQ9XDkLenFJJ3GchqEuDJ8T56q6iRO71wdQWvQnBabENDYhdJmygW+1YksTu9clVA4AfFdDyIP+zpSi94XkodLe8hMb8Cv4W6gu0h2fBWIPs0l2jdfhtoXgWYMehuArLukc=
+	t=1758878859; cv=none; b=A3dmbK43vz0a2sP4Ly3BbgVABBomSVf/KBE2JaiBLnrtrOTAn+F7P3X9lYm4pwlCdOR4/4JubRC9Jpe8tvmspFBlgXNF94lHOs9gRpglgO700s8F01EQBbJWIMXW5kUb14nRsZRod/7Pmoff+XmlhBvu1vE378Czu6dDCjJwV5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758878859; c=relaxed/simple;
-	bh=qfXgb+yYLhRa2IcpPHI2iywFY1Y2Fm3oR9YEiLZQd44=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qfF5P4/Dapw5Uj4KmgsQojsEM7NKMJnZU2dKYT+wxR1mNNACBjxrLByCeIDgktNFetqzDrRpkfHeGuHK16bTY32iD2MtyicuSczSZrWFkXr18W6T9eU0K15oaoCMmHbJgpGE8xIEqdyN7viILweljgBu/yHyiJrgH404wCKk7tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0otqkrD; arc=none smtp.client-ip=10.30.226.201
+	bh=bjiXcfLPlhN7qCFj4w0sp8jbXNvjc2ffeql8BPbnWpo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WCCnuGyHHsAFoInBT5ua+jcmm83ZOWGC6rwRMyg2ioa0Mvp13h0GdZY/tUBbKDHc2QUcQf/l/ROcJ0IAUkBVH4EdH3xbb+bG5UOBQYn7evkaaffcHTPneYn7kwnzH/FBGwcq+GPzLDDfoMkO/Q2A3U19g8Chjc4PvBXqa9+xogc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=htfR9Fn7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0otqkrD"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7259DC4CEF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="htfR9Fn7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 80A02C4CEF5;
 	Fri, 26 Sep 2025 09:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758878859;
-	bh=qfXgb+yYLhRa2IcpPHI2iywFY1Y2Fm3oR9YEiLZQd44=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=l0otqkrD1Hbv9WNoKeuZRDm1jZVn3R9sSeFgfuy0ObQhchDL/a/zTqkOdwmAxNvJV
-	 DiNtxviCvd3si9aIT54sH2ejxz7nZjruXNRC1ZzrCmwkVI4AhnrmIr4RmwOAlfubIw
-	 y6P4kiYzGOwsj4l7uD+0CBIh5sRiGRwtcz84AUePiEqh7e+XFxvxLBGpF5sshaW5uK
-	 ma+9KCHqIZJhnAtKiopBpwG6V8N6iHMk9wqzTBnjckrW9p5fEt8jX33/INQ6YlQ72z
-	 6ttGuE2/KQIHtH7j7KodKRM2JvUesZlhlszMEKk0MbqG0LSejsr7mF5ZoRWKDYUb/T
-	 n7sWs4gKxa49w==
+	bh=bjiXcfLPlhN7qCFj4w0sp8jbXNvjc2ffeql8BPbnWpo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=htfR9Fn77V/EC1FsKNdoMNB3KUPRv2RPX3gUFJcPnH3/NpE5uHwfJVSyLWdDLXQK5
+	 EzOZNtUsp8tTsFbIm2TVMixzFlUYbjSKIr292CgmIWvpp8xQOX71TSWlyMa/p1j3z5
+	 K93PvOm8XEtRnAslMGX2p4e4zqJqW/55ZBKT/KXZTpSbnoLpX+gP3twP+0aaBTMMVw
+	 rrd0iHscsyh42xyyFdJvsHlk7lx3rp5eDz66AE6kxr3Sf4nHkxlzBH0mcbz0OiMXts
+	 pNP9ddk3f+ciwWnaKTt9Z8cDK8kj66QJrNpB9quy+oSzQKxrqrrXotdB9h2JYF2o+/
+	 R+paKGubzARsQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61F41CAC5B9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EB26CAC5AE;
 	Fri, 26 Sep 2025 09:27:39 +0000 (UTC)
 From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Subject: [PATCH 0/3] Split patches sent earlier
-Date: Fri, 26 Sep 2025 18:27:28 +0900
-Message-Id: <20250926-v9fs_misc-v1-0-a8b3907fc04d@codewreck.org>
+Date: Fri, 26 Sep 2025 18:27:29 +0900
+Subject: [PATCH 1/3] 9p: clean up comment typos
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -39,11 +39,10 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIBc1mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDSyMz3TLLtOL43MziZF1jM2Mjg8TUNAuLFEsloPqCotS0zAqwWdGxtbU
- As/KtgFsAAAA=
-X-Change-ID: 20250926-v9fs_misc-36320aef88d9
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250926-v9fs_misc-v1-1-a8b3907fc04d@codewreck.org>
+References: <20250926-v9fs_misc-v1-0-a8b3907fc04d@codewreck.org>
+In-Reply-To: <20250926-v9fs_misc-v1-0-a8b3907fc04d@codewreck.org>
 To: "Randall P. Embry" <rpembry@gmail.com>, 
  Eric Van Hensbergen <ericvh@kernel.org>, 
  Latchesar Ionkov <lucho@ionkov.net>, 
@@ -51,21 +50,21 @@ To: "Randall P. Embry" <rpembry@gmail.com>,
 Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
  Dominique Martinet <asmadeus@codewreck.org>
 X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=878;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1608;
  i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=qfXgb+yYLhRa2IcpPHI2iywFY1Y2Fm3oR9YEiLZQd44=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBo1lyH+7NBIAYbEA8NOLVRhtoIVCFkD0YMEyn5K
- r+Ga74xinqJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaNZchwAKCRCrTpvsapjm
- cNIMD/9ZXhaWrq3pKI+K2orBC21oEcSf3qlXPhQsbLpLxWhfabSaDWI6ojpw3uDrNLGduPo2iAy
- IRRZbEUMFia2kPXomFhhG52rbAWJyT6AYqwzMqsJfcR6NEhX05pP81H/X1nPbqKBN7hKZFAMZVu
- d7/3OeDnIpkoXGGMtwa5WBhA8LAjC7aG5iUr9AEUGE4xf/nOgcjXoB5nZTT0KHBFbzplttMDdt2
- Qo65psDVWdEpH1LlQ3aocA5YK3GarAR3yIfn6c+y4CHMPNoWMoNHTRxLJQpxL7SftONwvbvdIn0
- 1iKCTqDasoYu/8YQqXIht30F+9Fsn1o/YEyn94AimHbZEDzsIOzRfFOIX8moP9QGrd7DF78whh4
- iqR4tlotSm12eILBaf/c6X2ep4g/Oh4RNV7yzaMGyBDRX4w6oWs1rgtp/po3FH90qFg71v7pD8U
- sTlrJeB3LzQsmFqjNDrU5KMq/iVQk9QgJUWbbwMQEsPqQ96oPyzHHg/ev+dC3qIbgugb/XuFNFf
- HTWxun331eeqtcJot7tw+WsVVY0vUAOU3bWZx5OhSlh7ddVhZkuOwIufxfjV+IAjSTkITf1DTWz
- /WGWbWCby2YXTtDPuUtCYx6taI8oaZT9qt5aosrvLhzr4wgOngxoa1fH/djuBj0R0cfQyfwWFfC
- bhPcsEbD/K2/SWg==
+ bh=iGmjLo6EVujPyWtH4nBhmJfViu8T3yF4qPnQ2nTMqIQ=;
+ b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBo1lyJAj4Xfe7DptT70ZeU109wolge7hWv3ztiB
+ RRMQoL9sFqJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaNZciQAKCRCrTpvsapjm
+ cFSkD/9Naw3YNi2op0W1lypB3TgDOma9d+PCgWVVAh/7sKyE6LFQN+d9MRCBnj6FdYeV6wdNR6T
+ c3xZuv/KPuAKMjTwDmXRlZ9Zgc46oayf1Vb5Ar9bNBFZI7qHLPLusS936HzsHEJQO5E72Kc8g2v
+ ianuKT/qQ1k0ihNXkyy+kQO7mlp61Qf+KI99bVGNb/zYRg3PG9RM0oRo9oqCzQfZ6iaYK8BGNgA
+ xtMFhGP/MKwF+Dx84beu6zwmavUL7cm/Z2Aknz65CGRAWFKC2Ku0vhSuRup7DSH2nIgz4IOxhoj
+ 1Xol7sEh10HyPKazMwKEdh10mD9/vElDVhmEHHTY0zzLJCvtC78gD5iulq1n0tfRvYM2KX77uHG
+ il7aZFlGiJfjRqIoXzs7TqraOMoMnN0K7ud4DFkW+B6E2Eulv4VPttRgarZDVQhbN5fp/DdsaYw
+ WvETUpj6u+CafhtGY62NGDoklMyA7aa8gZkjNruQVOMlDK5mpwP2fAbHw0mmDCfD4sFS+8oSUjf
+ QzbcRCXS7KFl5NHV0nKwz2U8trZPPx2B3JcZsKQlxkZCVC9LLU54uxb1QaC20Jn8BXilyrA6dIM
+ 0XewSpZ9Oh8gaeWB9XrisNnSvbKo7W9x6W7NQCck3zGLPDObkgaS+GWlKA1zQW+Rwsa/KJaYOKD
+ e29ABbxJ8zfZfWQ==
 X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
  fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
 X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
@@ -73,29 +72,50 @@ X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
 X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
 Reply-To: asmadeus@codewreck.org
 
-This was a pretty simple patch overall but "bullet point" commits are
-not great for later debugging, so just split this commit in 3:
-https://lkml.kernel.org/r/20250925122802.72580-1-rpembry@gmail.com
+From: "Randall P. Embry" <rpembry@gmail.com>
 
-Randall, I kept you as author, so please comment if you have anything to
-say about commit messages or anything else, and I'll pick these up and
-push to Linus in a couple of weeks.
+Fix a few minor typos in comments (e.g. "trasnport" → "transport").
 
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
 Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 ---
-Randall P. Embry (3):
-      9p: clean up comment typos
-      9p: fix /sys/fs/9p/caches overwriting itself
-      9p: sysfs_init: don't hardcode error to ENOMEM
+ fs/9p/v9fs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- fs/9p/v9fs.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
----
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250926-v9fs_misc-36320aef88d9
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index 77e9c4387c1dfd4de8a54e9b6f676bdf987dbdc9..01e70a464b6039231df272e43b4ebdd3b5afb967 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -438,8 +438,7 @@ struct p9_fid *v9fs_session_init(struct v9fs_session_info *v9ses,
+ 		v9ses->flags &= ~V9FS_ACCESS_MASK;
+ 		v9ses->flags |= V9FS_ACCESS_USER;
+ 	}
+-	/*FIXME !! */
+-	/* for legacy mode, fall back to V9FS_ACCESS_ANY */
++	/* FIXME: for legacy mode, fall back to V9FS_ACCESS_ANY */
+ 	if (!(v9fs_proto_dotu(v9ses) || v9fs_proto_dotl(v9ses)) &&
+ 		((v9ses->flags&V9FS_ACCESS_MASK) == V9FS_ACCESS_USER)) {
+ 
+@@ -450,7 +449,7 @@ struct p9_fid *v9fs_session_init(struct v9fs_session_info *v9ses,
+ 	if (!v9fs_proto_dotl(v9ses) ||
+ 		!((v9ses->flags & V9FS_ACCESS_MASK) == V9FS_ACCESS_CLIENT)) {
+ 		/*
+-		 * We support ACL checks on clinet only if the protocol is
++		 * We support ACL checks on client only if the protocol is
+ 		 * 9P2000.L and access is V9FS_ACCESS_CLIENT.
+ 		 */
+ 		v9ses->flags &= ~V9FS_ACL_MASK;
+@@ -669,7 +668,7 @@ static int __init init_v9fs(void)
+ 	int err;
+ 
+ 	pr_info("Installing v9fs 9p2000 file system support\n");
+-	/* TODO: Setup list of registered trasnport modules */
++	/* TODO: Setup list of registered transport modules */
+ 
+ 	err = v9fs_init_inode_cache();
+ 	if (err < 0) {
 
-Best regards,
 -- 
-Dominique Martinet <asmadeus@codewreck.org>
+2.51.0
 
 
