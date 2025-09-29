@@ -1,145 +1,135 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576E22D4DE
-	for <v9fs@lists.linux.dev>; Sat, 27 Sep 2025 22:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FAB2AD24;
+	Mon, 29 Sep 2025 13:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759013620; cv=none; b=VrSoRTWshsBVANG/oIoX7ucNTANcArQE7FlcAPKUoei6lqgNXPMr3IVf1q9HkzYqeT8eYLSlDDF83zBA7H2/PbLC7zbzfSe0pZVMYfccV4jhaPhlgLQjLicYFemlvzTeF47/locnoRcx9lw2khMqGXosnTTF/WRKzV9qn3B5lH0=
+	t=1759153861; cv=none; b=IHGk8sVINSIeZFhHdLP8k5sYYT29IiwQyLjpKrXrPPONJSkMnLAld5c2C/oWm1aMWk4RDfLdVL1hEHnI4bpJhcrURkpjwbpJxvxXzaqNIJ0uAStnUeSVJJz8pTmI6q7dVbOj+/jYO6qDNreNaAGHgW1+OA3RnSuQrdZumsxmRDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759013620; c=relaxed/simple;
-	bh=waBb0hPPk6mLfv0mSvcbxDflqmx7x/HwJzr4j44b6IA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rcN9gerGku7r76VfXLT8uUnuiC/wctu3R/gxa3+g6CnaOFgO13JxeWYs3WQ+WW4uH8CvsMOIjqAUjK2HvOWgo0jDUscAlJLHRNPyqbnA5ss7aMrm9XZl6v+SLOd9ycdKqzU1ajJ157WRS5c4bMr0UEtn9URHM13S026dxVIHx6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=eKyDbvq/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Fj1sP+JD; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
+	s=arc-20240116; t=1759153861; c=relaxed/simple;
+	bh=FCGLJ3gQ1x8pq+r+RPbGA0WUBLPRRV6F5YOHY/KaNQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=De+OkOnEiLK+K/92kwkkADoegOJg8s+ne3JtjrZkJH+Kd2Hz1W21E5Wc+XW0s51uUjUwqvFP97VN8jsTiyeFjVNjX8yyBi5gDg4wMGjn4/H9ba0yQwFenryqnVasss/1XgHBHfZK5xNKbWaDwvZgp699Dos1a9Y/Y5y4YVXR5/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=UVEYZsJ0; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="eKyDbvq/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Fj1sP+JD"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 953A81D00099;
-	Sat, 27 Sep 2025 18:53:37 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Sat, 27 Sep 2025 18:53:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1759013617;
-	 x=1759100017; bh=r8nlJBu4+DGKY/5R6PObJknBEO1eOAjKoGLmmZK/l90=; b=
-	eKyDbvq/Eh8iaSy38AvYlWf4aOL1JcMHoMq5lQFzbZf/qVYYvwiJuSRXUw2wRkyi
-	W84xxvDk7NHfE7DZlg+9RbWhBBAbvx9m+wRV2YfUavMdLu0A9IFeFXSLv+TF1krR
-	QW7xfCZNiUiTZbltC0iQRuK1utU2zvflFuo7E1KSoGrSnZ57pKS5hP4tSDVieF4n
-	i0vqcjPvxi/QhbwdZD9O5A7k7Mar+4XxER3w17Q9sHTBUdbwDMT/hwnZ/5eyITVA
-	+QuHLcyNnrsiCOrW8BRrFOOPYSurbe9qzWPZvvGmQzjkIedVMiYZqhLQxtRydMow
-	A3aFFVEY9aOfzVKVSCM+Fg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1759013617; x=
-	1759100017; bh=r8nlJBu4+DGKY/5R6PObJknBEO1eOAjKoGLmmZK/l90=; b=F
-	j1sP+JDD2LW7MH/hNDFObuIAHmvl4ktCJ9AAQMa3ZLeuGnsUe12x/HDf49NpLFFA
-	htpaRVtzbHRuNFngwO8J6C2vX2NiZqvsCL+lTmcwy9jEErKo/PAaYqnxfp07fUCl
-	vivDRwyOJspJ9inMbZbV/JswgJxiTuuLyuEwgJH2sRhfvANygX3Ix8zThfN2/zV3
-	eO+fOgoBl58o3v/nUh0kAmQiV2GY6T28DNqhbz8bTEXYqDtd3C/6bvC+wBFCgLFK
-	yn8skA2xg5yv6/SFUn4mNvvjEdME0UAcEAfSQ0HtZdn3o40dnCtKCWAPKmGzg2v6
-	UMwMVXiVRDH2+Q+ARjfpg==
-X-ME-Sender: <xms:72rYaOxzkHf1iBPn_ki2J2OddRSi2ii6KjXiEPLleocB1ub2u_NlzQ>
-    <xme:72rYaDqvnQf9m9t4eNo7xSt3ZYBmgM2QeaIeq8ZHkPw4jJbAHxKFKpPEp3uG09Mc4
-    qLRj7lsY84FsoH8J-iKxBm4Jt--fYdvGw5eeNNrUunwDbU57zWDUsI>
-X-ME-Received: <xmr:72rYaI31CI8BKu4N9Vm3gp_EKrk6hqqtvzfVMmR7yPk7mbOLlzaFOdmLGPtwjkWm5a7SjmU_LPrsd8SZM6nePVaN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdejfeeglecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepvfhinhhgmhgr
-    ohcuhggrnhhguceomhesmhgrohifthhmrdhorhhgqeenucggtffrrghtthgvrhhnpeduke
-    evhfegvedvveeihedvvdeghfeglefgudegfeetvdekiefgledtheeggefhgfenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmsehmrghofihtmh
-    drohhrghdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehmihgtseguihhgihhkohgurdhnvghtpdhrtghpthhtohepghhrohhugheskhgroh
-    gurdhorhhgpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshihtvgdrtgho
-    mhdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtph
-    htthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhutghhohes
-    ihhonhhkohhvrdhnvghtpdhrtghpthhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrd
-    guvghvpdhrtghpthhtohepghhnohgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pehlihhnuhigqdhsvggtuhhrihhthidqmhhoughulhgvsehvghgvrhdrkhgvrhhnvghlrd
-    horhhg
-X-ME-Proxy: <xmx:72rYaEC5odOfJqOYh5CMS46GpTM6xDb9AVvtOmNS_6861b1DtbsztQ>
-    <xmx:72rYaBNm-I01NRZ7X-TivQQ5r7FXtHG9_K3YPl08Zvco5qyjf6D3Ww>
-    <xmx:72rYaARSft9Pt3RFDwW19UffJldfrP84_MOYoOmm6R_M_zdt2Mdogw>
-    <xmx:72rYaB4mHnSpi0BBxfmydVJphgXGQj3ht06s42pDFl2BJTwV-n3H9A>
-    <xmx:8WrYaBidm_w-c5MxqEUeR0C1ovUZt-MHB6emscia4wEALnuJnqC2crNk>
-Feedback-ID: i580e4893:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 27 Sep 2025 18:53:33 -0400 (EDT)
-Message-ID: <dd5f424b-c6a8-4d0d-9ec0-1447fce7de39@maowtm.org>
-Date: Sat, 27 Sep 2025 23:53:33 +0100
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="UVEYZsJ0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=U6p5OzRV8NVMjy5kzKrrKHfil5LPBKG7T0tsPVsqnzI=; b=UVEYZsJ0K538ZWZ1EieZNxfF9H
+	p+8GxHeSHMULkws3bfrOst6rZyz24n7Bsvxd1g0QjwcQK4d9pHRxi/DcwrPmmIuMfD2Zi0mDoerQl
+	zH3AcfJbwSwiC1lTYEo5vwaPMduW1hwwPpeuzOlPxCdwYbtkUzOvlak6prs/hWO/UsBSToUyVX3hx
+	qFLivs3RCU77K/x3J7wqJYAqAAJQmN9zuSVm7RvEdlbGF9ie3EF3S8/fKGUXJ3cVuXNM2OxuMMBX9
+	bzLjSfeUKIhlGubBYvtJRf0x7t/k0IeQPJGWBtvrbb20jHJCLv9qaLVMNuT5gD/WFQbPeGGMvbYGL
+	dz2q7R7oo2aDRtjWaG2NBpJMw6EwGlyLPcf9tcH25wRdmSgUkEZ8oGLko38a+cnP7QtaG9g2sbduA
+	Wl/dMvFvfkmKk9lcMJrDdT7ZuTZTEt0z6g08CuAeO2iOXw2SKDhLNSImw/d2PmyXhULgmvn82BAF1
+	OnqtL0B8MJ0JEorALvE3QasTNEdA+ScfVGEGt2xw4GuSN7UNUN70guHROG/dMfXbhGZ7I+SCSr9ai
+	812H/aXsDoOQhXpOLVVKpKhqSs1IxYwXJwps85bQFCJ9AlUiGmUU2owkl8P2iB3zBfu8Om4bKmNt8
+	ZoLVN8UxciL1w24c6DNUhQw20CnUvQg3toB4BlYB0=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, qemu-devel@nongnu.org,
+ Greg Kurz <groug@kaod.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+ =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+ linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, Matthew Bobrowski <repnop@google.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ linux-fsdevel@vger.kernel.org, qemu-devel@nongnu.org,
+ Tingmao Wang <m@maowtm.org>
+Subject:
+ Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to qid)
+Date: Mon, 29 Sep 2025 15:06:59 +0200
+Message-ID: <3061192.c3ltI2prpg@silver>
+In-Reply-To: <f1228978-dac0-4d1a-a820-5ac9562675d0@maowtm.org>
+References:
+ <aMih5XYYrpP559de@codewreck.org> <20250917.Eip1ahj6neij@digikod.net>
+ <f1228978-dac0-4d1a-a820-5ac9562675d0@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
- qid)
-To: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
- Greg Kurz <groug@kaod.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, v9fs@lists.linux.dev, =?UTF-8?Q?G=C3=BCnther_Noack?=
- <gnoack@google.com>, linux-security-module@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>,
- Matthew Bobrowski <repnop@google.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- qemu-devel@nongnu.org
-References: <aMih5XYYrpP559de@codewreck.org> <3070012.VW4agfvzBM@silver>
- <f2c94b0a-2f1e-425a-bda1-f2d141acdede@maowtm.org> <3774641.iishnSSGpB@silver>
- <20250917.Eip1ahj6neij@digikod.net>
- <f1228978-dac0-4d1a-a820-5ac9562675d0@maowtm.org>
- <20250927.ahGhiiy0koo0@digikod.net>
-Content-Language: en-US
-From: Tingmao Wang <m@maowtm.org>
-In-Reply-To: <20250927.ahGhiiy0koo0@digikod.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On 9/27/25 19:27, Mickaël Salaün wrote:
-> Adding Greg Kurz too.
-> 
-> On Sun, Sep 21, 2025 at 05:24:49PM +0100, Tingmao Wang wrote:
->> On 9/17/25 16:00, Mickaël Salaün wrote:
->>> [...]
->>
->> Alternatively if we believe this to be a QEMU issue, maybe
->> Landlock don't need to work around it and should just hold fids (and use
->> QIDs to key the rules) anyway despite server quirks like these.  This can
->> perhaps then be fixed in QEMU?
-> 
-> Yes, I think it would make sense for Landlock to open and keep open a
-> fid (and hopefully the related remote file).  However, the v9fs umount
-> should be handled gracefully the same way Landlock tag inodes are
-> handled.  This should come with a QEMU patch to fix the consistency
-> issue.
-> 
->>
->> (I guess the fact that QEMU is doing path tracking in the first place does
->> gives more precedent for justifying doing path tracking in v9fs as well,
->> but maybe that's the wrong way to think about it)
-> 
-> Anyway, if QEMU does it, wouldn't it be the same for Landlock to just
-> rely on fid?
+On Sunday, September 21, 2025 6:24:49 PM CEST Tingmao Wang wrote:
+> On 9/17/25 16:00, Micka=EBl Sala=FCn wrote:
+[...]
 
-The fid can't be relied on because it's just a handle.  The client can
-open multiple fids pointing to the same file (and in fact this is what
-v9fs does - new fid for each open())
+Hi Greg,
 
-> If QEMU uses FD+O_PATH, then Landlock would work even for
-> server-moved files.
+I'd appreciate comments from your side as well, as you are much on longer on
+the QEMU 9p front than me.
 
-(With this new approach, Landlock would have to key the rules based on
-qid, but it also needs to hold an open fid to prevent that qid from being
-reused (due to ext4 inode number reuse, etc))
+I know you won't have the time to read up on the entire thread so I try to
+summarize: basically this is yet another user-after-unlink issue, this time=
+ on
+directories instead of files.
+
+> So I did some quick debugging and realized that I had a wrong
+> understanding of how fids relates to opened files on the host, under QEMU.
+> It turns out that in QEMU's 9p server implementation, a fid does not
+> actually correspond to any opened file descriptors - it merely represents
+> a (string-based) path that QEMU stores internally.  It only opens the
+> actual file if the client actually does an T(l)open, which is in fact
+> separate from acquiring the fid with T(l)walk.  The reason why renaming
+> file/dirs from the client doesn't break those fids is because QEMU will
+> actually fix those paths when a rename request is processed - c.f.
+> v9fs_fix_fid_paths [1].
+
+Correct, that's based on what the 9p protocols define: a FID does not exact=
+ly
+translate to what a file handle is on a local system. Even after acquiring a
+new FID by sending a Twalk request, subsequently client would still need to
+send a Topen for server to actually open that file/directory.
+
+And yes, QEMU's 9p server "fixes" the path string of a FID if it was moved
+upon client request. If the move happened on host side, outside of server's
+knowledge, then this won't happen ATM and hence it would break your use
+case.
+
+> It turns out that even if a guest process opens the file with O_PATH, that
+> file descriptor does not cause an actual Topen, and therefore QEMU does
+> not open the file on the host, and later on reopening that fd with another
+> mode (via e.g. open("/proc/self/fd/...", O_RDONLY)) will fail if the file
+> has moved on the host without QEMU's knowledge.  Also, openat will fail if
+> provided with a dir fd that "points" to a moved directory, regardless of
+> whether the fd is opened with O_PATH or not, since path walk in QEMU is
+> completely string-based and does not actually issue openat on the host fs
+> [2].
+
+I don't think the problem here is the string based walk per se, but rather
+that the string based walk always starts from the export root:
+
+https://github.com/qemu/qemu/blob/4975b64efb5aa4248cbc3760312bbe08d6e71638/=
+hw/9pfs/9p-local.c#L64
+
+I guess that's something that could be changed in QEMU such that the walk
+starts from FID's fs point, as the code already uses openat() to walk relat=
+ive
+to a file descriptor (for security reasons actually), Greg?
+
+That alone would still not fix your use case though: things being moved on
+host side. For this to work, it would require to already have a fd open on
+host for the FID. This could be done by server for each FID as you suggeste=
+d,
+or it could be done by client by opening the FID.
+
+Also keep in mind: once the open file descriptor limit on host is exhausted,
+QEMU is forced to close older open file desciptors to keep the QEMU process
+alive. So this might still break what you are trying to achieve there.
+
+Having said that, I wonder whether it'd be simpler for server to track for
+file tree changes (inotify API) and fix the pathes accordingly for host
+side changes as well?
+
+/Christian
+
+
