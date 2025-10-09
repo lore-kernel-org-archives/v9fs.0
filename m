@@ -1,139 +1,105 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601BD2BE05B
-	for <v9fs@lists.linux.dev>; Wed,  8 Oct 2025 17:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513F72E8B62
+	for <v9fs@lists.linux.dev>; Thu,  9 Oct 2025 13:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759946096; cv=none; b=Jex3Yr21tX+Q+QO0S3et4+HVuYoZaqjsXv8r8/OUNnUOxybprxR9/5cKTZjZQtVlnwv/fYGrPefJd6ih5SjgHfVV+i1PFxd9hgMoNPNBMn831R2K1eQhPuZpH5Ly21Zhd3hKa6svnqCwDmBG64LNqfuIZliu4eIKlo4ovH3H9II=
+	t=1760015990; cv=none; b=OiZterxcG1KyLzKY7ymujm/lNfjT96HTYsz3797O1VuheQOcN1KMB0Psa4pyZb5G37HBf220NHBTPEXHppM63gB+DsjscWagGvdt6N9TorWlCSXrcGEE+i3YW2pKgV902R+rDZlaSQZx1iry+0jhoZkupVRbk6jzCFIQUouQRxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759946096; c=relaxed/simple;
-	bh=u2DpBaXRZ7mJGKPOLy4KCBidsT0cH9E/K3CtFwps7PY=;
+	s=arc-20240116; t=1760015990; c=relaxed/simple;
+	bh=rNLTq1LQFw8bHXqJQapbXIlJpzZHUR76vAyHIGqeW78=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=eyYgncSpIg+HNZtvDmC7YTeW8HRRJ4ASNVt5XDJ6dkd0J832Fi0Lw+aIQh1gZ2e7arHicr15GaqaxHRDEGAsiSXjv8T+pOQQr4a1067jRceOUoMMCZqc4Y5Lmj34W4vvsV81xCo8b2u+zzt8Li5TYrjLjH2P5x9sqHU+2QNcQE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vGFFB0PK; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Disposition; b=F/yTvsLrMSjYSIYbyt3aCfPXYOaMSDiLgprelabPxi/dr19BZOrn0Nc1MD3Ve+ktVhf9AFLgcQk8IpEXBojjvBkRuR85kWikRSBxPygSl/vh6zzVzUuOz3n4G/95zuBdHOXu/seRCteCbqVQz5pY2vY5ofpSc+rs39CxTDLS/Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=GCvq1v9a; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vGFFB0PK"
-Date: Wed, 8 Oct 2025 13:54:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759946090;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="GCvq1v9a"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 0B97014C2D3;
+	Thu,  9 Oct 2025 15:10:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1760015441;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=8qejHQWaI1fXqm3UnNSaY0lJza2hZ2urX7Ww1ERGZSs=;
-	b=vGFFB0PKV1J9K7MEq/jCj2J0UL5M8a9+avSZ2Efag3dp+uJpYDjd0p7h5wBJeZ6hi6vlBl
-	BMC5m3Z/kDpkZaWp4GQLwjSkz2JQiogiTZL94rT06wXh42Aecdqjw7kDypGcmLzxQpxPD8
-	/j5oooQ/GbNQblraNYCvuzorG+kZYsQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: v9fs@lists.linux.dev, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: -ENODATA from read syscall on 9p
-Message-ID: <hexeb4tmfqsugdy442mkkomevnhjzpuwtsslypeo3lnbbtmpmk@ibrapupausp7>
+	bh=RSEzej2rMgZ/3dQXyeaxr2uE3jRK8E8SdoM2KwIIHvc=;
+	b=GCvq1v9aTg5FpSIPtWoorqiXzwQTMz83nHwr/4YiNUtsosP4PtDdQtyKlMjJFVNLWRXwLV
+	5pnPNYZm51/Dmf1pV9l9MvYOczeVYDkiqyIX+PA15TD2crMPIrjaH/dXUBJ8UD9ZZCwtLf
+	sgWLGkcREcmQKFin31e0cR/WPDTvGUrD8iSOCuJqKDnypCzg3WOtyT4JompyaylcOUKViK
+	rF3irMq8qBXy+e5hGpsbdjpWMHqMCWGII3O/pMKSvsgVyL8zn3ylJLxd+XZjbFoG30mUNV
+	YKVkLetDEpxD28O+CQ50axVPIM1flLCATD9Hj6M+wwbZ57DOaMbzqqaXW0qUKg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ec0f6332;
+	Thu, 9 Oct 2025 13:10:38 +0000 (UTC)
+Date: Thu, 9 Oct 2025 22:10:23 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p fixes for 6.18-rc1
+Message-ID: <aOe0P8ixMEg4ul5K@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
 
-So I recently rebased my xfstests branch and started seeing quite the
-strange test failures:
+The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585:
 
-00891     +cat: /ktest-out/xfstests/generic/036.dmesg: No data available
+  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
 
-No idea why a userspace update would expose this, it's a kernel bug - in
-the main netfs/9p read path, no less. Upon further investigation, cat is
-indeed receiving -ENODATA from a read syscall.
+are available in the Git repository at:
 
-No, read(2) is not allowed to return -ENODATA...
+  https://github.com/martinetd/linux tags/9p-for-6.18-rc1
 
-Upon further investigation, the error is generated in
-netfs_read_subreq_terminated():
+for you to fetch changes up to 528f218b31aac4bbfc58914d43766a22ab545d48:
 
-netfs_wait_for_in_progress (rreq=rreq@entry=0xffff8881032f3980, collector=0xffffffff81542240 <netfs_read_collection>) at /home/kent/linux/fs/netfs/misc.c:468
-468             BUG_ON(ret == -ENODATA);
-(gdb) bt
-#0  netfs_wait_for_in_progress (rreq=rreq@entry=0xffff8881032f3980, collector=0xffffffff81542240 <netfs_read_collection>) at /home/kent/linux/fs/netfs/misc.c:468
-#1  0xffffffff815412f5 in netfs_wait_for_read (rreq=rreq@entry=0xffff8881032f3980) at /home/kent/linux/fs/netfs/misc.c:492
-#2  0xffffffff8153ca41 in netfs_unbuffered_read (rreq=0xffff8881032f3980, sync=<optimized out>) at /home/kent/linux/fs/netfs/direct_read.c:153
-#3  netfs_unbuffered_read_iter_locked (iocb=iocb@entry=0xffffc90003a17e98, iter=iter@entry=0xffffc90003a17e70) at /home/kent/linux/fs/netfs/direct_read.c:234
-#4  0xffffffff8153cb25 in netfs_unbuffered_read_iter (iocb=0xffffc90003a17e98, iter=0xffffc90003a17e70) at /home/kent/linux/fs/netfs/direct_read.c:272
-#5  0xffffffff81498fb0 in new_sync_read (filp=0xffff88811234c180, buf=0x0, len=2147479552, ppos=0xffffc90003a17f00) at /home/kent/linux/fs/read_write.c:491
-#6  vfs_read (file=file@entry=0xffff88811234c180, buf=buf@entry=0x7f0ab1767000 <error: Cannot access memory at address 0x7f0ab1767000>, count=count@entry=262144, pos=pos@entry=0xffffc90003a17f00) at /home/kent/linux/fs/read_write.c:572
-#7  0xffffffff81499a2a in ksys_read (fd=<optimized out>, buf=0x7f0ab1767000 <error: Cannot access memory at address 0x7f0ab1767000>, count=262144) at /home/kent/linux/fs/read_write.c:717
-#8  0xffffffff81bce8cc in do_syscall_x64 (regs=0xffffc90003a17f58, nr=<optimized out>) at /home/kent/linux/arch/x86/entry/syscall_64.c:63
-#9  do_syscall_64 (regs=0xffffc90003a17f58, nr=<optimized out>) at /home/kent/linux/arch/x86/entry/syscall_64.c:94
-#10 0xffffffff810000b0 in entry_SYSCALL_64 () at /home/kent/linux/arch/x86/entry/entry_64.S:121
+  9p: sysfs_init: don't hardcode error to ENOMEM (2025-09-27 21:44:38 +0900)
 
-void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
-{
-	struct netfs_io_request *rreq = subreq->rreq;
+----------------------------------------------------------------
+Bunch of unrelated fixes
 
-	switch (subreq->source) {
-	case NETFS_READ_FROM_CACHE:
-		netfs_stat(&netfs_n_rh_read_done);
-		break;
-	case NETFS_DOWNLOAD_FROM_SERVER:
-		netfs_stat(&netfs_n_rh_download_done);
-		break;
-	default:
-		break;
-	}
+- polling fix for trans fd that ought to have been fixed otherwise back
+in March, but apparently came back somewhere else...
+- USB transport buffer overflow fix
+- Some dentry lifetime rework to handle metadata update for currently
+opened files in uncached mode, or inode type change in cached mode
+- a double-put on invalid flush found by syzbot
+- and finally /sys/fs/9p/caches not advancing buffer and overwriting
+itself for large contents
 
-	/* Deal with retry requests, short reads and errors.  If we retry
-	 * but don't make progress, we abandon the attempt.
-	 */
-	if (!subreq->error && subreq->transferred < subreq->len) {
-		if (test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_hit_eof);
-		} else if (test_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_need_clear);
-		} else if (test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_need_retry);
-		} else if (test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags)) {
-			__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-			trace_netfs_sreq(subreq, netfs_sreq_trace_partial_read);
-		} else {
-			BUG();								<- ???
-			__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-			subreq->error = -ENODATA;
-			trace_netfs_sreq(subreq, netfs_sreq_trace_short);
-		}
-	}
+Thanks to everyone involved!
 
-	if (unlikely(subreq->error < 0)) {
-		trace_netfs_failure(rreq, subreq, subreq->error, netfs_fail_read);
-		if (subreq->source == NETFS_READ_FROM_CACHE) {
-			netfs_stat(&netfs_n_rh_read_failed);
-			__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-		} else {
-			netfs_stat(&netfs_n_rh_download_failed);
-			__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-		}
-		trace_netfs_rreq(rreq, netfs_rreq_trace_set_pause);
-		set_bit(NETFS_RREQ_PAUSE, &rreq->flags);
-	}
+----------------------------------------------------------------
+Dominique Martinet (1):
+      net/9p: Fix buffer overflow in USB transport layer
 
-	trace_netfs_sreq(subreq, netfs_sreq_trace_terminated);
-	netfs_subreq_clear_in_progress(subreq);
-	netfs_put_subrequest(subreq, netfs_sreq_trace_put_terminated);
-}
+Nalivayko Sergey (1):
+      net/9p: fix double req put in p9_fd_cancelled
 
-So, the underlying transport doesn't appear to be making forward
-progress - IOW, this would appear to be a 9p bug - and then netfs
-instead of a WARN() or doing anything to let people know that there's a
-bug and where to look for it, returns a nonstandard error code to
-userspace - fun.
+Oleg Nesterov (1):
+      9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
 
-Of course, this being a read, short reads are expected; another thought
-is to wonder why netfs has decided that it should decide this particular
-short read is unexpected instead of leaving the i_size checks to the
-underlying filesystem.
+Randall P. Embry (3):
+      9p: clean up comment typos
+      9p: fix /sys/fs/9p/caches overwriting itself
+      9p: sysfs_init: don't hardcode error to ENOMEM
+
+Tingmao Wang (3):
+      fs/9p: Refresh metadata in d_revalidate for uncached mode too
+      fs/9p: Invalidate dentry if inode type change detected in cached mode
+      fs/9p: Add p9_debug(VFS) in d_revalidate
+
+ fs/9p/v9fs.c           | 16 +++++++++-------
+ fs/9p/vfs_dentry.c     | 33 +++++++++++++++++++++++++++++----
+ fs/9p/vfs_inode.c      |  8 +++++++-
+ fs/9p/vfs_inode_dotl.c |  8 +++++++-
+ net/9p/trans_fd.c      | 17 +++++------------
+ net/9p/trans_usbg.c    | 16 +++++++++++++---
+ 6 files changed, 70 insertions(+), 28 deletions(-)
+ 
+-- 
+Dominique Martinet | Asmadeus
