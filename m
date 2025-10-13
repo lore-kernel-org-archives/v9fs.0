@@ -1,117 +1,169 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB10E23D7D1
-	for <v9fs@lists.linux.dev>; Mon, 13 Oct 2025 10:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1B613D891
+	for <v9fs@lists.linux.dev>; Mon, 13 Oct 2025 11:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760351218; cv=none; b=DX8eocCNmxa+h3VFtRLRD6c2VAkYJgU6o22p8YGWynfxAFx5HGoiusAHUMazfvDgYV2lzMAlg4jaomGAOFqLM7YOwlGU2L6VSo7W/4blyX6P7Bm7iN3gj9mSnAgiGUAkEV3oXjyh/g1ik9abXowNAdq6l5df6YMSP/8N6Of5iXU=
+	t=1760355143; cv=none; b=V/y+iy6SKG+MkEo0aS1QY0YqzbnhGHHB1KCf7XHn3blUQPVrFz6uH8kRFwmbqLpJlIqcksiLm+PFgRlYZoij6rpMRL725tj5hAHfFo/0GkUQwnv+FoyUZcQVcpslKtCZ/aXWzQ7Opds+oOWWkYZ5+FmaPOQNWlaNYlgFn7Qet9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760351218; c=relaxed/simple;
-	bh=ABmn+fLVsctJIcVsQ8EXkfemm3Yt7M2ThU/pU1MhG9s=;
+	s=arc-20240116; t=1760355143; c=relaxed/simple;
+	bh=0xosZGkTXmSnEMdEcfXUoHuhuRB8W/qpykqw2fzqVZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwHRm6VCHegJf9Q3v3rl6Q1cMjf2SknhhYaRSr7Tt+hak7fwrD5nKqHT/QXAqcF1KgOZleP7tAJzcsr9ceSxOKWMLXWGxHeDRPYsvX5xwRIXe/KUDngA6pV+0Hclgf4Dj9V8d8lMXQyBIXiNyZjQG1i6/3FcSwf0I3wLKIu4QNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xI/WgtXI; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=U39RhNzhw86FX7TUZeyihzoLCO/uGVd0WoRPHvuXB8BHeSkazDP3iheirj60YkobDEpqkvxgB0l9H/Lc+gEKt0daqp7ISt+ToYFLbdc5FRX0UfkVyXLiTFXcjADfkd9/E/Y1Tt1z4LMGcai5w1FKGnnyKD2e2eS8mCc8z3kTYLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c2pY3Q60; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=PKyKaGFX; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c2pY3Q60; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=PKyKaGFX; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xI/WgtXI"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id C50BA14C2D3;
-	Mon, 13 Oct 2025 12:26:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1760351214;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c2pY3Q60";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="PKyKaGFX";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c2pY3Q60";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="PKyKaGFX"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4135121A0B;
+	Mon, 13 Oct 2025 11:32:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760355139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=liVWWnazWktLk7qYgIAJtTqEdttWgrGsPA7uT5rJXvE=;
-	b=xI/WgtXIs8rnlF78rRIuhG85Om82BhXX1ipNuWomu80ZemdzezlD3qOo1vHKI0MmwCyjQ4
-	TVJ+EwQfiTrv6kzqAinIkJ91eRXixNKlrUE8LQhvszZRyeUB6m8G683VMv6jAm8Pl6iepX
-	wAviR/0MKstVpFbNayZXsaPaJIEUIU2s9Jr1kVFJuzxhHSYgwmd9a6OPue1tNePOzTfl+4
-	3INJRJvvVOynG+Z/KL+Uzuf5ulq0U6HCNQo5iXp1n2OJH9uODYAVazzZouzjDOaQJsWSG5
-	Xe9K6a9ye88FRrt4/R8egH/VZXB1z5ilb7AaxJTCVj8Q7uuBTAw3+oszHhlYog==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e164d6cc;
-	Mon, 13 Oct 2025 10:26:50 +0000 (UTC)
-Date: Mon, 13 Oct 2025 19:26:35 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Eric Sandeen <sandeen@redhat.com>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
-	linux_oss@crudebyte.com, eadavis@qq.com
-Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
-Message-ID: <aOzT2-e8_p92WfP-@codewreck.org>
-References: <20251010214222.1347785-1-sandeen@redhat.com>
- <20251010214222.1347785-5-sandeen@redhat.com>
+	bh=OJD2D5sOD1UwFVRnLiisA06ok66jFshkpFT7U5auYaU=;
+	b=c2pY3Q60rdySkJnHio1esw2RtxdDS1I/ROgZuToYDooNtM5rlAyGD3QtN3IG5Biyk9zkDd
+	okc+vn2gfnqpE+l51QceqRYB1D59POM0BcYhL7iEbOXycj1ovhLT9DyS1f8xJx6reFNUId
+	CuxNanTwAusOc1HkfPI2SLlSS1FzxMY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760355139;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OJD2D5sOD1UwFVRnLiisA06ok66jFshkpFT7U5auYaU=;
+	b=PKyKaGFXDxUdTiiurMffn9aZFLjkmr8MgiOPS9YDScwKazJYvsQqAb+UV2lM1fMEPkFYXF
+	1HdhYBXBMD1JZjAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760355139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OJD2D5sOD1UwFVRnLiisA06ok66jFshkpFT7U5auYaU=;
+	b=c2pY3Q60rdySkJnHio1esw2RtxdDS1I/ROgZuToYDooNtM5rlAyGD3QtN3IG5Biyk9zkDd
+	okc+vn2gfnqpE+l51QceqRYB1D59POM0BcYhL7iEbOXycj1ovhLT9DyS1f8xJx6reFNUId
+	CuxNanTwAusOc1HkfPI2SLlSS1FzxMY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760355139;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OJD2D5sOD1UwFVRnLiisA06ok66jFshkpFT7U5auYaU=;
+	b=PKyKaGFXDxUdTiiurMffn9aZFLjkmr8MgiOPS9YDScwKazJYvsQqAb+UV2lM1fMEPkFYXF
+	1HdhYBXBMD1JZjAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 327D61374A;
+	Mon, 13 Oct 2025 11:32:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id C3H+C0Pj7GgJZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 13 Oct 2025 11:32:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id CD496A0A58; Mon, 13 Oct 2025 13:32:03 +0200 (CEST)
+Date: Mon, 13 Oct 2025 13:32:03 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 01/10] mm: don't opencode filemap_fdatawrite_range in
+ filemap_invalidate_inode
+Message-ID: <wxziorjgzpc5nlktnl53ctsroriqvwjkuvwsgznl63oeid4cvp@p7mkzimdgltg>
+References: <20251013025808.4111128-1-hch@lst.de>
+ <20251013025808.4111128-2-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251010214222.1347785-5-sandeen@redhat.com>
+In-Reply-To: <20251013025808.4111128-2-hch@lst.de>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
 
-Hi Eric,
+On Mon 13-10-25 11:57:56, Christoph Hellwig wrote:
+> Use filemap_fdatawrite_range instead of opencoding the logic using
+> filemap_fdatawrite_wbc.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Thanks for this V3!
+Looks good. Feel free to add:
 
-I find it much cleaner, hopefully will be easier to debug :)
-... Which turned out to be needed right away, trying with qemu's 9p
-export "mount -t 9p -o trans=virtio tmp /mnt" apparently calls
-p9_virtio_create() with fc->source == NULL, instead of the expected
-"tmp" string
-(FWIW I tried '-o trans=tcp 127.0.0.1' and I got the same problem in
-p9_fd_create_tcp(), might be easier to test with diod if that's what you
-used)
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Looking at other filesystems (e.g. fs/nfs/fs_context.c but others are
-the same) it looks like they all define a fsparam_string "source" option
-explicitly?...
+								Honza
 
-Something like this looks like it works to do (+ probably make the error
-more verbose? nothing in dmesg hints at why mount returns EINVAL...)
------
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 6c07635f5776..999d54a0c7d9 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -34,6 +34,8 @@ struct kmem_cache *v9fs_inode_cache;
-  */
- 
- enum {
-+	/* Mount-point source */
-+	Opt_source,
- 	/* Options that take integer arguments */
- 	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid,
- 	/* String options */
-@@ -82,6 +84,7 @@ static const struct constant_table p9_cache_mode[] = {
-  * the client, and all the transports.
-  */
- const struct fs_parameter_spec v9fs_param_spec[] = {
-+	fsparam_string  ("source",      Opt_source),
- 	fsparam_u32hex	("debug",	Opt_debug),
- 	fsparam_uid	("dfltuid",	Opt_dfltuid),
- 	fsparam_gid	("dfltgid",	Opt_dfltgid),
-@@ -210,6 +213,14 @@ int v9fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 	}
- 
- 	switch (opt) {
-+	case Opt_source:
-+                if (fc->source) {
-+			pr_info("p9: multiple sources not supported\n");
-+			return -EINVAL;
-+		}
-+		fc->source = param->string;
-+		param->string = NULL;
-+		break;
- 	case Opt_debug:
- 		session_opts->debug = result.uint_32;
- #ifdef CONFIG_NET_9P_DEBUG
------
-
-I'll try to find some time to test a mix of actual mount options later
-this week
-
-Cheers,
+> ---
+>  mm/filemap.c | 12 ++----------
+>  1 file changed, 2 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 13f0259d993c..99d6919af60d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4457,16 +4457,8 @@ int filemap_invalidate_inode(struct inode *inode, bool flush,
+>  	unmap_mapping_pages(mapping, first, nr, false);
+>  
+>  	/* Write back the data if we're asked to. */
+> -	if (flush) {
+> -		struct writeback_control wbc = {
+> -			.sync_mode	= WB_SYNC_ALL,
+> -			.nr_to_write	= LONG_MAX,
+> -			.range_start	= start,
+> -			.range_end	= end,
+> -		};
+> -
+> -		filemap_fdatawrite_wbc(mapping, &wbc);
+> -	}
+> +	if (flush)
+> +		filemap_fdatawrite_range(mapping, start, end);
+>  
+>  	/* Wait for writeback to complete on all folios and discard. */
+>  	invalidate_inode_pages2_range(mapping, start / PAGE_SIZE, end / PAGE_SIZE);
+> -- 
+> 2.47.3
+> 
 -- 
-Dominique Martinet | Asmadeus
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
