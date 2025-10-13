@@ -1,202 +1,118 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507E1272E6E
-	for <v9fs@lists.linux.dev>; Mon, 13 Oct 2025 18:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EAF2C2361
+	for <v9fs@lists.linux.dev>; Mon, 13 Oct 2025 19:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760381208; cv=none; b=cV7R2RrX+j9Ph/9lSHKESqH3nl0SRfxz5G+P3RqGCUd+fB7Wb3xw+8T0Hkb6K5eg6u+m7OwEjr3PEW9VexdMZ/QM3gp99JoDeFYcJO+f7YlZYdh6geCuAIfRejAVaxNeLM0GjdCF6TJU9yh/Lkqv40Xm+NJTnZrYo/zb7yMg3UY=
+	t=1760382278; cv=none; b=WOkz6t6vQ3L+eNdBmqjed4uW2nPidWh+wS/ZOzwesCo+z4YKejTjJ3lNMsZSa4P31CHtl9DQWpiTwpysU8wfjDnCQxTWisvR+m2lW+Z8QRlIIBJi6PlaveorsBf8CPzI1rdqrd4sEh2E0icBOt43n7xyawxqv2mg2PKdKdlY804=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760381208; c=relaxed/simple;
-	bh=nJMlcJVKA/S/p+TwTJAR4sneUnfxxNXEk2Hi0g6cdT4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P7XmZfAQVJhJgll/TD+v4059hM24bl6UykJWA210aGvfAyN0kx3a1KqPL2JxQkDesFMy++61vZSeHyoRAGddLULRhDZnHmI1zMp4cgyyyc1ZfQCNY0xEyZMz+KzvJEwsnQx2cH7NakKkeViePzjNhoYSbH0JikZp3uSlwCbwKx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=EQS5O1MD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Lp5n2uck; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
+	s=arc-20240116; t=1760382278; c=relaxed/simple;
+	bh=FIsgkB5h5ry6n2BuuRKc7KLJmszdPvD2e0mt/o5qinc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=thOGX3GDFm7YbxoKTi//Y6eYPnSAbaMW8kVqngRGN9qxys3DqD6ZFvizE8juBEVqnxMRhqs9kmgPJ28BxlYDzGEYmmN2MCH367m7cXFMLcXbm5HR3rDUU7cf+qGHFyU9T3Z3YGAqOHQ8fkHynPeLaMJx4/OsXUCU6k7XnEK2HnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qusZC5sh; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="EQS5O1MD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Lp5n2uck"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 5FAA21D000F8;
-	Mon, 13 Oct 2025 14:46:45 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Mon, 13 Oct 2025 14:46:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1760381205;
-	 x=1760467605; bh=ODvfGNxLi1HK131gK3WX63G87k/sXMzMiLk+BIgjTl8=; b=
-	EQS5O1MD0u22RtNerj6yV/BoxriKOQIbJPg2lN9JQCw/Q1U87yCwWEdedRbMwBK8
-	1UbNbsRiYWTb9fdJAksmjb6Q/M9njSv7UwoDIrMBIUA2HIcwn39Ds3iDXSVveOAL
-	tM6/E6t/EgOhAGux078xBEXTVfczOK3LJl08ylBqmk4r6VorS6MqlbkdIINil5ug
-	PKNkNiW/dBJ/WFia4+Y3SRv/QsTsLfbn8T/idN3Q4mhml8aLoOe8pKttHHTBGndd
-	jDchbT7NQ0HVM92yYfoctb2EKSgyf1hED/u9r4/Zhn9E/BUmKzhvTGHjyGgSOQrf
-	UGMf2l2LSUlXpBIXtCuL6w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760381205; x=
-	1760467605; bh=ODvfGNxLi1HK131gK3WX63G87k/sXMzMiLk+BIgjTl8=; b=L
-	p5n2uckLHSMG8sj+hsupnVQDXhLWoOJIGbRwBAaeqtxHwajKmaTQ3OWwNW3clTUt
-	5mzD/G2HuXui2hj23fRD5yvkNsyWmIOvVTaOY4yknQaEG2N+mVC0iCmwXYQ2LMjH
-	F7QMgARDAInJX+cdsfYuOm23GGgOPt+jJYfehbu5kxDFZzdPL72x/Z/I0NXpz2P6
-	1mJrMQbD7T09m4CdlaFrl2vFz6ewLaZQNLeY0ekBHp6oGtxY0N6DHZ8AUFSDUmY3
-	Z/3MfGMIP/OykT2SEUM1D+fhwEkEihi3ndwifSFn59XIZYz2hZT+vRQ4BMTIeTDS
-	XlBmQGca7qzSiSS/pKvZA==
-X-ME-Sender: <xms:FEntaMhfLY3YZMRI5mN8pvnBYJVfm_4dS8pxLJL5gh_ucCOaBaIiXQ>
-    <xme:FEntaFcuYa4ITfNHkv4nz5WXl3E6H5ZAcbWfDLOWp0JtqdwgjCZJlgyR2B02btNQ8
-    WaPdREiri_SnbqJoE09WOys9NseiHkUot8pTFRXBXyStWQZDg4sC7w>
-X-ME-Received: <xmr:FEntaEzhPYIBLdzMZTdjnvSuKVXNOS-YuEHHZUmW-9IS_48ux94ospxGwdAUFJYekaEviTMsbdeXku_ARJnZDOY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudekgeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejre
-    dttddvjeenucfhrhhomhepgfhrihgtucfurghnuggvvghnuceoshgrnhguvggvnhesshgr
-    nhguvggvnhdrnhgvtheqnecuggftrfgrthhtvghrnhepveeikeeuteefueejtdehfeefvd
-    egffeivdejjeelfffhgeegjeeutdejueelhfdvnecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomhepshgrnhguvggvnhesshgrnhguvggvnhdrnhgvth
-    dpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghs
-    mhgruggvuhhssegtohguvgifrhgvtghkrdhorhhgpdhrtghpthhtohepshgrnhguvggvnh
-    esrhgvughhrghtrdgtohhmpdhrtghpthhtohepvhelfhhssehlihhsthhsrdhlihhnuhig
-    rdguvghvpdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtoheplhhinhhugigp
-    ohhsshestghruhguvggshihtvgdrtghomhdprhgtphhtthhopegvrggurghvihhssehqqh
-    drtghomh
-X-ME-Proxy: <xmx:FEntaE0cnx7HP2HiNctGcyISzco3pACZEkz_gZ6CijkpRg-0mdhu9w>
-    <xmx:FEntaKxzzk2sEh9LAAuI4EzwWtzoaCr26Gz6hvRHWpyszyyMI5G4DQ>
-    <xmx:FEntaJXJ2JdGIuw31tlczbar6W_BxT7CUAykswYgqKyii21Wcj8qSw>
-    <xmx:FEntaG-K49NP11ml-ZDo78NDGknw9DqRED2v2U1Upb5ZpxZL6PznTA>
-    <xmx:FUntaHy9uBs-56vNBRCN_s5BmMhUbygjt52nQ5QcDwNYE2ltn1DAXBjJ>
-Feedback-ID: i2b59495a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Oct 2025 14:46:43 -0400 (EDT)
-Message-ID: <bc86b13e-1252-4bf0-86f9-77da37f5e37a@sandeen.net>
-Date: Mon, 13 Oct 2025 13:46:42 -0500
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qusZC5sh"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 9E2F014C2D3;
+	Mon, 13 Oct 2025 21:04:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1760382272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/I6JIBH6i2s+KyYmg/95gkYCV7Mkagjj3LtjeEdQzAI=;
+	b=qusZC5shpCqfOWYUxaMv2wNmODrBfb7vHdOlMuWw4wNq8DAIZ5LyH1F16/pu/8FsIuuXN5
+	zt4hHgGQ0bnv/cbcI2YtIIiT0DsoHpM0BmurlY4UvfLb98FITF7D38xnRo0ZbWQD+nwzVl
+	BFJizOk7J/nrQcnjk4caJYCVDqiVhiekB3KHSJ5/5zwGXds6Og4ljZFXeYUdrX4rZErEaz
+	5rYl6573bWAmEdNXIuiG55JGXp9TOuemmVxx1IZKdnECCXJAbzl41Bq4Nbc7NWmZMUWO+i
+	sqZtaG2dhHtNCdQAYN4xcnjc1DajKnWoeMQI+uHtn7WbKlL0FB8BnRL38WRdYw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c5a5a286;
+	Mon, 13 Oct 2025 19:04:27 +0000 (UTC)
+Date: Tue, 14 Oct 2025 04:04:12 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Sandeen <sandeen@sandeen.net>
+Cc: Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	eadavis@qq.com
+Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
+Message-ID: <aO1NLCI3kIdgWcvh@codewreck.org>
+References: <20251010214222.1347785-1-sandeen@redhat.com>
+ <20251010214222.1347785-5-sandeen@redhat.com>
+ <aOzT2-e8_p92WfP-@codewreck.org>
+ <bc86b13e-1252-4bf0-86f9-77da37f5e37a@sandeen.net>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Eric Sandeen <sandeen@redhat.com>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
- linux_oss@crudebyte.com, eadavis@qq.com
-References: <20251010214222.1347785-1-sandeen@redhat.com>
- <20251010214222.1347785-5-sandeen@redhat.com>
- <aOzT2-e8_p92WfP-@codewreck.org>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@sandeen.net>
-In-Reply-To: <aOzT2-e8_p92WfP-@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <bc86b13e-1252-4bf0-86f9-77da37f5e37a@sandeen.net>
 
-On 10/13/25 5:26 AM, Dominique Martinet wrote:
-> Hi Eric,
+Eric Sandeen wrote on Mon, Oct 13, 2025 at 01:46:42PM -0500:
+> > ... Which turned out to be needed right away, trying with qemu's 9p
+> > export "mount -t 9p -o trans=virtio tmp /mnt" apparently calls
+> > p9_virtio_create() with fc->source == NULL, instead of the expected
+> > "tmp" string
+> > (FWIW I tried '-o trans=tcp 127.0.0.1' and I got the same problem in
+> > p9_fd_create_tcp(), might be easier to test with diod if that's what you
+> > used)
 > 
-> Thanks for this V3!
+> I swear I tested this, but you are right, and it fails for me too.
 > 
-> I find it much cleaner, hopefully will be easier to debug :)
-
-Good news and bad news, I see.
-
-> ... Which turned out to be needed right away, trying with qemu's 9p
-> export "mount -t 9p -o trans=virtio tmp /mnt" apparently calls
-> p9_virtio_create() with fc->source == NULL, instead of the expected
-> "tmp" string
-> (FWIW I tried '-o trans=tcp 127.0.0.1' and I got the same problem in
-> p9_fd_create_tcp(), might be easier to test with diod if that's what you
-> used)
-
-I swear I tested this, but you are right, and it fails for me too.
-
-Oh ... I know what this is :(
-
-Introducing the "ignore unknown mount options" change in V4 caused it to
-also ignore the unknown "source" option and report success; this made the
-vfs think "source" was already handled in vfs_parse_fs_param() and
-therefore it does not call vfs_parse_fs_param_source(). This has bitten
-me before and it's a bit confusing.
-
-I'm not sure how I missed this in my V4 testing, I'm very sorry.
-
-> Looking at other filesystems (e.g. fs/nfs/fs_context.c but others are
-> the same) it looks like they all define a fsparam_string "source" option
-> explicitly?...
-
-Not all of them; filesystems that reject unknown options have "source"
-handled for them in the VFS, but for filesystems like debugfs that
-ignore unknown parameters it had to handle it explicitly. (Other
-filesystems may do so for other reasons I suppose).
-
-See also a20971c18752 which fixed a20971c18752, though the bug had
-slightly less of an impact.
-
-> Something like this looks like it works to do (+ probably make the error
-> more verbose? nothing in dmesg hints at why mount returns EINVAL...)
-> -----
-> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-> index 6c07635f5776..999d54a0c7d9 100644
-> --- a/fs/9p/v9fs.c
-> +++ b/fs/9p/v9fs.c
-> @@ -34,6 +34,8 @@ struct kmem_cache *v9fs_inode_cache;
->   */
->  
->  enum {
-> +	/* Mount-point source */
-> +	Opt_source,
->  	/* Options that take integer arguments */
->  	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid,
->  	/* String options */
-> @@ -82,6 +84,7 @@ static const struct constant_table p9_cache_mode[] = {
->   * the client, and all the transports.
->   */
->  const struct fs_parameter_spec v9fs_param_spec[] = {
-> +	fsparam_string  ("source",      Opt_source),
->  	fsparam_u32hex	("debug",	Opt_debug),
->  	fsparam_uid	("dfltuid",	Opt_dfltuid),
->  	fsparam_gid	("dfltgid",	Opt_dfltgid),
-> @@ -210,6 +213,14 @@ int v9fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
->  	}
->  
->  	switch (opt) {
-> +	case Opt_source:
-> +                if (fc->source) {
-> +			pr_info("p9: multiple sources not supported\n");
-> +			return -EINVAL;
-> +		}
-> +		fc->source = param->string;
-> +		param->string = NULL;
-
-Yep, this looks correct, I think. It essentially "steals" the string from
-the param and sets it in fc->source since the VFS won't do it for us.
-
-I can't help but feel like there's maybe a better treewide fix for this
-to make it all a bit less opaque, but for now this is what other
-filesystems do, and so I think this is the right fix for my series at
-this point.
-
-Would you like me to send an updated patch with this change, or will you
-just fix it on your end?
-
-Thanks,
--Eric
-
-> +		break;
->  	case Opt_debug:
->  		session_opts->debug = result.uint_32;
->  #ifdef CONFIG_NET_9P_DEBUG
-> -----
+> Oh ... I know what this is :(
 > 
-> I'll try to find some time to test a mix of actual mount options later
-> this week
+> Introducing the "ignore unknown mount options" change in V4 caused it to
+> also ignore the unknown "source" option and report success; this made the
+> vfs think "source" was already handled in vfs_parse_fs_param() and
+> therefore it does not call vfs_parse_fs_param_source(). This has bitten
+> me before and it's a bit confusing.
 > 
-> Cheers,
+> I'm not sure how I missed this in my V4 testing, I'm very sorry.
 
+No harm done :)
+
+And thanks for the explanation, the vfs parsing being done only if the
+fs-specific parsing failed was far from obvious for me!
+
+> > Looking at other filesystems (e.g. fs/nfs/fs_context.c but others are
+> > the same) it looks like they all define a fsparam_string "source" option
+> > explicitly?...
+> 
+> Not all of them; filesystems that reject unknown options have "source"
+> handled for them in the VFS, but for filesystems like debugfs that
+> ignore unknown parameters it had to handle it explicitly. (Other
+> filesystems may do so for other reasons I suppose).
+> 
+> See also a20971c18752 which fixed a20971c18752, though the bug had
+> slightly less of an impact.
+
+(I assume the former was 3a987b88a425)
+
+> Yep, this looks correct, I think. It essentially "steals" the string from
+> the param and sets it in fc->source since the VFS won't do it for us.
+
+Yes, I copied that from nfs and it looks like debugfs does the same.
+
+> I can't help but feel like there's maybe a better treewide fix for this
+> to make it all a bit less opaque, but for now this is what other
+> filesystems do, and so I think this is the right fix for my series at
+> this point.
+
+Not much better given it does the work twice but we could return -EINVAL
+in the case Opt_source statement to optimize for code size...
+I'm not sure that's quite clearer though, I'll stick to "doing what
+everyone else" does for now and we/someone can revisit this later.
+
+> Would you like me to send an updated patch with this change, or will you
+> just fix it on your end?
+
+Happy to roll it in directly, I'll reply again when I find time to
+finish testing and push to next.
+-- 
+Dominique Martinet | Asmadeus
