@@ -1,118 +1,67 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EAF2C2361
-	for <v9fs@lists.linux.dev>; Mon, 13 Oct 2025 19:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9D91DA62E;
+	Tue, 14 Oct 2025 04:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760382278; cv=none; b=WOkz6t6vQ3L+eNdBmqjed4uW2nPidWh+wS/ZOzwesCo+z4YKejTjJ3lNMsZSa4P31CHtl9DQWpiTwpysU8wfjDnCQxTWisvR+m2lW+Z8QRlIIBJi6PlaveorsBf8CPzI1rdqrd4sEh2E0icBOt43n7xyawxqv2mg2PKdKdlY804=
+	t=1760417069; cv=none; b=pwQR73jDoTiWhPevLFC+OMme8XC2oBmoU8mUhemay9YbG95aG42gYlP0ff2SXiphANETquXA1eKpFkPoITMlIbdfixMf8ppex291VqNEm7Afpa6AKvWsF28q19/7/OS10tNzy01daCRE66BuKyjnLFDl/FD5JTwj92/3mZEoizg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760382278; c=relaxed/simple;
-	bh=FIsgkB5h5ry6n2BuuRKc7KLJmszdPvD2e0mt/o5qinc=;
+	s=arc-20240116; t=1760417069; c=relaxed/simple;
+	bh=3xzfzkbgYIg9IfR3Ir94hE3O8Ov0sXJ49fRS3a8QW2U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=thOGX3GDFm7YbxoKTi//Y6eYPnSAbaMW8kVqngRGN9qxys3DqD6ZFvizE8juBEVqnxMRhqs9kmgPJ28BxlYDzGEYmmN2MCH367m7cXFMLcXbm5HR3rDUU7cf+qGHFyU9T3Z3YGAqOHQ8fkHynPeLaMJx4/OsXUCU6k7XnEK2HnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qusZC5sh; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qusZC5sh"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 9E2F014C2D3;
-	Mon, 13 Oct 2025 21:04:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1760382272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/I6JIBH6i2s+KyYmg/95gkYCV7Mkagjj3LtjeEdQzAI=;
-	b=qusZC5shpCqfOWYUxaMv2wNmODrBfb7vHdOlMuWw4wNq8DAIZ5LyH1F16/pu/8FsIuuXN5
-	zt4hHgGQ0bnv/cbcI2YtIIiT0DsoHpM0BmurlY4UvfLb98FITF7D38xnRo0ZbWQD+nwzVl
-	BFJizOk7J/nrQcnjk4caJYCVDqiVhiekB3KHSJ5/5zwGXds6Og4ljZFXeYUdrX4rZErEaz
-	5rYl6573bWAmEdNXIuiG55JGXp9TOuemmVxx1IZKdnECCXJAbzl41Bq4Nbc7NWmZMUWO+i
-	sqZtaG2dhHtNCdQAYN4xcnjc1DajKnWoeMQI+uHtn7WbKlL0FB8BnRL38WRdYw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c5a5a286;
-	Mon, 13 Oct 2025 19:04:27 +0000 (UTC)
-Date: Tue, 14 Oct 2025 04:04:12 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Eric Sandeen <sandeen@sandeen.net>
-Cc: Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	eadavis@qq.com
-Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
-Message-ID: <aO1NLCI3kIdgWcvh@codewreck.org>
-References: <20251010214222.1347785-1-sandeen@redhat.com>
- <20251010214222.1347785-5-sandeen@redhat.com>
- <aOzT2-e8_p92WfP-@codewreck.org>
- <bc86b13e-1252-4bf0-86f9-77da37f5e37a@sandeen.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mdWd3M+DaURQo4lLIWkFN/+4KJCREMlQmjJ2ehDXLEKeG2/JF3SKUN9mHYDvAGFv3K7J2LLGgdQO3/zIFHhEEpdpWvBMhfQm6hIDCmamiGab9ToGQ8Zu2+xTH7AMwZ7KgE/BFW8/64Gi7LKUtWAxh9MWm7i9nAd/s0P5Txa9j/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 26F11227A87; Tue, 14 Oct 2025 06:44:22 +0200 (CEST)
+Date: Tue, 14 Oct 2025 06:44:21 +0200
+From: hch <hch@lst.de>
+To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: hch <hch@lst.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"v9fs@lists.linux.dev" <v9fs@lists.linux.dev>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"jfs-discussion@lists.sourceforge.net" <jfs-discussion@lists.sourceforge.net>,
+	"ocfs2-devel@lists.linux.dev" <ocfs2-devel@lists.linux.dev>,
+	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH 04/10] btrfs: use the local tmp_inode variable in
+ start_delalloc_inodes
+Message-ID: <20251014044421.GA30920@lst.de>
+References: <20251013025808.4111128-1-hch@lst.de> <20251013025808.4111128-5-hch@lst.de> <aae79ea0-f056-4da7-8a87-4d4fd6aea85f@wdc.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bc86b13e-1252-4bf0-86f9-77da37f5e37a@sandeen.net>
+In-Reply-To: <aae79ea0-f056-4da7-8a87-4d4fd6aea85f@wdc.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-Eric Sandeen wrote on Mon, Oct 13, 2025 at 01:46:42PM -0500:
-> > ... Which turned out to be needed right away, trying with qemu's 9p
-> > export "mount -t 9p -o trans=virtio tmp /mnt" apparently calls
-> > p9_virtio_create() with fc->source == NULL, instead of the expected
-> > "tmp" string
-> > (FWIW I tried '-o trans=tcp 127.0.0.1' and I got the same problem in
-> > p9_fd_create_tcp(), might be easier to test with diod if that's what you
-> > used)
+On Mon, Oct 13, 2025 at 08:11:35AM +0000, Johannes Thumshirn wrote:
+> If you have to repost this for some reason, can you rename tmp_inode to 
+> vfs_inode or sth like that?
 > 
-> I swear I tested this, but you are right, and it fails for me too.
-> 
-> Oh ... I know what this is :(
-> 
-> Introducing the "ignore unknown mount options" change in V4 caused it to
-> also ignore the unknown "source" option and report success; this made the
-> vfs think "source" was already handled in vfs_parse_fs_param() and
-> therefore it does not call vfs_parse_fs_param_source(). This has bitten
-> me before and it's a bit confusing.
-> 
-> I'm not sure how I missed this in my V4 testing, I'm very sorry.
+> The name is really confusing and the commit introducing it doesn't 
+> describe it really either.
 
-No harm done :)
+It is.  vfs_inode is kinda weird, too.  The problem is that inode
+is used for the btrfs_inode.  But if there's consensus on a name
+I'll happily change it.
 
-And thanks for the explanation, the vfs parsing being done only if the
-fs-specific parsing failed was far from obvious for me!
-
-> > Looking at other filesystems (e.g. fs/nfs/fs_context.c but others are
-> > the same) it looks like they all define a fsparam_string "source" option
-> > explicitly?...
-> 
-> Not all of them; filesystems that reject unknown options have "source"
-> handled for them in the VFS, but for filesystems like debugfs that
-> ignore unknown parameters it had to handle it explicitly. (Other
-> filesystems may do so for other reasons I suppose).
-> 
-> See also a20971c18752 which fixed a20971c18752, though the bug had
-> slightly less of an impact.
-
-(I assume the former was 3a987b88a425)
-
-> Yep, this looks correct, I think. It essentially "steals" the string from
-> the param and sets it in fc->source since the VFS won't do it for us.
-
-Yes, I copied that from nfs and it looks like debugfs does the same.
-
-> I can't help but feel like there's maybe a better treewide fix for this
-> to make it all a bit less opaque, but for now this is what other
-> filesystems do, and so I think this is the right fix for my series at
-> this point.
-
-Not much better given it does the work twice but we could return -EINVAL
-in the case Opt_source statement to optimize for code size...
-I'm not sure that's quite clearer though, I'll stick to "doing what
-everyone else" does for now and we/someone can revisit this later.
-
-> Would you like me to send an updated patch with this change, or will you
-> just fix it on your end?
-
-Happy to roll it in directly, I'll reply again when I find time to
-finish testing and push to next.
--- 
-Dominique Martinet | Asmadeus
