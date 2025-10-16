@@ -1,49 +1,46 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B602F5A0F
-	for <v9fs@lists.linux.dev>; Thu, 16 Oct 2025 07:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E651E1DF982;
+	Thu, 16 Oct 2025 13:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760599612; cv=none; b=dAXX+mKfWUfP8J/W7CHDKtrsA4qGAw/Mdlt6J8W44RJcimwwnMP89aLgUG1CdVgs5Y7xOMB6rJyXD1VwzwHhFrjCbrfVMf5VEEzowBQxR5q5U6Sy/oDAKp5lecv0GoA/k+oNkpHvlHkWmiKdcu8y8yD4SIoLZ4HVIwe/EVVCXc4=
+	t=1760621342; cv=none; b=GaN8+hgAmGAafdHo7ujshi/LD9hnM2/Ntbg1LocoL1w6iWj8paIcESvv508pfNGKkJOzDiEtOp1jNgVGc9nr0qtQbQfudhM/Tt1jPATVzyU6gUewTAEjDUvyJAaLOiFSwr9I1GG3SC4FrZ/JSmy2x3U4/5q+yrUOZ2F+NcuF9Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760599612; c=relaxed/simple;
-	bh=05UloXMOGfgA+Goo9cxLqaUMFw/jumZnq1r5CrX4S4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LCctEVFK1lWd5SLBqO/s4qCEuxdJYphn8iGJwDO8BykDLpCRODQkybkaiMlK6MUNj02qc9kSe9OkMdKaSxO6ojwRCGYn5Tsx+PNd/ZU4JbHM39/AxPTHRdr+9nliQFaDJ+Z0b7tB8k/YpyMaOdfLdO4hfs96NlER715dimfIQuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hbA2h2qs; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1760621342; c=relaxed/simple;
+	bh=W7EFgnzr5VtHMbZSDIKFfHdRgXS6s6BbdPilZrxfOy8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mc5ewYBb7OKgxpX6xqdQNLw2FKIQlTeugTtWN2iJ8sA1s2tMaUu/SC1rGNndSVmbE7ycxcQiHqSJYz43GaLHH08EMyn1c4LIwNikwr8n1dpMzjm8xLKw1tM++wKzxXC/ez5qIgII2YaLrJNJ5KiFK7ftUvTqMH3KlJHSJ9Qako4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=PSTTxJjz; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hbA2h2qs"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3A55614C2D3;
-	Thu, 16 Oct 2025 09:26:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1760599601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmnapE2YgNjNgRuKkBe2xcRK85JFWVZYlkYtqwl7MHw=;
-	b=hbA2h2qsL5cAQnGwJpj1cNQCxwckWIE7YcGzRO4Hwv7BF8prQcRxOvDROkj5DxbEzX492B
-	pcjx3f3f0QGjVzejjR6qmv4kGVZ28l40hrm/KI9Ttv/cxgpjNWlCU1wnrcx4FrBkzCoO0g
-	MmTmYpEf63nnBGY//iU2L80013b+bzn4lsIdvYeLfGx52ZgaJhTQgnp/8rpwyAq+Ubgt9m
-	4K/ImeBkJ/pmdvn+Ns3j8CfY22nieaNKPb64Jt/3MgK2k7iR+Eeho4hfPqVKoJchbbK5BT
-	sRFdk6peYBXAD1PX97Wm8w8e835uF6NYyoSv/2cWkpyI454XUq/zmnSjp5z1cA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5e445050;
-	Thu, 16 Oct 2025 07:26:37 +0000 (UTC)
-Date: Thu, 16 Oct 2025 16:26:22 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Pierre Barre <pierre@barre.sh>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	v9fs@lists.linux.dev, ericvh@kernel.org, lucho@ionkov.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] 9p: Use kvmalloc for message buffers on supported
- transports
-Message-ID: <aPCeHj4vrDnc8R8v@codewreck.org>
-References: <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
- <f08d5585-0a26-4c98-be1a-c0fd89ccd916@app.fastmail.com>
- <aJPMwqqchOaZFSqn@codewreck.org>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="PSTTxJjz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=b2ScJ6plfteW9i8eAYDh25/3yzR6qSuYHL3UCvaBAQE=; b=PSTTxJjzed2gJfl+vwX+HLgzSH
+	9TZqqtJpFXglC0AA6CP2k2yH1EJxMX4Xc9SMaRPpuz3i+A83eeXMbeL99q6g6CiLymMspp1kOAgpX
+	1/U/L4xp6QbmP63hsrQ1bYCmhX6HB6Dgm6dDZuJoL433TRyajYacZ1cwq+ksYVssCHUR2MepGVlFW
+	TDb6WWsmSR2beF0aIEVcB8wCaQ4HaU16+6/jMeOumX4FtnR3kLdUZRajudj3naYJZCf5jAt5DG35Z
+	tzZmVFQOotlq44fcXn6myw5KG0txGbXZmjuNKfohlTaFu6xq5XAahofMto7lhPwKKNa4n7h35+0GQ
+	0+IczkB3CW4ohUAJQzPxy93SEEqGS+Yt4JQX5Yakghn8BWPWXMzKgkUyhiLto7ZEGGFN2mgDcyPou
+	A0KraeQNEu8P0ieYr5qWP0JjgEWtLn204ERmO78dHxqYuEQVke2aDk2jjocFY7p54CFY4A0UA/Ofc
+	Hahv5RnOQE8ApYclVVFlF8C0sVyPGD8PRKtw5Y4ZJkYMd0rCLytQxX7sZUOyzkK8KyDdbZKzXtDes
+	2TdMGiDY9mdwbJeQ144azsosjYEXuehhZgGTGS3F0eI25piSKM8jMgxUqjPPytXyjm4Y09iueimJe
+	EQ9EFo4nXBGggb2XR554Q9WggbrVNT93xfgFRCzh8=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: asmadeus <asmadeus@codewreck.org>, Pierre Barre <pierre@barre.sh>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, v9fs@lists.linux.dev,
+ ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v2] 9p: Use kvmalloc for message buffers on supported  transports
+Date: Thu, 16 Oct 2025 15:06:09 +0200
+Message-ID: <5019358.GXAFRqVoOG@silver>
+In-Reply-To: <7005d8d9-d42d-409f-b8e3-cd7207059eee@app.fastmail.com>
+References:
+ <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
  <8602724.2ttRNpPraX@silver>
  <7005d8d9-d42d-409f-b8e3-cd7207059eee@app.fastmail.com>
 Precedence: bulk
@@ -52,11 +49,10 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7005d8d9-d42d-409f-b8e3-cd7207059eee@app.fastmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Pierre Barre wrote on Thu, Oct 16, 2025 at 09:01:56AM +0200:
+On Thursday, October 16, 2025 9:01:56 AM CEST Pierre Barre wrote:
 > While developing a 9P server (https://github.com/Barre/ZeroFS) and
 > testing it under high-load, I was running into allocation failures.
 > The failures occur even with plenty of free memory available because
@@ -77,23 +73,103 @@ Pierre Barre wrote on Thu, Oct 16, 2025 at 09:01:56AM +0200:
 > 
 > Additionally, if kmem_cache_alloc fails, the code falls back to
 > kvmalloc for transports that support it.
-
-Looks good to me, I'll pick this up for -next when time allows and it'll
-get in 6.19 in a few months
-
-Now to get someone to make this work with virtio... :)
-
-
-
+> 
+> Signed-off-by: Pierre Barre <pierre@barre.sh>
+> ---
+> 
+>  include/net/9p/transport.h |  4 ++++
+>  net/9p/client.c            | 11 +++++++++--
+>  net/9p/trans_fd.c          |  3 +++
+>  3 files changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/net/9p/transport.h b/include/net/9p/transport.h
+> index 766ec07c9599..f0981515148d 100644
+> --- a/include/net/9p/transport.h
+> +++ b/include/net/9p/transport.h
+> @@ -24,6 +24,9 @@
+>   *                   we're less flexible when choosing the response message
+> *                   size in this case
+>   * @def: set if this transport should be considered the default
+> + * @supports_vmalloc: set if this transport can work with vmalloc'd buffers
+> + *                    (non-physically contiguous memory). Transports
+> requiring + *                    DMA should leave this as false.
+>   * @create: member function to create a new connection on this transport
+>   * @close: member function to discard a connection on this transport
+>   * @request: member function to issue a request to the transport
+> @@ -44,6 +47,7 @@ struct p9_trans_module {
+>  	int maxsize;		/* max message size of transport */
+>  	bool pooled_rbuffers;
+>  	int def;		/* this transport should be default */
+> +	bool supports_vmalloc;	/* can work with vmalloc'd buffers */
+>  	struct module *owner;
+>  	int (*create)(struct p9_client *client,
+>  		      const char *devname, char *args);
+> diff --git a/net/9p/client.c b/net/9p/client.c
+> index 5c1ca57ccd28..2a4884c880c1 100644
+> --- a/net/9p/client.c
+> +++ b/net/9p/client.c
+> @@ -229,8 +229,15 @@ static int p9_fcall_init(struct p9_client *c, struct
+> p9_fcall *fc, if (likely(c->fcall_cache) && alloc_msize == c->msize) {
+>  		fc->sdata = kmem_cache_alloc(c->fcall_cache, GFP_NOFS);
+>  		fc->cache = c->fcall_cache;
+> +		if (!fc->sdata && c->trans_mod->supports_vmalloc) {
+> +			fc->sdata = kvmalloc(alloc_msize, GFP_NOFS);
+> +			fc->cache = NULL;
+> +		}
+>  	} else {
+> -		fc->sdata = kmalloc(alloc_msize, GFP_NOFS);
+> +		if (c->trans_mod->supports_vmalloc)
+> +			fc->sdata = kvmalloc(alloc_msize, GFP_NOFS);
+> +		else
+> +			fc->sdata = kmalloc(alloc_msize, GFP_NOFS);
+>  		fc->cache = NULL;
+>  	}
+>  	if (!fc->sdata)
 > @@ -252,7 +259,7 @@ void p9_fcall_fini(struct p9_fcall *fc)
 >  	if (fc->cache)
 >  		kmem_cache_free(fc->cache, fc->sdata);
 >  	else
 > -		kfree(fc->sdata);
 > +		kvfree(fc->sdata);
+>  }
+>  EXPORT_SYMBOL(p9_fcall_fini);
+> 
+> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+> index a516745f732f..e7334033eba5 100644
+> --- a/net/9p/trans_fd.c
+> +++ b/net/9p/trans_fd.c
+> @@ -1101,6 +1101,7 @@ static struct p9_trans_module p9_tcp_trans = {
+>  	.maxsize = MAX_SOCK_BUF,
+>  	.pooled_rbuffers = false,
+>  	.def = 0,
+> +	.supports_vmalloc = true,
+>  	.create = p9_fd_create_tcp,
+>  	.close = p9_fd_close,n
+>  	.request = p9_fd_request,
+> @@ -1115,6 +1116,7 @@ static struct p9_trans_module p9_unix_trans = {
+>  	.name = "unix",
+>  	.maxsize = MAX_SOCK_BUF,
+>  	.def = 0,
+> +	.supports_vmalloc = true,
+>  	.create = p9_fd_create_unix,
+>  	.close = p9_fd_close,
+>  	.request = p9_fd_request,
+> @@ -1129,6 +1131,7 @@ static struct p9_trans_module p9_fd_trans = {
+>  	.name = "fd",
+>  	.maxsize = MAX_SOCK_BUF,
+>  	.def = 0,
+> +	.supports_vmalloc = true,
+>  	.create = p9_fd_create,
+>  	.close = p9_fd_close,
+>  	.request = p9_fd_request,
 
-(Oh, it's ok to kvfree() something allocated with either kmalloc
-or kvmalloc, neat.)
+Just for clarity I would add .supports_vmalloc = false to the other 
+transports. Except of that:
 
--- 
-Dominique Martinet | Asmadeus
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+
+Thanks!
+
+/Christian
+
+
