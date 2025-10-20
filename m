@@ -1,85 +1,80 @@
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43412FC862
-	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 11:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87AF331A6E
+	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 17:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760960311; cv=none; b=du+r377eEq3fp3RenLyuTZUp34jufeHIgHu0T/Oo56YzsQyRccT7gxIveVUEcFaM+JyGFALXLLdkJ6hc1TQ3wlNXaqmVWf0BHDVkZPGqMS86aaVLttFX7f6CdM6Y/22+mfwKHpKJ0+qEsJ6fb0y4RYkDHreZzAIVMDNoD0Zq/k8=
+	t=1760982054; cv=none; b=k5qvv1quyGXlJ+FeBdvPU0YIjI8M6TFmlUDoc0fuB0WwbxV+ZePHKkd9I04J05FYYCepx6TUYouL33E/CjhkGUw4Zz7T6NQVwvrb0Kme0e7xSiOWp1Xe9XxWo51aSgvGfk6N/Ho2chUjPS+crt5yPk6KxfJZiBAYC+q2X0+kN7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760960311; c=relaxed/simple;
-	bh=X/Lf6eJ2MeIX6uQyHWlFiCMgPrqb1bVvrXirRM9qSNg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ltk/wcpyr/PxL2MDjPhB6pkazsssxZxopdXYM2QKMeUMte6rBvjjwwWGGivpzF0E18bEFi9KBRqOl4N8rjUF6aZJKILH2RkQGl8KGWaz8s0022C2R2WzoQJhHztA2I2se48gQAGlwQbMUDVZtH2B59jfV5L8RIqVNeoH9nijtt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-93e86696bd9so223425039f.2
-        for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 04:38:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760960309; x=1761565109;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T485cP2PDfKw5L0LRph7Bn15y7b3Q3pOZ3t1w+cyIf4=;
-        b=Atn/Ye4iKVipe4uSJzpAk45LSJ0QmiUrVkSYnOFOxsMMzA7Rj4Eeg9GttkqbKvpfZ0
-         cpV32ZsQZpvLbK37xkg5lc46rXUUoqRbH4VWNcMzZ4nOsGAlOaIlt3WChMrE4Ve0txwb
-         y0QBOZ31V36oIsaex//igHq4f88bkeb/JVyNkDfQuUI7bdtJ2OLUuVEf7uJna/2NTgrZ
-         uRy2WvOfq2pdF+Bu1TdqDjhgHv0XLsVYP24Pf9tbLlKk42PBZsL0R6iWf62GL2RARqnU
-         QL6aK3/LC3GOYEMEtadmC9KfGwn0uxfMEY0n1jkaajo+Jy83sCutn4VSePHNj9XOT5RW
-         ia2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVOr9Wkrck/sr2+CSQg+eBeD+xGhEM3qTH7GQzd4pyz+FOVWtEGOX9pZT5o1mcyZzjeyqwx@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVR1kG+KJT2YsyDIVlYdecXteF/qEVDy0dmqKNdSDhfkUpvfkd
-	vSd1GJ0CzF8CaGzoM1T7whNF0b9o5+A6cnubkkBgZiCw1HIqeSBkvK8omwQFzpLF5+rPZX+S3qN
-	uwQbeOdC4YDm0Pn1cKTNeH/bzbKpHYI3VVnCzHw5L7ld9BRn8AM9DUTKryf0=
-X-Google-Smtp-Source: AGHT+IHIyMhT2Z7ldaGWSNIsMhOp6eIxGv/OXeRO4NSe4aOlKDrIeCpWJ8zH7xQnYmCBAGYSuEoYeUAhfH35xDnurjNGR3f1fo6u
+	s=arc-20240116; t=1760982054; c=relaxed/simple;
+	bh=33JwkN0c4OxqCnWyYrR5XwpQI3m0GzMLZfEtCy3F2AA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=LACyzlDnHQzk+06JSMZeywRpcxOaROnETO1lyjGlfVWnrvzRs6DQsKCePkftft3WDW3Oh+LLoaxk/L6lbEuxwdjqw+D6B4fdm2xwx0DEmmAP+9DasEeJbzZw/DpR4TKmwsreq3rAc8v77LhBTK/vBjj5QSsmSM+x0HmVRFr3Ct8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyAzErk3; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GyAzErk3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591C2C4AF0D
+	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 17:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760982054;
+	bh=33JwkN0c4OxqCnWyYrR5XwpQI3m0GzMLZfEtCy3F2AA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=GyAzErk3DqKkGQVP5y8IqdFQQR0p+Jt7cjXmAVpnaPJaTLNSb/KnyCp5VMDDPJrWH
+	 LdsZ3AsrrmhZCZv6RaE5HKIUgZJm2dPym2x35D6djAoCZoMWTY2lIbmIR8PsbMzyMN
+	 ni/XWy5uK70yJPfyGVR8bL4vD9s5Pw5skZgpca2+nVoIzreePL/KDznP/FLLeVL5qb
+	 HgH7YQBCxGx+PdwdH9lzOABwcyhoND7j0fOIdXv7/dAmX3yitGOFt0Uj4xggxLLcji
+	 dwDgdNCTAOEoJe6BdKiq0AdXauI7gtEmaX+QfyzAkcp4gN/h3zfWishajtGyybQPa6
+	 A7JMgF7q56kJw==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-79a7d439efbso62977696d6.0
+        for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 10:40:54 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxPuPIcjpM1tQHI/ikk6qVGm9enQYlkr6z6vCOBHdDWqUS6LrNM
+	9BJbzzvHe33q+vtCxCmgi+2+82PSJPlfuPpUgadyfxJr0sRnHUPi4lwOe/rFVVr2a+erdOCEsx0
+	dgF+MS5zGhrgBonF9wGAwiyvyLVvMzuI=
+X-Google-Smtp-Source: AGHT+IE6Vzd16FcbeBOMBXPpUL2dqpcIdH6E3O/h6H6m9noF6wP/3iJIflxKEQq6Niz27yWjaCr8FYpDB5Q6K7aMsis=
+X-Received: by 2002:a0c:f089:0:b0:87c:2213:ed28 with SMTP id
+ 6a1803df08f44-87c2213ee5bmr178472016d6.27.1760982053553; Mon, 20 Oct 2025
+ 10:40:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:15d3:b0:940:d1a7:dfa2 with SMTP id
- ca18e2360f4ac-940d1a7e14bmr873323939f.1.1760960308844; Mon, 20 Oct 2025
- 04:38:28 -0700 (PDT)
-Date: Mon, 20 Oct 2025 04:38:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68f61f34.a70a0220.205af.0030.GAE@google.com>
-Subject: [syzbot] Monthly v9fs report (Oct 2025)
-From: syzbot <syzbot+list0d3fd201f302d26981a7@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+From: Song Liu <song@kernel.org>
+Date: Mon, 20 Oct 2025 10:40:42 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_u_SYdt5=2gYO_dxzMKXzGMt-TfdE_ueowg-Hq5tRCAiw@mail.gmail.com>
+X-Gm-Features: AS18NWCP_xGl6IEii37L-2PXQXikvOE4GhujqkkZXqmMWsUBdnESg39dTP4v_eM
+Message-ID: <CAHzjS_u_SYdt5=2gYO_dxzMKXzGMt-TfdE_ueowg-Hq5tRCAiw@mail.gmail.com>
+Subject: 9P change breaks bpftrace running in qemu+9p?
+To: v9fs@lists.linux.dev, Tingmao Wang <m@maowtm.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	bpf <bpf@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello v9fs maintainers/developers,
+Hi,
 
-This is a 31-day syzbot report for the v9fs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/v9fs
+I noticed a new error in the upstream kernel when I run bpftrace with
+vmtest [2]:
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 8 issues are still open and 37 have already been fixed.
+$ vmtest -k arch/x86/boot/bzImage "bpftrace.real -e
+'fexit:cmdline_proc_show {exit();}'"
+=> bzImage
+===> Booting
+===> Setting up VM
+===> Running command
+[    5.610741] id (178) used greatest stack depth: 11592 bytes left
+Parse error: Input/output error
+Command failed with exit code: 2
+[root@(none) /]#
 
-Some of the still happening issues:
+git bisect points to patch 1/3 of this set [1].
 
-Ref Crashes Repro Title
-<1> 2597    Yes   INFO: task hung in v9fs_evict_inode
-                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
-<2> 96      Yes   WARNING: refcount bug in p9_req_put (3)
-                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
-<3> 5       No    possible deadlock in flush_all_rcu_sheaves
-                  https://syzkaller.appspot.com/bug?extid=aecb85f534f8915b6f5b
-<4> 2       Yes   WARNING in v9fs_begin_writeback
-                  https://syzkaller.appspot.com/bug?extid=0b74d367d6e80661d6df
+Any idea what is happening here?
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks,
+Song
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+[1] https://lore.kernel.org/v9fs/cover.1743956147.git.m@maowtm.org/
+[2] https://github.com/danobi/vmtest
