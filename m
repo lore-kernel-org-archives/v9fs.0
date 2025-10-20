@@ -1,133 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5459A1EDA0B
-	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 19:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0616B29B228
+	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 21:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760989237; cv=none; b=nr0x1e/ledmHyB0j9xCwVbyx8PaSlb+96Wkq4TxtoUHLCRItKGqS9EMsRjWSxHiCc/C1H50fXctIe8PE6AyMlqDGVIQaxQodbVSbKGWQJhBNH6eWJMu6bSBXcYzGjJEYhaQYtUtO0AW7yeIM+ebRidiYO4HJ/xoTWA3tgPT4ie8=
+	t=1760995973; cv=none; b=ObKzI0C6HLnhCQo34dSVNwwD59nlv7gXyPtV/jnUBKkc3GtKigcnWx9BfTi+N/sgZGD44INUpeFzyRblK4kc08UZaFtBAeXw7VRR+1DH5XEKbmkJNnBj8kMzSo2+Zi2yjfAhntHCxp3vaknYhKlP+YuNdlQG2B42qVJZMWRmsCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760989237; c=relaxed/simple;
-	bh=mNxMi2e3EZP50dgnVQKiVX/stu9CdgVnthu3QTuqFnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tV76AmOtK8/9C+1JfF1MTo2Oo+hQ0vuxBXlGMOMoy8dVn2H/2QvNMUSZBEfkzf0PywUNDX/GtDSCIaty4AgdaBWmnUyiPm0yZHWUg1AC2avn1Ui2khxqdVV7R22bx+PUsoH5cUXz8CgHGZC4rssaV4NCR1z13LmH8xPXP8lAX3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LghXKkMz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760995973; c=relaxed/simple;
+	bh=eHrECkEM63rtKZMGjxIdCIgrX3X5T3yvP2VGN/8TBC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u3yy/YgQpqLij9S0atCNTBqDTEybOqDsoIHKfZcdi6c4g7wUKghLhyDzLXBjHp7lUZTvPhxTEmmsxrl6qZBG60IEmAL6CR6dz3bCnBZwFW+gLXbElQ2a4QU0kkJkSaC2s2On3fZM/GIfBenEmymVSJgMf5ewN+R8wM2Ze7rzU0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Ul3eNP2H; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LghXKkMz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51EAC116C6
-	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 19:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760989236;
-	bh=mNxMi2e3EZP50dgnVQKiVX/stu9CdgVnthu3QTuqFnY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LghXKkMzCQAGnQo19DtJEa8AH4EBc4TjTu5supCPuUnt8cNOTzzR2+SUpM3j9Ctna
-	 5Q73aXJ9mWVHYBLIWMahjZrY1xH8qXApnWLEoikM6ckCPJAuZjkXy25dUhDczMijdP
-	 HwKXyDZj+bfrRZp5OHtmvm8qfEg4Ut0rsdQHyx/RsqKu0lO02TbcIYlr/Hc+Ueeq0K
-	 YgWsODptpPViIpMixSIvmAd1NTXHXldeRIvBGGW2Y3Wf13+ArVxo01auXQoPNQiyJ+
-	 doXqWZC9NWiTIyFR1zCG9qvXDH/4KbS+/PVJW0wOlkE7jkT9jDaLk8l9WPy/FDAPxp
-	 t33q0WGDGSlcg==
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-87c20106cbeso68947396d6.1
-        for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 12:40:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXYT2NS8PQd6iXxLuxeBqIkPJDEdlRX3DWBXHFJqVX11LXGootUP9PbnKibzmt/fr8T3VIK@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzhs4RnmbiwlzqG80snLwmwhQT4G+RjPetPonqwJS/bLp0PcLO0
-	77lxZpoD1+/06E8PXbfPNtTOIY4Vu/Ze/BL9niy/h0EIv9bpfLL8TQPORJ/w1ZCY3x5Py1vmFVR
-	U66qjd86LCQPaibvvHDe5eRPUeuZxCP4=
-X-Google-Smtp-Source: AGHT+IG3NeTBx7Prf/3sXQ6ixXSndWKdVl4o5sV0g2ylxymqwUWvbp+jw339EBlNsmvM/Y8QTxtG0vv2xCwBWR8xDdU=
-X-Received: by 2002:ad4:5d61:0:b0:87c:2847:f7c4 with SMTP id
- 6a1803df08f44-87c2847f8bamr153330996d6.23.1760989235949; Mon, 20 Oct 2025
- 12:40:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Ul3eNP2H"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id D1F9814C2D3;
+	Mon, 20 Oct 2025 23:32:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1760995961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ZjkqLkuqKJhoX3v2GjdOYI+aXyKqxwW3WOtRg6xSvU=;
+	b=Ul3eNP2HUSrgqCNdGr1xlu9nSwOnNir9p8ZdumPy4C0v0LOOlyPtR5i0GmIUqo1zQxaOMD
+	FOfWI+0kT8djgZa95A5qUqlA8RQAv+UZgZMwPEikLFp3w5UR64Hl//xLVqC211CCLU7f07
+	gT6Nei35etr0hPLVWvuc2me0EzBs3svFUP6nf9wNl55tpytqsR6GbHiwB3XWsbfzgX695G
+	l1wYWN67EKn+9F/+jU5lhAQXPOHKlJiYC1wy2KRCKsOr23DlldOipUU1qPsw15OLNpl3CY
+	KJik/WzVx4V+xXQmOU2B5ONCjIsJV3eueYqywKP+cuNzqRqdbrle1to48YR/PQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ab0b83ce;
+	Mon, 20 Oct 2025 21:32:37 +0000 (UTC)
+Date: Tue, 21 Oct 2025 06:32:22 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Song Liu <song@kernel.org>
+Cc: Tingmao Wang <m@maowtm.org>, v9fs@lists.linux.dev,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	bpf <bpf@vger.kernel.org>
+Subject: Re: 9P change breaks bpftrace running in qemu+9p?
+Message-ID: <aPaqZpDtc_Thi6Pz@codewreck.org>
+References: <CAHzjS_u_SYdt5=2gYO_dxzMKXzGMt-TfdE_ueowg-Hq5tRCAiw@mail.gmail.com>
+ <e0c7cd4e-4183-40a8-b90d-12e9e29e9890@maowtm.org>
+ <CAHzjS_sXdnHdFXS8z5XUVU8mCiyVu+WnXVTMxhyegBFRm6Bskg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHzjS_u_SYdt5=2gYO_dxzMKXzGMt-TfdE_ueowg-Hq5tRCAiw@mail.gmail.com>
- <e0c7cd4e-4183-40a8-b90d-12e9e29e9890@maowtm.org>
-In-Reply-To: <e0c7cd4e-4183-40a8-b90d-12e9e29e9890@maowtm.org>
-From: Song Liu <song@kernel.org>
-Date: Mon, 20 Oct 2025 12:40:23 -0700
-X-Gmail-Original-Message-ID: <CAHzjS_sXdnHdFXS8z5XUVU8mCiyVu+WnXVTMxhyegBFRm6Bskg@mail.gmail.com>
-X-Gm-Features: AS18NWCarXtoDKhgef621_pUFzzZSTOA--qmg9kt4Gj0KAYzdZvyF9I7MESdw4o
-Message-ID: <CAHzjS_sXdnHdFXS8z5XUVU8mCiyVu+WnXVTMxhyegBFRm6Bskg@mail.gmail.com>
-Subject: Re: 9P change breaks bpftrace running in qemu+9p?
-To: Tingmao Wang <m@maowtm.org>
-Cc: Song Liu <song@kernel.org>, v9fs@lists.linux.dev, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	bpf <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHzjS_sXdnHdFXS8z5XUVU8mCiyVu+WnXVTMxhyegBFRm6Bskg@mail.gmail.com>
 
-On Mon, Oct 20, 2025 at 11:40=E2=80=AFAM Tingmao Wang <m@maowtm.org> wrote:
->
-> Hi Song,
->
-> On 10/20/25 18:40, Song Liu wrote:
-> > Hi,
-> >
-> > I noticed a new error in the upstream kernel when I run bpftrace with
-> > vmtest [2]:
-> >
-> > $ vmtest -k arch/x86/boot/bzImage "bpftrace.real -e
-> > 'fexit:cmdline_proc_show {exit();}'"
-> > =3D> bzImage
-> > =3D=3D=3D> Booting
-> > =3D=3D=3D> Setting up VM
-> > =3D=3D=3D> Running command
-> > [    5.610741] id (178) used greatest stack depth: 11592 bytes left
-> > Parse error: Input/output error
-> > Command failed with exit code: 2
-> > [root@(none) /]#
-> >
-> > git bisect points to patch 1/3 of this set [1].
-> >
-> > Any idea what is happening here?
->
-> I have attempted to reproduce this but couldn't yet:
->
->         > git log --format=3Dshort -1
->         commit 211ddde0823f1442e4ad052a2f30f050145ccada (HEAD, tag: v6.18=
--rc2, origin/master, origin/HEAD)
->         Author: Linus Torvalds <torvalds@linux-foundation.org>
->
->             Linux 6.18-rc2
->         (0.067s) linux-devbox-2 (mao; ; ?) ~/9pfs
->         > vmtest -k arch/x86/boot/bzImage "bpftrace -e 'fexit:cmdline_pro=
-c_show {exit();}'"
->         =3D> bzImage
->         =3D=3D=3D> Booting
->         =3D=3D=3D> Setting up VM
->         =3D=3D=3D> Running command
->         Attached 1 probe
->         ^C=E2=8F=8E
->          (130) (14.421s) linux-devbox-2 (mao; ; ?) ~/9pfs
->         > vmtest -k arch/x86/boot/bzImage "(sleep 2; cat /proc/cmdline) &=
- bpftrace -e 'fexit:cmdline_proc_show {exit();}'"
->         =3D> bzImage
->         =3D=3D=3D> Booting
->         =3D=3D=3D> Setting up VM
->         =3D=3D=3D> Running command
->         Attached 1 probe
->         rootfstype=3D9p rootflags=3Dtrans=3Dvirtio,cache=3Dmmap,msize=3D1=
-048576 rw earlyprintk=3Dserial,0,115200 printk.devkmsg=3Don console=3D0,115=
-200 loglevel=3D7 ra...
->
->         (5.29s) linux-devbox-2 (mao; ; ?) ~/9pfs
->         > qemu-system-x86_64 -version
->         QEMU emulator version 10.1.1
->         Copyright (c) 2003-2025 Fabrice Bellard and the QEMU Project deve=
-lopers
->         (0.011s) linux-devbox-2 (mao; ; ?) ~/9pfs
->         > bpftrace --version
->         bpftrace v0.24.1
->
-> I'm happy to take a further look - is there anything special about your
-> setup, what version of QEMU / bpftrace are you running?
+Song Liu wrote on Mon, Oct 20, 2025 at 12:40:23PM -0700:
+> I am running qemu 9.2.0 and bpftrace v0.24.0. I don't think anything is
+> very special here.
 
-I am running qemu 9.2.0 and bpftrace v0.24.0. I don't think anything is
-very special here.
+I don't reproduce either (qemu 9.2.4 and bpftrace v0.24.1, I even went
+and installed vmtest to make sure), trying both my branch and a pristine
+v6.18-rc2 kernel -- what's the exact commit you're testing and could you
+attach your .config ?
 
 Thanks,
-Song
+-- 
+Dominique Martinet | Asmadeus
