@@ -1,121 +1,85 @@
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7E8213E6A
-	for <v9fs@lists.linux.dev>; Fri, 17 Oct 2025 05:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43412FC862
+	for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 11:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760680238; cv=none; b=I+PbwsHijhL8qf8taeb/RBJ2OxgGpilAKB9ntmN79vuqf/V4QCbtsBvTf76y1/CQfd/dYzxfBuFEkaq8nA2GzOIIhWWl1Z11JB/xtil2xw0k1bk0H9MDzpKGaVk+y/4DwUFHo4cen220E7CTay6qw9U12rb3u6kJKoWlSXU0Zmk=
+	t=1760960311; cv=none; b=du+r377eEq3fp3RenLyuTZUp34jufeHIgHu0T/Oo56YzsQyRccT7gxIveVUEcFaM+JyGFALXLLdkJ6hc1TQ3wlNXaqmVWf0BHDVkZPGqMS86aaVLttFX7f6CdM6Y/22+mfwKHpKJ0+qEsJ6fb0y4RYkDHreZzAIVMDNoD0Zq/k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760680238; c=relaxed/simple;
-	bh=q2z1XVsfOxaQEanFyl/O3jRiEJIBBrPJ+WgI7M7UIYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AI4Gaay+kYPQv89MQKKRU1dDlIhoFR9qFG6e5Dv6ClKSLtvs+f7jGMugJJB8hUKF2x9kTWUiDI9o50uEUsKIhdNVYNX8Jzci2nLcvA455Uo3goLzp6QsmbF/zna6vPV3LdA2ip1OEUTK5bQYQNC5w7RyhsHT1k+5H6EuIS6Dcm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=fVyRJno5; arc=none smtp.client-ip=80.12.242.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="fVyRJno5"
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id 9dL6vKtrFnE4g9dL6vORDv; Fri, 17 Oct 2025 07:49:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1760680162;
-	bh=a0DQw3/InaKVaaSpMVnNMO5+IxlhSvGdj3eQnTfqumg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=fVyRJno51WqygWBj7WjqLDoeuHsi4uG6O/0wxesYAKJ8J6CQf0ciMrTi9unLA3WI0
-	 04OrTRao7g2IUE+JWk07hhZQNoW5YLJbqlHW49zOucJ8hWAr6XtZnMKpq1nbAflaIr
-	 vlipTADdKGmCQ+beSEjuJ1jTfpniiB40wknKLOdwOsBXz8UuCHeiniJUi5w+qZIzGR
-	 +CqCWGASLZMRr2Vgf2z2t2q0FMbzBEgP/IWe+3brKaC3KzgscryyxyAITUarAqDxtP
-	 UYZqXl6Ew+7cdvuYUb3XDQgmO0dd2Q/F197f3kv+0bWy9v2KY+FMBrhq7uNLUT8Z10
-	 dD8Tj225Mj3GA==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 17 Oct 2025 07:49:22 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <25cab1de-ccc9-41b1-a7b1-8bfff44c74fc@wanadoo.fr>
-Date: Fri, 17 Oct 2025 07:49:19 +0200
+	s=arc-20240116; t=1760960311; c=relaxed/simple;
+	bh=X/Lf6eJ2MeIX6uQyHWlFiCMgPrqb1bVvrXirRM9qSNg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ltk/wcpyr/PxL2MDjPhB6pkazsssxZxopdXYM2QKMeUMte6rBvjjwwWGGivpzF0E18bEFi9KBRqOl4N8rjUF6aZJKILH2RkQGl8KGWaz8s0022C2R2WzoQJhHztA2I2se48gQAGlwQbMUDVZtH2B59jfV5L8RIqVNeoH9nijtt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-93e86696bd9so223425039f.2
+        for <v9fs@lists.linux.dev>; Mon, 20 Oct 2025 04:38:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760960309; x=1761565109;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T485cP2PDfKw5L0LRph7Bn15y7b3Q3pOZ3t1w+cyIf4=;
+        b=Atn/Ye4iKVipe4uSJzpAk45LSJ0QmiUrVkSYnOFOxsMMzA7Rj4Eeg9GttkqbKvpfZ0
+         cpV32ZsQZpvLbK37xkg5lc46rXUUoqRbH4VWNcMzZ4nOsGAlOaIlt3WChMrE4Ve0txwb
+         y0QBOZ31V36oIsaex//igHq4f88bkeb/JVyNkDfQuUI7bdtJ2OLUuVEf7uJna/2NTgrZ
+         uRy2WvOfq2pdF+Bu1TdqDjhgHv0XLsVYP24Pf9tbLlKk42PBZsL0R6iWf62GL2RARqnU
+         QL6aK3/LC3GOYEMEtadmC9KfGwn0uxfMEY0n1jkaajo+Jy83sCutn4VSePHNj9XOT5RW
+         ia2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVOr9Wkrck/sr2+CSQg+eBeD+xGhEM3qTH7GQzd4pyz+FOVWtEGOX9pZT5o1mcyZzjeyqwx@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVR1kG+KJT2YsyDIVlYdecXteF/qEVDy0dmqKNdSDhfkUpvfkd
+	vSd1GJ0CzF8CaGzoM1T7whNF0b9o5+A6cnubkkBgZiCw1HIqeSBkvK8omwQFzpLF5+rPZX+S3qN
+	uwQbeOdC4YDm0Pn1cKTNeH/bzbKpHYI3VVnCzHw5L7ld9BRn8AM9DUTKryf0=
+X-Google-Smtp-Source: AGHT+IHIyMhT2Z7ldaGWSNIsMhOp6eIxGv/OXeRO4NSe4aOlKDrIeCpWJ8zH7xQnYmCBAGYSuEoYeUAhfH35xDnurjNGR3f1fo6u
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] 9p: Use kvmalloc for message buffers on supported
- transports
-To: Pierre Barre <pierre@barre.sh>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- asmadeus <asmadeus@codewreck.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, v9fs@lists.linux.dev,
- ericvh@kernel.org, lucho@ionkov.net, linux-kernel@vger.kernel.org
-References: <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
- <8602724.2ttRNpPraX@silver>
- <7005d8d9-d42d-409f-b8e3-cd7207059eee@app.fastmail.com>
- <5019358.GXAFRqVoOG@silver>
- <d2017c29-11fb-44a5-bd0f-4204329bbefb@app.fastmail.com>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
-In-Reply-To: <d2017c29-11fb-44a5-bd0f-4204329bbefb@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6602:15d3:b0:940:d1a7:dfa2 with SMTP id
+ ca18e2360f4ac-940d1a7e14bmr873323939f.1.1760960308844; Mon, 20 Oct 2025
+ 04:38:28 -0700 (PDT)
+Date: Mon, 20 Oct 2025 04:38:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68f61f34.a70a0220.205af.0030.GAE@google.com>
+Subject: [syzbot] Monthly v9fs report (Oct 2025)
+From: syzbot <syzbot+list0d3fd201f302d26981a7@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	lucho@ionkov.net, syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Le 16/10/2025 à 15:58, Pierre Barre a écrit :
-> While developing a 9P server (https://github.com/Barre/ZeroFS) and
-> testing it under high-load, I was running into allocation failures.
-> The failures occur even with plenty of free memory available because
-> kmalloc requires contiguous physical memory.
-> 
-> This results in errors like:
-> ls: page allocation failure: order:7, mode:0x40c40(GFP_NOFS|__GFP_COMP)
-> 
-> This patch introduces a transport capability flag (supports_vmalloc)
-> that indicates whether a transport can work with vmalloc'd buffers
-> (non-physically contiguous memory). Transports requiring DMA should
-> leave this flag as false.
-> 
-> The fd-based transports (tcp, unix, fd) set this flag to true, and
-> p9_fcall_init will use kvmalloc instead of kmalloc for these
-> transports. This allows the allocator to fall back to vmalloc when
-> contiguous physical memory is not available.
-> 
-> Additionally, if kmem_cache_alloc fails, the code falls back to
-> kvmalloc for transports that support it.
-> 
-> Signed-off-by: Pierre Barre <pierre@barre.sh>
-> ---
-> Changes in v3:
-> - Added explicit .supports_vmalloc = false to DMA-based transports
->    (suggested by Christian Schoenebeck)
-> 
->   include/net/9p/transport.h |  4 ++++
->   net/9p/client.c            | 11 +++++++++--
->   net/9p/trans_fd.c          |  3 +++
->   net/9p/trans_rdma.c        |  1 +
->   net/9p/trans_usbg.c        |  1 +
->   net/9p/trans_virtio.c      |  1 +
->   net/9p/trans_xen.c         |  1 +
->   7 files changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/net/9p/transport.h b/include/net/9p/transport.h
-> index 766ec07c9599..f0981515148d 100644
-> --- a/include/net/9p/transport.h
-> +++ b/include/net/9p/transport.h
+Hello v9fs maintainers/developers,
 
-...
+This is a 31-day syzbot report for the v9fs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/v9fs
 
-> @@ -44,6 +47,7 @@ struct p9_trans_module {
->   	int maxsize;		/* max message size of transport */
->   	bool pooled_rbuffers;
->   	int def;		/* this transport should be default */
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 8 issues are still open and 37 have already been fixed.
 
-Unrelated to this patch, but it looks like 'def' could be a bool.
-This would save a few bytes in the structure, should it matter.
+Some of the still happening issues:
 
-CJ
+Ref Crashes Repro Title
+<1> 2597    Yes   INFO: task hung in v9fs_evict_inode
+                  https://syzkaller.appspot.com/bug?extid=56bd5818697f0f93fdd9
+<2> 96      Yes   WARNING: refcount bug in p9_req_put (3)
+                  https://syzkaller.appspot.com/bug?extid=d99d2414db66171fccbb
+<3> 5       No    possible deadlock in flush_all_rcu_sheaves
+                  https://syzkaller.appspot.com/bug?extid=aecb85f534f8915b6f5b
+<4> 2       Yes   WARNING in v9fs_begin_writeback
+                  https://syzkaller.appspot.com/bug?extid=0b74d367d6e80661d6df
 
-> +	bool supports_vmalloc;	/* can work with vmalloc'd buffers */
->   	struct module *owner;
->   	int (*create)(struct p9_client *client,
->   		      const char *devname, char *args);
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
