@@ -1,89 +1,85 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEEC299920
-	for <v9fs@lists.linux.dev>; Tue, 21 Oct 2025 22:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAF23E334
+	for <v9fs@lists.linux.dev>; Tue, 21 Oct 2025 22:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761084751; cv=none; b=jRYLGt61yeHjQPfJuTqQWIw2WwdkXxrUJY494wwu/t3p+jgj26hOPks9fmQH+t5Hzt6XzUjo2kJqjst+5N6Tb2n9O1J1Gb8yP1aIyHaqtdflcDGFJJYIPXhvALxCCllgWBgPcDbOJZOgdpVXehyQzjQ39mMXfnykW7YQY/EBSjk=
+	t=1761086772; cv=none; b=cvK5ejFziwF0YOOReTwX2soGDpBl3UHogompC8S7zoHyIu8dCZrt6BkNhmWLh2XajxNpwd4+il+wsjF2uhLpYC+8ds9Q1AQMvYkUXt+Zxh7bZZ/wrsWjUQDzpqIwOs6iheXTDcpO5qOMqt81/lhBrY3AfmnEAiB7mqg+rMnbW/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761084751; c=relaxed/simple;
-	bh=ofUIlUcJf+qSxbCYFOj4Dmv8C/Q/gYj+rCTIU17Szqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwTx0+dt8MgglW7D0oIeKqnBM+gYBI/5wC2cGWfdfw5gSDSZf2EJA6ioKng1h1BYpS+NPPqtD/9eAFbygTDnLZ8BRXWXBachonE52NVg+PgJEnKJfdzv4wtL1SptF/0wq6AKzRp5kiqGlQ318zORo7KMLF12Cl1MsX4lzeUyVKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=kX4lhc38; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1761086772; c=relaxed/simple;
+	bh=8Yi4wsLUGlj+LPpx1ZxCTrQv3laOqZ6rrsLk5GaysiM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YcukpyceCy3lmRMeYvbnCu/uLDSKqkFFqdigjXRd0IF8MyNwvqr/OgyAKw36OCk6x7Y49hiSFF5m6SgYqBHxA8fMpNBgZV7J3URjdZsLQvaRQYlkmrPkpCszMeSD6P/hGlRG0EBnzMiPHpmKfxYsTEZOL8xm9nKa5wFH/IbkDkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VkWa2lCS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="kX4lhc38"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id B02D014C2D3;
-	Wed, 22 Oct 2025 00:12:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1761084741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DvgjUM9pwk9ojxcDr4HMoG2nE5PWiwPcbp29vqBU1MQ=;
-	b=kX4lhc38IASBnGAnsO2gRsnvwMooM10C4XUxJwu1iiBoQ0Yt6dRbGxRdV59OGZmDIh7SJ1
-	CCCbN+U8fQMKAdz0ruJhqkEutoTsmcoVqmtyro9Brk6JK4EJs8QAJVVAHZfh2o31AjmxGK
-	IcJi68ksWWiz9jNTtOVPbCmUFfJq7t+Rlh8IbUJILZ129kf9BIcftNqZQiPk6ylgFWHp5a
-	Fe1NArMgPxT/x4V4M5Cq8WqVdPAWs4yARjmreAuatu7fowYr69lhmChIsDTQlGujjYF3rK
-	Ed02cDwGfd9zIzELtdIkr8TmufRWTQ0LuNmntysnVeYTFgIaDGrD5QSykKSCSw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f75e589d;
-	Tue, 21 Oct 2025 22:12:17 +0000 (UTC)
-Date: Wed, 22 Oct 2025 07:12:02 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Song Liu <song@kernel.org>,
-	Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
-	Christian Brauner <brauner@kernel.org>, Tingmao Wang <m@maowtm.org>,
-	v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-	bpf <bpf@vger.kernel.org>
-Subject: Re: 9P change breaks bpftrace running in qemu+9p?
-Message-ID: <aPgFMtg2DzzeRreH@codewreck.org>
-References: <CAHzjS_u_SYdt5=2gYO_dxzMKXzGMt-TfdE_ueowg-Hq5tRCAiw@mail.gmail.com>
- <e0c7cd4e-4183-40a8-b90d-12e9e29e9890@maowtm.org>
- <CAHzjS_sXdnHdFXS8z5XUVU8mCiyVu+WnXVTMxhyegBFRm6Bskg@mail.gmail.com>
- <aPaqZpDtc_Thi6Pz@codewreck.org>
- <CAHzjS_uEhozUU-g62AkTfSMW58FphVO8udz8qsGzE33jqVpY+g@mail.gmail.com>
- <086bb120-22eb-43ff-a486-14e8eeb7dd80@maowtm.org>
- <CAHzjS_vrVJrphZqBMxVE4UEfOqgP8XPq6dRuBh9DdWL-SYtO2w@mail.gmail.com>
- <CAADnVQKSJTAx-4T4WLFhLPcmJ-Ea5onKG+Z-d9iv48r4A6nJMQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VkWa2lCS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303B1C16AAE
+	for <v9fs@lists.linux.dev>; Tue, 21 Oct 2025 22:46:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761086772;
+	bh=8Yi4wsLUGlj+LPpx1ZxCTrQv3laOqZ6rrsLk5GaysiM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VkWa2lCSvnjE17/tgS81wePAfHecfhNG11jPXXED2zGzhsqK11qdo5tM9HSyExuIu
+	 4GulW1WNX1wFBoWOK3HmLy/167BS1R0dVCp4lO4V7KbcokjawBgKd09v9zZ/VtGl9r
+	 ym4FWaEehbNfIBpNgTi1KghAYO6tWIT/nXxEW932SFrIms6GfR6UP99T5Xj9UXj7ef
+	 oryBeOSqy2zL1WtUIv5Ken1IngK3H/k2/zeuxa9+YGbo12vPZk+mPi7pIWSGvRzH2L
+	 Jhys/puKeY8EHi7zGtXPczkrdd0EjHzEb1oKgLJGOtfc+/Ddi16JJGfmuGfFeNzuVg
+	 DI9whryrlWG2g==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-7f7835f4478so65270496d6.1
+        for <v9fs@lists.linux.dev>; Tue, 21 Oct 2025 15:46:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV/5o6So6pJBIsXpZLmmcV2ZBnY432bUzHsH/b/BDs+JOmH6nGLlX244t5w13kOpsSmM76M@lists.linux.dev
+X-Gm-Message-State: AOJu0YwREwqUIUH7Vr18XYa+cKV0+yFLICYMKQ7grnwrmHkRdH7pfKsH
+	MKrqBM8YrGUmEi+3jgd3/ZodREnrHSZU1b+b2XLSGfOI1+E38bh8Dvs/Hra1IWcwVKayDuQYSV0
+	lpIzHiRbJHCDcM1OuoSrJ5e+AJgqeknE=
+X-Google-Smtp-Source: AGHT+IGbJZonn9gqagn6gyi7iThd5ydwZkXgp5pIwGP34sdgmQ0t/Jmt6mgI+v0Edn839t8DPTWZKlLDZX0KMS6lYes=
+X-Received: by 2002:a05:6214:1948:b0:87d:a372:fd3e with SMTP id
+ 6a1803df08f44-87da3918502mr159614426d6.56.1761086771180; Tue, 21 Oct 2025
+ 15:46:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAADnVQKSJTAx-4T4WLFhLPcmJ-Ea5onKG+Z-d9iv48r4A6nJMQ@mail.gmail.com>
+References: <20251022-mmap-regression-v1-1-980365ee524e@codewreck.org>
+In-Reply-To: <20251022-mmap-regression-v1-1-980365ee524e@codewreck.org>
+From: Song Liu <song@kernel.org>
+Date: Tue, 21 Oct 2025 15:46:00 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_s5EzJkvTqi73XS_9bBsaGuXu1zQ4jOLgcpC9vmJ7FoaA@mail.gmail.com>
+X-Gm-Features: AS18NWAItVFqwhj3RByyGzRKQfVCYO_ER0xdHoP_gZ-DIxoEtoXTz3_jzN7jFVI
+Message-ID: <CAHzjS_s5EzJkvTqi73XS_9bBsaGuXu1zQ4jOLgcpC9vmJ7FoaA@mail.gmail.com>
+Subject: Re: [PATCH] fs/9p: don't use cached metadata in revalidate for cache=mmap
+To: asmadeus@codewreck.org
+Cc: Song Liu <song@kernel.org>, Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Tingmao Wang <m@maowtm.org>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
+	bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Alexei Starovoitov wrote on Tue, Oct 21, 2025 at 09:56:10AM -0700:
-> > I am not sure what is the "right" behavior in this case. But this is
-> > clearly a change of behavior.
+On Tue, Oct 21, 2025 at 3:10=E2=80=AFPM Dominique Martinet via B4 Relay
+<devnull+asmadeus.codewreck.org@kernel.org> wrote:
+>
+> From: Dominique Martinet <asmadeus@codewreck.org>
+[...]
+> ---
+>
+> Reported-by: Song Liu <song@kernel.org>
+> Link: https://lkml.kernel.org/r/CAHzjS_u_SYdt5=3D2gYO_dxzMKXzGMt-TfdE_ueo=
+wg-Hq5tRCAiw@mail.gmail.com
+> Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+> Link: https://lore.kernel.org/bpf/CAEf4BzZbCE4tLoDZyUf_aASpgAGFj75QMfSXX4=
+a4dLYixnOiLg@mail.gmail.com/
+> Fixes: 290434474c33 ("fs/9p: Refresh metadata in d_revalidate for uncache=
+d mode too")
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 
-That's definitely wrong, the resulting file was truncated.
-Thanks for the repro!
+I can confirm this fixes bpftrace and the reproducer in the VM.
 
-I've sent a fix here:
-https://lkml.kernel.org/r/20251022-mmap-regression-v1-1-980365ee524e@codewreck.org
+Tested-by: Song Liu <song@kernel.org>
 
+Thanks for the quick fix!
 
-Would be great if you could confirm it fixes your problems, and I'll get
-it sent to Linus
-
-> Andrii reported the issue as well:
-> https://lore.kernel.org/bpf/CAEf4BzZbCE4tLoDZyUf_aASpgAGFj75QMfSXX4a4dLYixnOiLg@mail.gmail.com/
-> 
-> selftests/bpf was relying on the above behavior too
-> which we adjusted already, but
-> this looks to be a regression either in 9p or in vfs.
-
-Looks like a 9p bug, sorry :(
-
--- 
-Dominique Martinet | Asmadeus
+[...]
