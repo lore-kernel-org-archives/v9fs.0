@@ -1,173 +1,102 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6590B2FDC3E;
-	Fri, 24 Oct 2025 08:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA41A304BBD
+	for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 11:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761293189; cv=none; b=s56Sbwh1pIMNbLkgPLpjrDWUxmERVecFX6acl35/uyxq7Gxai5yzUOS6QFQeiyHQb7QyqTOWpcLXQsXigXvJc4ZwPbSoBvBCmHjeVhrHITFn/+lJ8nZgWIoY0nTEwIJLGf8NtUwIaIcBFiDNkART2YHUWabq3OX7Y7+eC/wqZPY=
+	t=1761305167; cv=none; b=X6c3kw0nlhr8eTayUQ4e4zPZ25jBnh+dWAkPLtffFIYy7HqsJhoVQXT24+uqYsD7QGmRMs7VZlTsXb5D7OMLvS/ZVH+P/997N4xMei+EznOfVWdyQ7f1LoNCIHVd0hX8FDHS9+PHyCjBst6lcqHms7nK7Uirl667ZhiQZ+I2FJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761293189; c=relaxed/simple;
-	bh=fwUWvRaQsLFX3LqP3Ew3i68VLcwmDW8xgH2gbbo9sQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwjxqzXILQca5L1PPiQv1W5S8LhMt1b3NuLfDV/4uZbHdrXTTiWT1o1evXQ5x68/8AV6Ca7y3OuaP41bbbnDsEC0QZ8mDInitWacy6UFozTLrD0mPFozcRmOA9i2wciyPee2qtsR8LtLn1V5GfjmdQw+26uQljL7WAoEBbgRK9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=D6AogjIs; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1761305167; c=relaxed/simple;
+	bh=esg5jJJrldcsg4Eme/FaVfbzYkFZVxjJszNLHkfgbVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DNYyvdHRKTM4AQVR2hqtm6enyoOa8ksklAYG8pm1gSadkv1rEmC8YYikfCdfzxDEWlWDbAyWyS/7m82MnKZBqoLztiA+Iy86tWH470+FVWT0ae4qkHeq67BBVoSmyevUtL77JXohJrxcpFcy194/yKuWr9i/xGc+lTjJQL6uBJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WK/AcVsR; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="D6AogjIs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=CK4+A+XQ8xSWXf+Z9tTtAvh9OT31XsHF6kx6Btc5iA8=; b=D6AogjIsaOXIaEKMP8+nYzb2S/
-	Oi9fBsDLQ/QDLj8zWUOszOIZUXoUGJEGD6oOe3/gwwa36ob+z5Y4jnXIMl/I47R2yybCHjHy9PVpp
-	u9rk8NVCJvRsT7wc5scuOjf+d0qjgiv7xQKVzrHmYhwZolySV+SEki+Hm9VEk4MYwcBCOKWh8kE/L
-	vlzlOWvLC6nPNVOCQn/9gA1eRi4wHGrw+7X1beFwTeRlaIDXxs6ij8o/wGIbY6gxmKmEmayQZ5noV
-	iBvVRW/cRH9N2cvm1YrB7NcZkATFE2g0crlK/d+n5Fpb75Kk12b+O+FG+yCLdiKH/xMwQRP6Ju0xM
-	N9qYV9hw==;
-Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCCoa-00000008cQn-37yb;
-	Fri, 24 Oct 2025 08:06:25 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WK/AcVsR"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso1958248f8f.2
+        for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 04:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761305164; x=1761909964; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6njyGgpXnyix7DPfE/AD+aT34+lBZHSBxI3vVRiYPz8=;
+        b=WK/AcVsRx0Zbqn4o41EcK9hbKiFZw0zvmv6VLQnLzSIf2dqubFj1FanKa/vO5U+WKw
+         r2StmNBatTkvNfSeMdCWRj/9VbyQyVY3s5i/R6XGrwLs4WXYdrPNjKgkiSTglI3ChayV
+         aEZqAGwKfNuuOsKUGqj74Yfz1rAGfAH5TrhMt6555hPlj8qF/ZU5qnIp5Jw8xesTWU3d
+         iH/a1AEzCaEgcHWQY0Zll+fLRZcKxgTUoNerag7BhFqUgEChOrgBkjTX/xzqUPRwCt6K
+         Fss2RUwtKbAQ8RayHBSjdX/UHeGhz6/LEDMbNUVNcRUeSIe8YVG5xtcY9C0kExPWb2jH
+         ooDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761305164; x=1761909964;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6njyGgpXnyix7DPfE/AD+aT34+lBZHSBxI3vVRiYPz8=;
+        b=qwaJeexmKLvA/UfWeJf9OfnayBLxM2BoT+0P1h+kq5KlZIti6yR2n3zNZcsAsb7EvK
+         RdQLR9vtDIeUB3C1di562KjcSX5KG9yvrshjgQvD8OxZlKx1+MLpdZfQtttHjc+V0oJd
+         CDEsqIknFFklnDVmtaY1WJloiRd3KlOaW+dKReUDAALDqTw0OHWLy4MHskqpuS2fH9Iy
+         MJ4XAahtyhcosKXi32bIDwCN5At4+yigPnqU4GnXB0HX/Xpd6hFi/4ch5X3lNobaMOA7
+         1kCmSAajy5Y5FDsPYLw4LJtKWvdZ9okF1tw+/umiHLfR+5EIPVRB8uyO7Tq7otzFIrko
+         HoFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDy2K7ThroBLvP5GY+st4gJkV9oXxMMAPmrfH9Z3W/nIyHSKgYdUoJkFfEunMiFNDNmup5@lists.linux.dev
+X-Gm-Message-State: AOJu0YybCME5LRgNEWOHtFXqZU7WoKLwB+AFHqPqYS3ECyNyPRN6hKPR
+	bZLp03VlFe88CvUXqotW9aHQkKyHzwslU6vbJedrjPkzZO1+zu1iykieEY9NEC3W/yY=
+X-Gm-Gg: ASbGnctNlOK1C97n5irJztl2ilT0eZSx1Em8EWtLKxy94Ana+++D0tpMFe1QvJuSdre
+	zBwOFw5xBf82Hg1FkRCJY5qeGoZdfOjBahskd9fW8gYnuADnq7oG5bjlHpDyxzgwzHwIu26QymW
+	DF9uIvKMi+lKCdAIk6uwuUeVKZoKqt4Z6m4Aqzllr0T+LJdxlJELswK2E/0uJRDg8Lt8s/vMYTB
+	F5bEOPfVao/pTeMPWUMGqrPRhu2qihN9tKwtoHt3PKnoSBQi3XbaAtOrZGuQchdpr7VkuXPgI52
+	MIV4mYtY5Ww5Eb7xDyqTPTbUHd8ElOd3I3xbSecXN6qXSVSnYCH25HiTozJvFJCx1La1UTgvOYa
+	tdBU86nWPt5vi3KSLGxLpPCL0qB+Oy0hu3A0wGZhhfa7p24qQqd7BRSzmX71PbtDcmVWTqwvwjD
+	J0ori/IQ==
+X-Google-Smtp-Source: AGHT+IHTMdM53JxT5mbRrB/df/8148lrYpgmBufghOqk/tj4eesUFtAgikytzGYIeyYeUAUMaIogTA==
+X-Received: by 2002:a5d:5d87:0:b0:3ec:8c8:7b79 with SMTP id ffacd0b85a97d-4299075d0d3mr1809575f8f.61.1761305163789;
+        Fri, 24 Oct 2025 04:26:03 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4298d4a49ffsm4962650f8f.13.2025.10.24.04.26.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 04:26:03 -0700 (PDT)
+Date: Fri, 24 Oct 2025 14:26:00 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Dominique Martinet <asmadeus@codewreck.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-block@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-btrfs@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	jfs-discussion@lists.sourceforge.net,
-	ocfs2-devel@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 10/10] mm: rename filemap_fdatawrite_range_kick to filemap_flush_range
-Date: Fri, 24 Oct 2025 10:04:21 +0200
-Message-ID: <20251024080431.324236-11-hch@lst.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251024080431.324236-1-hch@lst.de>
-References: <20251024080431.324236-1-hch@lst.de>
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] fs/9p: delete unnnecessary condition
+Message-ID: <aPtiSJl8EwSfVvqN@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Rename filemap_fdatawrite_range_kick to filemap_flush_range because it
-is the ranged version of filemap_flush.
+We already know that "retval" is negative, so there is no need to check
+again.  Also the statement is not indented far enough.  Delete it.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- fs/sync.c          | 3 +--
- include/linux/fs.h | 6 +++---
- mm/fadvise.c       | 2 +-
- mm/filemap.c       | 8 ++++----
- 4 files changed, 9 insertions(+), 10 deletions(-)
+ fs/9p/vfs_dentry.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/sync.c b/fs/sync.c
-index 6d8b04e04c3c..1759f6ba36cd 100644
---- a/fs/sync.c
-+++ b/fs/sync.c
-@@ -285,8 +285,7 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
- 			ret = filemap_fdatawrite_range(mapping, offset,
- 					endbyte);
- 		else
--			ret = filemap_fdatawrite_range_kick(mapping, offset,
--					endbyte);
-+			ret = filemap_flush_range(mapping, offset, endbyte);
- 		if (ret < 0)
- 			goto out;
+diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+index c1acbc98465d..c5bf74d547e8 100644
+--- a/fs/9p/vfs_dentry.c
++++ b/fs/9p/vfs_dentry.c
+@@ -109,7 +109,6 @@ static int __v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
+ 			p9_debug(P9_DEBUG_VFS,
+ 				"refresh inode: dentry = %pd (%p), got error %pe\n",
+ 				dentry, dentry, ERR_PTR(retval));
+-		if (retval < 0)
+ 			return retval;
+ 		}
  	}
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index c895146c1444..a5dbfa20f8d7 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3014,7 +3014,7 @@ extern int __must_check file_fdatawait_range(struct file *file, loff_t lstart,
- extern int __must_check file_check_and_advance_wb_err(struct file *file);
- extern int __must_check file_write_and_wait_range(struct file *file,
- 						loff_t start, loff_t end);
--int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-+int filemap_flush_range(struct address_space *mapping, loff_t start,
- 		loff_t end);
- 
- static inline int file_write_and_wait(struct file *file)
-@@ -3051,8 +3051,8 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
- 	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
- 		struct address_space *mapping = iocb->ki_filp->f_mapping;
- 
--		filemap_fdatawrite_range_kick(mapping, iocb->ki_pos - count,
--					      iocb->ki_pos - 1);
-+		filemap_flush_range(mapping, iocb->ki_pos - count,
-+				iocb->ki_pos - 1);
- 	}
- 
- 	return count;
-diff --git a/mm/fadvise.c b/mm/fadvise.c
-index f1be619f0e58..67028e30aa91 100644
---- a/mm/fadvise.c
-+++ b/mm/fadvise.c
-@@ -111,7 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
- 		spin_unlock(&file->f_lock);
- 		break;
- 	case POSIX_FADV_DONTNEED:
--		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
-+		filemap_flush_range(mapping, offset, endbyte);
- 
- 		/*
- 		 * First and last FULL page! Partial pages are deliberately
-diff --git a/mm/filemap.c b/mm/filemap.c
-index f90f5bb2b825..fa770768ea3a 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -419,7 +419,7 @@ int filemap_fdatawrite(struct address_space *mapping)
- EXPORT_SYMBOL(filemap_fdatawrite);
- 
- /**
-- * filemap_fdatawrite_range_kick - start writeback on a range
-+ * filemap_flush_range - start writeback on a range
-  * @mapping:	target address_space
-  * @start:	index to start writeback on
-  * @end:	last (inclusive) index for writeback
-@@ -429,12 +429,12 @@ EXPORT_SYMBOL(filemap_fdatawrite);
-  *
-  * Return: %0 on success, negative error code otherwise.
-  */
--int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-+int filemap_flush_range(struct address_space *mapping, loff_t start,
- 				  loff_t end)
- {
- 	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, NULL);
- }
--EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
-+EXPORT_SYMBOL_GPL(filemap_flush_range);
- 
- /**
-  * filemap_flush - mostly a non-blocking flush
-@@ -447,7 +447,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
-  */
- int filemap_flush(struct address_space *mapping)
- {
--	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
-+	return filemap_flush_range(mapping, 0, LLONG_MAX);
- }
- EXPORT_SYMBOL(filemap_flush);
- 
 -- 
-2.47.3
+2.51.0
 
