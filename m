@@ -1,66 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10F4340D9E;
-	Wed, 22 Oct 2025 15:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BE22F7AD3;
+	Fri, 24 Oct 2025 08:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761146282; cv=none; b=dMsmcp1N/0+do/7NGqiyix3BdbWMPBOU4e6D/lU+dk6mTcRHT7GvUQvnBwbUzJaG+zryiQIMFy9ah47OkY2pipQt6H9xvs+axVNAaV3aarS1Ru+0txfO/tmZl9QMEVawWPfNjLVejqUmEl2WL93uLj3YiYLji4IokXEcc1Ax0TI=
+	t=1761293091; cv=none; b=N9jLgn6NmsGc/V2RkJzhAcHJ3DYAMFA3clRzu49eafNzN3EgQs/aETR63hDFiy05uAz0CctIcI7LgaGQWNmbULQTHYoOjQsvZbaY9ri2cbZotuXFyPYDHKY4l4vfsNkJH25eNwjEg+KFlnGhVIozfEy4+M45OyNm7nL6Y7fqe/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761146282; c=relaxed/simple;
-	bh=3yeJVTWsQ3PYP7UnkIWLKc7xoHqvrW6f9Xjdn+b5Fo0=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=XK0+FDvcIYHBowXLy53KFDgG5DNA5AZYzkvhD0xq5wZcKMNI9iFD0EgTVUBCZtvvet9h/Qst2Hg2loGXdmKbm6PBzZ4M3CFoDZNVCDnmaiA30j9sXqnoblXGY7pASKh9fOgxvGkRkvxTW6GB3+r3vl6EQY2ENnFS/dpn+levWdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqDzhGux; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761293091; c=relaxed/simple;
+	bh=cbp0PyNjc/FnWzdjpq1IiESkpBBpZqik92hgHtcyUlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kR0mRNjDiCV66cEYf8Mdx0QH6J0QKmHgiLm+GcKIn/w2uGfIyr97hILLmLBixc9aYcSQIrocTuu9Bx0KFutIhtBtJrMsn5MOhhQVnoHnhdRcuUED0SGZIr8BccpGY6entHpUlMAWtIR7eGDoyIEdBUb3bksaUDKR7muYGa/DO38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EFyFm+F2; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqDzhGux"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00AC7C4CEE7;
-	Wed, 22 Oct 2025 15:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761146282;
-	bh=3yeJVTWsQ3PYP7UnkIWLKc7xoHqvrW6f9Xjdn+b5Fo0=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=XqDzhGuxKey4Ptn2VUX7BaTGsyOl0B4f+SD2hyzATnyW0q+zaMAsCSfnUXYwk5oxu
-	 Jn2iIebbfa2s2qMpWlKLGCEPByAZIN/sCFYeCj1lByj+wQR2TJC8+ipuRQ2ZHUfWAW
-	 BCGY0rQEQgIdDm5gHOsaU0RSZLjv+eBOpmThiKysl1VEbFtBILWCLh3uSZYNu40uyk
-	 9aaUtZrj7Rnl4L3wcGJz3SF9zD9Oiv8WyV+DKmAiARqxxosR4u7q4orvrVQTbRyxrB
-	 x3nu8WRbqh7JMIkr8X4to+VRZXo4QqDpctRVaQFecV2zAvokfi2APrc82yq8+TnKHm
-	 PIJmRCIjAqB0A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 353903A78A6C;
-	Wed, 22 Oct 2025 15:17:44 +0000 (UTC)
-Subject: Re: Re: [GIT PULL] 9p cache=mmap regression fix (for 6.18-rc3)
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aPhtxt7qEWY5FjPQ@codewreck.org>
-References: <20251022-mmap-regression-v1-1-980365ee524e@codewreck.org>
- <CAHzjS_s5EzJkvTqi73XS_9bBsaGuXu1zQ4jOLgcpC9vmJ7FoaA@mail.gmail.com>
- <aPgUaFE1oUq8e1F-@codewreck.org>
- <39116c81-1798-4cc1-945c-a05d0ac7d8d9@maowtm.org> <aPhtxt7qEWY5FjPQ@codewreck.org>
-X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
-X-PR-Tracked-Message-Id: <aPhtxt7qEWY5FjPQ@codewreck.org>
-X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-6.18-rc3-v2
-X-PR-Tracked-Commit-Id: 43c36a56ccf6d9b07b4b3f4f614756e687dcdc01
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9ea7460217423f07febe273307a5f3b6b1303b29
-Message-Id: <176114626271.1971781.12512695262576428090.pr-tracker-bot@kernel.org>
-Date: Wed, 22 Oct 2025 15:17:42 +0000
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Tingmao Wang <m@maowtm.org>, Song Liu <song@kernel.org>, Andrii Nakryiko <andrii.nakryiko@gmail.com>, Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, bpf@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EFyFm+F2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=NA1EuLVhaXagkNkbEp2XlJIvkVm/6B2UHwg0o62JmEg=; b=EFyFm+F20P3IJnCg0fyoCLJwx/
+	iUjafVa3MnQpYacpmfc4FhY83ukGNrsi+RejEgHj/fS1IEVKt+ePz8CTV35hZRQCamiNAgvqGDamH
+	G/bB0vfKuOOTJboHNrKU8b2hjoo58Z8uBGyWcaRUUcJPc6WmWp8CKv+P1pfXUE9fZi1StqiPTEl1q
+	HIslYqKlVG2K5+5Q8OZdMGqwzwFPLr09kDx/GxHA5L8tPfeHjHs4BUFM+7cn6uFZmPAfxxCXlQRJS
+	784JSAnaI4lZd+Lz3VWOA9xf4bhqJXX+qM2lSiyLuhgSCRV3wEGvfowG3PsaZ5zzdMVd0nrjtN4P0
+	U8Bfua3w==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCCmu-00000008c2I-1Fku;
+	Fri, 24 Oct 2025 08:04:40 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-block@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-btrfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net,
+	ocfs2-devel@lists.linux.dev,
+	linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: filemap_* writeback interface cleanups v2
+Date: Fri, 24 Oct 2025 10:04:11 +0200
+Message-ID: <20251024080431.324236-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-The pull request you sent on Wed, 22 Oct 2025 14:38:14 +0900:
+Hi all,
 
-> https://github.com/martinetd/linux tags/9p-for-6.18-rc3-v2
+while looking at the filemap writeback code, I think adding
+filemap_fdatawrite_wbc ended up being a mistake, as all but the original
+btrfs caller should be using better high level interfaces instead.  This
+series removes all these, switches btrfs to a more specific interfaces
+and also cleans up another too low-level interface.  With this the
+writeback_control that is passed to the writeback code is only
+initialized in three places, although there are a lot more places in
+file system code that never reach the common writeback code.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9ea7460217423f07febe273307a5f3b6b1303b29
+Changes since v1:
+ - use LLONG_MAX instead of LONG_MAX in one place
+ - two commit message typo fixes
+ - keep the filemap_flush* naming
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Diffstat:
+ fs/9p/vfs_file.c        |   17 +------
+ fs/btrfs/inode.c        |   46 ++++++--------------
+ fs/fs-writeback.c       |    6 +-
+ fs/ocfs2/journal.c      |   11 ----
+ fs/sync.c               |   10 +---
+ include/linux/fs.h      |    6 +-
+ include/linux/pagemap.h |    5 --
+ mm/fadvise.c            |    3 -
+ mm/filemap.c            |  109 +++++++++++++++++++-----------------------------
+ 9 files changed, 76 insertions(+), 137 deletions(-)
