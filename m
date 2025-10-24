@@ -1,84 +1,107 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BEF3101D3;
-	Fri, 24 Oct 2025 12:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1515D2DCBF4
+	for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 13:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761308943; cv=none; b=RKrIbH83viwXheLmzRv5CIuo9c8jyIR6yci7FMTh1xsPnCAnVWWKfjNGwBmcGiSloytXGoNElBvWkl56kAKwSbxI4rTk3MW6TL3UEEu57Y2fUs2nEU3BCEPUL4jIqimk6vnn+trcJRLVMo3HS4YOIFwOAH+T0bPBzNlIpfNTIgw=
+	t=1761312891; cv=none; b=bshXE3jITKgXohpvKcwb+Mui0AyVKvvYrmlMQQQ/0ODm4cJIdunHvaXnJKTq83WOQC6HL1v2xksJmAGpQtU/YXHUpzO9cD9weMt3ySbD0tS3tQHGShfkcgZqeKuOzn7bzpYuwD8c30enFmj/ENFaqyiALEi9pcriEPqQq2vqffU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761308943; c=relaxed/simple;
-	bh=p1zcp/BvsovSEjsHM4m3I4WnClUB4hHeWZ+LV7Ag+ts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ujNvAP7nVc6E78OITxL7pgKKZ/uBFIgdoSMRtOtdpOQ/6IFKrD5dXuBUfv7+R4rsV4G7pPBe8OdS9kmePmRCgR1lQ6XouK+eWgP1Fol31kA65re6m7QA4LL+k33hj4k3dSF1qUwf/Wr4oWbRKHa26lX7RbFCtaLoPYo+3aKrNZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=HiVeJ2fD; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1761312891; c=relaxed/simple;
+	bh=j50UC3gpZzM+sZcUvUP6Ut3HC1+zm/hUKXuj616DXSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OrX8pqzddob0PUCTDdIl9TFgoJL+1WGSQeiGt5wYojOztJ6l7CdtjCHwJKL/3uCf3WKrzlKzVIlyJC+45Gzj9A01oMfkxcxc38Ni1NrF9d1eCzYWV7h1IsJBZuawG8n5Op4QOvVzcsdMngj7dJz35WCdaXyNDHSxgYECJsCq/I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=jToRp2QV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="HiVeJ2fD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=Z8lNTQOCrGiG4a2LitzVK325/I8OKhv/L7kNAExDh40=; b=HiVeJ2fDXSd7OUtBlYfXJ569Lg
-	nA8JC6NAJoesNdl1ZZuwEHNmiYTB980ige4cGRfdlxr6Y0nqcBYC/HieOquCw0hOAQoV8eyJ2AITP
-	1WhthtkRbgqzQ1YcJoO8j1bBJ2o/mYsu9qFAtOi678GSJ3WgnT17VjMNFaXBra/9euAmrZ17xkxu7
-	0tDve9GzYa0L+XCT3t0gC6JNscW1tgqpC6jyH0Iqk89zvf6hM85Te4cq+LpKA0fKRQJz4I59wOixe
-	FsOwIEcWedJXqKbhNWusuoFcTDClS1iISJ3h4tNfqzGEeRH4knRZC9xFTox2WpzzowH7GKuWm3fB4
-	06svTj6Uo3S8GQkX4LW7JQ7Smtio04Cggh8SbPn4zseY4qISRlxGdnWzHUvaPPJxH237nVlPIh8/m
-	46x3Efyqr65tS2iPUWvwPZnqmbZqi9rEMdKLcUqLm53InWyKIviTXHCv65sdzh3rAPpv6dv/bETqy
-	IlH/Dec26zsaUGQ4IByhggyNNWiZ+rbTIBswUGNaLkEE4/M5hxorMwB/Fdc2kZHkP7VX1GLp0aYGb
-	7aUmcDoPWSqkFDDXvglvZ+p3sXvtMZIb1MedwnO6NU9KFTbvYwfKCe219m3odaOlBsAxRPUPd3sI+
-	ElWdE0o+e+3fanm28uYFHgXXf2ddVp0I0Ix/AnbT4=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="jToRp2QV"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 9D7B314C2D3;
+	Fri, 24 Oct 2025 15:34:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1761312880;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r1/r7129Thb1q07EWwLnDb7V2mKBqHDrr+sIHFTvGfo=;
+	b=jToRp2QVbPYnRqiNsobWoAssQ3moE8bSJytyjP8pQA6Ho7wRDhiXWICqVyQGI2TO5j4sQU
+	2AedX+o0qlGY5wiWfGb74FmCWVZ5irz30LuXgQG7oAHRjVA2i/0IjqOQULOX72aIeGF8Ie
+	iJBqW/gF9zZzaq5sKaBqv0a4sIxu83Fo1QHY4bMZx1Nt5xV5smWAgNxFjTTTF8wk+zEN7U
+	FQfmZ33ymbBvoSkoCwZkQ7OfO1nMJcvs4W/qhSoKPysqoTk/I5NoXOKqYJiBOH/TSCeB8m
+	OZx+4+PAqKA7ejcL7m/PppdE/T82r0mkJa839BZfAIJdvaFSV1hVOghY6RgJ5g==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 02b4df75;
+	Fri, 24 Oct 2025 13:34:36 +0000 (UTC)
+Date: Fri, 24 Oct 2025 22:34:21 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] fs/9p: delete unnnecessary condition
-Date: Fri, 24 Oct 2025 13:59:46 +0200
-Message-ID: <13655400.bYd4YqkHfl@silver>
-In-Reply-To: <aPtiSJl8EwSfVvqN@stanley.mountain>
+Message-ID: <aPuAXaHNWMhZOeuv@codewreck.org>
 References: <aPtiSJl8EwSfVvqN@stanley.mountain>
+ <13655400.bYd4YqkHfl@silver>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <13655400.bYd4YqkHfl@silver>
 
-On Friday, October 24, 2025 1:26:00 PM CEST Dan Carpenter wrote:
-> We already know that "retval" is negative, so there is no need to check
-> again.  Also the statement is not indented far enough.  Delete it.
+Christian Schoenebeck wrote on Fri, Oct 24, 2025 at 01:59:46PM +0200:
+> On Friday, October 24, 2025 1:26:00 PM CEST Dan Carpenter wrote:
+> > We already know that "retval" is negative, so there is no need to check
+> > again.  Also the statement is not indented far enough.  Delete it.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > ---
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-
-Fixes: 43c36a5
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-Apparently a manual revert copy paste error. The rest of the revert commit
-LGTM.
-
-/Christian
-
->  fs/9p/vfs_dentry.c | 1 -
->  1 file changed, 1 deletion(-)
+> Fixes: 43c36a5
+> Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 > 
-> diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-> index c1acbc98465d..c5bf74d547e8 100644
-> --- a/fs/9p/vfs_dentry.c
-> +++ b/fs/9p/vfs_dentry.c
-> @@ -109,7 +109,6 @@ static int __v9fs_lookup_revalidate(struct dentry
-> *dentry, unsigned int flags) p9_debug(P9_DEBUG_VFS,
->  				"refresh inode: dentry = %pd (%p), got error %pe\n",
->  				dentry, dentry, ERR_PTR(retval));
-> -		if (retval < 0)
->  			return retval;
->  		}
->  	}
+> Apparently a manual revert copy paste error. The rest of the revert commit
+> LGTM.
+
+Ah, I left that part of the reverted hunk while keeping the HEAD part:
+```
+<<<<<<< HEAD
+                }
+                if (v9inode->cache_validity & V9FS_INO_INVALID_ATTR) {
+                        p9_debug(P9_DEBUG_VFS, "dentry: %pd (%p) invalidated due to type change\n",
+                                 dentry, dentry);
+                        return 0;
+                }
+                if (retval < 0) {
+                        p9_debug(P9_DEBUG_VFS,
+                                "refresh inode: dentry = %pd (%p), got error %pe\n",
+                                dentry, dentry, ERR_PTR(retval));
+||||||| 290434474c33 (fs/9p: Refresh metadata in d_revalidate for uncached mode too)
+                if (!cached && v9inode->cache_validity & V9FS_INO_INVALID_ATTR)
+                        return 0;
+                if (retval < 0)
+=======
+                if (retval < 0)
+>>>>>>> parent of 290434474c33 (fs/9p: Refresh metadata in d_revalidate for uncached mode too)
+                        return retval;
+```
+
+For a proper revert I should have removed the first `if
+(v9inode->cache_validity & V9FS_INO_INVALID_ATTR)` too :/
+
+OTOH it still makes sense even without the rest of the patch (the only
+reason V9FS_INO_INVALID_ATTR would still be set is on type change, and
+in that case we do want to return 0 even on refresh inode error)
 
 
+Anyway, thanksfully this particular double retval < 0 check is harmless
+-- I'll pick this up for -next for now but hopefully we'll be able to
+"revert the revert" and fix the other problems Tingmao pointed out by
+the time we reach the 6.19 merge window...
+
+Thank you both!
+-- 
+Dominique Martinet | Asmadeus
