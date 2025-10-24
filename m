@@ -1,72 +1,95 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA41A304BBD
-	for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 11:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9877313E21
+	for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 12:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761305167; cv=none; b=X6c3kw0nlhr8eTayUQ4e4zPZ25jBnh+dWAkPLtffFIYy7HqsJhoVQXT24+uqYsD7QGmRMs7VZlTsXb5D7OMLvS/ZVH+P/997N4xMei+EznOfVWdyQ7f1LoNCIHVd0hX8FDHS9+PHyCjBst6lcqHms7nK7Uirl667ZhiQZ+I2FJA=
+	t=1761307768; cv=none; b=UGEqWkwB2Fg7VfHRfImMGS4mQY2p3wMSIJFJxp1JcUjWaZRH4H4JeRRA4y7Kvl0/HcKuiHuxSO/EJY4bjHpxSSlwD6+Cri7oUqJs6YeHA+88q8RSl+9bJwmPgGgnGoJz3kbQbGnRAAs/wegPXw+Rer+5F+//RxA9uNbtkz0NKh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761305167; c=relaxed/simple;
-	bh=esg5jJJrldcsg4Eme/FaVfbzYkFZVxjJszNLHkfgbVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DNYyvdHRKTM4AQVR2hqtm6enyoOa8ksklAYG8pm1gSadkv1rEmC8YYikfCdfzxDEWlWDbAyWyS/7m82MnKZBqoLztiA+Iy86tWH470+FVWT0ae4qkHeq67BBVoSmyevUtL77JXohJrxcpFcy194/yKuWr9i/xGc+lTjJQL6uBJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WK/AcVsR; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761307768; c=relaxed/simple;
+	bh=/7GrhG+XNBm4vB6QS6VoSNUoFr3/5T/r6pWvp1jxZ4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KHK6i+zb1nzxQrCX0uy6i798usIBP8LON+LUpy42Abjlq6Zg8Qf4hMMdSgaLCLLmqo+3HXnd7vDqgZ1IRIjKfX6vN4qQH/U6xPE9t3TVBZJuA8WUmhs2v/GUcp9JirTKE5nu3tFYkOFL8k/8OtGiEkY0q5x2sEntuQHk4llyVik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=lUfDGig/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mc8jLQtK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=lUfDGig/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mc8jLQtK; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WK/AcVsR"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso1958248f8f.2
-        for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 04:26:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761305164; x=1761909964; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6njyGgpXnyix7DPfE/AD+aT34+lBZHSBxI3vVRiYPz8=;
-        b=WK/AcVsRx0Zbqn4o41EcK9hbKiFZw0zvmv6VLQnLzSIf2dqubFj1FanKa/vO5U+WKw
-         r2StmNBatTkvNfSeMdCWRj/9VbyQyVY3s5i/R6XGrwLs4WXYdrPNjKgkiSTglI3ChayV
-         aEZqAGwKfNuuOsKUGqj74Yfz1rAGfAH5TrhMt6555hPlj8qF/ZU5qnIp5Jw8xesTWU3d
-         iH/a1AEzCaEgcHWQY0Zll+fLRZcKxgTUoNerag7BhFqUgEChOrgBkjTX/xzqUPRwCt6K
-         Fss2RUwtKbAQ8RayHBSjdX/UHeGhz6/LEDMbNUVNcRUeSIe8YVG5xtcY9C0kExPWb2jH
-         ooDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761305164; x=1761909964;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6njyGgpXnyix7DPfE/AD+aT34+lBZHSBxI3vVRiYPz8=;
-        b=qwaJeexmKLvA/UfWeJf9OfnayBLxM2BoT+0P1h+kq5KlZIti6yR2n3zNZcsAsb7EvK
-         RdQLR9vtDIeUB3C1di562KjcSX5KG9yvrshjgQvD8OxZlKx1+MLpdZfQtttHjc+V0oJd
-         CDEsqIknFFklnDVmtaY1WJloiRd3KlOaW+dKReUDAALDqTw0OHWLy4MHskqpuS2fH9Iy
-         MJ4XAahtyhcosKXi32bIDwCN5At4+yigPnqU4GnXB0HX/Xpd6hFi/4ch5X3lNobaMOA7
-         1kCmSAajy5Y5FDsPYLw4LJtKWvdZ9okF1tw+/umiHLfR+5EIPVRB8uyO7Tq7otzFIrko
-         HoFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXDy2K7ThroBLvP5GY+st4gJkV9oXxMMAPmrfH9Z3W/nIyHSKgYdUoJkFfEunMiFNDNmup5@lists.linux.dev
-X-Gm-Message-State: AOJu0YybCME5LRgNEWOHtFXqZU7WoKLwB+AFHqPqYS3ECyNyPRN6hKPR
-	bZLp03VlFe88CvUXqotW9aHQkKyHzwslU6vbJedrjPkzZO1+zu1iykieEY9NEC3W/yY=
-X-Gm-Gg: ASbGnctNlOK1C97n5irJztl2ilT0eZSx1Em8EWtLKxy94Ana+++D0tpMFe1QvJuSdre
-	zBwOFw5xBf82Hg1FkRCJY5qeGoZdfOjBahskd9fW8gYnuADnq7oG5bjlHpDyxzgwzHwIu26QymW
-	DF9uIvKMi+lKCdAIk6uwuUeVKZoKqt4Z6m4Aqzllr0T+LJdxlJELswK2E/0uJRDg8Lt8s/vMYTB
-	F5bEOPfVao/pTeMPWUMGqrPRhu2qihN9tKwtoHt3PKnoSBQi3XbaAtOrZGuQchdpr7VkuXPgI52
-	MIV4mYtY5Ww5Eb7xDyqTPTbUHd8ElOd3I3xbSecXN6qXSVSnYCH25HiTozJvFJCx1La1UTgvOYa
-	tdBU86nWPt5vi3KSLGxLpPCL0qB+Oy0hu3A0wGZhhfa7p24qQqd7BRSzmX71PbtDcmVWTqwvwjD
-	J0ori/IQ==
-X-Google-Smtp-Source: AGHT+IHTMdM53JxT5mbRrB/df/8148lrYpgmBufghOqk/tj4eesUFtAgikytzGYIeyYeUAUMaIogTA==
-X-Received: by 2002:a5d:5d87:0:b0:3ec:8c8:7b79 with SMTP id ffacd0b85a97d-4299075d0d3mr1809575f8f.61.1761305163789;
-        Fri, 24 Oct 2025 04:26:03 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4298d4a49ffsm4962650f8f.13.2025.10.24.04.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 04:26:03 -0700 (PDT)
-Date: Fri, 24 Oct 2025 14:26:00 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] fs/9p: delete unnnecessary condition
-Message-ID: <aPtiSJl8EwSfVvqN@stanley.mountain>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="lUfDGig/";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mc8jLQtK";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="lUfDGig/";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mc8jLQtK"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F4EA211BF;
+	Fri, 24 Oct 2025 12:09:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761307764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQR+rmk5JJXbJh11H9IDr0zLIVayrC9/4bdXvKTXH9w=;
+	b=lUfDGig/qurmVZAmpVVx1+6t4iItNTrwBssMnwosNyjfn/OD41thPRQZws77hFfL6Shbsy
+	/S9YqER4is+c4uGjNaQv3YFeDuyT0hStEhOQ2hit/J3SmVLYsa73EEYwWDh/m4urXkFC6I
+	jH1zSZOKjUxxP40wfWPq8Sh3ZY1JEYA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761307764;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQR+rmk5JJXbJh11H9IDr0zLIVayrC9/4bdXvKTXH9w=;
+	b=mc8jLQtKYuPOW4qIpvZhNNIhKVbUYxR27PH60LKkwxa7HFmNGDGYRGd0EQxn29H/BahXv3
+	NUfOFibub6Ppi6Dg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761307764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQR+rmk5JJXbJh11H9IDr0zLIVayrC9/4bdXvKTXH9w=;
+	b=lUfDGig/qurmVZAmpVVx1+6t4iItNTrwBssMnwosNyjfn/OD41thPRQZws77hFfL6Shbsy
+	/S9YqER4is+c4uGjNaQv3YFeDuyT0hStEhOQ2hit/J3SmVLYsa73EEYwWDh/m4urXkFC6I
+	jH1zSZOKjUxxP40wfWPq8Sh3ZY1JEYA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761307764;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQR+rmk5JJXbJh11H9IDr0zLIVayrC9/4bdXvKTXH9w=;
+	b=mc8jLQtKYuPOW4qIpvZhNNIhKVbUYxR27PH60LKkwxa7HFmNGDGYRGd0EQxn29H/BahXv3
+	NUfOFibub6Ppi6Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0A0B13693;
+	Fri, 24 Oct 2025 12:09:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7k/ONnNs+2ikNQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 24 Oct 2025 12:09:23 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 33729A28AB; Fri, 24 Oct 2025 14:09:23 +0200 (CEST)
+Date: Fri, 24 Oct 2025 14:09:23 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	David Hildenbrand <david@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: Re: [PATCH 06/10] mm,btrfs: add a filemap_flush_nr helper
+Message-ID: <myxuxundkuabvgmym5ayqycxjgzjgcxn35ncuxpmdxgwjc7ht4@utx2jecj6wpq>
+References: <20251024080431.324236-1-hch@lst.de>
+ <20251024080431.324236-7-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -75,28 +98,130 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20251024080431.324236-7-hch@lst.de>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	R_RATELIMIT(0.00)[to_ip_from(RLzktxcg676y4egiq9xyqoc9t5)];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
 
-We already know that "retval" is negative, so there is no need to check
-again.  Also the statement is not indented far enough.  Delete it.
+On Fri 24-10-25 10:04:17, Christoph Hellwig wrote:
+> Abstract out the btrfs-specific behavior of kicking off I/O on a number
+> of pages on an address_space into a well-defined helper.
+> 
+> Note: there is no kerneldoc comment for the new function because it is
+> not part of the public API.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- fs/9p/vfs_dentry.c | 1 -
- 1 file changed, 1 deletion(-)
+Looks good. Feel free to add:
 
-diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-index c1acbc98465d..c5bf74d547e8 100644
---- a/fs/9p/vfs_dentry.c
-+++ b/fs/9p/vfs_dentry.c
-@@ -109,7 +109,6 @@ static int __v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
- 			p9_debug(P9_DEBUG_VFS,
- 				"refresh inode: dentry = %pd (%p), got error %pe\n",
- 				dentry, dentry, ERR_PTR(retval));
--		if (retval < 0)
- 			return retval;
- 		}
- 	}
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/btrfs/inode.c        | 13 ++-----------
+>  include/linux/pagemap.h |  1 +
+>  mm/filemap.c            | 22 ++++++++++++++++++++++
+>  3 files changed, 25 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index b97d6c1f7772..d12b8116adde 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -8752,19 +8752,10 @@ static int start_delalloc_inodes(struct btrfs_root *root, long *nr_to_write,
+>  			btrfs_queue_work(root->fs_info->flush_workers,
+>  					 &work->work);
+>  		} else {
+> -			struct writeback_control wbc = {
+> -				.nr_to_write = *nr_to_write,
+> -				.sync_mode = WB_SYNC_NONE,
+> -				.range_start = 0,
+> -				.range_end = LLONG_MAX,
+> -			};
+> -
+> -			ret = filemap_fdatawrite_wbc(tmp_inode->i_mapping,
+> -					&wbc);
+> +			ret = filemap_flush_nr(tmp_inode->i_mapping,
+> +					nr_to_write);
+>  			btrfs_add_delayed_iput(inode);
+>  
+> -			if (*nr_to_write != LONG_MAX)
+> -				*nr_to_write = wbc.nr_to_write;
+>  			if (ret || *nr_to_write <= 0)
+>  				goto out;
+>  		}
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 09b581c1d878..cebdf160d3dd 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -38,6 +38,7 @@ int filemap_invalidate_pages(struct address_space *mapping,
+>  int write_inode_now(struct inode *, int sync);
+>  int filemap_fdatawrite(struct address_space *);
+>  int filemap_flush(struct address_space *);
+> +int filemap_flush_nr(struct address_space *mapping, long *nr_to_write);
+>  int filemap_fdatawait_keep_errors(struct address_space *mapping);
+>  int filemap_fdatawait_range(struct address_space *, loff_t lstart, loff_t lend);
+>  int filemap_fdatawait_range_keep_errors(struct address_space *mapping,
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 99d6919af60d..e344b79a012d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -474,6 +474,28 @@ int filemap_flush(struct address_space *mapping)
+>  }
+>  EXPORT_SYMBOL(filemap_flush);
+>  
+> +/*
+> + * Start writeback on @nr_to_write pages from @mapping.  No one but the existing
+> + * btrfs caller should be using this.  Talk to linux-mm if you think adding a
+> + * new caller is a good idea.
+> + */
+> +int filemap_flush_nr(struct address_space *mapping, long *nr_to_write)
+> +{
+> +	struct writeback_control wbc = {
+> +		.nr_to_write = *nr_to_write,
+> +		.sync_mode = WB_SYNC_NONE,
+> +		.range_start = 0,
+> +		.range_end = LLONG_MAX,
+> +	};
+> +	int ret;
+> +
+> +	ret = filemap_fdatawrite_wbc(mapping, &wbc);
+> +	if (!ret)
+> +		*nr_to_write = wbc.nr_to_write;
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(filemap_flush_nr, "btrfs");
+> +
+>  /**
+>   * filemap_range_has_page - check if a page exists in range.
+>   * @mapping:           address space within which to check
+> -- 
+> 2.47.3
+> 
 -- 
-2.51.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
