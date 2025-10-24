@@ -1,237 +1,84 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC2630F530
-	for <v9fs@lists.linux.dev>; Fri, 24 Oct 2025 12:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BEF3101D3;
+	Fri, 24 Oct 2025 12:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761308004; cv=none; b=O6uU3ujTZrU/h6gA9nGUNeeujo+ojPfhyFbhKBLrIq+Ki1Lphoat81uMBV7ALkhO6B9yLuurifiSNi9y3DCOD1eRSSxkqUGJpEx+ElCcnVKzZbyV/VfzIfSqEjrEW0lXnybWZmQ35aZscKGy3TQdqK2JeOIVclEmWiCJe8yPfk0=
+	t=1761308943; cv=none; b=RKrIbH83viwXheLmzRv5CIuo9c8jyIR6yci7FMTh1xsPnCAnVWWKfjNGwBmcGiSloytXGoNElBvWkl56kAKwSbxI4rTk3MW6TL3UEEu57Y2fUs2nEU3BCEPUL4jIqimk6vnn+trcJRLVMo3HS4YOIFwOAH+T0bPBzNlIpfNTIgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761308004; c=relaxed/simple;
-	bh=i0EfOjInC/aJdda6sojezLSbi8o9QQmIbE3cti/JV8w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OCjCyKomjsquAY91M+uwrMHJw9ynnGPiLZVLWb54BS2xlZHm7KtFArj4LDHo/9ZJsI5NJpCCfb7TWZkBeX8JQieEjAuTFaODguoIwxipBJPz6LA5JAXBrW8t/CH0IzCbkb/4CHGkJKcEt51XPmjp/6Lk5bIHJ1Ci9AnBIbz4xhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CjojHoYq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1acUFfy3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CjojHoYq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1acUFfy3; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1761308943; c=relaxed/simple;
+	bh=p1zcp/BvsovSEjsHM4m3I4WnClUB4hHeWZ+LV7Ag+ts=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ujNvAP7nVc6E78OITxL7pgKKZ/uBFIgdoSMRtOtdpOQ/6IFKrD5dXuBUfv7+R4rsV4G7pPBe8OdS9kmePmRCgR1lQ6XouK+eWgP1Fol31kA65re6m7QA4LL+k33hj4k3dSF1qUwf/Wr4oWbRKHa26lX7RbFCtaLoPYo+3aKrNZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=HiVeJ2fD; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CjojHoYq";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1acUFfy3";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CjojHoYq";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1acUFfy3"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 46D6C2120A;
-	Fri, 24 Oct 2025 12:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761308000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=CjojHoYqaGMzfr5XqNusQqu1GyDxPy0hnR6Ldj+jMf2eYrTAdI2alMTnKoUSmrXoHvFzyY
-	UToaifYK+aQl8TtK32yOMGz7StJr1kY/XFCLmL8yl3rGsIxvYxpuaYXr9RvWQe45kcVwON
-	5/tuFmNtP0/OwY0IBwV80drSEDaabHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761308000;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=1acUFfy3hGwnqk5XZUYklOyZE7Yzi46EVBZ/g+PJSSiLxPnydp7ewriPn0sf5iaWyR9gF9
-	M2aK7AndCIkzA5Cg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761308000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=CjojHoYqaGMzfr5XqNusQqu1GyDxPy0hnR6Ldj+jMf2eYrTAdI2alMTnKoUSmrXoHvFzyY
-	UToaifYK+aQl8TtK32yOMGz7StJr1kY/XFCLmL8yl3rGsIxvYxpuaYXr9RvWQe45kcVwON
-	5/tuFmNtP0/OwY0IBwV80drSEDaabHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761308000;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=1acUFfy3hGwnqk5XZUYklOyZE7Yzi46EVBZ/g+PJSSiLxPnydp7ewriPn0sf5iaWyR9gF9
-	M2aK7AndCIkzA5Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 301D713693;
-	Fri, 24 Oct 2025 12:13:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Mwu+C2Bt+2jXOQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 24 Oct 2025 12:13:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3BF23A28AB; Fri, 24 Oct 2025 14:13:19 +0200 (CEST)
-Date: Fri, 24 Oct 2025 14:13:19 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/10] mm: rename filemap_fdatawrite_range_kick to
- filemap_flush_range
-Message-ID: <yybiur2jmv6s4n2sjlubwimmfbsrb3gx6tk67ki23jnqncaeba@wayirnpbaum3>
-References: <20251024080431.324236-1-hch@lst.de>
- <20251024080431.324236-11-hch@lst.de>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="HiVeJ2fD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=Z8lNTQOCrGiG4a2LitzVK325/I8OKhv/L7kNAExDh40=; b=HiVeJ2fDXSd7OUtBlYfXJ569Lg
+	nA8JC6NAJoesNdl1ZZuwEHNmiYTB980ige4cGRfdlxr6Y0nqcBYC/HieOquCw0hOAQoV8eyJ2AITP
+	1WhthtkRbgqzQ1YcJoO8j1bBJ2o/mYsu9qFAtOi678GSJ3WgnT17VjMNFaXBra/9euAmrZ17xkxu7
+	0tDve9GzYa0L+XCT3t0gC6JNscW1tgqpC6jyH0Iqk89zvf6hM85Te4cq+LpKA0fKRQJz4I59wOixe
+	FsOwIEcWedJXqKbhNWusuoFcTDClS1iISJ3h4tNfqzGEeRH4knRZC9xFTox2WpzzowH7GKuWm3fB4
+	06svTj6Uo3S8GQkX4LW7JQ7Smtio04Cggh8SbPn4zseY4qISRlxGdnWzHUvaPPJxH237nVlPIh8/m
+	46x3Efyqr65tS2iPUWvwPZnqmbZqi9rEMdKLcUqLm53InWyKIviTXHCv65sdzh3rAPpv6dv/bETqy
+	IlH/Dec26zsaUGQ4IByhggyNNWiZ+rbTIBswUGNaLkEE4/M5hxorMwB/Fdc2kZHkP7VX1GLp0aYGb
+	7aUmcDoPWSqkFDDXvglvZ+p3sXvtMZIb1MedwnO6NU9KFTbvYwfKCe219m3odaOlBsAxRPUPd3sI+
+	ElWdE0o+e+3fanm28uYFHgXXf2ddVp0I0Ix/AnbT4=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] fs/9p: delete unnnecessary condition
+Date: Fri, 24 Oct 2025 13:59:46 +0200
+Message-ID: <13655400.bYd4YqkHfl@silver>
+In-Reply-To: <aPtiSJl8EwSfVvqN@stanley.mountain>
+References: <aPtiSJl8EwSfVvqN@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251024080431.324236-11-hch@lst.de>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri 24-10-25 10:04:21, Christoph Hellwig wrote:
-> Rename filemap_fdatawrite_range_kick to filemap_flush_range because it
-> is the ranged version of filemap_flush.
+On Friday, October 24, 2025 1:26:00 PM CEST Dan Carpenter wrote:
+> We already know that "retval" is negative, so there is no need to check
+> again.  Also the statement is not indented far enough.  Delete it.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > ---
->  fs/sync.c          | 3 +--
->  include/linux/fs.h | 6 +++---
->  mm/fadvise.c       | 2 +-
->  mm/filemap.c       | 8 ++++----
->  4 files changed, 9 insertions(+), 10 deletions(-)
+
+Fixes: 43c36a5
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+
+Apparently a manual revert copy paste error. The rest of the revert commit
+LGTM.
+
+/Christian
+
+>  fs/9p/vfs_dentry.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/fs/sync.c b/fs/sync.c
-> index 6d8b04e04c3c..1759f6ba36cd 100644
-> --- a/fs/sync.c
-> +++ b/fs/sync.c
-> @@ -285,8 +285,7 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
->  			ret = filemap_fdatawrite_range(mapping, offset,
->  					endbyte);
->  		else
-> -			ret = filemap_fdatawrite_range_kick(mapping, offset,
-> -					endbyte);
-> +			ret = filemap_flush_range(mapping, offset, endbyte);
->  		if (ret < 0)
->  			goto out;
+> diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+> index c1acbc98465d..c5bf74d547e8 100644
+> --- a/fs/9p/vfs_dentry.c
+> +++ b/fs/9p/vfs_dentry.c
+> @@ -109,7 +109,6 @@ static int __v9fs_lookup_revalidate(struct dentry
+> *dentry, unsigned int flags) p9_debug(P9_DEBUG_VFS,
+>  				"refresh inode: dentry = %pd (%p), got error %pe\n",
+>  				dentry, dentry, ERR_PTR(retval));
+> -		if (retval < 0)
+>  			return retval;
+>  		}
 >  	}
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index c895146c1444..a5dbfa20f8d7 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3014,7 +3014,7 @@ extern int __must_check file_fdatawait_range(struct file *file, loff_t lstart,
->  extern int __must_check file_check_and_advance_wb_err(struct file *file);
->  extern int __must_check file_write_and_wait_range(struct file *file,
->  						loff_t start, loff_t end);
-> -int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-> +int filemap_flush_range(struct address_space *mapping, loff_t start,
->  		loff_t end);
->  
->  static inline int file_write_and_wait(struct file *file)
-> @@ -3051,8 +3051,8 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
->  	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
->  		struct address_space *mapping = iocb->ki_filp->f_mapping;
->  
-> -		filemap_fdatawrite_range_kick(mapping, iocb->ki_pos - count,
-> -					      iocb->ki_pos - 1);
-> +		filemap_flush_range(mapping, iocb->ki_pos - count,
-> +				iocb->ki_pos - 1);
->  	}
->  
->  	return count;
-> diff --git a/mm/fadvise.c b/mm/fadvise.c
-> index f1be619f0e58..67028e30aa91 100644
-> --- a/mm/fadvise.c
-> +++ b/mm/fadvise.c
-> @@ -111,7 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
->  		spin_unlock(&file->f_lock);
->  		break;
->  	case POSIX_FADV_DONTNEED:
-> -		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
-> +		filemap_flush_range(mapping, offset, endbyte);
->  
->  		/*
->  		 * First and last FULL page! Partial pages are deliberately
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index f90f5bb2b825..fa770768ea3a 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -419,7 +419,7 @@ int filemap_fdatawrite(struct address_space *mapping)
->  EXPORT_SYMBOL(filemap_fdatawrite);
->  
->  /**
-> - * filemap_fdatawrite_range_kick - start writeback on a range
-> + * filemap_flush_range - start writeback on a range
->   * @mapping:	target address_space
->   * @start:	index to start writeback on
->   * @end:	last (inclusive) index for writeback
-> @@ -429,12 +429,12 @@ EXPORT_SYMBOL(filemap_fdatawrite);
->   *
->   * Return: %0 on success, negative error code otherwise.
->   */
-> -int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-> +int filemap_flush_range(struct address_space *mapping, loff_t start,
->  				  loff_t end)
->  {
->  	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, NULL);
->  }
-> -EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
-> +EXPORT_SYMBOL_GPL(filemap_flush_range);
->  
->  /**
->   * filemap_flush - mostly a non-blocking flush
-> @@ -447,7 +447,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
->   */
->  int filemap_flush(struct address_space *mapping)
->  {
-> -	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
-> +	return filemap_flush_range(mapping, 0, LLONG_MAX);
->  }
->  EXPORT_SYMBOL(filemap_flush);
->  
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
+
