@@ -1,149 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429561527B4;
-	Sun, 26 Oct 2025 14:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E3F2C0F7B;
+	Wed, 29 Oct 2025 14:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761490251; cv=none; b=E+j2eD8CR8VYU1uFmiSXLJPEVSTwdHWIZ3OVQC21tsx7HWmRyQArHyaWg+vlYNWAv1gYTz1w9Ds4k94Bko0sfGkGqwvBIN7I1z2Gmk8VpO1mXl/1JDseVy7lx4N4BoFCNkMD36Kge0gGf3bSe3ipXCB8Ar3l5SZepzFF+pB63+4=
+	t=1761749618; cv=none; b=NSoVANkLGskMXfU0iHrLzZ3fzRvHOggDgaAfM26GRVD5K1Zr1zyolyh7e/9Aqsc4Y09Oy9+lhLd4uf5z7k1PaOs+VR0scIDqTdj5wQBkFvKDzIyRhUAat+dhNkkfqSPJhDoFqi/tDTuJAG27Xf/MWfC7j0HoOBjgzp5QJvfE+8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761490251; c=relaxed/simple;
-	bh=w1gMYvfH3Sk/X2LiBP00UEk02bYsThghO3HlZeRMoRY=;
+	s=arc-20240116; t=1761749618; c=relaxed/simple;
+	bh=4N52YreIUF0OvAY3AgVuCEeEXHoxvfXQKpRpGqGXt0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TM60IISYcxmLiFtM0g5mcbjjvAoAx/qY/Y1vLWmVdTjdmfOiycIJNS/GwGxhqN+fsPtAhEFwjs6IpuswtZmr/cRm6/g5AAphfuv0Hk2IECLIH3YCsURRP9HseZo7ixjlNBkSMKwSki/sEHaboxqSz/4RYNNKXCGuMaEa7fnC4xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAI34osQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=qTF/08hMBurk2hPwiIPkUZwmEy9OIzZyGfzUNdQj5E0gGxLFwX+tqQp907bMfRzXXyl/gekmuswJXYIETm6t0bFAc454qrV8pVgSrG445q/6IeGFWhm6YGVB85fuoq/lBa1dRg1sAjIp826mzPY8Dbp9LxT4iVr7mngzjE0GAe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6i+Tpv8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAI34osQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A84DC116D0;
-	Sun, 26 Oct 2025 14:50:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6i+Tpv8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75851C4CEF7;
+	Wed, 29 Oct 2025 14:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761490251;
-	bh=w1gMYvfH3Sk/X2LiBP00UEk02bYsThghO3HlZeRMoRY=;
+	s=k20201202; t=1761749617;
+	bh=4N52YreIUF0OvAY3AgVuCEeEXHoxvfXQKpRpGqGXt0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAI34osQdeCSacPan0prjqR3CDz5tajHtGpuubLIzbShqgulp8a4bQIthAOUYPk79
-	 xdLwHOQmOl0t9lqAOth4ZQKo8346XUoR1r2/Yn75+pZy+pBRdi2HyQga80D/CDHV7S
-	 B8g4FSXg4wxhZ5j7/ExdRfeF/SVTuYGpiv5YcoPKwsbIXwUuIRk+9H6l7ZD7ggaCXl
-	 mTFbn1Rc8pvQgJVUCUcpDKepI2gLEWFmkbQ0cpTOKsTQPcRlVpsUwNaAVB0Q2tlGJ+
-	 mpn5NUJ3ousSZ+xx5zNX3tcknO3ZN3ntgYi9BPYbb7V47KjkddLZ8RxIhvGG9dOLuk
-	 XfOyUKF8AAhsA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	b=d6i+Tpv81I+RjXv1z/ZhRypcIVRTtXraq5U9iBWHQnvW+KkPDvGl1y2pSEVEa6fIB
+	 Ln4x6wF3AkfAIwedEj981+iIN+wR6+btNH1aNeYDoUlV+PjuWWLC2qWuazlwsZDUyc
+	 w6JEXBhDvgpuQ5ndnBinokI18XbR2srsXkcfTy4nMLpLT5LYAeO4NgeFX7Rl3DUghg
+	 Y+Yu9YxHcIql1AYDpRrZVpwWLKrTXwOqAs1s25OG2ooUXYEvx3zM1w82Fg077igDaB
+	 eTslPtXRVVOcLbKtU1sdxtLF6P6BiY2N2GMT83pc272G20lW+5PvUy3M8NbUj0mjMG
+	 oZaRyJXLYf5Iw==
+From: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-block@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-btrfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net,
+	ocfs2-devel@lists.linux.dev,
+	linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>,
-	ericvh@kernel.org,
-	lucho@ionkov.net,
-	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.17-6.12] 9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
-Date: Sun, 26 Oct 2025 10:49:01 -0400
-Message-ID: <20251026144958.26750-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251026144958.26750-1-sashal@kernel.org>
-References: <20251026144958.26750-1-sashal@kernel.org>
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: Re: filemap_* writeback interface cleanups v2
+Date: Wed, 29 Oct 2025 15:53:19 +0100
+Message-ID: <20251029-fahrdienst-klaglos-834e266b8e42@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251024080431.324236-1-hch@lst.de>
+References: <20251024080431.324236-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.5
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2522; i=brauner@kernel.org; h=from:subject:message-id; bh=4N52YreIUF0OvAY3AgVuCEeEXHoxvfXQKpRpGqGXt0Y=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQyaaVPuJ+i9m4br2nk2mOv3Hiqzuq8kEi/LX5pZ5Jpp 1hLQ0l0RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwESObmZkePvsGoekGs9rdpbt ZmmmOZrb/hx/6K49NePTtSDdi8HVvIwMl5ZenxV508LqDt+pO5cidkrwHHy3v/970ayNXZffekh 4MAEA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+On Fri, 24 Oct 2025 10:04:11 +0200, Christoph Hellwig wrote:
+> while looking at the filemap writeback code, I think adding
+> filemap_fdatawrite_wbc ended up being a mistake, as all but the original
+> btrfs caller should be using better high level interfaces instead.  This
+> series removes all these, switches btrfs to a more specific interfaces
+> and also cleans up another too low-level interface.  With this the
+> writeback_control that is passed to the writeback code is only
+> initialized in three places, although there are a lot more places in
+> file system code that never reach the common writeback code.
+> 
+> [...]
 
-[ Upstream commit e8fe3f07a357c39d429e02ca34f740692d88967a ]
+Applied to the vfs-6.19.writeback branch of the vfs/vfs.git tree.
+Patches in the vfs-6.19.writeback branch should appear in linux-next soon.
 
-p9_read_work() doesn't set Rworksched and doesn't do schedule_work(m->rq)
-if list_empty(&m->req_list).
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-However, if the pipe is full, we need to read more data and this used to
-work prior to commit aaec5a95d59615 ("pipe_read: don't wake up the writer
-if the pipe is still full").
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-p9_read_work() does p9_fd_read() -> ... -> anon_pipe_read() which (before
-the commit above) triggered the unnecessary wakeup. This wakeup calls
-p9_pollwake() which kicks p9_poll_workfn() -> p9_poll_mux(), p9_poll_mux()
-will notice EPOLLIN and schedule_work(&m->rq).
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-This no longer happens after the optimization above, change p9_fd_request()
-to use p9_poll_mux() instead of only checking for EPOLLOUT.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.19.writeback
 
-Reported-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-Tested-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68a2de8f.050a0220.e29e5.0097.GAE@google.com/
-Link: https://lore.kernel.org/all/67dedd2f.050a0220.31a16b.003f.GAE@google.com/
-Co-developed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Message-ID: <20250819161013.GB11345@redhat.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-YES – Calling `p9_poll_mux(m)` directly from `p9_fd_request()` restores
-the read-side kick that was lost when `pipe_read()` stopped waking
-writers, preventing 9p transports from stalling once their pipe fills.
-
-**Key Points**
-- `net/9p/trans_fd.c:688` now invokes `p9_poll_mux(m)` right after a
-  request is queued, so the mux re-evaluates readiness instead of only
-  relying on the write-ready bit.
-- `net/9p/trans_fd.c:622-652` shows that `p9_poll_mux()` schedules both
-  read and write work: with the new call it can react to `EPOLLIN`, set
-  `Rpending`, and queue `m->rq`, which is exactly what the syzbot report
-  needed to drain a full pipe.
-- `net/9p/trans_fd.c:394-402` (in `p9_read_work()`) demonstrates why
-  this matters: the read worker only reschedules when `Rpending` is set;
-  without the new kick the queue stayed full after commit
-  aaec5a95d59615, blocking all further writes.
-- The change is contained to the 9p fd transport, touches no external
-  APIs, and is a regression fix confirmed by syzbot, making it a safe
-  and targeted backport candidate.
-
-Given the regression impact (total hang under load) and the minimal,
-well-scoped fix, this should be backported to the affected stable
-kernels. Consider running the syzkaller reproducer or a 9p workload test
-after backporting to confirm the stall is gone.
-
- net/9p/trans_fd.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 8992d8bebbddf..a516745f732f7 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -666,7 +666,6 @@ static void p9_poll_mux(struct p9_conn *m)
- 
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
--	__poll_t n;
- 	int err;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
-@@ -686,13 +685,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 	list_add_tail(&req->req_list, &m->unsent_req_list);
- 	spin_unlock(&m->req_lock);
- 
--	if (test_and_clear_bit(Wpending, &m->wsched))
--		n = EPOLLOUT;
--	else
--		n = p9_fd_poll(m->client, NULL, NULL);
--
--	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
--		schedule_work(&m->wq);
-+	p9_poll_mux(m);
- 
- 	return 0;
- }
--- 
-2.51.0
-
+[01/10] mm: don't opencode filemap_fdatawrite_range in filemap_invalidate_inode
+        https://git.kernel.org/vfs/vfs/c/a21134b5d6cb
+[02/10] 9p: don't opencode filemap_fdatawrite_range in v9fs_mmap_vm_close
+        https://git.kernel.org/vfs/vfs/c/3c2e5cee5eb3
+[03/10] ocfs2: don't opencode filemap_fdatawrite_range in ocfs2_journal_submit_inode_data_buffers
+        https://git.kernel.org/vfs/vfs/c/890f141da068
+[04/10] btrfs: use the local tmp_inode variable in start_delalloc_inodes
+        https://git.kernel.org/vfs/vfs/c/41e52c644753
+[05/10] btrfs: push struct writeback_control into start_delalloc_inodes
+        https://git.kernel.org/vfs/vfs/c/c9501112e3cb
+[06/10] mm,btrfs: add a filemap_flush_nr helper
+        https://git.kernel.org/vfs/vfs/c/7fabcb7fbabb
+[07/10] mm: remove __filemap_fdatawrite
+        https://git.kernel.org/vfs/vfs/c/735965144806
+[08/10] mm: remove filemap_fdatawrite_wbc
+        https://git.kernel.org/vfs/vfs/c/1bcb413d0cd8
+[09/10] mm: remove __filemap_fdatawrite_range
+        https://git.kernel.org/vfs/vfs/c/45cbce5b8877
+[10/10] mm: rename filemap_fdatawrite_range_kick to filemap_flush_range
+        https://git.kernel.org/vfs/vfs/c/c28d67b33cbf
