@@ -1,90 +1,182 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E334B2BE62C
-	for <v9fs@lists.linux.dev>; Mon,  3 Nov 2025 07:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92142C029B;
+	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762155283; cv=none; b=DPpKVnSGq5c9bP+0009pDDjl+nlu7dN0Kk7f2Ocx0AhFxqIhoz0OZoyXgL+ZDDxxknsEOPu7J7l2kchceHptIkbuskDZBm3+k2tbt2erL3c6SANz37vv0X7/MzWe7NPC3mR0G4IVVyAZrGiDrG8IpbclwdAxO1O9LBqMvKEJlBE=
+	t=1762155775; cv=none; b=QCNz1cRF0ol1VkZFh6F+I+LvNrEbjbhd7uGjGdCur2v2/dsSAbbhjMLR3Ecm1xWZQZcsJGU+PCRtRJe6lfkn8FlimyTIHE11rxtTpyw6mO+fiBd2FSjg5CKt0m/S9SdSwJZSHQfwDyNBafwI3zp9EMOmqkHTfi9VkqKAVmH5Hfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762155283; c=relaxed/simple;
-	bh=OaIrQuLa4Fc/nUWN+i36v0NLFWmb/7dXjMkFBh6t7HQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O5KxhlXEznf6bArFUw98svqMDV4dxPTwBo5ASTb+KxKRADO40WiVS+bSDhPYgyVnNee/i8xh7UbfPTyEgn73ThVDbHBscVvvNxrusZ9FP4UiMEsTIBj6eBhKyrO9UOScmNHXUH6a6j+rEcOzpgBZyLXuuU+j1RedeoHKQfkJgbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Q5155Gp8; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1762155775; c=relaxed/simple;
+	bh=OUU0goUyjKS7VJe0KB9XzF2ZbtU3WVULdIiCjdEoyU0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HErtRIaBIbU3BgjHJjM+hMHnhNIxnqWW4hdZ9F35C07KkzWWqgVuEsGGTRrMlgA0qbHmH5Lt8erKbQbieI2hwF5lBvvNilTpj6kkuUjo2ctnNC/TFA78zgV8BmbvJfI6LMr5jPNwbhI9+BhpWiOE8BYsAtM51Ac4ulJ+YKNvJhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7GZX35f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Q5155Gp8"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 5ED9014C2D3;
-	Mon,  3 Nov 2025 08:34:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1762155277;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yQrtrx4bqMFJsQe0FEzhHJ9535jhbktObZu6e5hp1Hw=;
-	b=Q5155Gp8XBV8wrqnW7AmSnBBTyLdLM+Pext9G/hNgUyJmWEYI4tVax6dZe1b02SLnWba7W
-	NNtD4srNvbh2BwyaewUZIoofXsXLDQH4IVBdPAmrlmZ61tNqMzK6mttrfaI73hvG+AuJpY
-	UaWoXebY0HSZDDtwvQRc7UEeRUCoL9A6Lq9SAswb9JwZFMbQlOZiMqpUQa8gazGta//OtT
-	yA9PxowqL2lPS0PhKViSQuZUAEMHqQVEPFUipLlvSqnqb/7Ah/+qbiORjrmgJNUqt5/Gcp
-	keja4xlWVDLIGFe49bhjQ6kA5W+tsfS71qJBp97N607ZnAiJPreMGpkFO3v7OA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1231a4a8;
-	Mon, 3 Nov 2025 07:34:34 +0000 (UTC)
-Date: Mon, 3 Nov 2025 16:34:19 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Tingmao Wang <m@maowtm.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev
-Subject: Re: [PATCH v2] fs/9p: Don't open remote file with APPEND mode when
- writeback cache is used
-Message-ID: <aQha--QBgwu8DoDE@codewreck.org>
-References: <cover.1762115015.git.m@maowtm.org>
- <ed2d3f0045f538e8ddbd2d0a151e31767dda87e8.1762115015.git.m@maowtm.org>
- <aQfkMUncxteb9aPW@codewreck.org>
- <20251102235631.8724-1-m@maowtm.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7GZX35f"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 61C15C4CEFD;
+	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762155774;
+	bh=OUU0goUyjKS7VJe0KB9XzF2ZbtU3WVULdIiCjdEoyU0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=G7GZX35fT3IGRYT0M/GBsJfltdc3JWMOyFMnMycXR2eoQSpiY9R4VKIpQ7uAQsQ69
+	 C/9+AxLoDLnbMEe6u3tuMV6HrL41ud/ORal/0HuzjQlXmUVNAPKDkN8vjX8CNFItci
+	 kriVqVoe19UTvQK77syFxHY2UPSVVuGzaCoXOugqtMMUJVXwfCzz+nkO7aSrjfSg28
+	 SF2Gp3huYMaRLHugi3etBpIQqpMZIhJOm08E0MtkGCHS1jXGv4hddR+nN71+ETyoKF
+	 99dkutPQVivsVSvF7YRFNcQdIxRjq+81YoqHMKRwwkP21+MPJrwFSXfJDpT1+dxauw
+	 MxSjxdArNLyVQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F72ACCFA03;
+	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
+From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
+Date: Mon, 03 Nov 2025 16:42:36 +0900
+Subject: [PATCH] net/9p: cleanup: change p9_trans_module->def to bool
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251102235631.8724-1-m@maowtm.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251103-v9fs_trans_def_bool-v1-1-f33dc7ed9e81@codewreck.org>
+X-B4-Tracking: v=1; b=H4sIAOtcCGkC/x2MQQqAIBAAvxJ7TsiiwL4SIZa7tRAabkgQ/T3pN
+ nOYeUAwMQqM1QMJMwvHUETXFay7Cxsq9sWhbdpe66ZT2ZDYK7kg1iPZJcZDOb8aGgz1BaCUZ0L
+ i+79O8/t+kBGn8GUAAAA=
+X-Change-ID: 20251103-v9fs_trans_def_bool-adc9f69f5adc
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+X-Mailer: b4 0.15-dev-7be4f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3628;
+ i=asmadeus@codewreck.org; h=from:subject:message-id;
+ bh=e6a1iYQuHQC7x5fsHwGCTvDypr2b1ZkzPJioRFGi6XY=;
+ b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBpCFz3yuyEQXZJcrjOEuC62x15QrGZfQvJftDe4
+ cHKuq1TJ56JAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaQhc9wAKCRCrTpvsapjm
+ cBdkD/wLg99Ehw6pxqNvcpYX9IDW48H/OKBbTGrGtJ1kIB9KVLMeG/oSyXAUVeVifpBEZgtnxoC
+ d2TO1zxlITNeHZMFWqxHIjItEMQf8UlIt1QdTcvRrYSw0wWRWJhM4AFN9vVRSpJNFvZogESXSHs
+ 4tbyUd8eNmlgVEavm6QczfUC1AJbUZ8/gOd6bGnGm9StZyCErp7+qPvEY2VKT0UGRiXUjlyp0+/
+ 1d9gWY/herCreyiSF0FrWbQWO8uiYiiCXsByJrvqmSdlvuQIIdC2gKclVaAGm6hcwZdyAntsJMP
+ XHIHaUgMzEkabsn7jwf/sv2mRPp9EKXpSLVE8ObpMtnDZYaV9y4DKzJtruqbPKJqClEtCYGdw0J
+ sN5H4DcuJR9uRgaRbwtmLZGTB87hDPgenOcYgRGQofCw2noNHvKP1CGEgLSnW30e3jF6QPdZzPj
+ nbBzHPBamA55eUZTuURKMqKTuhUdCIjq48PYHNOxST2kBKnUy+3EcxKDloztvq4/jY0sKg5/wm6
+ 1/hY4kPowgv/kKevvY0O6P+YUdRxS2nOE9JMkX51NUQqZE5uo8zAPEgdkD2IVsLCl3jQVyG7jbq
+ DwXaGKOo6NXPMHSi6hxqgFrM1fY+rF+GGke5/un80w93i1nVWKkfNKkvxbC3emQOlHWnNTiBnYQ
+ NLN1U+qI0xvONTg==
+X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
+ fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
+X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
+ auth_id=435
+X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
+Reply-To: asmadeus@codewreck.org
 
-Thanks for the v2
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-Tingmao Wang wrote on Sun, Nov 02, 2025 at 11:56:30PM +0000:
-> I haven't done a bisect to figure out if this regression was introduced by
-> a change or was this behaviour always present - 6.14 has the same problem
-> and 6.13 did not compile for me due to some problem with bool / true /
-> false being a keyword in c23, and it could not compile with c17 either.
+'->def' is only ever used as a true/false flag
 
-Ok so you got me at the "it happens in cache=loose too", so I went ahead
-with bisect... I had the same problem with newer gcc being c23 and older
-kernels being silly, you'd think `KCFLAGS=-std=gnu11` is enough but some
-arch makefiles ignore that so I went in heavy patching
-arch/x86/boot/Makefile and arch/x86/boot/compressed/Makefile . . .
-... Anyway, it certainly didn't break recently, but it's not ages ago
-either: the repro you made (thank you!!) starts failing in 6.4 cache
-rework: the first bad commit is actually 21e26d5e54ab ("fs/9p: Fix bit
-operation logic error"), but that's just a fixup of the previous commit
-so 4eb3117888a9 ("fs/9p: Rework cache modes and add new options to
-Documentation") is the cluprit... and... I'm not quite sure I get why
-without digging deeper...
-(But at least that made me realize the commit just before, 1543b4c5071c
-("fs/9p: remove writeback fid and fix per-file modes"), removed the
-writeback fid I was talking about... But that commit was working (with a
-sane ~P9_OWRITE mask), so it's not directly that removal that broke
-things, but something else in the rework)
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ include/net/9p/transport.h | 2 +-
+ net/9p/trans_fd.c          | 6 +++---
+ net/9p/trans_rdma.c        | 2 +-
+ net/9p/trans_virtio.c      | 2 +-
+ net/9p/trans_xen.c         | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/include/net/9p/transport.h b/include/net/9p/transport.h
+index f0981515148d69abdaf06a2874eaab39f7ee2e94..0aedabc9b7ebe19e2c7273679fc934eff203de03 100644
+--- a/include/net/9p/transport.h
++++ b/include/net/9p/transport.h
+@@ -46,7 +46,7 @@ struct p9_trans_module {
+ 	char *name;		/* name of transport */
+ 	int maxsize;		/* max message size of transport */
+ 	bool pooled_rbuffers;
+-	int def;		/* this transport should be default */
++	bool def;		/* this transport should be default */
+ 	bool supports_vmalloc;	/* can work with vmalloc'd buffers */
+ 	struct module *owner;
+ 	int (*create)(struct p9_client *client,
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index e7334033eba5ae41f03fe8fe0fef7f8f35924886..bd4903d6482710cc3ae9e192fab2fd0d5318ad7a 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -1100,7 +1100,7 @@ static struct p9_trans_module p9_tcp_trans = {
+ 	.name = "tcp",
+ 	.maxsize = MAX_SOCK_BUF,
+ 	.pooled_rbuffers = false,
+-	.def = 0,
++	.def = false,
+ 	.supports_vmalloc = true,
+ 	.create = p9_fd_create_tcp,
+ 	.close = p9_fd_close,
+@@ -1115,7 +1115,7 @@ MODULE_ALIAS_9P("tcp");
+ static struct p9_trans_module p9_unix_trans = {
+ 	.name = "unix",
+ 	.maxsize = MAX_SOCK_BUF,
+-	.def = 0,
++	.def = false,
+ 	.supports_vmalloc = true,
+ 	.create = p9_fd_create_unix,
+ 	.close = p9_fd_close,
+@@ -1130,7 +1130,7 @@ MODULE_ALIAS_9P("unix");
+ static struct p9_trans_module p9_fd_trans = {
+ 	.name = "fd",
+ 	.maxsize = MAX_SOCK_BUF,
+-	.def = 0,
++	.def = false,
+ 	.supports_vmalloc = true,
+ 	.create = p9_fd_create,
+ 	.close = p9_fd_close,
+diff --git a/net/9p/trans_rdma.c b/net/9p/trans_rdma.c
+index 6c5ad232c19463ff42c611f5e409555381911c39..a0bc766199dadf448b8e048e68b97c646e125435 100644
+--- a/net/9p/trans_rdma.c
++++ b/net/9p/trans_rdma.c
+@@ -748,7 +748,7 @@ static struct p9_trans_module p9_rdma_trans = {
+ 	.name = "rdma",
+ 	.maxsize = P9_RDMA_MAXSIZE,
+ 	.pooled_rbuffers = true,
+-	.def = 0,
++	.def = false,
+ 	.supports_vmalloc = false,
+ 	.owner = THIS_MODULE,
+ 	.create = rdma_create_trans,
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index 12806207f4f03c5b291db938842d78f5146dc0b7..b58f50b00c7237d529556484ca497fe438b78d31 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -802,7 +802,7 @@ static struct p9_trans_module p9_virtio_trans = {
+ 	 */
+ 	.maxsize = PAGE_SIZE * (VIRTQUEUE_NUM - 3),
+ 	.pooled_rbuffers = false,
+-	.def = 1,
++	.def = true,
+ 	.supports_vmalloc = false,
+ 	.owner = THIS_MODULE,
+ };
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 4b1cec0ab82977e366dfa6673a71b5a90cb2cd45..9389c1247001e2d8ed7e2151390295b09cdcf98c 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -257,7 +257,7 @@ static struct p9_trans_module p9_xen_trans = {
+ 	.name = "xen",
+ 	.maxsize = 1 << (XEN_9PFS_RING_ORDER + XEN_PAGE_SHIFT - 2),
+ 	.pooled_rbuffers = false,
+-	.def = 1,
++	.def = true,
+ 	.supports_vmalloc = false,
+ 	.create = p9_xen_create,
+ 	.close = p9_xen_close,
 
-Anyway, I think this commit is a strict improvement over the current
-situation, I'll just slap a Fixes tag and push to -next for now, and if
-time allows I'll try to have a closer look...
+---
+base-commit: e21d451a82f39e91b7635c4fc3ff5ac082873ec3
+change-id: 20251103-v9fs_trans_def_bool-adc9f69f5adc
 
-Thanks,
+Best regards,
 -- 
-Dominique
+Dominique Martinet <asmadeus@codewreck.org>
+
+
