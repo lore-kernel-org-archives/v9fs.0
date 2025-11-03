@@ -1,182 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92142C029B;
-	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780C5299A94
+	for <v9fs@lists.linux.dev>; Mon,  3 Nov 2025 07:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762155775; cv=none; b=QCNz1cRF0ol1VkZFh6F+I+LvNrEbjbhd7uGjGdCur2v2/dsSAbbhjMLR3Ecm1xWZQZcsJGU+PCRtRJe6lfkn8FlimyTIHE11rxtTpyw6mO+fiBd2FSjg5CKt0m/S9SdSwJZSHQfwDyNBafwI3zp9EMOmqkHTfi9VkqKAVmH5Hfg=
+	t=1762156395; cv=none; b=U057dV/uaq5qJoddeSCv/pQ8vhliNxMUkjiIUaT3lQigdtw5RS0v3Yln96F2PaKyp3UBBaDh4A6/huYKwyttuTnVcuZwXGdEcLHai8FbTqhOrnVNHDatGSIdUnqWYXqcRANAC/vO3uKz97wyuEW6ccoXos92kJWlubhuGN5J2U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762155775; c=relaxed/simple;
-	bh=OUU0goUyjKS7VJe0KB9XzF2ZbtU3WVULdIiCjdEoyU0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HErtRIaBIbU3BgjHJjM+hMHnhNIxnqWW4hdZ9F35C07KkzWWqgVuEsGGTRrMlgA0qbHmH5Lt8erKbQbieI2hwF5lBvvNilTpj6kkuUjo2ctnNC/TFA78zgV8BmbvJfI6LMr5jPNwbhI9+BhpWiOE8BYsAtM51Ac4ulJ+YKNvJhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7GZX35f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762156395; c=relaxed/simple;
+	bh=81khHww0RXrIGfByOluomSheMwJMiosI66q5KkdC/28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oGbXgUXQyu6ftcIrg2lvZwfqYViQrH+7wBDIGaGvwgqN4cKzCI+zC9uTswjgQUlvIuq/gczUQAtC4LuxAzk/P99KYKFUQ6VdkD1OCDwKu5uaPBwGHrsXHx/QJ9XuoSxXzJVQNNWZidhm33cz+ryYY7iSVNRlfqSOKaihZIWucxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=YdmoOAiZ; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7GZX35f"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 61C15C4CEFD;
-	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762155774;
-	bh=OUU0goUyjKS7VJe0KB9XzF2ZbtU3WVULdIiCjdEoyU0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=G7GZX35fT3IGRYT0M/GBsJfltdc3JWMOyFMnMycXR2eoQSpiY9R4VKIpQ7uAQsQ69
-	 C/9+AxLoDLnbMEe6u3tuMV6HrL41ud/ORal/0HuzjQlXmUVNAPKDkN8vjX8CNFItci
-	 kriVqVoe19UTvQK77syFxHY2UPSVVuGzaCoXOugqtMMUJVXwfCzz+nkO7aSrjfSg28
-	 SF2Gp3huYMaRLHugi3etBpIQqpMZIhJOm08E0MtkGCHS1jXGv4hddR+nN71+ETyoKF
-	 99dkutPQVivsVSvF7YRFNcQdIxRjq+81YoqHMKRwwkP21+MPJrwFSXfJDpT1+dxauw
-	 MxSjxdArNLyVQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F72ACCFA03;
-	Mon,  3 Nov 2025 07:42:54 +0000 (UTC)
-From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Date: Mon, 03 Nov 2025 16:42:36 +0900
-Subject: [PATCH] net/9p: cleanup: change p9_trans_module->def to bool
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="YdmoOAiZ"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 61F4714C2D3;
+	Mon,  3 Nov 2025 08:53:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1762156392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F9zWb1t8klcmQ6eGCLVDZoSM8kXy4Cpxwtf8zrpJYR4=;
+	b=YdmoOAiZueOIu8yhEDUC6gMjIxzLj32Jwdfd9/McKak8N+sUZgT1KOS2Dmxe0GopVIsKSR
+	IydtoIipg2uYcjUefEOH/A/22VDmp5vdKoVTSxmOo7s1ITdhBje18eaI5/3ncC9QBOYIhF
+	udlck+vX7QsAbtgf7nJL5gDxTwe+1sS8hhFx6m6Ka7fr9OZK6QgM2uX284XIRJP/ytUG7F
+	HvZRWYXZ2fioFmYxstR1SM03P6Gp0H0Oq8niTJEp3i4pCjSDlxtQyDohqUypR9PUp0yxaa
+	JHRWDHF6v0C+sIJ+ZwKNpWm805JQQSWK9Ei7kMQS/ZX3IWte4FnDV4L0TEfR6A==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 0b5c3878;
+	Mon, 3 Nov 2025 07:53:08 +0000 (UTC)
+Date: Mon, 3 Nov 2025 16:52:53 +0900
+From: asmadeus <asmadeus@codewreck.org>
+To: Pierre Barre <pierre@barre.sh>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	v9fs@lists.linux.dev, ericvh@kernel.org, lucho@ionkov.net,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] 9p: Use kvmalloc for message buffers on supported
+ transports
+Message-ID: <aQhfVa_jdI_1kQwB@codewreck.org>
+References: <1fb9c439-73f3-4a00-8a8b-45eeb85883eb@app.fastmail.com>
+ <8602724.2ttRNpPraX@silver>
+ <7005d8d9-d42d-409f-b8e3-cd7207059eee@app.fastmail.com>
+ <5019358.GXAFRqVoOG@silver>
+ <d2017c29-11fb-44a5-bd0f-4204329bbefb@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-v9fs_trans_def_bool-v1-1-f33dc7ed9e81@codewreck.org>
-X-B4-Tracking: v=1; b=H4sIAOtcCGkC/x2MQQqAIBAAvxJ7TsiiwL4SIZa7tRAabkgQ/T3pN
- nOYeUAwMQqM1QMJMwvHUETXFay7Cxsq9sWhbdpe66ZT2ZDYK7kg1iPZJcZDOb8aGgz1BaCUZ0L
- i+79O8/t+kBGn8GUAAAA=
-X-Change-ID: 20251103-v9fs_trans_def_bool-adc9f69f5adc
-To: Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3628;
- i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=e6a1iYQuHQC7x5fsHwGCTvDypr2b1ZkzPJioRFGi6XY=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBpCFz3yuyEQXZJcrjOEuC62x15QrGZfQvJftDe4
- cHKuq1TJ56JAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaQhc9wAKCRCrTpvsapjm
- cBdkD/wLg99Ehw6pxqNvcpYX9IDW48H/OKBbTGrGtJ1kIB9KVLMeG/oSyXAUVeVifpBEZgtnxoC
- d2TO1zxlITNeHZMFWqxHIjItEMQf8UlIt1QdTcvRrYSw0wWRWJhM4AFN9vVRSpJNFvZogESXSHs
- 4tbyUd8eNmlgVEavm6QczfUC1AJbUZ8/gOd6bGnGm9StZyCErp7+qPvEY2VKT0UGRiXUjlyp0+/
- 1d9gWY/herCreyiSF0FrWbQWO8uiYiiCXsByJrvqmSdlvuQIIdC2gKclVaAGm6hcwZdyAntsJMP
- XHIHaUgMzEkabsn7jwf/sv2mRPp9EKXpSLVE8ObpMtnDZYaV9y4DKzJtruqbPKJqClEtCYGdw0J
- sN5H4DcuJR9uRgaRbwtmLZGTB87hDPgenOcYgRGQofCw2noNHvKP1CGEgLSnW30e3jF6QPdZzPj
- nbBzHPBamA55eUZTuURKMqKTuhUdCIjq48PYHNOxST2kBKnUy+3EcxKDloztvq4/jY0sKg5/wm6
- 1/hY4kPowgv/kKevvY0O6P+YUdRxS2nOE9JMkX51NUQqZE5uo8zAPEgdkD2IVsLCl3jQVyG7jbq
- DwXaGKOo6NXPMHSi6hxqgFrM1fY+rF+GGke5/un80w93i1nVWKkfNKkvxbC3emQOlHWnNTiBnYQ
- NLN1U+qI0xvONTg==
-X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
- fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
-X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
- auth_id=435
-X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
-Reply-To: asmadeus@codewreck.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d2017c29-11fb-44a5-bd0f-4204329bbefb@app.fastmail.com>
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+Pierre Barre wrote on Thu, Oct 16, 2025 at 03:58:36PM +0200:
+> While developing a 9P server (https://github.com/Barre/ZeroFS) and
+> testing it under high-load, I was running into allocation failures.
+> The failures occur even with plenty of free memory available because
+> kmalloc requires contiguous physical memory.
+> 
+> This results in errors like:
+> ls: page allocation failure: order:7, mode:0x40c40(GFP_NOFS|__GFP_COMP)
+> 
+> This patch introduces a transport capability flag (supports_vmalloc)
+> that indicates whether a transport can work with vmalloc'd buffers
+> (non-physically contiguous memory). Transports requiring DMA should
+> leave this flag as false.
+> 
+> The fd-based transports (tcp, unix, fd) set this flag to true, and
+> p9_fcall_init will use kvmalloc instead of kmalloc for these
+> transports. This allows the allocator to fall back to vmalloc when
+> contiguous physical memory is not available.
+> 
+> Additionally, if kmem_cache_alloc fails, the code falls back to
+> kvmalloc for transports that support it.
+> 
+> Signed-off-by: Pierre Barre <pierre@barre.sh>
 
-'->def' is only ever used as a true/false flag
+Thanks, it's now picked up and queued in -next -- will send to Linus in
+a couple of months.
 
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- include/net/9p/transport.h | 2 +-
- net/9p/trans_fd.c          | 6 +++---
- net/9p/trans_rdma.c        | 2 +-
- net/9p/trans_virtio.c      | 2 +-
- net/9p/trans_xen.c         | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
+FWIW, I prefer (and I think it's the norm in the linux world) if patches
+new versions aren't sent as a reply to previous version, it confuses
+tools like b4 that fetch the patch thread for version operations.
+If you send patches again please just send later versions without
+using --in-reply-to :)
 
-diff --git a/include/net/9p/transport.h b/include/net/9p/transport.h
-index f0981515148d69abdaf06a2874eaab39f7ee2e94..0aedabc9b7ebe19e2c7273679fc934eff203de03 100644
---- a/include/net/9p/transport.h
-+++ b/include/net/9p/transport.h
-@@ -46,7 +46,7 @@ struct p9_trans_module {
- 	char *name;		/* name of transport */
- 	int maxsize;		/* max message size of transport */
- 	bool pooled_rbuffers;
--	int def;		/* this transport should be default */
-+	bool def;		/* this transport should be default */
- 	bool supports_vmalloc;	/* can work with vmalloc'd buffers */
- 	struct module *owner;
- 	int (*create)(struct p9_client *client,
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index e7334033eba5ae41f03fe8fe0fef7f8f35924886..bd4903d6482710cc3ae9e192fab2fd0d5318ad7a 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -1100,7 +1100,7 @@ static struct p9_trans_module p9_tcp_trans = {
- 	.name = "tcp",
- 	.maxsize = MAX_SOCK_BUF,
- 	.pooled_rbuffers = false,
--	.def = 0,
-+	.def = false,
- 	.supports_vmalloc = true,
- 	.create = p9_fd_create_tcp,
- 	.close = p9_fd_close,
-@@ -1115,7 +1115,7 @@ MODULE_ALIAS_9P("tcp");
- static struct p9_trans_module p9_unix_trans = {
- 	.name = "unix",
- 	.maxsize = MAX_SOCK_BUF,
--	.def = 0,
-+	.def = false,
- 	.supports_vmalloc = true,
- 	.create = p9_fd_create_unix,
- 	.close = p9_fd_close,
-@@ -1130,7 +1130,7 @@ MODULE_ALIAS_9P("unix");
- static struct p9_trans_module p9_fd_trans = {
- 	.name = "fd",
- 	.maxsize = MAX_SOCK_BUF,
--	.def = 0,
-+	.def = false,
- 	.supports_vmalloc = true,
- 	.create = p9_fd_create,
- 	.close = p9_fd_close,
-diff --git a/net/9p/trans_rdma.c b/net/9p/trans_rdma.c
-index 6c5ad232c19463ff42c611f5e409555381911c39..a0bc766199dadf448b8e048e68b97c646e125435 100644
---- a/net/9p/trans_rdma.c
-+++ b/net/9p/trans_rdma.c
-@@ -748,7 +748,7 @@ static struct p9_trans_module p9_rdma_trans = {
- 	.name = "rdma",
- 	.maxsize = P9_RDMA_MAXSIZE,
- 	.pooled_rbuffers = true,
--	.def = 0,
-+	.def = false,
- 	.supports_vmalloc = false,
- 	.owner = THIS_MODULE,
- 	.create = rdma_create_trans,
-diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index 12806207f4f03c5b291db938842d78f5146dc0b7..b58f50b00c7237d529556484ca497fe438b78d31 100644
---- a/net/9p/trans_virtio.c
-+++ b/net/9p/trans_virtio.c
-@@ -802,7 +802,7 @@ static struct p9_trans_module p9_virtio_trans = {
- 	 */
- 	.maxsize = PAGE_SIZE * (VIRTQUEUE_NUM - 3),
- 	.pooled_rbuffers = false,
--	.def = 1,
-+	.def = true,
- 	.supports_vmalloc = false,
- 	.owner = THIS_MODULE,
- };
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 4b1cec0ab82977e366dfa6673a71b5a90cb2cd45..9389c1247001e2d8ed7e2151390295b09cdcf98c 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -257,7 +257,7 @@ static struct p9_trans_module p9_xen_trans = {
- 	.name = "xen",
- 	.maxsize = 1 << (XEN_9PFS_RING_ORDER + XEN_PAGE_SHIFT - 2),
- 	.pooled_rbuffers = false,
--	.def = 1,
-+	.def = true,
- 	.supports_vmalloc = false,
- 	.create = p9_xen_create,
- 	.close = p9_xen_close,
-
----
-base-commit: e21d451a82f39e91b7635c4fc3ff5ac082873ec3
-change-id: 20251103-v9fs_trans_def_bool-adc9f69f5adc
-
-Best regards,
+Cheers,
 -- 
-Dominique Martinet <asmadeus@codewreck.org>
-
-
+Dominique Martinet | Asmadeus
