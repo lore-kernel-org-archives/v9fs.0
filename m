@@ -1,73 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBC42F6935
-	for <v9fs@lists.linux.dev>; Tue,  2 Dec 2025 22:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E580A2D6E7C
+	for <v9fs@lists.linux.dev>; Tue,  2 Dec 2025 22:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764714660; cv=none; b=jUvjbsGB5zWgYukg+p17PBdSflIc2BE/LLsj9RwSPB1nZS1P6z1Z2l2lqv3/PJOLFTnPGwWOWNFvvuvfuQOVuolksV5R6u+AnReXYkB2zOolnuyUv0CAucmknC19mMDDP9MPbTA3xZoesy9OYq7n5AzJYMLZBLIN8tautfu+IO4=
+	t=1764714897; cv=none; b=XxpjqcTl8u8aYeUWcigMw4eQIcDKcQqhautEk6GerR6ZdFLSadm74U3/rAORWKooanbZ0IFsBTm0Lyx1bUlCCnPlz7dQvg2rdOu0pRJmwXsUN3tRbHN9VAqP1O11mX+M0EJo88xaluNDlPDt6AUy9s4MLG6z7ZsLuPXWhK7pkiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764714660; c=relaxed/simple;
-	bh=MmUh4MKXgs1k08VeXFr5wg8d4AsDjxUObXE1+1XdpG4=;
+	s=arc-20240116; t=1764714897; c=relaxed/simple;
+	bh=knGCB2QWCi7I+b7T8oml1J2JVo/fTrJd+ijEv1ZyS1U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ayu1DTzCQIUzOvGFWOXJBQgxct86Sxvip1TXivjsNdbvERJ6gmsaJA+wHsZXtOuQKcthiJQiv24Lto+UO/FWDvWzrcBfL3uWZAYYlzEU9a3QCj2GSrcwdH8J08kHupy7EDaUq2Qijl1zkNl8MtwuZ4uJ31gVxMY4yc93FLzoKAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XpVo6Joc; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=tFHqW14R8fTtp+/Q76lT9Jcw8AL7wyqB1cIblwxRZUSyi8lfpHT3AReAOZzpbfbkm2oHQezw4/42VT3XEsT2b5ykOLZjqX9QRKDOj1c0iwxVUPDo467gzKyeTdcp1c3yuuNwslu7OMvF/p2HaopC1BQbYXnGTvbdlBfIqSLpRl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S3o9tcEh; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XpVo6Joc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S3o9tcEh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764714657;
+	s=mimecast20190719; t=1764714894;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9XpYvds7AGfom+0aJqkkhOOQLSOqoY1MbT24dcNg0Fo=;
-	b=XpVo6JocMQHyzkWoO8xJYKm7aOHD1Wc5n6+pnLqHAErJEjKKDjQ1btSBI8LSbxeJeL0Bkh
-	m14i5pw9GbP4QAcgUy0Euw/HiQKlvLEBj0e8I2Llek4DWDKFfEnoI9H4emPfZh8uqEq4L0
-	Jm6NFewM21dPBKr15ZmpDm4OYCgQHBE=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=I75stScld0jImIWnHzAwTuoOvKajHCPvGtn9toaW0BQ=;
+	b=S3o9tcEha85TpN1QEl8bhFezoSkV/rMN3xpG2KWRyROury1p2rzLebR2/iio+Knm38fbJT
+	bvqY9vnp3CRV/cAS5oY5zV7dT1gnrx+yqelYfEXg9iO0fxvsx7DEoM8s9P76L6N34VX5kn
+	ND7918BMkV/yD+EhYwZ4bbfJY4Xm+3Y=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-0H-j4RCnNYKb2xmos9Ej2g-1; Tue, 02 Dec 2025 17:30:56 -0500
-X-MC-Unique: 0H-j4RCnNYKb2xmos9Ej2g-1
-X-Mimecast-MFC-AGG-ID: 0H-j4RCnNYKb2xmos9Ej2g_1764714655
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-65742f8c565so6233605eaf.1
-        for <v9fs@lists.linux.dev>; Tue, 02 Dec 2025 14:30:55 -0800 (PST)
+ us-mta-43-vY80BPtiPm-nClEQUvhtgA-1; Tue, 02 Dec 2025 17:34:53 -0500
+X-MC-Unique: vY80BPtiPm-nClEQUvhtgA-1
+X-Mimecast-MFC-AGG-ID: vY80BPtiPm-nClEQUvhtgA_1764714893
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7c6ce3b9fa0so4070867a34.0
+        for <v9fs@lists.linux.dev>; Tue, 02 Dec 2025 14:34:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764714655; x=1765319455;
+        d=1e100.net; s=20230601; t=1764714893; x=1765319693;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9XpYvds7AGfom+0aJqkkhOOQLSOqoY1MbT24dcNg0Fo=;
-        b=ghrPDik0UwhqnWUGQLGHejTyF43Ef12PTymDPhjPkei36Z4ojbFAgLEGzHzoirJH3h
-         eRePU/Dleqm+JRdumUycXC72SUij/DxYUHt5yKC2LCIKRAzHyWtfsjFuG4Ys1MMxTKMN
-         F4ZJHeCqca6hvqZo2UHSrO2qvlcbq0z/pYzUbJPYP6md+1k7Hej+11ACi/U+nnCBv9pY
-         P/SYZOBvJhw7Z319/p8CCP9VlVoDAtZom5bZkaWSinGeCBCT879pioqBvUC5OI3QitXa
-         bEXzfkI3eUpAKpX3EKZqEE8++gez2IypjuyOhirNwqMDZUlCp0ws6VergoYBrlJ9v3Wo
-         b3ew==
-X-Gm-Message-State: AOJu0YzKiNlYnivK8hT3D8J/BTUgUTWK335VN5yA41fE4BxKq9CGwdf2
-	Bxz2Y0D0tNOtEecXUupKQxOmBdInOPMChOzOZuoWpVMJgKRgsR11Pa+kIZnWFIRPs6x61fdmQa5
-	gPlo3g9eOMo0n+k5CmmOW+stK24QTXDyQniRit98/A1cnUUc2XOHwYUYxQIng375q7GKEh68PCC
-	FNJNZ+7uU6D3ERwdoFTU3i1YELf6BF9QoJ7FnID49Q
-X-Gm-Gg: ASbGncsW4qVSyK4gnTf5WImBpErr27nZcY6Iith9aRVT6QWhWo/qvKl2PDYiEJhnIYf
-	RUShauGaUelD8qjVO7/yWU6BJyCdmFP7Bbs7VGlPiwqmm3R/AJF1YcJAOC7IgyvopwG/M+xbFcm
-	jbDmnkF00IWgZUagN8WDxseZGzgxwmzt2YYfyz0vWEgG0QwkSlrUQsQcOVsw6b/boQ1LQ758rNo
-	kUQF4kO8cYKADDcengYqO0b46d/1kwclg+rxH6rDRVWcYCHn+Xqy5M6Ug/g88vdb3j4uvcntiUd
-	wB5EmZdnq9pRjCDMGlab4e37fVklHTNE0nrYQCKTcu8czngtxZjebuaZJ8YXzFpPSGR1tzneMrl
-	xnDGkQ2pgHgRDuZsMC1F5BVI5VDuy6cWAW57KmQAmDMBTG1htmsk=
-X-Received: by 2002:a05:6808:2213:b0:453:f62:de01 with SMTP id 5614622812f47-4536e43a399mr17456b6e.30.1764714655105;
-        Tue, 02 Dec 2025 14:30:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHy88N7ZuKZYlIvdZQmy4kg6Oeq+tbP5nzm2BGu6Vun9VEEZ04RppoINDoRk960fJq0ifc1/g==
-X-Received: by 2002:a05:6808:2213:b0:453:f62:de01 with SMTP id 5614622812f47-4536e43a399mr17434b6e.30.1764714654720;
-        Tue, 02 Dec 2025 14:30:54 -0800 (PST)
+        bh=I75stScld0jImIWnHzAwTuoOvKajHCPvGtn9toaW0BQ=;
+        b=lnZyroaMoNcbX1YJhDqRRyMF2q9go9v82dQmHCDRrHWSacdfZuigiQCqf+ocCa2UjL
+         Lpu1s2f4W12FDegFXYRTb9yaw1z/klM+xEBM8N6NGmMT5KrK1tKhw2fUvSCKWqJjQwiV
+         eYMaMYPexLXO42PjMfGH9uEfPGN002QG0+xmDxy3MsjN8nEKmePE57Piiv+7w1iylc5E
+         hFyRmvH4Tqd+W3+n9TR3ZqmYvJuSloJVHrL0cCzbRd7j8Eqfs5hb0s5umPOCpoGoSNDk
+         RpHmbvX5Op8mVNRfnl49h7pqYbgwzwM/ZUeZPADZrl62hgsMMddadErugdjKZMatAlE4
+         RUzw==
+X-Gm-Message-State: AOJu0YyzhVFaR3uD9luODochiRQ9dDE4mt5vOPO7mH5IJPfdeOkqjZYH
+	oKCIlWwZ+UoOdQEh4VxS3EK6FQUKn3zBqPWOd3AG83P6X6q0p9+KZ5L6FmOFfy6lXc5SUCHHYgX
+	xCxXnBMACuYeFUGgt2P996lfiugoLlS3PkazV9trjjSrh4k1UCcRZIRf2u2VS3ju4wadJQcQRRs
+	4RlsAlu9zvfY3e/7XR7f/PqjAaUbvOtd/eXSPsUkdh
+X-Gm-Gg: ASbGncvRIRZn9Lu/b0MN7olUxpXClMH9SPWFNwBSNdVytKAdOF+KGEE/ROJBXHItv+Z
+	4XitweYfl7iJYZ1kRpk6DgYv7OHuwfxajYgSaOxUjVRSKI8QcQL6bu9CV1JBWymdZbxTE/jC7bQ
+	fo+7uB2uaQqDXfM8M0c0onFY4SsZ/+i2Tm+1pNMuqVMDYki/cRfHZyMpOh2q8GK1wHOmjQphjeD
+	JlkT2fU5HJgRcNP4WIzWeTatei/8liu3fNIA656Mg0yYxpWy0c7EgQjaWiKhWbd+m8YMtrncnXO
+	hjZP5Xs7xr2WK3KXIEESZG6vyzmxqKMnjjzZrAvAQVebgYBnsKlrVW2cYZt1kCRcOFdqJgodqwP
+	YtgRFeOmq0GX0ETpYwanDNrcu8Uesrd0mvPTPcY1l/jc+3nnzFoM=
+X-Received: by 2002:a05:6830:310b:b0:78e:a394:ca24 with SMTP id 46e09a7af769-7c94db16322mr243471a34.8.1764714892822;
+        Tue, 02 Dec 2025 14:34:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBk5xgbqxkiF0SI2w8qIvhL+LUE6hwtLWp1H8RJuryPPzCLFIrSmuLFBL1JZq1IvKtaEk8Vw==
+X-Received: by 2002:a05:6830:310b:b0:78e:a394:ca24 with SMTP id 46e09a7af769-7c94db16322mr243453a34.8.1764714892458;
+        Tue, 02 Dec 2025 14:34:52 -0800 (PST)
 Received: from [10.0.0.82] (97-127-77-149.mpls.qwest.net. [97.127.77.149])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90fcedce6sm7464634a34.16.2025.12.02.14.30.53
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90f5d7ba2sm7520115a34.5.2025.12.02.14.34.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Dec 2025 14:30:54 -0800 (PST)
-Message-ID: <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
-Date: Tue, 2 Dec 2025 16:30:53 -0600
+        Tue, 02 Dec 2025 14:34:52 -0800 (PST)
+Message-ID: <48cdeec9-5bb9-4c7a-a203-39bb8e0ef443@redhat.com>
+Date: Tue, 2 Dec 2025 16:34:51 -0600
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH V3 5/4] 9p: fix cache option printing in v9fs_show_options
+Subject: [PATCH V3 6/4] 9p: fix new mount API cache option handling
 To: v9fs@lists.linux.dev
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
@@ -85,40 +85,105 @@ References: <20251010214222.1347785-1-sandeen@redhat.com>
 From: Eric Sandeen <sandeen@redhat.com>
 In-Reply-To: <20251010214222.1347785-5-sandeen@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: O3bxLosRnf69EDFr_nNdkalF_KEdfIp2jYJmCeU5iGA_1764714655
+X-Mimecast-MFC-PROC-ID: aEFbGTsRuUevQ-TuBXuINcSoO2wQltT9n-5pD5J9Uys_1764714893
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-commit 4eb3117888a92 changed the cache= option to accept either string
-shortcuts or bitfield values. It also changed /proc/mounts to emit the
-option as the hexadecimal numeric value rather than the shortcut string.
+After commit 4eb3117888a92, 9p needs to be able to accept numerical
+cache= mount options as well as the string "shortcuts" because the option
+is printed numerically in /proc/mounts rather than by string. This was
+missed in the mount API conversion, which used an enum for the shortcuts
+and therefore could not handle a numeric equivalent as an argument
+to the cache option.
 
-However, by printing "cache=%x" without the leading 0x, shortcuts such
-as "cache=loose" will emit "cache=f" and 'f' is not a string that is
-parseable by kstrtoint(), so remounting may fail if a remount with
-"cache=f" is attempted.
+Fix this by removing the enum and reverting to the slightly more
+open-coded option handling for Opt_cache, with the reinstated
+get_cache_mode() helper.
 
-Fix this by adding the 0x prefix to the hexadecimal value shown in
-/proc/mounts.
-
-Fixes: 4eb3117888a92 ("fs/9p: Rework cache modes and add new options to Documentation")
 Signed-off-by: Eric Sandeen <sandeen@redhat.com>
 ---
 
+If you wanted to fold this into my original mount api conversion patch
+so there's no regression point, that would be fine with me as well,
+of course. Sorry for the error.
+
 diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 05fc2ba3c5d4..d684cb406ed6 100644
+index d684cb406ed6..dea2c5347933 100644
 --- a/fs/9p/v9fs.c
 +++ b/fs/9p/v9fs.c
-@@ -148,7 +148,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
- 	if (v9ses->nodev)
- 		seq_puts(m, ",nodevmap");
- 	if (v9ses->cache)
--		seq_printf(m, ",cache=%x", v9ses->cache);
-+		seq_printf(m, ",cache=0x%x", v9ses->cache);
- #ifdef CONFIG_9P_FSCACHE
- 	if (v9ses->cachetag && (v9ses->cache & CACHE_FSCACHE))
- 		seq_printf(m, ",cachetag=%s", v9ses->cachetag);
+@@ -72,15 +72,6 @@ static const struct constant_table p9_versions[] = {
+ 	{}
+ };
+ 
+-static const struct constant_table p9_cache_mode[] = {
+-	{ "loose",	CACHE_SC_LOOSE },
+-	{ "fscache",	CACHE_SC_FSCACHE },
+-	{ "mmap",	CACHE_SC_MMAP },
+-	{ "readahead",	CACHE_SC_READAHEAD },
+-	{ "none",	CACHE_SC_NONE },
+-	{}
+-};
+-
+ /*
+  * This structure contains all parameters used for the core code,
+  * the client, and all the transports.
+@@ -97,7 +88,7 @@ const struct fs_parameter_spec v9fs_param_spec[] = {
+ 	fsparam_flag	("noxattr",	Opt_noxattr),
+ 	fsparam_flag	("directio",	Opt_directio),
+ 	fsparam_flag	("ignoreqv",	Opt_ignoreqv),
+-	fsparam_enum	("cache",	Opt_cache, p9_cache_mode),
++	fsparam_string	("cache",	Opt_cache),
+ 	fsparam_string	("cachetag",	Opt_cachetag),
+ 	fsparam_string	("access",	Opt_access),
+ 	fsparam_flag	("posixacl",	Opt_posixacl),
+@@ -124,6 +115,33 @@ const struct fs_parameter_spec v9fs_param_spec[] = {
+ 	{}
+ };
+ 
++/* Interpret mount options for cache mode */
++static int get_cache_mode(char *s)
++{
++	int version = -EINVAL;
++
++	if (!strcmp(s, "loose")) {
++		version = CACHE_SC_LOOSE;
++		p9_debug(P9_DEBUG_9P, "Cache mode: loose\n");
++	} else if (!strcmp(s, "fscache")) {
++		version = CACHE_SC_FSCACHE;
++		p9_debug(P9_DEBUG_9P, "Cache mode: fscache\n");
++	} else if (!strcmp(s, "mmap")) {
++		version = CACHE_SC_MMAP;
++		p9_debug(P9_DEBUG_9P, "Cache mode: mmap\n");
++	} else if (!strcmp(s, "readahead")) {
++		version = CACHE_SC_READAHEAD;
++		p9_debug(P9_DEBUG_9P, "Cache mode: readahead\n");
++	} else if (!strcmp(s, "none")) {
++		version = CACHE_SC_NONE;
++		p9_debug(P9_DEBUG_9P, "Cache mode: none\n");
++	} else if (kstrtoint(s, 0, &version) != 0) {
++		version = -EINVAL;
++		pr_info("Unknown Cache mode or invalid value %s\n", s);
++	}
++	return version;
++}
++
+ /*
+  * Display the mount options in /proc/mounts.
+  */
+@@ -269,8 +287,10 @@ int v9fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ #endif
+ 		break;
+ 	case Opt_cache:
+-		session_opts->cache = result.uint_32;
+-		p9_debug(P9_DEBUG_9P, "Cache mode: %s\n", param->string);
++		r = get_cache_mode(param->string);
++		if (r < 0)
++			return r;
++		session_opts->cache = r;
+ 		break;
+ 	case Opt_access:
+ 		s = param->string;
 
 
