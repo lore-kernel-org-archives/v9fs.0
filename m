@@ -1,129 +1,77 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853D35BDB8
-	for <v9fs@lists.linux.dev>; Wed,  3 Dec 2025 16:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56952FB962;
+	Wed,  3 Dec 2025 18:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778991; cv=none; b=nDD1VO59L49R0s4bca/mNSPstzYL30BupdBvycglBZm9rZX0J/eMa5jeegyBt+1AQ9Y7TjwIkeAfMZ8VY22diRdU4ul+7ZV+xLKbY97UQzZxxSj2/E3jTdn0HhSuGcHwo/DHNsEQqiR4paK6Yesvyu0B1Z4IYlIDT/XTcvGplz0=
+	t=1764785079; cv=none; b=MtrpeOt+JH/GeJwAaUfmyJL27iCH5IpE7B9s4ZoDbJ7NlQYegZJLTalJDwd/24RcjPz1d3Q8NnjpfdPXn6a6W/vCUKgKcbRQRUTOD2GxfwguEi6+D84SsaeQ4oWGTtEolcrxJuOXUaMMJmlk3riz/Jymz0uZXwVri0nir/NS1pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778991; c=relaxed/simple;
-	bh=bx937mEcj8vEK6tgEte3icTEq3dIugv3PYquKmorkHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IU5Jsa2XJT3WeFZhWDmYZqzWSxMrxdfii9nMsUAL/2up8K/Z0PcSadlcV4VujjzEg8g0fuMNr/SNDuDTVynEfhsGA93XfRUyWQOLxRyUREC+kW4FVfQARLXURA4cQL9i4z0b8+eO/B8nfwV5trjNkF4+HlmedI+Kqdbf2pdeRq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=aHcDVid9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KLfJDOBp; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
+	s=arc-20240116; t=1764785079; c=relaxed/simple;
+	bh=Se2PfxGlMP2oRTa5rQHeRfD2j2fYjzcv//v6ox5mTys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYpcXPt6GjeCGqfhllfguUzy/ifOAJO/nXAPkjm5hS/RHwmoLqCKppxBctyfunj/9wSo+mdYnBHfaZ9jhWq0Xp1N/DbpNCSC5lYr9lP2QrSAZ2k54mcCDddNq9rVQ8EnIioQ1i8+bc9aI4aSCQAh/xq2B3Rit8Zl6A5tsakq99U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=m6HaoR9X; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="aHcDVid9";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KLfJDOBp"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 881C1EC0541;
-	Wed,  3 Dec 2025 11:23:08 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 03 Dec 2025 11:23:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1764778988;
-	 x=1764865388; bh=VQ/KPY2nDrJs35yoFE20KGE0zYNXnzk6GT4UM+TVCc0=; b=
-	aHcDVid92/5L5FFIAYdIr1bRtonG7s8TbvPykkKSPEHfjseHeA7HQmzliHPetkmG
-	Mb4nS5oDESl/lASUy+iIlKjOafpIfg9rGCFy3OZ9BTWg1pimnFAooSBPAJXJDbir
-	IcSHiUc97vn5NLv4BOy1Y3XkiSCgqeQTMZ6bGUA657uwIQVArFsl6T8YM8fQXcb0
-	ijeDZqR3tcInx6P9COkzrXdNS79BoKagdCNbVCjoTdksLAbu6yM10+uPDuPI3qvl
-	nXMJlxBrIw3Z3F7Hxa74WXf67Mj8sREWYdxMKeb0XCbwdISQt0bCJB1RidUl783Q
-	FvDx9fWCXfbC1uuy3Z/wjg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764778988; x=
-	1764865388; bh=VQ/KPY2nDrJs35yoFE20KGE0zYNXnzk6GT4UM+TVCc0=; b=K
-	LfJDOBp57l/lYsvtSCbgMRGtumpG74hVdMSgylT+LMf04MwY7Oz16JKa+rntx0hZ
-	oGx0jhHhOqvSsNWznltPwGgrsGdVEdP4uBpHuks+BKKtk8qtKcoUSTbNzbE1qnbr
-	Teh2xrQWpqQz5crvVyRTACzx0/KRRKJvHgayRT9D7dE7pIUpJe3DOUTMqLYjFI1p
-	hFoH3zB4h5gpRt0Ro9+KsGYP1aRqWlrFhZ9bA8AXOh1nK2bD7ApqfcI5Qs2jvqlN
-	+p+8AeosL9gbMAentsrTd1/XdetWne1yoJ5zqW9IzW9UXt6Adg9hvGhE+Tg1ZpM7
-	Qr1qcDx1/1affS1ezlp/A==
-X-ME-Sender: <xms:62MwadYpzPsImovkpqYOd1a5cPLHLn48zenyhSaTsM8HaMZHPm_RWw>
-    <xme:62MwaaaLzqEFscS3Xgu6v3GHtYT1GAi-WKw875tUL7cenf28nv82Ka1KmLHLOGOkg
-    cc3RlAepar1ZlRAs9vqOC10BcZhYAEn9j6eM3LSyRpHKjZlusfE5Fo>
-X-ME-Received: <xmr:62MwaawCMbtMzyGraIY9s_2hdZHn1Nz4N5R1vCmS3rIBomy8o6id672GJcnh7SM8p5O6gPsMMp7e_E8DasSnse88jw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttd
-    dvjeenucfhrhhomhepgfhrihgtucfurghnuggvvghnuceoshgrnhguvggvnhesshgrnhgu
-    vggvnhdrnhgvtheqnecuggftrfgrthhtvghrnhepveeikeeuteefueejtdehfeefvdegff
-    eivdejjeelfffhgeegjeeutdejueelhfdvnecuvehluhhsthgvrhfuihiivgeptdenucfr
-    rghrrghmpehmrghilhhfrhhomhepshgrnhguvggvnhesshgrnhguvggvnhdrnhgvthdpnh
-    gspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhm
-    rgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehsrghnuggvvghnse
-    hrvgguhhgrthdrtghomhdprhgtphhtthhopehrvghpkhesthhrihhplhgvfhgruhdrlhht
-    pdhrtghpthhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoh
-    eplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhutghhohes
-    ihhonhhkohhvrdhnvghtpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshi
-    htvgdrtghomh
-X-ME-Proxy: <xmx:62Mwaee7Rh3b4WodIKywTGZl2k0e35htAZ7HBjreCLvW0wTx3EDsqg>
-    <xmx:62MwaX5NXhgNov7wjEiBiXiCtfjPpN_UXSw7JvryjqE3683Hia0BhQ>
-    <xmx:62MwabK4ZjDrenv7-NY_Ui6vH1CUfqPiglSpyMmPjf6Q75VBxLgUmw>
-    <xmx:62MwaXzTEn0KD1NTFpBBsAnRYz9kaQvIEtMnfG3aA2dpOJSSs322mg>
-    <xmx:7GMwaZOhnMw8aS-hmOBkz6hqwkNKhvNOKXyFw77Jk0aeKisBHiq7z41U>
-Feedback-ID: i2b59495a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Dec 2025 11:23:07 -0500 (EST)
-Message-ID: <35a48945-a163-4325-9e08-8f1604c698bc@sandeen.net>
-Date: Wed, 3 Dec 2025 10:23:06 -0600
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="m6HaoR9X"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BiiCmM83gj8nnJg+Q05lk7LGEvwJXQOD7Xzr4jYNyao=; b=m6HaoR9X2nkIwoWIrWXb37Miiz
+	F/2it5/akUUd0a+saZ4vxzTp6syli3LaRdiML/kv1ziH6todL8mdl13EEqeSq+hQaS55qayIMy9xM
+	3iudv3BxzJOkZpuH7SZmzkDYMjc0LlgEj3Ps1GoMDYMbhqzCRRw22Q33EPuW1y56kuOa+UJ4o6L1L
+	0kv8VYGgCsdNt9ED/hftIBBAy0afA4Yo8AnQEBW84lTbOs9rQhgoQvDE8uqPFoMFmnqZ9IaXmKKYG
+	IkzHNm+xdOI+lp396gtbx2ERkW2+ix+EccOmN6D+GpBzOqRHod3kuoqoQFaO7v7Rhj3yOvlnNthgo
+	vmxdiKXg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vQrDY-0000000BsuX-0efU;
+	Wed, 03 Dec 2025 18:04:44 +0000
+Date: Wed, 3 Dec 2025 18:04:44 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Sandeen <sandeen@redhat.com>, v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	eadavis@qq.com, Remi Pommarel <repk@triplefau.lt>
+Subject: Re: [PATCH V3 5/4] 9p: fix cache option printing in v9fs_show_options
+Message-ID: <20251203180444.GG1712166@ZenIV>
+References: <20251010214222.1347785-1-sandeen@redhat.com>
+ <20251010214222.1347785-5-sandeen@redhat.com>
+ <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
+ <20251202231352.GF1712166@ZenIV>
+ <c1d0a33e-768a-45ee-b870-e84c25b04896@redhat.com>
+ <aTBRdeUvqF4rX778@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
-To: Dominique Martinet <asmadeus@codewreck.org>,
- Eric Sandeen <sandeen@redhat.com>
-Cc: Remi Pommarel <repk@triplefau.lt>, v9fs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, eadavis@qq.com
-References: <20251010214222.1347785-1-sandeen@redhat.com>
- <20251010214222.1347785-5-sandeen@redhat.com>
- <aOzT2-e8_p92WfP-@codewreck.org> <aSdgDkbVe5xAT291@pilgrim>
- <aSeCdir21ZkvXJxr@codewreck.org>
- <b7b203c4-6e4b-4eeb-a23e-e6314342f288@redhat.com>
- <aS47OBYiF1PBeVSv@codewreck.org>
- <13d4a021-908e-4dff-874d-d4cbdcdd71d4@redhat.com>
- <aTBTndsQaLAv0sHP@codewreck.org>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@sandeen.net>
-In-Reply-To: <aTBTndsQaLAv0sHP@codewreck.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTBRdeUvqF4rX778@codewreck.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 12/3/25 9:13 AM, Dominique Martinet wrote:
-> Eric Sandeen wrote on Tue, Dec 02, 2025 at 04:12:36PM -0600:
-
-...
-
-> I also agree the other show_options look safe enough as they either
-> print a string or int. . . .
-> Ah, actually I spotted another one:
->         if (v9ses->debug)
->                 seq_printf(m, ",debug=%x", v9ses->debug);
-> This needs to be prefixed by 0x as well -- Eric, do you mind if I amend
-> your patch 5 with that as well?
-
-Doh ... sure, please go ahead and fix it however you'd like.
-
--Eric
-
+On Thu, Dec 04, 2025 at 12:04:21AM +0900, Dominique Martinet wrote:
+> Eric Sandeen wrote on Tue, Dec 02, 2025 at 07:09:42PM -0600:
+> > >> -		seq_printf(m, ",cache=%x", v9ses->cache);
+> > >> +		seq_printf(m, ",cache=0x%x", v9ses->cache);
+> > > 
+> > > What's wrong with "cache=%#x"?
+> > 
+> > Nothing, presumably - I did not know this existed TBH.
+> > 
+> > (looks like that usage is about 1/10 of 0x%x currently)
 > 
-> Remi - I did check rootfstype=9p as well and all seems fine but I'd
-> appreciate if you could test as well
-> 
-> 
-> Thanks!
+> I don't have any preference here, but I've folded in %#x when applying
+> because why not -- I've been seeing it slightly more often lately so I
+> guess it's the "modern way" of doing this.
 
+In 4BSD libc by October 1980, part of ANSI C variants all way back to C89.
+Covered in K&R 2nd edition ('88); 3BSD didn't have it, neither did v7,
+so I'd guess that it was done at some point in 1980, possibly late 1979.
+
+So it's hardly something newfangled...
