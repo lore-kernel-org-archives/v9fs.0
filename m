@@ -1,111 +1,129 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12579326D73
-	for <v9fs@lists.linux.dev>; Wed,  3 Dec 2025 15:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853D35BDB8
+	for <v9fs@lists.linux.dev>; Wed,  3 Dec 2025 16:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764774836; cv=none; b=MC1/ucer36WfjqqfD26A6Mbzr5hrmOeWmE4emNfT83YErC2Qa6YNdZOHrzj7al/3p2z6X+D5hU8WAseI/EzMuhO9+KOuDqNadT1pZEVSNcMgb6XwnvxmThIYbIGEufJK/BouyjbNua9drsXiHAHA8rqw8eZh6kvkQf/p5X70FTg=
+	t=1764778991; cv=none; b=nDD1VO59L49R0s4bca/mNSPstzYL30BupdBvycglBZm9rZX0J/eMa5jeegyBt+1AQ9Y7TjwIkeAfMZ8VY22diRdU4ul+7ZV+xLKbY97UQzZxxSj2/E3jTdn0HhSuGcHwo/DHNsEQqiR4paK6Yesvyu0B1Z4IYlIDT/XTcvGplz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764774836; c=relaxed/simple;
-	bh=2/tSBOz+PiCZaXG/ct+4MljpRxJJsJHv6HuN/o2wvXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Keb7owdAx47q3rG7b2XN7OhE/J0U5khew00R3g9tiA0zwR2scOiFXtPqdnuRk/8ELzF9hyVzqHi75EVX/gRY1UEs+0GS7BiizD8F7Bq/hxuXpOPxW0S7MY8o2qJ4O47zzxDBi13Bhk5nBcM1IIbSgYshYmeYw3agmXp2PCawJM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=WGB735LL; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1764778991; c=relaxed/simple;
+	bh=bx937mEcj8vEK6tgEte3icTEq3dIugv3PYquKmorkHI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IU5Jsa2XJT3WeFZhWDmYZqzWSxMrxdfii9nMsUAL/2up8K/Z0PcSadlcV4VujjzEg8g0fuMNr/SNDuDTVynEfhsGA93XfRUyWQOLxRyUREC+kW4FVfQARLXURA4cQL9i4z0b8+eO/B8nfwV5trjNkF4+HlmedI+Kqdbf2pdeRq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=aHcDVid9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KLfJDOBp; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="WGB735LL"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8C58014C2D6;
-	Wed,  3 Dec 2025 16:13:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1764774833;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hQf0VWKAwl8tCdlJSS2kYD/qAghSgtRdWIsKNjDMfXc=;
-	b=WGB735LLIxDNHokh567k8nIAJxKRQpkks2YGc6sTnaYyvAx6xYEESUlb7o2AtjkFZ/W747
-	ZjfzXivPiNszftYdQPBYDwXRu+LJuu09buxO791KLgi/LQ+fSoIhMnxfEKt1hX10bbQ27f
-	yKviAMzHJrrXWkYdvmd1Ag6ocem4xLGn5jHKk4QaRMWHj4yBC+HgWnN6iOqEw6Or0fNKmV
-	3HuGKBn0mrjl238kfLROlR9DuVuJqyXqQDXik5seCzWIsWdO6M2qTP32AwAUFxwpuk6l+r
-	6K4GKIfCBSwURZXmT9U+J9DLtFvonGSZ4pXEpJy0PMkie/lsbiIES3nTn6th7Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1f1d1cea;
-	Wed, 3 Dec 2025 15:13:48 +0000 (UTC)
-Date: Thu, 4 Dec 2025 00:13:33 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Eric Sandeen <sandeen@redhat.com>
-Cc: Remi Pommarel <repk@triplefau.lt>, v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	eadavis@qq.com
-Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
-Message-ID: <aTBTndsQaLAv0sHP@codewreck.org>
-References: <20251010214222.1347785-1-sandeen@redhat.com>
- <20251010214222.1347785-5-sandeen@redhat.com>
- <aOzT2-e8_p92WfP-@codewreck.org>
- <aSdgDkbVe5xAT291@pilgrim>
- <aSeCdir21ZkvXJxr@codewreck.org>
- <b7b203c4-6e4b-4eeb-a23e-e6314342f288@redhat.com>
- <aS47OBYiF1PBeVSv@codewreck.org>
- <13d4a021-908e-4dff-874d-d4cbdcdd71d4@redhat.com>
+	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="aHcDVid9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KLfJDOBp"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 881C1EC0541;
+	Wed,  3 Dec 2025 11:23:08 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 03 Dec 2025 11:23:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1764778988;
+	 x=1764865388; bh=VQ/KPY2nDrJs35yoFE20KGE0zYNXnzk6GT4UM+TVCc0=; b=
+	aHcDVid92/5L5FFIAYdIr1bRtonG7s8TbvPykkKSPEHfjseHeA7HQmzliHPetkmG
+	Mb4nS5oDESl/lASUy+iIlKjOafpIfg9rGCFy3OZ9BTWg1pimnFAooSBPAJXJDbir
+	IcSHiUc97vn5NLv4BOy1Y3XkiSCgqeQTMZ6bGUA657uwIQVArFsl6T8YM8fQXcb0
+	ijeDZqR3tcInx6P9COkzrXdNS79BoKagdCNbVCjoTdksLAbu6yM10+uPDuPI3qvl
+	nXMJlxBrIw3Z3F7Hxa74WXf67Mj8sREWYdxMKeb0XCbwdISQt0bCJB1RidUl783Q
+	FvDx9fWCXfbC1uuy3Z/wjg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764778988; x=
+	1764865388; bh=VQ/KPY2nDrJs35yoFE20KGE0zYNXnzk6GT4UM+TVCc0=; b=K
+	LfJDOBp57l/lYsvtSCbgMRGtumpG74hVdMSgylT+LMf04MwY7Oz16JKa+rntx0hZ
+	oGx0jhHhOqvSsNWznltPwGgrsGdVEdP4uBpHuks+BKKtk8qtKcoUSTbNzbE1qnbr
+	Teh2xrQWpqQz5crvVyRTACzx0/KRRKJvHgayRT9D7dE7pIUpJe3DOUTMqLYjFI1p
+	hFoH3zB4h5gpRt0Ro9+KsGYP1aRqWlrFhZ9bA8AXOh1nK2bD7ApqfcI5Qs2jvqlN
+	+p+8AeosL9gbMAentsrTd1/XdetWne1yoJ5zqW9IzW9UXt6Adg9hvGhE+Tg1ZpM7
+	Qr1qcDx1/1affS1ezlp/A==
+X-ME-Sender: <xms:62MwadYpzPsImovkpqYOd1a5cPLHLn48zenyhSaTsM8HaMZHPm_RWw>
+    <xme:62MwaaaLzqEFscS3Xgu6v3GHtYT1GAi-WKw875tUL7cenf28nv82Ka1KmLHLOGOkg
+    cc3RlAepar1ZlRAs9vqOC10BcZhYAEn9j6eM3LSyRpHKjZlusfE5Fo>
+X-ME-Received: <xmr:62MwaawCMbtMzyGraIY9s_2hdZHn1Nz4N5R1vCmS3rIBomy8o6id672GJcnh7SM8p5O6gPsMMp7e_E8DasSnse88jw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttd
+    dvjeenucfhrhhomhepgfhrihgtucfurghnuggvvghnuceoshgrnhguvggvnhesshgrnhgu
+    vggvnhdrnhgvtheqnecuggftrfgrthhtvghrnhepveeikeeuteefueejtdehfeefvdegff
+    eivdejjeelfffhgeegjeeutdejueelhfdvnecuvehluhhsthgvrhfuihiivgeptdenucfr
+    rghrrghmpehmrghilhhfrhhomhepshgrnhguvggvnhesshgrnhguvggvnhdrnhgvthdpnh
+    gspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhm
+    rgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehsrghnuggvvghnse
+    hrvgguhhgrthdrtghomhdprhgtphhtthhopehrvghpkhesthhrihhplhgvfhgruhdrlhht
+    pdhrtghpthhtohepvhelfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoh
+    eplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhutghhohes
+    ihhonhhkohhvrdhnvghtpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshi
+    htvgdrtghomh
+X-ME-Proxy: <xmx:62Mwaee7Rh3b4WodIKywTGZl2k0e35htAZ7HBjreCLvW0wTx3EDsqg>
+    <xmx:62MwaX5NXhgNov7wjEiBiXiCtfjPpN_UXSw7JvryjqE3683Hia0BhQ>
+    <xmx:62MwabK4ZjDrenv7-NY_Ui6vH1CUfqPiglSpyMmPjf6Q75VBxLgUmw>
+    <xmx:62MwaXzTEn0KD1NTFpBBsAnRYz9kaQvIEtMnfG3aA2dpOJSSs322mg>
+    <xmx:7GMwaZOhnMw8aS-hmOBkz6hqwkNKhvNOKXyFw77Jk0aeKisBHiq7z41U>
+Feedback-ID: i2b59495a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Dec 2025 11:23:07 -0500 (EST)
+Message-ID: <35a48945-a163-4325-9e08-8f1604c698bc@sandeen.net>
+Date: Wed, 3 Dec 2025 10:23:06 -0600
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <13d4a021-908e-4dff-874d-d4cbdcdd71d4@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 4/4] 9p: convert to the new mount API
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Eric Sandeen <sandeen@redhat.com>
+Cc: Remi Pommarel <repk@triplefau.lt>, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, eadavis@qq.com
+References: <20251010214222.1347785-1-sandeen@redhat.com>
+ <20251010214222.1347785-5-sandeen@redhat.com>
+ <aOzT2-e8_p92WfP-@codewreck.org> <aSdgDkbVe5xAT291@pilgrim>
+ <aSeCdir21ZkvXJxr@codewreck.org>
+ <b7b203c4-6e4b-4eeb-a23e-e6314342f288@redhat.com>
+ <aS47OBYiF1PBeVSv@codewreck.org>
+ <13d4a021-908e-4dff-874d-d4cbdcdd71d4@redhat.com>
+ <aTBTndsQaLAv0sHP@codewreck.org>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@sandeen.net>
+In-Reply-To: <aTBTndsQaLAv0sHP@codewreck.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Eric Sandeen wrote on Tue, Dec 02, 2025 at 04:12:36PM -0600:
-> Working on this, but something that confuses me about the current
-> (not for-next) code:
+On 12/3/25 9:13 AM, Dominique Martinet wrote:
+> Eric Sandeen wrote on Tue, Dec 02, 2025 at 04:12:36PM -0600:
+
+...
+
+> I also agree the other show_options look safe enough as they either
+> print a string or int. . . .
+> Ah, actually I spotted another one:
+>         if (v9ses->debug)
+>                 seq_printf(m, ",debug=%x", v9ses->debug);
+> This needs to be prefixed by 0x as well -- Eric, do you mind if I amend
+> your patch 5 with that as well?
+
+Doh ... sure, please go ahead and fix it however you'd like.
+
+-Eric
+
 > 
-> If I mount with "cache=loose" I see this in /proc/mounts:
+> Remi - I did check rootfstype=9p as well and all seems fine but I'd
+> appreciate if you could test as well
 > 
-> 127.0.0.1 /mnt 9p rw,relatime,uname=fsgqa,aname=/tmp/9,cache=f,access=user,trans=tcp 0 0
 > 
-> note the "cache=f" thanks to show_options printing "cache=%x"
-> 
-> "mount -o cache=f" is rejected, though, because "f" is not a parseable
-> number.
-> 
-> Shouldn't it be printing "cache=0xf" instead of "cache=f?"
+> Thanks!
 
-Definitely should be!
-
-> (for some reason, though, in my test "remount -o,ro" does still work even with
-> "cache=f" in /proc/mounts but that seems to be a side effect of mount.9p trying
-> to use the new mount API when it shouldn't, or ...???)
-
-... and Remi explicitly had cache=loose in his command line, so I'm also
-surprised it worked...
-
-> I'll send my fix-up patch with a (maybe?) extra bugfix of printing
-> "cache=0x%x" in show_options, and you can see what you think... it could
-> be moved into a pure bugfix patch first if you agree.
-
-Thank you! I would have been happy to see both together but it does make
-more sense separately, I've just tested and pushed both your patches to
--next
-
-
-I also agree the other show_options look safe enough as they either
-print a string or int. . . .
-Ah, actually I spotted another one:
-        if (v9ses->debug)
-                seq_printf(m, ",debug=%x", v9ses->debug);
-This needs to be prefixed by 0x as well -- Eric, do you mind if I amend
-your patch 5 with that as well?
-
-
-Remi - I did check rootfstype=9p as well and all seems fine but I'd
-appreciate if you could test as well
-
-
-Thanks!
--- 
-Dominique Martinet | Asmadeus
