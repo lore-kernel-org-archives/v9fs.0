@@ -1,175 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119562DE707;
-	Wed,  3 Dec 2025 10:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93947302166
+	for <v9fs@lists.linux.dev>; Wed,  3 Dec 2025 15:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764757151; cv=none; b=l1y/iSY3P6bBKvJmq7rfGniKBLZ/N+ITjeHc/tYquDWUGvNErSeQ+Nx1uktYZhMQwK9KJaKYAVzIDIwpFWKsOCDR5OQt2vxS1pXHKllevKb46ByutDXSV7CIX1ds0M4LfkzWbsbeKqWsSV42pR80nsIwvB1HEA7q5/RDEwFV3CY=
+	t=1764774291; cv=none; b=mFymIY6MDiDzVRR8DxLYcbnslV+sgbOOhdFR1G+UPMAT6PbB/gpBnCEmM11zQ4/HsD48bLHxdpmDnavqJxCzmUMXCpcCwwHHKje43/vus/SIo6Qkl7XlQ7eLI4qhYZCltoIvWA+koizz6N8FDQZNq98htk+7GvRomlnRJKd587s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764757151; c=relaxed/simple;
-	bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MzVrCaPOfJSbHnu5034+sN/igCQpAT0+eqawrc2CmK2pAHRA2QjXw7hUydE514Q7CmplIfKVrvREVZ5mESHganvctY0wvUSStpd4q0tj2K2UR/RW+qDVmiF3IJKZIDMao2imUe8JmnRcJWDHCn1/lUgf8DoAhemIKTQ1oTsaR84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sia1MYIL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764774291; c=relaxed/simple;
+	bh=T8ms1WcQVOIxEyZthB7YUiFTBuQHprL7hEGnbLFBJP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SD4TTsB5xKa0mANDKZ8oK5uuJ+OhNukbxg7nxOSmyV9SkNab1nGahJmAy8jsKv84Id1OEGR6DC+ogJ5o5SE8CjUNnVr9Op5pmgMbc8DLAxN9uNeJ9oG6sWu+IkisKfgTQKC17ULv3uALNjpM0EaRULZ76mT8G6gzPJ8XCDAqMME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Z+Us54k7; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sia1MYIL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25361C113D0;
-	Wed,  3 Dec 2025 10:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764757150;
-	bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sia1MYILwN3OHyU8vJVbFzEbPmh+E9Rkdc13NmENJiNAQwujMzrx7aLJDYQwnRJH2
-	 icv0Cs7+2DiJlUtJrJ3jFjsxz5e5SC+H4b4cDPm/4/s+aTZepyO4AvrHMcRjPs8po7
-	 P0lAluHlqilBXk1Sh/B/XN0TZMdipTL7EolZ0FehsZ8XGO0/aidHMHK8ayQiiiT5TA
-	 U6OOgYna9Ec2DgYD68Hcv9/StfMLZVIApf1YAZumWdYivMJy+S1b4NF19fKc5R60wD
-	 vv/cJLS0nI7ttPeXB8OyKOFM1iSYjxfn/4avfs6o2Xu7czGUpIFQziUIbMv79dw+WM
-	 YExRE41C2xh0g==
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neilb@ownmail.net>,
-	linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-btrfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	codalist@coda.cs.cmu.edu,
-	ecryptfs@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	gfs2@lists.linux.dev,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-mtd@lists.infradead.org,
-	jfs-discussion@lists.sourceforge.net,
-	linux-nfs@vger.kernel.org,
-	linux-nilfs@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev,
-	linux-karma-devel@lists.sourceforge.net,
-	devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	linux-xfs@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Chris Mason <clm@fb.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>,
-	coda@cs.cmu.edu,
-	Tyler Hicks <code@tyhicks.com>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Bob Copeland <me@bobcopeland.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH RESEND v3] vfs: remove the excl argument from the ->create() inode_operation
-Date: Wed,  3 Dec 2025 11:18:32 +0100
-Message-ID: <20251203-sechzehn-lethargisch-cd739d4ff49a@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
-References: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Z+Us54k7"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 2EA3814C2D6;
+	Wed,  3 Dec 2025 16:04:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1764774281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=36FRYFsxMH2qjWK3MdPzV9wfli6X/mz5VG8zURIgZPo=;
+	b=Z+Us54k79XHg6Q79rxHJ8pvOptAqYYXvjWza7nLcZo3jdX6fsKnxFY+vnLmNt5tcGeWYEL
+	DKeOQJBqGF1T2oAl8Ffr1lnCyn567Lavu9Gw36orkwJvhRZnvpDpYl5JqqqFfpaQJYRjHk
+	nt/ArkYSHLvE4z264Un7GFb2I3mb54Rar1+H3JeYGamgm2UU1tMKM/XLLffjmpSo/AIR5/
+	vALOnnxLn5+BV1zgiBthBnLyT1CGHfVLuG0w2cyMmlxHdvjtTa8Z1u4DwfFIToF8GX7Dk7
+	D8XKHjCC39IaKFvcDUNpY2OPkOGwTn6zd5Mn25mjuzfYpTpP4UHXD4Q5uCTnmA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 690ba842;
+	Wed, 3 Dec 2025 15:04:36 +0000 (UTC)
+Date: Thu, 4 Dec 2025 00:04:21 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Eric Sandeen <sandeen@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	eadavis@qq.com, Remi Pommarel <repk@triplefau.lt>
+Subject: Re: [PATCH V3 5/4] 9p: fix cache option printing in v9fs_show_options
+Message-ID: <aTBRdeUvqF4rX778@codewreck.org>
+References: <20251010214222.1347785-1-sandeen@redhat.com>
+ <20251010214222.1347785-5-sandeen@redhat.com>
+ <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
+ <20251202231352.GF1712166@ZenIV>
+ <c1d0a33e-768a-45ee-b870-e84c25b04896@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=brauner@kernel.org; h=from:subject:message-id; bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQa8NXdfyOWEe7C1j7j3H39MtmOfckhfYU3uPbO3GJ5W X9idSdfRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwER6JjEyXElxiNLjXsTcG/zF veHQZtE3X3LuXMnZx/2vIaPja/5RBYb/9Vo7JnHefOS2MX2Dr5zm5id7fnmJz3GXVk7n4Wu5Kpf KBAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c1d0a33e-768a-45ee-b870-e84c25b04896@redhat.com>
 
-On Mon, 01 Dec 2025 08:11:42 -0500, Jeff Layton wrote:
-> With three exceptions, ->create() methods provided by filesystems ignore
-> the "excl" flag.  Those exception are NFS, GFS2 and vboxsf which all also
-> provide ->atomic_open.
+Eric Sandeen wrote on Tue, Dec 02, 2025 at 07:09:42PM -0600:
+> >> -		seq_printf(m, ",cache=%x", v9ses->cache);
+> >> +		seq_printf(m, ",cache=0x%x", v9ses->cache);
+> > 
+> > What's wrong with "cache=%#x"?
 > 
-> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
-> the "excl" argument to the ->create() inode_operation is always set to
-> true in vfs_create(). The ->create() call in lookup_open() sets it
-> according to the O_EXCL open flag, but is never called if the filesystem
-> provides ->atomic_open().
+> Nothing, presumably - I did not know this existed TBH.
 > 
-> [...]
+> (looks like that usage is about 1/10 of 0x%x currently)
 
-Applied to the vfs-6.20.mkdir branch of the vfs/vfs.git tree.
-Patches in the vfs-6.20.mkdir branch should appear in linux-next soon.
+I don't have any preference here, but I've folded in %#x when applying
+because why not -- I've been seeing it slightly more often lately so I
+guess it's the "modern way" of doing this.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+(I got curious and this SPECIAL flag in lib/vsprintf.c has been around
+since at least the first 2.6.12-rc2 git commit, so there's nothing new
+about it and I suspect it'll never quite be popular...)
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.20.mkdir
-
-[1/1] vfs: remove the excl argument from the ->create() inode_operation
-      https://git.kernel.org/vfs/vfs/c/7d91315b4335
+-- 
+Dominique Martinet | Asmadeus
