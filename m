@@ -1,93 +1,70 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A2E313E21
-	for <v9fs@lists.linux.dev>; Fri,  5 Dec 2025 13:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930AE4C97;
+	Sun,  7 Dec 2025 07:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764942559; cv=none; b=mqO2Lhm1jP9Etx9/HMrVA9MGzDHoLwRJlOOFglIkJVO8Z+qa6BwWhPiEmUIkBJI/e0wllKd/9Mabs1GCrOc5y/3DG4iBRAcmkpc7OphFXnN12JtBWuEAWwPd37Kln9alJ6vVFTb23WJAzgcn+YZHJMdBlhhR2lrhIVzkHR1Fj9c=
+	t=1765091892; cv=none; b=V3jW8iuWRcuhcz9dX69ScgQaplVJbGhDVeLY/EMYwTpkl7AC8PqH+WLSEOyoa5jXNOlrpSm8mNyMBj9dV0E3PsNjkoSsVPIBUGkW2k8NZK8eHenMQQd+aXxG4ZZ4SfcdWQl0gXDC/0+EsfwEFDoW3GMWexJ1ysQ7SCB1Mt8VMQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764942559; c=relaxed/simple;
-	bh=V6gTzCSoWu6rTG3TZmh5s3or3M7AG/rXNoj5xQG9Mp0=;
+	s=arc-20240116; t=1765091892; c=relaxed/simple;
+	bh=DAccmFMfzX6rNCXBjl+K+iP0Ga3fG6NQilcf5Z/1OQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MrHPimqlUxw3Qt7qiIpD9AVkZarj5zpNHXy3fQwxG1aInVUqSCPGQHHEt1YSsBHozKFuNW9ZUpSqxD7Xz1UKcYz0KKgu2o1ErqDpYc0zgCo0G5a8k40uMONXNJpTh8RVJaacy7XW5RunO/sSpr7fnvtpXQNXzSfQki2UDfmL7oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=VoCkZx3P; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=P3LrDAd0G+K4xLShlRcePYCzRfg1YQ+SiFnceWQbtj1orETJ0tv1SzpC7REsvVoNEaGZBQqTYcFmJ/tsiDQl1EX2H1hudzVnSs9rmUjMICVJHOIvT2Vn1h8+MPjz+UvCttjWWTilsh5fbOPTo1rRzZOA1VnGLPYNl3Vhr1lVF1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nQkolVUq; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="VoCkZx3P"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D321014C2D6;
-	Fri,  5 Dec 2025 14:49:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1764942554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iJVR4LpcDJc6LNHUdhPlErogMTdnQ3sOZNcg9jmD2ag=;
-	b=VoCkZx3PIZHSRRNxbsWB/psO0/ImApj5dsgUu1Pd1gyp1/NzBsQQrv9939hA3Lg8u0SKBq
-	z4c4zZX9PkdSNiGcl+GQR7I4lFMxDMSEAHA/+68C2wB/RUNMkEldHBZCEt5/aFY6rD4NYx
-	0jQNFPB6bBeAdKLfzQJIzPTkjl0hM8qltguZpY/+PBarxjDsVFX49Db1X03vCayIOUXoXH
-	MtVKwX0EE8QjgCcNPIs9NHtp+1dGuGsqXEVvLexzCU1mA+3/4dui3sv4w9qAQXe7FjoIBy
-	bhr882JbZEg7efgr2OiQntQYYCSynEPz2ZuXx36PaxoCLN5rkRcZ4PKc9Jv+sw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8f6454a6;
-	Fri, 5 Dec 2025 13:49:10 +0000 (UTC)
-Date: Fri, 5 Dec 2025 22:48:55 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nQkolVUq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CpbRA2oq7D72qJWSVvTQlZDv/Lqjzxz1XcpqKhTtug0=; b=nQkolVUqeEg+auocfOygmyEHJ6
+	cPY2I1sL+5YEf2UKx5MQGFloVD9HW3tLVZxwMDyhwAgIkNczchXxLWEGtFKr5vpCPMqYFSrXlMcL3
+	LnUy4xM/MAydPe2TWbjdWpUPPe+YfvEpE24AXBQnjcRN+5NnPohwOvS6xaaSlanAsEEUUTbN9Dlm9
+	+P0tCodwQrFwiepvcIspJI8BJZd9zEnLCHLrA4WMD7uqwLDcqa0VfpcIrwk4+ZPp3mtQWk1N3pSyT
+	Bd34WKmvYBvpuTzX/hTLluKJldXkDyt+cM0mQ2vh3oyUPxzPk4OIV5k+RJ0IiySlIO6CqGQusa+1I
+	yLofWRlQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vS91u-000000088wz-28Kr;
+	Sun, 07 Dec 2025 07:18:02 +0000
+Date: Sun, 7 Dec 2025 07:18:02 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
 	Chris Arges <carges@cloudflare.com>,
 	David Howells <dhowells@redhat.com>, ericvh@kernel.org,
 	lucho@ionkov.net, v9fs@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
 Subject: Re: kernel BUG when mounting large block xfs backed by 9p (folio ref
  count bug)
-Message-ID: <aTLix4bcHo_XDXpf@codewreck.org>
+Message-ID: <aTUqKudyHxilbBpL@casper.infradead.org>
 References: <aSR-C4ahmNRoUV58@861G6M3>
  <5945634.DvuYhMxLoT@weasel>
  <aTLYEF4ZaTwF3tdL@codewreck.org>
  <2245723.irdbgypaU6@weasel>
+ <aTLix4bcHo_XDXpf@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2245723.irdbgypaU6@weasel>
+In-Reply-To: <aTLix4bcHo_XDXpf@codewreck.org>
 
-Christian Schoenebeck wrote on Fri, Dec 05, 2025 at 02:36:41PM +0100:
-> Haven't checked yet, but shouldn't it be like this?
-> 
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index 0b8086f58ad5..5ff4bfe25a3e 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -318,7 +318,7 @@ static int p9_get_mapped_pages(struct virtio_chan *chan,
->         if (!iov_iter_count(data))
->                 return 0;
->  
-> -       if (!iov_iter_is_kvec(data)) {
-> +       if (iov_iter_is_iovec(data)) {
+On Fri, Dec 05, 2025 at 10:48:55PM +0900, Dominique Martinet wrote:
+> Your patch will appear to work (folioq path won't go there so the page
+> won't be pinned), but I'm not sure just being a folio is enough of a
+> guarantee here? for example is a folio coming from page cache
+> (e.g. readahead) guaranteed to be stable while it is being read? Can
+> something (try to) kill that thread while the IO is in progress and
+> reclaim the memory?
 
-Hmm, __iov_iter_get_pages_alloc() is supposed to handle any of these:
-user_backed_iter() (iter_is_ubuf() || iter_is_iovec()),
-iov_iter_is_bvec(),
-iov_iter_is_folioq(),
-iov_iter_is_xarray()
-
-so it would EFAULT on stuff like is_discard() and is_kvec(), but in our
-case (folio) it also depends on what backs the folio, and just the type
-of the iov isn't enough to tell
-
-Your patch will appear to work (folioq path won't go there so the page
-won't be pinned), but I'm not sure just being a folio is enough of a
-guarantee here? for example is a folio coming from page cache
-(e.g. readahead) guaranteed to be stable while it is being read? Can
-something (try to) kill that thread while the IO is in progress and
-reclaim the memory?
-
--- 
-Dominique Martinet | Asmadeus
+In readahead, we allocate a folio, lock it and add it to the page cache.
+We then submit it to the filesystem for read.  It cannot be truncated
+from the page cache until the filesystem unlocks it (generally by calling
+folio_end_read() but some filesystems explicitly call folio_unlock()
+instead).  So you don't need to take an extra reference to it.
