@@ -1,146 +1,99 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster4-host1-snip4-10.eps.apple.com [57.103.69.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAC218DB0D
-	for <v9fs@lists.linux.dev>; Mon,  8 Dec 2025 17:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF52B2777E0
+	for <v9fs@lists.linux.dev>; Mon,  8 Dec 2025 19:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765214486; cv=none; b=rkTUKwJgT4EhH2S67j8FDUX2g9n6yXyDhA379QjhK87UVCW7oEF4bTQlnJTZoyUIr+jczS1rwX82j1oFnLfCh0tdoug4oKtfcEAIfCSzfrTUF6O43mp76hi6I1tJ/j8x20xys9yGFbA5qAiflsUCcXmMrpjnNyWpT1VqWHx/xPw=
+	t=1765223529; cv=none; b=pK9+lQ8/2Rz9vC5RE9AnyOGnm2ZVio0PYPUEG31RvaRbacNsbzE5JCZdekJOQk8F5IHMr0YZjvtw/v8AscK2U6BYpSAWELb8olcfonuEOr42uY4jzjzuYRippA4KrF70BYXwwegWb2WPqH7lj4UJp5dE5/2znn8HfcrK3B0kRQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765214486; c=relaxed/simple;
-	bh=58IBorTfmU4uDxhBSWnSUuJZWpGW4TpbGkMXG7s3Rek=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l7PEGqqKTVL0SSNyHZ9lNMjLetXK/34JYW/5H1atnkIFlakguoKlRMq9dOlgEwUiDU+1rZ5tLAcjeWSbmX1p8F8A8qjmAIXntQQQ0lwZx1GhHBi7elP6k0xGjrtFrpHlT692JHZh5WsSRZHgvOtZJVfyuBuVbj42vyMh9Ko2HGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Hewqdjvu; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1765223529; c=relaxed/simple;
+	bh=W8s8d+IpYsHDQWqqQ7JvWmMvGU/yyn0x5yMIBkiVupc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RabcTXrTtjIMRYz9vuvX9g4P+wsSfblSDmciROa/yltpryhFJo3//bxA3b2UDvSTyT2G7pwZ6O+nTAJpzS1Wivnge8gt89rwwvtX2vR81nN1ZW9MnaM7WnYI8ZTTeBMiGtJK26OlnnPSNip+OhyxQ6V8/vkYJfcmwb+JRCfAAVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space; spf=pass smtp.mailfrom=ariadne.space; dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b=Ir977hqJ; arc=none smtp.client-ip=57.103.69.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariadne.space
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Hewqdjvu"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-3f551ad50d1so557922fac.0
-        for <v9fs@lists.linux.dev>; Mon, 08 Dec 2025 09:21:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1765214484; x=1765819284; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GhPMrWpz1eQdpSXVpfBQ716e8Gxsn6bVq0Q9mSHX8u0=;
-        b=HewqdjvuEJpGNj6w7EBBVYIv+0UJttV9QLiYEgg80dnXiE2upLbi6CF6emRQA1jLkn
-         QNvcKYouu+8FiRBfpxF57Icqp7dkiIOSMO0g1ALWRKMPrbL6lKt93KTEiFnzHm1dnFoj
-         2utGbLJ+oXUpCYAzJ0mtg4daj7jqzoQfhmtqSck2b7TBMHRjPCci8V9ygCThgxCYbSVA
-         l3QmCCGl8RHadSsjoLY/tn7bWPe+Wl/5k6cJ+B/lC6R7ndYMFDMBes5JmwJQco3WD+RP
-         dzhh8AXacefyz7vtZ9wuvut8zqTWip1l7UneT1PWFsSEco5qYvPXSMul3EyFg5ls1iFL
-         16cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765214484; x=1765819284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GhPMrWpz1eQdpSXVpfBQ716e8Gxsn6bVq0Q9mSHX8u0=;
-        b=EgA62rC/LfybAnpfWJHyLlWUPmXDYovWkmMpVwKp+uI80zByHXf6zdHzZI5R0K9d5r
-         Vv6ryvlE2KtsNbZOKOhIpGUSdxwF0Basd2klNcDOInDlYYCcE0WSP3sGEkV6Pkt3wpur
-         X2OqAKmWrGgUlZEshnuSfRuUw1166SlX4gBRngMN/7sX5EWhkvMWVGCVeY95LTCAP0VP
-         YPUBADHmaHpL6ULd3EE2AtVDUn+E/8alaP4CogNSPg31uv4I5fqhCDG7hYQnP56S9cc1
-         SoTfpKRLVZ7QmcF4aVMeAL4IqS1IqaJbH+AzhEfrE3INu9mOmh/W3n1q2lFU1MM5+x7V
-         khUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYE6btCCahjIsHc6JAIwZaq/vOvy42eIHkzmWFSgcOoKRK3nNCNxN46SMlKqJ41IIs4F4W@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxh3AYEoz4m1i5rtH3AEtfx09eJTi+f0Oif9L8CYwYop7lvtT7/
-	yghhRPaxYn09Y8w6tbVgZcNAW8OixU9TKBMPl1hSRiV5L4aJzFvRI8wLWz5fjq59Q7I=
-X-Gm-Gg: ASbGnct8pMsDC3hL5pzbJf/VhjFc+3KMmRyj39VyB7X1+czJZItijOq5gC3cZ40jzeA
-	FkHktjFjsogOr7W1LmdqxK7uWDztWTt1mw7shfDQdAj+Qf21uVHlCCoBct39HmcDJyMgIdgUaf9
-	vyfm6xOOIyX6T34a8ZiKVm5rjBJTlN2yDIyRVxYgvTm1LInbcGpPAzd9nffcwPpdskcvoAG9cbl
-	8ZG5ZrSRK9moeCBmSq8awXc0c6MZ+sClgm0n3V6DySx5FQGD8kEYHCH2wtHhL7xwN8YFOrecqMi
-	0iJ0Eqlzhf6SKoy1fEDLpoQBiWsUWPaoqUaPZsfI0R5GYwhIOfaW1mkDrzWh/gpwBQbn53hI4Za
-	XEUr/2nTX42upGFJ3hW4Z/UwfCSZkKKgvlNFCqcDhF3+ZbrineTai/66Vp+N/lBlzpug0+1Q=
-X-Google-Smtp-Source: AGHT+IECgGHbNEhUfjt57ooHzsGKSD3RZhEl51RBJQ/aq3BU3oY5jPZpKWy80c6MtcCdkgMJ57fipw==
-X-Received: by 2002:a05:6870:c191:b0:3ec:3d84:3c51 with SMTP id 586e51a60fabf-3f544194db0mr2994393fac.49.1765214483639;
-        Mon, 08 Dec 2025 09:21:23 -0800 (PST)
-Received: from 861G6M3 ([2a09:bac1:76a0:540::22d:109])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f50b5ed5a7sm8916428fac.22.2025.12.08.09.21.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 09:21:22 -0800 (PST)
-Date: Mon, 8 Dec 2025 11:21:17 -0600
-From: Chris Arges <carges@cloudflare.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Howells <dhowells@redhat.com>, ericvh@kernel.org,
-	lucho@ionkov.net, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: kernel BUG when mounting large block xfs backed by 9p (folio ref
- count bug)
-Message-ID: <aTcJDS67sks7KoY0@861G6M3>
-References: <aSR-C4ahmNRoUV58@861G6M3>
- <5945634.DvuYhMxLoT@weasel>
- <aTLYEF4ZaTwF3tdL@codewreck.org>
- <2245723.irdbgypaU6@weasel>
- <aTLix4bcHo_XDXpf@codewreck.org>
- <aTUqKudyHxilbBpL@casper.infradead.org>
- <aTWF6xnCe1sSA8gQ@codewreck.org>
+	dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b="Ir977hqJ"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-1 (Postfix) with ESMTPS id B1C3518013A5;
+	Mon,  8 Dec 2025 19:52:03 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariadne.space; s=sig1; bh=DvHhgkq2dJ0sklVse1aa7ik+cqkwTEL9gjApsPpOcPk=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=Ir977hqJXy+lPFMRIZJUBmuyolPNe+HhmMPQZDPQX/VOLSpIOwxl2t5H81O04yy8iANqNwjm56wDLwTXV6g86kDtzzvMfGvCBqFYxZUP8Ra6fCblx8KNbXeor4hDEdZijL7GaOZliIH+T7/FbaCrZSeTdACflFevxgA5NWp/C5fLpdL38YDBr4c0Kz/r+lwnfw4bIB1v5SspHkjekSTVeT7OYUDmkrdN+/NMs/kbgE7OlATsjsmfBw1Mxm5KfBZ+JRaT1BtlSnlZUGuN6IlTGShAafOXyahs2VFMgxTPvuY0iDy6gqoBEazf2McqQJiGM4sd0L6jSluKhF5yVrFHPA==
+mail-alias-created-date: 1688796967087
+Received: from phoebe.taild41b8.ts.net (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-1 (Postfix) with ESMTPSA id 9A3A01800138;
+	Mon,  8 Dec 2025 19:52:02 +0000 (UTC)
+From: Ariadne Conill <ariadne@ariadne.space>
+To: v9fs@lists.linux.dev
+Cc: xen-devel@lists.xenproject.org,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	ericvh@kernel.org,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Alex Zenla <alex@edera.dev>
+Subject: [PATCH] 9p/xen: mark 9p transport device as closing when removing it
+Date: Mon,  8 Dec 2025 11:51:55 -0800
+Message-ID: <20251208195155.27473-1-ariadne@ariadne.space>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTWF6xnCe1sSA8gQ@codewreck.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: EX3QNWAq4p9Q36IVYhk4hN6tDjCVJVgw
+X-Proofpoint-ORIG-GUID: EX3QNWAq4p9Q36IVYhk4hN6tDjCVJVgw
+X-Authority-Info: v=2.4 cv=f69FxeyM c=1 sm=1 tr=0 ts=69372c64 cx=c_apl:c_pps
+ a=9OgfyREA4BUYbbCgc0Y0oA==:117 a=9OgfyREA4BUYbbCgc0Y0oA==:17
+ a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=iox4zFpeAAAA:8 a=VwQbUJbxAAAA:8
+ a=k0M0V4IRsTHp1vcmCjoA:9 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA4MDE2OCBTYWx0ZWRfX5xZ2+rgn0Y/4
+ Qv7tsTi0IKi0zb2IZUVafW6TZF9iFY9745vHH0rxoUZvI5ygfjgeuSlmwmMGR/yPc2bNFVFjfaN
+ TjdKpfdefNGdjBSKQCabjDGhQnWejGiOy9JTO4/B6Nfw249HywEG1W4qLT/tO0nDMTYD1nUHr1C
+ B7Bbc/YNuqReFBKLyoSJSNl402ka8P+ZFIEb0uLu/pqcvOO9/TWpnRlUECRAaqddrX3QEeolmEm
+ A3xn/J03tuNQyYi2NnO2yFX8fH8jyeWd0DHFx0MQ2wCb4E/NTfS3nw18imfVoTYDEqWjh+oTz+C
+ /iWPrTcyIRg+yS+PXcg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0 suspectscore=0 bulkscore=0 spamscore=0 clxscore=1030
+ adultscore=0 mlxscore=0 mlxlogscore=999 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512080168
+X-JNJ: AAAAAAABmt3X/758cjYAQS8mYvsy7oEhS4QHglaBA9kiQvxB0XGgJqzOok1JcvHOGX3vNJSCA9RPAF3s3p7S6EEL/PgZOu8MdVGipaCDUNImHK2A9oXfxB9buA6dwgVIYulZGSnBaK8bLmEsQIjUyNXnTYFNw83wfB53TRrBY8oMwkN07qL4ukyeoLwkwJYWYDcIN5ybEZ9SKbNVPTtN3WYCkT0IpdJMzgG8LkgcAqHAv0Ti3jNG5uHTcCcKwYG5cvbTrXit2atGiwTaqxgPUI9AK0LcKxbY2YPrJVkOI23TF6sXbGphr8F1hcJGbeZe41MYGTxYvZEPPDjxMKURxGETa0QhEKR2psrpY2dSZyqeoYFAPWBNAX13DYo4ObWAikfyJmgnUidCZDpkcemckAkD15jr5OeVUovjHxrRvbr0AYPMGckY2BTr8QWHJfRT7IpVulcQih/sML9gTy/aDmjUwe1vLCxkZt8xe91NHlLm04/81NhExbX7Lf4zc5LBpZhyymwFbgKl64VjVY2f8PaSQ8RBVQExFnUUCgIBqIPXGgqO22btw9QG0E1ZJ1yfV2bjH+3lX+mwcW/gmln8B2VRPYP0wSpa784xeDEcwCq6Bki9bv8te4BOmVFuo70/ZWe8OpI/D9+2EoXbmSiojVUJ2D1ZGc/zk0Khk4xMglfGeFjgwFO0FyC4iEDj0Jak+1EwVts78Z703xQURQm5uBwwuAk0IG/IeajulQ8=
 
-On 2025-12-07 22:49:31, Dominique Martinet wrote:
-> Chris,
-> 
-> I'm not sure why but I can't reproduce with your .config either :/
-> If you can still reproduce this reliably, could you try with the
-> following diff applied (which is basically the same as what Christian
-> suggested a couple of days ago with also ubuf, whatever that is)
-> ------------
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index 10c2dd486438..f7ee1f864b03 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -318,7 +318,7 @@ static int p9_get_mapped_pages(struct virtio_chan *chan,
->  	if (!iov_iter_count(data))
->  		return 0;
->  
-> -	if (!iov_iter_is_kvec(data)) {
-> +	if (user_backed_iter(data)) {
->  		int n;
->  		/*
->  		* We allow only p9_max_pages pinned. We wait for the
-> -----------
-> 
+We need to do this so that we can signal to the other end that the
+device is being removed, so that it will release its claim on the
+underlying memory allocation.  Otherwise releasing the grant-table
+entries is deferred resulting in a kernel oops since the pages have
+already been freed.
 
-Dominique,
-I can still reproduce this easily. If I apply this patch, I no longer get
-the crash. If this patch ends up being applied feel free to add:
-Tested-By: Chris Arges <carges@cloudflare.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Fixes: 71ebd71921e45 ("xen/9pfs: connect to the backend")
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Signed-off-by: Alex Zenla <alex@edera.dev>
+---
+ net/9p/trans_xen.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Happy to test other iterations as well.
---chris
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index b9ff69c7522a..cde283c42dc6 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -312,6 +312,7 @@ static void xen_9pfs_front_remove(struct xenbus_device *dev)
+ {
+ 	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
+ 
++	xenbus_switch_state(dev, XenbusStateClosing);
+ 	dev_set_drvdata(&dev->dev, NULL);
+ 	xen_9pfs_front_free(priv);
+ }
+-- 
+2.52.0
 
-> 
-> 
-> Willy,
-> 
-> Matthew Wilcox wrote on Sun, Dec 07, 2025 at 07:18:02AM +0000:
-> > In readahead, we allocate a folio, lock it and add it to the page cache.
-> > We then submit it to the filesystem for read.  It cannot be truncated
-> > from the page cache until the filesystem unlocks it (generally by calling
-> > folio_end_read() but some filesystems explicitly call folio_unlock()
-> > instead).  So you don't need to take an extra reference to it.
-> 
-> Thanks.
-> 
-> My main problem with this all is that trans_virtio adds the buffers to
-> the virtio virtqueue but does nothing to take it off if
-> wait_event_killable() in virtio_request() gets killed, but looking at it
-> even in the code path that gets a ref the code will happily drop the ref
-> even before the flush is over so I guess there's no reason to actively
-> try to pin kernel pages...
-> 
-> I'd sleep better if there was a way to remove (detach?) the buffer from
-> the virtqueue but I can't see how to do that without breaking something
-> else, so I guess we'll have to live with that behavior unless someone
-> knows better.
-> 
-> -- 
-> Dominique Martinet | Asmadeus
