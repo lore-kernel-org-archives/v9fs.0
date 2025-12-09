@@ -1,414 +1,122 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.pv.icloud.com (p-west1-cluster3-host5-snip4-2.eps.apple.com [57.103.66.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5B11DE2BF
-	for <v9fs@lists.linux.dev>; Tue,  9 Dec 2025 17:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BFC2D46C0
+	for <v9fs@lists.linux.dev>; Tue,  9 Dec 2025 17:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765300357; cv=none; b=NgZqOOoBnrXxP75PBZW32y0zhOrujT6SfDjut+X/vx1pcsw2bnXhEPFXpzH4GWYTDB8K9Fzd6I6MdmNpaLDcNHcVDWTmPgN00JTrNhov42JQBAAHVgc0Vq1hVFyZ5EsgX5Kjoso5YCIodX0f+bFITGE6s6ldmioPvYh0jbQvch8=
+	t=1765300753; cv=none; b=DL82bM7ZtcKk1nKuDLeEm67yx6J71w2WX3qv4W+azmbHCoOmRsueb1IA8j9BQ4M9NmOs0sIKn7PVpAFKEuF5y/9TSVPAi9EgegLAP+QUgDhKmzYQk5ke8ZR9M8ktT2NR7z3cIT7t8JbbAXvmYRi0QFfdJ9At5cTQTpQKXsVoLyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765300357; c=relaxed/simple;
-	bh=IDBMWvSZN8GfWl5pkppEN6oAXo2B4G9uOXbdpYOadWY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hJICD5YX+qh07rOwks9NG8Ab513Em/tAZAT5HNho1ruSe+AnZo4d3Nbf3UcNNpNtNO4uotim2jKU5voHxPh1DB9hhkB0aV+/eX3m7VP7jXaFjB68TyuhpUpRhBwr4U7DKMMmYPcK/sUrtTlLoBbDurQscrK2URKV8RBYxe5qcuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYzBUN9p; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765300753; c=relaxed/simple;
+	bh=LvAYrusHEW/9sNQeQ7RpHxlikTrFooTlN2q4++F/Z7g=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=INjgj1s2VmF/7NKibrb8DipBWsXx2eO8QzhPvrjqwvtHM1k/3koOgxomrhdt+S2Bl+9hPjATM3Enj3pIAnSE31b667teKob2BkwD+4VbKSD/wg+XEH37m7CDZVH5KEn0sWCRaENZZqOlq7wWw0ccJCfRAPsMjhn8JrhDIvly3Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space; spf=pass smtp.mailfrom=ariadne.space; dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b=UL/IbNoE; arc=none smtp.client-ip=57.103.66.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ariadne.space
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariadne.space
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYzBUN9p"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78c35dc5806so30930537b3.1
-        for <v9fs@lists.linux.dev>; Tue, 09 Dec 2025 09:12:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765300354; x=1765905154; darn=lists.linux.dev;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bR53BGNZzHUTnTQW5nozFRmIeq8kQI2i3aRfvd0OLpw=;
-        b=ZYzBUN9pAtRNnGUSIB0dysekbvPPBz7LyUxhutR9U8vw/OC021oX2ak0G5RnHuxrco
-         12IndjGRUJo6PqtlEGy4WPBhIlx58eKLksEe2AU2uR1RqSKls2sKattZPIRex92u07Am
-         qCX/x2kzBBVkp9nZmfncon1WzrSueWGfzG8BrJmBTpNwzeG7r9X8CvyIQylq1pm0t6nc
-         9eRdu8g/BsxyppLnL7zICAzONoUlqsQMDohU2T2I3bZDdqDSR493Lr/HeSB8oOli0ibb
-         /KJa4LRxb/iLzaptBMmeaKKLE9iy6BFFn48+zK+TMTJwk3aryX5OVkO14ih5eRvjMSqV
-         6/vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765300354; x=1765905154;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bR53BGNZzHUTnTQW5nozFRmIeq8kQI2i3aRfvd0OLpw=;
-        b=tQKOYS4VP6iPSNyumvytLPywKPm8v98KAMhGdot6WsaIi/KgT+h0dJ0EWTlc/um/Ig
-         lSTtV+IdKUHH2xYKKwWcug5VFVBLOZu0TGomUlmmUZUDddbisSKDtu5BxB+eWO6ECNzi
-         jsufmm8hhSrEDUZDnFnd7gZtQlpTPSZkUXLp8BgMnajzp7/DJjwcoAED//z3n12nUcvR
-         GsNeS05sGlAEpf/iBR8WPGPzGj4mwSG3mWQtfwZxpQVbb6D2Z755xKXZ1KsR92fFbsLZ
-         x++roZYZnemR3oE5kHYcRLxCMl3Tg+kAG6noch0ia8IpV4mZ1gjGRPJDxs52syeT9vOf
-         y9ug==
-X-Gm-Message-State: AOJu0Yw2AnIPmiE6iNTb+T4pKKY06FH9/bBNJtA6wI1IYgc/HqXwJfpJ
-	Y3xTPCeFWS3BpXAvJQbYn3Y4DQNMqzGBch4HJHBRnnifqOXAKBOPjErN
-X-Gm-Gg: AY/fxX5JGiRQHi81nag7XuKs3u9Eaq2EDrRZn62d9AhKW0x7eVEm1+1NvNTO02r9Z+I
-	S3iqoSES0W1yt96tHSI3vFFt56pIdIhyQgQc0Xas9M5ulev6HU5N/f9nK7adEh+GzLdZIqcjb6J
-	mg0+nkbMuZsp635C2NLHk51GHp5xhZPf2rDT53CsXOkG4MabPZAcds7QHB3MfkKRJ+c4S5aEIyi
-	7l0RpsCc9qqD+FEHq3OTz+iaFUcvvwqUAOOuqW/jsnUxZYUoPTSP+r+2+nfO4lGJ+PijoNVrTqM
-	jzivWmL5vcfZN4OnLkaA9yX4Se8BPkMJ2ny9weqYkws7BFKWLacgYUWBTxTz8TLxOiSkLs+EZe9
-	Hl7duAHZKlZ+BPjmSMKb9Sx4LIvLNpZPMj+zFRgR22ccPP8JMQVztBjxOXlBb4jo8aWUoq8OOVY
-	EFFbCCkc5AlOqBfPi30qU5X+RS/7CYeMJ3Lf/cEmbPcAQ/sF0NpKTb79PHV6H1L5qHlv/A5Czz4
-	nKaxesuDg1j5sQPWSoTga7HZPA=
-X-Google-Smtp-Source: AGHT+IEQJW/h4JG5l9YirDjjucXpfMIAOSp6ZFiWcOUmbVqVs0KWAXEYQPEd2kg7QjEDdhzzr3nkbQ==
-X-Received: by 2002:a05:690e:118b:b0:63f:b4ee:792c with SMTP id 956f58d0204a3-6444e762773mr11373459d50.19.1765300354021;
-        Tue, 09 Dec 2025 09:12:34 -0800 (PST)
-Received: from [10.138.34.110] (h96-60-249-169.cncrtn.broadband.dynamic.tds.net. [96.60.249.169])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b779237sm61338637b3.30.2025.12.09.09.12.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Dec 2025 09:12:33 -0800 (PST)
-Message-ID: <efbab440-cb84-4900-989c-43d0d69b60f2@gmail.com>
-Date: Tue, 9 Dec 2025 12:12:25 -0500
+	dkim=pass (2048-bit key) header.d=ariadne.space header.i=@ariadne.space header.b="UL/IbNoE"
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-3 (Postfix) with ESMTPS id F2BEF18000BE;
+	Tue,  9 Dec 2025 17:19:06 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariadne.space; s=sig1; bh=RNErpzZbcTJeDU6TKVZ8PzZlmV6CMi2ciqMc2TRk1Gk=; h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To:x-icloud-hme; b=UL/IbNoEwoD/QRO9D+725yIjAOhWYncYJPAXjiXvqUr2Q86b1lon+xbs13GKpSatkjdH0CpF+8ws44oxIAkwf1rcet5zU0dkPVLvaULmJQnENb/dMH/lY7ZwRUgeh3RGSYr8xf64m4shGjho4H+I8QrCRhllaXVi51kNBl/uIPgHleEcmmh9wEvnfDAY/o26kzmcWJKntmJHr5UnbhcVzhm1TpjCszm2xmtRtDyOV2zTUGXJycJ/MrpSo3ud1J8tAqA56Nqc5rKZyRl2satBPeLhCt/xRNw5Z7n9ExiOC3Bfm1VwgH9WXqcNJ+R7+sYiHs/GCLeHY5e1mDP8fWwP3g==
+mail-alias-created-date: 1688796967087
+Received: from smtpclient.apple (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-3 (Postfix) with ESMTPSA id EB4C718000BB;
+	Tue,  9 Dec 2025 17:19:05 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Ariadne Conill <ariadne@ariadne.space>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] 9p/xen: mark 9p transport device as closing when removing
- it
-To: Ariadne Conill <ariadne@ariadne.space>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] 9p/xen: mark 9p transport device as closing when removing it
+Date: Tue, 9 Dec 2025 09:18:55 -0800
+Message-Id: <AF8229BC-39BC-4857-AD06-1AB2E8748459@ariadne.space>
+References: <efbab440-cb84-4900-989c-43d0d69b60f2@gmail.com>
 Cc: v9fs@lists.linux.dev, xen-devel@lists.xenproject.org,
  asmadeus@codewreck.org, linux_oss@crudebyte.com, lucho@ionkov.net,
  ericvh@kernel.org, Juergen Gross <jgross@suse.com>,
  Stefano Stabellini <sstabellini@kernel.org>, Alex Zenla <alex@edera.dev>
-References: <409cccec-15dd-4e80-ba56-f0bba12772cb@gmail.com>
- <BD7157CB-3064-4194-ABD9-8A4D9F57E908@ariadne.space>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- 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
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <BD7157CB-3064-4194-ABD9-8A4D9F57E908@ariadne.space>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------4Oy6bLrQsc0ZiVACdVm37hWU"
+In-Reply-To: <efbab440-cb84-4900-989c-43d0d69b60f2@gmail.com>
+To: Demi Marie Obenour <demiobenour@gmail.com>
+X-Mailer: iPhone Mail (23B85)
+X-Authority-Info: v=2.4 cv=Zqfg6t7G c=1 sm=1 tr=0 ts=69385a0c cx=c_apl:c_pps
+ a=azHRBMxVc17uSn+fyuI/eg==:117 a=azHRBMxVc17uSn+fyuI/eg==:17
+ a=IkcTkHD0fZMA:10 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=eRcs-64NSlAV9zilaZwA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 7r_hZ7o3_Pm27eEs0aWveTRU2jd3sglZ
+X-Proofpoint-ORIG-GUID: 7r_hZ7o3_Pm27eEs0aWveTRU2jd3sglZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDEzMSBTYWx0ZWRfX9sVDiqgz8GJj
+ hDpVAyhUCmHWNGTK4gMLhKwcbe8afPMZ4IbcBzustWCDhupJhf9B4KCY2QHNWfuSAFo37dlIYQr
+ Uo2ueOAVLj5EuwM3Ky4uad5WK6sGeh89N3QCmBMkSkmI0y/omVlpr8xJmz4LJ/oBBz3oCcuurjF
+ ht3XgdItbXqPGDX52dRJ59o0+Hm78EdCfjDh7oe4sgAntYB7dP+vdLGqOwVs6dt7uyS//cXFM02
+ 8CmLyEEplI/BvLsKdJEYaefjYzSHcQwqZAf/sEU0racMvxhpU4PHr/IyPjmLeJq4b65AODiU6Ax
+ 2sGtB06vMscJwPPXCF0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-09_04,2025-12-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxscore=0 mlxlogscore=999 clxscore=1030 malwarescore=0 phishscore=0
+ adultscore=0 suspectscore=0 spamscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512090131
+X-JNJ: AAAAAAABsFSdo+CoX8eF5pXh3rEpRXRMwQt0kJOVpLOpVXfRBU3ydhGou0ayG7Gi8jnDNoVfhJLVS7TdKSyyCDtY7cpIkbp+IxTULZqSowgUV7WYGDsSeulFdzR/Cvs43OBIteTraNI68j1jT97cvC+sIGx+QGyRGi3CiMqeSA0Yp+sseufh4DFemSb4yHkL/otYIyfm80duGdPXFf0eCMKrpmQNESR1AUvpXxsCrHXwwZw56r8ggycEZFX3Z4Th54ofXQlG6T7ANVh15YPEP4Q+H+vNZWtVF8z7QCKdSTkn25fY0IkFQSYU33oWx0d52FkARbDXiRtNNgpHnd5zQ2cO70xGdY5g3QofVLbralHR24VYJmrAwwS//DdX2PntqdyozP4+BCGRBatNuNDguq9n019PJlPireu7cMEywIQIquS92GJqGDO3an5LoQpvGccruTzJQkPxmr8rYMppEF4GlPVrGwVQUOMFrbvJDUOVlFh7nkgxLz56Znrhqx/WCJSOavbAECq7gYgatcizALqaMC9FiTKbhIWAokbkSto1MkciTK+LUD1udOYKhVRDg7CSPqaaMTlrT+RuqSRDqf8QpH9OIogY/lYz7sUM4ekLgI3FQ8cmJTyo93XTuqy11EAgfOXc7rbV1DMoEGnavlctuCE4tvbieWC/xCcvyaxtfacnKphW2dxHFt4hnVtgg7caxFEchJ1JaOl/XejDvBa8wqx+Br7YSHieMng5Qd+9qvYWFVCi7xc=
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------4Oy6bLrQsc0ZiVACdVm37hWU
-Content-Type: multipart/mixed; boundary="------------h4qYrSNSXRM44ROuXTpYWvww";
- protected-headers="v1"
-Message-ID: <efbab440-cb84-4900-989c-43d0d69b60f2@gmail.com>
-Date: Tue, 9 Dec 2025 12:12:25 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] 9p/xen: mark 9p transport device as closing when removing
- it
-To: Ariadne Conill <ariadne@ariadne.space>
-Cc: v9fs@lists.linux.dev, xen-devel@lists.xenproject.org,
- asmadeus@codewreck.org, linux_oss@crudebyte.com, lucho@ionkov.net,
- ericvh@kernel.org, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Alex Zenla <alex@edera.dev>
-References: <409cccec-15dd-4e80-ba56-f0bba12772cb@gmail.com>
- <BD7157CB-3064-4194-ABD9-8A4D9F57E908@ariadne.space>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- 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
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <BD7157CB-3064-4194-ABD9-8A4D9F57E908@ariadne.space>
-Autocrypt-Gossip: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+Hello,
 
---------------h4qYrSNSXRM44ROuXTpYWvww
-Content-Type: multipart/mixed; boundary="------------q0p5AUHbSgkaDRQYrkyoICHh"
-
---------------q0p5AUHbSgkaDRQYrkyoICHh
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On 12/9/25 12:09, Ariadne Conill wrote:
-> Hello,
+> On Dec 9, 2025, at 9:12=E2=80=AFAM, Demi Marie Obenour <demiobenour@gmail.=
+com> wrote:
 >=20
->> On Dec 9, 2025, at 2:43=E2=80=AFAM, Demi Marie Obenour <demiobenour@gm=
-ail.com> wrote:
->>
->> =EF=BB=BFOn 12/8/25 14:51, Ariadne Conill wrote:
->>> We need to do this so that we can signal to the other end that the
->>> device is being removed, so that it will release its claim on the
->>> underlying memory allocation.  Otherwise releasing the grant-table
->>> entries is deferred resulting in a kernel oops since the pages have
->>> already been freed.
->>
->> I don't think this is sufficient.  The backend can simply refuse
->> to release the grants.  The frontend needs to ensure that the pages
->> are not freed until the grant table entries are freed.  Right now,
->> the backend can cause a use-after-free in the frontend, and my
->> understanding of the Xen Project's security policy is that this is
->> a security vulnerability in the frontend code.
->>
->> My instinct is that the core Xen code should take a reference on
->> each page before granting it to another domain, and not release that
->> reference until the pages are no longer granted.  This should prevent
->> any use-after-free problems if I understand Linux core MM correctly.
+> =EF=BB=BFOn 12/9/25 12:09, Ariadne Conill wrote:
+>> Hello,
+>>=20
+>>>> On Dec 9, 2025, at 2:43=E2=80=AFAM, Demi Marie Obenour <demiobenour@gma=
+il.com> wrote:
+>>>=20
+>>> =EF=BB=BFOn 12/8/25 14:51, Ariadne Conill wrote:
+>>>> We need to do this so that we can signal to the other end that the
+>>>> device is being removed, so that it will release its claim on the
+>>>> underlying memory allocation.  Otherwise releasing the grant-table
+>>>> entries is deferred resulting in a kernel oops since the pages have
+>>>> already been freed.
+>>>=20
+>>> I don't think this is sufficient.  The backend can simply refuse
+>>> to release the grants.  The frontend needs to ensure that the pages
+>>> are not freed until the grant table entries are freed.  Right now,
+>>> the backend can cause a use-after-free in the frontend, and my
+>>> understanding of the Xen Project's security policy is that this is
+>>> a security vulnerability in the frontend code.
+>>>=20
+>>> My instinct is that the core Xen code should take a reference on
+>>> each page before granting it to another domain, and not release that
+>>> reference until the pages are no longer granted.  This should prevent
+>>> any use-after-free problems if I understand Linux core MM correctly.
+>>=20
+>> Yes, there are other issues in the 9p transport that are likely in play h=
+ere.  In our internal testing, we confirm this is not a full fix for hotplug=
+ging 9p transport devices, but no such claim of a complete fix has been made=
+ here or in the Matrix thread.
+>>=20
+>> However, this is one defect that is contributing to the overall hotpluggi=
+ng problem and should be merged regardless: if the driver isn=E2=80=99t tell=
+ing the other side to disconnect, the other side will never release the gran=
+ts to begin with.
+>>=20
+>> Ariadne
 >=20
-> Yes, there are other issues in the 9p transport that are likely in play=
- here.  In our internal testing, we confirm this is not a full fix for ho=
-tplugging 9p transport devices, but no such claim of a complete fix has b=
-een made here or in the Matrix thread.
+> I definitely agree that this should be merged!
 >=20
-> However, this is one defect that is contributing to the overall hotplug=
-ging problem and should be merged regardless: if the driver isn=E2=80=99t=
- telling the other side to disconnect, the other side will never release =
-the grants to begin with.
->=20
-> Ariadne
+> Is this code-path triggerable by the backend at will, or only during
+> teardown by the toolstack?
 
-I definitely agree that this should be merged!
+In practice it only happens when the toolstack tears down a 9p transport.
 
-Is this code-path triggerable by the backend at will, or only during
-teardown by the toolstack?
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
---------------q0p5AUHbSgkaDRQYrkyoICHh
-Content-Type: application/pgp-keys; name="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+In theory it can happen in any situation where the backend decides to tear d=
+own the transport, which may or may not actually be mediated by the toolstac=
+k.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49y
-B+l2nipdaq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYf
-bWpr/si88QKgyGSVZ7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/
-UorR+FaSuVwT7rqzGrTlscnTDlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7M
-MPCJwI8JpPlBedRpe9tfVyfu3euTPLPxwcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9H
-zx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR6h3nBc3eyuZ+q62HS1pJ5EvU
-T1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl5FMWo8TCniHynNXs
-BtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2Bkg1b//r
-6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
-9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nS
-m9BBff0Nm0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQAB
-zTxEZW1pIE9iZW5vdXIgKElUTCBFbWFpbCBLZXkpIDxhdGhlbmFAaW52aXNpYmxl
-dGhpbmdzbGFiLmNvbT7CwY4EEwEIADgWIQR2h02fEza6IlkHHHGyiLVf/5wiwQUC
-X6YJvQIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRCyiLVf/5wiwWRhD/0Y
-R+YYC5Kduv/2LBgQJIygMsFiRHbR4+tWXuTFqgrxxFSlMktZ6gQrQCWe38WnOXkB
-oY6n/5lSJdfnuGd2UagZ/9dkaGMUkqt+5WshLFly4BnP7pSsWReKgMP7etRTwn3S
-zk1OwFx2lzY1EnnconPLfPBc6rWG2moA6l0WX+3WNR1B1ndqpl2hPSjT2jUCBWDV
-rGOUSX7r5f1WgtBeNYnEXPBCUUM51pFGESmfHIXQrqFDA7nBNiIVFDJTmQzuEqIy
-Jl67pKNgooij5mKzRhFKHfjLRAH4mmWZlB9UjDStAfFBAoDFHwd1HL5VQCNQdqEc
-/9lZDApqWuCPadZN+pGouqLysesIYsNxUhJ7dtWOWHl0vs7/3qkWmWun/2uOJMQh
-ra2u8nA9g91FbOobWqjrDd6x3ZJoGQf4zLqjmn/P514gb697788e573WN/MpQ5XI
-Fl7aM2d6/GJiq6LC9T2gSUW4rbPBiqOCeiUx7Kd/sVm41p9TOA7fEG4bYddCfDsN
-xaQJH6VRK3NOuBUGeL+iQEVF5Xs6Yp+U+jwvv2M5Lel3EqAYo5xXTx4ls0xaxDCu
-fudcAh8CMMqx3fguSb7Mi31WlnZpk0fDuWQVNKyDP7lYpwc4nCCGNKCj622ZSocH
-AcQmX28L8pJdLYacv9pU3jPy4fHcQYvmTavTqowGnM08RGVtaSBNYXJpZSBPYmVu
-b3VyIChsb3ZlciBvZiBjb2RpbmcpIDxkZW1pb2Jlbm91ckBnbWFpbC5jb20+wsF4
-BBMBAgAiBQJafgNKAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRCyiLVf
-/5wiwYa/EACv8a2+MMou9cSCNoZBQaU+fTmyzft9hUE+0d5W2UY1RY3OsjFIzm9R
-/4SVccfsqOYLEo+S0vQMIIIqFEq3FCpXXwPzyimotps05VA8U3Bd7yseojFygOgK
-sAMOAee2RCaDDOnoJue01dfZMzzHPO/TVdp3OvnpWipfv5G1Xg96rwbhMLE3tg6N
-xwAHa31Bv4/Xq8CJOoIWvx6fcmZQpz01/lSvsYn0KrfEbTKkuUf0vM9JrCTCP2oz
-VNN5BYzqaq2M4r+jmSyeXLim922VOWqGkUEQ85BSEemqrRS06IU6NtEMsF8EWt/b
-hWjk/9GDKTcnpdJHTrMxTspExBiNrvpI2t+YPU5B/dJJAUxvmhFrbSIbdB8umBZs
-I3AMYrEmpAbh5x7jEjoskUC7uN3o9vpg1oCLS2ePDLtAtyBtbHnkA4xGD7ar8mem
-xpH9lY/i+sC6CyyIUWcUDnnagKyJP0m9ks0GLsTeOCA0bft2XA6rD6aaCnMUsndT
-ctrab42CV5XypjmC4U1rPJ8JQJUh1/3P48/8sMH+3krxpJ06KNWNFaUbaMTGiltZ
-7x9DngklSYrX0T+2G4kVXNmjaljwkoLahwLla2gUWwBSyofXdqyhQdwZsp01KXNQ
-UCyT/Pg+aDcm/E7OMV3d4lf7g/CSxiX2GSEe6BlhSz+Lmd7ZJ3g32M1ARGVtaSBN
-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
-EtJuZYM5blWncBOJCoWMnBEcTEo/viU3GgcVRw=3D=3D
-=3Dx94R
------END PGP PUBLIC KEY BLOCK-----
-
---------------q0p5AUHbSgkaDRQYrkyoICHh--
-
---------------h4qYrSNSXRM44ROuXTpYWvww--
-
---------------4Oy6bLrQsc0ZiVACdVm37hWU
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmk4WHwACgkQszaHOrMp
-8lO2Rg//b0DgOxe0XZDZWA9ZpNP9VOdnUfH/8xXvOFGeDdzxioV6y08IW/8/nAvz
-fkaBcOnwZ/hqgcKsqKInfA2z3YnNKl5JXr7MsBmtlusU08CzDoSSdkO0tc7/leR9
-FJ+w0Xz2JTcbOgwN+TgcLTGKvMNOBnJEixDG9jqcKtcAJKVZ8JNjOA0mCHwx9uS/
-LLnOxfqzw7+wpAeyOSfjkfrr/+kEoGPG6mgKnYVHHBUr1qDaW5Mtw+3lXe/Vhn5O
-Wn+alafh2XNXzj45SVVV/eahem8QNWrMgtygQI3BLgKaPpE9x2b7HuHEcjtz+rJZ
-/On2KWj7LhB/9hyeT1VGjLppkhzMraGwkcJdDivW9tvRwGSAtzXFRL/77/pQ8o6f
-Cu3SRj1aCLNXnTDrGSh8y5q+9qGfeo+jzzWg6Ax8AYBzv+vX3NOnQzhGRgSAjobo
-vzq3RvWponKn9a50FMHbWKuwO3N+Wq0t6tTmx7bfI6Tc1JNlySXKjj0Ay29ZllGn
-RBkibL2cMYERJLRdA34p1dpm41B0f9pkrIAE0i0H8wq1cRKtHoSEiJwpxz7WI7oe
-f3XXfrnT/F3k2v+dcchM39Xuy/JTj9+DjwT/kCK/Ujc0WWLrZJd2KtUlt8yKY/T4
-zhmjbpEvNKyCL9XJBlAPfXFXvIAzGZzGHWt8EoAByj1ZMtQgwvM=
-=J7Td
------END PGP SIGNATURE-----
-
---------------4Oy6bLrQsc0ZiVACdVm37hWU--
+Ariadne=
