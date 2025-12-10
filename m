@@ -1,145 +1,82 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A8D1A4F3C;
-	Wed, 10 Dec 2025 08:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9804645948;
+	Wed, 10 Dec 2025 13:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765355568; cv=none; b=Ps8fVTiOd/b8ShFvuk4Clzk+Yp7MWZNvQvibR8zw4k/ZA+0CmoN8ZblMNaG7KHTaD44gx8N3TQrRDm2bmSuLmtLHur+gTpA0q0JbNzygslsTF4Zld20b4ignSrNHOiqiWJmjhANG/ueUIdliuqKoXtWjBIxGS3amgLEeWtcYzP8=
+	t=1765373656; cv=none; b=Fm6ckSZVSRLjZtvQtaU/Sc2nkDY7rFsuchQiTJ/Z7toqcH34lFOQPaZi9fdKYAQn40kTWmCXqFdVF37FZ/Jvk2ML9vbtCsFZt/T3n+kVSFyWTUBkbE68/nw8u6lnmUfid0V6NiKxF+dKUimSnihIUkc7Vb3vY1JZ4vWvWzXuM20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765355568; c=relaxed/simple;
-	bh=RTaTVeMg04YHaQOjbX9jJFyj4G8vBIspppLffXBVHms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gII2g5M8CHDldMeJbIONzY3wzL1uIlKYvPE6057RjZxAoie8Tj+b1QcPuVQUq6DRuZ7jO8yAcBh/lC6YXcURXCKbJu6oqQBb1wkwPV85cOGxx9rMB4kjTvlBrlgmk41BVSrTSLD0j1zgNiXmh9QUbFtThPPKenjdtR1VxRqKscI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GpZ40KU2; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1765373656; c=relaxed/simple;
+	bh=9In1NsxkWtLDv8pCbfUEj22suatG6WoAPTQDneAYSyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dKmjs/TzKFhZTuxa8QLvnPyDQT+8yK44qbqxoU/O8vsF1EL2h3aE/6K1rgsMcqSRsbeP2FCNjR6tv7/TjY9M/brRU8hiSsDxfLwn8TiCupgpJijWTszPuRIxPCoQFnsayfeZeoOWXl2g3AUkXXRS2z/rDNI0aMOZFtjHQOTKzpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=YGs52B8O; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GpZ40KU2"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="YGs52B8O"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=wEvQcURYapAuWTIomIIzYbWrtAigaNvRekpwUAiJGZM=; b=GpZ40KU2WrUfIhGFZagHFzAGUW
-	Y4uWT4ZP7gJMOd7EP/g/ZQ3XvX1dS8GdpnRbtlVQNBPrTjnt5vEuk34oy0t9mqs0cVFNj0OsXGVAc
-	33n0c7xB/8fdxzrlky8/Py3lZjzgXiNhya3acF/149fs0zE1HHuzSxEXA3tVkCcBbu3PgYIUiINBQ
-	IV+TqWYoZVpxpIOAkeTgqc+ixdwmIZcqErL2o6wc899peMmnnn1pziiupQ+c5Z6BCAjZBBkbf3XOc
-	uGGH2GhGkpuVEbq77pNtjJ1+lDD2O0Dm5vVoCsPPzGYE8A223MfhpesBGHYsY+KsqPMz5xJfgXj0q
-	e9ndppww==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTFcn-0000000FFWW-3MT2;
-	Wed, 10 Dec 2025 08:32:41 +0000
-Date: Wed, 10 Dec 2025 00:32:41 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: asmadeus@codewreck.org
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org,
-	Chris Arges <carges@cloudflare.com>
-Subject: Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter()
- iovec
-Message-ID: <aTkwKbnXvUZs4UU9@infradead.org>
-References: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=z4rVeB5KmFkVF4IbrkNZFDmV4plSREzVqZi6Tlz/vg8=; b=YGs52B8OHsW81numTFHU9CjSDV
+	AdfGeQ/ZQTpJxiG9wonOez26enUqmRrBUdSFpeZIB84N6kEkX9fxuHfVbZ/p2uXBL6STo1bmwtvVJ
+	o0L1sJqVu7xAd3ZXBExjKRHSvo7Vh3K8t8JJ3hUgETzZJVhQyKwi5bDwek31PDG922WYwipfF/0xy
+	hiQpuIXzw/vtn3W6U5to5KSc+RJSJ2xovbuIa7MDRQIkNpt/J7kKhQYkEna0MgWXP3Y0ZSNqx6iMI
+	HvvuCKgtlj51x6mkfrCZFMmnhZ1X1MFgPaAh+vjbBQQyp/i+RlD2PzFiD7oGdelid9pR+MuH8fcom
+	TEemcehtk2M0ybKGBpGErftHxOqJ/1LKYWLN1iLNe672oNuHTLjdgYAe0xQpcLsyewtFStIG3nc2T
+	3o+v4tavhNwPc5PyRaGI00drCngnRPR+Jvl1v77DwXjri397fDBxd5T7vsFEdpghsEfA3oVFOlWri
+	Blxk5iCXxV1fpdLNLHlSKDQfrSxC5Nfe61oyXLFNAIac8KPfClR5MzfO0MxLUPxH6LN59h0wvh5hH
+	DLY2jAhASzLjRzLg6HEo7dD4F2gFc6K1ZEj1HQu6JpLAmVenAwUd7tHKjBQ37z4H/BJjdObOZWHlt
+	Q8zLduVAoYOnmp1gsStNAK5QBnvAAuWX0vhAHiH9E=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: asmadeus@codewreck.org, Christoph Hellwig <hch@infradead.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org,
+ Chris Arges <carges@cloudflare.com>
+Subject:
+ Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter() iovec
+Date: Wed, 10 Dec 2025 14:33:56 +0100
+Message-ID: <3385064.aeNJFYEL58@weasel>
+In-Reply-To: <aTkNbptI5stvpBPn@infradead.org>
+References:
+ <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
  <aTkNbptI5stvpBPn@infradead.org>
- <aTkjWsOyDzXq_bLv@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aTkjWsOyDzXq_bLv@codewreck.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Dec 10, 2025 at 04:38:02PM +0900, asmadeus@codewreck.org wrote:
-> Christoph Hellwig wrote on Tue, Dec 09, 2025 at 10:04:30PM -0800:
-> > On Wed, Dec 10, 2025 at 06:04:23AM +0900, Dominique Martinet via B4 Relay wrote:
-> > > From: Dominique Martinet <asmadeus@codewreck.org>
-> > > 
-> > > When doing a loop mount of a filesystem over 9p, read requests can come
-> > > from unexpected places and blow up as reported by Chris Arges with this
-> > > reproducer:
-> > > ```
-> > > dd if=/dev/zero of=./xfs.img bs=1M count=300
-> > > yes | mkfs.xfs -b size=8192 ./xfs.img
-> > > rm -rf ./mount && mkdir -p ./mount
-> > > mount -o loop ./xfs.img ./mount
-> > 
-> > We should really wire this up to xfstests so that all file systems
-> > see the pattern of kmalloc allocations passed into the block layer
-> > and then on to the direct I/O code.
+On Wednesday, 10 December 2025 07:04:30 CET Christoph Hellwig wrote:
+> On Wed, Dec 10, 2025 at 06:04:23AM +0900, Dominique Martinet via B4 Relay
+> wrote:
+[...]
+> > The problem is that iov_iter_get_pages_alloc2() apparently cannot be
+> > called on folios (as illustrated by the backtrace below), so limit what
+> > iov we can pin from !iov_iter_is_kvec() to user_backed_iter()
 > 
-> Note this doesn't seem to reproduce on my test VM so I'm not sure what
-> kind of precondition there is to going through this code...
-
-In general the best way to get XFS issue kmalloc I/O is to use a
-file system sector size smaller than the page size, і.e. something
-like:
-
-   mkfs.xfs -s 512 -b 4096 -f
-
-The above would do that job when run on a large page size system
-like typical arm64 configs.
-
-> > And 9p (just like NFS) really needs to switch away from
-> > iov_iter_get_pages_alloc2 to iov_iter_extract_pages, which handles not
-> > just this perfectly fine but also fixes various other issues.
+> As willy pointed out this is a kmalloc.
 > 
-> Ok, so we can remove the special branch for kvec and just extract pages
-> with this.
-
-Yes.
-
-> I understand it pins user spaces pages, so there's no risk of it moving
-> under us during the IO, and there's nothing else we need to do about it?
-
-Yes, unlike iov_iter_get_pages_alloc2 which gets a reference and doesn't
-pin.
-
-> Looking at the implementation for iov_iter_extract_bvec_pages() it looks
-> like it might not process all the way to the end, so we need to loop on
-> calling iov_iter_extract_pages()? (I see networking code looping on
-> "while (iter->count > 0)")
-
-Yes.
-
-> I'll send a v2 with that when I can
-
-You looked into this already, but in case you haven't seen it yet,
-don't forget to call unpin_user_folio on the completion side as well.
-
-> While I have your attention, there's some work to move away from large
-> (>1MB) kmalloc() in the non-zerocopy case into kvmalloc() that might not
-> be contiguous (see commit e21d451a82f3 ("9p: Use kvmalloc for message
-> buffers on supported transports") that basically only did that for
-> trans_fd), there's no iov_iter involved so it's off topic but how would
-> one get around "extracting pages" out of that?
-
-vmalloc and I/O is in general problematic, because you need special
-calls to flush the cached for VIVT caches:
-flush_kernel_vmap_range / invalidate_kernel_vmap_range.
-
-If you want to stuff that into an iov_iter, the only sane way is to
-call vmalloc_to_page and build a bvec iter from that at the moment.
-You also need to do the flush_kernel_vmap_range /
-invalidate_kernel_vmap_range in the caller for it.
-
-
+> And 9p (just like NFS) really needs to switch away from
+> iov_iter_get_pages_alloc2 to iov_iter_extract_pages, which handles not
+> just this perfectly fine but also fixes various other issues.
 > 
-> > Note that the networking code still wants special treatment for kmalloc
-> > pages, so you might have more work there.
-> 
-> I *think* we're fine on this end, as it's just passing the buffers into
-> a sg list for virtio, as long as things don't move under the caller I
-> assume they don't care...
+> Note that the networking code still wants special treatment for kmalloc
+> pages, so you might have more work there.
 
-Ok, if your backend is virtio that's fine.  If it's actual 9p over the
-network you might still into issues, though.
+But couldn't this patch be used as a preliminary solution for this issue 
+before switching to iov_iter_extract_pages(), as the latter does not look like 
+a trivial change?
+
+Maybe I'm still missing something important here, not sure.
+
+/Christian
+
 
