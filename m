@@ -1,63 +1,67 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBC433032F;
-	Mon, 15 Dec 2025 11:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFAE3B8D5E;
+	Mon, 15 Dec 2025 14:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765797384; cv=none; b=l/rfnaFkSwHXwbYaL+S3usz04kIFw58lbkmz6/1vdWES2BBv9NYBAsQihVd572EZFyOZOCrdUbOE9ShQk//qYu7ocb4d996dOaNHrKf3Ei2AOm5KcKd0MekM1qIyGUOIrZ16owDgKDbvCVaJ4z9l0BgYc06IoXMoqaOGYtgRh54=
+	t=1765809456; cv=none; b=ogBqk1p0S1GfzaY/tuglUEYDh9OXUZuKlXakQ01k3sDhyZI5BCx9/rU+KjJYUifZJSS15JRFYxx4ZZMXTd4wWALKtmEkw0GTeciW4/QzbhFipqQiW6yBfecIw0nMuitVNYG/9hktztfUrTyXKSfgVGGRAOk/uHNyqmET/YGDRCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765797384; c=relaxed/simple;
-	bh=EuSiIuyRALw+TdcF14QddpLJOwbNYrv2UImUyp6ZNh0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUH2nd15MpHUu54Pxk2VUv1EIakQCPmpoR6yT39NRcqqqPX/h+KfuS8PEpq52h883n+jowAQimKvejp+d6macrmyA8X4wHno69Qi73fePIHf1caRNdimsgeLY63qFeiIz92y0d1avKOqBkZabqzYGBZ2Tk8VVDLcMCbGffKMtXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=S+rF9uWk; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1765809456; c=relaxed/simple;
+	bh=/qa5s65gU3g1Q4gJa/dljDUWl87YAU2rtIPazQx17kQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hAp0o6FOLk2xn9pXz35jzzSByL+XRt47QBd6dgquyfxa9lSeh6NCeuvCBlEDiHFAKzIpypYRMsYL1ohEL6DO+K1wge92sArOJOzsFw0yD47wFHtdBfFfq41J0lmRwVULmVH2KGyiPvKJFehmGsb0sxFAqaG82O/BqCXKIOsWEe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Q0zXCTJG; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="S+rF9uWk"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Q0zXCTJG"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=hP/U9X3ek/QPwoi3hGCAMfuswx9V7+TFBIHg3O2P6rc=; b=S+rF9uWkZtNiWd/8J8ou1tmFj8
-	9YuwD6EmL+i3avVYw4IEyLfND/tWoVcKkp/cVbKMw1ejAMRubvxTAXfiJczfv3vALZ7rlgh9X0oS5
-	tl7poU4qLn60GJ3XU+oDqtNR+1Y4bqOwTXzguO6D2bMKCI3jHNiX985n9zoUJc7vJNWjpVUwVH74z
-	EllTfZYCeYaQT/kgoPC94FsdUTPi0yNrzRR+8KNrKj2IxHcHiJGZOKXY+2oM5C7F+sHDWb3rGqTAy
-	A6YymweDqLbpcL4o0BaZ2bodgaReivKG0VJl6t0v39JgELAzcze5jYIjwtaR/Xv50FakOZhZLpQ92
-	PlJqCMbsqsUAf1ab4OdXA2TFLqcWfuSYn+3vzQSMrYG9ojiFxD3JNkXnUmaVuJ/yYAagY0p4Yirp3
-	D4aQRHo9vP62RntLW4qCAniGztY94QOSpm+aMTselahAE7m6XPqSgGMqdGj54CmEsAMNX2HmYsmSY
-	uB79S7zMbBg2hLiiF3y9Hg4e085edg+k7T4YC+gfNct1Qy7BYQCqIt2anicmF8ZGDsJOgqnH3v4qB
-	reSssMpwgnpC9aCgzbjKfZA5zLXfpzxPyrg0RTGYDZz9hPHOIPu9/axT72B3kpgB3tHVtyahUui7C
-	8XdcGrkStSiggcGu+o997hiBHXZvgSQdU2zfIUcjA=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Christoph Hellwig <hch@infradead.org>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org,
- Chris Arges <carges@cloudflare.com>
-Subject:
- Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter() iovec
-Date: Mon, 15 Dec 2025 12:16:07 +0100
-Message-ID: <3918430.kQq0lBPeGt@weasel>
-In-Reply-To: <aT-59HURCGPDUJnZ@codewreck.org>
-References:
- <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
- <aT-iwMpOfSoRzkTF@infradead.org> <aT-59HURCGPDUJnZ@codewreck.org>
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GL+t1YP5Sq1fjsltWXMjIWkUSofjmPUmHoVyBGu/NzU=; b=Q0zXCTJGUBTpmj7QVRb7pb9/PF
+	nCdmn1RvTIEinpSgDQ6jHJV2czMl0ToxHaEDZQVTTY9B2YoqqCb8dnTPROfHM0buxH2mY/71qAkbP
+	ME+6cC4KCnOMT+GiiROyPbh/r5CUKKhpIQUZDmTvQix8CnhQb3+jBgGM7SXz3mi1djUADkkm5X78o
+	Ac9tt4BmJBDmE8zD/NVqGbixmETmYYBEcQn4F1HZ45DytFxfXKV+KQKH3jtkf6qUzwBUk0lvLpEpO
+	39txek78yC8C31LZ7NzNrICrlYUi0NBhyBroGkfO591MaIo+d1su/AyEKoQZ5zRZw9ZSarxQMGcqQ
+	q4aiGbHA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vV9hb-00000003oUx-0ETP;
+	Mon, 15 Dec 2025 14:37:31 +0000
+Date: Mon, 15 Dec 2025 06:37:31 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org,
+	Chris Arges <carges@cloudflare.com>
+Subject: Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter()
+ iovec
+Message-ID: <aUAdKxcC7195Od5N@infradead.org>
+References: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
+ <aTkNbptI5stvpBPn@infradead.org>
+ <aTkjWsOyDzXq_bLv@codewreck.org>
+ <aTkwKbnXvUZs4UU9@infradead.org>
+ <aT1qEmxcOjuJEZH9@codewreck.org>
+ <aT-iwMpOfSoRzkTF@infradead.org>
+ <aT-59HURCGPDUJnZ@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aT-59HURCGPDUJnZ@codewreck.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Monday, 15 December 2025 08:34:12 CET Dominique Martinet wrote:
-> Thanks for having a look
-> 
+On Mon, Dec 15, 2025 at 04:34:12PM +0900, Dominique Martinet wrote:
 > Christoph Hellwig wrote on Sun, Dec 14, 2025 at 09:55:12PM -0800:
 > > > Ok, I don't understand why the current code locks everything down and
 > > > wants to use a single scatterlist shared for the whole channel (and
@@ -71,21 +75,17 @@ On Monday, 15 December 2025 08:34:12 CET Dominique Martinet wrote:
 > sure this was just the author trying to avoid an allocation by recycling
 > the chan->sg array around though, so ignore this.
 
-The lock protects the channel wide, shared scatterlist while the scatterlist 
-is filled from the linear buffers by pack_sg_list(). Then virtqueue_add_sgs() 
-pushes scatterlist's segments as virtio descriptors into the virtio FIFOs. 
-From this point it safe to unlock as the scatterlist is no longer needed.
+Oh, ok.  This seems unrelated to the handling of the iov_iters and
+I'm sorry that I don't really know anything about that part.
 
-And yes, the assumption probably was that handling the scatterlist as a 
-temporary was more expensive due to allocation.
-
+> 
 > > > Looking at other virtio drivers I could probably use a sg_table and
 > > > have extract_iter_to_sg() do all the work for us...
 > > 
 > > Looking at the code I'm actually really confused.  Both because I
 > > actually though we were talking about the 9fs direct I/O code, but
 > > that has actually been removed / converted to netfs a long time ago.
-> > 
+> >
 > > But even more so what the net/9p code is actually doing..  How do
 > > we even end up with user addresses here at all?
 > 
@@ -93,24 +93,19 @@ temporary was more expensive due to allocation.
 > O_DIRECT writes are seen as BVEC so I guess it's not as direct as I
 > expected them to be -- that code could very well be leftovers from
 > the switch to iov_iter back in 2015...
-> 
-> (I'm actually not sure why Christian suggested checking for is_iovec()
-> in https://lkml.kernel.org/r/2245723.irdbgypaU6@weasel -- then I
-> generalized it to user_backed_iter() and it just worked because checking
-> for that moved out bvec and folioq from iov_iter_get_pages_alloc2()
-> to... something that obviously should not work in my opinion but
-> apparently was enough to not trigger this particular BUG.)
 
-Sorry, I should have explained why I suggested that change: My understanding 
-of the p9_get_mapped_pages() code was that the original author intended to go 
-down the iov_iter_get_pages_alloc2() path only for user space memory 
-exclusively and that he assumed that his preceding !iov_iter_is_kvec(data) 
-check would guard this appropriately. But apparently there are several other 
-iterator types that are kernel memory as well. So I thought switching the 
-check to is_iovec() would be better as these are user space memory, however I 
-missed that there is also ITER_UBUF with user space memory, which you realized 
-fortunately by suggesting user_backed_iter() check instead.
+Oh right, I think this from Dave's netfs_extract_user_iter.
 
-/Christian
+> (waiting for David's answer here, but as far as I see the contract
+> between the transport and the vfs is that the transport should handle
+> whatever it's being fed, so it doesn't really matter if it's a bio_vec
+> or an iov_iter -- ultimately virtio or whatever backend that wants to
+> handle zc likely won't handle bio_vec any better so it'll need
+> converting anyway)
 
+Yeah.  Looking at what the code does with the pages, I think all this
+should go away in favor of using extract_iter_to_sg and build the
+scatterlists directly from the iters, without an extra page indirection.
 
+(and of course one day virtio should migrate away from scatterlists,
+but that's for another time).
