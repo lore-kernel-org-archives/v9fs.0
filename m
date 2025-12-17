@@ -1,107 +1,77 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F5834252F;
-	Wed, 17 Dec 2025 13:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190ED192590
+	for <v9fs@lists.linux.dev>; Wed, 17 Dec 2025 21:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765978908; cv=none; b=YadvI0tGH+DDh1T1UJCOUt9LzdrB8kNgOBZFV39HUg0nS+1w2BkkzULLxMbIzlOazRJJO4Xl6Z6KEWZkAcC7Sw80fml3rrpoirbdrpe22l6EKwbk+ArA1Vh05Tz5RL4Jhygf6lOTwIN7cFViq6rB3jtDHuUgvfP5TMKUO/P9ZUY=
+	t=1766008174; cv=none; b=raTWjYf0mtclEJi5cNa3C77Re0KbJtyAfhWYrbD8y6JVuDHArZ6RKXLvzahOaLT2EDZwqB7YRf/Yo7+QZ/5N9ZP4Bslq/kI0ixLMzb6Se6eSZasvLIKvBeeyv9o8/nKKgxAa+dqxU1W5GY6U2LDDAnRLX28pdJWWCVR+efjYCzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765978908; c=relaxed/simple;
-	bh=w6Vg1aDGUc/4a0Xa+7zZBFvhlcmqlDjtygk5QBTRxNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aDhBsI2bNZ5K27A3K1XGq7oKQxEl3XVLjQfM2uGstLUmSs9Pmk2rflkuQcCr33w/K6Iv6UmqCORPCyihxoPn3feo7lRbo3jJpzIoixYLWmjDmeR58Jv2MSlft4DI1HtOFNxxmyBMs4wAB9lY+30KRjn+sZP/kPck4w2UiITbCm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=Nh39j5O7; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1766008174; c=relaxed/simple;
+	bh=pe6MD91KBXNGiAzgccXj8T+pTJoWLRrL5iFCNmLhSjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDkFBjYXCo7mGNwADt//ghRJnLq7bG2hwbNYcFTxBvjDwgfEIpuOho3MISHyX46xt3T1MfO2jkYihv1f1GlQz2cOLQ4l7P/aAkHh00tgd3RvPsP1cbiFaqUj/IShc1Sw+T78lWcIt5gTXXE4jJqv3i7EeVXEF4ZYTgXgM1oJ6N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qTJ1yVHV; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="Nh39j5O7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=ETsLTV4d8l/8DLT+5nRiNYPm60z6FUh/BDtjYtFJRYQ=; b=Nh39j5O7oHanWQiT+uJHr+TFF9
-	nPexn3pQjkrXrn1kA01MGbAfW5ikI3FptyM8LOunaypivgCNlGc2JONaHAPfnvfi061AesmNZj3iz
-	Mozu2yqZCCMWbGJDLW2cek8OsH8l5YUSujMNfUs+D/trlOi4luLMsdfbbGsKktt/tyc1W7V2ix1p9
-	2ZRnUh1iJmS9bo9ms/2nIfIB+xCN8BcdjgiqL2CSVKrMV8rQRuahESuiwjwHg9IaIn3w3CLb1ejbU
-	5qo8JqiMYByffPPEejIyDkb7ndpZNSmbu+rRc5wtoje5rrzpmjfIDVTrqMxgGnb/42LIzXeKLB44V
-	nOCftc+0Qp8nyi2H6erQYoZy4DDR0XGszPYK1A/X2GjPS0WNm3DyHC2FPWFbTf5ZAgR2Vxtlb/1+U
-	Jw4CpQEo2a3Eu0BbLV0QBZUJclgqxeaVMvncptKPefVRBNzlDNxyS2+kq8MJI2PQrCoVpJgaYODvw
-	HZ9X7O/BeSTAY8xDo1TUaN+aqfENwQtwSKl5mMTy0hTrCGfr5iQx7fpskSu2ayp44jTpBhNSy54K8
-	xl+HUo407L/0zI7oHnf4yoYamXrpxUaZBZ8qv1JLleeI+WiJ2vc1IdwZ+hoM5VGFUb6+qXWr2rZja
-	mjta8J8e3VaWJ71ABLzH4whJeVpDkVJor+roGsFTs=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>, asmadeus@codewreck.org,
- Chris Arges <carges@cloudflare.com>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel@vger.kernel.org
-Subject:
- Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter() iovec
-Date: Wed, 17 Dec 2025 14:41:31 +0100
-Message-ID: <2332946.iZASKD2KPV@weasel>
-In-Reply-To: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qTJ1yVHV"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id DBCD114C2D6;
+	Wed, 17 Dec 2025 22:49:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1766008163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rm0JYrpF7d0NcE2CiRu2ipHmE7x2XFoJEcDXDNz0kiM=;
+	b=qTJ1yVHV9ta8kgjEQx1M9VNpZi6Ex+WOflXMZWwvIfAqXLy2vP1KGi7WNH5+0wfSYElTPO
+	Dh2iULa3x8eVjXAsdYl18pT99qC+iSV7S4D8gL9yuo4zBY0sXMb9LrfHu6Vj6/l8tkSEqU
+	9gaJKSi3N0vOAhfY2IMzKi98tZGj1j/b9IJHhn6uoTIjjJ7jVH6CwKi8Wuz4+0iycDcwcd
+	UQ94SvazkKdhRkLuhDhqIFBA5hsQcAMb3//x4auyn05s14ElqI5zzo0F+XAE1i3WniGK09
+	UuErgazzURIJ6EET0ya6gnYUAmRhalcfXgD3szsmA7j3Yfp7EbRqgIoyX2tQuA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ce03f421;
+	Wed, 17 Dec 2025 21:49:19 +0000 (UTC)
+Date: Thu, 18 Dec 2025 06:49:04 +0900
+From: asmadeus@codewreck.org
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Chris Arges <carges@cloudflare.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter()
+ iovec
+Message-ID: <aUMlUDBnBs8Bdqg0@codewreck.org>
 References: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
+ <2332946.iZASKD2KPV@weasel>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2332946.iZASKD2KPV@weasel>
 
-On Tuesday, 9 December 2025 22:04:23 CET Dominique Martinet via B4 Relay 
-wrote:
-> From: Dominique Martinet <asmadeus@codewreck.org>
-> 
-> When doing a loop mount of a filesystem over 9p, read requests can come
-> from unexpected places and blow up as reported by Chris Arges with this
-> reproducer:
-> ```
-> dd if=/dev/zero of=./xfs.img bs=1M count=300
-> yes | mkfs.xfs -b size=8192 ./xfs.img
-> rm -rf ./mount && mkdir -p ./mount
-> mount -o loop ./xfs.img ./mount
-> ```
-> 
-> The problem is that iov_iter_get_pages_alloc2() apparently cannot be
-> called on folios (as illustrated by the backtrace below), so limit what
-> iov we can pin from !iov_iter_is_kvec() to user_backed_iter()
-[...] 
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index
-> 10c2dd48643818907f4370243eb971fceba4d40b..f7ee1f864b03a59568510eb0dd3496bd0
-> 5b3b8d6 100644 --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -318,7 +318,7 @@ static int p9_get_mapped_pages(struct virtio_chan *chan,
-> if (!iov_iter_count(data))
->  		return 0;
-> 
-> -	if (!iov_iter_is_kvec(data)) {
-> +	if (user_backed_iter(data)) {
->  		int n;
->  		/*
->  		 * We allow only p9_max_pages pinned. We wait for the
-> 
-> ---
-> base-commit: 3e281113f871d7f9c69ca55a4d806a72180b7e8a
-> change-id: 20251210-virtio_trans_iter-5973892db2e3
+Christian Schoenebeck wrote on Wed, Dec 17, 2025 at 02:41:31PM +0100:
+> Something's seriously messed up with 9p cache right now. With today's git 
+> master I do get data corruption in any 9p cache mode, including cache=mmap, 
+> only cache=none behaves clean.
 
-Something's seriously messed up with 9p cache right now. With today's git 
-master I do get data corruption in any 9p cache mode, including cache=mmap, 
-only cache=none behaves clean.
+Ugh...
 
-With this patch applied though it gets even worse as I can't even boot due to 
-immediate 9p data corruption. Could be coincidence, as I get corruption 
-without this patch in any cache mode as well, but at least I have to try much 
-harder to trigger it.
+> With this patch applied though it gets even worse as I can't even boot due to 
+> immediate 9p data corruption. Could be coincidence, as I get corruption 
+> without this patch in any cache mode as well, but at least I have to try much 
+> harder to trigger it.
 
-Currently busy with other stuff, so could be a while before being able to 
-identify the cause.
+As said before don't bother with this patch, it's definitely wrong --
+we can't just use data->kvec->iov_base for bvec or folioq iters, so
+there *will* be corruptions with this patch.
 
-/Christian
-
-
+I'll try to see if I can produce anything wrong with master...
+-- 
+Dominique
