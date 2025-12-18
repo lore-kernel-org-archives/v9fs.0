@@ -1,136 +1,96 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85564352FB9
-	for <v9fs@lists.linux.dev>; Thu, 18 Dec 2025 15:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71A7EADC
+	for <v9fs@lists.linux.dev>; Thu, 18 Dec 2025 23:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766072901; cv=none; b=G3epAyYbT65CvOywfXg4HwymzXYYyrLrAQrTiMfseV5Ss6O3u6qHp+Am+Uyrgqc6f8cBrsNy3HRvLAooB/SwLSF8VQYeCzgAuyBDGgnSZ8q/JoVJ39Ju33O4pBScQjTTecpIWOX4eRMowJvFuAkE9Mq6FBn0omjbaubh+Jprsfc=
+	t=1766099728; cv=none; b=B7pjcaurol017c1FBylJzujM+azY3LW089tNhFMlSr7qKh+IlHpD7SnfvH0oxC2hKs7l89vIMcxmDSJTzu/+Vin8mQmuMsTvmaviBkzNUi/Lzn1BTXdOcOirjV4r+D2t8Yvscz2C8gybXCba+qdevBHKn8mpqurlG83p+2SjZ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766072901; c=relaxed/simple;
-	bh=JrvIb7/vexgjtgjPDoQtI2p9c83SMglMjbUpS5UutyU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NPyngcMB2B87qfYk37WBC7jIWzs7ANZRAuMaCDChfDfDgtP0fUGU1VCTgXmllbVGcZInIN9ufaMxF4XnyE8LXq7Pl4+j0HQF7LpXBraIJn4uHv809lcdcm7K8lJUATF5CaIDxX29q4mrGYx46ckQhN67WAKDylH6HhIg94792xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=BQ4ScyBz; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=BQ4ScyBz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1766099728; c=relaxed/simple;
+	bh=0cXC7QjWlndFHEB9Cv8hYNwGfUMJZWFXnRG1l2g4zpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AOmNGlUw7u77HNhN/ldLwp0Jq6AjmyfUpDrqyi2J7ev65EvePBRRL0zAFeZeQJj48wwTvpGJZapK0GBpr00CNJMhKPc48x9Ttg67cfJd/kVDq+q+SKlI3B+wwCC9SBLOrg8Zof8CYdjgFJTqmR1QSb0pUmGHuCC1SPSGWMvmBlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=vb7jV33G; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="BQ4ScyBz";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="BQ4ScyBz"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A65035BCEA;
-	Thu, 18 Dec 2025 15:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1766072897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=JUkILHHtydyJKd6345vOYj6van+XsE7l7VPm/raSiio=;
-	b=BQ4ScyBzO8loY/QesA4Kb1ftoTpUHmm/BvOVSUAiPMJyApXtg2o66vCvy6vqdW9E/43hlq
-	BoVY8iZgHeDeQpcnFVAdDgtWk11D/WFVKl/4wewUkyXiN3EvL1YCsiGQX9Q+TcwkRHbuSc
-	ZijGXmxpVtGbj6mLCZzk8lUBVqlZFWI=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=BQ4ScyBz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1766072897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=JUkILHHtydyJKd6345vOYj6van+XsE7l7VPm/raSiio=;
-	b=BQ4ScyBzO8loY/QesA4Kb1ftoTpUHmm/BvOVSUAiPMJyApXtg2o66vCvy6vqdW9E/43hlq
-	BoVY8iZgHeDeQpcnFVAdDgtWk11D/WFVKl/4wewUkyXiN3EvL1YCsiGQX9Q+TcwkRHbuSc
-	ZijGXmxpVtGbj6mLCZzk8lUBVqlZFWI=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 552873EA63;
-	Thu, 18 Dec 2025 15:48:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +KJLE0EiRGmuIwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Thu, 18 Dec 2025 15:48:17 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev
-Cc: ariadne@ariadne.space,
-	Juergen Gross <jgross@suse.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="vb7jV33G"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id C984D14C2D6;
+	Fri, 19 Dec 2025 00:15:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1766099717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AhlYdIZTXXwmG9n/yzVcLdOMymxzvZf2QcspbdE27d4=;
+	b=vb7jV33GUhbfTV4t0gJxrwGehY4rMw0juDjwPN85KpZ29jGo5vroHzhG25H8UJBmmPwKkG
+	aoGTpNj1VLGYpGuapoMGqxQuXPknHDI5lJBzbePosZu93WCOI1pTnuoJSTZ3NCZskaFwme
+	y3MLKJoDLFRyjTGvPKxQd2W4IAP+wPLwjEN97nC6xdgRiN533irPavMBQSAyHS58ula9jP
+	5dHwJEbIXBm7vc1DtcGeY372BnDbvRRXlPInnTAxa9GPKxXvOa/EBBVChqeo6Jbloh+Ylu
+	lkiLnKm0hd8frdRpTdc9DBJv+bjr6u3/ecBO5frWpNRlV/UKKKSS9NnFMxzUVQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c5d6a9fc;
+	Thu, 18 Dec 2025 23:15:13 +0000 (UTC)
+Date: Fri, 19 Dec 2025 08:14:58 +0900
+From: asmadeus@codewreck.org
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: [PATCH] xen/9pfs: Fix data ring granting
-Date: Thu, 18 Dec 2025 16:48:14 +0100
-Message-ID: <20251218154814.28938-1-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
+	Chris Arges <carges@cloudflare.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter()
+ iovec
+Message-ID: <aUSK8vrhPLAGdQlv@codewreck.org>
+References: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
+ <aUMlUDBnBs8Bdqg0@codewreck.org>
+ <aUQN96w9qi9FAxag@codewreck.org>
+ <8622834.T7Z3S40VBb@weasel>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Rspamd-Queue-Id: A65035BCEA
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8622834.T7Z3S40VBb@weasel>
 
-xen_9pfs_front_alloc_dataring() is granting the backend access to the
-data ring by using gnttab_grant_foreign_access() for each memory page
-of the ring.
+Christian Schoenebeck wrote on Thu, Dec 18, 2025 at 04:14:45PM +0100:
+> > Won't be the first time I can't reproduce, but what kind of workload are
+> > you testing?
+> > Anything that might help me try to reproduce (like VM cpu count/memory)
+> > will be appreciated, corruptions are Bad...
+> 
+> Debian Trixie guest running as 9p rootfs in QEMU, 4 cores, 16 GB.
+> 
+> Compiling a bunch of projects with GCC works fine without errors, but with 
+> clang it's very simple for me to reproduce. E.g. just a very short C++ file 
+> that pulls in some system headers:
+> 
+> #include <utility>
+> #include <sys/cdefs.h>
+> #include <limits>
+> 
+> Then running 3 times: clang++ -c foo.cpp -std=c++17
+> 
+> The first 2 clang runs succeed, the 3rd clang run then always blows up for 
+> anything else than cache=none, various spurious clang errors on those system 
+> headers like
 
-Unfortunately the pages passed to gnttab_grant_foreign_access() are
-not referenced by the consecutive PFNs, but by GFNs, which might be
-not consecutive if the system is running as a PV guest.
+Thanks, I can't reproduce with this example, but building linux with
+`make LLVM=1` does blow up on debian... even with cache=none actually?
 
-Fix that by not using "virt_to_gfn(bytes) + i" as parameter, but
-"pfn_to_gfn(virt_to_pfn(bytes) + i)" instead.
+I couldn't reproduce running the same rootfs directory in a container so
+I don't think I corrupted my image, it appears to be reading junk? short
+reads perhaps?...
+(Interestingly, it doesn't seem to blow up on an alpine rootfs, I wonder
+what's different...)
 
-Fixes: 71ebd71921e4 ("xen/9pfs: connect to the backend")
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
- net/9p/trans_xen.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I'm now getting late for work but at least there's something I can
+reproduce, I'll have a closer look ASAP, thank you.
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 12f752a92332..a2ab633e78be 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -347,7 +347,8 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
- 	}
- 	for (; i < (1 << order); i++) {
- 		ret = gnttab_grant_foreign_access(
--				dev->otherend_id, virt_to_gfn(bytes) + i, 0);
-+				dev->otherend_id,
-+				pfn_to_gfn(virt_to_pfn(bytes) + i), 0);
- 		if (ret < 0)
- 			goto out;
- 		ring->intf->ref[i] = ret;
 -- 
-2.51.0
-
+Dominique Martinet | Asmadeus
