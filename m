@@ -1,104 +1,98 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E841E7C34
-	for <v9fs@lists.linux.dev>; Fri, 19 Dec 2025 13:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B62327BF7
+	for <v9fs@lists.linux.dev>; Fri, 19 Dec 2025 14:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766151996; cv=none; b=VjBIXKQcNe1PqVPOgzKzjJuZATZerbI6VSYxDzz/eO9tQ7rTEv8eiBIj374Gty9pZ4TeuyNsZTLq+Vjj999OHZthh5EC2U7v6xk4hrFHojHx8t1VqHdvmGSpVQtdMdjJsZGK2RozNIzNF8tFRWKKWzsjP6vyat2PCCgpXiQhWoQ=
+	t=1766152931; cv=none; b=q3BPaHDNltMpxwvJp1r4Hg7I972k+RKRCfmppugS8N0O+T2Z7FKGSUcqz6bUw+f4J4D5Ht+1m0k95YR/8KpX2yQt8SQ6JfxxBH0HU+ez1WYMBQZlOM5Iovs7mNNDjNxgwGoGCMc46qjf3h/hKdEMLCnineJj5ohwHcFvPWoEwbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766151996; c=relaxed/simple;
-	bh=zPPkekuJmYgycUeyaexDoYmHhNNCHKFOVPs6U34RvkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kZtcdQ4RidJ/QCCSt93oOIVTA0qMH0fJm9BwDiEpQ4dQJ5PXhXJOI8L9atqAXPKO/726EGDYSrazSxOaLgcvXmKH3QLr3JHm8GYQUuVCACeiOlegZjaxdOC8mZS14q7gnevSK9mHRu6wazXxs2N0x8/CTmyvoweBAYGDFjjpTv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=EpmKeuGt; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1766152931; c=relaxed/simple;
+	bh=lYIXcGcrOPmOZzFUGlVjofb/tOUmKZRLWpRMjul5nf0=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=eBoziqt9chZiD6NgwJHDTDJmAoI+4OQzB+tOHrwpWom1ERaPEGVGfsf3Q+wcTBq4gHRoLz82ZIDY0elILuBqtf4gARhMHdozLr7dbPGVIHoFGF9mr9PrTXJNO0hEvfSNd5qLbcPA+J+4hBUtnBWE1yWmzIxwbmIQhTKydnaRHUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cAPtK90L; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="EpmKeuGt"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id AD68D14C2D6;
-	Fri, 19 Dec 2025 14:46:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1766151991;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cAPtK90L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766152928;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YmKzRaTkyKwxJ3o6NYTLCB2EbFWYltDYzEopIi05EpA=;
-	b=EpmKeuGtMrr62EcheB+8xlMYiSVj9zRgnc5ecDWQqW4BvooWUA3FzZeevm16azdtzphu5+
-	WSkQCoYpUpMkBUOkzbI0RfBUlPsOYkXmm6cy+RWL+JT1Lptr1vWX31LJs8MEyP2tbSmkhM
-	P5cGVljprWKHKLXuzuLzTqJ0whMqOSA3pYWx3xeUu+ijmpL03tTYQJVgtaKicokumG4Cz3
-	6FoRPtVXHwUIiesP08zly2a0TB/jd0Wo1brwGOd4m2HxZV69RS172iCOFNEjrDGmXfjMl8
-	1YW9c5YR88RBNDrGs9q1PpTdvTifXTsIoc4NW5FWxdJjnxxzdupeNhwC2PMuSQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5594623a;
-	Fri, 19 Dec 2025 13:46:26 +0000 (UTC)
-Date: Fri, 19 Dec 2025 22:46:11 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Howells <dhowells@redhat.com>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Chris Arges <carges@cloudflare.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: 9p read corruption of mmaped content (Was: [PATCH] 9p/virtio:
- restrict page pinning to user_backed_iter() iovec)
-Message-ID: <aUVXI5wt9jm9x66E@codewreck.org>
-References: <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org>
- <aUMlUDBnBs8Bdqg0@codewreck.org>
- <aUQN96w9qi9FAxag@codewreck.org>
- <8622834.T7Z3S40VBb@weasel>
- <aUSK8vrhPLAGdQlv@codewreck.org>
- <aUTP9oCJ9RkIYtKQ@codewreck.org>
- <aUU8thEsa0X4YrlF@codewreck.org>
+	bh=yzNnOFBqwNj3DGyLxibs+wwctNsN2xP1MIdjPWFUw7s=;
+	b=cAPtK90Lm2ZcHuYxr09OzmCkhotou5Rj5HW204PE22N9sDVmO54T9jJIjDeF1JMzIjrkwN
+	CK7kHbnWzYJ2L3sRzEIEnlOgUUztjVidYhQiOQsU7tIFQAfjghD1ymn/lIFUUZeNXS19DI
+	Caymw78HpR/T7EKQjgbZa9b9Q7x1Kzs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-454-ou7AYO8ANTehcnavAX8JjA-1; Fri,
+ 19 Dec 2025 09:02:05 -0500
+X-MC-Unique: ou7AYO8ANTehcnavAX8JjA-1
+X-Mimecast-MFC-AGG-ID: ou7AYO8ANTehcnavAX8JjA_1766152923
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1DA8E1955DD1;
+	Fri, 19 Dec 2025 14:02:02 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6616D30001A2;
+	Fri, 19 Dec 2025 14:01:58 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <aUTP9oCJ9RkIYtKQ@codewreck.org>
+References: <aUTP9oCJ9RkIYtKQ@codewreck.org> <20251210-virtio_trans_iter-v1-1-92eee6d8b6db@codewreck.org> <aUMlUDBnBs8Bdqg0@codewreck.org> <aUQN96w9qi9FAxag@codewreck.org> <8622834.T7Z3S40VBb@weasel> <aUSK8vrhPLAGdQlv@codewreck.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: dhowells@redhat.com, Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Chris Arges <carges@cloudflare.com>, v9fs@lists.linux.dev,
+    linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+    linux-fsdevel@vger.kernel.org
+Subject: Re: 9p read corruption of mmaped content (Was: [PATCH] 9p/virtio: restrict page pinning to user_backed_iter() iovec)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aUU8thEsa0X4YrlF@codewreck.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <818488.1766152917.1@warthog.procyon.org.uk>
+Date: Fri, 19 Dec 2025 14:01:57 +0000
+Message-ID: <818489.1766152917@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-David pointing this out on IRC (thanks!)
-> you may have actually caught the bug in your trace
->    kworker/u16:2-233     [002] .....  3031.183459: netfs_folio: i=157f3 ix=00005-00005 read-unlock
-> ...
->            clang-318     [002] .....  3031.183462: netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 
-> s=5fb2 0/4e s=0 e=0
-> we shouldn't have unlocked page 5 yet
-> we still have to clear the tail of the page
+Dominique Martinet <asmadeus@codewreck.org> wrote:
 
-And indeed, if I update the read_collect code to not unlock as soon as
-we've read i_size but wait for the tail to be cleared as follow, I can't
-reproduce anymore:
----------
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index a95e7aadafd0..7a0ffa675fb1 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
- 		rreq->front_folio_order = order;
- 		fsize = PAGE_SIZE << order;
- 		fpos = folio_pos(folio);
--		fend = umin(fpos + fsize, rreq->i_size);
-+		fend = fpos + fsize;
- 
- 		trace_netfs_collect_folio(rreq, folio, fend, collected_to);
---------- 
+>    netfs_collect_folio: R=00001b55 ix=00003 r=3000-4000 t=3000/5fb2
+>    netfs_folio: i=157f3 ix=00003-00003 read-done
+>    netfs_folio: i=157f3 ix=00003-00003 read-unlock
+>    netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
+>    netfs_folio: i=157f3 ix=00004-00004 read-done
+>    netfs_folio: i=157f3 ix=00004-00004 read-unlock
+>    netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
+>    netfs_folio: i=157f3 ix=00005-00005 read-done
+>    netfs_folio: i=157f3 ix=00005-00005 read-unlock
+>    ...
+>    netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+>    netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
+>    netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+>    netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
+>    ...
+>    netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
+>    netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
 
-It's too late for me to think of the implications and consider this
-diff's correctness, but with that patch the kernel is happily building
-with LLVM=1, so I'm fairly confident this particular bug goes away...
+This would seem to show a problem, if not the problem.
 
-(Now that umin() dates back v6.14-rc1 (commit e2d46f2ec332 ("netfs:
-Change the read result collector to only use one work item")), I guess
-I'll want to check if it's been broken this long next, or if it's a side
-effect of another change... Tomorrow...)
+We unlocked page ix=00005 before doing the ZERO subreq that clears the page
+tail.  That shouldn't have happened since the collection point hasn't reached
+the end of the folio yet.
 
-I'm off to bed, feel free to send a patch with the above if you think
-it's correct
--- 
-Dominique Martinet | Asmadeus
+David
+
