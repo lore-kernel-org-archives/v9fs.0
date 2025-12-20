@@ -1,432 +1,177 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31764502F
-	for <v9fs@lists.linux.dev>; Sat, 20 Dec 2025 02:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54F918B0A
+	for <v9fs@lists.linux.dev>; Sat, 20 Dec 2025 12:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766196149; cv=none; b=DvkOYecFHeaWUr/B3HvMNKf68ffVOJGxHaxniGpxtWsbjaoVf9wJpBU6Vlc0SHigAK+stWaJjVQZC9A3CwabLjSFVe2VGQAz/R2ZbYNu04AMyx4wLaE8KtOJ0DEPYvAmkq/sXjWjGF4hzFXD4Q+HaEvfqUHuauau174vXH4XMMs=
+	t=1766233914; cv=none; b=kwXr3jw4B2UsLqFaPKyzNj4xFP3szp6ZXH3IJwGO9w9TsjRXHZ0QvAjgQaPJrHGHa56FzhvMQrzgq2XrnYuODtfyokp44/YneMZXC/Bqfao48jSe37tpEGHDKHn3vlLS3mqxsUJYkIH2TSZ2pG/Wfs+M/3SZL2TACEVarBXR9GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766196149; c=relaxed/simple;
-	bh=ngSaV9zsZ5Mdp8pOwKMLmgR/bRMU9fnlvOc2SXEh4LU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I0cXNcffSLWkp8S3TF3JFp4T+hZXvSHD9euswoj8RQ3b5Pq5GKD2YWURCwGsu3u2FbtoOuxMyXjEqdGO0xC/oQcOmFvjtFgqMRXn0PuHWUefp4BCRkIKO8UA/lSeveR6LVzNyETgBsNOETUOMMqUE9rmPAbQQqtIVjWdNnZHmMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SiBkLAZ/; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766233914; c=relaxed/simple;
+	bh=HiiZAKxtpNKLnOYl0GWimjE9g7TIzc3F5OFiwHQimaQ=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=Xhc+PN9PlSYppxAXIVsD0v+hHj6T7c6PGYA3sIuVaUSIzpNVn0Rx59oFI0WPNmdLOM5xvT8Vp3/vR/biWsTHscYuWzXhoI9JCzyAPM4fnBqez2mGNTAgsNokboc/TUNeIGn3fvywOa6R2RYlH82HDcI8XtkOPynh6tagym6PKzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gmxbPfbZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SiBkLAZ/"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6420c08f886so3143592d50.3
-        for <v9fs@lists.linux.dev>; Fri, 19 Dec 2025 18:02:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766196147; x=1766800947; darn=lists.linux.dev;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BmQkWN5cLiJ69SUBknPUJfKLARCEpm/Nd3t2bdOaoWQ=;
-        b=SiBkLAZ/CovovcpHHCgOoeqPJEFpmbI7a3Qm1nk53FD/AKynyFZcsIi9zgIPANz6+4
-         0KTEzH8dzh/wg9wU9UffsQ0FpZw3pkaCfPIU9geWq+tunfzrpIirmaT5UsLpA+ihAqs+
-         x0Gw/UtjesIFeVIRyZFiXA5vaivF5gALFSIR3U3eoOOC3wk8F/W9mbAQOI4HgtsafPuF
-         Pe1uCu25+e54BnVlAWdUkslVzipxqXVozk+s7Y6NLOK3lrbBoMxF8LmMNKroGTUPcFlD
-         Rg3nZSiL4o1IhnvqFADeJUuU8yJNM4CSNQTbedwP4blHNg20CQIk4S8MauygPzm3Nj5g
-         hShA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766196147; x=1766800947;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BmQkWN5cLiJ69SUBknPUJfKLARCEpm/Nd3t2bdOaoWQ=;
-        b=mOxZSJMAinUmwbIsUixGaVYPtF6O92eVZcQkUI69XLiypW/u9C6pzS9ufxBTzFo5oz
-         HCwq1sZB7bczs4P1+9NmSznE8edPIGv+sR+MCKHQiD4SWaQ5KM8hD/Ua9FAwMbeThNki
-         4CxZ7vzrTmJ4QlZbgJGINX50IMhhxkmV7w9GAIA2huuUXLKlEosUYhp/ALwnYoLhSAKl
-         94k5gROUa/U9WbBA84LTTC9RHKA1V/Kz5OuLjTRVCSHuhTaGtsF2rA5zNBR/f0ZrUG8f
-         IYl1AfbKPTInqEKRu9Fd/mchOprPqSntpYh2FJsmCVgwixo4OKbdpEPwgTT7y6xSk2Nm
-         jNTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQQmp15QdfsKCWWztbgCwA1YhE0PD6haS92uFQgwqiuw3dTZbDGW3OlLKarJj0CnO9FeFd@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfuVfjtFF3QhXV4IGp+u6SvxlXANDNLPZaP/yLN9stF/pj4znl
-	wORpYJDF3QSuBNNYHEMnquYPSY+JqZGYKNH5/qaJQJLJT1i+gYRG8Kp3
-X-Gm-Gg: AY/fxX6Btk+7UPLY6zf9JVDueV9aI3Z9D61W4YSnLf2OZ8MUKur2otxHeQcfmB70PRg
-	hI5HwqcQBCUr7NH31q7LaEt+gpedseP5EbrnlvTsnLv505BVdxUHlsfKN40p4j50rpgPsTWKsdH
-	qkcHWM+XCrGG1zTasf4hgeYaRNDzsF6Bq6fS8LDHDxlAq/uVigEfK4Y5Qo69QR6LLu1RIBOyyOl
-	OTo+0mZh3riyAiqL8y+H3ArFTvK5VZuVBcBldXh9ZN5rlPmO+VOz95HKuP6QJWkKaXvKDsybmsx
-	Bh+D/1CMOyrGmoRqLf950/RqE14P5EDmJ5kNkiv9NDFOHp5std/b3SVhn/r88OBCAOitPoo0FQb
-	VmkUpeJou1x/IPpuHjB3s+7RmgCu72g4LZ86jaLWy0IKrPTVWOuYYaoiCT295C1TZaIInAx9DW/
-	bvNVlu9o0afr/vnbn5u4pPThgSeVQI5KD1ANlC9/mZprMNF1CirP/MfinNpZpVIz76nM6p8+XW4
-	ngFP/1pWwOCrufUBx91p03Q8/s=
-X-Google-Smtp-Source: AGHT+IGQLEHOG9i68KC64XOdTY6oZvZKjdZIQwf80Po+fkQVUbDAPSBA6PrF5zM1chnMdZzjx5AQoQ==
-X-Received: by 2002:a05:690e:419c:b0:63f:aef7:d01b with SMTP id 956f58d0204a3-6466a84406bmr3508631d50.8.1766196146393;
-        Fri, 19 Dec 2025 18:02:26 -0800 (PST)
-Received: from [10.138.34.110] (h96-60-249-169.cncrtn.broadband.dynamic.tds.net. [96.60.249.169])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb43cddb7sm16568197b3.24.2025.12.19.18.02.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 18:02:24 -0800 (PST)
-Message-ID: <0f4014cb-77d4-4d31-96cd-ea584ed8bba1@gmail.com>
-Date: Fri, 19 Dec 2025 21:02:18 -0500
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gmxbPfbZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766233910;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EttdANpspnOT+Dim2C1JuGnSPCut69JUBFoLijH19Yo=;
+	b=gmxbPfbZC/chhg/ohlQaf3ZUPVgicy7qBHPeKDpbAldUFTHE6zrQNcaXNe2LIgJRVIyYcL
+	Xww9YVH6R8SI8sNxRKL+YU9ZEI/kc/0yiOj/Yqx78dhUJTtHyE0G4jXOvfHbzkF9350Z+D
+	HYHvmqxkW7W/BJW4jjFAKDjWoUIkflo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-LDDRf5UqNd635L2LF0Sa9w-1; Sat,
+ 20 Dec 2025 07:31:48 -0500
+X-MC-Unique: LDDRf5UqNd635L2LF0Sa9w-1
+X-Mimecast-MFC-AGG-ID: LDDRf5UqNd635L2LF0Sa9w_1766233906
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5C0C1800343;
+	Sat, 20 Dec 2025 12:31:45 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 769F030001A2;
+	Sat, 20 Dec 2025 12:31:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: David Howells <dhowells@redhat.com>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Chris Arges <carges@cloudflare.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <sfrench@samba.org>, v9fs@lists.linux.dev,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix early read unlock of page with EOF in middle
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] 9p/xen: mark 9p transport device as closing when removing
- it
-To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
- Ariadne Conill <ariadne@ariadne.space>, v9fs@lists.linux.dev
-Cc: xen-devel@lists.xenproject.org, asmadeus@codewreck.org,
- linux_oss@crudebyte.com, lucho@ionkov.net, ericvh@kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>, Alex Zenla <alex@edera.dev>
-References: <20251208195155.27473-1-ariadne@ariadne.space>
- <409cccec-15dd-4e80-ba56-f0bba12772cb@gmail.com>
- <548207b3-c941-4956-bf2c-11eee467777b@suse.com>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- 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
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <548207b3-c941-4956-bf2c-11eee467777b@suse.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------zP68rpYrZp0Uzl9j10Hk0qmJ"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------zP68rpYrZp0Uzl9j10Hk0qmJ
-Content-Type: multipart/mixed; boundary="------------3DjjrTYtUxIfPkonGj3cKuPy";
- protected-headers="v1"
-Message-ID: <0f4014cb-77d4-4d31-96cd-ea584ed8bba1@gmail.com>
-Date: Fri, 19 Dec 2025 21:02:18 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] 9p/xen: mark 9p transport device as closing when removing
- it
-To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
- Ariadne Conill <ariadne@ariadne.space>, v9fs@lists.linux.dev
-Cc: xen-devel@lists.xenproject.org, asmadeus@codewreck.org,
- linux_oss@crudebyte.com, lucho@ionkov.net, ericvh@kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>, Alex Zenla <alex@edera.dev>
-References: <20251208195155.27473-1-ariadne@ariadne.space>
- <409cccec-15dd-4e80-ba56-f0bba12772cb@gmail.com>
- <548207b3-c941-4956-bf2c-11eee467777b@suse.com>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- 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
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <548207b3-c941-4956-bf2c-11eee467777b@suse.com>
-Autocrypt-Gossip: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-
---------------3DjjrTYtUxIfPkonGj3cKuPy
-Content-Type: multipart/mixed; boundary="------------4YoX49qTQIA0OtTPwVPWuSpb"
-
---------------4YoX49qTQIA0OtTPwVPWuSpb
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <938161.1766233898.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Sat, 20 Dec 2025 12:31:40 +0000
+Message-ID: <938162.1766233900@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 12/18/25 03:14, J=C3=BCrgen Gro=C3=9F wrote:
-> On 09.12.25 11:41, Demi Marie Obenour wrote:
->> On 12/8/25 14:51, Ariadne Conill wrote:
->>> We need to do this so that we can signal to the other end that the
->>> device is being removed, so that it will release its claim on the
->>> underlying memory allocation.  Otherwise releasing the grant-table
->>> entries is deferred resulting in a kernel oops since the pages have
->>> already been freed.
->>
->> I don't think this is sufficient.  The backend can simply refuse
->> to release the grants.  The frontend needs to ensure that the pages
->> are not freed until the grant table entries are freed.  Right now,
->> the backend can cause a use-after-free in the frontend, and my
->> understanding of the Xen Project's security policy is that this is
->> a security vulnerability in the frontend code.
->>
->> My instinct is that the core Xen code should take a reference on
->> each page before granting it to another domain, and not release that
->> reference until the pages are no longer granted.  This should prevent
->> any use-after-free problems if I understand Linux core MM correctly.
->=20
-> I looked at this in detail now.
->=20
-> I don't think we have a security bug right now, but the interfaces rega=
-rding
-> granting pages to other domains should probably be reworked like you su=
-ggest.
->=20
-> Currently it is the caller who needs to handle page references correctl=
-y,
-> while this should be done by the grant handling (having to either issue=
+The read result collection for buffered reads seems to run ahead of the
+completion of subrequests under some circumstances, as can be seen in the
+following log snippet:
 
-> get_page() or to pass NULL for the page pointer, in case you don't want=
- the
-> underlying page to be freed by gnttab_end_foreign_access(), is far from=
+    9p_client_res: client 18446612686390831168 response P9_TREAD tag  0 er=
+r 0
+    ...
+    netfs_sreq: R=3D00001b55[1] DOWN TERM  f=3D192 s=3D0 5fb2/5fb2 s=3D5 e=
+=3D0
+    ...
+    netfs_collect_folio: R=3D00001b55 ix=3D00004 r=3D4000-5000 t=3D4000/5f=
+b2
+    netfs_folio: i=3D157f3 ix=3D00004-00004 read-done
+    netfs_folio: i=3D157f3 ix=3D00004-00004 read-unlock
+    netfs_collect_folio: R=3D00001b55 ix=3D00005 r=3D5000-5fb2 t=3D5000/5f=
+b2
+    netfs_folio: i=3D157f3 ix=3D00005-00005 read-done
+    netfs_folio: i=3D157f3 ix=3D00005-00005 read-unlock
+    ...
+    netfs_collect_stream: R=3D00001b55[0:] cto=3D5fb2 frn=3Dffffffff
+    netfs_collect_state: R=3D00001b55 col=3D5fb2 cln=3D6000 n=3Dc
+    netfs_collect_stream: R=3D00001b55[0:] cto=3D5fb2 frn=3Dffffffff
+    netfs_collect_state: R=3D00001b55 col=3D5fb2 cln=3D6000 n=3D8
+    ...
+    netfs_sreq: R=3D00001b55[2] ZERO SUBMT f=3D000 s=3D5fb2 0/4e s=3D0 e=3D=
+0
+    netfs_sreq: R=3D00001b55[2] ZERO TERM  f=3D102 s=3D5fb2 4e/4e s=3D5 e=3D=
+0
 
-> intuitive).
+The 'cto=3D5fb2' indicates the collected file pos we've collected results =
+to
+so far - but we still have 0x4e more bytes to go - so we shouldn't have
+collected folio ix=3D00005 yet.  The 'ZERO' subreq that clears the tail
+happens after we unlock the folio, allowing the application to see the
+uncleared tail through mmap.
 
-Unfortunately, I don't think this is going to work.  Page refcounts
-are going away.  Taking a reference on kmalloc()'d memory already
-runs into a VM_BUG_ON_FOLIO().  So the only reasonable approach
-is a callback that is run when the grant is no longer accessible by
-the backend.  It could well be that this is another example of a bug
-in 9p that also affects virtio.
+The problem is that netfs_read_unlock_folios() will unlock a folio in whic=
+h
+the amount of read results collected hits EOF position - but the ZERO
+subreq lies beyond that and so happens after.
 
-More details about the memory management and
-virtio-9p situation can be found in the thread at
-<https://lore.kernel.org/lkml/20251210-virtio_trans_iter-1-1-92eee6d8b6db=
-@codewreck.org/t/#u>.
+Fix this by changing the end check to always be the end of the folio and
+never the end of the file.
 
-A much better API would allow the grantor of a page to revoke the
-grantee's access, with subsequent accesses by the grantee redirected
-to a scratch page.  For PVH/HVM guests I expect this to be possible,
-but for PV guests it would require Xen to modify the guest's own
-page tables.  My understanding is that this isn't allowed as it would
-break the guest.
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
---------------4YoX49qTQIA0OtTPwVPWuSpb
-Content-Type: application/pgp-keys; name="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+In the future, I should look at clearing to the end of the folio here rath=
+er
+than adding a ZERO subreq to do this.  On the other hand, the ZERO subreq =
+can
+run in parallel with an async READ subreq.  Further, the ZERO subreq may s=
+till
+be necessary to, say, handle extents in a ceph file that don't have any
+backing store and are thus implicitly all zeros.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+This can be reproduced by creating a file, the size of which doesn't align
+to a page boundary, e.g. 24998 (0x5fb2) bytes and then doing something
+like:
 
-xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49y
-B+l2nipdaq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYf
-bWpr/si88QKgyGSVZ7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/
-UorR+FaSuVwT7rqzGrTlscnTDlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7M
-MPCJwI8JpPlBedRpe9tfVyfu3euTPLPxwcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9H
-zx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR6h3nBc3eyuZ+q62HS1pJ5EvU
-T1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl5FMWo8TCniHynNXs
-BtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2Bkg1b//r
-6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
-9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nS
-m9BBff0Nm0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQAB
-zTxEZW1pIE9iZW5vdXIgKElUTCBFbWFpbCBLZXkpIDxhdGhlbmFAaW52aXNpYmxl
-dGhpbmdzbGFiLmNvbT7CwY4EEwEIADgWIQR2h02fEza6IlkHHHGyiLVf/5wiwQUC
-X6YJvQIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRCyiLVf/5wiwWRhD/0Y
-R+YYC5Kduv/2LBgQJIygMsFiRHbR4+tWXuTFqgrxxFSlMktZ6gQrQCWe38WnOXkB
-oY6n/5lSJdfnuGd2UagZ/9dkaGMUkqt+5WshLFly4BnP7pSsWReKgMP7etRTwn3S
-zk1OwFx2lzY1EnnconPLfPBc6rWG2moA6l0WX+3WNR1B1ndqpl2hPSjT2jUCBWDV
-rGOUSX7r5f1WgtBeNYnEXPBCUUM51pFGESmfHIXQrqFDA7nBNiIVFDJTmQzuEqIy
-Jl67pKNgooij5mKzRhFKHfjLRAH4mmWZlB9UjDStAfFBAoDFHwd1HL5VQCNQdqEc
-/9lZDApqWuCPadZN+pGouqLysesIYsNxUhJ7dtWOWHl0vs7/3qkWmWun/2uOJMQh
-ra2u8nA9g91FbOobWqjrDd6x3ZJoGQf4zLqjmn/P514gb697788e573WN/MpQ5XI
-Fl7aM2d6/GJiq6LC9T2gSUW4rbPBiqOCeiUx7Kd/sVm41p9TOA7fEG4bYddCfDsN
-xaQJH6VRK3NOuBUGeL+iQEVF5Xs6Yp+U+jwvv2M5Lel3EqAYo5xXTx4ls0xaxDCu
-fudcAh8CMMqx3fguSb7Mi31WlnZpk0fDuWQVNKyDP7lYpwc4nCCGNKCj622ZSocH
-AcQmX28L8pJdLYacv9pU3jPy4fHcQYvmTavTqowGnM08RGVtaSBNYXJpZSBPYmVu
-b3VyIChsb3ZlciBvZiBjb2RpbmcpIDxkZW1pb2Jlbm91ckBnbWFpbC5jb20+wsF4
-BBMBAgAiBQJafgNKAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRCyiLVf
-/5wiwYa/EACv8a2+MMou9cSCNoZBQaU+fTmyzft9hUE+0d5W2UY1RY3OsjFIzm9R
-/4SVccfsqOYLEo+S0vQMIIIqFEq3FCpXXwPzyimotps05VA8U3Bd7yseojFygOgK
-sAMOAee2RCaDDOnoJue01dfZMzzHPO/TVdp3OvnpWipfv5G1Xg96rwbhMLE3tg6N
-xwAHa31Bv4/Xq8CJOoIWvx6fcmZQpz01/lSvsYn0KrfEbTKkuUf0vM9JrCTCP2oz
-VNN5BYzqaq2M4r+jmSyeXLim922VOWqGkUEQ85BSEemqrRS06IU6NtEMsF8EWt/b
-hWjk/9GDKTcnpdJHTrMxTspExBiNrvpI2t+YPU5B/dJJAUxvmhFrbSIbdB8umBZs
-I3AMYrEmpAbh5x7jEjoskUC7uN3o9vpg1oCLS2ePDLtAtyBtbHnkA4xGD7ar8mem
-xpH9lY/i+sC6CyyIUWcUDnnagKyJP0m9ks0GLsTeOCA0bft2XA6rD6aaCnMUsndT
-ctrab42CV5XypjmC4U1rPJ8JQJUh1/3P48/8sMH+3krxpJ06KNWNFaUbaMTGiltZ
-7x9DngklSYrX0T+2G4kVXNmjaljwkoLahwLla2gUWwBSyofXdqyhQdwZsp01KXNQ
-UCyT/Pg+aDcm/E7OMV3d4lf7g/CSxiX2GSEe6BlhSz+Lmd7ZJ3g32M1ARGVtaSBN
-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
-EtJuZYM5blWncBOJCoWMnBEcTEo/viU3GgcVRw=3D=3D
-=3Dx94R
------END PGP PUBLIC KEY BLOCK-----
+    xfs_io -c "mmap -r 0 0x6000" -c "madvise -d 0 0x6000" \
+           -c "mread -v 0 0x6000" /xfstest.test/x
 
---------------4YoX49qTQIA0OtTPwVPWuSpb--
+The last 0x4e bytes should all be 00, but if the tail hasn't been cleared
+yet, you may see rubbish there.  This can be reproduced with kafs by
+modifying the kernel to disable the call to netfs_read_subreq_progress()
+and to stop afs_issue_read() from doing the async call for NETFS_READAHEAD=
+.
+Reproduction can be made easier by inserting an mdelay(100) in
+netfs_issue_read() for the ZERO-subreq case.
 
---------------3DjjrTYtUxIfPkonGj3cKuPy--
+AFS and CIFS are normally unlikely to show this as they dispatch READ ops
+asynchronously, which allows the ZERO-subreq to finish first.  9P's READ o=
+p is
+completely synchronous, so the ZERO-subreq will always happen after.  It i=
+sn't
+seen all the time, though, because the collection may be done in a worker
+thread.
 
---------------zP68rpYrZp0Uzl9j10Hk0qmJ
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Reported-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Link: https://lore.kernel.org/r/8622834.T7Z3S40VBb@weasel/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/read_collect.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index a95e7aadafd0..7a0ffa675fb1 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_r=
+equest *rreq,
+ 		rreq->front_folio_order =3D order;
+ 		fsize =3D PAGE_SIZE << order;
+ 		fpos =3D folio_pos(folio);
+-		fend =3D umin(fpos + fsize, rreq->i_size);
++		fend =3D fpos + fsize;
+ =
 
-iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmlGA6wACgkQszaHOrMp
-8lMpmBAAgy+iuRkmwzbFoi5gqc2Swp1Y3kFp9U0VOm2xjId4N7bh7+AhZU8/Nfpn
-8lhIWoIeAiF4lCFGFQQI2WIrxZ/uBwjEexw1XBVJZO5nlk5MzGzp0TC8uS78lx6/
-5QzZDmteNlyEpblD8SYQ7rP39iScnaVKnFj3pwjn0vGvZIt8T2JPsXzquOSYe65j
-tyBZNVQS9Ck/T6jII9PJvu3fZU5tLLl0orXf6lr9rpqjkwq3y3OtXSq9XnS70t9I
-ZzxfsuN1HSvGvM85UVpOfJGTZzjDLQcEkZBUdhJ5Znxw2txo5Krwj+X4n5/1LsDw
-Hw6WAMGvUxiOG2wfh20yekUbwE4mEWV5i+xCSTGJ+vZytsVJ0Q9egMFH6yEGjKcu
-4bQ1+Q5Op3vatIgGBvAy5mgA4qj8yHr+N1CF70pv3PJvLah4zCwTqoQT7Vp66aH0
-iCGwHR3EoqOs/RyqyYWCYTJvZJJKayk+XVzTQazZMOyQNvp+FPjNR864dULRbQKq
-NKItJk+Ouv0XiSYSajLLYaSKkUWYtEARPZMBcz1oxdnlJAWdFg3SHx79lONCvPTp
-fMfYdQ/qZW2cF/ylQE97UyH/OCVuEyndxCqB7PaQFzJvmxHyJC96EHE3TzA9d44g
-Nf59kfbi71byZPLTKr6ctdmg05jJNJ8vM8QM++4AwPdLrbSF4uU=
-=si8/
------END PGP SIGNATURE-----
+ 		trace_netfs_collect_folio(rreq, folio, fend, collected_to);
+ =
 
---------------zP68rpYrZp0Uzl9j10Hk0qmJ--
