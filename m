@@ -1,102 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0E1315765;
-	Wed, 24 Dec 2025 12:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C43C27467F
+	for <v9fs@lists.linux.dev>; Wed, 24 Dec 2025 14:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766579485; cv=none; b=JyAhqjOiBrnONeroISRZcw9tyiWRJQrO4sKPean9BoYpHA9PwMttWik7O5IiClt/m/ixDPhZ3ZV8L3fCnHRe5kgUsDBdyXNo5CFk36f+P5/Pkg2ZTbTNpgP75JiiUftxNnH74M8aYmuYZ7pDVsnU3FPMSYDgEx0E+YpgX7F1rZs=
+	t=1766586564; cv=none; b=d9EGz7ZE+GnbPEX9Wi7Yo+/Cabvdn9Tydvxy/dpV5Qcu3rKteZK3uCxqPjoT6vfGvkdTVrDtkhIpZImLQm5SF6xanDNw9qXoeIr8NPmQt8F9CrBijw5PTuRKXCGU78VqT0neBXe2wc6hcQq6XtFAusCEjrFUGd8TZUEfopW0HGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766579485; c=relaxed/simple;
-	bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GwgoltHxISw4Gh6fNRvd0cbBOhVT4KaRZwpc7a2COfd2UMJCnH5JuARuMOg9hR7y9iJvog/OwLkh4DMmc/QYlN0Bjk/qsYkro605KPLoqiFbU+uaG4XtvLsO5+nLR8nNiFdRLeazvZWUWi+FNdWTTUDW0Dn9OgSCKq/EgCVMXq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kE1sijUa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766586564; c=relaxed/simple;
+	bh=UY7r9ZHLh6WvHFhbYzjaIxcCCpxgW/ob4sUXK+Gc3Gw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:Subject:Content-Type; b=uhKr0Ao/Kc5Cnb/KFq9LZQblz7H8Ug2zzfCeUSzzIPXGWDBePsmC/fjHjFNmfLR5G9R4wlMuf0FTsrZVsWI+3eAZ5Ym+vJlQhCBWsGQQO+Cpud+SfLUCZ9fQnKA9qAUVy1CItUIPSRRZkl90bjoo//k083u4ncNcckv/k2x+Tac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=GSbICQnM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ro2C8Src; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kE1sijUa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A178C19421;
-	Wed, 24 Dec 2025 12:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766579484;
-	bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kE1sijUaDNKRy2uClNM15cW5Wa3Iloo5Flu8VR2jjbJWn+m4OdyOkbYvnOmOWTzfI
-	 +Lyf+0qfVFQ/aafBcqPQukxxdlIbeKrYod1ey7FNvDrcK7XOlKqxwgbgpAw/tq/iWT
-	 19k1PVui5xuUvZffDcckOqdklP0dbTJgtkckUZo5Mf9GoWL7bnjC8yYxsxA91/VcUK
-	 RnlIi5T2IJvxPb7uuU97r6OpfgiUvB45cuk/Jc3bG3OcEJkSsgL6deiTE0pNciKJV2
-	 0LsDXQK+E3OUapUigErrE/liMT6k4/PqonyJdvx6wtAEFgXsB1WuQtQ/y3r/9qQLG+
-	 jN5zOE9rNNa0Q==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Chris Arges <carges@cloudflare.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <sfrench@samba.org>,
-	v9fs@lists.linux.dev,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix early read unlock of page with EOF in middle
-Date: Wed, 24 Dec 2025 13:31:14 +0100
-Message-ID: <20251224-petrischalen-abtreiben-c023b9242319@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <938162.1766233900@warthog.procyon.org.uk>
-References: <938162.1766233900@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="GSbICQnM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ro2C8Src"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 670C8EC032F;
+	Wed, 24 Dec 2025 09:29:22 -0500 (EST)
+Received: from phl-imap-04 ([10.202.2.82])
+  by phl-compute-06.internal (MEProxy); Wed, 24 Dec 2025 09:29:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm3; t=1766586562; x=1766672962; bh=U4
+	wc0PyuiKLhULiv+pIMbDFV7iBxSAoG8+KAJ8PDxHE=; b=GSbICQnMFhUpOChOG8
+	ORqVjn8dM097lFvOYYV/02E/gi3S/3fP1ZSpg+p3swMuAWY8Iptcmb4/2W3l9iTR
+	Xvo1ZRdaBjijSNbFlUyOc8zbi6g4S4Fz762Z6rfQpTRlpa4I1s+gEPiAf6Tn3B8e
+	yRjBEnUd2eNVliSsXUUAAhcBz/vhD94fKKJbavg6FzMCGr0lDXzy8/jiGImVgj2/
+	i9zMzOI7AW+uEk5kMyfV1Anse4K9ajf4nNrJ76edE4EjJ9Pn9/r+3hKvCe5Xrcc5
+	ZPS6h+ZTQ4Eo2NY1A2Lbb+alrCEETVFGvLQmyE8e/YzQ96Pp64MPssiyIa1JkZ/3
+	JXzw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1766586562; x=1766672962; bh=U4wc0PyuiKLhULiv+pIMbDFV7iBx
+	SAoG8+KAJ8PDxHE=; b=Ro2C8Srcu/CEgfwYyBP9HX63rWcVktkmSGFxsHK5OOUq
+	pM0+Jj8Z/TOsdfKp5V8dp6IH+OLAu9dj7xbDf8uCM1J2lxZxk/2NWZTMlhEqjmFu
+	yWuQ+RHVOP4JJ3Pad4b1FKC/30+aSu1gJe/eeyXxFw8ZkBjoQzD14A/tH0XEIwPG
+	b6on2xYXlXiK4vVYVDlb7uXeyt5HHS9FQcnP+gC2AZOTYx7k/AwDDd9tPtp69fw7
+	0Hi8IMEs96e47Nv5yrO6H3+sW5elg4Q6BP20MjId5exl+kCfN8/m+Cl6x5yQ3+Ca
+	ZtaCeTkonGo1uQ1s+BaLNOQW0ZxbcTAn/3PYX7vw9g==
+X-ME-Sender: <xms:wvhLaXL9Pfh_xYXjyY0MT9IWUpFS5wEHN46Mk53w2C_8cTtMEa6QVw>
+    <xme:wvhLaV8pwMC1awhR6TOqJc1BDxM8FkkldzOfGYgxyzHEVJZycHhtdM8qdfBmzPCL2
+    LrpfuhpPfpq-mTYkRxiXcht3gZBGzOThdXRrbPZvdOGuUMr7TP2Eb9z>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeivdelgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvfevkffutgfgsehtjeertdertd
+    dtnecuhfhrohhmpedfrfhivghrrhgvuceurghrrhgvfdcuoehpihgvrhhrvgessggrrhhr
+    vgdrshhhqeenucggtffrrghtthgvrhhnpeejffeugffgueeihedtgeefudejkeetudfghf
+    egudekgeefgefgleduhfetfefhkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
+    mhepmhgrihhlfhhrohhmpehpihgvrhhrvgessggrrhhrvgdrshhhpdhnsggprhgtphhtth
+    hopeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushestgho
+    uggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhigpghoshhssegtrhhuuggvsg
+    ihthgvrdgtohhmpdhrtghpthhtoheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghp
+    thhtohepvghrihgtvhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsheslh
+    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhes
+    vhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:wvhLaZGyiqP5Vnz2NWLNqjiG6vN-jBqIc4UF3I_C5T8QYTCXdiwxYw>
+    <xmx:wvhLaVvEMKifDcUaJt9UwL8cwzbWOlVlxXrQK3ICbnQryRg5C6OPQg>
+    <xmx:wvhLaQth31lgHU2dmvs8-TNLco005iJXqH01rB-rbN_hc6FGA-WcRQ>
+    <xmx:wvhLabAPtODtN-zNTbTfDh45BuHLF8y68xD-vmVVym54TTjfr8Q8cA>
+    <xmx:wvhLaXsYc3QZ6an5KVUcbh2ujvW2gJSbRVSX9eOm7kEj1HDofFfITLmM>
+Feedback-ID: i97614980:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3176CB6006E; Wed, 24 Dec 2025 09:29:22 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1975; i=brauner@kernel.org; h=from:subject:message-id; bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR63xWR1tC5vbRLfbpM9WEmnplbNTK5xCe3JtpYRcx5E dLJlc7ZUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJFAY0aGD1v6JA4c8NiUmq5y ZrK3LOOrG+/UnmgtaBNbvk1eNtfJj+GfrW26z1KxVZsiGbpmulun+Cq2pz2+K5d7IPSefMmynTc 4AQ==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+x-forwarded-message-id: 
+ <c03bb61c-88a5-420e-acd5-d45ef43676b7@app.fastmail.com>
+Date: Wed, 24 Dec 2025 15:29:01 +0100
+From: "Pierre Barre" <pierre@barre.sh>
+To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org
+Cc: linux_oss@crudebyte.com, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Message-Id: <aea6cd1d-ff2b-4288-8196-edfdfd1539f6@app.fastmail.com>
+Subject: [BUG] 9p: data corruption with cache=mmap under concurrent stat/write
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Sat, 20 Dec 2025 12:31:40 +0000, David Howells wrote:
-> The read result collection for buffered reads seems to run ahead of the
-> completion of subrequests under some circumstances, as can be seen in the
-> following log snippet:
-> 
->     9p_client_res: client 18446612686390831168 response P9_TREAD tag  0 err 0
->     ...
->     netfs_sreq: R=00001b55[1] DOWN TERM  f=192 s=0 5fb2/5fb2 s=5 e=0
->     ...
->     netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
->     netfs_folio: i=157f3 ix=00004-00004 read-done
->     netfs_folio: i=157f3 ix=00004-00004 read-unlock
->     netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
->     netfs_folio: i=157f3 ix=00005-00005 read-done
->     netfs_folio: i=157f3 ix=00005-00005 read-unlock
->     ...
->     netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
->     netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
->     netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
->     netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
->     ...
->     netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
->     netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
-> 
-> [...]
+Hi,
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+I'm hitting data corruption using 9p with cache=mmap when stat() is called concurrently with writes.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Environment:
+- Kernel: v6.18.1-061801
+- Mount options: cache=mmap
+- Transport: unix
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Reproducer:
+1. Mount 9p filesystem with cache=mmap
+2. Run PostgreSQL with data directory on 9p mount
+3. Run pgbench workload
+4. Simultaneously run `watch -n 0.1 tree -ah` on the data directory
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+PostgreSQL reports:
+  ERROR: unexpected data beyond EOF in block N of relation "..."
+  HINT: This has been seen to occur with buggy kernels
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+Analysis:
 
-[1/1] netfs: Fix early read unlock of page with EOF in middle
-      https://git.kernel.org/vfs/vfs/c/570ad253a345
+The issue appears to be race conditions in getattr/setattr when using
+writeback caching:
+
+1. v9fs_vfs_getattr_dotl() condition checks `v9ses->cache` instead of
+   `v9ses->cache & CACHE_WRITEBACK`, triggering writeback flush for
+   any cache mode
+2. Both getattr and setattr call filemap_fdatawrite() which initiates
+   writeback but doesn't wait for completion. The subsequent server
+   stat/wstat sees stale file size.
+
+Would using filemap_write_and_wait() instead be the correct fix?
+
+Thanks,
+Pierre Barre
