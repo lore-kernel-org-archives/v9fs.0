@@ -1,99 +1,100 @@
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE1B346E59
-	for <v9fs@lists.linux.dev>; Wed, 21 Jan 2026 19:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9632C08AB;
+	Wed, 21 Jan 2026 19:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769024438; cv=none; b=MUCSo2qAIZyxgKVk4F3t6ACBj6Dk/hm7wyuHM8z6JNjTa5bsVRyLVQnxuK3ODMW/nbDwNgN+uwQl7NcuiTadI4u8RYq78Dd5ydDa0mZ88IvcXetUe/7NptPuBcDtV9tQ/2gNTRfEpEX9mXnwzlI/KIMhRdKC2S93mj1exFTsx/E=
+	t=1769024621; cv=none; b=MArAIdV3IqH2x55hGd6oKl8KotUvKF10VuuDN/CsQNPnWMkQiB1aWRxqakhVgdHFs5iWeuL9KXmvOeiBrb8RVznC7Yuj+BMy/qPu+6h7YiM+Mj8k88TKoVOI8/x9sj+VnUfLiEJquWkJ6sI21OMiM6ql+MrsQ6DBgiW3ffcROWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769024438; c=relaxed/simple;
-	bh=S3hxWCQPMT8XIQzsU477HCdlF2KOvOQcuSSHK1nzbBA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMD5BBJ9w7st0dcFW25hLPyYS6BchbXDQJVpuSMD1wR1NysQCHo/O6i8h5MiJIbzrnbMWiHWzW8YaZmoJmEbsyrLL1+M1XzdgHEySsszTuCFFujtNrrtkz8l2znHsQ9lMGK094uOU6fkac2SuM+zZzfVtjnJB519Q25vBHWGoy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=fho0111T reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=dLJq+w3S; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+	s=arc-20240116; t=1769024621; c=relaxed/simple;
+	bh=WNtkf6/W+a8tRyxaDZhIX9sWX7TczseGjxUye2O8yOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nqEitUdhJ2YBxBJ5Sn9yexF98AKUS56GDWVhgEpOjzRLANrlLC5PFY9auDtqThu6pxm+2qjVBepMsCIpMlVHrKkvxV5mhnW1xPT3mzvQNBkHfdwn/rCjjGfkCauHCrUJANNqGZkEWk1t0mGnCAm/kttH0DQ1Ndkvu1kjGErc4co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NpsExNBu; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="fho0111T";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="dLJq+w3S"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NpsExNBu"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1769025335; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=/OSCX664UbG6WyfoVOW1dP6q4L9KvL6tcvUejq4tXGY=; b=fho0111T5bnRtCG9YmjD23drF7
-	de+tsC/ckfkCXYL0M1CrkHXkaiX8o8YLQrryeB8lXh89F84jPXibFGZN83XjilMsoA8HK9Es2iY7h
-	Iue5DlZodxUqGW56HExGP5GtwkkASDttl25A2BGKQCe9c+DGqrQxEOGNRTpZLI2i5pLwbFxCl3Vtk
-	7GcCelcf10TSCHPYoqTEHIx36TsSJxAi6vKbgU+3kDcmBLWzcT8HUf7LqNcXnLxovF6F2jDb/XYRo
-	Dro3UMaYGi/z+36TlPCYVVmC+FR+o6gqvmE7jdUkGqV70MQ+N3UZ/WPX1XpObNa4gFk1P2fVi5LzQ
-	U++pqQaA==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1769024435; h=from : subject
- : to : message-id : date;
- bh=/OSCX664UbG6WyfoVOW1dP6q4L9KvL6tcvUejq4tXGY=;
- b=dLJq+w3SjMhPdsd3Xild/QFlop6I7VfIbEPcbPYpIOg95hSLWIn++Vx5e+j5ZSSE7vuiG
- kyRXvo32SuEsIeYli14tWFRgzDOU9QYekbbJrTEd1eEy6fi7CHZQtzQKU/5u69w0m0AQGDJ
- FKOgih7+vCm4XVAC5PflrhwNzzIYBvZjYvHNBHF7rf+KWKA+jim0XHu5hbeD/TtrQfeAyA2
- R1C7jlhuOi75+Df4FtjGQZcJkVMhaAxODHx/vPejMQDKgB4CJhOJ/bavY6Jd6Ouu1J0v7N7
- C9Nb7QuxiQN1Oc1ykzpK+/pHfTK7oQ0VIwO6ITHuey+qdG08rEISF30VpazA==
-Received: from [10.139.162.187] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vie3n-TRjx7e-LU; Wed, 21 Jan 2026 19:40:11 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.98.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vie3n-4o5NDgrkeP7-lgVq; Wed, 21 Jan 2026 19:40:11 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- v9fs@lists.linux.dev
-Cc: Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH 2/2] 9p: Track 9P RPC waiting time as IO
-Date: Wed, 21 Jan 2026 20:21:59 +0100
-Message-ID: <47f0b44f159084f4032a9424e0e2e586b8640a12.1769009696.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1769009696.git.repk@triplefau.lt>
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HMG8k455f7tE91ouMSuYF+NGd0zzTpmcJ48fETxJSJI=; b=NpsExNBulsnwMrThqHDHUx0czG
+	YlhBvEj0qncI88W+pJ4aQIhb1DN5Os5we1y6Mc1L7JMnL2qAAvnxJ5FuPYOSMvwSuggBVNn8A59WJ
+	Bd4OycZSIYdHUWqlJ9ZhAtcssffMs8qto++axD0tsBDEw0AE0CXYAevsOicaOFZax3CzpsSQT4MfC
+	O+6Tmu4N6IP1U+u7s/oZJktzE5UlF27XqMxejl2iqzTzbhZNiEnhHgF2NcZS2yjfsDvjOqv5xikjl
+	mjqEocw/8tZk/ZHrq8w1en9o8OQJwQl79lcnIEO/eSj8hN1MZSOqNvBFBjd2QNUE5wVYH1Gt+P+Cy
+	xCcQd71Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vie74-0000000GiYM-43HW;
+	Wed, 21 Jan 2026 19:43:35 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 05694300328; Wed, 21 Jan 2026 20:43:34 +0100 (CET)
+Date: Wed, 21 Jan 2026 20:43:33 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Remi Pommarel <repk@triplefau.lt>
+Cc: Ingo Molnar <mingo@redhat.com>, v9fs@lists.linux.dev,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] wait: Introduce io_wait_event_killable()
+Message-ID: <20260121194333.GO166857@noisy.programming.kicks-ass.net>
 References: <cover.1769009696.git.repk@triplefau.lt>
+ <1b2870001ecd34fe6c05be2ddfefb3c798b11701.1769009696.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Smtpcorp-Track: C9deZWzgpoQ3.Mz6NMpQoeAQw.OvVRrg8sq6S
-Feedback-ID: 510616m:510616apGKSTK:510616s9QkJ0c_51
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1b2870001ecd34fe6c05be2ddfefb3c798b11701.1769009696.git.repk@triplefau.lt>
 
-Use io_wait_event_killable() to ensure that time spent waiting for 9P
-RPC transactions is accounted as IO wait time.
+On Wed, Jan 21, 2026 at 08:21:58PM +0100, Remi Pommarel wrote:
+> Add io_wait_event_killable(), a variant of wait_event_killable() that
+> uses io_schedule() instead of schedule(). This is to be used in
+> situation where waiting time is to be accounted as IO wait time.
+> 
+> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
- net/9p/client.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index f60d1d041adb..1b475525ac5b 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -590,8 +590,8 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
- 	}
- again:
- 	/* Wait for the response */
--	err = wait_event_killable(req->wq,
--				  READ_ONCE(req->status) >= REQ_STATUS_RCVD);
-+	err = io_wait_event_killable(req->wq,
-+				     READ_ONCE(req->status) >= REQ_STATUS_RCVD);
- 
- 	/* Make sure our req is coherent with regard to updates in other
- 	 * threads - echoes to wmb() in the callback
--- 
-2.50.1
-
+> ---
+>  include/linux/wait.h | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/include/linux/wait.h b/include/linux/wait.h
+> index f648044466d5..dce055e6add3 100644
+> --- a/include/linux/wait.h
+> +++ b/include/linux/wait.h
+> @@ -937,6 +937,21 @@ extern int do_wait_intr_irq(wait_queue_head_t *, wait_queue_entry_t *);
+>  	__ret;									\
+>  })
+>  
+> +#define __io_wait_event_killable(wq, condition)					\
+> +	___wait_event(wq, condition, TASK_KILLABLE, 0, 0, io_schedule())
+> +
+> +/*
+> + * wait_event_killable() - link wait_event_killable but with io_schedule()
+> + */
+> +#define io_wait_event_killable(wq_head, condition)				\
+> +({										\
+> +	int __ret = 0;								\
+> +	might_sleep();								\
+> +	if (!(condition))							\
+> +		__ret = __io_wait_event_killable(wq_head, condition);		\
+> +	__ret;									\
+> +})
+> +
+>  #define __wait_event_state(wq, condition, state)				\
+>  	___wait_event(wq, condition, state, 0, 0, schedule())
+>  
+> -- 
+> 2.50.1
+> 
