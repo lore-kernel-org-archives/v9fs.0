@@ -1,49 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C467F394487;
-	Thu, 15 Jan 2026 16:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE1B346E59
+	for <v9fs@lists.linux.dev>; Wed, 21 Jan 2026 19:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496187; cv=none; b=IRL172uKCuipDx9yHCsuiH2By5FUyeFdRCyKNgN8y7ZWP2zcfrwsPPrcuGT34D/WB1W8EnYpy52Pq2eINCq/IH+vjlGw0CyNTEFEMMxQabTzJpU/DOBXuD5s/eTthwozUOcHNvwWLtv+qHYRby6347sVQU3F0zC66/ruOKt6myk=
+	t=1769024438; cv=none; b=MUCSo2qAIZyxgKVk4F3t6ACBj6Dk/hm7wyuHM8z6JNjTa5bsVRyLVQnxuK3ODMW/nbDwNgN+uwQl7NcuiTadI4u8RYq78Dd5ydDa0mZ88IvcXetUe/7NptPuBcDtV9tQ/2gNTRfEpEX9mXnwzlI/KIMhRdKC2S93mj1exFTsx/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496187; c=relaxed/simple;
-	bh=LWNuQ48QC0Di+/AXHivZoyHcMZdYkIpnFgcaIBbdUuc=;
+	s=arc-20240116; t=1769024438; c=relaxed/simple;
+	bh=S3hxWCQPMT8XIQzsU477HCdlF2KOvOQcuSSHK1nzbBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxjrNL3MLrc/A7MP0YrtOEZNBDyTxUjJ+c1CDaipFoIwcdG+LIBmZNClhOFVur6bPfGHBgBF/Z/YHeN3h2kSn+pwFez34oMbp3LEsEqStKVgOuiAngBWifjg8EaSGBE0wjQ7xbDkZ7Th+u+b2YrV8jeQXdCy2UdQtoNwnLg2I6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThwEvD+1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=bMD5BBJ9w7st0dcFW25hLPyYS6BchbXDQJVpuSMD1wR1NysQCHo/O6i8h5MiJIbzrnbMWiHWzW8YaZmoJmEbsyrLL1+M1XzdgHEySsszTuCFFujtNrrtkz8l2znHsQ9lMGK094uOU6fkac2SuM+zZzfVtjnJB519Q25vBHWGoy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=fho0111T reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=dLJq+w3S; arc=none smtp.client-ip=103.2.141.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThwEvD+1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A742C116D0;
-	Thu, 15 Jan 2026 16:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496187;
-	bh=LWNuQ48QC0Di+/AXHivZoyHcMZdYkIpnFgcaIBbdUuc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThwEvD+1SCijQdsCbKReOJ6RWF+v5VbG1DsOcUtbKR7lu+SDqHvypfxJruo8c2hjf
-	 OxleZL3ky3JnSYksxJclc+4xJxwUH1oqshlZoUB/QtMq3o9ULtE2GupDeaIeFACe0S
-	 fM855qw/um1dha3/sJ5kfxygJghgmko+GqUDLNlo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Howells <dhowells@redhat.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	v9fs@lists.linux.dev,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 076/181] netfs: Fix early read unlock of page with EOF in middle
-Date: Thu, 15 Jan 2026 17:46:53 +0100
-Message-ID: <20260115164205.066104007@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="fho0111T";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="dLJq+w3S"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1769025335; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=/OSCX664UbG6WyfoVOW1dP6q4L9KvL6tcvUejq4tXGY=; b=fho0111T5bnRtCG9YmjD23drF7
+	de+tsC/ckfkCXYL0M1CrkHXkaiX8o8YLQrryeB8lXh89F84jPXibFGZN83XjilMsoA8HK9Es2iY7h
+	Iue5DlZodxUqGW56HExGP5GtwkkASDttl25A2BGKQCe9c+DGqrQxEOGNRTpZLI2i5pLwbFxCl3Vtk
+	7GcCelcf10TSCHPYoqTEHIx36TsSJxAi6vKbgU+3kDcmBLWzcT8HUf7LqNcXnLxovF6F2jDb/XYRo
+	Dro3UMaYGi/z+36TlPCYVVmC+FR+o6gqvmE7jdUkGqV70MQ+N3UZ/WPX1XpObNa4gFk1P2fVi5LzQ
+	U++pqQaA==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1769024435; h=from : subject
+ : to : message-id : date;
+ bh=/OSCX664UbG6WyfoVOW1dP6q4L9KvL6tcvUejq4tXGY=;
+ b=dLJq+w3SjMhPdsd3Xild/QFlop6I7VfIbEPcbPYpIOg95hSLWIn++Vx5e+j5ZSSE7vuiG
+ kyRXvo32SuEsIeYli14tWFRgzDOU9QYekbbJrTEd1eEy6fi7CHZQtzQKU/5u69w0m0AQGDJ
+ FKOgih7+vCm4XVAC5PflrhwNzzIYBvZjYvHNBHF7rf+KWKA+jim0XHu5hbeD/TtrQfeAyA2
+ R1C7jlhuOi75+Df4FtjGQZcJkVMhaAxODHx/vPejMQDKgB4CJhOJ/bavY6Jd6Ouu1J0v7N7
+ C9Nb7QuxiQN1Oc1ykzpK+/pHfTK7oQ0VIwO6ITHuey+qdG08rEISF30VpazA==
+Received: from [10.139.162.187] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vie3n-TRjx7e-LU; Wed, 21 Jan 2026 19:40:11 +0000
+Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.98.1-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vie3n-4o5NDgrkeP7-lgVq; Wed, 21 Jan 2026 19:40:11 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ v9fs@lists.linux.dev
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH 2/2] 9p: Track 9P RPC waiting time as IO
+Date: Wed, 21 Jan 2026 20:21:59 +0100
+Message-ID: <47f0b44f159084f4032a9424e0e2e586b8640a12.1769009696.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1769009696.git.repk@triplefau.lt>
+References: <cover.1769009696.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -51,111 +66,34 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Smtpcorp-Track: C9deZWzgpoQ3.Mz6NMpQoeAQw.OvVRrg8sq6S
+Feedback-ID: 510616m:510616apGKSTK:510616s9QkJ0c_51
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+Use io_wait_event_killable() to ensure that time spent waiting for 9P
+RPC transactions is accounted as IO wait time.
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit 570ad253a3455a520f03c2136af8714bc780186d ]
-
-The read result collection for buffered reads seems to run ahead of the
-completion of subrequests under some circumstances, as can be seen in the
-following log snippet:
-
-    9p_client_res: client 18446612686390831168 response P9_TREAD tag  0 err 0
-    ...
-    netfs_sreq: R=00001b55[1] DOWN TERM  f=192 s=0 5fb2/5fb2 s=5 e=0
-    ...
-    netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
-    netfs_folio: i=157f3 ix=00004-00004 read-done
-    netfs_folio: i=157f3 ix=00004-00004 read-unlock
-    netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
-    netfs_folio: i=157f3 ix=00005-00005 read-done
-    netfs_folio: i=157f3 ix=00005-00005 read-unlock
-    ...
-    netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
-    netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
-    netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
-    netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
-    ...
-    netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
-    netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
-
-The 'cto=5fb2' indicates the collected file pos we've collected results to
-so far - but we still have 0x4e more bytes to go - so we shouldn't have
-collected folio ix=00005 yet.  The 'ZERO' subreq that clears the tail
-happens after we unlock the folio, allowing the application to see the
-uncleared tail through mmap.
-
-The problem is that netfs_read_unlock_folios() will unlock a folio in which
-the amount of read results collected hits EOF position - but the ZERO
-subreq lies beyond that and so happens after.
-
-Fix this by changing the end check to always be the end of the folio and
-never the end of the file.
-
-In the future, I should look at clearing to the end of the folio here rather
-than adding a ZERO subreq to do this.  On the other hand, the ZERO subreq can
-run in parallel with an async READ subreq.  Further, the ZERO subreq may still
-be necessary to, say, handle extents in a ceph file that don't have any
-backing store and are thus implicitly all zeros.
-
-This can be reproduced by creating a file, the size of which doesn't align
-to a page boundary, e.g. 24998 (0x5fb2) bytes and then doing something
-like:
-
-    xfs_io -c "mmap -r 0 0x6000" -c "madvise -d 0 0x6000" \
-           -c "mread -v 0 0x6000" /xfstest.test/x
-
-The last 0x4e bytes should all be 00, but if the tail hasn't been cleared
-yet, you may see rubbish there.  This can be reproduced with kafs by
-modifying the kernel to disable the call to netfs_read_subreq_progress()
-and to stop afs_issue_read() from doing the async call for NETFS_READAHEAD.
-Reproduction can be made easier by inserting an mdelay(100) in
-netfs_issue_read() for the ZERO-subreq case.
-
-AFS and CIFS are normally unlikely to show this as they dispatch READ ops
-asynchronously, which allows the ZERO-subreq to finish first.  9P's READ op is
-completely synchronous, so the ZERO-subreq will always happen after.  It isn't
-seen all the time, though, because the collection may be done in a worker
-thread.
-
-Reported-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Link: https://lore.kernel.org/r/8622834.T7Z3S40VBb@weasel/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/938162.1766233900@warthog.procyon.org.uk
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Tested-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Acked-by: Dominique Martinet <asmadeus@codewreck.org>
-Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: v9fs@lists.linux.dev
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
- fs/netfs/read_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/9p/client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index a95e7aadafd07..7a0ffa675fb17 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
- 		rreq->front_folio_order = order;
- 		fsize = PAGE_SIZE << order;
- 		fpos = folio_pos(folio);
--		fend = umin(fpos + fsize, rreq->i_size);
-+		fend = fpos + fsize;
+diff --git a/net/9p/client.c b/net/9p/client.c
+index f60d1d041adb..1b475525ac5b 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -590,8 +590,8 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
+ 	}
+ again:
+ 	/* Wait for the response */
+-	err = wait_event_killable(req->wq,
+-				  READ_ONCE(req->status) >= REQ_STATUS_RCVD);
++	err = io_wait_event_killable(req->wq,
++				     READ_ONCE(req->status) >= REQ_STATUS_RCVD);
  
- 		trace_netfs_collect_folio(rreq, folio, fend, collected_to);
- 
+ 	/* Make sure our req is coherent with regard to updates in other
+ 	 * threads - echoes to wmb() in the callback
 -- 
-2.51.0
-
-
+2.50.1
 
