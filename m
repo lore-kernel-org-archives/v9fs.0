@@ -1,64 +1,76 @@
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010053.outbound.protection.outlook.com [52.101.61.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20D02F25E4
-	for <v9fs@lists.linux.dev>; Fri, 23 Jan 2026 15:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769180781; cv=none; b=ZZU6fNP4VasPpMUU003mPTcAS9iym7+2ps06MK/K1N4ARMfdfK4CidGVLQYOfv74K3kaOlAkVf/Fp9xx7CEe0tjqHXQLK88KxSFOmpal/BzH8XPgKy3PXIv5E6//X0t+biP7sMMfhRE+8VO+8mLGQN2AXdWzKCMfNrvz2rFmxdo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769180781; c=relaxed/simple;
-	bh=XtiAGoBQ1blzOcjTq8pgxagTyavwnvETQwdQ0jnB2rA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNRvVOEmD9JXAJSqbtKakzGUkxx+LjEo7BMsW0ri9HUmULSr9YpBycwbe+WJr8jsUZv2XpKBbWQH537/ZGOnkQWCnRhjVC1vg1AUiTovbUbb4O72zZnrSJvFrCBYhvmtsnkwcOkUjCmh0BJRZmPjD0ghwWMTR3JcpOuYDgyXjxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=2AS9Mhjz reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=koDZOJc5; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AE13EBF36
+	for <v9fs@lists.linux.dev>; Fri, 23 Jan 2026 18:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769193626; cv=fail; b=YBYEw9PNAV6SC3LuKcqiJYwpDcg6zAGFR865vJf0HKMDQRxMvdYBcezJzicxi/CF+SfkTylWgwOvrCpzS+BukBI0RR/g75hMHZ34W3YRnhloBDuSBfaSUvJbsvpxvdZYdp56JxDgK9IPf7ZTUWFnIfmrC6bhr3KvjbfSh2li5zU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769193626; c=relaxed/simple;
+	bh=3+EyizsPS8KpFU12NIWLv5Bi8Kz/thYcyY9SLBGUYNc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VxzVjYiQKhIBx3S8QNejKSDfief0SpaGzteU111eDlFIHIdR13v1RHcV2e6LYb94ZDbi40W+uvA5n9UtCnZX4vLgdDcfrySx10QSbh4UXzcquRpQ5TVwtJP6V8IKaNVqbmLzD8PUbDsnQ7b/pFBh8OWdk5nzvHALA6ljy3rnDOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=J2hlSOqI; arc=fail smtp.client-ip=52.101.61.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="2AS9Mhjz";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="koDZOJc5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1769181677; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=5hlZx6sa9MG8kpnxvIumfa5wATQurfzuGf1yx1tG58U=; b=2AS9Mhjz78ePn3WMtyJhB39VGx
-	XA0lJRClr2OaJHAOANA4H/BG1DfWYlbmw1rd2zeSqjLw/TCz/ud/+ix+vgxLOhZoYmMZTllnMG6kJ
-	h1kMB5Uukb1b7KoMudmGxIzbY4PDRMcWEO31i2lG9dTkqnplyzfnpr2CSPCNyksYLliaQg88NLxM5
-	AExQ5P4fSk2yIewmZXC1X55crjjV6hEg7w5SqgFUE+t5WUm5qAQrvyTP3nm7Xx2XOEWd0vxaS8SyL
-	1ERNj+vUjZ1u6SLdUyrHfhiPGHjnYv9cE9A1khNATunw5ExwSy+dqbmu1NRP8BViHy6wbEhMB2GrM
-	sCafJb8w==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1769180777; h=from : subject
- : to : message-id : date;
- bh=5hlZx6sa9MG8kpnxvIumfa5wATQurfzuGf1yx1tG58U=;
- b=koDZOJc5JnECxH5p7vAWTpJb0gp+JWbgf7boSADxDC5cKimVTReabhp/ssU0V5Cf31ytR
- ZccJ0UxpSZxlP12fGraiB0gx9VODiqyL7a8R7LuOXMJ1pYbotCiHOTsTyg/sYOiHUxU1o/4
- oebt1ggWmmFVsbwglHDS/FfyAuzdZYl4zJwssrZpoVU6zZAS+QX5NDEhyGKAk9xrU+UsCy/
- aEN8LELwwVzDNEYPmunDWQ452zpL1Pp+/WyHGVVZaqRcjXKzuc2aapFhQNF+IPEGT0DK7+P
- tSy1X9kmV7ubxV/70E1AqPHO6GVZgloOWZsvrE0J2uT7zWi1oUoMzbd2b6fA==
-Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vjIjN-TRk3Nn-Sa; Fri, 23 Jan 2026 15:05:49 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.98.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vjIjN-AIkwcC8p21S-ImA4; Fri, 23 Jan 2026 15:05:49 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- v9fs@lists.linux.dev
-Cc: Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v2 1/2] wait: Introduce io_wait_event_killable()
-Date: Fri, 23 Jan 2026 15:48:07 +0100
-Message-ID: <1b2870001ecd34fe6c05be2ddfefb3c798b11701.1769179462.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1769179462.git.repk@triplefau.lt>
-References: <cover.1769179462.git.repk@triplefau.lt>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="J2hlSOqI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DU6EB6HeWP7XqGZOaivqghcL4mcHR36ybMthxOvqTuxBNry4DuJhQkVrnBFJIBjkFM1jcFDS9p+ZP+OOlBxOInC3CzCpZQGLNTGrl766x86jqPy44jcp63wmpazCsHFTg6jf2Hp2sxzKft47zderASbUGapz96pEA0kNIenn9nlPSGNN3c+x4X0VKRl7ForBlOy7npzA8mo7L4TPRlD04JxLJaumGqHWW+c2pIh0BUyVdbJCFaJO1clHLkuRXKaLDJoqkNjkupNYrrtTIlsy4L5AGI/hQP/9ZOiL5RH730FWheuwFhVfkJw9Gqp6grI5Azs4lx/stRBSAA2GxBlzcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1Zn1BH99uusiRfW0GGp2REfCR6pwTNQ4LVM1LBPTGp8=;
+ b=SMSNWD/RK/JSA5/sjBW+O1cZJsN17R6i0f0lD9rxL+zsZLvreuMZRCyM9U/AL2R/4b430ZL6LJdnrfp5rSViVESbrjQ7K0lXw7RuIgBk4DacpC7nFe8s0Jz09L/kwkJ7SyuasKpXA2b+LXYKOydkXLs5jsFIUrZraeoiQcqnPAsu9rQWJoUseb1rBjXuQZFIX1rrQUrHqTGRAwRA30el1Cep0cPEHdJoyIlzcZfjousyRkIB4xr1RlhnDLkvNWVrBOdt88rhsRYRDUAe/7JjLQuhwWWXjUTe8VLwMQMOLejvieJwwiZJFKAFTcDrDwJ2HZY34IaF+cKYeGXIErTgtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.xenproject.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Zn1BH99uusiRfW0GGp2REfCR6pwTNQ4LVM1LBPTGp8=;
+ b=J2hlSOqIl3qSUyd+6J6TljNFao6fTqvohScuFdsIeEtCSjCwJEG19ugu/xBhV5ErgUDZNBehluUjgh4XHV+2vw0RpUdwRGmZFZXWHq+C6Cq3cxJRIRPLr7bJOoKM930PJPVsFjuitsTojt+Xuk/+l4tmbqfkRn6/RckKJuky9ic=
+Received: from BY3PR04CA0009.namprd04.prod.outlook.com (2603:10b6:a03:217::14)
+ by BN7PPF915F74166.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 18:40:18 +0000
+Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
+ (2603:10b6:a03:217:cafe::7a) by BY3PR04CA0009.outlook.office365.com
+ (2603:10b6:a03:217::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.10 via Frontend Transport; Fri,
+ 23 Jan 2026 18:39:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Fri, 23 Jan 2026 18:40:15 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 23 Jan
+ 2026 12:40:15 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 23 Jan
+ 2026 12:40:15 -0600
+Received: from SATLEXMB04.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 23 Jan 2026 10:40:14 -0800
+From: Stefano Stabellini <stefano.stabellini@amd.com>
+To: <xen-devel@lists.xenproject.org>
+CC: <jgross@suse.com>, <v9fs@lists.linux.dev>, Eric Van Hensbergen
+	<ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
+	<asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+	<sstabellini@kernel.org>, Stefano Stabellini <stefano.stabellini@amd.com>
+Subject: [PATCH] 9p/xen: protect xen_9pfs_front_free against concurrent calls
+Date: Fri, 23 Jan 2026 10:40:09 -0800
+Message-ID: <20260123184009.1298536-1-stefano.stabellini@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -66,47 +78,193 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Smtpcorp-Track: BXsWhv2wVMY4.A_n7tFLvx5Lw.qKElFwi_Ehz
-Feedback-ID: 510616m:510616apGKSTK:510616siuLes3UuY
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: stefano.stabellini@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|BN7PPF915F74166:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9084faa-dadf-4f10-4223-08de5aaed9d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ztUw7kZYq+/lOjU78pewF8Ti+/GmhdAQCT+Y3shKDyza9tIfZmekNriNPvD4?=
+ =?us-ascii?Q?pGIrKMWQezq6g5N1F8t5eq7eS15zONN7A7WsdHwmYZp8p1pcMBM9O2vNxtQ8?=
+ =?us-ascii?Q?nU1qNRWwpQHsvlehOSm5Mgj89XYBDwTfTsXrwCiGqw4mHFROY+cbOp1+5CWm?=
+ =?us-ascii?Q?E1t2PolShmZoV7KdzGoiiTpKzRFcXl5BH+h6Ch9XUgXpWlQb1//NGVGgq0ZK?=
+ =?us-ascii?Q?jDTt/ZTLKq6vUChxo/twEgo7Z/hsw6yVuNYTJ/Uy+dNK1PZ65aXaO5ZZcLjw?=
+ =?us-ascii?Q?K3w+mWn6rmSrXL49ZGytWiusPT8dtyYu5+roqvGSje6DBHTZPwWanViple/z?=
+ =?us-ascii?Q?aM2C0+iN7ahSglGKPYfcF3CNNO8wUTj4fKlfNKbrJTBGf2STcQrAYwqx68FN?=
+ =?us-ascii?Q?fhNeVLx2ZKxvUX8HMBbAMszMf26uhi9onRhq39cd7Jnr43sByNEsL886FPL5?=
+ =?us-ascii?Q?zSaY+MrhSOMdQEPVjdm6S8xEE0Rh+DSZxGUHOw1noG/XbhzBJBEvamLVuY9Q?=
+ =?us-ascii?Q?JdqAJe5tOpnaX8TSCYxxy6yL1hFIH1jTiArPRKt+81ytEQRBnmXC6IxzKBL6?=
+ =?us-ascii?Q?yOGQMC9TrSasYelvsCqETS2JYfSXiBOogOpLOb2q4mPGAptn7Sj910MXk1u0?=
+ =?us-ascii?Q?ONH92Kj/cAwiRcxcMFvlC/uhDDMieZ+wKV/2LxFPIp5xyOSZ62U6a0FxbVIN?=
+ =?us-ascii?Q?DBaqjCsADp0gCLuJGrfOdSFis7j+m/sm9lYsoeD4Uxg4lsuadrSCNssNF8sM?=
+ =?us-ascii?Q?Q0qo3El0YSyMmKO5V5JX1kdYKEt0c0kWTuDhLEmBI7FwzoG5MXd5AvEkbhtW?=
+ =?us-ascii?Q?BaVUZKpd4JchGy5JguXXRAD4+Qwa7BZeJHh3mhtsLxtjyVzJ0HsSyc2ikdLn?=
+ =?us-ascii?Q?pEmCIf/0JOl5MO6immT2mPYwS6o6HLow3NqxwnJXL/mukwozm0xCnI4CvyB6?=
+ =?us-ascii?Q?tTztJUeW8qN2Q4RkhzHH1HdU9BV9V+VEtr5cXcjUt+nppdJ2wmna6X5xB5VT?=
+ =?us-ascii?Q?0i/AB724amWLYHCFGbGBn54z0BilQwq/2u+NKN7xo+sYHRChKn58LNZbUg37?=
+ =?us-ascii?Q?iLzfrJ4vDLvRmGKXqvtwsmAosynVMC2ig+dhumV9dG0Hf7JfxOUv0tO1+e1F?=
+ =?us-ascii?Q?eKNxOn1kP7CXwcRauRqbJiFcqP1P0+GvvsIIGoS5TbqrDUmaIXRjIzNuw+FM?=
+ =?us-ascii?Q?bpbuSGtX2JViOfMeru2l6kIBYsVFGL+kJAaIND4D9SY1f2YAFDvdbyFBpoNa?=
+ =?us-ascii?Q?n9gWvzjf91l1TEFInZTqnK6LmXzRmcWRTgwR+6ArP1xvO87jtvSGnuzIkB8j?=
+ =?us-ascii?Q?S2Koin28HdA/M/qKeZxJFppE8BvjXUchGEnI3he07Cxs7+BqGj9wRhNo0sB0?=
+ =?us-ascii?Q?TZHWKUSR3ZV/uW20gWcLOQ+v/8PjX/mZNn6ZAIIQrKRrJQS0Vwv5nCDusvcC?=
+ =?us-ascii?Q?H87zG7tcpS6G5jKcK+W3tXsX2/OI3pghG0nhF0bLIKjNN6mbk9ptbsMPJMn4?=
+ =?us-ascii?Q?lAUhYQuXZvOn+16Y04FcsDMgTqbEVNfLlSiXsmMplRslMM6bBu8FrfYe84t4?=
+ =?us-ascii?Q?z9I6Gp0jPTjnZqxfq9o9jIaVlQacpaIXCsn/7JhGffjuTyHs2aQ5el9spdSm?=
+ =?us-ascii?Q?xTV994EpuMz85krGGAd14svjcrqUFmXlh0pIfg+Qqx91J40SjJxTibaxHI6Y?=
+ =?us-ascii?Q?dJppJg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 18:40:15.7961
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9084faa-dadf-4f10-4223-08de5aaed9d6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066E7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF915F74166
 
-Add io_wait_event_killable(), a variant of wait_event_killable() that
-uses io_schedule() instead of schedule(). This is to be used in
-situation where waiting time is to be accounted as IO wait time.
+The xenwatch thread can race with other back-end change notifications
+and call xen_9pfs_front_free() twice, hitting the observed general
+protection fault due to a double-free. Guard the teardown path so only
+one caller can release the front-end state at a time, preventing the
+crash.
 
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+This is a fix for the following double-free:
+
+[   27.052347] Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] SMP DEBUG_PAGEALLOC NOPTI
+[   27.052357] CPU: 0 UID: 0 PID: 32 Comm: xenwatch Not tainted 6.18.0-02087-g51ab33fc0a8b-dirty #60 PREEMPT(none)
+[   27.052363] RIP: e030:xen_9pfs_front_free+0x1d/0x150
+[   27.052368] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 41 55 41 54 55 48 89 fd 48 c7 c7 48 d0 92 85 53 e8 cb cb 05 00 48 8b 45 08 48 8b 55 00 <48> 3b 28 0f 85 f9 28 35 fe 48 3b 6a 08 0f 85 ef 28 35 fe 48 89 42
+[   27.052377] RSP: e02b:ffffc9004016fdd0 EFLAGS: 00010246
+[   27.052381] RAX: 6b6b6b6b6b6b6b6b RBX: ffff88800d66e400 RCX: 0000000000000000
+[   27.052385] RDX: 6b6b6b6b6b6b6b6b RSI: 0000000000000000 RDI: 0000000000000000
+[   27.052389] RBP: ffff88800a887040 R08: 0000000000000000 R09: 0000000000000000
+[   27.052393] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888009e46b68
+[   27.052397] R13: 0000000000000200 R14: 0000000000000000 R15: ffff88800a887040
+[   27.052404] FS:  0000000000000000(0000) GS:ffff88808ca57000(0000) knlGS:0000000000000000
+[   27.052408] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   27.052412] CR2: 00007f9714004360 CR3: 0000000004834000 CR4: 0000000000050660
+[   27.052418] Call Trace:
+[   27.052420]  <TASK>
+[   27.052422]  xen_9pfs_front_changed+0x5d5/0x720
+[   27.052426]  ? xenbus_otherend_changed+0x72/0x140
+[   27.052430]  ? __pfx_xenwatch_thread+0x10/0x10
+[   27.052434]  xenwatch_thread+0x94/0x1c0
+[   27.052438]  ? __pfx_autoremove_wake_function+0x10/0x10
+[   27.052442]  kthread+0xf8/0x240
+[   27.052445]  ? __pfx_kthread+0x10/0x10
+[   27.052449]  ? __pfx_kthread+0x10/0x10
+[   27.052452]  ret_from_fork+0x16b/0x1a0
+[   27.052456]  ? __pfx_kthread+0x10/0x10
+[   27.052459]  ret_from_fork_asm+0x1a/0x30
+[   27.052463]  </TASK>
+[   27.052465] Modules linked in:
+[   27.052471] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
 ---
- include/linux/wait.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/9p/trans_xen.c | 41 +++++++++++++++++++++--------------------
+ 1 file changed, 21 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index f648044466d5..dce055e6add3 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -937,6 +937,21 @@ extern int do_wait_intr_irq(wait_queue_head_t *, wait_queue_entry_t *);
- 	__ret;									\
- })
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 280f686f60fbb..8809f3c06ec95 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -274,11 +274,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ {
+ 	int i, j;
  
-+#define __io_wait_event_killable(wq, condition)					\
-+	___wait_event(wq, condition, TASK_KILLABLE, 0, 0, io_schedule())
+-	write_lock(&xen_9pfs_lock);
+-	list_del(&priv->list);
+-	write_unlock(&xen_9pfs_lock);
+-
+-	for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
++	for (i = 0; priv->rings != NULL && i < XEN_9PFS_NUM_RINGS; i++) {
+ 		struct xen_9pfs_dataring *ring = &priv->rings[i];
+ 
+ 		cancel_work_sync(&ring->work);
+@@ -310,9 +306,18 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ 
+ static void xen_9pfs_front_remove(struct xenbus_device *dev)
+ {
+-	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
++	struct xen_9pfs_front_priv *priv;
+ 
++	write_lock(&xen_9pfs_lock);
++	priv = dev_get_drvdata(&dev->dev);
++	if (priv == NULL) {
++		write_unlock(&xen_9pfs_lock);
++		return;
++	}
+ 	dev_set_drvdata(&dev->dev, NULL);
++	list_del_init(&priv->list);
++	write_unlock(&xen_9pfs_lock);
 +
-+/*
-+ * wait_event_killable() - link wait_event_killable but with io_schedule()
-+ */
-+#define io_wait_event_killable(wq_head, condition)				\
-+({										\
-+	int __ret = 0;								\
-+	might_sleep();								\
-+	if (!(condition))							\
-+		__ret = __io_wait_event_killable(wq_head, condition);		\
-+	__ret;									\
-+})
+ 	xen_9pfs_front_free(priv);
+ }
+ 
+@@ -387,7 +392,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ {
+ 	int ret, i;
+ 	struct xenbus_transaction xbt;
+-	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
++	struct xen_9pfs_front_priv *priv;
+ 	char *versions, *v;
+ 	unsigned int max_rings, max_ring_order, len = 0;
+ 
+@@ -415,6 +420,10 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 	if (p9_xen_trans.maxsize > XEN_FLEX_RING_SIZE(max_ring_order))
+ 		p9_xen_trans.maxsize = XEN_FLEX_RING_SIZE(max_ring_order) / 2;
+ 
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	priv->dev = dev;
+ 	priv->rings = kcalloc(XEN_9PFS_NUM_RINGS, sizeof(*priv->rings),
+ 			      GFP_KERNEL);
+ 	if (!priv->rings) {
+@@ -473,6 +482,11 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
+ 	}
+ 
++	write_lock(&xen_9pfs_lock);
++	dev_set_drvdata(&dev->dev, priv);
++	list_add_tail(&priv->list, &xen_9pfs_devs);
++	write_unlock(&xen_9pfs_lock);
 +
- #define __wait_event_state(wq, condition, state)				\
- 	___wait_event(wq, condition, state, 0, 0, schedule())
+ 	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+@@ -487,19 +501,6 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ static int xen_9pfs_front_probe(struct xenbus_device *dev,
+ 				const struct xenbus_device_id *id)
+ {
+-	struct xen_9pfs_front_priv *priv = NULL;
+-
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
+-		return -ENOMEM;
+-
+-	priv->dev = dev;
+-	dev_set_drvdata(&dev->dev, priv);
+-
+-	write_lock(&xen_9pfs_lock);
+-	list_add_tail(&priv->list, &xen_9pfs_devs);
+-	write_unlock(&xen_9pfs_lock);
+-
+ 	return 0;
+ }
  
 -- 
-2.50.1
+2.25.1
 
