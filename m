@@ -1,131 +1,321 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010016.outbound.protection.outlook.com [40.93.198.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387FF2264A9
-	for <v9fs@lists.linux.dev>; Thu, 29 Jan 2026 07:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769672226; cv=none; b=hx7R0txjkmioHOXeHyTNftB6goQhanOlpKKsPaS8I6i/mnnoqD1tiiCpU3wakrFvhW5jv3gTAfQDa8uTwajF/vuvr/TNHp9ooyE1XESbCp13FJpjjmGku+Hlro9W49dSuSxxWSyBJNb5hlFcaHJ94HQbdeiVQ4rnKqcbJF65B0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769672226; c=relaxed/simple;
-	bh=oPw/nsqrWP4LErhWBk/YfEBooRpjecURWVx0sDitESY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GcU+v83qu2IYJlGL7lU4sJab9Wf05iEx79Tqr/OmWveLBOtDmpznTapI0H/8SFXhykOKJQLQeL4BvJVU9KSp/qQGTAxwsNRHwTQS5vs2QDWW+ZeJ2q21KsjZcaSSrg/nQ11mkD3/g1WB6KYzs6hLpYMvr+2X+mc/MLK7hDjnkcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Utfzl1e3; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D599374169
+	for <v9fs@lists.linux.dev>; Thu, 29 Jan 2026 23:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769727839; cv=fail; b=DafD981dtYpc7yj4KbDxqHLQ2f4gzDIABYwyn/qJbNEBwJPB0+aWxqZeSne8WrJc7nX7wh0yPw79UNvn4Udk79PgDu/63D6TdrJgR8rT6GzM6lyHU3F1c2r4yNb5bPRG0+wXpsJdH1Qq/RC8ERzftM+H4vJXlZeX4WKEEmsG3Rw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769727839; c=relaxed/simple;
+	bh=az8PmgbLt5s/tPFEGKQ4NxQ5ktsGgUnREpb1XI8teqM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T14NZLq3MkOo/qzwbAR8wbKIivhqwaqgDMN1gF7SWtT5at/Ss6LdMXVovKYpSCMjd++ZYaYs6Ou331FOCUwOPZAjlCPM4zlUiXmrdhDHNEN/7zlwypMqsKwejdv4UQjiiAtSf92YmcDGbeQJ7iJBzcp17y572+9Nf592gbRIPjA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0yhX5u3s; arc=fail smtp.client-ip=40.93.198.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Utfzl1e3"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3CEA914C2D6;
-	Thu, 29 Jan 2026 08:36:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1769672219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQDqB+mpzOzpDLWettESVpWi4zTuQoKZ83rJ5PXlXsE=;
-	b=Utfzl1e36A2wZv76F17RVhsSsXY0plzYVCueTuT85WwlXMo1A38GOI7w8DmPKUgsaSjKLY
-	28kUw9EOU1a7YYghh+r3TM9fBC9H/6y8hiA0QFzI8vWSTFunw8BsAJj7liML7O8AKuimDm
-	IbGyQKd+g0qg7xNLiGdA+9hR43thY5644oMToIvD+kV4qTqWXU3TPHzp35/HebnU5aaL9q
-	NoyKrZjsOYhLZIrtCWCmhAYJx+QOQ9E6GQKL86rZwsGsu/kFpPbptpWBw8lB0kW5YACTew
-	VgjRwkmTHrfUE3s9f/ndkr+YkoahiOK5WRpl56T1bfBo7pXfQDA3EWG2R4lFmQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d3792bec;
-	Thu, 29 Jan 2026 07:36:55 +0000 (UTC)
-Date: Thu, 29 Jan 2026 16:36:40 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Stefano Stabellini <stefano.stabellini@amd.com>,
-	xen-devel@lists.xenproject.org, jgross@suse.com,
-	v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH] 9p/xen: protect xen_9pfs_front_free against concurrent
- calls
-Message-ID: <aXsOCNkLvUHex-YT@codewreck.org>
-References: <20260123184009.1298536-1-stefano.stabellini@amd.com>
- <aXRXbFVmilATqvfO@codewreck.org>
- <alpine.DEB.2.22.394.2601261354410.7192@ubuntu-linux-20-04-desktop>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0yhX5u3s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xEyHoZuNuLqfs3aJcNDewhXFvdanpNKFhcfKh2ff8AZt+UKw0KnERrpcIPdc+WmmXucTdrReyvhfxe6cFPF+LFZlR9P2GiBj5BjJYhHAV8LdZo85Oa8ZKiUWHt4EaBk5osBG+PhE+0sKz+QL1nCEMeIP5bA9lmBoD16y8PhtOLUc/37J9R6C0vvKFRsEc31Vnt/1C9iZq42RZKH/1F6dvDqfVyMViR1H5aQTZ2LvYsnHlgR4ySq+yq/A2L6zIiPftoFKEGw2wqt6xwfmuRQeRMWgj4Ci8vTaF7TvQvR3lg8tesHikM4HB3VQeQXkoI11xadh8pF2T8vwuNzvtihclg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rc/3iRD0JqFXqIjo/xG/IZyeLwM/HjQ1QMov9Grx2n8=;
+ b=Q+63x/e7s1QoLtDyfwMo7kSOJ13HAELPrCNTuM9ehH0v49rJrIwKKZX/piNHa87P64Rum1MXtlxShGSauLS4TOqyERM2vG9UwRIqLE2bLLJ3GITbLScBli063zdefoSTkSLastDrNDf9kpVW0dkZWjPe9IyTgcA3Gk5Kgr95yvgCCdsxDHSjo90PuYne6cHV1+W98vUnkTUT/K1UzgpYkZQx/cSP6qoIWIbzQmc8NQAezdEz3v0vRRD5SiwbZ23Uu/ORwbBUcT9sDSBEJUcOUQUyYHrbDOe1mxj+kkBxM4Ngzt8B0kPbe8A4zJgsBjLvtj4AacALc5UrLsv4p7062g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.xenproject.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Rc/3iRD0JqFXqIjo/xG/IZyeLwM/HjQ1QMov9Grx2n8=;
+ b=0yhX5u3st8C9DIaNFX635jNbOzGmr5DKtlbdWvFk6Y71WvPs7kTQyYs5NyXYbmELcZeSTuAXOrBX6ZWC2ELGuNtHaRX0rZMOFZodkON65zlbVQmpiRfm2tMqN6Dp7Xd8HYvg43DwqG2Fok2yYqdfJVG9ZCGY/mxXyaoixA6cNl0=
+Received: from BN9PR03CA0952.namprd03.prod.outlook.com (2603:10b6:408:108::27)
+ by SA3PR12MB7976.namprd12.prod.outlook.com (2603:10b6:806:312::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
+ 2026 23:03:51 +0000
+Received: from BN1PEPF00004685.namprd03.prod.outlook.com
+ (2603:10b6:408:108:cafe::d9) by BN9PR03CA0952.outlook.office365.com
+ (2603:10b6:408:108::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.16 via Frontend Transport; Thu,
+ 29 Jan 2026 23:03:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00004685.mail.protection.outlook.com (10.167.243.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 23:03:50 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
+ 2026 17:03:50 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
+ 2026 15:03:50 -0800
+Received: from SATLEXMB03.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 29 Jan 2026 15:03:50 -0800
+From: Stefano Stabellini <stefano.stabellini@amd.com>
+To: <xen-devel@lists.xenproject.org>
+CC: <jgross@suse.com>, <v9fs@lists.linux.dev>, <ericvh@kernel.org>,
+	<lucho@ionkov.net>, <asmadeus@codewreck.org>, <linux_oss@crudebyte.com>,
+	<sstabellini@kernel.org>, Stefano Stabellini <stefano.stabellini@amd.com>
+Subject: [PATCH v2] 9p/xen: protect xen_9pfs_front_free against concurrent calls
+Date: Thu, 29 Jan 2026 15:03:48 -0800
+Message-ID: <20260129230348.2390470-1-stefano.stabellini@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2601261354410.7192@ubuntu-linux-20-04-desktop>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004685:EE_|SA3PR12MB7976:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfb85172-49e5-4457-6db3-08de5f8aaae2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?g+QUrCUF3Zqorx7xMLo9LenwN+sTfaAr2Hdp2y246LyaQGx1XhBgAXyxQf+t?=
+ =?us-ascii?Q?0/C7f/RQOGiKqgObB2Nc/18vaB39JIpJkjmFD6DATvtYdtHUzYWBttxc+QZo?=
+ =?us-ascii?Q?zHvjz2CFkApHe3zA8YX/15v+0osi4uexxWT8oKTNbmWlBd6RvZzGfUO2XEyt?=
+ =?us-ascii?Q?pKaPaQuZvAGBHc76o0plGDlUZNsYNjwdvOGFUHMy5kv/IPDhw1lksB3x2geJ?=
+ =?us-ascii?Q?Izr1DX8mRYf4hMuHPmvHIVclvC876POZvLi8DkznuuQCNRyORdxYewVSN/RD?=
+ =?us-ascii?Q?qf6FJRRBViIDHeA8I1nrt5rz79eSngIl3Io+2gi87rXkcfjup8mP/ehMdII9?=
+ =?us-ascii?Q?vMwAEWX4leM6JFmcvDwsA9zl1piVIGwzDqBHqZXrAo6UXunKm8z3OUBrZ11R?=
+ =?us-ascii?Q?LpqcMOWydFmQuIq/2OI5sGzLakMHZbanevbgw02IzGTs1e3uKdGmms4FPpIV?=
+ =?us-ascii?Q?h0tDmblOeIqYVA8mCW+scFHwNKhEim71HFpcYEMtvQsGz9CbFxCGEhvTRRUz?=
+ =?us-ascii?Q?ZE1SyzMhSiX8spaEr0LaOI4tfCUcTw4Gi9RGvYbdYoQei2ug1mJ5WQbiuoAF?=
+ =?us-ascii?Q?U31a/YqPY8LSyyMj49cKaI8tIx9/Y/SEq0nB6wG3GSzmpjsL+PIQA7WC/LHB?=
+ =?us-ascii?Q?PJ68axgMBIuO0JAquos7hCyGIoRH8PEfc5I73roBluPotv/+R3/8AvXECYmg?=
+ =?us-ascii?Q?/sM679lJWXQHPmN9yL3KzrbNJCyHE2UDPBvfD2jijeHA+kCR8c8vUOqeIKh2?=
+ =?us-ascii?Q?XJv0VwtbMgJRUUJ7XAyvk+zvfGdwMZbPx+YVsv4Wd21EHrsiJZdHUhbx18US?=
+ =?us-ascii?Q?pM8GUDVtZDEjneN8fcm5YlRuq317o6wsHpHsyqK8QmNgfp80xOqJsnMK5qIp?=
+ =?us-ascii?Q?DPI9MSMr+3rPWP5jQ4ioj0+ziEI7TVMsB7jnnObgDhLnLa2Bpggi5IyJbJxe?=
+ =?us-ascii?Q?3bEPb4cG2M4StQtv2g8Lx3qhXNNAKSmFHUfUYnvTJTX+LnvqB3YddNQigVTg?=
+ =?us-ascii?Q?faDaBh1pzKCcOFy/NXaIvn0bNTWaN/QojtFcrVuaeVY04qH6YrmdmsufYXxm?=
+ =?us-ascii?Q?BXte+DhyO8jM7AhHI5Bg5pVaZj88xfUrYMSp2kE5bif9AEHN9zCR9IuwP9TZ?=
+ =?us-ascii?Q?2KVmCRUuWZ1VVaC8NEfam5Ox6kQhJRWS87n2CWpr7sZJ90nmT/UEVFfYedJN?=
+ =?us-ascii?Q?HPWYyPvBG3B9qllWtBctUmTmyGtCnx2B9E+Pe+vTwON0lffbp1BSzY0mlF/W?=
+ =?us-ascii?Q?w40Q/Lhf7tDcjIn1Y1Ku6E3sn+nTzLaw02Lb2fd70udrC8XdmZE07xy4b2e8?=
+ =?us-ascii?Q?jNMTVNeQX0slca9ZJw4nAGwM67zQ9k7uqJ/fQM/RCnRYvkm/yYWQAJ/0AtrL?=
+ =?us-ascii?Q?HqyXwiYRDileQnBs4dR/qm93PlgjDd2+52J3xYM9E+VhDrN8i1XCC+qBaAzx?=
+ =?us-ascii?Q?zzg9jPVlB96qwOZmTscX05dHcaH/nK1AWJIshbvpkoQ2gziqCMevkwFe94ZP?=
+ =?us-ascii?Q?vFX1OkrNyGv2k3Iidv697E05GcGXcNFfE6x9+k28RUlam2pWwkPbwhaEmpFo?=
+ =?us-ascii?Q?ce2PgMR+uLyTHCOnco9cWMHml/7NyGmOl8UA3ylhAIm3pbpuN0LNlGWiibGt?=
+ =?us-ascii?Q?DxQyCkLqdydhQb3b1MpTLj0bmdmqeuLluwtO1ENVPyb9zwkijveyHNKCG9gB?=
+ =?us-ascii?Q?Hm2qTw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	jnoSlLdE/HpUKS8u8czDDMIioILQtOUNPe75hjWI8kz7uPkbrjun6+bK00tSThV/rH6SRkXO48s2rsoM3FxD5bC7oJJuMmrIJii7ewhyEtuB1I1OUoxRGC9IwjgdnpGfu4Te5r2bfr+WwLDFoB7HhJt+b99xDsqvgvSegWlNftO4py7BzsuWLJfATsJfVe4uaSn3glQQYsuqHwpPdyfHy5b8cpS7MWjTiyOq1H9RUJaykVfBdgRfN33hRTQQ+C1ETIxvsBfxQpc5nxn97ZixRsKqPFo3qfeEh86iveQvbh/eQ/EhHUdcA8pwid1+SSzrD5vhWXnLt+FNHohgH7x3XY74sxikXfRht4tTSTNgWN4yJvbT9DJ9n7Ox//C4YDfK//fV6e7ZX6lxHtJ40tg5WRJN58twhXmH8+BWBhjCl4mV82YI9vq9K8061H3CF+G5
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 23:03:50.9854
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfb85172-49e5-4457-6db3-08de5f8aaae2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004685.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7976
 
-Stefano Stabellini wrote on Mon, Jan 26, 2026 at 02:09:01PM -0800:
-> > I don't understand this priv->rings != NULL check here;
-> > if it's guarding for front_free() called before front_init() then it
-> > doesn't need to be checked at every iteration, and if it can change in
-> > another thread I don't see why it would be safe.
-> 
-> xen_9pfs_front_free() can be reached from the error paths before any
-> rings are allocated, so we need to handle a NULL priv->rings but it
-> doesn't have to be checked at every iteration. I can move it before the
-> for loop as you suggested.
+The xenwatch thread can race with other back-end change notifications
+and call xen_9pfs_front_free() twice, hitting the observed general
+protection fault due to a double-free. Guard the teardown path so only
+one caller can release the front-end state at a time, preventing the
+crash.
 
-Yes, please move it above the loop
+This is a fix for the following double-free:
 
-> > > @@ -310,9 +306,18 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
-> > >  
-> > >  static void xen_9pfs_front_remove(struct xenbus_device *dev)
-> > >  {
-> > > -	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
-> > > +	struct xen_9pfs_front_priv *priv;
-> > >  
-> > > +	write_lock(&xen_9pfs_lock);
-> > > +	priv = dev_get_drvdata(&dev->dev);
-> > > +	if (priv == NULL) {
-> > > +		write_unlock(&xen_9pfs_lock);
-> > > +		return;
-> > > +	}
-> > >  	dev_set_drvdata(&dev->dev, NULL);
-> > > +	list_del_init(&priv->list);
-> > 
-> > There's nothing wrong with using the del_init() variant here, but it
-> > would imply someone else could still access it after the unlock here,
-> > which means to me they could still access it after priv is freed in
-> > xen_9pfs_front_free().
-> > >From your commit message I think the priv == NULL check and
-> > dev_set_drvdata() under lock above is enough, can you confirm?
-> 
-> Yes you are right. I can replace list_del_init with list_del if you
-> think it is clearer.
+[   27.052347] Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] SMP DEBUG_PAGEALLOC NOPTI
+[   27.052357] CPU: 0 UID: 0 PID: 32 Comm: xenwatch Not tainted 6.18.0-02087-g51ab33fc0a8b-dirty #60 PREEMPT(none)
+[   27.052363] RIP: e030:xen_9pfs_front_free+0x1d/0x150
+[   27.052368] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 41 55 41 54 55 48 89 fd 48 c7 c7 48 d0 92 85 53 e8 cb cb 05 00 48 8b 45 08 48 8b 55 00 <48> 3b 28 0f 85 f9 28 35 fe 48 3b 6a 08 0f 85 ef 28 35 fe 48 89 42
+[   27.052377] RSP: e02b:ffffc9004016fdd0 EFLAGS: 00010246
+[   27.052381] RAX: 6b6b6b6b6b6b6b6b RBX: ffff88800d66e400 RCX: 0000000000000000
+[   27.052385] RDX: 6b6b6b6b6b6b6b6b RSI: 0000000000000000 RDI: 0000000000000000
+[   27.052389] RBP: ffff88800a887040 R08: 0000000000000000 R09: 0000000000000000
+[   27.052393] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888009e46b68
+[   27.052397] R13: 0000000000000200 R14: 0000000000000000 R15: ffff88800a887040
+[   27.052404] FS:  0000000000000000(0000) GS:ffff88808ca57000(0000) knlGS:0000000000000000
+[   27.052408] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   27.052412] CR2: 00007f9714004360 CR3: 0000000004834000 CR4: 0000000000050660
+[   27.052418] Call Trace:
+[   27.052420]  <TASK>
+[   27.052422]  xen_9pfs_front_changed+0x5d5/0x720
+[   27.052426]  ? xenbus_otherend_changed+0x72/0x140
+[   27.052430]  ? __pfx_xenwatch_thread+0x10/0x10
+[   27.052434]  xenwatch_thread+0x94/0x1c0
+[   27.052438]  ? __pfx_autoremove_wake_function+0x10/0x10
+[   27.052442]  kthread+0xf8/0x240
+[   27.052445]  ? __pfx_kthread+0x10/0x10
+[   27.052449]  ? __pfx_kthread+0x10/0x10
+[   27.052452]  ret_from_fork+0x16b/0x1a0
+[   27.052456]  ? __pfx_kthread+0x10/0x10
+[   27.052459]  ret_from_fork_asm+0x1a/0x30
+[   27.052463]  </TASK>
+[   27.052465] Modules linked in:
+[   27.052471] ---[ end trace 0000000000000000 ]---
 
-Since you'll send a v2 for the loop check, might as well do this as well
-if you don't mind.
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+---
+Changes in v2:
+- move priv->rings check above the loop
+- replace list_del_init with list_del
+---
+ net/9p/trans_xen.c | 85 ++++++++++++++++++++++++----------------------
+ 1 file changed, 44 insertions(+), 41 deletions(-)
 
-
-> > > @@ -473,6 +482,11 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
-> > >  		goto error;
-> > >  	}
-> > >  
-> > > +	write_lock(&xen_9pfs_lock);
-> > > +	dev_set_drvdata(&dev->dev, priv);
-> > 
-> > Honest question: could xen_9pfs_front_init() also be called multiple
-> > times as well?
-> > (if so this should check for the previous drvdata and free the priv
-> > that was just built if it was non-null)
-> > 
-> > Please ignore this if you think that can't happen, I really don't
-> > know.
-> 
-> That should not be possible before freeing priv first:
-> xen_9pfs_front_init is only called when the frontend is in the
-> XenbusStateInitialising state (see xen_9pfs_front_changed). Once we
-> store priv we immediately switch the state to XenbusStateInitialised,
-> and there will be no more calls to xen_9pfs_front_init. If the backend
-> forces a re-probe, xenbus invokes xen_9pfs_front_remove first, which
-> frees priv.
-
-Ok, this makes sense to me.
-I don't have any setup to test xen so trusting you here, but this looks
-sane enough so will apply v2 when you send it
-
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 12f752a923324..9bbfc20744f69 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -277,45 +277,52 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ {
+ 	int i, j;
+ 
+-	write_lock(&xen_9pfs_lock);
+-	list_del(&priv->list);
+-	write_unlock(&xen_9pfs_lock);
+-
+-	for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
+-		struct xen_9pfs_dataring *ring = &priv->rings[i];
+-
+-		cancel_work_sync(&ring->work);
+-
+-		if (!priv->rings[i].intf)
+-			break;
+-		if (priv->rings[i].irq > 0)
+-			unbind_from_irqhandler(priv->rings[i].irq, ring);
+-		if (priv->rings[i].data.in) {
+-			for (j = 0;
+-			     j < (1 << priv->rings[i].intf->ring_order);
+-			     j++) {
+-				grant_ref_t ref;
+-
+-				ref = priv->rings[i].intf->ref[j];
+-				gnttab_end_foreign_access(ref, NULL);
+-			}
+-			free_pages_exact(priv->rings[i].data.in,
++	if (priv->rings) {
++		for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
++			struct xen_9pfs_dataring *ring = &priv->rings[i];
++
++			cancel_work_sync(&ring->work);
++
++			if (!priv->rings[i].intf)
++				break;
++			if (priv->rings[i].irq > 0)
++				unbind_from_irqhandler(priv->rings[i].irq, ring);
++			if (priv->rings[i].data.in) {
++				for (j = 0;
++				     j < (1 << priv->rings[i].intf->ring_order);
++				     j++) {
++					grant_ref_t ref;
++
++					ref = priv->rings[i].intf->ref[j];
++					gnttab_end_foreign_access(ref, NULL);
++				}
++				free_pages_exact(priv->rings[i].data.in,
+ 				   1UL << (priv->rings[i].intf->ring_order +
+ 					   XEN_PAGE_SHIFT));
++			}
++			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
++			free_page((unsigned long)priv->rings[i].intf);
+ 		}
+-		gnttab_end_foreign_access(priv->rings[i].ref, NULL);
+-		free_page((unsigned long)priv->rings[i].intf);
++		kfree(priv->rings);
+ 	}
+-	kfree(priv->rings);
+ 	kfree(priv->tag);
+ 	kfree(priv);
+ }
+ 
+ static void xen_9pfs_front_remove(struct xenbus_device *dev)
+ {
+-	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
++	struct xen_9pfs_front_priv *priv;
+ 
++	write_lock(&xen_9pfs_lock);
++	priv = dev_get_drvdata(&dev->dev);
++	if (priv == NULL) {
++		write_unlock(&xen_9pfs_lock);
++		return;
++	}
+ 	dev_set_drvdata(&dev->dev, NULL);
++	list_del(&priv->list);
++	write_unlock(&xen_9pfs_lock);
++
+ 	xen_9pfs_front_free(priv);
+ }
+ 
+@@ -382,7 +389,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ {
+ 	int ret, i;
+ 	struct xenbus_transaction xbt;
+-	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
++	struct xen_9pfs_front_priv *priv;
+ 	char *versions, *v;
+ 	unsigned int max_rings, max_ring_order, len = 0;
+ 
+@@ -410,6 +417,10 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 	if (p9_xen_trans.maxsize > XEN_FLEX_RING_SIZE(max_ring_order))
+ 		p9_xen_trans.maxsize = XEN_FLEX_RING_SIZE(max_ring_order) / 2;
+ 
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	priv->dev = dev;
+ 	priv->rings = kcalloc(XEN_9PFS_NUM_RINGS, sizeof(*priv->rings),
+ 			      GFP_KERNEL);
+ 	if (!priv->rings) {
+@@ -468,6 +479,11 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
+ 	}
+ 
++	write_lock(&xen_9pfs_lock);
++	dev_set_drvdata(&dev->dev, priv);
++	list_add_tail(&priv->list, &xen_9pfs_devs);
++	write_unlock(&xen_9pfs_lock);
++
+ 	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+@@ -482,19 +498,6 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ static int xen_9pfs_front_probe(struct xenbus_device *dev,
+ 				const struct xenbus_device_id *id)
+ {
+-	struct xen_9pfs_front_priv *priv = NULL;
+-
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
+-		return -ENOMEM;
+-
+-	priv->dev = dev;
+-	dev_set_drvdata(&dev->dev, priv);
+-
+-	write_lock(&xen_9pfs_lock);
+-	list_add_tail(&priv->list, &xen_9pfs_devs);
+-	write_unlock(&xen_9pfs_lock);
+-
+ 	return 0;
+ }
+ 
 -- 
-Dominique Martinet | Asmadeus
+2.25.1
+
