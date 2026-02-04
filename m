@@ -1,321 +1,234 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010016.outbound.protection.outlook.com [40.93.198.16])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D599374169
-	for <v9fs@lists.linux.dev>; Thu, 29 Jan 2026 23:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769727839; cv=fail; b=DafD981dtYpc7yj4KbDxqHLQ2f4gzDIABYwyn/qJbNEBwJPB0+aWxqZeSne8WrJc7nX7wh0yPw79UNvn4Udk79PgDu/63D6TdrJgR8rT6GzM6lyHU3F1c2r4yNb5bPRG0+wXpsJdH1Qq/RC8ERzftM+H4vJXlZeX4WKEEmsG3Rw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769727839; c=relaxed/simple;
-	bh=az8PmgbLt5s/tPFEGKQ4NxQ5ktsGgUnREpb1XI8teqM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T14NZLq3MkOo/qzwbAR8wbKIivhqwaqgDMN1gF7SWtT5at/Ss6LdMXVovKYpSCMjd++ZYaYs6Ou331FOCUwOPZAjlCPM4zlUiXmrdhDHNEN/7zlwypMqsKwejdv4UQjiiAtSf92YmcDGbeQJ7iJBzcp17y572+9Nf592gbRIPjA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0yhX5u3s; arc=fail smtp.client-ip=40.93.198.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE5838F92F;
+	Wed,  4 Feb 2026 11:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770205745; cv=none; b=jU6B/iKytNfUsvQjPjfegtogd/nA5+OINTvFjjYSsb/xOr2yg6h1Y5O8TpWRYysAfir7udvIyOa+CyW7n+GwZ1LGJK+aL+aeLedzo1uaAeOLU3U0eKy6cdNjIynvwx6ZsZnvaJAFGsRGL08ca3xAg/gMwT0PyYyEq2iBuxk5SIs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770205745; c=relaxed/simple;
+	bh=/BP1Ux4L4Lq8BO/UQizK5AQMQvkr4cBAH2c7D0v8ZPU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=svM5RJarti6ocXoCxfpsWP1d/GIqG4f6syA/rMcf6PompsMqqDTCDCMD1O6gf8CygDI7hJJC/FyZAY9mYoaLIkbX3SgcRfHq3p1MhH5vQsQ1Kj5+A/cNCVdbgeUp1EZFPKjWQZ8DxbMr+o8UtHRwe/CbShFLHfakQKx9sJQ2Rac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=SbFpH/WM; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0yhX5u3s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xEyHoZuNuLqfs3aJcNDewhXFvdanpNKFhcfKh2ff8AZt+UKw0KnERrpcIPdc+WmmXucTdrReyvhfxe6cFPF+LFZlR9P2GiBj5BjJYhHAV8LdZo85Oa8ZKiUWHt4EaBk5osBG+PhE+0sKz+QL1nCEMeIP5bA9lmBoD16y8PhtOLUc/37J9R6C0vvKFRsEc31Vnt/1C9iZq42RZKH/1F6dvDqfVyMViR1H5aQTZ2LvYsnHlgR4ySq+yq/A2L6zIiPftoFKEGw2wqt6xwfmuRQeRMWgj4Ci8vTaF7TvQvR3lg8tesHikM4HB3VQeQXkoI11xadh8pF2T8vwuNzvtihclg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Rc/3iRD0JqFXqIjo/xG/IZyeLwM/HjQ1QMov9Grx2n8=;
- b=Q+63x/e7s1QoLtDyfwMo7kSOJ13HAELPrCNTuM9ehH0v49rJrIwKKZX/piNHa87P64Rum1MXtlxShGSauLS4TOqyERM2vG9UwRIqLE2bLLJ3GITbLScBli063zdefoSTkSLastDrNDf9kpVW0dkZWjPe9IyTgcA3Gk5Kgr95yvgCCdsxDHSjo90PuYne6cHV1+W98vUnkTUT/K1UzgpYkZQx/cSP6qoIWIbzQmc8NQAezdEz3v0vRRD5SiwbZ23Uu/ORwbBUcT9sDSBEJUcOUQUyYHrbDOe1mxj+kkBxM4Ngzt8B0kPbe8A4zJgsBjLvtj4AacALc5UrLsv4p7062g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.xenproject.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Rc/3iRD0JqFXqIjo/xG/IZyeLwM/HjQ1QMov9Grx2n8=;
- b=0yhX5u3st8C9DIaNFX635jNbOzGmr5DKtlbdWvFk6Y71WvPs7kTQyYs5NyXYbmELcZeSTuAXOrBX6ZWC2ELGuNtHaRX0rZMOFZodkON65zlbVQmpiRfm2tMqN6Dp7Xd8HYvg43DwqG2Fok2yYqdfJVG9ZCGY/mxXyaoixA6cNl0=
-Received: from BN9PR03CA0952.namprd03.prod.outlook.com (2603:10b6:408:108::27)
- by SA3PR12MB7976.namprd12.prod.outlook.com (2603:10b6:806:312::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
- 2026 23:03:51 +0000
-Received: from BN1PEPF00004685.namprd03.prod.outlook.com
- (2603:10b6:408:108:cafe::d9) by BN9PR03CA0952.outlook.office365.com
- (2603:10b6:408:108::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.16 via Frontend Transport; Thu,
- 29 Jan 2026 23:03:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00004685.mail.protection.outlook.com (10.167.243.86) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 23:03:50 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
- 2026 17:03:50 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
- 2026 15:03:50 -0800
-Received: from SATLEXMB03.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 29 Jan 2026 15:03:50 -0800
-From: Stefano Stabellini <stefano.stabellini@amd.com>
-To: <xen-devel@lists.xenproject.org>
-CC: <jgross@suse.com>, <v9fs@lists.linux.dev>, <ericvh@kernel.org>,
-	<lucho@ionkov.net>, <asmadeus@codewreck.org>, <linux_oss@crudebyte.com>,
-	<sstabellini@kernel.org>, Stefano Stabellini <stefano.stabellini@amd.com>
-Subject: [PATCH v2] 9p/xen: protect xen_9pfs_front_free against concurrent calls
-Date: Thu, 29 Jan 2026 15:03:48 -0800
-Message-ID: <20260129230348.2390470-1-stefano.stabellini@amd.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="SbFpH/WM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=elc39LTVW9uMOL7thZspUztVFQObNDA5rV9O1BlftK4=; b=SbFpH/WMeWitBkT26WSDPFtMs3
+	Not+LF6s0ch+J+ahUCV+Kx7TPG2/lcCHjyn8+TXbo0ccCwixC2/hkmrdgk3hnqfTwDPV8pYbQdzaz
+	ntIjW7uewsbDL8LEvHH8CMK0CjlSYYO6n/Y3NOp+wqCPP/FMIqrhzcu7pZ5G9pmVbxovvwnLEAYkB
+	t0SmsTFbCUuqflQhi0LGnXBEz9rsXoA2m0oOfa7/5TfuLt8vHs+KoQnyCLGOqqsZ60mVZI8EOf1xR
+	ICBsozgi56Tnm1z/LaeIPkY0/5vnd3YlKHyOk1wneBFjeS6hiSaoTRW3xmeBBH0Z8OMVG5KyEkvqj
+	BVzMWWfHIidmW70RaqbLRazEusJcsjqAJ5fISz1c5jpkRCNcwxI7i1Sh+zwUjVVx4dOXk57SW/zY7
+	FfW2cQeIhdLl27IV1k7xQfOQ47IkYSUPgzJIPHbEnH2S+yZGnuXlGHCG9qT0y0QxSpBLcgFUPcXiY
+	xy2L5YskGi23k+iFcL6nij3u8ZDKaZ8N4wTW9pYk/eA/DsLmhxFC/vHpIiP7IKcUOH418dNya9/8j
+	vUr24jibxYUTO6S7FJD4wbkQLNakSWwtZjgaRS5LUK0X5V48wg5g3aWbWq6u0p0uOmB2VPk1bXPVq
+	Fjwf9IpRaJ5xrSBASsoV5OSbiQD5h/gZvlljNRAOw=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Pierre Barre <pierre@barre.sh>, asmadeus <asmadeus@codewreck.org>
+Cc: ericvh@kernel.org, lucho@ionkov.net, David Howells <dhowells@redhat.com>,
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v2] 9p: fix i_size update race in getattr with writeback caching
+Date: Wed, 04 Feb 2026 12:48:55 +0100
+Message-ID: <1946294.tdWV9SEqCh@weasel>
+In-Reply-To: <64008E3D-7EEE-4E6C-9392-986C1D8E8858@barre.sh>
+References:
+ <20251227180137.730385-1-pierre@barre.sh> <2025543.PYKUYFuaPT@weasel>
+ <64008E3D-7EEE-4E6C-9392-986C1D8E8858@barre.sh>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004685:EE_|SA3PR12MB7976:EE_
-X-MS-Office365-Filtering-Correlation-Id: cfb85172-49e5-4457-6db3-08de5f8aaae2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?g+QUrCUF3Zqorx7xMLo9LenwN+sTfaAr2Hdp2y246LyaQGx1XhBgAXyxQf+t?=
- =?us-ascii?Q?0/C7f/RQOGiKqgObB2Nc/18vaB39JIpJkjmFD6DATvtYdtHUzYWBttxc+QZo?=
- =?us-ascii?Q?zHvjz2CFkApHe3zA8YX/15v+0osi4uexxWT8oKTNbmWlBd6RvZzGfUO2XEyt?=
- =?us-ascii?Q?pKaPaQuZvAGBHc76o0plGDlUZNsYNjwdvOGFUHMy5kv/IPDhw1lksB3x2geJ?=
- =?us-ascii?Q?Izr1DX8mRYf4hMuHPmvHIVclvC876POZvLi8DkznuuQCNRyORdxYewVSN/RD?=
- =?us-ascii?Q?qf6FJRRBViIDHeA8I1nrt5rz79eSngIl3Io+2gi87rXkcfjup8mP/ehMdII9?=
- =?us-ascii?Q?vMwAEWX4leM6JFmcvDwsA9zl1piVIGwzDqBHqZXrAo6UXunKm8z3OUBrZ11R?=
- =?us-ascii?Q?LpqcMOWydFmQuIq/2OI5sGzLakMHZbanevbgw02IzGTs1e3uKdGmms4FPpIV?=
- =?us-ascii?Q?h0tDmblOeIqYVA8mCW+scFHwNKhEim71HFpcYEMtvQsGz9CbFxCGEhvTRRUz?=
- =?us-ascii?Q?ZE1SyzMhSiX8spaEr0LaOI4tfCUcTw4Gi9RGvYbdYoQei2ug1mJ5WQbiuoAF?=
- =?us-ascii?Q?U31a/YqPY8LSyyMj49cKaI8tIx9/Y/SEq0nB6wG3GSzmpjsL+PIQA7WC/LHB?=
- =?us-ascii?Q?PJ68axgMBIuO0JAquos7hCyGIoRH8PEfc5I73roBluPotv/+R3/8AvXECYmg?=
- =?us-ascii?Q?/sM679lJWXQHPmN9yL3KzrbNJCyHE2UDPBvfD2jijeHA+kCR8c8vUOqeIKh2?=
- =?us-ascii?Q?XJv0VwtbMgJRUUJ7XAyvk+zvfGdwMZbPx+YVsv4Wd21EHrsiJZdHUhbx18US?=
- =?us-ascii?Q?pM8GUDVtZDEjneN8fcm5YlRuq317o6wsHpHsyqK8QmNgfp80xOqJsnMK5qIp?=
- =?us-ascii?Q?DPI9MSMr+3rPWP5jQ4ioj0+ziEI7TVMsB7jnnObgDhLnLa2Bpggi5IyJbJxe?=
- =?us-ascii?Q?3bEPb4cG2M4StQtv2g8Lx3qhXNNAKSmFHUfUYnvTJTX+LnvqB3YddNQigVTg?=
- =?us-ascii?Q?faDaBh1pzKCcOFy/NXaIvn0bNTWaN/QojtFcrVuaeVY04qH6YrmdmsufYXxm?=
- =?us-ascii?Q?BXte+DhyO8jM7AhHI5Bg5pVaZj88xfUrYMSp2kE5bif9AEHN9zCR9IuwP9TZ?=
- =?us-ascii?Q?2KVmCRUuWZ1VVaC8NEfam5Ox6kQhJRWS87n2CWpr7sZJ90nmT/UEVFfYedJN?=
- =?us-ascii?Q?HPWYyPvBG3B9qllWtBctUmTmyGtCnx2B9E+Pe+vTwON0lffbp1BSzY0mlF/W?=
- =?us-ascii?Q?w40Q/Lhf7tDcjIn1Y1Ku6E3sn+nTzLaw02Lb2fd70udrC8XdmZE07xy4b2e8?=
- =?us-ascii?Q?jNMTVNeQX0slca9ZJw4nAGwM67zQ9k7uqJ/fQM/RCnRYvkm/yYWQAJ/0AtrL?=
- =?us-ascii?Q?HqyXwiYRDileQnBs4dR/qm93PlgjDd2+52J3xYM9E+VhDrN8i1XCC+qBaAzx?=
- =?us-ascii?Q?zzg9jPVlB96qwOZmTscX05dHcaH/nK1AWJIshbvpkoQ2gziqCMevkwFe94ZP?=
- =?us-ascii?Q?vFX1OkrNyGv2k3Iidv697E05GcGXcNFfE6x9+k28RUlam2pWwkPbwhaEmpFo?=
- =?us-ascii?Q?ce2PgMR+uLyTHCOnco9cWMHml/7NyGmOl8UA3ylhAIm3pbpuN0LNlGWiibGt?=
- =?us-ascii?Q?DxQyCkLqdydhQb3b1MpTLj0bmdmqeuLluwtO1ENVPyb9zwkijveyHNKCG9gB?=
- =?us-ascii?Q?Hm2qTw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	jnoSlLdE/HpUKS8u8czDDMIioILQtOUNPe75hjWI8kz7uPkbrjun6+bK00tSThV/rH6SRkXO48s2rsoM3FxD5bC7oJJuMmrIJii7ewhyEtuB1I1OUoxRGC9IwjgdnpGfu4Te5r2bfr+WwLDFoB7HhJt+b99xDsqvgvSegWlNftO4py7BzsuWLJfATsJfVe4uaSn3glQQYsuqHwpPdyfHy5b8cpS7MWjTiyOq1H9RUJaykVfBdgRfN33hRTQQ+C1ETIxvsBfxQpc5nxn97ZixRsKqPFo3qfeEh86iveQvbh/eQ/EhHUdcA8pwid1+SSzrD5vhWXnLt+FNHohgH7x3XY74sxikXfRht4tTSTNgWN4yJvbT9DJ9n7Ox//C4YDfK//fV6e7ZX6lxHtJ40tg5WRJN58twhXmH8+BWBhjCl4mV82YI9vq9K8061H3CF+G5
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 23:03:50.9854
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfb85172-49e5-4457-6db3-08de5f8aaae2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004685.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7976
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-The xenwatch thread can race with other back-end change notifications
-and call xen_9pfs_front_free() twice, hitting the observed general
-protection fault due to a double-free. Guard the teardown path so only
-one caller can release the front-end state at a time, preventing the
-crash.
+On Wednesday, 7 January 2026 01:27:50 CET Pierre Barre wrote:
+> > On 5 Jan 2026, at 12:35, Christian Schoenebeck <linux_oss@crudebyte.com>
+> > wrote:> 
+> > On Saturday, 27 December 2025 19:01:37 CET Pierre Barre wrote:
+> >> With writeback caching (cache=mmap), v9fs_stat2inode() and
+> >> v9fs_stat2inode_dotl() unconditionally overwrite i_size from the server
+> >> response, even when dirty pages may exist locally. This causes processes
+> >> using lseek(SEEK_END) to see incorrect file sizes, leading to data
+> >> corruption when extending files while concurrent stat() calls occur.
+> >> 
+> >> Fix by passing V9FS_STAT2INODE_KEEP_ISIZE when CACHE_WRITEBACK is
+> >> enabled to preserve the client's authoritative i_size.
+> >> 
+> >> Signed-off-by: Pierre Barre <pierre@barre.sh>
+> >> ---
+> > 
+> > Adding David Howells to this discussion.
+> > 
+> > David, I read today that you suggested [1] to go for a wait approach
+> > instead? So somewhat similar to what Pierre suggested in v1 [2].
+> 
+> FWIW, I tested the initial approach I described and this seems to result in
+> no real performance improvements compared to not using any writeback
+> caching at all.
 
-This is a fix for the following double-free:
+Right, surprisingly I don't measure a performance penalty either.
 
-[   27.052347] Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] SMP DEBUG_PAGEALLOC NOPTI
-[   27.052357] CPU: 0 UID: 0 PID: 32 Comm: xenwatch Not tainted 6.18.0-02087-g51ab33fc0a8b-dirty #60 PREEMPT(none)
-[   27.052363] RIP: e030:xen_9pfs_front_free+0x1d/0x150
-[   27.052368] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 41 55 41 54 55 48 89 fd 48 c7 c7 48 d0 92 85 53 e8 cb cb 05 00 48 8b 45 08 48 8b 55 00 <48> 3b 28 0f 85 f9 28 35 fe 48 3b 6a 08 0f 85 ef 28 35 fe 48 89 42
-[   27.052377] RSP: e02b:ffffc9004016fdd0 EFLAGS: 00010246
-[   27.052381] RAX: 6b6b6b6b6b6b6b6b RBX: ffff88800d66e400 RCX: 0000000000000000
-[   27.052385] RDX: 6b6b6b6b6b6b6b6b RSI: 0000000000000000 RDI: 0000000000000000
-[   27.052389] RBP: ffff88800a887040 R08: 0000000000000000 R09: 0000000000000000
-[   27.052393] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888009e46b68
-[   27.052397] R13: 0000000000000200 R14: 0000000000000000 R15: ffff88800a887040
-[   27.052404] FS:  0000000000000000(0000) GS:ffff88808ca57000(0000) knlGS:0000000000000000
-[   27.052408] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   27.052412] CR2: 00007f9714004360 CR3: 0000000004834000 CR4: 0000000000050660
-[   27.052418] Call Trace:
-[   27.052420]  <TASK>
-[   27.052422]  xen_9pfs_front_changed+0x5d5/0x720
-[   27.052426]  ? xenbus_otherend_changed+0x72/0x140
-[   27.052430]  ? __pfx_xenwatch_thread+0x10/0x10
-[   27.052434]  xenwatch_thread+0x94/0x1c0
-[   27.052438]  ? __pfx_autoremove_wake_function+0x10/0x10
-[   27.052442]  kthread+0xf8/0x240
-[   27.052445]  ? __pfx_kthread+0x10/0x10
-[   27.052449]  ? __pfx_kthread+0x10/0x10
-[   27.052452]  ret_from_fork+0x16b/0x1a0
-[   27.052456]  ? __pfx_kthread+0x10/0x10
-[   27.052459]  ret_from_fork_asm+0x1a/0x30
-[   27.052463]  </TASK>
-[   27.052465] Modules linked in:
-[   27.052471] ---[ end trace 0000000000000000 ]---
+Dominique, suggestions how to proceed on this issue?
 
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
----
-Changes in v2:
-- move priv->rings check above the loop
-- replace list_del_init with list_del
----
- net/9p/trans_xen.c | 85 ++++++++++++++++++++++++----------------------
- 1 file changed, 44 insertions(+), 41 deletions(-)
+/Christian
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 12f752a923324..9bbfc20744f69 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -277,45 +277,52 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
- {
- 	int i, j;
- 
--	write_lock(&xen_9pfs_lock);
--	list_del(&priv->list);
--	write_unlock(&xen_9pfs_lock);
--
--	for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
--		struct xen_9pfs_dataring *ring = &priv->rings[i];
--
--		cancel_work_sync(&ring->work);
--
--		if (!priv->rings[i].intf)
--			break;
--		if (priv->rings[i].irq > 0)
--			unbind_from_irqhandler(priv->rings[i].irq, ring);
--		if (priv->rings[i].data.in) {
--			for (j = 0;
--			     j < (1 << priv->rings[i].intf->ring_order);
--			     j++) {
--				grant_ref_t ref;
--
--				ref = priv->rings[i].intf->ref[j];
--				gnttab_end_foreign_access(ref, NULL);
--			}
--			free_pages_exact(priv->rings[i].data.in,
-+	if (priv->rings) {
-+		for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
-+			struct xen_9pfs_dataring *ring = &priv->rings[i];
-+
-+			cancel_work_sync(&ring->work);
-+
-+			if (!priv->rings[i].intf)
-+				break;
-+			if (priv->rings[i].irq > 0)
-+				unbind_from_irqhandler(priv->rings[i].irq, ring);
-+			if (priv->rings[i].data.in) {
-+				for (j = 0;
-+				     j < (1 << priv->rings[i].intf->ring_order);
-+				     j++) {
-+					grant_ref_t ref;
-+
-+					ref = priv->rings[i].intf->ref[j];
-+					gnttab_end_foreign_access(ref, NULL);
-+				}
-+				free_pages_exact(priv->rings[i].data.in,
- 				   1UL << (priv->rings[i].intf->ring_order +
- 					   XEN_PAGE_SHIFT));
-+			}
-+			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
-+			free_page((unsigned long)priv->rings[i].intf);
- 		}
--		gnttab_end_foreign_access(priv->rings[i].ref, NULL);
--		free_page((unsigned long)priv->rings[i].intf);
-+		kfree(priv->rings);
- 	}
--	kfree(priv->rings);
- 	kfree(priv->tag);
- 	kfree(priv);
- }
- 
- static void xen_9pfs_front_remove(struct xenbus_device *dev)
- {
--	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
-+	struct xen_9pfs_front_priv *priv;
- 
-+	write_lock(&xen_9pfs_lock);
-+	priv = dev_get_drvdata(&dev->dev);
-+	if (priv == NULL) {
-+		write_unlock(&xen_9pfs_lock);
-+		return;
-+	}
- 	dev_set_drvdata(&dev->dev, NULL);
-+	list_del(&priv->list);
-+	write_unlock(&xen_9pfs_lock);
-+
- 	xen_9pfs_front_free(priv);
- }
- 
-@@ -382,7 +389,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- {
- 	int ret, i;
- 	struct xenbus_transaction xbt;
--	struct xen_9pfs_front_priv *priv = dev_get_drvdata(&dev->dev);
-+	struct xen_9pfs_front_priv *priv;
- 	char *versions, *v;
- 	unsigned int max_rings, max_ring_order, len = 0;
- 
-@@ -410,6 +417,10 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	if (p9_xen_trans.maxsize > XEN_FLEX_RING_SIZE(max_ring_order))
- 		p9_xen_trans.maxsize = XEN_FLEX_RING_SIZE(max_ring_order) / 2;
- 
-+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	priv->dev = dev;
- 	priv->rings = kcalloc(XEN_9PFS_NUM_RINGS, sizeof(*priv->rings),
- 			      GFP_KERNEL);
- 	if (!priv->rings) {
-@@ -468,6 +479,11 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 		goto error;
- 	}
- 
-+	write_lock(&xen_9pfs_lock);
-+	dev_set_drvdata(&dev->dev, priv);
-+	list_add_tail(&priv->list, &xen_9pfs_devs);
-+	write_unlock(&xen_9pfs_lock);
-+
- 	xenbus_switch_state(dev, XenbusStateInitialised);
- 	return 0;
- 
-@@ -482,19 +498,6 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- static int xen_9pfs_front_probe(struct xenbus_device *dev,
- 				const struct xenbus_device_id *id)
- {
--	struct xen_9pfs_front_priv *priv = NULL;
--
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
--
--	priv->dev = dev;
--	dev_set_drvdata(&dev->dev, priv);
--
--	write_lock(&xen_9pfs_lock);
--	list_add_tail(&priv->list, &xen_9pfs_devs);
--	write_unlock(&xen_9pfs_lock);
--
- 	return 0;
- }
- 
--- 
-2.25.1
+> > [1] https://lore.kernel.org/all/1696785.1767599663@warthog.procyon.org.uk/
+> > [2] https://lore.kernel.org/all/20251227083751.715152-1-pierre@barre.sh/
+> > 
+> > I understand the point about cifs and nfs, where you must expect foreign
+> > changes on server side by another client.
+> > 
+> > For 9pfs though IMO it would make sense to distinguish:
+> > 
+> > for cache=loose (and cache=fscache?) we are not expecting host side
+> > changes, so we could safely go for the approach suggested by this patch
+> > here and not wait for flushing dirty data and just use the locally cached
+> > file size (for performance reasons).
+> > 
+> > And for all other cache modes going for the cifs/nfs approach and wait for
+> > flushing? Does this make sense?
+> > 
+> > I just tested this reported issue with the following reproducer:
+> > 
+> > --------------------------
+> > 
+> > #!/bin/bash
+> > 
+> > rm -f foo.txt
+> > 
+> > for i in {1..50}
+> > do
+> > 
+> >  echo $i >> foo.txt &
+> >  ls -lha foo.txt &
+> > 
+> > done
+> > 
+> > sync
+> > 
+> > cat foo.txt
+> > 
+> > echo
+> > 
+> > wc -l foo.txt
+> > 
+> > --------------------------
+> > 
+> > For cache=loose I couldn't reproduce, but with cache=mmap I could
+> > reproduce
+> > data corruption, folio writeback hangup and the following error message:
+> > 
+> > [   60.847671] [append] R=134d: No submit
+> > 
+> > ...
+> > 
+> > [  243.153292] INFO: task sync:986 blocked for more than 120 seconds.
+> > [  243.161516]       Tainted: G            E       6.19.0-rc1+ #107
+> > [  243.168847] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables
+> > this message. [  243.178702] task:sync            state:D stack:0    
+> > pid:986   tgid:986   ppid:884    task_flags:0x400000 flags:0x00080002 [ 
+> > 243.190379] Call Trace:
+> > [  243.192285]  <TASK>
+> > 
+> > [  243.193891]  __schedule (kernel/sched/core.c:5256
+> > kernel/sched/core.c:6863) [  243.195999]  schedule
+> > (kernel/sched/core.c:6946 kernel/sched/core.c:6960) [  243.197730] 
+> > io_schedule (kernel/sched/core.c:7764 (discriminator 1)
+> > kernel/sched/core.c:7790 (discriminator 1)) [  243.199418] 
+> > folio_wait_bit_common (mm/filemap.c:1312)
+> > [  243.201451]  ? __pfx_wake_page_function (mm/filemap.c:1134)
+> > [  243.203399]  folio_wait_writeback (./arch/x86/include/asm/bitops.h:202
+> > ./arch/x86/include/asm/bitops.h:232
+> > ./include/asm-generic/bitops/instrumented-non-atomic.h:142
+> > ./include/linux/page-flags.h:597 mm/page-writeback.c:3087) [  243.205371]
+> >  __filemap_fdatawait_range (mm/filemap.c:529 (discriminator 1)) [ 
+> > 243.207377]  ? _raw_spin_unlock (./include/linux/spinlock_api_smp.h:143
+> > (discriminator 3) kernel/locking/spinlock.c:186 (discriminator 3)) [ 
+> > 243.209305]  ? finish_task_switch.isra.0
+> > (./arch/x86/include/asm/paravirt.h:671 kernel/sched/sched.h:1570
+> > kernel/sched/core.c:4995 kernel/sched/core.c:5112) [  243.212030]  ?
+> > __schedule (kernel/sched/core.c:5259)
+> > [  243.214083]  ? wb_wait_for_completion (fs/fs-writeback.c:227)
+> > [  243.215925]  filemap_fdatawait_keep_errors
+> > (./arch/x86/include/asm/bitops.h:202 ./arch/x86/include/asm/bitops.h:232
+> > ./include/asm-generic/bitops/instrumented-non-atomic.h:142
+> > mm/filemap.c:363 mm/filemap.c:627) [  243.217628]  sync_inodes_sb
+> > (./include/linux/sched.h:2062 fs/fs-writeback.c:2777
+> > fs/fs-writeback.c:2897) [  243.218914]  ? __pfx_sync_inodes_one_sb
+> > (fs/sync.c:75)
+> > [  243.220186]  __iterate_supers (fs/super.c:64 fs/super.c:925)
+> > [  243.221601]  ksys_sync (fs/sync.c:103)
+> > [  243.222746]  __do_sys_sync (fs/sync.c:115)
+> > [  243.223950]  do_syscall_64 (arch/x86/entry/syscall_64.c:63
+> > (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1)) [ 
+> > 243.226140]  entry_SYSCALL_64_after_hwframe
+> > (arch/x86/entry/entry_64.S:131) [  243.228375] RIP: 0033:0x7f51e4613707
+> > [  243.230260] RSP: 002b:00007ffdb2fccad8 EFLAGS: 00000246 ORIG_RAX:
+> > 00000000000000a2 [  243.234092] RAX: ffffffffffffffda RBX:
+> > 00007ffdb2fccc38 RCX: 00007f51e4613707 [  243.238153] RDX:
+> > 00007f51e46f3501 RSI: 00007ffdb2fcef3e RDI: 00007f51e46ae557 [ 
+> > 243.241063] RBP: 0000000000000001 R08: 0000000000000000 R09:
+> > 0000000000000000 [  243.244028] R10: 00007f51e45be0d0 R11:
+> > 0000000000000246 R12: 00005568f2d350fb [  243.247586] R13:
+> > 0000000000000000 R14: 0000000000000000 R15: 00005568f2d37b00 [ 
+> > 243.251622]  </TASK>
+> > 
+> > BTW running this script with cache=loose made me realize that Linux 9p
+> > client is always requesting server for every "ls foo.txt", which makes it
+> > extremely slow unnecessarily.
+> > 
+> >> fs/9p/vfs_inode.c      | 7 ++++++-
+> >> fs/9p/vfs_inode_dotl.c | 7 ++++++-
+> >> 2 files changed, 12 insertions(+), 2 deletions(-)
+> >> 
+> >> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+> >> index 97abe65bf7c1..bfba21f5d8a9 100644
+> >> --- a/fs/9p/vfs_inode.c
+> >> +++ b/fs/9p/vfs_inode.c
+> >> @@ -993,7 +993,12 @@ v9fs_vfs_getattr(struct mnt_idmap *idmap, const
+> >> struct
+> >> path *path, if (IS_ERR(st))
+> >> return PTR_ERR(st);
+> >> 
+> >> - v9fs_stat2inode(st, d_inode(dentry), dentry->d_sb, 0);
+> >> + /*
+> >> + * With writeback caching, the client is authoritative for i_size.
+> >> + * Don't let the server overwrite it with a potentially stale value.
+> >> + */
+> >> + v9fs_stat2inode(st, d_inode(dentry), dentry->d_sb,
+> >> + (v9ses->cache & CACHE_WRITEBACK) ? V9FS_STAT2INODE_KEEP_ISIZE : 0);
+> >> generic_fillattr(&nop_mnt_idmap, request_mask, d_inode(dentry), stat);
+> >> 
+> >> p9stat_free(st);
+> >> diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+> >> index 643e759eacb2..67a0ded2e223 100644
+> >> --- a/fs/9p/vfs_inode_dotl.c
+> >> +++ b/fs/9p/vfs_inode_dotl.c
+> >> @@ -453,7 +453,12 @@ v9fs_vfs_getattr_dotl(struct mnt_idmap *idmap,
+> >> if (IS_ERR(st))
+> >> return PTR_ERR(st);
+> >> 
+> >> - v9fs_stat2inode_dotl(st, d_inode(dentry), 0);
+> >> + /*
+> >> + * With writeback caching, the client is authoritative for i_size.
+> >> + * Don't let the server overwrite it with a potentially stale value.
+> >> + */
+> >> + v9fs_stat2inode_dotl(st, d_inode(dentry),
+> >> + (v9ses->cache & CACHE_WRITEBACK) ? V9FS_STAT2INODE_KEEP_ISIZE : 0);
+> >> generic_fillattr(&nop_mnt_idmap, request_mask, d_inode(dentry), stat);
+> >> /* Change block size to what the server returned */
+> >> stat->blksize = st->st_blksize;
+
+
+
 
