@@ -1,46 +1,51 @@
 Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CEA3ED105;
-	Wed,  4 Feb 2026 12:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA9E32548D;
+	Wed, 11 Feb 2026 15:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770206656; cv=none; b=AewFP6zwKFuu+4ZFJh6CSlpeJSVnR2mTBVIUDir1gjg2Z2avDdN84wvwE0an5rihqEcEo52ua5lBiIUTexTgbkk0TuCljd5WxOGIRHprBcREZVpuzpJZDTl7xPklY9xmU3rvsf2j4SXwxEZOs8v/WPSzlG63bYCdJQfh/JqqW7E=
+	t=1770825487; cv=none; b=ecVeft2sxAbacsrDbDr2wv4GWNwvXTXZEBrK7zfvLtuPXLZ+1YBHAUdFW/js+o4BK5OXTJCgMcyKE6fvNenSu02sHyJi5ngE5guaBNb4/RFUMG+pG0BgjoPCgke2/hUB8u1xT98XosBxVHRItKcb27rJqkeHMbEspY+EVQhR+js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770206656; c=relaxed/simple;
-	bh=7G/PwzIk3g4uIGdcJqA20KrJMGGg5TpRuyz/ChE2xac=;
+	s=arc-20240116; t=1770825487; c=relaxed/simple;
+	bh=HboLgwrrJSBpIVbQmtbxi3id/yn56qSaq/Ws66MZEz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=icXkCsvyp8U7m1Iv+Rb8QlTU5+juSY6JptLVV46yX+0jBdXpqWP1J9y578koz0BwBA3JMcV7oAMNUgH3Kraajxk1whWTc9gxe5ToGFU/m8DI1N1FOGGXAw1NeAbtivHbDQEHCt9vxYUgJO7iXPdwDlCQW8aSFXbce2bs9b1lTQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=AZSOnMie; arc=none smtp.client-ip=5.189.157.229
+	 MIME-Version:Content-Type; b=QWqUJvMvUNLY6CO4Ya6JNrXvSoOi9BTp2bEQmB+JUD+JwB1eCo+ty/+LhDWFTLUGvUvBdaEPLPTSJC5Y5E4hKiMjDbgdE/tGcjcwKbL6CujN6Akvh7HRdBQVPCgUCTPYOB7DxTRG660rwuN5ar87vcQUKHwgJYa3yGgRfHsaZS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=YVqWCmw3; arc=none smtp.client-ip=5.189.157.229
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="AZSOnMie"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="YVqWCmw3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Content-ID:Content-Description;
-	bh=Q+Ks08PzHVA8pXNev8uKWfCnJ6OcTFhczPTs0oqi89M=; b=AZSOnMie4dVcjCOeODKz4Zoxz2
-	7ozRS3+UpFV3dz8fQWwx4MRQCqx8EZdSUlQy9wfvjeT1edNHzmGMg6V4L+s4p5d6DeBz+fDC6MBWm
-	SQR4I+C2LEaUpn4f+RI6u4oX1eRpa1XLY3uoLinNmp9TPAio4wlaBBcQQICxbNjlPYQKPNeOp3u8h
-	bHqZSoyKqNoauavjA7QUNPPveR2zwQiM7TgMXCoQsYvoQOY3dosMhNFBrAwxmoEKlHcXI5+R2WPKc
-	KFxNVDbiy6dRu5hjxZM/IzfAt8oWS/8NBfsS6IZH3OVt81yj0trwXyuNi230F0zdBM6q7wOGDRNAf
-	yCrdXMsYT4hOM+WzmhGD3pI93xh7S+oOkEe+mOMurAAajyGUJ6H/mer9PS1kjKOr6vSu/anOtSKaU
-	BMClTz45J/5xzVksHMjaT3JEhz8HZV1A8zd8gPzx/pGNo1EKMoI46dC64ZCm5SLQUX9NfXv/gE1Vk
-	O0l9haMVubcIq5eM8DdGRRWu8LEK38Nz4oSl+98tYEu0fgJS2YVVSx9h8YnMxfoDPygOQZSHAjoWg
-	TxEav8G/iSIdYe535wH3L5J9SWh+uxIu4G0v/28tpU0A6SxWy5EMpbM8Wkgn/pzwbNl9PGNetVXJK
-	nOIXLcHrFmMYeAmh905U3bbXF+gl02CLOzIrzTCSo=;
+	bh=XHs+MvJHP7lm1GyHxgPTtCKn4yhsw71bbxz6K7cmxMA=; b=YVqWCmw3pDbyedqAUhHAjTiqUt
+	NckSUNlaq7mtjn0V6BMRQs7ObxzZyXoKbWEgK4sTMnnu+DEC2135Hew/IjWvG33uCmVMWM+/kAik1
+	8dM8MzG7p1jqVqUCcCcEB5BNaiMXmPfqUqz+kGRi6V4Awwh4F12zUNEKIk3QXNC7xAzJdBslllZ00
+	3/tsKST6lVjxr4dv1fuRjVclfGkg07h+s4/iyjZbIbkX7RGgcqdSjFip41heudAL9EU0ZorAk5noE
+	naG1ARHWz+PLncyfEgpUx3+iRZBqVcN2nwjzJtFRVjHSwQ4NyfGJBA+grAd30bk2T3FdTV4OzTMI3
+	MW3ZunWSduYwWYqj8bNOvRIBnFjYylWxOyupuug5lUhSf91A3TiG3NrxSqv3Fn2+HDrm2ixU08ePw
+	7HT4Yeu/dKDQTY7Ba7KRHCmCkK5R57czVXAWDAHPnLqn/4i7apQWf7Pn71cvw8oFAjQRm2QNF8j9m
+	GvFedvARdeoPj3ZB0q4WHtepwhg0y/NFAAqgINhWg+hT0XpMOOQ+1hx72G78CwIjbsaQ5YtKs8VTS
+	3Fozz7M2K4mks3vuNUS7OKVbrLoHeEM9CGjafGXZCGb5ct2mGVhEdW1TayuQxaTZGtmf6J4WS3a+f
+	M0sQhKn0xRDl8Ap4VN+sQDXHIq6JF3Yw27qVl6+TQ=;
 From: Christian Schoenebeck <linux_oss@crudebyte.com>
 To: v9fs@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
  Dominique Martinet <asmadeus@codewreck.org>,
  Remi Pommarel <repk@triplefau.lt>
-Subject: Re: [PATCH v2 0/3] 9p: Performance improvements for build workloads
-Date: Wed, 04 Feb 2026 12:37:55 +0100
-Message-ID: <4711141.LvFx2qVVIh@weasel>
-In-Reply-To: <cover.1769013622.git.repk@triplefau.lt>
-References: <cover.1769013622.git.repk@triplefau.lt>
+Subject:
+ Re: [PATCH v2 2/3] 9p: Introduce option for negative dentry cache retention
+ time
+Date: Wed, 11 Feb 2026 16:58:02 +0100
+Message-ID: <3929797.kQq0lBPeGt@weasel>
+In-Reply-To:
+ <7e38e7bd31674208ab2b0de909c0744feda2c03f.1769013622.git.repk@triplefau.lt>
+References:
+ <cover.1769013622.git.repk@triplefau.lt>
+ <7e38e7bd31674208ab2b0de909c0744feda2c03f.1769013622.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,34 +55,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
 
-On Wednesday, 21 January 2026 20:56:07 CET Remi Pommarel wrote:
-> This patchset introduces several performance optimizations for the 9p
-> filesystem when used with cache=loose option (exclusive or read only
-> mounts). These improvements particularly target workloads with frequent
-> lookups of non-existent paths and repeated symlink resolutions.
-[...]
-> Here is summary of the different hostapd/wpa_supplicant build times:
+On Wednesday, 21 January 2026 20:56:09 CET Remi Pommarel wrote:
+> Add support for a new mount option in v9fs that allows users to specify
+> the duration for which negative dentries are retained in the cache. The
+> retention time can be set in milliseconds using the ndentrytmo option.
 > 
->   - Baseline (no patch): 2m18.702s
->   - negative dentry caching (patches 1-2): 1m46.198s (23% improvement)
->   - Above + symlink caching (patches 1-3): 1m26.302s (an additional 18%
->     improvement, 37% in total)
+> For the same consistency reasons, this option should only be used in
+> exclusive or read-only mount scenarios, aligning with the cache=loose
+> usage.
 > 
-> With this ~37% performance gain, 9pfs with cache=loose can compete with
-> virtiofs for (at least) this specific scenario. Although this benchmark
-> is not the most typical, I do think that these caching optimizations
-> could benefit a wide range of other workflows as well.
+> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+> ---
+>  fs/9p/v9fs.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+> index 1da7ab186478..f58a2718e412 100644
+> --- a/fs/9p/v9fs.c
+> +++ b/fs/9p/v9fs.c
+> @@ -39,7 +39,7 @@ enum {
+>  	 * source if we rejected it as EINVAL */
+>  	Opt_source,
+>  	/* Options that take integer arguments */
+> -	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid,
+> +	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid, Opt_ndentrytmo,
+>  	/* String options */
+>  	Opt_uname, Opt_remotename, Opt_cache, Opt_cachetag,
+>  	/* Options that take no arguments */
+> @@ -93,6 +93,7 @@ const struct fs_parameter_spec v9fs_param_spec[] = {
+>  	fsparam_string	("access",	Opt_access),
+>  	fsparam_flag	("posixacl",	Opt_posixacl),
+>  	fsparam_u32	("locktimeout",	Opt_locktimeout),
+> +	fsparam_s32	("ndentrytmo",	Opt_ndentrytmo),
 
-I did a wide range of tests. In broad average I'm also seeing ~40% improvement 
-when compiling. Some individual sources even had 60% improvements and more. So 
-there is quite a big variance.
+Not better "ndentrytimeout" ?
 
-I did not encounter misbehaviours in my tests, so feel free to add:
+My first thought was whether it was really worth introducing a dedicated
+timeout option exactly for negative dentries (instead of a general cache
+timeout option). But on a 2nd thought it actually needs separate handling, as
+negative dentries have the potential to pollute with a ridiculous amount of
+bogus entries.
 
-Tested-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Wouldn't it make sense to enable this option with some meaningful value for
+say cache=loose by default? 24 hours maybe?
 
-I still need to make a proper review though.
+> 
+>  	/* client options */
+>  	fsparam_u32	("msize",	Opt_msize),
+> @@ -159,6 +160,8 @@ int v9fs_show_options(struct seq_file *m, struct dentry
+> *root) from_kgid_munged(&init_user_ns, v9ses->dfltgid));
+>  	if (v9ses->afid != ~0)
+>  		seq_printf(m, ",afid=%u", v9ses->afid);
+> +	if (v9ses->ndentry_timeout != 0)
+> +		seq_printf(m, ",ndentrytmo=%d", v9ses->ndentry_timeout);
+>  	if (strcmp(v9ses->uname, V9FS_DEFUSER) != 0)
+>  		seq_printf(m, ",uname=%s", v9ses->uname);
+>  	if (strcmp(v9ses->aname, V9FS_DEFANAME) != 0)
+> @@ -337,6 +340,10 @@ int v9fs_parse_param(struct fs_context *fc, struct
+> fs_parameter *param) session_opts->session_lock_timeout =
+> (long)result.uint_32 * HZ; break;
+> 
+> +	case Opt_ndentrytmo:
+> +		session_opts->ndentry_timeout = result.int_32;
+> +		break;
+> +
+>  	/* Options for client */
+>  	case Opt_msize:
+>  		if (result.uint_32 < 4096) {
 
-/Christian
+
 
 
