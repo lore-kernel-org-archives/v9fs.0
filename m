@@ -1,49 +1,48 @@
-Received: from e3i677.smtp2go.com (e3i677.smtp2go.com [158.120.86.165])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BD9346E64
-	for <v9fs@lists.linux.dev>; Thu, 12 Feb 2026 22:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.86.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D67822CBD9
+	for <v9fs@lists.linux.dev>; Sun, 15 Feb 2026 09:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770933682; cv=none; b=dZbjloqCedoLoyZxhWD7CaYsQ3IwxspXBDqpAp/ZOl/Qa5IT2YZKKJYWnXC+L4rw30nG2yXRsfNRedgxSEYywpjeNtwGAf4EQ3722HEr59TXnL3lKRZtFWMclE8bi6b/ThKYqPoZy+Uy12pVietsH2xC37ilqTJ5dM56A6LNOv4=
+	t=1771146804; cv=none; b=HdPDSIwrGapGod46UGncaMT4odf2bNdJHZ1/LMudG1FcZg12XyqWNM9gsmju69BlDbocVBJmk12EyUHQRZjDJLnI/w8wRpwdQOE1B4XcABcUnq9YpZ1dHawBizzT1l82LJyzFVRxnhwRvmmFyu92mJMUCxe1KWXR7R3DuIMlytg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770933682; c=relaxed/simple;
-	bh=/uzxl7mcz4rCA42Y3ztV83uJIM8obdgWVSPCbfAai/g=;
+	s=arc-20240116; t=1771146804; c=relaxed/simple;
+	bh=+GB7qHZaUX+EsxbFmVgSjrXD5tZfbgWbUE7dLpM1xdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcaLI3azUYQbNJylr5GoyOd+Flth+BhlmZRax0y9L/8YiOGWvhFln42VJSZY2ZDIzMNBzVwaExIICkzqZ4N/YkC6lPP08rWA1mOdJ2hE4mBPa0otiYzJQiwCfgGlGNFXSpSeuCf2RIf61Ib+aAQqTlDG2jIVxWQbe4u4Wl66+T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=BoUq1Nn4; arc=none smtp.client-ip=158.120.86.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+	 Content-Type:Content-Disposition:In-Reply-To; b=oeODKCysHzI+OmFSfyIigZpOzY2z/mbQgbzxpOfR19OFYp2iUaXXK5z2eXhBg2gXDW2sCzV5O0HyCNJu62h+LQx3z6tOQ17mmdk8Kfeaz/KHDMO9TZxL+vh22ghJpG3hTqxU9xcsBvKcNeIPO/OPT+Tf6ejWBvLxV84WrJL4GuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ohM1tTgf; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="BoUq1Nn4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1770933679; h=from : subject
- : to : message-id : date;
- bh=SPyKIPsZsBCAFDSVVgy7JovAeyFqTdGemFov23Js+nQ=;
- b=BoUq1Nn4UAoso497KrKqflK5GvJUYXFmXCbC8mZ/6KpvENGAYABagg8xc3NyhREsSgajf
- XGiBm31+x79VID5g+UstrTuxTXJ+XVOAAYmias1dfSg96Vujo/IXuGSUqWQDF/YSNwsAxgV
- VpYyYMVImPoCmTM4iBMQx/nzB6rLyIeQKSOLECS7IAzjkfIvGBAdse2yrJP86HBMVh3cei8
- Q1W6tt2cIV/sj6cCtyULcUue0+bz1/gDLy4Wa82PGdGNfxxqTlPCLsgzxIRdsF76aGxwiJ+
- 4s1mPYGw+NsOOl/6EhIriH61SM8p8S5Gqc/yMvHiPpQny1ASkXADwSRC01xg==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.99.1-S2G)
-	(envelope-from <repk@triplefau.lt>)
-	id 1vqekK-FnQW0hPvYx2-ndcv;
-	Thu, 12 Feb 2026 22:01:12 +0000
-Date: Thu, 12 Feb 2026 22:42:50 +0100
-From: Remi Pommarel <repk@triplefau.lt>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: Re: [PATCH v2 3/3] 9p: Enable symlink caching in page cache
-Message-ID: <aY5JWgyHq5P17_jx@pilgrim>
-References: <cover.1769013622.git.repk@triplefau.lt>
- <dfc736a3b22d1a799ec0eb30c038d75120745610.1769013622.git.repk@triplefau.lt>
- <2050624.usQuhbGJ8B@weasel>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ohM1tTgf"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 4AEBF14C2DE;
+	Sun, 15 Feb 2026 10:13:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1771146799;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X6PMMPGz+jLe5ualpnm5Aab0p5EjTgChnMRnoKKA/Fs=;
+	b=ohM1tTgfFBEmPiR3IPGDXoOqOAcf/5fyLo5GMbtawe3lv4QXeHSR6Tfjg3CTsEKJa/0r1a
+	ECI8dgKfua712El69ShX/WNWoB2KFNbkwlbSG627Xwz1xs43TzGJpLVdxDalz0jjV3cL7/
+	cVBlZExsUsBaLyjBuBnjzWsFsV792UAtl5pYusQwv29XiJyxfB+chicskwqc1j+oR/cQDi
+	/XM5hKkxeFBul4d8OX/BEite+SJTT4Vdwe0wYD4Bu5ahgPhkPi9iMS0rzVGa3NJimBYveZ
+	ej9pC0glbNQ/PetAYqOaWK+pt1KaVQIq7WvLmpH4n95kLPt5Tr/MyHUKcm3bnw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id acf4b99f;
+	Sun, 15 Feb 2026 09:13:15 +0000 (UTC)
+Date: Sun, 15 Feb 2026 18:13:00 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Stefano Stabellini <stefano.stabellini@amd.com>
+Cc: xen-devel@lists.xenproject.org, jgross@suse.com, v9fs@lists.linux.dev,
+	ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	sstabellini@kernel.org
+Subject: Re: [PATCH v2] 9p/xen: protect xen_9pfs_front_free against
+ concurrent calls
+Message-ID: <aZGOHNhDe1PPJCRO@codewreck.org>
+References: <20260129230348.2390470-1-stefano.stabellini@amd.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,283 +51,16 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2050624.usQuhbGJ8B@weasel>
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sDdW3pvTwq
-X-smtpcorp-track: TW83d8mj3w5x.EqDymkfH9zaF.2_4IxgdsPkQ
+In-Reply-To: <20260129230348.2390470-1-stefano.stabellini@amd.com>
 
-On Thu, Feb 12, 2026 at 04:35:24PM +0100, Christian Schoenebeck wrote:
-> On Wednesday, 21 January 2026 20:56:10 CET Remi Pommarel wrote:
-> > Currently, when cache=loose is enabled, file reads are cached in the
-> > page cache, but symlink reads are not. This patch allows the results
-> > of p9_client_readlink() to be stored in the page cache, eliminating
-> > the need for repeated 9P transactions on subsequent symlink accesses.
-> > 
-> > This change improves performance for workloads that involve frequent
-> > symlink resolution.
-> > 
-> > Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-> > ---
-> >  fs/9p/vfs_addr.c       | 24 ++++++++++++--
-> >  fs/9p/vfs_inode.c      |  6 ++--
-> >  fs/9p/vfs_inode_dotl.c | 73 +++++++++++++++++++++++++++++++++++++-----
-> >  3 files changed, 90 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-> > index 862164181bac..ee672abbb02c 100644
-> > --- a/fs/9p/vfs_addr.c
-> > +++ b/fs/9p/vfs_addr.c
-> > @@ -70,10 +70,19 @@ static void v9fs_issue_read(struct netfs_io_subrequest
-> > *subreq) {
-> >  	struct netfs_io_request *rreq = subreq->rreq;
-> >  	struct p9_fid *fid = rreq->netfs_priv;
-> > +	char *target;
-> >  	unsigned long long pos = subreq->start + subreq->transferred;
-> > -	int total, err;
-> > -
-> > -	total = p9_client_read(fid, pos, &subreq->io_iter, &err);
-> > +	int total, err, len, n;
-> > +
-> > +	if (S_ISLNK(rreq->inode->i_mode)) {
-> > +		err = p9_client_readlink(fid, &target);
-> 
-> Treadlink request requires 9p2000.L. So this would break with legacy protocol
-> versions 9p2000 and 9p2000.u I guess:
-> 
-> https://wiki.qemu.org/Documentation/9p#9p_Protocol
+Stefano Stabellini wrote on Thu, Jan 29, 2026 at 03:03:48PM -0800:
+> Changes in v2:
+> - move priv->rings check above the loop
+> - replace list_del_init with list_del
 
-I'm having trouble seeing how v9fs_issue_read() could be called for
-S_ISLNK inodes under 9p2000 or 9p2000.u.
-
-As I understand it, v9fs_issue_read() is only invoked through the page
-cache operations via the inode’s a_ops. This seems to me that only
-regular files and (now that I added a page_get_link() in
-v9fs_symlink_inode_operations_dotl) symlinks using 9p2000.L can call
-v9fs_issue_read(). But not symlinks using 9p2000 or 9p2000.u as I
-haven't modified v9fs_symlink_inode_operations. But I may have missed
-something here ?
-
-Maybe what is misleading is that this performance optimization is only
-applicable for 9p2000.L which I should possibly mention in the commit
-message.
-
-> 
-> > +		len = strnlen(target, PAGE_SIZE - 1);
-> 
-> Usually we are bound to PATH_MAX.
-> 
-> Target link path is coming from 9p server, which may run another OS and
-> therefore target might be longer than PATH_MAX, in which case it would always
-> yield in -ENAMETOOLONG when client requests that link target from cache.
-> 
-> But OTOH there is no real alternative for storing a link target in cache that
-> can never be delivered to user. So I guess it is OK as-is.
-> 
-> Simply using PATH_MAX would make it worse, as it would potentially silently
-> shorten the link from host.
-> 
-> > +		n = copy_to_iter(target, len, &subreq->io_iter);
-> > +		if (n != len)
-> > +			err = -EFAULT;
-> > +		total = i_size_read(rreq->inode);
-> > +	} else
-> > +		total = p9_client_read(fid, pos, &subreq->io_iter, &err);
-> > 
-> >  	/* if we just extended the file size, any portion not in
-> >  	 * cache won't be on server and is zeroes */
-> > @@ -99,6 +108,7 @@ static void v9fs_issue_read(struct netfs_io_subrequest
-> > *subreq) static int v9fs_init_request(struct netfs_io_request *rreq, struct
-> > file *file) {
-> >  	struct p9_fid *fid;
-> > +	struct dentry *dentry;
-> >  	bool writing = (rreq->origin == NETFS_READ_FOR_WRITE ||
-> >  			rreq->origin == NETFS_WRITETHROUGH ||
-> >  			rreq->origin == NETFS_UNBUFFERED_WRITE ||
-> > @@ -115,6 +125,14 @@ static int v9fs_init_request(struct netfs_io_request
-> > *rreq, struct file *file) if (!fid)
-> >  			goto no_fid;
-> >  		p9_fid_get(fid);
-> > +	} else if (S_ISLNK(rreq->inode->i_mode)) {
-> > +		dentry = d_find_alias(rreq->inode);
-> > +		if (!dentry)
-> > +			goto no_fid;
-> > +		fid = v9fs_fid_lookup(dentry);
-> > +		dput(dentry);
-> > +		if (IS_ERR(fid))
-> > +			goto no_fid;
-> >  	} else {
-> >  		fid = v9fs_fid_find_inode(rreq->inode, writing, INVALID_UID, true);
-> >  		if (!fid)
-> > diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> > index a82a71be309b..e1b762f3e081 100644
-> > --- a/fs/9p/vfs_inode.c
-> > +++ b/fs/9p/vfs_inode.c
-> > @@ -302,10 +302,12 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
-> >  			goto error;
-> >  		}
-> > 
-> > -		if (v9fs_proto_dotl(v9ses))
-> > +		if (v9fs_proto_dotl(v9ses)) {
-> >  			inode->i_op = &v9fs_symlink_inode_operations_dotl;
-> > -		else
-> > +			inode_nohighmem(inode);
-> 
-> What is that for?
-
-According to filesystems/porting.rst and commit 21fc61c73c39 ("don't put
-symlink bodies in pagecache into highmem") all symlinks that need to use
-page_follow_link_light() (which is now more or less page_get_link())
-should not add highmem pages in pagecache or deadlocks could happen. The
-inode_nohighmem() prevents that.
-
-Also from __page_get_link()
-  BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
-
-A BUG_ON() is supposed to punish us if inode_nohighmem() is not used
-here.
-
-Of course this does not have any effect on 64bits platforms.
-
-> 
-> > +		} else {
-> >  			inode->i_op = &v9fs_symlink_inode_operations;
-> > +		}
-> > 
-> >  		break;
-> >  	case S_IFDIR:
-> > diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-> > index 6312b3590f74..486b11dbada3 100644
-> > --- a/fs/9p/vfs_inode_dotl.c
-> > +++ b/fs/9p/vfs_inode_dotl.c
-> > @@ -686,9 +686,13 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct
-> > inode *dir, int err;
-> >  	kgid_t gid;
-> >  	const unsigned char *name;
-> > +	umode_t mode;
-> > +	struct v9fs_session_info *v9ses;
-> >  	struct p9_qid qid;
-> >  	struct p9_fid *dfid;
-> >  	struct p9_fid *fid = NULL;
-> > +	struct inode *inode;
-> > +	struct posix_acl *dacl = NULL, *pacl = NULL;
-> > 
-> >  	name = dentry->d_name.name;
-> >  	p9_debug(P9_DEBUG_VFS, "%lu,%s,%s\n", dir->i_ino, name, symname);
-> > @@ -702,6 +706,15 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct
-> > inode *dir,
-> > 
-> >  	gid = v9fs_get_fsgid_for_create(dir);
-> > 
-> > +	/* Update mode based on ACL value */
-> > +	err = v9fs_acl_mode(dir, &mode, &dacl, &pacl);
-> > +	if (err) {
-> > +		p9_debug(P9_DEBUG_VFS,
-> > +			 "Failed to get acl values in symlink %d\n",
-> > +			 err);
-> > +		goto error;
-> > +	}
-> > +
-> >  	/* Server doesn't alter fid on TSYMLINK. Hence no need to clone it. */
-> >  	err = p9_client_symlink(dfid, name, symname, gid, &qid);
-> > 
-> > @@ -712,8 +725,30 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct
-> > inode *dir,
-> > 
-> >  	v9fs_invalidate_inode_attr(dir);
-> > 
-> > +	/* instantiate inode and assign the unopened fid to the dentry */
-> > +	fid = p9_client_walk(dfid, 1, &name, 1);
-> > +	if (IS_ERR(fid)) {
-> > +		err = PTR_ERR(fid);
-> > +		p9_debug(P9_DEBUG_VFS, "p9_client_walk failed %d\n",
-> > +			 err);
-> > +		goto error;
-> > +	}
-> > +
-> > +	v9ses = v9fs_inode2v9ses(dir);
-> > +	inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
-> > +	if (IS_ERR(inode)) {
-> > +		err = PTR_ERR(inode);
-> > +		p9_debug(P9_DEBUG_VFS, "inode creation failed %d\n",
-> > +			 err);
-> > +		goto error;
-> > +	}
-> > +	v9fs_set_create_acl(inode, fid, dacl, pacl);
-> > +	v9fs_fid_add(dentry, &fid);
-> > +	d_instantiate(dentry, inode);
-> > +	err = 0;
-> >  error:
-> >  	p9_fid_put(fid);
-> > +	v9fs_put_acl(dacl, pacl);
-> >  	p9_fid_put(dfid);
-> >  	return err;
-> >  }
-> > @@ -853,24 +888,23 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct
-> > inode *dir, }
-> > 
-> >  /**
-> > - * v9fs_vfs_get_link_dotl - follow a symlink path
-> > + * v9fs_vfs_get_link_nocache_dotl - Resolve a symlink directly.
-> > + *
-> > + * To be used when symlink caching is not enabled.
-> > + *
-> >   * @dentry: dentry for symlink
-> >   * @inode: inode for symlink
-> >   * @done: destructor for return value
-> >   */
-> > -
-> >  static const char *
-> > -v9fs_vfs_get_link_dotl(struct dentry *dentry,
-> > -		       struct inode *inode,
-> > -		       struct delayed_call *done)
-> > +v9fs_vfs_get_link_nocache_dotl(struct dentry *dentry,
-> > +			       struct inode *inode,
-> > +			       struct delayed_call *done)
-> >  {
-> >  	struct p9_fid *fid;
-> >  	char *target;
-> >  	int retval;
-> > 
-> > -	if (!dentry)
-> > -		return ERR_PTR(-ECHILD);
-> > -
-> >  	p9_debug(P9_DEBUG_VFS, "%pd\n", dentry);
-> > 
-> >  	fid = v9fs_fid_lookup(dentry);
-> > @@ -884,6 +918,29 @@ v9fs_vfs_get_link_dotl(struct dentry *dentry,
-> >  	return target;
-> >  }
-> > 
-> > +/**
-> > + * v9fs_vfs_get_link_dotl - follow a symlink path
-> > + * @dentry: dentry for symlink
-> > + * @inode: inode for symlink
-> > + * @done: destructor for return value
-> > + */
-> > +static const char *
-> > +v9fs_vfs_get_link_dotl(struct dentry *dentry,
-> > +		       struct inode *inode,
-> > +		       struct delayed_call *done)
-> > +{
-> > +	struct v9fs_session_info *v9ses;
-> > +
-> > +	if (!dentry)
-> > +		return ERR_PTR(-ECHILD);
-> > +
-> > +	v9ses = v9fs_inode2v9ses(inode);
-> > +	if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
-> > +		return page_get_link(dentry, inode, done);
-> > +
-> > +	return v9fs_vfs_get_link_nocache_dotl(dentry, inode, done);
-> > +}
-> > +
-> >  int v9fs_refresh_inode_dotl(struct p9_fid *fid, struct inode *inode)
-> >  {
-> >  	struct p9_stat_dotl *st;
-> 
-
-Thanks for the review,
+It looks like I didn't reply a couple of weeks ago but I did
+pick it up and just sent to Linus now.
+Thanks!
 
 -- 
-Remi
+Dominique Martinet | Asmadeus
