@@ -1,138 +1,63 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FCE28EA56
-	for <v9fs@lists.linux.dev>; Sun, 15 Feb 2026 12:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3AD1A23A6;
+	Sun, 15 Feb 2026 18:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771158986; cv=none; b=dppTS1pOZMtFhwauu6++WgrYFrZ2ywuy99mpasrbF+5nUB6tWkjb4g+631WBowPtHkJ6/HkpyT8KyS2DImnB0tCC3SXl2P0A8xuPvZOdBPHeJ+0jRXJf34n9CxFA+/CLowdYYpUThLRS1/aim6yOnOx/Ife2r59mi1XBennH2Kc=
+	t=1771181907; cv=none; b=LUYk26E/i59gkPPFPKdpQ5NKBjlNl1HsGQVT7fzUaUQa1P2JkjlKPGTHD4z+72eja3u9yWmU8cEe5x5mQy6XjZiBCrtFoYvh2y4+/rofU+N/QcJqKAUFiuddn15cQmSCp0ne/7fttPWst7clCIhzI/61EzI/gnIf+FyCQEud6A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771158986; c=relaxed/simple;
-	bh=8LDkYks1X9Y77i3jA5I2+ZBP83sIk4ga7yhDx6sOK68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uwE61wKT9V0bN4M0HMadgNyHoIlmY1uZM4vQzKZ69k0Oe67mZE7KTxkF4EwJ1IrZR5WWEJxJR/7QCzQQnP1UhUQ4C3Sv/zZfuPbGmoPXjz4Pms5EDMwXgKvFZF8oKezudWAGaLVA1ig2udbG9AI4c1ZmsH28ea3BqUEPcec+Eww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=TJJMOChJ; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1771181907; c=relaxed/simple;
+	bh=kN5gG+MCYV6VKLrjN+hPAEMvI/rzYxIbbuG9FritWHo=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=heEN1MBELEdxMs/+aGs8OAUjon9B0Ev0RToJwCcydDqn+8V5cgGvnw6nylmUTrHnMqHTGK1ETgBoARI3V6Dtwual8cV7/0nGbfazDKSsgFGmAc/WLIjpVPUyOpFHphacibTCKzNwBL1P/bbFW6BtR5RfGFQY/kQTb8pt6fRGn4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5Pftuaa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="TJJMOChJ"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3D47514C2D6;
-	Sun, 15 Feb 2026 13:36:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1771158981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x52V94sUrb9KjxsFrGIkU/fw7O4bJiNXv94/Wc68kCY=;
-	b=TJJMOChJ+ONZnU6GAcatdgKYYfAFlMFge2M4XrI6NWds6sIFisnfFMM7n/DjesOUD/VW06
-	6MEwPLzZXfaZtG/WyJdNLgmBZpY0cGise7QiSfy6uL8jB41VxbWXTrgErI6IQMDIL96Hb/
-	SPsqVb0MAW7EpHj8WORpnu5D2QqlJGXOoRMeU6R7vTimnTaR5rZ5I3XDzLRwXRouskzn2q
-	+s2ht8GzJBerhPcxrNAwtUza87/12Wsg7nvXJy4ITanysMciTsSWVT7zYb74kO0Xi47VvY
-	vZ/6GyVg2nX0hkx5or9UUOjts4d4JvdIAkD3dkORefHnaLsPhoWuPi1RyAcrfA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 30af9ace;
-	Sun, 15 Feb 2026 12:36:17 +0000 (UTC)
-Date: Sun, 15 Feb 2026 21:36:02 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Remi Pommarel <repk@triplefau.lt>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>
-Subject: Re: [PATCH v2 3/3] 9p: Enable symlink caching in page cache
-Message-ID: <aZG9skZzT_LaHB6O@codewreck.org>
-References: <cover.1769013622.git.repk@triplefau.lt>
- <dfc736a3b22d1a799ec0eb30c038d75120745610.1769013622.git.repk@triplefau.lt>
- <2050624.usQuhbGJ8B@weasel>
- <aY5JWgyHq5P17_jx@pilgrim>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5Pftuaa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE301C4CEF7;
+	Sun, 15 Feb 2026 18:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771181906;
+	bh=kN5gG+MCYV6VKLrjN+hPAEMvI/rzYxIbbuG9FritWHo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=J5PftuaaF9ju6wh2OifNp5gnU29bqHHhv8ElxG8zMSRn9cJxW9I1dGpFNRfRgdflu
+	 MrVkTk1Tn4HJHu+ubgtS0m475s3KaG1qXh808o3VpgkyC6Zfkgddb1BLEhI2R/3Kvj
+	 IVuuv7DkIjQWKdFTE2PFBSBqCraYg+cL5hZSKQO2U32rfeV3lC0N+0+nHpm67goUdF
+	 UwRAM/jK3RNSr9j1De7d34HCqniQKxdPRhCnwyoYA8uwrLBi1+FzQPv1WjVIRnWVTW
+	 y39RXdSQV7pSRInVRMuFl4uGH/CSHB5/SMQUeRnN0zDse6HhetNOhx5fm1NvTKVt1f
+	 k0IF9yQjXh7ug==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C21A23930925;
+	Sun, 15 Feb 2026 18:58:20 +0000 (UTC)
+Subject: Re: [GIT PULL] 9p update for 7.0-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aZGNuohPlbuGjwaJ@codewreck.org>
+References: <aZGNuohPlbuGjwaJ@codewreck.org>
+X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
+X-PR-Tracked-Message-Id: <aZGNuohPlbuGjwaJ@codewreck.org>
+X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-7.0-rc1
+X-PR-Tracked-Commit-Id: ce8ded2e61f47747e31eeefb44dc24a2160a7e32
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 011af61b9f7c9104eae7ad9951456330d950c771
+Message-Id: <177118189931.3159544.4323362736152895354.pr-tracker-bot@kernel.org>
+Date: Sun, 15 Feb 2026 18:58:19 +0000
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aY5JWgyHq5P17_jx@pilgrim>
 
-Still haven't taken time to review, just replying since I'm looking at
-9p mails tonight... (The IO accounting part was sent to Linus earlier,
-still intending to review and test soonish but feel free to send a v3
-with Christian comments for now)
+The pull request you sent on Sun, 15 Feb 2026 18:11:22 +0900:
 
-Remi Pommarel wrote on Thu, Feb 12, 2026 at 10:42:50PM +0100:
-> > > +	if (S_ISLNK(rreq->inode->i_mode)) {
-> > > +		err = p9_client_readlink(fid, &target);
-> > 
-> > Treadlink request requires 9p2000.L. So this would break with legacy protocol
-> > versions 9p2000 and 9p2000.u I guess:
-> > 
-> > https://wiki.qemu.org/Documentation/9p#9p_Protocol
-> 
-> I'm having trouble seeing how v9fs_issue_read() could be called for
-> S_ISLNK inodes under 9p2000 or 9p2000.u.
-> 
-> As I understand it, v9fs_issue_read() is only invoked through the page
-> cache operations via the inode’s a_ops. This seems to me that only
-> regular files and (now that I added a page_get_link() in
-> v9fs_symlink_inode_operations_dotl) symlinks using 9p2000.L can call
-> v9fs_issue_read(). But not symlinks using 9p2000 or 9p2000.u as I
-> haven't modified v9fs_symlink_inode_operations. But I may have missed
-> something here ?
+> https://github.com/martinetd/linux tags/9p-for-7.0-rc1
 
-I think that's correct, but since it's not obvious perhaps a comment
-just above the p9_client_readlink() call might be useful?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/011af61b9f7c9104eae7ad9951456330d950c771
 
-Also nitpick: please add brackets to the else as well because the if
-part had some (checkpatch doesn't complain either way, but I don't like
-  if (foo) {
-    ...
-  } else
-    bar
-formatting)
-
-
-
-> > > diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> > > index a82a71be309b..e1b762f3e081 100644
-> > > --- a/fs/9p/vfs_inode.c
-> > > +++ b/fs/9p/vfs_inode.c
-> > > @@ -302,10 +302,12 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
-> > >  			goto error;
-> > >  		}
-> > > 
-> > > -		if (v9fs_proto_dotl(v9ses))
-> > > +		if (v9fs_proto_dotl(v9ses)) {
-> > >  			inode->i_op = &v9fs_symlink_inode_operations_dotl;
-> > > -		else
-> > > +			inode_nohighmem(inode);
-> > 
-> > What is that for?
-> 
-> According to filesystems/porting.rst and commit 21fc61c73c39 ("don't put
-> symlink bodies in pagecache into highmem") all symlinks that need to use
-> page_follow_link_light() (which is now more or less page_get_link())
-> should not add highmem pages in pagecache or deadlocks could happen. The
-> inode_nohighmem() prevents that.
-> 
-> Also from __page_get_link()
->   BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
-> 
-> A BUG_ON() is supposed to punish us if inode_nohighmem() is not used
-> here.
-> 
-> Of course this does not have any effect on 64bits platforms.
-
-That's how it should be but it marks memory as GFP_USER, I'm curious if
-it really has no other effect... Anyway, from what I've read I think it
-is likely to go away (highmem on 32bit platforms) soon enough, so this
-probably won't matter in the long run.
-(if we really care we could flag this only for S_ISLNK(mode), but I
-don't think it's worth the check)
-
+Thank you!
 
 -- 
-Dominique Martinet | Asmadeus
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
