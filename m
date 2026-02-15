@@ -1,51 +1,51 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F791F03DE
-	for <v9fs@lists.linux.dev>; Sun, 15 Feb 2026 09:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DB41E834E
+	for <v9fs@lists.linux.dev>; Sun, 15 Feb 2026 09:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771147324; cv=none; b=mAeg9hn1I20nORpBBfn6wOS/3G6VNYa8e3BGQ5lVfAbW7kvtdaXQynPF1TBu/rraJ4QIzoyEUhfaAS9AvmDhdQhQfb5C5u4qpBEVM9LgiWKEpm0vdp/d30OJoOalZEJOOpS8A9eUBsDe99/uLFNYZdt+8F3b0j5oOwEDgdS4raM=
+	t=1771147687; cv=none; b=sFJ4did+RP2AuuHjvdJsqyecRWcw341bnLXusHUeTdtE/DmNFzXlZOVpXT3uJrvlpi68+SnrCTAlMLCBoA5HwaLlAewA9dkhZeZtsPT4QPuLqlmRqEEyhaMQHAbmQSQTXscqA90ZM6LKfjLGOB5t46guRWmMNDo+8Jy3rv+sLhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771147324; c=relaxed/simple;
-	bh=wkAS4RJJl6vDV0QaeK+eTSGXuymafUpb7sdDSBT1qIw=;
+	s=arc-20240116; t=1771147687; c=relaxed/simple;
+	bh=C0H44V/77PoBqbHQWID2vzYJZg/RjwktuHel3C+HrYI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2Ch6uIW1YneCsfPr2woUfC6vlxBR/GrDB6ufmlWzpODezPEbBmzbXWYe6nNTYGTYsc16kR2CiArD30mNRoRjPR8hgrY5xqsuQnU2Nlo1+gIYXHVyTup4Lh4zEjBWpI1ZInOK529yJvegb3QENxEvIYxoA6ghqWs9DBI4pLQAug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=BEhZ1I0m; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=g3p0t6CUWesOutSkQXqon8FQyrKofShXxgxrcl7BRL3O8HuD/qhmxdyVkno5Rg/9enk3Pwshs3VvzyckbPmIIXIJaKYrSvn2TJ/zLxSh9nOaUdlbHN3OekGoJgI03FUyC0cixDpprzQF8W1YnA8HFwWMmIQ/ziKJ24Jo7d/AxDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=nmrI89n9; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="BEhZ1I0m"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="nmrI89n9"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 5370514C2D6;
-	Sun, 15 Feb 2026 10:21:59 +0100 (CET)
+	by submarine.notk.org (Postfix) with ESMTPS id E369B14C2D6;
+	Sun, 15 Feb 2026 10:28:01 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1771147321;
+	s=2; t=1771147684;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hZir9aqsyFPLT6pkG/trDWIZZ0JXD3/dPzKk1KrXGYk=;
-	b=BEhZ1I0m9i4pGIrNEC5oWlyYWGW/R5YN96TwTfs/NHv8f4Y/lLwQlL2GwOHX+ENa3zfT07
-	/uhl/qpgbBGA9E2iZlkEQCV1arNoWI8Vxn0F0DN6XnmuHm5vGoGStLL8yj7q3rAxzFDlRl
-	Fmgwk3I+z56JwKnbflIP6Xn8mHbpd3P9/MV+zZ8WCbhmfr2Fq2YpFi2YmYljphMn0R6nzA
-	AMfVv2gZXwnmgTcaQOpGsgPn6walUu4HhMrnIu2gYMDKMHoUVHorOqI/KweZaxRbcPzL1g
-	2f28yHQuftmhueywo7OGNq8qt+sHKCj88UUUnJ505xv3aMTXTzAHU7ooJDvAwQ==
+	bh=tY4YZyEw5GxWBlYlZZdYm+ln93eMRUDbVlzcSMzvuws=;
+	b=nmrI89n9xgsq1K6iAvyqggRb7h0vexmNSwL6Bh1pWLCGJcHyU1rfJNHXg8FCNorfUMN9/k
+	bMXEW09Oi6Kze22NS6Fl/tHXrXLRTnrtIoZzSawfGAmLAGTZRTnsu0fzpcRcoqhcBj7IP8
+	tim7v6Qj+haIbpIZrHPTonmi/etJ5lpSl2YBWHqhU1unqCtbKo2EuO9uB3E/rrkxDrKjkq
+	fcpcq9VeCExAoV/XVh9t8iZTYdwWNXs0vqVlf6bno+eN7CTKQCV7kI5wEU+vkpkBpQzEul
+	NKEXP38UXmVOABhbvdiLejkh0MLS8+4N0ORwCSEaVaxzjLnasFWjwTK2PO0l5Q==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 000b32f3;
-	Sun, 15 Feb 2026 09:21:57 +0000 (UTC)
-Date: Sun, 15 Feb 2026 18:21:42 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 24e3fc66;
+	Sun, 15 Feb 2026 09:28:00 +0000 (UTC)
+Date: Sun, 15 Feb 2026 18:27:45 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Pierre Barre <pierre@barre.sh>, ericvh@kernel.org, lucho@ionkov.net,
-	David Howells <dhowells@redhat.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] 9p: fix i_size update race in getattr with writeback
- caching
-Message-ID: <aZGQJsgPxuLqlJ_-@codewreck.org>
-References: <20251227180137.730385-1-pierre@barre.sh>
- <2025543.PYKUYFuaPT@weasel>
- <64008E3D-7EEE-4E6C-9392-986C1D8E8858@barre.sh>
- <1946294.tdWV9SEqCh@weasel>
+To: Breno Leitao <leitao@debian.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eryu Guan <eguan@linux.alibaba.com>,
+	Yiwen Jiang <jiangyiwen@huawei.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] 9p: fix WARN_ON when dropping nlink on files with nlink=0
+Message-ID: <aZGRkaFZPXfZW8a0@codewreck.org>
+References: <20260126-9p-v1-1-dc234d53ae87@debian.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,25 +54,88 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1946294.tdWV9SEqCh@weasel>
+In-Reply-To: <20260126-9p-v1-1-dc234d53ae87@debian.org>
 
-Christian Schoenebeck wrote on Wed, Feb 04, 2026 at 12:48:55PM +0100:
-> > FWIW, I tested the initial approach I described and this seems to result in
-> > no real performance improvements compared to not using any writeback
-> > caching at all.
+Breno Leitao wrote on Mon, Jan 26, 2026 at 02:23:37AM -0800:
+> v9fs_dec_count() guards against decrementing nlink on directories that
+> have nlink <= 2, but does not guard against decrementing nlink on
+> regular files that already have nlink == 0.
 > 
-> Right, surprisingly I don't measure a performance penalty either.
+> In the 9p filesystem, the client caches inode metadata including nlink,
+> but the server is the source of truth. During an unlink operation, the
+> following race can occur:
+>
+>   1. Client initiates unlink, server processes it and sets nlink to 0
+>   2. Client fetches updated inode metadata (nlink=0) before unlink returns
+>   3. Client's v9fs_remove() completes successfully
+>   4. Client calls v9fs_dec_count() which calls drop_nlink() on nlink=0
+
+Thanks for the patch and sorry for the delay
+
+
+hmm.. I'm not actually sure if we should call drop_nlink() at all in
+cacheless mode, actually..
+We don't really care about nlink in this context, as inode should be
+gone immediately anyway, or does nlink hitting zero imply something
+else?
+
+So we could get the v9fs_session_info out of the inode
+(v9fs_inode2v9ses) and just return if CACHE_META is set?
+
+Others opinion would be great, but I get the feeling that just checking
+before update only makes the race smaller, and not totally fixed.
+
+
+> This race is easily triggered under heavy unlink workloads, such as
+> stress-ng's unlink stressor, producing the following warning:
 > 
-> Dominique, suggestions how to proceed on this issue?
-
-Thanks for the ping and sorry for lack of activity lately.
-
-I've just pinged David on IRC (and will remind him monday if no news) as
-I don't have enough opinion here..
-
-I'd be tempted to agree with your initial review that this v2 should be
-enough though, so unless he has any reason to disagree I'll pick it up
-and send to Linus after rc1
+>   WARNING: fs/inode.c:417 at drop_nlink+0x4c/0xc8
+>   Call trace:
+>    drop_nlink+0x4c/0xc8
+>    v9fs_remove+0x1e0/0x250 [9p]
+>    v9fs_vfs_unlink+0x20/0x38 [9p]
+>    vfs_unlink+0x13c/0x258
+>    ...
+> 
+> Fix this by returning early from v9fs_dec_count() if the inode's nlink
+> is already zero, extending the protection that commit ac89b2ef9b55
+> ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
+> added for directories to also cover regular files.
+> 
+> Fixes: ac89b2ef9b55 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  fs/9p/vfs_inode.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+> index 97abe65bf7c1f..b75f656af4c98 100644
+> --- a/fs/9p/vfs_inode.c
+> +++ b/fs/9p/vfs_inode.c
+> @@ -488,10 +488,16 @@ static int v9fs_at_to_dotl_flags(int flags)
+>   * - ext4 (with dir_nlink feature enabled) sets nlink to 1 if a dir has more
+>   *   than EXT4_LINK_MAX (65000) links.
+>   *
+> + * For regular files, the server may have already decremented nlink to 0
+> + * before the client's unlink completes, so we must also guard against
+> + * decrementing an already-zero nlink.
+> + *
+>   * @inode: inode whose nlink is being dropped
+>   */
+>  static void v9fs_dec_count(struct inode *inode)
+>  {
+> +	if (!inode->i_nlink)
+> +		return;
+>  	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+>  		drop_nlink(inode);
+>  }
+> 
+> ---
+> base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
+> change-id: 20260126-9p-50d206e2f6f6
+> 
+> Best regards,
 
 -- 
 Dominique Martinet | Asmadeus
