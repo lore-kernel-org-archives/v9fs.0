@@ -1,53 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B3C2D0C63
-	for <v9fs@lists.linux.dev>; Wed, 18 Feb 2026 13:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE042FD698
+	for <v9fs@lists.linux.dev>; Wed, 18 Feb 2026 13:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421904; cv=none; b=nl/R7ynJjB1Vi7zjhYPGOlNysSuAQGpVpMwRhWEcqMFIBlo5lKVW7i3JLQ0/q1ieIIacctxikVwuNHEidtWhGQuzFCw0DClHUbKySVVyK6fWuuXCokD0I02LC/Yrul2oTAjstvNs5P+QuDUOSdGQAhyhvHrl/rPKgyDH1aFye5M=
+	t=1771422096; cv=none; b=Yj9QwrHr8G7Seg20sPCyOPIV88ilPRfbLo79BQKRuyQ+SYsptrfMsrOs2ljRWAXtqfvyTsfucadobk/etREgMHbI+/7nwIIemG/UmI5cazFNGoi5LiQ5Tp3y70qx0V4ZBeIJeiGk9TDNH3dA/wj8p8nf0qr3Du93dpq501UkTdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771421904; c=relaxed/simple;
-	bh=KZzt2wmniiMeHBSAKYUUTIcW2lb0MUI+X7abJKPGIxE=;
+	s=arc-20240116; t=1771422096; c=relaxed/simple;
+	bh=KNHnUIVOfeXh/kBrD7UrbZs2NbRp+HcrDfvJgP9yLgk=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=bVRSADWwZ2KkO3s0IYkJPCVfa5IaCFBr2fgBiOSaQ9aabuPL6snPR1QEzXc/gNEk0oia+kMFX2g3bOif69Pq8qj8x2HkzNP6ocwQ7Aq4sa/LZt4oh0kf2SH6fs1QCd6SmQeDmtNObi0aiX0Czt2MVQeE8QUDV3ngnbXkir4Wjuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Be8jUPTk; arc=none smtp.client-ip=170.10.133.124
+	 Message-ID:Content-Type; b=I+JlbQdtBrZbaA12T7RB8E8ECuZ+V5+rg7q/Acl46DhWywr44y59HYe4SKNCo6dCU2WF+oFjNZr2a8nGrrSqzoBL2PIlfHKTxQhV8FgNBaf9C7fLTwNx07dvJc+mQHnF/oQt214dGOJCMQXK7epIb2yuEHvFqCtWVM1gDL+aGQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mxa1CqmE; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Be8jUPTk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mxa1CqmE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771421901;
+	s=mimecast20190719; t=1771422094;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YpR7Rsa1o6eDLAN5ndsVX1V7ImMVIEq9yJ2oPvVopHA=;
-	b=Be8jUPTknKchmgI0dAXxBZnJVKiXhTutIvkGvksEkdPaBpd0mbicK+iWhnJGKJ2NMhTmFw
-	1itbu5C2J0UfwE83j0HnQTFEPyuL7Z7cxbYy0e1+gJoPYEUXLGhPT6D470dM4GPzubxL5U
-	qzlSMYumSeItgJovZOto6f2jmZhbVro=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=KNHnUIVOfeXh/kBrD7UrbZs2NbRp+HcrDfvJgP9yLgk=;
+	b=Mxa1CqmEaN2V92GDrl8QFFHqolvsBWPqBSRXMMiLC6O5a0dtbCXsS+Ay2CR2oG78i2Q3t4
+	wcrC3V1ngxPru+1ZWnHKh6wqgcydqMj2XITp9UB5xHtInSK4DcsPTsodgbVhJY+VubyuBh
+	VdPkAJPrc8HB4smvlIXF+li7B3VOPnU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-2iaFNR1gPyqfmKxKAAgkpw-1; Wed,
- 18 Feb 2026 08:38:19 -0500
-X-MC-Unique: 2iaFNR1gPyqfmKxKAAgkpw-1
-X-Mimecast-MFC-AGG-ID: 2iaFNR1gPyqfmKxKAAgkpw_1771421898
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-nbp9YrhgMs2_bNi4rDFRbw-1; Wed,
+ 18 Feb 2026 08:41:31 -0500
+X-MC-Unique: nbp9YrhgMs2_bNi4rDFRbw-1
+X-Mimecast-MFC-AGG-ID: nbp9YrhgMs2_bNi4rDFRbw_1771422089
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4486F1890329;
-	Wed, 18 Feb 2026 13:38:11 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 879EB1955D4D;
+	Wed, 18 Feb 2026 13:41:29 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.45.225.173])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E5ACA30002EC;
-	Wed, 18 Feb 2026 13:38:07 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B56861954115;
+	Wed, 18 Feb 2026 13:41:26 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20251227180137.730385-1-pierre@barre.sh>
-References: <20251227180137.730385-1-pierre@barre.sh>
+In-Reply-To: <1642497.1771421883@warthog.procyon.org.uk>
+References: <1642497.1771421883@warthog.procyon.org.uk> <20251227180137.730385-1-pierre@barre.sh>
 To: Pierre Barre <pierre@barre.sh>
 Cc: dhowells@redhat.com, ericvh@kernel.org, lucho@ionkov.net,
     asmadeus@codewreck.org, linux_oss@crudebyte.com,
@@ -59,34 +60,32 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 18 Feb 2026 13:38:03 +0000
-Message-ID: <1642497.1771421883@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: geunkmHtNrM12feHOi9ADPJt09LDEwD8RimYSr1MQ7c_1771421898
+Date: Wed, 18 Feb 2026 13:41:25 +0000
+Message-ID: <1642566.1771422085@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: rnZRSuLonLE_UHyAMgaKq5ElgZ2GN7-S8MUSlYdxfUs_1771422089
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1642496.1771421883.1@warthog.procyon.org.uk>
+Content-ID: <1642565.1771422085.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Pierre Barre <pierre@barre.sh> wrote:
+David Howells <dhowells@redhat.com> wrote:
 
-> With writeback caching (cache=mmap), v9fs_stat2inode() and
-> v9fs_stat2inode_dotl() unconditionally overwrite i_size from the server
-> response, even when dirty pages may exist locally. This causes processes
-> using lseek(SEEK_END) to see incorrect file sizes, leading to data
-> corruption when extending files while concurrent stat() calls occur.
-> 
-> Fix by passing V9FS_STAT2INODE_KEEP_ISIZE when CACHE_WRITEBACK is
-> enabled to preserve the client's authoritative i_size.
+> A better way is probably, in v9fs_stat2inode() and v9fs_stat2inode_dotl()=
+, if
+> the inode isn't new, compare the values for stat->mtime to inode->i_mtime=
+ and
+> stat->length to v9inode->netfs.remote_i_size and if they differ mark the =
+inode
+> as being remotely modified, invalidate the pagecache and reset inode->i_s=
+ize.
+>=20
+> If stat->mtime =3D=3D inode->i_mtime and stat->length =3D=3D
+> v9inode->netfs.remote_i_size, then don't alter inode->i_size.
 
-I think this might be the wrong approach.
-
-A better way is probably, in v9fs_stat2inode() and v9fs_stat2inode_dotl(), if
-the inode isn't new, compare the values for stat->mtime to inode->i_mtime and
-stat->length to v9inode->netfs.remote_i_size and if they differ mark the inode
-as being remotely modified, invalidate the pagecache and reset inode->i_size.
-
-If stat->mtime == inode->i_mtime and stat->length ==
-v9inode->netfs.remote_i_size, then don't alter inode->i_size.
+Also, you'd need to update remote_i_size upon successful completion of a wr=
+ite
+RPC call to increase it up to the end of the write.
 
 David
 
