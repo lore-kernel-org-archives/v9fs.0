@@ -1,82 +1,92 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B1A2D6E76;
-	Wed, 18 Feb 2026 12:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B3C2D0C63
+	for <v9fs@lists.linux.dev>; Wed, 18 Feb 2026 13:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771419381; cv=none; b=fnka1c934K/rleEwqnN0tui7yEtFqkKD3dz4KJKWXAaotXNGR+FE3tfarZfTI+dPIEXb//4fCURNPccLI5luKdGqSPOeJrPpwqe296pJNYJyX3bAz7qWqeeol/2QVSc5jhIIbFEhffXcRzIpiMBN4ijQcQ9VwqLJScI2mt8kP0Q=
+	t=1771421904; cv=none; b=nl/R7ynJjB1Vi7zjhYPGOlNysSuAQGpVpMwRhWEcqMFIBlo5lKVW7i3JLQ0/q1ieIIacctxikVwuNHEidtWhGQuzFCw0DClHUbKySVVyK6fWuuXCokD0I02LC/Yrul2oTAjstvNs5P+QuDUOSdGQAhyhvHrl/rPKgyDH1aFye5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771419381; c=relaxed/simple;
-	bh=D721kOqnMJgXW11UxJ3c5NKSoTFXExUb5Aw9fORLDYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RQpSHzb6dTlRZIGAS0p4bvLQQduNm3uSQZUpyksbn2jKMq/7DXREYfzzH6/mtF3n9MOf8yU7INRAyUWuvplIxtUlgYrl3DoprEA/WvOIQfigMLJL38jCScFsobfxyc0QjeLG1kyi9HIqo2Ie7KLJHSw0RG4gHF062nDx4CIVPwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=Sb+Jv6Tz; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1771421904; c=relaxed/simple;
+	bh=KZzt2wmniiMeHBSAKYUUTIcW2lb0MUI+X7abJKPGIxE=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=bVRSADWwZ2KkO3s0IYkJPCVfa5IaCFBr2fgBiOSaQ9aabuPL6snPR1QEzXc/gNEk0oia+kMFX2g3bOif69Pq8qj8x2HkzNP6ocwQ7Aq4sa/LZt4oh0kf2SH6fs1QCd6SmQeDmtNObi0aiX0Czt2MVQeE8QUDV3ngnbXkir4Wjuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Be8jUPTk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="Sb+Jv6Tz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=MZt2HE8eiO0uRLaoVeWG4Oj2x1b20jHkcdDTYTxItYA=; b=Sb+Jv6TzH9c1P6zdgMahAJ6etA
-	09cxKjmAbDIjSpfti5nxypN9xZ/2CCaTTjiJ2W2L0/mRPM3uBcsi1WzD1jVSGWA90kzx7CSqTBhqG
-	Vf9ElvCi4AIanh8oONWg9OpCi7WCI5saHLMmbrp1pgRHxZyKXQSl2Igtv2M7GyVJxa7qIf+7SXX3J
-	4F3+WDgC9P/pE7OGbaQ24K5BSWv6ZFFS6a5qd0wHO5R6zUABuwuujQSuBitpOO5V6aj5Sklj74Ozp
-	YvJtKu/Np8ALnNsgGyJnOBNKPv+xZB662LIvKnHvJGP9IAo8v7L0EXUPDsQb4TLjUF61xOIi1LKIz
-	CgyBitTv5WeUt5DzcpwNTlm1YJHwRMy/imgcxPtVWMRc4IAqWx3pgDiwgVpDi/34NW9V36OmzfXde
-	Q2y8hEU6Y2OVc24qwlAmbmcTkZhEbOO/p6zG8hcJGrlvD5CHnCr3o7h+juGjVufQczBevwSTg2Wme
-	PsDlwgGcSjqj6gSb8bZmfjf8k5inTkdkoHNo9H67cRsxA5L/MIs4ZIOhstgAulUaKq4+fILR/Uzmg
-	o4qIm+ExEb6UKPEeI3RdFCnJo9qaC91Ui3F3T/gq5n2MNFUuM9hTpMTn+LnOFIMCy+2t7+aNnib1r
-	qsLChisCYyUoQ06/wAg1CFyxCiB60fvpxG9W9SKj0=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Remi Pommarel <repk@triplefau.lt>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>
-Subject:
- Re: [PATCH v2 2/3] 9p: Introduce option for negative dentry cache retention
- time
-Date: Wed, 18 Feb 2026 13:56:15 +0100
-Message-ID: <3031269.e9J7NaK4W3@weasel>
-In-Reply-To: <aY2cS77rIL-h-8il@pilgrim>
-References:
- <cover.1769013622.git.repk@triplefau.lt> <3929797.kQq0lBPeGt@weasel>
- <aY2cS77rIL-h-8il@pilgrim>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Be8jUPTk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771421901;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YpR7Rsa1o6eDLAN5ndsVX1V7ImMVIEq9yJ2oPvVopHA=;
+	b=Be8jUPTknKchmgI0dAXxBZnJVKiXhTutIvkGvksEkdPaBpd0mbicK+iWhnJGKJ2NMhTmFw
+	1itbu5C2J0UfwE83j0HnQTFEPyuL7Z7cxbYy0e1+gJoPYEUXLGhPT6D470dM4GPzubxL5U
+	qzlSMYumSeItgJovZOto6f2jmZhbVro=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-2iaFNR1gPyqfmKxKAAgkpw-1; Wed,
+ 18 Feb 2026 08:38:19 -0500
+X-MC-Unique: 2iaFNR1gPyqfmKxKAAgkpw-1
+X-Mimecast-MFC-AGG-ID: 2iaFNR1gPyqfmKxKAAgkpw_1771421898
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4486F1890329;
+	Wed, 18 Feb 2026 13:38:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.45.225.173])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E5ACA30002EC;
+	Wed, 18 Feb 2026 13:38:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20251227180137.730385-1-pierre@barre.sh>
+References: <20251227180137.730385-1-pierre@barre.sh>
+To: Pierre Barre <pierre@barre.sh>
+Cc: dhowells@redhat.com, ericvh@kernel.org, lucho@ionkov.net,
+    asmadeus@codewreck.org, linux_oss@crudebyte.com,
+    v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] 9p: fix i_size update race in getattr with writeback caching
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Date: Wed, 18 Feb 2026 13:38:03 +0000
+Message-ID: <1642497.1771421883@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: geunkmHtNrM12feHOi9ADPJt09LDEwD8RimYSr1MQ7c_1771421898
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1642496.1771421883.1@warthog.procyon.org.uk>
 
-On Thursday, 12 February 2026 10:24:27 CET Remi Pommarel wrote:
-> On Wed, Feb 11, 2026 at 04:58:02PM +0100, Christian Schoenebeck wrote:
-> > On Wednesday, 21 January 2026 20:56:09 CET Remi Pommarel wrote:
-[...]
-> > Wouldn't it make sense to enable this option with some meaningful value
-> > for
-> > say cache=loose by default? 24 hours maybe?
+Pierre Barre <pierre@barre.sh> wrote:
+
+> With writeback caching (cache=mmap), v9fs_stat2inode() and
+> v9fs_stat2inode_dotl() unconditionally overwrite i_size from the server
+> response, even when dirty pages may exist locally. This causes processes
+> using lseek(SEEK_END) to see incorrect file sizes, leading to data
+> corruption when extending files while concurrent stat() calls occur.
 > 
-> That is an interesting question, I have seen pretty satisfying (at least
-> for me) perf results on the different builds I ran, even with a 1 to 2
-> seconds cache timeout, maybe this would be a good tradeoff for
-> cache=loose being almost transparent in the eye of the user ? But maybe
-> this is too specific to the build workflow (that hit the same negative
-> dentries fast enough) ?
+> Fix by passing V9FS_STAT2INODE_KEEP_ISIZE when CACHE_WRITEBACK is
+> enabled to preserve the client's authoritative i_size.
 
-Always hard to pick magic numbers. But I would also say that 1s...2s is 
-probably a use-case specific pick specifically for compiling sources.
+I think this might be the wrong approach.
 
-When running 9p as rootfs you will also frequently run into libs querying the 
-same non-existing configuration files and DLLs over and over again. So I would 
-pick a higher value. Personally I would be fine with anything between few 
-minutes ... 24h for cache=loose. For other cache modes this could be lower.
+A better way is probably, in v9fs_stat2inode() and v9fs_stat2inode_dotl(), if
+the inode isn't new, compare the values for stat->mtime to inode->i_mtime and
+stat->length to v9inode->netfs.remote_i_size and if they differ mark the inode
+as being remotely modified, invalidate the pagecache and reset inode->i_size.
 
-/Christian
+If stat->mtime == inode->i_mtime and stat->length ==
+v9inode->netfs.remote_i_size, then don't alter inode->i_size.
 
+David
 
