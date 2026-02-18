@@ -1,48 +1,50 @@
 Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA842FC011;
-	Wed, 18 Feb 2026 12:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B1A2D6E76;
+	Wed, 18 Feb 2026 12:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771418797; cv=none; b=j3espNnlZborDc6/svPQeM9Qff4tj4CXWywcq9y1tvqSOw0TiY6p4U8kvx+V5QurTJQap9Vlgaqy/ZDFf6B34Q938zMyQbTFAcLriA3tmQg6jGtK+JaTPEt1P58PE/Whnta7ma5aEIofRk8eOOYzcHVd8ks/cHEnky9WgGqYXqQ=
+	t=1771419381; cv=none; b=fnka1c934K/rleEwqnN0tui7yEtFqkKD3dz4KJKWXAaotXNGR+FE3tfarZfTI+dPIEXb//4fCURNPccLI5luKdGqSPOeJrPpwqe296pJNYJyX3bAz7qWqeeol/2QVSc5jhIIbFEhffXcRzIpiMBN4ijQcQ9VwqLJScI2mt8kP0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771418797; c=relaxed/simple;
-	bh=Pf0ky7VJtmQgZG9U5wyhRHyMbdOaayrlkz5iGRqtdbE=;
+	s=arc-20240116; t=1771419381; c=relaxed/simple;
+	bh=D721kOqnMJgXW11UxJ3c5NKSoTFXExUb5Aw9fORLDYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sA9Dt8QWVdYivIcQ52tZJzMs1XGblHyZDP11mKCXrr7kwNsvJ1K5CtlvGPuXuBuQ4XrnYWNHGI8upxSjG1TRidYuTq9JeM6kznnB7rSaOViER5d85comlZ9nP0zGRgdMXkyx+NF5xntyHkp+I+DoXvWE/nCJrftgoTSJjZUWPkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=iWrr6L3R; arc=none smtp.client-ip=5.189.157.229
+	 MIME-Version:Content-Type; b=RQpSHzb6dTlRZIGAS0p4bvLQQduNm3uSQZUpyksbn2jKMq/7DXREYfzzH6/mtF3n9MOf8yU7INRAyUWuvplIxtUlgYrl3DoprEA/WvOIQfigMLJL38jCScFsobfxyc0QjeLG1kyi9HIqo2Ie7KLJHSw0RG4gHF062nDx4CIVPwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=Sb+Jv6Tz; arc=none smtp.client-ip=5.189.157.229
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="iWrr6L3R"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="Sb+Jv6Tz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Content-ID:Content-Description;
-	bh=QBMk+4Q4w2PDFULpcFzorTKdWNEp9yy900J7ZQr3JJs=; b=iWrr6L3R2Mp5doFoXOPkHEfABt
-	/29i3itGwrrDO2QTX3QvN0nQUHU7lEWnYZFZ0vwTYa65i+aYbKqSN+UkQOnzgIzWcv0/esf5OClna
-	kQe/sxVHdVgblD1TYdzlFYKUliKoBTMDY4y8EN0KdZTTr6zhhNFNXjnnsGuX4FNpp8NrP/GSlsapo
-	/986DrP+ftmsZsj4Qe+ATZUQQmFyDJPihnER7yaycqAZWNNSNgg6s3W+jqs/GwFilujyUOKWyQi8R
-	HXb+dkk81xaeS5jBkoTIjZHY21RHIL8MFwj9YYJuGzBfB74PYQYTbEnBOfAP0SSSseDIYOgYzLJln
-	XSroXZgD0pqPaI+TdkRp3s2GjDVOJFcMNaTg8ihMeuf2IhFYwLFovu22HeiMIac5F8D6sLJ2ytsd2
-	1GyYIRy5QPiEcZEQqB7zyN9ZGfkM87goh5qc+shQnn21VtixQWa6FRjxB+wTy1Emz/CZFg9gMrocD
-	nXBFoQDybSUmJ4VlAYFS2isNANwTJOhDdOTGGWJNgbarZRvqeMgT/ROE9piYRQemaSrNu2sa8xQKq
-	7YIPvkQ05O/MdSpyZgkbDHSX0tG8JLv0rPjxRvQVmyNbBu7F5mnbSJCO6RTl3Agvk3FfqotZ+Vo7c
-	Nwo1ZVAVzSyHuq6RFs4Hop9bE5Bdhkn9hVJI4IWak=;
+	bh=MZt2HE8eiO0uRLaoVeWG4Oj2x1b20jHkcdDTYTxItYA=; b=Sb+Jv6TzH9c1P6zdgMahAJ6etA
+	09cxKjmAbDIjSpfti5nxypN9xZ/2CCaTTjiJ2W2L0/mRPM3uBcsi1WzD1jVSGWA90kzx7CSqTBhqG
+	Vf9ElvCi4AIanh8oONWg9OpCi7WCI5saHLMmbrp1pgRHxZyKXQSl2Igtv2M7GyVJxa7qIf+7SXX3J
+	4F3+WDgC9P/pE7OGbaQ24K5BSWv6ZFFS6a5qd0wHO5R6zUABuwuujQSuBitpOO5V6aj5Sklj74Ozp
+	YvJtKu/Np8ALnNsgGyJnOBNKPv+xZB662LIvKnHvJGP9IAo8v7L0EXUPDsQb4TLjUF61xOIi1LKIz
+	CgyBitTv5WeUt5DzcpwNTlm1YJHwRMy/imgcxPtVWMRc4IAqWx3pgDiwgVpDi/34NW9V36OmzfXde
+	Q2y8hEU6Y2OVc24qwlAmbmcTkZhEbOO/p6zG8hcJGrlvD5CHnCr3o7h+juGjVufQczBevwSTg2Wme
+	PsDlwgGcSjqj6gSb8bZmfjf8k5inTkdkoHNo9H67cRsxA5L/MIs4ZIOhstgAulUaKq4+fILR/Uzmg
+	o4qIm+ExEb6UKPEeI3RdFCnJo9qaC91Ui3F3T/gq5n2MNFUuM9hTpMTn+LnOFIMCy+2t7+aNnib1r
+	qsLChisCYyUoQ06/wAg1CFyxCiB60fvpxG9W9SKj0=;
 From: Christian Schoenebeck <linux_oss@crudebyte.com>
 To: Remi Pommarel <repk@triplefau.lt>,
  Dominique Martinet <asmadeus@codewreck.org>
 Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
  Latchesar Ionkov <lucho@ionkov.net>
-Subject: Re: [PATCH v2 1/3] 9p: Cache negative dentries for lookup performance
-Date: Wed, 18 Feb 2026 13:46:26 +0100
-Message-ID: <4714422.LvFx2qVVIh@weasel>
-In-Reply-To: <aY2aXG4ljulj1QRh@pilgrim>
+Subject:
+ Re: [PATCH v2 2/3] 9p: Introduce option for negative dentry cache retention
+ time
+Date: Wed, 18 Feb 2026 13:56:15 +0100
+Message-ID: <3031269.e9J7NaK4W3@weasel>
+In-Reply-To: <aY2cS77rIL-h-8il@pilgrim>
 References:
- <cover.1769013622.git.repk@triplefau.lt> <10801068.nUPlyArG6x@weasel>
- <aY2aXG4ljulj1QRh@pilgrim>
+ <cover.1769013622.git.repk@triplefau.lt> <3929797.kQq0lBPeGt@weasel>
+ <aY2cS77rIL-h-8il@pilgrim>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,107 +54,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
 
-On Thursday, 12 February 2026 10:16:12 CET Remi Pommarel wrote:
-> On Wed, Feb 11, 2026 at 04:49:19PM +0100, Christian Schoenebeck wrote:
-> > On Wednesday, 21 January 2026 20:56:08 CET Remi Pommarel wrote:
+On Thursday, 12 February 2026 10:24:27 CET Remi Pommarel wrote:
+> On Wed, Feb 11, 2026 at 04:58:02PM +0100, Christian Schoenebeck wrote:
+> > On Wednesday, 21 January 2026 20:56:09 CET Remi Pommarel wrote:
 [...]
-> > > diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-> > > index c5bf74d547e8..90291cf0a34b 100644
-> > > --- a/fs/9p/vfs_dentry.c
-> > > +++ b/fs/9p/vfs_dentry.c
-> > > @@ -23,6 +23,46 @@
-> > > 
-> > >  #include "v9fs_vfs.h"
-> > >  #include "fid.h"
-> > > 
-> > > +/**
-> > > + * v9fs_dentry_is_expired - Check if dentry lookup has expired
-> > > + *
-> > > + * This should be called to know if a negative dentry should be removed
-> > > from + * cache.
-> > > + *
-> > > + * @dentry: dentry in question
-> > > + *
-> > > + */
-> > > +static bool v9fs_dentry_is_expired(struct dentry const *dentry)
-> > > +{
-> > > +	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
-> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-> > > +
-> > > +	if (v9ses->ndentry_timeout == -1)
-> > > +		return false;
-> > > +
-> > > +	return time_before_eq64(v9fs_dentry->expire_time, get_jiffies_64());
-> > > +}
-> > 
-> > v9fs_negative_dentry_is_expired() ?
-> > 
-> > Or is there a plan to use this for regular dentries, say with cache=loose
-> > in future?
+> > Wouldn't it make sense to enable this option with some meaningful value
+> > for
+> > say cache=loose by default? 24 hours maybe?
 > 
-> Yes I wanted to let the possibility for dentry cache expiration open,
-> maybe this could be a nice thing to have ?
+> That is an interesting question, I have seen pretty satisfying (at least
+> for me) perf results on the different builds I ran, even with a 1 to 2
+> seconds cache timeout, maybe this would be a good tradeoff for
+> cache=loose being almost transparent in the eye of the user ? But maybe
+> this is too specific to the build workflow (that hit the same negative
+> dentries fast enough) ?
 
-Fine either way, I leave it up to you.
+Always hard to pick magic numbers. But I would also say that 1s...2s is 
+probably a use-case specific pick specifically for compiling sources.
 
-> > > +
-> > > +/**
-> > > + * v9fs_dentry_refresh - Refresh dentry lookup cache timeout
-> > > + *
-> > > + * This should be called when a look up yields a negative entry.
-> > > + *
-> > > + * @dentry: dentry in question
-> > > + *
-> > > + */
-> > > +void v9fs_dentry_refresh(struct dentry *dentry)
-> > > +{
-> > > +	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
-> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-> > > +
-> > > +	if (v9ses->ndentry_timeout == -1)
-> > > +		return;
-> > > +
-> > > +	v9fs_dentry->expire_time = get_jiffies_64() +
-> > > +				   msecs_to_jiffies(v9ses->ndentry_timeout);
-> > > +}
-> > 
-> > v9fs_negative_dentry_refresh_timeout() ?
-
-Nevertheless I would rename this function to something that at least contains
-"timeout" in its name, as v9fs_dentry_refresh() is somewhat too generic IMO.
-
-> > 
-> > > +
-> > > 
-> > >  /**
-> > >  
-> > >   * v9fs_cached_dentry_delete - called when dentry refcount equals 0
-> > >   * @dentry:  dentry in question
-> > > 
-> > > @@ -33,20 +73,15 @@ static int v9fs_cached_dentry_delete(const struct
-> > > dentry *dentry) p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
-> > > 
-> > >  		 dentry, dentry);
-> > > 
-> > > -	/* Don't cache negative dentries */
-> > > -	if (d_really_is_negative(dentry))
-> > > -		return 1;
-> > > -	return 0;
-> > > -}
-> > > +	if (!d_really_is_negative(dentry))
-> > > +		return 0;
-> > 
-> > Is it worth a check for v9ses->ndentry_timeout != 0 here?
-> 
-> The check will be done in v9fs_dentry_is_expired() not sure this is
-> worth the optimization here ?
-
-Right, that's OK.
-
-Overall I think it makes sense to bring this series forward. The improvement
-is really impressive.
-
-Thanks!
+When running 9p as rootfs you will also frequently run into libs querying the 
+same non-existing configuration files and DLLs over and over again. So I would 
+pick a higher value. Personally I would be fine with anything between few 
+minutes ... 24h for cache=loose. For other cache modes this could be lower.
 
 /Christian
 
