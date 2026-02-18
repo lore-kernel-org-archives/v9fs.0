@@ -1,153 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF08377556;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA842FC011;
+	Wed, 18 Feb 2026 12:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771362878; cv=none; b=I1cE0czN/JqrzwCyYagf5KFZu2o2M3/tomV5KpJ3m76vgxobOJgTM0cEsY8zprq11QsGUJNYWVld+2V7PuI2Ho0eHbUunAz6fN6oTrIsrYwPc/Ses21IHJztjbV7AbtH/IUbJpTrIQkT7PrrYtAnLgPVv52tTi8pTqUqiDuJvQk=
+	t=1771418797; cv=none; b=j3espNnlZborDc6/svPQeM9Qff4tj4CXWywcq9y1tvqSOw0TiY6p4U8kvx+V5QurTJQap9Vlgaqy/ZDFf6B34Q938zMyQbTFAcLriA3tmQg6jGtK+JaTPEt1P58PE/Whnta7ma5aEIofRk8eOOYzcHVd8ks/cHEnky9WgGqYXqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771362878; c=relaxed/simple;
-	bh=SWr3Pg6zIeu2S3Z6UDsk8BzZU6tf527GPJ41POMlghM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qf73RQTBW78Pcv6J9dBKvzNX/FNGJgXVTmVVoigvinF0CjnwPfK0iR0uj8VK38XoiI6cVmH64K4TLto6Y3pEc02dtB225HrR8fIR/RV3h6mqzIvUGnbdLlsk8MLaVaquaRd2p/sYT+3a1y5N6U27AF7NGxXcL3SWTYAmHp7+jO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qME5lVPC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771418797; c=relaxed/simple;
+	bh=Pf0ky7VJtmQgZG9U5wyhRHyMbdOaayrlkz5iGRqtdbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sA9Dt8QWVdYivIcQ52tZJzMs1XGblHyZDP11mKCXrr7kwNsvJ1K5CtlvGPuXuBuQ4XrnYWNHGI8upxSjG1TRidYuTq9JeM6kznnB7rSaOViER5d85comlZ9nP0zGRgdMXkyx+NF5xntyHkp+I+DoXvWE/nCJrftgoTSJjZUWPkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=iWrr6L3R; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qME5lVPC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05413C19421;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771362878;
-	bh=SWr3Pg6zIeu2S3Z6UDsk8BzZU6tf527GPJ41POMlghM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qME5lVPCgbs75GtVkYDVSedStUuy5Pu7iKCY4IKu3xqN3EcQE+Oh5yA77hoZy7VyU
-	 +0wZZYMpZQVXM9oVuFBmRCNz9ULENuT2B5em0ouDg88Yb0OXaPujVB/GBPkgNNMpHr
-	 EhgPO+uLpu1WI515RTCnoSYcSuoUoWHPdRcl280BUTS4HjHiimnSyoFiD+9+NmEu7s
-	 4m0WVXB/a1C6i48qotqtPrvf49sFdMixg5MNCldkNycO7JhTW+IJtnP0WEfZw+8dYi
-	 1uYBY6iDz7huxRyc2w6LATusfRgMkVW0RAKYcp9Uufer3E7jADONKO2Apo8cM0wFiU
-	 pB1OIFY+N5Jzg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B1123806667;
-	Tue, 17 Feb 2026 21:14:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="iWrr6L3R"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=QBMk+4Q4w2PDFULpcFzorTKdWNEp9yy900J7ZQr3JJs=; b=iWrr6L3R2Mp5doFoXOPkHEfABt
+	/29i3itGwrrDO2QTX3QvN0nQUHU7lEWnYZFZ0vwTYa65i+aYbKqSN+UkQOnzgIzWcv0/esf5OClna
+	kQe/sxVHdVgblD1TYdzlFYKUliKoBTMDY4y8EN0KdZTTr6zhhNFNXjnnsGuX4FNpp8NrP/GSlsapo
+	/986DrP+ftmsZsj4Qe+ATZUQQmFyDJPihnER7yaycqAZWNNSNgg6s3W+jqs/GwFilujyUOKWyQi8R
+	HXb+dkk81xaeS5jBkoTIjZHY21RHIL8MFwj9YYJuGzBfB74PYQYTbEnBOfAP0SSSseDIYOgYzLJln
+	XSroXZgD0pqPaI+TdkRp3s2GjDVOJFcMNaTg8ihMeuf2IhFYwLFovu22HeiMIac5F8D6sLJ2ytsd2
+	1GyYIRy5QPiEcZEQqB7zyN9ZGfkM87goh5qc+shQnn21VtixQWa6FRjxB+wTy1Emz/CZFg9gMrocD
+	nXBFoQDybSUmJ4VlAYFS2isNANwTJOhDdOTGGWJNgbarZRvqeMgT/ROE9piYRQemaSrNu2sa8xQKq
+	7YIPvkQ05O/MdSpyZgkbDHSX0tG8JLv0rPjxRvQVmyNbBu7F5mnbSJCO6RTl3Agvk3FfqotZ+Vo7c
+	Nwo1ZVAVzSyHuq6RFs4Hop9bE5Bdhkn9hVJI4IWak=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Remi Pommarel <repk@triplefau.lt>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>
+Subject: Re: [PATCH v2 1/3] 9p: Cache negative dentries for lookup performance
+Date: Wed, 18 Feb 2026 13:46:26 +0100
+Message-ID: <4714422.LvFx2qVVIh@weasel>
+In-Reply-To: <aY2aXG4ljulj1QRh@pilgrim>
+References:
+ <cover.1769013622.git.repk@triplefau.lt> <10801068.nUPlyArG6x@weasel>
+ <aY2aXG4ljulj1QRh@pilgrim>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH 00/24] vfs: require filesystems to explicitly
- opt-in to lease support
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <177136286957.643511.1991968143318289235.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Feb 2026 21:14:29 +0000
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-In-Reply-To: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: luisbg@kernel.org, salah.triki@gmail.com, nico@fluxnic.net,
- hch@infradead.org, jack@suse.cz, al@alarsen.net, viro@zeniv.linux.org.uk,
- brauner@kernel.org, dsterba@suse.com, clm@fb.com, xiang@kernel.org,
- chao@kernel.org, zbestahu@gmail.com, jefflexu@linux.alibaba.com,
- dhavale@google.com, lihongbo22@huawei.com, guochunhai@vivo.com,
- jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
- hirofumi@mail.parknet.co.jp, dwmw2@infradead.org, richard@nod.at,
- shaggy@kernel.org, konishi.ryusuke@gmail.com, slava@dubeyko.com,
- almaz.alexandrovich@paragon-software.com, mark@fasheh.com,
- jlbec@evilplan.org, joseph.qi@linux.alibaba.com, hubcap@omnibond.com,
- martin@omnibond.com, miklos@szeredi.hu, amir73il@gmail.com,
- phillip@squashfs.org.uk, cem@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
- chuck.lever@oracle.com, alex.aring@gmail.com, agruenba@redhat.com,
- corbet@lwn.net, willy@infradead.org, ericvh@kernel.org, lucho@ionkov.net,
- asmadeus@codewreck.org, linux_oss@crudebyte.com, xiubli@redhat.com,
- idryomov@gmail.com, trondmy@kernel.org, anna@kernel.org, sfrench@samba.org,
- pc@manguebit.org, ronniesahlberg@gmail.com, sprasad@microsoft.com,
- tom@talpey.com, bharathsm@microsoft.com, hansg@kernel.org,
- jfs-discussion@lists.sourceforge.net, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, gfs2@lists.linux.dev, linux-mm@kvack.org,
- linux-mtd@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nilfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
- ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, v9fs@lists.linux.dev,
- samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, ntfs3@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-btrfs@vger.kernel.org
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Hello:
-
-This series was applied to jaegeuk/f2fs.git (dev)
-by Christian Brauner <brauner@kernel.org>:
-
-On Thu, 08 Jan 2026 12:12:55 -0500 you wrote:
-> Yesterday, I sent patches to fix how directory delegation support is
-> handled on filesystems where the should be disabled [1]. That set is
-> appropriate for v6.19. For v7.0, I want to make lease support be more
-> opt-in, rather than opt-out:
+On Thursday, 12 February 2026 10:16:12 CET Remi Pommarel wrote:
+> On Wed, Feb 11, 2026 at 04:49:19PM +0100, Christian Schoenebeck wrote:
+> > On Wednesday, 21 January 2026 20:56:08 CET Remi Pommarel wrote:
+[...]
+> > > diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
+> > > index c5bf74d547e8..90291cf0a34b 100644
+> > > --- a/fs/9p/vfs_dentry.c
+> > > +++ b/fs/9p/vfs_dentry.c
+> > > @@ -23,6 +23,46 @@
+> > > 
+> > >  #include "v9fs_vfs.h"
+> > >  #include "fid.h"
+> > > 
+> > > +/**
+> > > + * v9fs_dentry_is_expired - Check if dentry lookup has expired
+> > > + *
+> > > + * This should be called to know if a negative dentry should be removed
+> > > from + * cache.
+> > > + *
+> > > + * @dentry: dentry in question
+> > > + *
+> > > + */
+> > > +static bool v9fs_dentry_is_expired(struct dentry const *dentry)
+> > > +{
+> > > +	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
+> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
+> > > +
+> > > +	if (v9ses->ndentry_timeout == -1)
+> > > +		return false;
+> > > +
+> > > +	return time_before_eq64(v9fs_dentry->expire_time, get_jiffies_64());
+> > > +}
+> > 
+> > v9fs_negative_dentry_is_expired() ?
+> > 
+> > Or is there a plan to use this for regular dentries, say with cache=loose
+> > in future?
 > 
-> For historical reasons, when ->setlease() file_operation is set to NULL,
-> the default is to use the kernel-internal lease implementation. This
-> means that if you want to disable them, you need to explicitly set the
-> ->setlease() file_operation to simple_nosetlease() or the equivalent.
+> Yes I wanted to let the possibility for dentry cache expiration open,
+> maybe this could be a nice thing to have ?
+
+Fine either way, I leave it up to you.
+
+> > > +
+> > > +/**
+> > > + * v9fs_dentry_refresh - Refresh dentry lookup cache timeout
+> > > + *
+> > > + * This should be called when a look up yields a negative entry.
+> > > + *
+> > > + * @dentry: dentry in question
+> > > + *
+> > > + */
+> > > +void v9fs_dentry_refresh(struct dentry *dentry)
+> > > +{
+> > > +	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
+> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
+> > > +
+> > > +	if (v9ses->ndentry_timeout == -1)
+> > > +		return;
+> > > +
+> > > +	v9fs_dentry->expire_time = get_jiffies_64() +
+> > > +				   msecs_to_jiffies(v9ses->ndentry_timeout);
+> > > +}
+> > 
+> > v9fs_negative_dentry_refresh_timeout() ?
+
+Nevertheless I would rename this function to something that at least contains
+"timeout" in its name, as v9fs_dentry_refresh() is somewhat too generic IMO.
+
+> > 
+> > > +
+> > > 
+> > >  /**
+> > >  
+> > >   * v9fs_cached_dentry_delete - called when dentry refcount equals 0
+> > >   * @dentry:  dentry in question
+> > > 
+> > > @@ -33,20 +73,15 @@ static int v9fs_cached_dentry_delete(const struct
+> > > dentry *dentry) p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
+> > > 
+> > >  		 dentry, dentry);
+> > > 
+> > > -	/* Don't cache negative dentries */
+> > > -	if (d_really_is_negative(dentry))
+> > > -		return 1;
+> > > -	return 0;
+> > > -}
+> > > +	if (!d_really_is_negative(dentry))
+> > > +		return 0;
+> > 
+> > Is it worth a check for v9ses->ndentry_timeout != 0 here?
 > 
-> [...]
+> The check will be done in v9fs_dentry_is_expired() not sure this is
+> worth the optimization here ?
 
-Here is the summary with links:
-  - [f2fs-dev,01/24] fs: add setlease to generic_ro_fops and read-only filesystem directory operations
-    https://git.kernel.org/jaegeuk/f2fs/c/ca4388bf1d9e
-  - [f2fs-dev,02/24] affs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/663cdef61a27
-  - [f2fs-dev,03/24] btrfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f9688474e413
-  - [f2fs-dev,04/24] erofs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f8902d3df893
-  - [f2fs-dev,05/24] ext2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/ccdc2e0569f5
-  - [f2fs-dev,06/24] ext4: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/20747a2a29c6
-  - [f2fs-dev,07/24] exfat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/b8ca02667552
-  - [f2fs-dev,08/24] f2fs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/9e2ac6ddb397
-  - [f2fs-dev,09/24] fat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/a9acc8422ffb
-  - [f2fs-dev,10/24] gfs2: add a setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/3b514c333390
-  - [f2fs-dev,11/24] jffs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/c275e6e7c085
-  - [f2fs-dev,12/24] jfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/7dd596bb35e5
-  - [f2fs-dev,13/24] nilfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f46bb13dc5d9
-  - [f2fs-dev,14/24] ntfs3: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6aaa1d6337b5
-  - [f2fs-dev,15/24] ocfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f15d3150279d
-  - [f2fs-dev,16/24] orangefs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/136b43aa4b16
-  - [f2fs-dev,17/24] overlayfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/94a3f60af5dc
-  - [f2fs-dev,18/24] squashfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dfd8676efe43
-  - [f2fs-dev,19/24] tmpfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f5a3446be277
-  - [f2fs-dev,20/24] udf: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dbe8d57d1483
-  - [f2fs-dev,21/24] ufs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/545b4144d804
-  - [f2fs-dev,22/24] xfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6163b5da2f5e
-  - [f2fs-dev,23/24] filelock: default to returning -EINVAL when ->setlease operation is NULL
-    https://git.kernel.org/jaegeuk/f2fs/c/2b10994be716
-  - [f2fs-dev,24/24] fs: remove simple_nosetlease()
-    https://git.kernel.org/jaegeuk/f2fs/c/51e49111c00b
+Right, that's OK.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Overall I think it makes sense to bring this series forward. The improvement
+is really impressive.
+
+Thanks!
+
+/Christian
 
 
