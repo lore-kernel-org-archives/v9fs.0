@@ -1,147 +1,182 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F2D2FFDF7;
-	Thu, 19 Feb 2026 10:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8325419067C
+	for <v9fs@lists.linux.dev>; Sat, 21 Feb 2026 15:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771496330; cv=none; b=awFOwhmvOKAf7JpSDCi+AYPpFSkctt7p8mB/cuC1rTB1ETH0spQXTKD6QDOFrJVaVb1fPYPzkGIa7ORSk3ygVyk6uczWOiBJUQ3kO1oU4xsteGAILky+cUL07qQIRaGzEeOvOxT43heyFWANhMZ+urdJ8rx2xS3r1qTPiVlXtMs=
+	t=1771686014; cv=none; b=HE45r9EJPYYAURkKceGuxJQU+mcq+0O5C3gauYVjIjoQIVCgs80IykGbsrttqRKWhv6or8RGOGoK0m4aBAuVSiGOU2eRiAb4cx1zGb2q3z4SeAfaya9q8BzZVEVF5dksjfrVISuJcOyJ5XdF7qz5/newhrp2Lsmz3GrfqAYJ7Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771496330; c=relaxed/simple;
-	bh=AqKfMlzVUHFx9EfDo1H1HYkJjiBYnjW4O4AxWjx5a7w=;
+	s=arc-20240116; t=1771686014; c=relaxed/simple;
+	bh=QvKBTacd5z2P43CbYauz1u/x08KHhA7f2Nkz0BaL8og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nvR8owOsgeHSszVTGzm70WaSE68ofKLj3QxXVWp75RvBfxabQZkETeMYka9hudadPe0DI4va0U4NOH89Hci4nslI48Cl3Ov2Eb1IhpK/JxIcUE2AAbCVKDJ9TqMNCvuU44JQO+RNFCt3MIo4iggsvh0VqzvrFnQtE8rqGEF3Jn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=AhXCo6ys; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	 MIME-Version; b=d8rsZ2FEE3JpCgHgraOUrzbdhmpS5NZzxq1L44SsM/zSz54SVHBxynOB0dNmPnKH5wNH35+Pl3mBLHR5/DLulOHnSZx19nIGAVs3X5K9vJNMpDZGMmBFPNulF0tNqL4UkE0vG68ORsWuhAMmTpDzqQROs8Jg61Q2NZ6i5LaahAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNCCeRMu; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="AhXCo6ys"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=C/azCgonTTjryPatWu0vVS7QfE6juRqJ+ClDF7fu1Ts=; b=AhXCo6ysufl+5wr+elfE+Il1DG
-	zCE2r8IJZnjoEsvBtm8poV0KyhT+lxPzdLiGaTRJB3dds1TcTgre7rbmfwVmKxNPREcSPK/x5gqgW
-	BGe+FsQLaLETYeF3PxPEV/wE/Ug5iaEAYXkrPOgCFL3p8gdkzPzXV8risJzKd/L+8cDmowdff8B8G
-	XkctgUl/03PYarnVYGuqjR7vOgbKCdACTCFN2AQPisv4LSy9eo/ZW5hsZ279S2Ao7V0PV7qKmalZ1
-	mzp+rOjvqCVU0a/Liec2Mk0FNhW3RVVYdV4YzFXRtY3j3hR/hRCoggBKBuWFVOOO3rnIoETOZh1DF
-	Qzwvj5J6r6xcQTL/wyqcaTAzY8p5mc1DlbDpFeBhXthEZmfRyNhfjAMdXACH94P9zuc9RnqSIkoNU
-	SKP3Aj4Ohuok8TMyCEOp66HOvNaiFCy7HGSvgzUd7Rjz7nTkF6TSWkyNymN7fHZNohbOTHWZEVWWe
-	dAhCUIPbVeKiHEMUMZZB0ZwoCdj7SmhZUbeO0WK1bsb4lk2QBP3cffVFRO+9CviSVbieiKOvFjfhK
-	Ae+oz6VB1feDjtTALFVUnUVKYM6g+9S0MwJ6pcZOO5OJrvLgyzgOCMsV5TtuKMbyXUlcFEvuLRetY
-	HuOMoigN2lVnwSQcPEivERL9SoIeSkCAS0P5mqQk8=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Remi Pommarel <repk@triplefau.lt>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>
-Subject: Re: [PATCH v2 3/3] 9p: Enable symlink caching in page cache
-Date: Thu, 19 Feb 2026 11:18:44 +0100
-Message-ID: <5050216.GXAFRqVoOG@weasel>
-In-Reply-To: <aZG9skZzT_LaHB6O@codewreck.org>
-References:
- <cover.1769013622.git.repk@triplefau.lt> <aY5JWgyHq5P17_jx@pilgrim>
- <aZG9skZzT_LaHB6O@codewreck.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNCCeRMu"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2aaf5d53eaaso19376915ad.0
+        for <v9fs@lists.linux.dev>; Sat, 21 Feb 2026 07:00:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771686013; x=1772290813; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
+        b=XNCCeRMuyqePWSwM6QDXEhpQgu6PLC7k1WpzzCCFfo4nnTEKjmajTDp0jvX4raQ+GR
+         HMt5haSQj6FmgCoj/Znelt5/t3ycUDljLdM/cH3nE7sUFkt+otvzbkWXxD9jIK7vjGR/
+         Daw8yP0pxlZBgGB9fTkLHrcyfVOFeMxJ9WNfY786wOl5yQn5KEZzuRM/FuAfN2lOOz1+
+         NvxALA4YIMlmvs3wHACHS3yFXcjD7aE3hpcf7rAckRFVdfPNRgKU0pJM7FvW0ohxrXht
+         uULlzBVxpMUm9WBIEYKIv5U1SM+J+hxC0tPwuaGWA1uTGP9PQHbu/4OWXWANeVrFLf36
+         DWqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771686013; x=1772290813;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
+        b=BsE7NyrEN0EUp2plY1dW4P/t7UjiVB581ictnCD+bdy3/dAdQ7ecmBcDwlLGAVjdmQ
+         rBSBj7yUULzU/52r6ApxtRBJ+ty+PRX03TFcTOVOzctQKY+2R8hHV5fK17mrmPFi7Og5
+         QtrpNHBfC7lCT6WRji/uzc+YKTE5mLsuug34e9XMebqJm86Y9s/OHx0tY1qs7Ku2VVph
+         8lOZravdrRJ00H6TWyD/EWZLm07DU+K4MmJ/Ylx0xNpJkft0Ls4L4nTw3UdUM4x/OUsl
+         0mRJwobbNB0F4lXJi4dPTFPfaPsioEuJN38YG2r7C+NENEHWImDbUqEw4WplLe/w4ORg
+         yIww==
+X-Forwarded-Encrypted: i=1; AJvYcCXEf7C09Ol3gASOfs5DBeTNRsPDlEWaPmFxNV+HaUt5dymf0QCKRoY+9SIBVkfTpkCfcJCW@lists.linux.dev
+X-Gm-Message-State: AOJu0YzP9qMd7DYAk+39MwVXmwTbFxQbp+BAN9tVVdUAYn9H4L900lIi
+	OwnuqrrLakVOE52bHdsWB22phjRsr6PCdolPmvToYetvUUgHvPICnVXp
+X-Gm-Gg: AZuq6aLslwoqWgafhvxqFVf9/hM+SQ+30gprv7D9MD1TdNWCRVoVkUyWIv458uIsaPA
+	hD7DnnS395ykFrAUn6z4l0l6Rvxx7QRxJAflvevaQ3OI9FFX5kasy5UMD9kfCa+GHdkG3Y0D5rp
+	tLYFXqGjsWj2jDaPQK0DW0YOFawtFLO9GfKQZUGD7vLkw2xZ+BKkeOQfJ+ysVhQtuMB2q7qor7c
+	Y1Xu+oLvwv8Be0AqD7ahguPKmFp+w/bN374GTzgGuSzHk77BaejH3m9wu11rY/eA1zApibYhoo0
+	anMQu2qYLdhKm7CUPaCJrvN0o4tiu/ViMX3gGxyb1Ytbg1dazezY9MZcgqiKBIorrGxN23w+p1S
+	sssg8atWWEW5xPR9d/9VxKx7QjSPJ1txlyuxSyu689g29ZAwZf4C+T4ItlNlPWQhdxqXevPhie5
+	78S3gm6E2c1h99VJVeUXJJBXEYNi4ZLbWCH+bAiLNal/IKm/6+hvVQUPY=
+X-Received: by 2002:a17:902:cf07:b0:2a9:322e:2473 with SMTP id d9443c01a7336-2ad7457e58dmr34715235ad.48.1771686012796;
+        Sat, 21 Feb 2026 07:00:12 -0800 (PST)
+Received: from toolbx ([103.230.182.3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f4a4sm23730205ad.79.2026.02.21.06.59.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Feb 2026 07:00:11 -0800 (PST)
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	chuck.lever@oracle.com,
+	alex.aring@gmail.com,
+	arnd@arndb.de,
+	adilger@dilger.ca,
+	mjguzik@gmail.com,
+	smfrench@gmail.com,
+	richard.henderson@linaro.org,
+	mattst88@gmail.com,
+	linmag7@gmail.com,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	idryomov@gmail.com,
+	amarkuze@redhat.com,
+	slava@dubeyko.com,
+	agruenba@redhat.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	sfrench@samba.org,
+	pc@manguebit.org,
+	ronniesahlberg@gmail.com,
+	sprasad@microsoft.com,
+	tom@talpey.com,
+	bharathsm@microsoft.com,
+	shuah@kernel.org,
+	miklos@szeredi.hu,
+	hansg@kernel.org
+Subject: [PATCH v4 2/4] kselftest/openat2: test for OPENAT2_REGULAR flag
+Date: Sat, 21 Feb 2026 20:45:44 +0600
+Message-ID: <20260221145915.81749-3-dorjoychy111@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260221145915.81749-1-dorjoychy111@gmail.com>
+References: <20260221145915.81749-1-dorjoychy111@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Sunday, 15 February 2026 13:36:02 CET Dominique Martinet wrote:
-> Still haven't taken time to review, just replying since I'm looking at
-> 9p mails tonight... (The IO accounting part was sent to Linus earlier,
-> still intending to review and test soonish but feel free to send a v3
-> with Christian comments for now)
->=20
-> Remi Pommarel wrote on Thu, Feb 12, 2026 at 10:42:50PM +0100:
-> > > > +	if (S_ISLNK(rreq->inode->i_mode)) {
-> > > > +		err =3D p9_client_readlink(fid, &target);
-> > >=20
-> > > Treadlink request requires 9p2000.L. So this would break with legacy
-> > > protocol versions 9p2000 and 9p2000.u I guess:
-> > >=20
-> > > https://wiki.qemu.org/Documentation/9p#9p_Protocol
-> >=20
-> > I'm having trouble seeing how v9fs_issue_read() could be called for
-> > S_ISLNK inodes under 9p2000 or 9p2000.u.
-> >=20
-> > As I understand it, v9fs_issue_read() is only invoked through the page
-> > cache operations via the inode=E2=80=99s a_ops. This seems to me that o=
-nly
-> > regular files and (now that I added a page_get_link() in
-> > v9fs_symlink_inode_operations_dotl) symlinks using 9p2000.L can call
-> > v9fs_issue_read(). But not symlinks using 9p2000 or 9p2000.u as I
-> > haven't modified v9fs_symlink_inode_operations. But I may have missed
-> > something here ?
->=20
-> I think that's correct, but since it's not obvious perhaps a comment
-> just above the p9_client_readlink() call might be useful?
+Just a happy path test.
 
-And maybe adding a BUG_ON(!p9_is_proto_dotl(client)) in p9_client_readlink()
-[net/9p/client.c].
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+---
+ .../testing/selftests/openat2/openat2_test.c  | 37 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-> Also nitpick: please add brackets to the else as well because the if
-> part had some (checkpatch doesn't complain either way, but I don't like
->   if (foo) {
->     ...
->   } else
->     bar
-> formatting)
->=20
-> > > > diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> > > > index a82a71be309b..e1b762f3e081 100644
-> > > > --- a/fs/9p/vfs_inode.c
-> > > > +++ b/fs/9p/vfs_inode.c
-> > > > @@ -302,10 +302,12 @@ int v9fs_init_inode(struct v9fs_session_info
-> > > > *v9ses,
-> > > >=20
-> > > >  			goto error;
-> > > >  	=09
-> > > >  		}
-> > > >=20
-> > > > -		if (v9fs_proto_dotl(v9ses))
-> > > > +		if (v9fs_proto_dotl(v9ses)) {
-> > > >=20
-> > > >  			inode->i_op =3D &v9fs_symlink_inode_operations_dotl;
-> > > >=20
-> > > > -		else
-> > > > +			inode_nohighmem(inode);
-> > >=20
-> > > What is that for?
-> >=20
-> > According to filesystems/porting.rst and commit 21fc61c73c39 ("don't put
-> > symlink bodies in pagecache into highmem") all symlinks that need to use
-> > page_follow_link_light() (which is now more or less page_get_link())
-> > should not add highmem pages in pagecache or deadlocks could happen. The
-> > inode_nohighmem() prevents that.
-> >=20
-> > Also from __page_get_link()
-> >=20
-> >   BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
-> >=20
-> > A BUG_ON() is supposed to punish us if inode_nohighmem() is not used
-> > here.
-> >=20
-> > Of course this does not have any effect on 64bits platforms.
->=20
-> That's how it should be but it marks memory as GFP_USER, I'm curious if
-> it really has no other effect... Anyway, from what I've read I think it
-> is likely to go away (highmem on 32bit platforms) soon enough, so this
-> probably won't matter in the long run.
-> (if we really care we could flag this only for S_ISLNK(mode), but I
-> don't think it's worth the check)
-
-Good point. Most other fs only call inode_nohighmem() for symlinks. IIUIC i=
-t's
-not a good idea to do this simply for all inodes, as it may lead to deadloc=
-ks
-for instance. So I think it is worth to add that check.
-
-/Christian
-
+diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
+index 0e161ef9e9e4..e8847f7d416c 100644
+--- a/tools/testing/selftests/openat2/openat2_test.c
++++ b/tools/testing/selftests/openat2/openat2_test.c
+@@ -320,8 +320,42 @@ void test_openat2_flags(void)
+ 	}
+ }
+ 
++#ifndef OPENAT2_REGULAR
++#define OPENAT2_REGULAR 040000000
++#endif
++
++#ifndef EFTYPE
++#define EFTYPE 134
++#endif
++
++void test_openat2_regular_flag(void)
++{
++	if (!openat2_supported) {
++		ksft_test_result_skip("Skipping %s as openat2 is not supported\n", __func__);
++		return;
++	}
++
++	struct open_how how = {
++		.flags = OPENAT2_REGULAR | O_RDONLY
++	};
++
++	int fd = sys_openat2(AT_FDCWD, "/dev/null", &how);
++
++	if (fd == -ENOENT) {
++		ksft_test_result_skip("Skipping %s as there is no /dev/null\n", __func__);
++		return;
++	}
++
++	if (fd != -EFTYPE) {
++		ksft_test_result_fail("openat2 should return EFTYPE\n");
++		return;
++	}
++
++	ksft_test_result_pass("%s succeeded\n", __func__);
++}
++
+ #define NUM_TESTS (NUM_OPENAT2_STRUCT_VARIATIONS * NUM_OPENAT2_STRUCT_TESTS + \
+-		   NUM_OPENAT2_FLAG_TESTS)
++		   NUM_OPENAT2_FLAG_TESTS + 1)
+ 
+ int main(int argc, char **argv)
+ {
+@@ -330,6 +364,7 @@ int main(int argc, char **argv)
+ 
+ 	test_openat2_struct();
+ 	test_openat2_flags();
++	test_openat2_regular_flag();
+ 
+ 	if (ksft_get_fail_cnt() + ksft_get_error_cnt() > 0)
+ 		ksft_exit_fail();
+-- 
+2.53.0
 
