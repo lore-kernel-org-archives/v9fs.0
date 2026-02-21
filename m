@@ -1,193 +1,191 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC8432E6A3
-	for <v9fs@lists.linux.dev>; Sat, 21 Feb 2026 16:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED301F5821
+	for <v9fs@lists.linux.dev>; Sat, 21 Feb 2026 20:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771692299; cv=none; b=PpEqZ9eVox8QoTGQRaaCgPsxaDw6LVHJzhbvZ+lXUaWhW1t21FXyedgMdnxNs6tlNp4TU1oP1/0pdfMVufYmSllbCTwsjwFQ9Mlw+PeV66uKwghcld0NWs7qCby660mbtCb2xv/lypkzfpvN5vFSwYKpzWbXn/MTqzs0OjW8/DQ=
+	t=1771707457; cv=none; b=kPhafNhwenqcPqZoopJ5CKlN7chjGIR0+uvbhoTcV8HcM6FHJWMwUVcXlbIOUoIoKlhpZ2GiQ8fr7N13H5riKQO29nVQXlD57U5L9wBZskOB+D9O5tZOvzD61fyeSYAlkTM3Pa3Sv7nthekKgj8SWeibPZh2Hg9U/VVEFHoPeYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771692299; c=relaxed/simple;
-	bh=Q8LjG5w0LfBzA+qqIJUKX9oy/FN75Vn0W7VHoH69Qv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l3JQ/g1J1yGxSiccm1/6UkFOAQdlN6Ajc/lINNCVeFgGUondkhUnqBoZprO3Gvu+wv8QKAHQ1ln1qXM4YfNrddT8Kl8eBcdzay4ACKIzX13WNPvdaR5VYW8iR+w2U2dUxAvzILrXgj0lKJqato0AnB3VMxEDqIfI6CaFxv+Hk90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0NyK4ql; arc=none smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771707457; c=relaxed/simple;
+	bh=1FLSnJJwFzgCN2DNjXqWIoCXuNJVyBDH2pejoIcm2NA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=liaY4SCWZ7DAMjay9AL4KNT6cOUCr8t5kI5tNLYicEp2ib7e6O7jD5grtVpLhhgp3qG7cz7J/pZ9GUV6mNdQ7OfU9lMxrxr9SMMMxMxvoPuV3E/Ty6uzK1nH5gvbFVROrOifbJXjzMdXjZjXo9mPjIrgnwmMVOZO5+gMUAzDbbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=SlbSXOXI reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=ZEvJhAeU; arc=none smtp.client-ip=103.2.141.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0NyK4ql"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5fd05e8d317so1940100137.1
-        for <v9fs@lists.linux.dev>; Sat, 21 Feb 2026 08:44:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771692296; x=1772297096; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dchZpIBGjK9hFXqFYovVVV/bmoJVWZnsrs7zJJ1McUQ=;
-        b=A0NyK4ql+7NIDWu0cOQgcsmSgnWXC1P9rN+tuIEWRQ9jqkqgAq7zh8m0KsPhVgvn5r
-         wri7KO8l5ibuB8blcg5qbC9WabhMvqPdQe13gF3vtyyN31+OHC4oSRU3BbYc7BvZMoql
-         HkH9+KBe+vh6Oq+A2JZ1peTYA8UZDkL8OOE7L9H2vw3GleAwmPdNz5O/9NJ+FheDTbsi
-         lXrU/xKSGFXYIs21loUbr21wbrrngNfISinqcBAXDsjg9cocy/XcKl/6BjNVcLXhkq7l
-         NKy0wP1Jn5/MWK7YkCibgSH0CCau2pcLcsX14SF8cE5iiNjuC7aPprhRYy6LsWa033qx
-         5Raw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771692296; x=1772297096;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dchZpIBGjK9hFXqFYovVVV/bmoJVWZnsrs7zJJ1McUQ=;
-        b=oF0OH0O+k6wLKuqBl1girNkNSH8JXT8H6BcccOVd8GFNJ1zK+8R6ci5WIsNDuyCkTx
-         RrRoVjOQ6WGoNslWAiNyjWb0mVZHm4dd8AFZCpHsw4oa1jSU+5EsfigKExr/WUCUMqgC
-         twLBVDsPMZXA3KZCByxpouvV1cZA6PpoHu+uulDgf/mCxHoc2Dy37pe09aV21cEFsbxa
-         Q5dp3Vr+sl8WdJ2Zv7JRH3DhBHTw6QGCUaljukDv13Vx9y0OxI6rIuZCOk9LUkWV0oZf
-         amVpO3Y1bvvURsTNt+Pk14hIVls7Un5Awkxr1bVlMtvsvzoR/kPLBLTw7c0BuZdnV/C7
-         5sQw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8/TDdA7ZPPM2zs5EvnizJiPTl1VzanhqNWLdRCgIs25Xpz83QYxyTHRjKPNEWlD+ePiHJ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx9FqSWUq5K3HBd9K3SpnOikn8SOzHaL27qNwtG5D0LEmhCmOl0
-	2sa0+s/spUt8cfIONc9FQnWpIOeuif8rh2Or5hWioXdAzd7PsBf1YSVEJmlsDQ==
-X-Gm-Gg: AZuq6aKThZaKtvQhjCCNGrinWhGhdFODY6dcD7MDfF+CienLRlreATMa9gZEgNRn+QD
-	C5nkET497rb5hQ3jdVLg/3Q3sgwZO4H972zriNETa2ki7qikQZnqK0LBSFhf6KFkKZYkbLgJY/u
-	KhOAKXX1e6mCiLXJ50mDUWA4UdXXiLV3nwoqISzDntZuGwUESzbakq+3/tfVPguBmhPwXEoP9u3
-	SzC4rA3JQksoZ1KExFHT1HjSuFMWQSzLZkuyB3u/xZctqzZ+l5b28vNM8rx7ZOoBdCJuOUErlm8
-	qUb5w9fKT2bRne8HObxUWjW8cyIcWJpyl6rKaoxOWJvPqmJJT4TIjk0MLdf0DUo0KnTyH9Qc2DI
-	lc8nTQ/xwj9Ick52JIGZQCDPVeX2PctktAnAmpnhVyNYKnHpii62jm2dRIfjy2b5txvFibBW34m
-	6J5WFkrbHzVzpigUHD5WuLbwDMwVCa4EXZPhboKPEDV+RLmYmatggBLyl6eJQhX5eV0A==
-X-Received: by 2002:a17:903:1d2:b0:295:24ab:fb06 with SMTP id d9443c01a7336-2ad74458fa3mr31285505ad.22.1771685983010;
-        Sat, 21 Feb 2026 06:59:43 -0800 (PST)
-Received: from toolbx ([103.230.182.3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f4a4sm23730205ad.79.2026.02.21.06.59.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Feb 2026 06:59:42 -0800 (PST)
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	chuck.lever@oracle.com,
-	alex.aring@gmail.com,
-	arnd@arndb.de,
-	adilger@dilger.ca,
-	mjguzik@gmail.com,
-	smfrench@gmail.com,
-	richard.henderson@linaro.org,
-	mattst88@gmail.com,
-	linmag7@gmail.com,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	deller@gmx.de,
-	davem@davemloft.net,
-	andreas@gaisler.com,
-	idryomov@gmail.com,
-	amarkuze@redhat.com,
-	slava@dubeyko.com,
-	agruenba@redhat.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	sfrench@samba.org,
-	pc@manguebit.org,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	shuah@kernel.org,
-	miklos@szeredi.hu,
-	hansg@kernel.org
-Subject: [PATCH v4 0/4] OPENAT2_REGULAR flag support in openat2
-Date: Sat, 21 Feb 2026 20:45:42 +0600
-Message-ID: <20260221145915.81749-1-dorjoychy111@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="SlbSXOXI";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="ZEvJhAeU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1771708356; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=+iLIVd2IaggnfcWfPzgeVDaeJzo1dvYtJEbqPBKfZu4=; b=SlbSXOXInCXmdGvqD0ZTEy7lYd
+	dPsdKP/Wf3sjuvOY+Ie3z0qw31oGv2Da7zD5aF/2A3vng5vFqN3vOa3XwjbXwVD2MavWWIi3m2lAQ
+	/e/UHq/j7G5xDluvU23Mpp8qY4nO2MdEZFQ6BUQBufCUCmbEL3W/8dcogmSUNnHKtCchuvsE8GPKO
+	rn/dkJoKXQfRecFW5FENghn698WdMezmgOn+xjOBq72VLTCrHSlJaX89d7k0bZK8+BOv/OqDMNtr5
+	jptXilM1Wn+mb4a9IeTBdWr6XDq2gXvSIMwWXljHiAiZVb5muk3Kfx1GtkxLbU1RCNVJvpOh9TKY3
+	LejvmcYA==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1771707456; h=from : subject
+ : to : message-id : date;
+ bh=+iLIVd2IaggnfcWfPzgeVDaeJzo1dvYtJEbqPBKfZu4=;
+ b=ZEvJhAeUPMvt7rij9/4mkS+iO1Dyk/1Toj/4zrFTr8bwll5ZEmi0u2h6GfT9HtTm+7TXE
+ 2HJ3GvafVNl7JDrg5kCIc25Iy7unjq/M5JaMo4ITZ4rP0stJTxSy6Cz9YF7lGbIgOcqzlef
+ fwO6z/j99G8pWQdnKoWtktieBakqtd3lSa7EapSpVzA3l8NvGL2V0w6TPtPUiJ3R61446KI
+ CstdtSOXIbdpBBlFNxjmJy/Krewo2022GRHtI4/1fqjtSOtjq6HF/n7lFTgp1PaQyIsK/Vp
+ GB+3WfMr1QmEN64aGXJHqbbjhWG0Z6J5kBBKuofEv+8NR1yDwkMUgMJ4A2rw==
+Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vttzp-TRjwl8-1h; Sat, 21 Feb 2026 20:54:37 +0000
+Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.99.1-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vttzo-AIkwcC8uaYC-K0GS; Sat, 21 Feb 2026 20:54:36 +0000
+Date: Sat, 21 Feb 2026 21:35:52 +0100
+From: Remi Pommarel <repk@triplefau.lt>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH v2 1/3] 9p: Cache negative dentries for lookup performance
+Message-ID: <aZoXKN8pPOqEBBBz@pilgrim>
+References: <cover.1769013622.git.repk@triplefau.lt>
+ <51afd44abb72d251e2022fbb4d53dd05a03aeed0.1769013622.git.repk@triplefau.lt>
+ <10801068.nUPlyArG6x@weasel> <aY2aXG4ljulj1QRh@pilgrim>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aY2aXG4ljulj1QRh@pilgrim>
+X-Smtpcorp-Track: d17tr8-pCQYm.mz_gcWNU-kx3.qcm6lAUMhu0
+Feedback-ID: 510616m:510616apGKSTK:510616shlp15QIr_
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-Hi,
+On Thu, Feb 12, 2026 at 10:16:13AM +0100, Remi Pommarel wrote:
+> On Wed, Feb 11, 2026 at 04:49:19PM +0100, Christian Schoenebeck wrote:
+> > On Wednesday, 21 January 2026 20:56:08 CET Remi Pommarel wrote:
+> > > Not caching negative dentries can result in poor performance for
+> > > workloads that repeatedly look up non-existent paths. Each such
+> > > lookup triggers a full 9P transaction with the server, adding
+> > > unnecessary overhead.
+> > > 
+> > > A typical example is source compilation, where multiple cc1 processes
+> > > are spawned and repeatedly search for the same missing header files
+> > > over and over again.
+> > > 
+> > > This change enables caching of negative dentries, so that lookups for
+> > > known non-existent paths do not require a full 9P transaction. The
+> > > cached negative dentries are retained for a configurable duration
+> > > (expressed in milliseconds), as specified by the ndentry_timeout
+> > > field in struct v9fs_session_info. If set to -1, negative dentries
+> > > are cached indefinitely.
+> > > 
+> > > This optimization reduces lookup overhead and improves performance for
+> > > workloads involving frequent access to non-existent paths.
+> > > 
+> > > Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+> > > ---
+> > >  fs/9p/fid.c             |  11 +++--
+> > >  fs/9p/v9fs.c            |   1 +
+> > >  fs/9p/v9fs.h            |   2 +
+> > >  fs/9p/v9fs_vfs.h        |  15 ++++++
+> > >  fs/9p/vfs_dentry.c      | 105 ++++++++++++++++++++++++++++++++++------
+> > >  fs/9p/vfs_inode.c       |   7 +--
+> > >  fs/9p/vfs_super.c       |   1 +
+> > >  include/net/9p/client.h |   2 +
+> > >  8 files changed, 122 insertions(+), 22 deletions(-)
+> > > 
+> > > diff --git a/fs/9p/fid.c b/fs/9p/fid.c
+> > > index f84412290a30..76242d450aa7 100644
+> > > --- a/fs/9p/fid.c
+> > > +++ b/fs/9p/fid.c
+> > > @@ -20,7 +20,9 @@
+> > > 
+> > >  static inline void __add_fid(struct dentry *dentry, struct p9_fid *fid)
+> > >  {
+> > > -	hlist_add_head(&fid->dlist, (struct hlist_head *)&dentry->d_fsdata);
+> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
+> > > +
+> > > +	hlist_add_head(&fid->dlist, &v9fs_dentry->head);
+> > >  }
+> > > 
+> > > 
+> > > @@ -112,6 +114,7 @@ void v9fs_open_fid_add(struct inode *inode, struct
+> > > p9_fid **pfid)
+> > > 
+> > >  static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int
+> > > any) {
+> > > +	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
+> > >  	struct p9_fid *fid, *ret;
+> > > 
+> > >  	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p) uid %d any %d\n",
+> > > @@ -119,11 +122,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry
+> > > *dentry, kuid_t uid, int any) any);
+> > >  	ret = NULL;
+> > >  	/* we'll recheck under lock if there's anything to look in */
+> > > -	if (dentry->d_fsdata) {
+> > > -		struct hlist_head *h = (struct hlist_head *)&dentry->d_fsdata;
+> > > -
+> > > +	if (!hlist_empty(&v9fs_dentry->head)) {
+> > >  		spin_lock(&dentry->d_lock);
+> > > -		hlist_for_each_entry(fid, h, dlist) {
+> > > +		hlist_for_each_entry(fid, &v9fs_dentry->head, dlist) {
+> > >  			if (any || uid_eq(fid->uid, uid)) {
+> > >  				ret = fid;
+> > >  				p9_fid_get(ret);
+> > > diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+> > > index 057487efaaeb..1da7ab186478 100644
+> > > --- a/fs/9p/v9fs.c
+> > > +++ b/fs/9p/v9fs.c
+> > > @@ -422,6 +422,7 @@ static void v9fs_apply_options(struct v9fs_session_info
+> > > *v9ses, v9ses->cache = ctx->session_opts.cache;
+> > >  	v9ses->uid = ctx->session_opts.uid;
+> > >  	v9ses->session_lock_timeout = ctx->session_opts.session_lock_timeout;
+> > > +	v9ses->ndentry_timeout = ctx->session_opts.ndentry_timeout;
+> > >  }
+> > > 
+> > >  /**
+> > > diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
+> > > index 6a12445d3858..99d1a0ff3368 100644
+> > > --- a/fs/9p/v9fs.h
+> > > +++ b/fs/9p/v9fs.h
+> > > @@ -91,6 +91,7 @@ enum p9_cache_bits {
+> > >   * @debug: debug level
+> > >   * @afid: authentication handle
+> > >   * @cache: cache mode of type &p9_cache_bits
+> > > + * @ndentry_timeout: Negative dentry lookup cache retention time in ms
+> > >   * @cachetag: the tag of the cache associated with this session
+> > >   * @fscache: session cookie associated with FS-Cache
+> > >   * @uname: string user name to mount hierarchy as
+> > > @@ -116,6 +117,7 @@ struct v9fs_session_info {
+> > >  	unsigned short debug;
+> > >  	unsigned int afid;
+> > >  	unsigned int cache;
+> > > +	unsigned int ndentry_timeout;
+> > 
+> > Why not (signed) long?
+> 
+> I first though 40+ days of cache retention was enough but that is just
+> an useless limitation, I will change it to signed long.
 
-I came upon this "Ability to only open regular files" uapi feature suggestion
-from https://uapi-group.org/kernel-features/#ability-to-only-open-regular-files
-and thought it would be something I could do as a first patch and get to
-know the kernel code a bit better.
+Well now that I think about it, this is supposed to be set from a mount
+options. However, with the new mount API in use, there is currently no
+support for fsparam_long or fsparam_s64.
 
-I only tested this new flag on my local system (fedora btrfs).
+While it could be implemented using a custom __fsparam, is the effort
+truly justified here? Also in that case maybe a long long would be a bit
+more portable across 32-bit and 64-bit platform?
 
-Note that I had submitted a v4 previously (that had -EINVAL for the atomic_open
-code paths) but did not do a get_maintainers.pl. It didn't get any review and
-please ignore that one anyway. In this version, I have tried to properly update
-the filesystems that provide atomic_open (fs/ceph, fs/nfs, fs/smb, fs/gfs2,
-fs/fuse, fs/vboxsf, fs/9p) for the new OPENAT2_REGULAR flag. Some of them
-(fs/fuse, fs/vboxsf, fs/9p) didn't need any changing. As far as I see, most of
-the filesystems do finish_no_open for ~O_CREAT and have file->f_mode |= FMODE_CREATED
-for the O_CREAT code path which I assume means they always create new file which
-is a regular file. OPENAT2_REGULAR | O_DIRECTORY returns -EINVAL (instead of working
-if path is either a directory or regular file) as it was easier to reason about when
-making changes in all the filesystems.
-
-Changes in v4:
-- changed O_REGULAR to OPENAT2_REGULAR
-- OPENAT2_REGULAR does not affect O_PATH
-- atomic_open codepaths updated to work properly for OPENAT2_REGULAR
-- commit message includes the uapi-group URL
-- v3 is at: https://lore.kernel.org/linux-fsdevel/20260127180109.66691-1-dorjoychy111@gmail.com/T/
-
-Changes in v3:
-- included motivation about O_REGULAR flag in commit message e.g., programs not wanting to be tricked into opening device nodes
-- fixed commit message wrongly referencing ENOTREGULAR instead of ENOTREG
-- fixed the O_REGULAR flag in arch/parisc/include/uapi/asm/fcntl.h from 060000000 to 0100000000
-- added 2 commits converting arch/{mips,sparc}/include/uapi/asm/fcntl.h O_* macros from hex to octal
-- v2 is at: https://lore.kernel.org/linux-fsdevel/20260126154156.55723-1-dorjoychy111@gmail.com/T/
-
-Changes in v2:
-- rename ENOTREGULAR to ENOTREG
-- define ENOTREG in uapi/asm-generic/errno.h (instead of errno-base.h) and in arch/*/include/uapi/asm/errno.h files
-- override O_REGULAR in arch/{alpha,sparc,parisc}/include/uapi/asm/fcntl.h due to clash with include/uapi/asm-generic/fcntl.h
-- I have kept the kselftest but now that O_REGULAR and ENOTREG can have different value on different architectures I am not sure if it's right
-- v1 is at: https://lore.kernel.org/linux-fsdevel/20260125141518.59493-1-dorjoychy111@gmail.com/T/
-
-Thanks.
-
-Regards,
-Dorjoy
-
-Dorjoy Chowdhury (4):
-  openat2: new OPENAT2_REGULAR flag support
-  kselftest/openat2: test for OPENAT2_REGULAR flag
-  sparc/fcntl.h: convert O_* flag macros from hex to octal
-  mips/fcntl.h: convert O_* flag macros from hex to octal
-
- arch/alpha/include/uapi/asm/errno.h           |  2 +
- arch/alpha/include/uapi/asm/fcntl.h           |  1 +
- arch/mips/include/uapi/asm/errno.h            |  2 +
- arch/mips/include/uapi/asm/fcntl.h            | 22 +++++------
- arch/parisc/include/uapi/asm/errno.h          |  2 +
- arch/parisc/include/uapi/asm/fcntl.h          |  1 +
- arch/sparc/include/uapi/asm/errno.h           |  2 +
- arch/sparc/include/uapi/asm/fcntl.h           | 35 +++++++++---------
- fs/ceph/file.c                                |  4 ++
- fs/gfs2/inode.c                               |  2 +
- fs/namei.c                                    |  4 ++
- fs/nfs/dir.c                                  |  4 +-
- fs/open.c                                     |  4 +-
- fs/smb/client/dir.c                           | 11 +++++-
- include/linux/fcntl.h                         |  2 +
- include/uapi/asm-generic/errno.h              |  2 +
- include/uapi/asm-generic/fcntl.h              |  4 ++
- tools/arch/alpha/include/uapi/asm/errno.h     |  2 +
- tools/arch/mips/include/uapi/asm/errno.h      |  2 +
- tools/arch/parisc/include/uapi/asm/errno.h    |  2 +
- tools/arch/sparc/include/uapi/asm/errno.h     |  2 +
- tools/include/uapi/asm-generic/errno.h        |  2 +
- .../testing/selftests/openat2/openat2_test.c  | 37 ++++++++++++++++++-
- 23 files changed, 119 insertions(+), 32 deletions(-)
+Thanks,
 
 -- 
-2.53.0
-
+Remi
