@@ -1,63 +1,62 @@
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0127E2C0268
-	for <v9fs@lists.linux.dev>; Wed, 25 Feb 2026 03:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F729BD87
+	for <v9fs@lists.linux.dev>; Wed, 25 Feb 2026 03:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771990734; cv=none; b=CzK+f1hqFFR/bpfirsK8FRQwBSApkQQFidHf0kzrv8Eq23fctgrB+64dvnmIYUH0OMN0mOBcvh+9G5ZoideqK+OPPXUGGHrhpsmcPrgmTtCG1GdHMT2Ac/pVSx4RgL0zVTh5WT8bh2Tc4U0Aji4fqticBep3YspiaGkzG/NsjN8=
+	t=1771990737; cv=none; b=N4EJwbE9B/xeWEoN2xOsClPV7nfvafHKZaMrl/zIsqK8XaHi1ztLlSS5EX5pJcdbQWhHv63lXDFKqjmT06TkVxMG9Eip4mLpcpNbVbdMP1u+1OpH/+D/WrIJoFDnOcIV6N6U7qHRqOjKLOLbfSvO/e9/WwYexjpcF0h8Km2TAaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771990734; c=relaxed/simple;
-	bh=UzebxA6/a7fg3sjOiWp/u7lzb1dFODtxX1sVJYsce3s=;
+	s=arc-20240116; t=1771990737; c=relaxed/simple;
+	bh=ioQkH6Kq3BaHcNNHYkbSQWOm2Z0hguUCzLEhgRepsrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJyJANEfOj3ERIX4EMHCpNt8vcifWbxp885PUoShEiZieauQHMYawIFqelgTPxirvujw1xFVuWYprJrOAjZCv+3gvF/fOjNrgG85c1RKbpqrwwm2hG6upkzxJebQIxi09oC9TJp/FcghAMdv5S04g+VqEmgnL0yR2eMMYzizLcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXM23/sH; arc=none smtp.client-ip=209.85.215.195
+	 MIME-Version; b=cB6BtqJhfcj5ggrVhk++HDKs4m6afcSJg5kWs7xpbQ3OInek5nXqCJ5USxp523fNFEsKZfpXlEo74cUoLMleq58LQZCcXpqRt/5luXKeUWBYSkGFcrquotc2lzne+d0NIAjLc6AUx9neSSSHrLFSUhz9SuKjVfkcrdXUzl2ND64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldBAMt+P; arc=none smtp.client-ip=209.85.215.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXM23/sH"
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c626bd75628so2271603a12.3
-        for <v9fs@lists.linux.dev>; Tue, 24 Feb 2026 19:38:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldBAMt+P"
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-c7059b9df33so199892a12.0
+        for <v9fs@lists.linux.dev>; Tue, 24 Feb 2026 19:38:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771990731; x=1772595531; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1771990735; x=1772595535; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
-        b=CXM23/sHi0wB90SilSWDLkZJQzviCoWMeA5Qid2k/wOVRpxYL1dzYoT5SHH1rrjnH4
-         QfePXXC8Dy2q1Z+rAa9vdYD585swGCXy+1kBHU/z+EmI2SYk9EZWiwDASfoSU26Ymqv7
-         qQxpDa9i5hnUkWIm5UJqJSM7NT6/f62Q9uUlbZ3vhVpDexXsFqD4qJnhx5wmxU09sL8M
-         mmRUpdLzpMqcCT2yVL87g7x3tu8u6qmdQi1K0K1m88W9LEapRZOw+KgClnPiqnXDGRE0
-         4pRmA6GsOmKplRiAx6P/E3nF2VokyfcU9q97s+wUzPEYxDIjqBg2Ks8lklzuk0IT6uvW
-         d8oQ==
+        bh=pRulitact7LuRkcM6p1wuTRq7YmEiipbfGs7cAozTt0=;
+        b=ldBAMt+PDp5932x03Ex0H2po6a493TW33NVTGVLiMP0b7ofAI7GPquqTM6nqde1y8t
+         ZNQ+KK9xo/p4lQZCIW17mYQsIs1GnuIzFamXTXS5XECiMOY6Ynd+sgT4CD0QasPM+zlP
+         744+wrbVUM/tPp0ahftlgw+X8bXxoIiyC/EdKV++bkHn6/sUIlf/kPCDgmVqxhkidXrY
+         u/NosCTxSGxOzsPeHksdrn09mTNt9npi63PAmJPOoyar5K4JehYSI4wUXaYi4wOReXuT
+         tfMfRrKtkko2NTUf2BldlR5K2BYnfsAD5daWsM/Wu2HgEWOsQw0gR2EPmdcuywEtyq7U
+         /g4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771990731; x=1772595531;
+        d=1e100.net; s=20230601; t=1771990735; x=1772595535;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
-        b=VkB+KT2uN6T8JU9EC9Y4iQtQBSpqFLGKFomVgsi5yXH6D17ABy+Zzq9sAyOcAeDTkY
-         9OusZR3J13Ku79w1jlyaISLGJ13ooVJSn7HbT5Dn8eal18XYwXcwRjfP3emQEEs9YG3C
-         YYezic8wxvyT9Xyf9izlt4LB3ykjhriKWM7OOJzh58aMPFCSo6TZyLWTOgMKubJxXUYW
-         496R/JubrQc4nydBpr8VYqgoJ5vpqhNGfxlAWyQkPXqYt+tKguJADSEeHBco8ZoiT/9x
-         XiD5FLuPR5FGcZKa0WS3mURNnJ8qDFdbfF/w0IwBBSI+xD9vOGWJSDM0iwC8uTMnFQME
-         CZMg==
-X-Gm-Message-State: AOJu0YzZxyD1EwVMqYzEWVq1Xni4GE9krNr+wOyeCDdUeWNicFOzW0Ff
-	Jl/VynmrqlFZg70lWsQVqyI8ZCET0XvKjeZR3KlWtsTQAs6/NEQ1KpQFc5kwPiZYT64kZA==
-X-Gm-Gg: ATEYQzwdzdAKdn9diTdoW7LNAAOg5e9BJYCnImY28/u55hPbf2KebUzaj/f6yh97tCx
-	fkVosrcOlTDCHl0B8X9obqDlukv02pjZDBvwasyig875AbzaVbnKXo46iT7lIUzDU1FTBnGFJw7
-	6qdptja2/HIGq/Rq4/v+zvFW3FHYXw70jkZeTtnesUf29RzbIXqzpLRYHQ4SXjj5nIoXNPsKrlH
-	QMapQAIFF26+KwxF8wWnvAWsFf4fLWx+5fG9hO+RHWzGWhzutF1YbY/1Q08ugH3vfntCgcaMDEw
-	gf2E0np9gUs4GmzZreVQeHQsustsoreOIkDLr6fSA7SSvEMxUi3seNVwZOFLdu+JlPi6fYX2n6l
-	iw4/bCmA4hpg2zB032o7SEC3EmBTS81f6z6+wGR55bLywn/uTJu2OfLVyAQnurhOLJBIPmd8633
-	ZwnMiFsdojC/FOWTT7uhcUaffjwJZVnwrlya6NcLIiia0beDbmBgywXZ4Vn7k29hgK46i7DRWs/
-	uBe2PTV
-X-Received: by 2002:a17:90a:c887:b0:356:23be:7ecb with SMTP id 98e67ed59e1d1-358ae808fb4mr11595307a91.12.1771990731279;
-        Tue, 24 Feb 2026 19:38:51 -0800 (PST)
+        bh=pRulitact7LuRkcM6p1wuTRq7YmEiipbfGs7cAozTt0=;
+        b=KOi8pzkw0cLCFISmd+nn6w98W5kv3i1sQjYyPm7V8fEdX584cmc/BpsBgKFu3Qjv78
+         PEwpychR+YcEyl31dRCUJbHAbkQt1/qVC/nWTZwY+Os8S6da9tuY2bhkckhjuYn+vUba
+         hS4NU9ybw8Y/utYwhZLqz5Vtfci2/tM2YrTx8HwpIipYr5J+FaHDt8aWkqn55lzarV8V
+         zdD/+OJm6CDF5OC20ynXXdS8T810rU6xIRKe/CvRtuEIJgojTiV167427mwz2XCDTIXc
+         4jdZNwTsdAW8E/y4xUOq1FKaCQnSuR/lsbvnhTQ21+0mk3xBXHP/PUdiE4Ll6bGcMGjO
+         h9/Q==
+X-Gm-Message-State: AOJu0YzS9iXQGT8e31LsI7uu4HjuEbMqdAqFjxZQoVI8P4MW45k/Gz9+
+	YNcJ2y/s/uhOdG255v5EfR3SHzuhE+1BrydPtejAOzobiJPnOe1P6iwh
+X-Gm-Gg: ATEYQzwzlYjA5Ty+HPVyJOnOVQdyMnongotA5tykJeQ0UiqzvTYWxSZ22gZLtknxPwP
+	CmkU+Uu7z6uGSGXFk8dtxb1bfPStfjIqfGqNXdzxnccWqTidzqwKDda2E85MgAHqgU+7Eg4dSn9
+	YqqafgS1Tm+TTbH2+ifCcxByMMPB8qyMF6VS4fEWk7iVdzolXE7HyopC9wMTLyQ9HZhQZmrAekM
+	zrXReMuyOK4cWexs/JVTMzosGEQHD+GUEQcyL444Tv9ZpNQWi4hUF6KXekfiqkg1j78sNvso5h2
+	ox3C8OuHJFuWCm5s0Ywv4ZFTH8swjJizV3OSzqL9499nm61K7PsiR0yC+25G2IfWMfacFjWCHWk
+	Rs7Fy6cNKodFVmUBQXDEnyDWp8MyFVWBw6nXig/AmP91zUwK6g9/Yfsd8AKDukJzA2xmbCMP6lu
+	rcuYoB4kBXDXXngjK0QD2U78r34AIwsEhLHw0KBUSRuyyJ4wFP8uEzcgUhOaeecPO2pyj8wA==
+X-Received: by 2002:a17:90b:530d:b0:32e:72bd:6d5a with SMTP id 98e67ed59e1d1-359037f3512mr2134249a91.1.1771990735285;
+        Tue, 24 Feb 2026 19:38:55 -0800 (PST)
 Received: from localhost.localdomain ([138.199.21.245])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359018838b2sm1161746a91.5.2026.02.24.19.38.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359018838b2sm1161746a91.5.2026.02.24.19.38.51
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 24 Feb 2026 19:38:50 -0800 (PST)
+        Tue, 24 Feb 2026 19:38:54 -0800 (PST)
 From: Eric-Terminal <ericterminal@gmail.com>
 To: Dominique Martinet <asmadeus@codewreck.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
@@ -73,9 +72,9 @@ Cc: v9fs@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	linux-nfs@vger.kernel.org,
 	Yufan Chen <ericterminal@gmail.com>
-Subject: [PATCH v2 1/4] 9p/trans_xen: make cleanup idempotent after dataring alloc errors
-Date: Wed, 25 Feb 2026 11:38:37 +0800
-Message-ID: <20260225033840.33000-2-ericterminal@gmail.com>
+Subject: [PATCH v2 2/4] 9p/trans_xen: replace simple_strto* with kstrtouint
+Date: Wed, 25 Feb 2026 11:38:38 +0800
+Message-ID: <20260225033840.33000-3-ericterminal@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225033840.33000-1-ericterminal@gmail.com>
 References: <20260225010853.15916-1-ericterminal@gmail.com>
@@ -86,113 +85,65 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3411; i=ericterminal@gmail.com; h=from:subject; bh=Gu0MyqKlwATaZLTHkAVxYELyEu7nRq9nuCfzTHc2Ad8=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWTOy5NTm/gzgiOsN2hHx4cJz7fzhr19LZHb++7ufoVZo snTztnZdZSyMIhxMciKKbLc/b9vbq7XrTnXuQ/nwsxhZQIZwsDFKQATuWbAyHDC3ICJlbVC0rBZ fRMn18uDx4MObX75UfXy+stNxZIpL/4y/BXwOLHVb3ZcItMd+/SAj2IK0WHehYmHLjAYvrrHufu tEDsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1616; i=ericterminal@gmail.com; h=from:subject; bh=ULBANr6zOAUiLxfBQ+XUgxxtzikjVOyTnngJAb6RsoQ=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWTOy5Mv3PZGZ5rZi2trbn3b/meXvM21X0ZzD/hIHVHnU j+hlrfcraOUhUGMi0FWTJHl7v99c3O9bs25zn04F2YOKxPIEAYuTgGYyAFhhr+iYfnVLu2vlgl9 9Lm+6VXxTJlXa/TrWIMsHp+NPXTYLvgIw1+pWW6lZxMq+642FKwxSdu3MvZ8S+y6r4dllvUskXi 4sJ0VAA==
 X-Developer-Key: i=ericterminal@gmail.com; a=openpgp; fpr=DDFFBE9D6D4ADA9CD70BC36D8C9DD07C93EDF17F
 Content-Transfer-Encoding: 8bit
 
 From: Yufan Chen <ericterminal@gmail.com>
 
-xen_9pfs_front_alloc_dataring() tears down resources on failure but
-leaves ring fields stale. If xen_9pfs_front_init() later jumps to the
-common error path, xen_9pfs_front_free() may touch the same resources
-again, causing duplicate/invalid gnttab_end_foreign_access() calls and
-potentially dereferencing a freed intf pointer.
-
-Initialize dataring sentinels before allocation, gate teardown on those
-sentinels, and clear ref/intf/data/irq immediately after each release.
-
-This keeps cleanup idempotent for partially initialized rings and
-prevents repeated teardown during init failure handling.
+In xen_9pfs_front_init(), parse the backend version list as comma-separated
+tokens with kstrtouint(). This improves error reporting and ensures strict
+token validation while explicitly requiring protocol version 1.
 
 Signed-off-by: Yufan Chen <ericterminal@gmail.com>
 ---
- net/9p/trans_xen.c | 51 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 37 insertions(+), 14 deletions(-)
+ net/9p/trans_xen.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
 diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 47af5a10e..85b9ebfaa 100644
+index 85b9ebfaa..f9fb2db7a 100644
 --- a/net/9p/trans_xen.c
 +++ b/net/9p/trans_xen.c
-@@ -283,25 +283,33 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+@@ -413,23 +413,29 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 	int ret, i;
+ 	struct xenbus_transaction xbt;
+ 	struct xen_9pfs_front_priv *priv;
+-	char *versions, *v;
+-	unsigned int max_rings, max_ring_order, len = 0;
++	char *versions, *v, *token;
++	bool version_1 = false;
++	unsigned int max_rings, max_ring_order, len = 0, version;
  
- 			cancel_work_sync(&ring->work);
- 
--			if (!priv->rings[i].intf)
-+			if (!ring->intf)
- 				break;
--			if (priv->rings[i].irq > 0)
--				unbind_from_irqhandler(priv->rings[i].irq, ring);
--			if (priv->rings[i].data.in) {
--				for (j = 0;
--				     j < (1 << priv->rings[i].intf->ring_order);
-+			if (ring->irq >= 0) {
-+				unbind_from_irqhandler(ring->irq, ring);
-+				ring->irq = -1;
-+			}
-+			if (ring->data.in) {
-+				for (j = 0; j < (1 << ring->intf->ring_order);
- 				     j++) {
- 					grant_ref_t ref;
- 
--					ref = priv->rings[i].intf->ref[j];
-+					ref = ring->intf->ref[j];
- 					gnttab_end_foreign_access(ref, NULL);
-+					ring->intf->ref[j] = INVALID_GRANT_REF;
- 				}
--				free_pages_exact(priv->rings[i].data.in,
--				   1UL << (priv->rings[i].intf->ring_order +
--					   XEN_PAGE_SHIFT));
-+				free_pages_exact(ring->data.in,
-+						 1UL << (ring->intf->ring_order +
-+							 XEN_PAGE_SHIFT));
-+				ring->data.in = NULL;
-+				ring->data.out = NULL;
-+			}
-+			if (ring->ref != INVALID_GRANT_REF) {
-+				gnttab_end_foreign_access(ring->ref, NULL);
-+				ring->ref = INVALID_GRANT_REF;
- 			}
--			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
--			free_page((unsigned long)priv->rings[i].intf);
-+			free_page((unsigned long)ring->intf);
-+			ring->intf = NULL;
- 		}
- 		kfree(priv->rings);
- 	}
-@@ -334,6 +342,12 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
- 	int ret = -ENOMEM;
- 	void *bytes = NULL;
- 
-+	ring->intf = NULL;
-+	ring->data.in = NULL;
-+	ring->data.out = NULL;
-+	ring->ref = INVALID_GRANT_REF;
-+	ring->irq = -1;
+ 	versions = xenbus_read(XBT_NIL, dev->otherend, "versions", &len);
+ 	if (IS_ERR(versions))
+ 		return PTR_ERR(versions);
+-	for (v = versions; *v; v++) {
+-		if (simple_strtoul(v, &v, 10) == 1) {
+-			v = NULL;
+-			break;
++	for (v = versions; (token = strsep(&v, ",")); ) {
++		if (!*token)
++			continue;
 +
- 	init_waitqueue_head(&ring->wq);
- 	spin_lock_init(&ring->lock);
- 	INIT_WORK(&ring->work, p9_xen_response);
-@@ -379,9 +393,18 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
- 		for (i--; i >= 0; i--)
- 			gnttab_end_foreign_access(ring->intf->ref[i], NULL);
- 		free_pages_exact(bytes, 1UL << (order + XEN_PAGE_SHIFT));
-+		ring->data.in = NULL;
-+		ring->data.out = NULL;
-+	}
-+	if (ring->ref != INVALID_GRANT_REF) {
-+		gnttab_end_foreign_access(ring->ref, NULL);
-+		ring->ref = INVALID_GRANT_REF;
-+	}
-+	if (ring->intf) {
-+		free_page((unsigned long)ring->intf);
-+		ring->intf = NULL;
++		ret = kstrtouint(token, 10, &version);
++		if (ret) {
++			kfree(versions);
++			return ret;
+ 		}
+-	}
+-	if (v) {
+-		kfree(versions);
+-		return -EINVAL;
++		if (version == 1)
++			version_1 = true;
  	}
--	gnttab_end_foreign_access(ring->ref, NULL);
--	free_page((unsigned long)ring->intf);
-+	ring->irq = -1;
- 	return ret;
- }
- 
+ 	kfree(versions);
++	if (!version_1)
++		return -EINVAL;
++
+ 	max_rings = xenbus_read_unsigned(dev->otherend, "max-rings", 0);
+ 	if (max_rings < XEN_9PFS_NUM_RINGS)
+ 		return -EINVAL;
 -- 
 2.47.3
 
