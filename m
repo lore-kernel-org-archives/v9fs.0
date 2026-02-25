@@ -1,62 +1,63 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
+Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4781626FD9B
-	for <v9fs@lists.linux.dev>; Wed, 25 Feb 2026 03:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0127E2C0268
+	for <v9fs@lists.linux.dev>; Wed, 25 Feb 2026 03:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771990729; cv=none; b=HSe1aQVxf6SJD1LPOI3MFE/cAmFXOQ8C0j/FFatWgBP3ZZid9RESjpQiuJESDx8g7JqF/Kug4uQkqY8zyGlGXEByj2fOTDGhUOBJ/eF2CxyPSMEgJfHtA1fVRap2t2pdv6bAERT7qvL4OO9tIfkq4vkPnXOPRvxO5iXyKBAdrAs=
+	t=1771990734; cv=none; b=CzK+f1hqFFR/bpfirsK8FRQwBSApkQQFidHf0kzrv8Eq23fctgrB+64dvnmIYUH0OMN0mOBcvh+9G5ZoideqK+OPPXUGGHrhpsmcPrgmTtCG1GdHMT2Ac/pVSx4RgL0zVTh5WT8bh2Tc4U0Aji4fqticBep3YspiaGkzG/NsjN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771990729; c=relaxed/simple;
-	bh=CgQkRKZi8n6qzzxkB9hjDn8pnf1PBXTxjcBXQQvQt6g=;
+	s=arc-20240116; t=1771990734; c=relaxed/simple;
+	bh=UzebxA6/a7fg3sjOiWp/u7lzb1dFODtxX1sVJYsce3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBtrig2fFJwpTN+TOFpPieo5lYMl61Zj4mzXirtxIZtBr4MT5hJM7+HB7t1LMATAvRcFRnvq3xQ8EsMHVL1YpYPtui4GEcHCaDG+rVCV7dVRiNyWu2yN0R2eQL+ioTpa8p+X1Y4LChnxC0JpC8rNQdJ7O+L5oGy8UrzUOYJrF9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cz9w8wyR; arc=none smtp.client-ip=209.85.216.65
+	 MIME-Version; b=aJyJANEfOj3ERIX4EMHCpNt8vcifWbxp885PUoShEiZieauQHMYawIFqelgTPxirvujw1xFVuWYprJrOAjZCv+3gvF/fOjNrgG85c1RKbpqrwwm2hG6upkzxJebQIxi09oC9TJp/FcghAMdv5S04g+VqEmgnL0yR2eMMYzizLcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXM23/sH; arc=none smtp.client-ip=209.85.215.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cz9w8wyR"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-35851eadc17so3498192a91.2
-        for <v9fs@lists.linux.dev>; Tue, 24 Feb 2026 19:38:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXM23/sH"
+Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c626bd75628so2271603a12.3
+        for <v9fs@lists.linux.dev>; Tue, 24 Feb 2026 19:38:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771990728; x=1772595528; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1771990731; x=1772595531; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bIBkt8Uip58Gmu/ZZcPFAEjJpU3JU8q0pJGlTo8qLYw=;
-        b=cz9w8wyRxWkUgjgZHIiWbiiWVPnNGAAXojnj6EOmj2doNHVnK4ouzMNyrrrJFvwjs9
-         jMiScuQeeG5/ENcEZ0SRDtm+bfBUbllNO/5Zhj0QYRmmV+shIEOLmYREBzihnFzIM+kJ
-         JdrklK7nRIUvqm/kYk5A+ZBP1D56lpYNuLXW+EZ7Mo+lKhfsBfUiBpOzImqn6oLvac4h
-         p1QtyS4tHY5Wg1YIrwXIaaieJ4FMSIYz2yKxzZa6LTRF07VD19QmAq3YzxTbwvYmeEvu
-         YIBsx2qLIaSk4whb3jSVaBwrwj+5jRwvZVO+MO6WvNA9O49mDPq8PnpKurjcqWDX4TwA
-         2a1w==
+        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
+        b=CXM23/sHi0wB90SilSWDLkZJQzviCoWMeA5Qid2k/wOVRpxYL1dzYoT5SHH1rrjnH4
+         QfePXXC8Dy2q1Z+rAa9vdYD585swGCXy+1kBHU/z+EmI2SYk9EZWiwDASfoSU26Ymqv7
+         qQxpDa9i5hnUkWIm5UJqJSM7NT6/f62Q9uUlbZ3vhVpDexXsFqD4qJnhx5wmxU09sL8M
+         mmRUpdLzpMqcCT2yVL87g7x3tu8u6qmdQi1K0K1m88W9LEapRZOw+KgClnPiqnXDGRE0
+         4pRmA6GsOmKplRiAx6P/E3nF2VokyfcU9q97s+wUzPEYxDIjqBg2Ks8lklzuk0IT6uvW
+         d8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771990728; x=1772595528;
+        d=1e100.net; s=20230601; t=1771990731; x=1772595531;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bIBkt8Uip58Gmu/ZZcPFAEjJpU3JU8q0pJGlTo8qLYw=;
-        b=dCSYBx5hWIk+ZuYtQm2wdGKCjRyaM1VwF2nRcoCSYLxjpmddLO3VCDpy/bhwzoxjAl
-         ucYcr+fvg8ZTAxddJtiRp6sJWgxdGzjFSwBUDuFBsVKpOnU2EtW4mjMcjCVCLmU2jwn5
-         FtPtc2u96QUtshmrJ/hhi9C2tb7uPjMnhbsFCuTgq9LrvBJx2Dl4rZ4FV0MgTPRuHQX6
-         EB872ijtoVxA0+PEvh/uUt7AdzfMW3lSbfBuy39rxWSeCsBpHo1Y5EqeNgNELtyOr5kJ
-         V41GG+VU3Fyxk5J3GXcUlvwCjQVav779P466BzUf5woBHg0q11AOH6UYnRFDSfPZv6//
-         8HjA==
-X-Gm-Message-State: AOJu0Yz9HHye2RY4jVUFabtx8IsaEJWfj/GrRpml2dRRG7LrMs/lVOT9
-	hKaZvqZH1tziCgWbyOHYR0s/+srTkBicHUfH3/GLkpOgBUZ5M3jDlaHs
-X-Gm-Gg: ATEYQzwjwEFi5YZg0ri3Qw+NJFwGoz6CGtUnWI6R0q9Fj0nvi2syM4oqpolNyTzAjt8
-	NB5plBoI0aw2nE20Ao8acbSftiDUQGJT4zxyEgOS43kabc7hPys1hiuOu6rDZwHXxkPxDM9Vzig
-	CPfEjeTrePkguxzayLYz64ksAKpKfKk2dsd5wOVcF24uYQn4ek7T74N4rkXkJC4I7CaIhjlzCcf
-	GSRjKkEmisPJU8aPWg6WSgZzF4xb+pbp9yQ0xpELRPiCGzXUTihuHN8v804gXWuYmtev1qUCrOo
-	OfZB4K26r/gd5FxHLuOjZoTM0+/IFUjvuN4WAK46NBDYdqGrJMTK90a/L3P8UhXh60e3IXICIzD
-	6Mjs93ijOPniLq2rxJFYymzbVyic/lWUjUfAbZi1XpECG/nMYBKu3n59140cOvG5LNhceUAWAo8
-	7CmY18S+SHmXadXaGReZjpcM4Ui2ZittKUYaxgdt3GbZWpyMtDn4OMRhr8cs62D+OI3U9w8Q==
-X-Received: by 2002:a17:90b:164e:b0:356:2c7b:c026 with SMTP id 98e67ed59e1d1-358ae8d80d0mr12854544a91.23.1771990727568;
-        Tue, 24 Feb 2026 19:38:47 -0800 (PST)
+        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
+        b=VkB+KT2uN6T8JU9EC9Y4iQtQBSpqFLGKFomVgsi5yXH6D17ABy+Zzq9sAyOcAeDTkY
+         9OusZR3J13Ku79w1jlyaISLGJ13ooVJSn7HbT5Dn8eal18XYwXcwRjfP3emQEEs9YG3C
+         YYezic8wxvyT9Xyf9izlt4LB3ykjhriKWM7OOJzh58aMPFCSo6TZyLWTOgMKubJxXUYW
+         496R/JubrQc4nydBpr8VYqgoJ5vpqhNGfxlAWyQkPXqYt+tKguJADSEeHBco8ZoiT/9x
+         XiD5FLuPR5FGcZKa0WS3mURNnJ8qDFdbfF/w0IwBBSI+xD9vOGWJSDM0iwC8uTMnFQME
+         CZMg==
+X-Gm-Message-State: AOJu0YzZxyD1EwVMqYzEWVq1Xni4GE9krNr+wOyeCDdUeWNicFOzW0Ff
+	Jl/VynmrqlFZg70lWsQVqyI8ZCET0XvKjeZR3KlWtsTQAs6/NEQ1KpQFc5kwPiZYT64kZA==
+X-Gm-Gg: ATEYQzwdzdAKdn9diTdoW7LNAAOg5e9BJYCnImY28/u55hPbf2KebUzaj/f6yh97tCx
+	fkVosrcOlTDCHl0B8X9obqDlukv02pjZDBvwasyig875AbzaVbnKXo46iT7lIUzDU1FTBnGFJw7
+	6qdptja2/HIGq/Rq4/v+zvFW3FHYXw70jkZeTtnesUf29RzbIXqzpLRYHQ4SXjj5nIoXNPsKrlH
+	QMapQAIFF26+KwxF8wWnvAWsFf4fLWx+5fG9hO+RHWzGWhzutF1YbY/1Q08ugH3vfntCgcaMDEw
+	gf2E0np9gUs4GmzZreVQeHQsustsoreOIkDLr6fSA7SSvEMxUi3seNVwZOFLdu+JlPi6fYX2n6l
+	iw4/bCmA4hpg2zB032o7SEC3EmBTS81f6z6+wGR55bLywn/uTJu2OfLVyAQnurhOLJBIPmd8633
+	ZwnMiFsdojC/FOWTT7uhcUaffjwJZVnwrlya6NcLIiia0beDbmBgywXZ4Vn7k29hgK46i7DRWs/
+	uBe2PTV
+X-Received: by 2002:a17:90a:c887:b0:356:23be:7ecb with SMTP id 98e67ed59e1d1-358ae808fb4mr11595307a91.12.1771990731279;
+        Tue, 24 Feb 2026 19:38:51 -0800 (PST)
 Received: from localhost.localdomain ([138.199.21.245])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359018838b2sm1161746a91.5.2026.02.24.19.38.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359018838b2sm1161746a91.5.2026.02.24.19.38.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 24 Feb 2026 19:38:47 -0800 (PST)
+        Tue, 24 Feb 2026 19:38:50 -0800 (PST)
 From: Eric-Terminal <ericterminal@gmail.com>
 To: Dominique Martinet <asmadeus@codewreck.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
@@ -72,50 +73,126 @@ Cc: v9fs@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	linux-nfs@vger.kernel.org,
 	Yufan Chen <ericterminal@gmail.com>
-Subject: [PATCH v2 0/4] net: replace deprecated simple_strto* parsers with kstrto*
-Date: Wed, 25 Feb 2026 11:38:36 +0800
-Message-ID: <20260225033840.33000-1-ericterminal@gmail.com>
+Subject: [PATCH v2 1/4] 9p/trans_xen: make cleanup idempotent after dataring alloc errors
+Date: Wed, 25 Feb 2026 11:38:37 +0800
+Message-ID: <20260225033840.33000-2-ericterminal@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225010853.15916-1-ericterminal@gmail.com>
+In-Reply-To: <20260225033840.33000-1-ericterminal@gmail.com>
 References: <20260225010853.15916-1-ericterminal@gmail.com>
+ <20260225033840.33000-1-ericterminal@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1227; i=ericterminal@gmail.com; h=from:subject; bh=1tb3uAWyvMrtFX3Irq/HFgcUiWj8AVbAWEAlYdlN66k=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWTOy5PjOL2xPl8orDiN9Vn/QSb/0BUXPKvm3L10KPZa0 znOjmuuHaUsDGJcDLJiiix3/++bm+t1a8517sO5MHNYmUCGMHBxCsBETn1i+O9fn/J4q9KXlT41 l/z2/fnWJGZ86GTOW+dJyx3eLk7MfLaM4Z+Ozll1w1OGChuc1/+1W/D54UbVPp8HRzkuSX/dd+p zfSQnAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3411; i=ericterminal@gmail.com; h=from:subject; bh=Gu0MyqKlwATaZLTHkAVxYELyEu7nRq9nuCfzTHc2Ad8=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWTOy5NTm/gzgiOsN2hHx4cJz7fzhr19LZHb++7ufoVZo snTztnZdZSyMIhxMciKKbLc/b9vbq7XrTnXuQ/nwsxhZQIZwsDFKQATuWbAyHDC3ICJlbVC0rBZ fRMn18uDx4MObX75UfXy+stNxZIpL/4y/BXwOLHVb3ZcItMd+/SAj2IK0WHehYmHLjAYvrrHufu tEDsA
 X-Developer-Key: i=ericterminal@gmail.com; a=openpgp; fpr=DDFFBE9D6D4ADA9CD70BC36D8C9DD07C93EDF17F
 Content-Transfer-Encoding: 8bit
 
 From: Yufan Chen <ericterminal@gmail.com>
 
-This series replaces deprecated simple_strto* parsers in net paths with
-kstrto* helpers and keeps parser behavior strict.
+xen_9pfs_front_alloc_dataring() tears down resources on failure but
+leaves ring fields stale. If xen_9pfs_front_init() later jumps to the
+common error path, xen_9pfs_front_free() may touch the same resources
+again, causing duplicate/invalid gnttab_end_foreign_access() calls and
+potentially dereferencing a freed intf pointer.
 
-v2:
-Split the original large patch into a 4-patch series for easier review.
-Added a prerequisite fix for xen_9pfs dataring cleanup idempotency
-(Patch 1) to ensure safe error handling during the parser transition.
-Refined the xen_9pfs version parsing logic to use strsep() for better
-token handling.
+Initialize dataring sentinels before allocation, gate teardown on those
+sentinels, and clear ref/intf/data/irq immediately after each release.
 
-Patch 1/4 fixes xen_9pfs dataring cleanup idempotency to avoid repeated
-resource teardown on init error paths.
-Patch 2/4 switches xen_9pfs backend version parsing to kstrtouint().
-Patch 3/4 updates bridge brport_store() to use kstrtoul().
-Patch 4/4 updates sunrpc proc_dodebug() to use kstrtouint().
+This keeps cleanup idempotent for partially initialized rings and
+prevents repeated teardown during init failure handling.
 
-Yufan Chen (4):
-  9p/trans_xen: make cleanup idempotent after dataring alloc errors
-  9p/trans_xen: replace simple_strto* with kstrtouint
-  net: bridge: replace deprecated simple_strtoul with kstrtoul
-  sunrpc: sysctl: replace simple_strtol with kstrtouint
+Signed-off-by: Yufan Chen <ericterminal@gmail.com>
+---
+ net/9p/trans_xen.c | 51 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 14 deletions(-)
 
- net/9p/trans_xen.c       | 77 +++++++++++++++++++++++++++-------------
- net/bridge/br_sysfs_if.c |  5 ++-
- net/sunrpc/sysctl.c      | 24 ++++++-------
- 3 files changed, 67 insertions(+), 39 deletions(-)
-
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 47af5a10e..85b9ebfaa 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -283,25 +283,33 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ 
+ 			cancel_work_sync(&ring->work);
+ 
+-			if (!priv->rings[i].intf)
++			if (!ring->intf)
+ 				break;
+-			if (priv->rings[i].irq > 0)
+-				unbind_from_irqhandler(priv->rings[i].irq, ring);
+-			if (priv->rings[i].data.in) {
+-				for (j = 0;
+-				     j < (1 << priv->rings[i].intf->ring_order);
++			if (ring->irq >= 0) {
++				unbind_from_irqhandler(ring->irq, ring);
++				ring->irq = -1;
++			}
++			if (ring->data.in) {
++				for (j = 0; j < (1 << ring->intf->ring_order);
+ 				     j++) {
+ 					grant_ref_t ref;
+ 
+-					ref = priv->rings[i].intf->ref[j];
++					ref = ring->intf->ref[j];
+ 					gnttab_end_foreign_access(ref, NULL);
++					ring->intf->ref[j] = INVALID_GRANT_REF;
+ 				}
+-				free_pages_exact(priv->rings[i].data.in,
+-				   1UL << (priv->rings[i].intf->ring_order +
+-					   XEN_PAGE_SHIFT));
++				free_pages_exact(ring->data.in,
++						 1UL << (ring->intf->ring_order +
++							 XEN_PAGE_SHIFT));
++				ring->data.in = NULL;
++				ring->data.out = NULL;
++			}
++			if (ring->ref != INVALID_GRANT_REF) {
++				gnttab_end_foreign_access(ring->ref, NULL);
++				ring->ref = INVALID_GRANT_REF;
+ 			}
+-			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
+-			free_page((unsigned long)priv->rings[i].intf);
++			free_page((unsigned long)ring->intf);
++			ring->intf = NULL;
+ 		}
+ 		kfree(priv->rings);
+ 	}
+@@ -334,6 +342,12 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
+ 	int ret = -ENOMEM;
+ 	void *bytes = NULL;
+ 
++	ring->intf = NULL;
++	ring->data.in = NULL;
++	ring->data.out = NULL;
++	ring->ref = INVALID_GRANT_REF;
++	ring->irq = -1;
++
+ 	init_waitqueue_head(&ring->wq);
+ 	spin_lock_init(&ring->lock);
+ 	INIT_WORK(&ring->work, p9_xen_response);
+@@ -379,9 +393,18 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
+ 		for (i--; i >= 0; i--)
+ 			gnttab_end_foreign_access(ring->intf->ref[i], NULL);
+ 		free_pages_exact(bytes, 1UL << (order + XEN_PAGE_SHIFT));
++		ring->data.in = NULL;
++		ring->data.out = NULL;
++	}
++	if (ring->ref != INVALID_GRANT_REF) {
++		gnttab_end_foreign_access(ring->ref, NULL);
++		ring->ref = INVALID_GRANT_REF;
++	}
++	if (ring->intf) {
++		free_page((unsigned long)ring->intf);
++		ring->intf = NULL;
+ 	}
+-	gnttab_end_foreign_access(ring->ref, NULL);
+-	free_page((unsigned long)ring->intf);
++	ring->irq = -1;
+ 	return ret;
+ }
+ 
 -- 
 2.47.3
+
