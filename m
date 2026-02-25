@@ -1,114 +1,187 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E4B14A60C;
-	Mon, 23 Feb 2026 14:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1414199949
+	for <v9fs@lists.linux.dev>; Wed, 25 Feb 2026 01:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771857931; cv=none; b=dNBysABRTPnyKlJhM9h+7ZuNrHK2HI2UxW/sWzqA1D8v1sJT1syiWdzgz4SBf21A5oSfveFHYLL4zOk/Li8znuHZRNuTAAU5t8lTpMi3MbyAt/0sJKYN9KLNmDw3ZVcbLi1SqE3N+445pEIMn7Q1RWtcNbMymjy6tfcwa1xA350=
+	t=1771981751; cv=none; b=LA39O1ZQAi72Bw8iuozKrhBv0M4FdfJu1FydanNAI6WFYBfTwrkQ9gWFgxuH11ap/nVW6nf9rRRrtO5QHlZh/2HvL/Nv2jq8wIJitUuak9f6ZNVNEN8Tbf8Grm+x1J0+LVRFNcrYcEBHikRDLDpLbJCkrUoA4U1TJmo/OqlnNdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771857931; c=relaxed/simple;
-	bh=rbqaeaXWAOX+f168RGuiX9opo28PTMTTkZQHmxCQWj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JkIFwbyHKwTBZlKYQB7ohUUu53moo/khh+kG1PpqfMDmEu+Fh2xwQ+NO6KLr5emS3CzFqqQhA19sE96groncc3FV779vpp+FqhlxHNy8MUxgblpscy52A3Ye20wUBaEgSqMTovJ3TF0VifiPScYIDeJRq7l2HvF9owr6gUmk/oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=oBxS4oiF; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1771981751; c=relaxed/simple;
+	bh=UzebxA6/a7fg3sjOiWp/u7lzb1dFODtxX1sVJYsce3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ecy0YzuMjWXzG0EsjmnupadximgUtiH2h/PPkgjheNE8SHZcMw3kNeV1sWtMX+0+wCr5DkV2EP3AvycpfaAJHVp31z7TnWBOjUU/NAnn3kpEokInlptNxYT+qo4UZ+nbxi+vpH34keirb9NYaTHCYZTg4qbjOtAmUFjKaO6uoXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHjzlqUI; arc=none smtp.client-ip=209.85.216.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="oBxS4oiF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=xIuNQ3UxNNUvzDppf0sdJxW7+WQLLbzNj0JON6LH8xo=; b=oBxS4oiFEcoyU+QrAx/UTcFNgn
-	OVs4W0QYV/sgRVVAI2hH6+bM55k6tx/PeFvR4rA+j0n53vh6zudrxtxDTRE9NATsomMbuOpqy6vj0
-	CZ4OUXN54uE9+KM5+dIgRRAVPTiPki3+Jt6z5gvuIVzObbo3Ioi9+WU9GL+jl64HRoNwx0VH4iwEA
-	4ZrO7Eb7vGxWprixXUp1yhchFaow5qpxPpoSjCpIRHHCH1n5WvKHIFMytj6DSMWdZqjfEPF0igmbw
-	YDKJGeBdzOvwFAa2itGRNUQrjPuKZb75Fzf2pC3nw4OnOyYFiPNHsO/KMZlIPfQ+m4HNPRWhsNu9j
-	dMONmzcw2PNOatipSbDiMo3h4+ZPH9hx6KeZ96vby2CYGuhjneRyyuSwmMWzD3LAtF1Am72HhBpLX
-	R9eJt2Q8YHrhiwC5i9swtw3snfogf6yUjpgI6AfvYmixGZhZUzot29eE/HWyjqbCGZxuahee6GJNw
-	esf9Jt8R/l3xqvuo7T34xf/SW4QcdhSpPfFExq04DqWQjZuW2BGxc/2x+Hhw4X6Rj2n1HeC68ZQg6
-	c+PO8iE15cKRlPSyYjTYzj2FtqfTiSMGUCN9jjfblYc3xWBzT3vU0Hob/iOBzwh1b4xLYSPQCGg2p
-	EdG1FQKKU8gUModcSBLjunyjsIgbKX9T0AIPzEwDE=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Remi Pommarel <repk@triplefau.lt>,
- Dominique Martinet <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>
-Subject: Re: [PATCH v2 1/3] 9p: Cache negative dentries for lookup performance
-Date: Mon, 23 Feb 2026 15:45:21 +0100
-Message-ID: <4715570.LvFx2qVVIh@weasel>
-In-Reply-To: <aZoXKN8pPOqEBBBz@pilgrim>
-References:
- <cover.1769013622.git.repk@triplefau.lt> <aY2aXG4ljulj1QRh@pilgrim>
- <aZoXKN8pPOqEBBBz@pilgrim>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHjzlqUI"
+Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-358f5aeb46eso395298a91.1
+        for <v9fs@lists.linux.dev>; Tue, 24 Feb 2026 17:09:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771981750; x=1772586550; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
+        b=DHjzlqUIHi98cYgYCEr0SckUJrBv5QopTCNcUzMUD3EnHANE6r/H/a4Jz8UbzpghVK
+         LwTpjlf7i94XXEC8KIxv0qHkkQdz7ZwTRDqGcv56vBBYIx7VsJ/XSG++EGtfomxGryqb
+         rg40TyIAxO8rU+a45FPEuXkBazZZr1dWpCN1VATcxLNodIq8qg8wwbLEXbaw95eGPJt3
+         c2JcyW6usokDizEeNSYkYst+H4h+sHIzUxTV6RB6YvCxq4+eX3ylCIKaZF8wqW+M/keG
+         /N8BH7/NRrT6LnqBufZ+DDHDrhZr3uBWYN3thCVFRq4/j7CJXo5u94INN/mIXZigubxU
+         ZHlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771981750; x=1772586550;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JqCX+A7B/xYK3O+/EJk4ZtsIswe0wWdZp+sEMdt10Pc=;
+        b=CXcolIyKB6PncbFhbeXpyh4H7l3cRDwmA7SyUz7tA3Og4L1U8+H4+LS8TF9fr/UcIx
+         GP75faq5b17YT29CW2O8uIU5C94axSG8FxL9mY0W9jHwTPAQNkUqHefHBrdc1cBXEE+5
+         xMYs1KuTTDv1VQ/y6WXyfyztVGBkyK4SktskTDba8pzS91XhwlQcxFH7w6uY+vxTqLoe
+         D0AVpYZDjzuR+NIyi+Shwl7P5Wu8spVO5JTSdnX+fkMimMDkc4D0lfYNWev3Ik+7R9Tw
+         QV6bq5e207xYQu3LBVAX70w+yLpK3isKFPDjiInoNl9jzQUzpfd1t+8k7rIrFhqLV8UE
+         BM0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWcBYAf8uw/B3srhf7F/TbJZ+GGlTg2LZ81TvaEbZf9KdRj3S3U8fSzBGo+oE2DoYHz4XO3@lists.linux.dev
+X-Gm-Message-State: AOJu0YwEqpEKRCgB7qAn7qnR4bhadh5WV68797xTWdG53KmMH8IwdIDN
+	uf5fPhFdmCFcwoYELYFa6wGtG/twfJs/vDUuZitBeedHsLllhyaS4PzZ
+X-Gm-Gg: ATEYQzyr7+Lvq2+l2vA6yBzu3o1e/V5Zm8WxIfelCysOLhXPwuIsfJyADuVLjw8jnnb
+	wbJ50DxXr9S5UdWIvil/0DwTz6H+ykbHfvWWbrwt7Tp5c6V3h+crdebxYzrT6B7NUK6G26zUIgN
+	Blu4Z0n50WeN1Tgl6tkx2iteVR+Fce1hPkbMCuIPYALeJISS6wk8FuOVFxCbM47IpMEjzAP0p3I
+	pVWKnOPMGqkXWrM562p4NntQllOQEtulMKn6bYBSuWDZdsQyWIMdbTvb5EBRv2F28jzP21AIozF
+	jZbvIfrVQdM+RcV/KG0UjW29kAC2GImY60p2b/FlYiop0qMLn1VXb4jJlyfclvbCGUBPWLIzMj5
+	3yFlofKREGBlh6YwSddKis9Mg8WiSRqRwayR8CRw9DNH2hE/Oqa5VXB+9khM0vs6vBvDnOUloSp
+	Y9PzVPdj9Sp06dKKNQN9DvTN4KUexI+ZDYwpvkj8xI9FkMTt7ADYbI5j+wGF5N0jfuppigx9P43
+	Wo/M3T8
+X-Received: by 2002:a17:90b:5847:b0:358:ee2d:df2d with SMTP id 98e67ed59e1d1-3590f069d87mr523046a91.8.1771981749874;
+        Tue, 24 Feb 2026 17:09:09 -0800 (PST)
+Received: from localhost.localdomain ([138.199.21.245])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359034bbfd4sm913979a91.10.2026.02.24.17.09.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 24 Feb 2026 17:09:09 -0800 (PST)
+From: Eric-Terminal <ericterminal@gmail.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Yufan Chen <ericterminal@gmail.com>
+Subject: [PATCH] 9p/trans_xen: make cleanup idempotent after dataring alloc errors
+Date: Wed, 25 Feb 2026 09:08:53 +0800
+Message-ID: <20260225010853.15916-1-ericterminal@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3411; i=ericterminal@gmail.com; h=from:subject; bh=Gu0MyqKlwATaZLTHkAVxYELyEu7nRq9nuCfzTHc2Ad8=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWTO8/ymNvFnBEdYb9COjg8Tnm/nDXv7WiK3993d/QqzR JOnnbOz6yhlYRDjYpAVU2S5+3/f3FyvW3Oucx/OhZnDygQyhIGLUwAm8raZ4Z+WWAhP1R273cFR uhP8En8G3s8z53vxSH++4artOQqy/kWMDD2753rVvbh2x9z8VZOtzzVtIa52jYM1gm3592b5Xt8 vyAQA
+X-Developer-Key: i=ericterminal@gmail.com; a=openpgp; fpr=DDFFBE9D6D4ADA9CD70BC36D8C9DD07C93EDF17F
+Content-Transfer-Encoding: 8bit
 
-On Saturday, 21 February 2026 21:35:52 CET Remi Pommarel wrote:
-> On Thu, Feb 12, 2026 at 10:16:13AM +0100, Remi Pommarel wrote:
-> > On Wed, Feb 11, 2026 at 04:49:19PM +0100, Christian Schoenebeck wrote:
-> > > On Wednesday, 21 January 2026 20:56:08 CET Remi Pommarel wrote:
-[...]
-> > > > diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
-> > > > index 6a12445d3858..99d1a0ff3368 100644
-> > > > --- a/fs/9p/v9fs.h
-> > > > +++ b/fs/9p/v9fs.h
-> > > > @@ -91,6 +91,7 @@ enum p9_cache_bits {
-> > > >=20
-> > > >   * @debug: debug level
-> > > >   * @afid: authentication handle
-> > > >   * @cache: cache mode of type &p9_cache_bits
-> > > >=20
-> > > > + * @ndentry_timeout: Negative dentry lookup cache retention time in
-> > > > ms
-> > > >=20
-> > > >   * @cachetag: the tag of the cache associated with this session
-> > > >   * @fscache: session cookie associated with FS-Cache
-> > > >   * @uname: string user name to mount hierarchy as
-> > > >=20
-> > > > @@ -116,6 +117,7 @@ struct v9fs_session_info {
-> > > >=20
-> > > >  	unsigned short debug;
-> > > >  	unsigned int afid;
-> > > >  	unsigned int cache;
-> > > >=20
-> > > > +	unsigned int ndentry_timeout;
-> > >=20
-> > > Why not (signed) long?
-> >=20
-> > I first though 40+ days of cache retention was enough but that is just
-> > an useless limitation, I will change it to signed long.
->=20
-> Well now that I think about it, this is supposed to be set from a mount
-> options. However, with the new mount API in use, there is currently no
-> support for fsparam_long or fsparam_s64.
->=20
-> While it could be implemented using a custom __fsparam, is the effort
-> truly justified here? Also in that case maybe a long long would be a bit
-> more portable across 32-bit and 64-bit platform?
+From: Yufan Chen <ericterminal@gmail.com>
 
-Ah, there is fsparam_u64 but not fsparam_s64 and you are using -1 as option
-for "infinite".
+xen_9pfs_front_alloc_dataring() tears down resources on failure but
+leaves ring fields stale. If xen_9pfs_front_init() later jumps to the
+common error path, xen_9pfs_front_free() may touch the same resources
+again, causing duplicate/invalid gnttab_end_foreign_access() calls and
+potentially dereferencing a freed intf pointer.
 
-There is also `long session_lock_timeout=C2=B4, but now that I look at it, =
-its mount
-option was apparently always limited to 32-bit, even before the new mount A=
-PI
-transition.
+Initialize dataring sentinels before allocation, gate teardown on those
+sentinels, and clear ref/intf/data/irq immediately after each release.
 
-I agree, then just leave it as `int=C2=B4 type now.
+This keeps cleanup idempotent for partially initialized rings and
+prevents repeated teardown during init failure handling.
 
-Thanks!
+Signed-off-by: Yufan Chen <ericterminal@gmail.com>
+---
+ net/9p/trans_xen.c | 51 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 14 deletions(-)
 
-/Christian
-
-
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 47af5a10e..85b9ebfaa 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -283,25 +283,33 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ 
+ 			cancel_work_sync(&ring->work);
+ 
+-			if (!priv->rings[i].intf)
++			if (!ring->intf)
+ 				break;
+-			if (priv->rings[i].irq > 0)
+-				unbind_from_irqhandler(priv->rings[i].irq, ring);
+-			if (priv->rings[i].data.in) {
+-				for (j = 0;
+-				     j < (1 << priv->rings[i].intf->ring_order);
++			if (ring->irq >= 0) {
++				unbind_from_irqhandler(ring->irq, ring);
++				ring->irq = -1;
++			}
++			if (ring->data.in) {
++				for (j = 0; j < (1 << ring->intf->ring_order);
+ 				     j++) {
+ 					grant_ref_t ref;
+ 
+-					ref = priv->rings[i].intf->ref[j];
++					ref = ring->intf->ref[j];
+ 					gnttab_end_foreign_access(ref, NULL);
++					ring->intf->ref[j] = INVALID_GRANT_REF;
+ 				}
+-				free_pages_exact(priv->rings[i].data.in,
+-				   1UL << (priv->rings[i].intf->ring_order +
+-					   XEN_PAGE_SHIFT));
++				free_pages_exact(ring->data.in,
++						 1UL << (ring->intf->ring_order +
++							 XEN_PAGE_SHIFT));
++				ring->data.in = NULL;
++				ring->data.out = NULL;
++			}
++			if (ring->ref != INVALID_GRANT_REF) {
++				gnttab_end_foreign_access(ring->ref, NULL);
++				ring->ref = INVALID_GRANT_REF;
+ 			}
+-			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
+-			free_page((unsigned long)priv->rings[i].intf);
++			free_page((unsigned long)ring->intf);
++			ring->intf = NULL;
+ 		}
+ 		kfree(priv->rings);
+ 	}
+@@ -334,6 +342,12 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
+ 	int ret = -ENOMEM;
+ 	void *bytes = NULL;
+ 
++	ring->intf = NULL;
++	ring->data.in = NULL;
++	ring->data.out = NULL;
++	ring->ref = INVALID_GRANT_REF;
++	ring->irq = -1;
++
+ 	init_waitqueue_head(&ring->wq);
+ 	spin_lock_init(&ring->lock);
+ 	INIT_WORK(&ring->work, p9_xen_response);
+@@ -379,9 +393,18 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
+ 		for (i--; i >= 0; i--)
+ 			gnttab_end_foreign_access(ring->intf->ref[i], NULL);
+ 		free_pages_exact(bytes, 1UL << (order + XEN_PAGE_SHIFT));
++		ring->data.in = NULL;
++		ring->data.out = NULL;
++	}
++	if (ring->ref != INVALID_GRANT_REF) {
++		gnttab_end_foreign_access(ring->ref, NULL);
++		ring->ref = INVALID_GRANT_REF;
++	}
++	if (ring->intf) {
++		free_page((unsigned long)ring->intf);
++		ring->intf = NULL;
+ 	}
+-	gnttab_end_foreign_access(ring->ref, NULL);
+-	free_page((unsigned long)ring->intf);
++	ring->irq = -1;
+ 	return ret;
+ }
+ 
+-- 
+2.47.3
 
