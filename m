@@ -1,233 +1,254 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AA13A8732;
-	Tue,  3 Mar 2026 14:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC4E47DD72;
+	Tue,  3 Mar 2026 14:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772548296; cv=none; b=E0ek4jLYU/iIi5uCypyUahJUslsed2dyqRCLzBnXTAunniI1BL58zGs0eEJmGHlByh/rmwp2x1hYUv4fZKp7zTjWxreWqbDj2kB8DBQXPT7Tz4hBsny8J4oAwtzIJvJE72zOfUPDgnxyWL/al2qLQbBIBGZlZfN9rEPI6UDb7Rk=
+	t=1772549632; cv=none; b=LUN2+tE3vPTOGJcVgaP1rcvI9x7oEhHrnATWvDXcRjA89csxtHgBC1+3gXkVeZFfjDsDpVfRiBqkRLmkBrH2BAuwBWdeMj2Cv4Jyrylz7kLpYlrMywu6LJz3kRBVyNI+wnlDP4+cahqdqRB0f+HuuiDU4NLBKZUvCkgqo2H7/5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772548296; c=relaxed/simple;
-	bh=Fz5KSEt2JdUDAxYeRXF2qsARCi47vI+UkFanERJHSIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BLwtDsPTTn46+qh4nFN8B7HHfToqpvfV0aFplotltKnVXHapUCbRBDt6BgTo8jqfxrGVBzreA6og7wvu0/3Ld+HKaE13Du3I70U2o3GZT9zh0THFwYKshXUE7fHwTZ+rIYJlnQGQJM0VZd9wq4G8jhl1rMmWIV+vemUB1+MbLOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Lcd6Fno+; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1772549632; c=relaxed/simple;
+	bh=gI5bOwAeUkUY8pSAuolzMNEKM2WKrkwcWy+OzXJrtJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gYMlBssZ1Xq0uOOGS2VLdcwt9rtGjTi5DhpgcPw81OC58oWPDe9LiWsmxpSYgauJc0CuaT/pwWSwdKSAwnCSBUXzhOMwy9x4/DPLQ36OtKNPGwgICDzM3I7403g5l4mDu3V8oqP/wleNoZDHJVCwqMbHuzCdIhIj+vrMYXUfGIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=DXt75/c1; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Lcd6Fno+"
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="DXt75/c1"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FVGHEap2/y4lqrOlTw4I1PUuJRk8gJ1LY6chx54er5w=; b=Lcd6Fno+d5UFOYRjzgSXS/STDW
-	OnOCNUozkxsQY4gAaLcG3UD8bgmPzX/hQhnp+XRh93wE//HqWrx6I2tY3mKjuf2IaREQRwDMg25PG
-	3rHjoEyH4eWTjWo2to2N4q8xFIulCCjw+wnruiylvrdWjofeIWtF3V0P9I2qdnWzQ6TL3ZQvvH61Z
-	rPO9WUDLhEIV5cHVRy7B8ebSHdIsWTUbMNRXqGGAPCL3AhrpvrHgan/jOnhq5S2sES5qYdDusKr5g
-	aSpySF1dCrXtiFPjIQCZRSsvuPR6BM2kGpXN99BQqvFof3+8ottSE9BRZ+7Avp/LETtYrw8IHT+HY
-	hmdbkK9g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxQlS-0000000FKdJ-46fW;
-	Tue, 03 Mar 2026 14:30:23 +0000
-Date: Tue, 3 Mar 2026 06:30:22 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Steve French <sfrench@samba.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-	autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	codalist@telemann.coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-	audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
- format macro
-Message-ID: <aabwflLfe2HcGv7X@infradead.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
- <20260303012556.GA6520@macsyma-wired.lan>
- <20260303042546.GF13868@frogsfrogsfrogs>
- <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
- <aabkBadGzo7IZpSU@infradead.org>
- <19e4e79a59dcfc4c61c8cf263af345d0d7026fc8.camel@kernel.org>
- <aabpPQxCTweoTp8Z@infradead.org>
- <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=akjDuevaC6SFej5GlTUhQnMF+egg0zckZ+j0Qk1HXe8=; b=DXt75/c1v72RO6v1U3XR9ogkPL
+	38Fgjjo0KIiVpK4CnRmK/5BoghFqqL2jnHcFrm3vQpIYC24imTfWps1ZKyArc2Tnu5B9y87bjp0Nt
+	laBw7mS/PI+T7odCYY3UlzJ/o587a9MQEKUh4ka/9j4Kyt+gPMWkeSrVfoKsTRXZWX05snHPkRaYB
+	EOWn2kUMS3BNeiMIrnfWUR6vOzsk7Ef7m+MRBV3AxBXWvev01aNtahiu3JyqwQe/Mf4AFmBQWTf8l
+	5SuQrir4T4EyZMTuRUXGPpFtei9zF/MC1cVOX0sdOUPmkJzv05/NAB+hU0HBfzBx1aFROYmz5vJEK
+	KQtRIe3/3FaJkYIDkx/feICJM7qzsEGo4sj+iH3jlxS8bte0orsCvi+r/+kA0h12nKRxYyUHHfTLy
+	ka4Zgt31Fbs7C6QXDdPX2ifbq74c9de78vxfBXmRTdz43HJU79pv0n8/DpE5+BXXcPOEZWY+nSWg7
+	Hphuv/NfaUJJJYikzNYNUA5NxkifeGQJ93PhrgkJQxElBCHAubl7uhiTJPZLqpARsuS6IQpIjB1en
+	G6SFtzZrv2DUNHTvaWL2lQ1rHEDGUyM/6SCkbPMaJ05IjVFq7LY+0n+8R1p6Yn6B72toTkcXEmzVU
+	nVsEHbjONLABdd1SE2MCQzqjPFIT9RYiRPgjBg29A=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: v9fs@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ Remi Pommarel <repk@triplefau.lt>
+Subject:
+ Re: [PATCH v3 2/4] 9p: Add mount option for negative dentry cache retention
+Date: Tue, 03 Mar 2026 15:53:47 +0100
+Message-ID: <4490625.ejJDZkT8p0@weasel>
+In-Reply-To:
+ <7c2a5ba3e229b4e820f0fcd565ca38ab3ca5493f.1772178819.git.repk@triplefau.lt>
+References:
+ <cover.1772178819.git.repk@triplefau.lt>
+ <7c2a5ba3e229b4e820f0fcd565ca38ab3ca5493f.1772178819.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 03, 2026 at 09:19:42AM -0500, Jeff Layton wrote:
-> On Tue, 2026-03-03 at 05:59 -0800, Christoph Hellwig wrote:
-> > On Tue, Mar 03, 2026 at 08:43:15AM -0500, Jeff Layton wrote:
-> > > On Tue, 2026-03-03 at 05:37 -0800, Christoph Hellwig wrote:
-> > > > On Tue, Mar 03, 2026 at 05:53:39AM -0500, Jeff Layton wrote:
-> > > > > Like I said to Ted, this is just temporary scaffolding for the change.
-> > > > > The PRIino macro is removed in the end. Given that, perhaps you can
-> > > > > overlook the bikeshed's color in this instance?
-> > > > 
-> > > > So why add it in the first place?  
-> > > 
-> > > Bisectability. The first version I did of this would have broken the
-> > > ability to bisect properly across these changes. I don't love the
-> > > "churn" here either, but this should be cleanly bisectable.
-> > 
-> > What do you need to bisect in format string changes?  Splitting
-> > every variable type change outside of the main i_ino out - sure.
-> > But bisecting that "change to u64 in ext4" really broke ext4 and
-> > not "change to u64" is not very useful.  Commits should do one
-> > well defined thing.  Adding a weird transition layer for a format
-> > thing that just gets dropped is not one well defined thing.
+On Friday, 27 February 2026 08:56:53 CET Remi Pommarel wrote:
+> Introduce a new mount option, ndentrycache, for v9fs that allows users
+> to specify how long negative dentries are retained in the cache. The
+> retention time can be set in milliseconds (e.g. ndentrycache=10000 for
+> a 10secs retention time), or negative entries can be kept until the
+> buffer cache management removes them by using the option without a
+> value (i.e. ndentrycache).
 > 
-> In the middle stages of the series, you will get warnings or errors on
-> 32-bit hosts when i_ino's type doesn't match what the format string
-> expects.
+> For consistency reasons, this option should only be used in exclusive
+> or read-only mount scenarios, aligning with the cache=loose usage.
 > 
-> There are really only three options here:
+> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+> ---
+>  fs/9p/v9fs.c | 73 ++++++++++++++++++++++++++++++++--------------------
+>  fs/9p/v9fs.h | 23 ++++++++++-------
+>  2 files changed, 58 insertions(+), 38 deletions(-)
 > 
-> 1/ Do (almost) all of the changes in one giant patch
-> 
-> 2/ Accept that the build may break during the interim stages
-> 
-> 3/ This series: using a typedef and macro to work around the breakage
-> until the type can be changed, at the expense of some extra churn in
-> the codebase
-> 
-> 3 seems like the lesser evil.
+> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+> index c5dca81a553e..a26bd9070786 100644
+> --- a/fs/9p/v9fs.c
+> +++ b/fs/9p/v9fs.c
+> @@ -39,11 +39,12 @@ enum {
+>  	 * source if we rejected it as EINVAL */
+>  	Opt_source,
+>  	/* Options that take integer arguments */
+> -	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid,
+> +	Opt_debug, Opt_dfltuid, Opt_dfltgid, Opt_afid, Opt_ndentrycachetmo,
+>  	/* String options */
+>  	Opt_uname, Opt_remotename, Opt_cache, Opt_cachetag,
+>  	/* Options that take no arguments */
+>  	Opt_nodevmap, Opt_noxattr, Opt_directio, Opt_ignoreqv,
+> +	Opt_ndentrycache,
+>  	/* Access options */
+>  	Opt_access, Opt_posixacl,
+>  	/* Lock timeout option */
+> @@ -77,41 +78,43 @@ static const struct constant_table p9_versions[] = {
+>   * the client, and all the transports.
+>   */
+>  const struct fs_parameter_spec v9fs_param_spec[] = {
+> -	fsparam_string	("source",	Opt_source),
+> -	fsparam_u32hex	("debug",	Opt_debug),
+> -	fsparam_uid	("dfltuid",	Opt_dfltuid),
+> -	fsparam_gid	("dfltgid",	Opt_dfltgid),
+> -	fsparam_u32	("afid",	Opt_afid),
+> -	fsparam_string	("uname",	Opt_uname),
+> -	fsparam_string	("aname",	Opt_remotename),
+> -	fsparam_flag	("nodevmap",	Opt_nodevmap),
+> -	fsparam_flag	("noxattr",	Opt_noxattr),
+> -	fsparam_flag	("directio",	Opt_directio),
+> -	fsparam_flag	("ignoreqv",	Opt_ignoreqv),
+> -	fsparam_string	("cache",	Opt_cache),
+> -	fsparam_string	("cachetag",	Opt_cachetag),
+> -	fsparam_string	("access",	Opt_access),
+> -	fsparam_flag	("posixacl",	Opt_posixacl),
+> -	fsparam_u32	("locktimeout",	Opt_locktimeout),
+> +	fsparam_string	("source",		Opt_source),
+> +	fsparam_u32hex	("debug",		Opt_debug),
+> +	fsparam_uid	("dfltuid",		Opt_dfltuid),
+> +	fsparam_gid	("dfltgid",		Opt_dfltgid),
+> +	fsparam_u32	("afid",		Opt_afid),
+> +	fsparam_string	("uname",		Opt_uname),
+> +	fsparam_string	("aname",		Opt_remotename),
+> +	fsparam_flag	("nodevmap",		Opt_nodevmap),
+> +	fsparam_flag	("noxattr",		Opt_noxattr),
+> +	fsparam_flag	("directio",		Opt_directio),
+> +	fsparam_flag	("ignoreqv",		Opt_ignoreqv),
+> +	fsparam_string	("cache",		Opt_cache),
+> +	fsparam_string	("cachetag",		Opt_cachetag),
+> +	fsparam_string	("access",		Opt_access),
+> +	fsparam_flag	("posixacl",		Opt_posixacl),
+> +	fsparam_u32	("locktimeout",		Opt_locktimeout),
+> +	fsparam_flag	("ndentrycache",	Opt_ndentrycache),
+> +	fsparam_u32	("ndentrycache",	Opt_ndentrycachetmo),
 
-No, 1 is by far the least evil.  Note that it's not really almost all,
-as all the local variables can easily and sanely be split out.  It's
-all of the format strings, and that makes sense.  The only "regressions"
-there are incorrect format strings which have good warnings and can
-be fixed easily.
+That double entry is surprising. So this mount option is supposed to be used
+like ndentrycache=n for a specific timeout value (in ms) and just ndentrycache
+(without any assignment) for infinite timeout. That's a bit weird.
+
+Documentation/filesystems/9p.rst should be updated as well BTW.
+
+Nevertheless, like mentioned before, I really think the string "timeout"
+should be used, at least in a user visible mount option. Keep in mind that
+timeouts are a common issue to look at, so it is common to just grep for
+"timeout" in a code base or documentation. An abbrevation like "tmo" or
+leaving it out entirely is for me therefore IMHO inappropriate.
+
+You found "ndentrycachetimeout" too horribly long, or was that again just
+motivated by the code indention below? I personally find those indention
+alignments completely irrelevant, not sure how Dominique sees that.
+Personally I avoid them, as they cost unnecessary time on git blame.
+
+/Christian
+ 
+>  	/* client options */
+> -	fsparam_u32	("msize",	Opt_msize),
+> -	fsparam_flag	("noextend",	Opt_legacy),
+> -	fsparam_string	("trans",	Opt_trans),
+> -	fsparam_enum	("version",	Opt_version, p9_versions),
+> +	fsparam_u32	("msize",		Opt_msize),
+> +	fsparam_flag	("noextend",		Opt_legacy),
+> +	fsparam_string	("trans",		Opt_trans),
+> +	fsparam_enum	("version",		Opt_version, p9_versions),
+> 
+>  	/* fd transport options */
+> -	fsparam_u32	("rfdno",	Opt_rfdno),
+> -	fsparam_u32	("wfdno",	Opt_wfdno),
+> +	fsparam_u32	("rfdno",		Opt_rfdno),
+> +	fsparam_u32	("wfdno",		Opt_wfdno),
+> 
+>  	/* rdma transport options */
+> -	fsparam_u32	("sq",		Opt_sq_depth),
+> -	fsparam_u32	("rq",		Opt_rq_depth),
+> -	fsparam_u32	("timeout",	Opt_timeout),
+> +	fsparam_u32	("sq",			Opt_sq_depth),
+> +	fsparam_u32	("rq",			Opt_rq_depth),
+> +	fsparam_u32	("timeout",		Opt_timeout),
+> 
+>  	/* fd and rdma transprt options */
+> -	fsparam_u32	("port",	Opt_port),
+> -	fsparam_flag	("privport",	Opt_privport),
+> +	fsparam_u32	("port",		Opt_port),
+> +	fsparam_flag	("privport",		Opt_privport),
+>  	{}
+>  };
+> 
+> @@ -159,6 +162,10 @@ int v9fs_show_options(struct seq_file *m, struct dentry
+> *root) from_kgid_munged(&init_user_ns, v9ses->dfltgid));
+>  	if (v9ses->afid != ~0)
+>  		seq_printf(m, ",afid=%u", v9ses->afid);
+> +	if (v9ses->ndentry_timeout_ms == NDENTRY_TMOUT_NEVER)
+> +		seq_printf(m, ",ndentrycache");
+> +	else if (v9ses->flags & V9FS_NDENTRY_TMOUT_SET)
+> +		seq_printf(m, ",ndentrycache=%u", v9ses->ndentry_timeout_ms);
+>  	if (strcmp(v9ses->uname, V9FS_DEFUSER) != 0)
+>  		seq_printf(m, ",uname=%s", v9ses->uname);
+>  	if (strcmp(v9ses->aname, V9FS_DEFANAME) != 0)
+> @@ -337,6 +344,16 @@ int v9fs_parse_param(struct fs_context *fc, struct
+> fs_parameter *param) session_opts->session_lock_timeout =
+> (long)result.uint_32 * HZ; break;
+> 
+> +	case Opt_ndentrycache:
+> +		session_opts->flags |= V9FS_NDENTRY_TMOUT_SET;
+> +		session_opts->ndentry_timeout_ms = NDENTRY_TMOUT_NEVER;
+> +		break;
+> +
+> +	case Opt_ndentrycachetmo:
+> +		session_opts->flags |= V9FS_NDENTRY_TMOUT_SET;
+> +		session_opts->ndentry_timeout_ms = result.uint_64;
+> +		break;
+> +
+>  	/* Options for client */
+>  	case Opt_msize:
+>  		if (result.uint_32 < 4096) {
+> diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
+> index 8410f7883109..2e42729c6c20 100644
+> --- a/fs/9p/v9fs.h
+> +++ b/fs/9p/v9fs.h
+> @@ -24,6 +24,8 @@
+>   * @V9FS_ACCESS_ANY: use a single attach for all users
+>   * @V9FS_ACCESS_MASK: bit mask of different ACCESS options
+>   * @V9FS_POSIX_ACL: POSIX ACLs are enforced
+> + * @V9FS_NDENTRY_TMOUT_SET: Has negative dentry timeout retention time been
+> + *			    overriden by ndentrycache mount option
+>   *
+>   * Session flags reflect options selected by users at mount time
+>   */
+> @@ -34,16 +36,17 @@
+>  #define V9FS_ACL_MASK V9FS_POSIX_ACL
+> 
+>  enum p9_session_flags {
+> -	V9FS_PROTO_2000U    = 0x01,
+> -	V9FS_PROTO_2000L    = 0x02,
+> -	V9FS_ACCESS_SINGLE  = 0x04,
+> -	V9FS_ACCESS_USER    = 0x08,
+> -	V9FS_ACCESS_CLIENT  = 0x10,
+> -	V9FS_POSIX_ACL      = 0x20,
+> -	V9FS_NO_XATTR       = 0x40,
+> -	V9FS_IGNORE_QV      = 0x80, /* ignore qid.version for cache hints */
+> -	V9FS_DIRECT_IO      = 0x100,
+> -	V9FS_SYNC           = 0x200
+> +	V9FS_PROTO_2000U       = 0x01,
+> +	V9FS_PROTO_2000L       = 0x02,
+> +	V9FS_ACCESS_SINGLE     = 0x04,
+> +	V9FS_ACCESS_USER       = 0x08,
+> +	V9FS_ACCESS_CLIENT     = 0x10,
+> +	V9FS_POSIX_ACL         = 0x20,
+> +	V9FS_NO_XATTR          = 0x40,
+> +	V9FS_IGNORE_QV         = 0x80, /* ignore qid.version for cache hints */
+> +	V9FS_DIRECT_IO         = 0x100,
+> +	V9FS_SYNC              = 0x200,
+> +	V9FS_NDENTRY_TMOUT_SET = 0x400,
+>  };
+> 
+>  /**
+
+
+
 
