@@ -1,139 +1,140 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0016B3988E4
-	for <v9fs@lists.linux.dev>; Wed,  4 Mar 2026 09:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C143A4F25;
+	Wed,  4 Mar 2026 11:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772616641; cv=none; b=rDeStaOugAVelBrA1q7nolkDLQ+g1IS7yZZwuKX8uG+MXTfoGE2g+tANz2W+zJaRspTKLYEx2LCSQiSlvmbcQVr4MfKbbBepuA6l0S7dDmutmJBp1FEuCVAQ70VTTaUdWI0vloG8sCAtuazmhUj5rHijGB23PNTZELQ/6+zKBTQ=
+	t=1772622631; cv=none; b=aZtHzLQpweEt+kh840pINpvzSE+nKnyhcJoOhxo+6R1N7Yw31nPRCynTzOGkPzNmmZJZRYKnQIgwHQsOfoZhbxhnjQv+KKhyj4y/jh6dN9In27WClQl1bg1Awldy4VcrF1MHVjT7ozDtmmCBbM9Y/+sJ3o7kDLmOcFQ97kz4LrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772616641; c=relaxed/simple;
-	bh=qyvL/iXE6+TakoKVVxVCaopqm1BpX+f7Q05dx5gBHDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HDPr1OfTBfEcrwDuczZC8CdfD0X5RNhHccT7x0TQK26K1nH92n70iWFqAbUtQ/XNwi1eBgSHHxpSGlmraDPEj8jygOCOGtB4txkkqXediCY6VOEx22t1lVZ337M+v47H2gLV4YQ+QwVPaUYociOSoH9tazQe+WVe62CEQ6s+elQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VXBfZ85W; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772622631; c=relaxed/simple;
+	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOwlADegZNWRm0dv1I4xMg8DdkrRZbC46fUuw/aLiMnSDMLdPP8/cLmuhRe9Vw96PeB0QSAmg+sms6aFjjxTSOFAZjwpi9F7k594FFvGPhAoOOuNfBGe+Fx1beGv1+HxaEnI950JuPzQtAN/CqdL+7qCjmLB4Lo2GwEd3jnJrWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtxESzLT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VXBfZ85W"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-483a233819aso64872345e9.3
-        for <v9fs@lists.linux.dev>; Wed, 04 Mar 2026 01:30:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772616636; x=1773221436; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUzQoESoh9/PqMSFbMpuw4Pmh5IPXiGP/qvOjxX4wwo=;
-        b=VXBfZ85WCNnS1YA4riE7WlgmBU7lDNyYyUkse0B+ZqjOYf4uij3TO0G0VIVlItsoyQ
-         zAisFncEc0hzAiz4WVTGvlxd7IlvTOo6yMyx5qxCLP66yZzaTWPAyJdNuH1ivv4Bjtph
-         hWFMcdVn3En92NYldPlrnVGr70YURQO569q9dc9Mnt68sMQBldt9RLTXIQyR37Rg4oze
-         GdeM6Es1wjdG5iCUgXW5efpFfJApVOOw9ZFt7aTzcxg7OoXctaJXnzHzyA6zs59BdHgJ
-         5tx48GMwBIkyqIWAJ4dlLGO+IKeKjfX749jXPLP1dr4XWtMiVmSdXK1+slJu3yWNQHtU
-         pb8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772616636; x=1773221436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BUzQoESoh9/PqMSFbMpuw4Pmh5IPXiGP/qvOjxX4wwo=;
-        b=CX3GPe/2DsDIVbgE32gTeNGEWlKxvHxnfZObpNGZDm8VPMefxBpKlmXK2cASYuPyFX
-         O31x66QCXVi6QblCJ0x5E9LrhhSFV+CVweDURgzw7aIbEGMqGhMT0INFUcel9FK/uUnU
-         qwF8loWmBJFtRV56FGJ5dx4yV3n6IFiJJ4wBylZxejHAEeLR1mY+lLtf9WfYuECXAYlJ
-         ML5tV8MVx0WL84jMTaCZJGzCjhG5w3rp4rO3LmC+Iq1opVKT5FcbilOVEPPMRkT4JBfN
-         Dv5F+qdoYXyWrv0uFm6f0NEGODlZvafcQmohEvEJjNVyG5BXlGBnkuKPXhqMCiiD7jwo
-         RKyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnAmcEuomAt9wrrIXIS+/DTVJGrpRl6hQ8VjZMfofyahTS4VPBzAlVg6z43DeadOITtNKE@lists.linux.dev
-X-Gm-Message-State: AOJu0YzY+CqPIvt6n8M5q9okf4MJNqlCICu4ZJ6w5p2NpBKEKzOdBOzP
-	JLGPppPSiyVk3DKOBtol2nlLyD36K/HMHx6fjEDZQDWbDkR+Hi6lYYsi
-X-Gm-Gg: ATEYQzxZk9gAqNzQQQk8onIFseFK/zsq8A+lswZ1XnF8ODaJnmuKgauatmmA2XrKDPQ
-	JRXM8BZt6X1hiFeRDF7KFI5u55llpiybg/F2QKo8qIKhhMiAeCvpQjl17x1zjdVy+iL7WDVBKnr
-	0e0ariJi+lAiw9j5X/QPrnkXQXVjJXzHVmK4PpNns0SL67kvY8IF10Q66qipXSz/OwlJI8Ep1lW
-	rXHqRhnTobXGFcNu7umPhCsyZGggfkI10V2+M5PZAbfzE8+gYnLBMK0oLziyxzfcuwYo4EYSoAG
-	JnFpi0r6j6KQDJRhW+HF1iqr9Cj3wwz40UAX1jrjEsruJYf/IlNZ+gU+iDASe8b0lIsM54GLzvk
-	Jp0erNK79z0H1bsaz0iM0uFeYzHw9IDgwNT4gopIu75CV4o70e/hBl0pXfRTidb3ENWGX+zCGpn
-	pMwd9MfcYQVgcZbbhknYXG+jr3GaF7ibu77bO1gg2sXZCJ+cxLgYrdy3x5YxUH1Mlb
-X-Received: by 2002:a05:600c:8b53:b0:483:498f:7963 with SMTP id 5b1f17b1804b1-4851989024emr19550785e9.26.1772616636117;
-        Wed, 04 Mar 2026 01:30:36 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851884225asm38972555e9.6.2026.03.04.01.30.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 01:30:35 -0800 (PST)
-Date: Wed, 4 Mar 2026 09:30:33 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: NeilBrown <neilb@ownmail.net>
-Cc: "Jeff Layton" <jlayton@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, fsverity@lists.linux.dev, linux-mm@kvack.org,
- netfs@lists.linux.dev, linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-nilfs@vger.kernel.org, v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 000/110] vfs: change inode->i_ino from unsigned long
- to u64
-Message-ID: <20260304092559.554ac9a9@pumpkin>
-In-Reply-To: <177260561903.7472.14075475865748618717@noble.neil.brown.name>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-	<1787281.1772535332@warthog.procyon.org.uk>
-	<1c28e34c7167acf4e20c3e201476504135aa44e8.camel@kernel.org>
-	<177260561903.7472.14075475865748618717@noble.neil.brown.name>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtxESzLT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64839C19423;
+	Wed,  4 Mar 2026 11:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772622630;
+	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KtxESzLTRevMkC0RMT3EArDVMk2FhTkCghz7l84S/Sl/uRFMKbvYjBO6WKTPLXZG2
+	 hDd+jtXTkQDCPlsNqrRNNBIS69FSEG3kyCqhhWldcKaA7lgmXmclpmibkTkxFDGx05
+	 L1mWc9QOtddQl0a6TEhhiss3l8edtqg3iz0dJiofY0wVH+4yeCbYY1MzoD2oPWrjdR
+	 EnDw2NjEjLAGM8p4Zym2vHqMmJuBYJNQQtn7Ix1yH9YiSler1bu8kJQI/BP/hsAWKP
+	 HCA4EbtIlLqW3pzKVaXGzu0CeEXA+pozdgRHL7CTE7jTeamnzsicmpnlaw5LC2gU+C
+	 eQD2mqeeLI41g==
+Date: Wed, 4 Mar 2026 11:10:13 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna Schumaker <anna@kernel.org>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chao Yu <chao@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Jaroslav Kysela <perex@perex.cz>, Jens Axboe <axboe@kernel.dk>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Linus Walleij <linusw@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 5/8] spi: use rest_of_page() macro where appropriate
+Message-ID: <e731e101-bf06-44d7-ac91-0756c5b8bbc8@sirena.org.uk>
+References: <20260304012717.201797-1-ynorov@nvidia.com>
+ <20260304012717.201797-6-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MuL6cN1k4g/DbVd2"
+Content-Disposition: inline
+In-Reply-To: <20260304012717.201797-6-ynorov@nvidia.com>
+X-Cookie: Take it easy, we're in a hurry.
 
-On Wed, 04 Mar 2026 17:26:59 +1100
-NeilBrown <neilb@ownmail.net> wrote:
 
-> On Tue, 03 Mar 2026, Jeff Layton wrote:
-> > On Tue, 2026-03-03 at 10:55 +0000, David Howells wrote:  
-> > > Jeff Layton <jlayton@kernel.org> wrote:
-> > >   
-> > > > This version splits the change up to be more bisectable. It first adds a
-> > > > new kino_t typedef and a new "PRIino" macro to hold the width specifier
-> > > > for format strings. The conversion is done, and then everything is
-> > > > changed to remove the new macro and typedef.  
-> > > 
-> > > Why remove the typedef?  It might be better to keep it.
-> > >   
-> > 
-> > Why? After this change, internel kernel inodes will be u64's -- full
-> > stop. I don't see what the macro or typedef will buy us at that point.  
-> 
-> Implicit documentation?
-> ktime_t is (now) always s64, but we still keep the typedef;
-> 
-> It would be cool if we could teach vsprintf to understand some new
-> specifier to mean "kinode_t" or "ktime_t" etc.  But that would trigger
-> gcc warnings.
+--MuL6cN1k4g/DbVd2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-A more interesting one would be something that made gcc re-write the
-format with the correct 'length modifier' for the parameter.
+On Tue, Mar 03, 2026 at 08:27:13PM -0500, Yury Norov wrote:
+> Switch SPI code to using the macro. No functional changes intended.
+>=20
 
-That would save a lot of effort!
+Acked-by: Mark Brown <broonie@kernel.org>
 
-	David
+--MuL6cN1k4g/DbVd2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> NeilBrown
-> 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmoExQACgkQJNaLcl1U
+h9CfwQf+I/XcN+BTYZLFcHPKTZ6Gt21+q3GLOzdkgChqzxOybf6b2qD+OHDN55Te
+HvnosWIFzWzrD0ZP4eNe1TE0j1djIs+y2hdX6fElOOuJijsn21UWvVZXuuGdENdA
+tPZDWrSzxJ8sU12FFYyBJDxsnWysekc1llPy00e37sfeetOZOLaYg/1jnttOl6oU
+a3i0DGlMSVCN0pIYah+1R5Vbe35l4DlrcyOoswdwqqqEAzPLr0ysycWbbVmelm0M
+U/y3gvpx6ZZBlMMio/3WWZfu3pM/Kwc8nzHkdzsstdqSIsRHEWru1MF5W4E+IcwO
+Id51vK66wgwDVauWcfBpUUDez8/oEA==
+=1DSJ
+-----END PGP SIGNATURE-----
+
+--MuL6cN1k4g/DbVd2--
