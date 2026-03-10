@@ -1,39 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EDF46AEE4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5625546AEF1;
 	Tue, 10 Mar 2026 11:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143750; cv=none; b=Bk9Tdb9/E6Gd4XlskwWsbsDM6kGcKO1S5Hqlk/isaGwGBVli5ukJuUkZxy6wJhR6etXA1bTp+KA3QWoTDrA6+oNAmDtXMrcm2XI0U6m9TTcp1XNbAXgsq6qd1Atv8YTFKoGULaiDmoOcuBE15rniPNDPUC3orv8niKqpJ5bwAHk=
+	t=1773143749; cv=none; b=FextzlOM7SoQChDlNheKfYkYqOXF1HIa0DFnbZmUocrvpLQGs+cj7RE8/FxHBwF3wKw5zX3W5nDTf/iHmxc1w3amlrhWLdBn9iSl0sLROX/qFjzg3XRbo3pZmwaSJolNFfT70bk5byPxVFqwCkDRYfpsRUNBcQp2Xf5LkpoF44g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143750; c=relaxed/simple;
-	bh=tuKkFaje3/67N7+EgH43toSki2nfSyvowNLdXGdESEg=;
+	s=arc-20240116; t=1773143749; c=relaxed/simple;
+	bh=Axff4FnAHPNmyZXZ2vgEuavJkfKhCKJPqZGqnoou9Q8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S7DbTWY+QSKL0aoI41dP0XrDzrlT6RHTGVb6KZ2ZSa9hCIgDic9As4PuAUb37y4hAewriCcklFUOeqhtKISSPZwoERjhQiBa9LpBZS8ZejwQiImEjymsStC7qLrbRd2eyMzXDEFgDmmiyWlFjfs4qIYy4KRYBB8i5JlooS1kfhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=r+Bm3oJS; arc=none smtp.client-ip=212.42.244.94
+	 In-Reply-To:To:Cc; b=X4KXyknrVBWNaGfe53Qm3MoUpSiL8FslbQ7GlkekgysSDZSAl8UPjHRNFY/Doql5pbXVtX2Lf1I8aDot2NJR431Q47RZdnVy6B8ZWMUBjKrCMT74/EMakmWAX33ac1WH1MYGKIvUsR+lQL+XItppOuJPtPfqJUHSu7MHO1LfCkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=vC8qGYtm; arc=none smtp.client-ip=212.42.244.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="r+Bm3oJS"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="vC8qGYtm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143727; bh=tuKkFaje3/67N7+EgH43toSki2nfSyvowNLdXGdESEg=;
+	t=1773143726; bh=Axff4FnAHPNmyZXZ2vgEuavJkfKhCKJPqZGqnoou9Q8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=r+Bm3oJS8/+32ZYGJ4UVxlrt7f9UtpWnT+67BiHxtliz59uxMI5sUh7+OdyJZrU84
-	 oJKKVCJPxENp4cyPplGnJOyhV2Rya3i4aDtjbyK8DFhZzMmI64bq0RbYNiKKndHNeg
-	 obwacGvLiuG6y1WbSPM0lPtBbQUvyegsd7ixN734=
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	b=vC8qGYtmoTTFtKG57rlNoXWnybB42U6r7mF3yDjZNK169i+LPPc6FbsKjJViJXz0P
+	 z0SkvHe3S8CzlbyDQgjnVKCfReu3jwjo1Tnr6q9iIPykZjcNCRLdwFjqB3/YTiencA
+	 upketXPZTZxW0W7lPSDpgLsiq82FnKI8pFh7qlSE=
+Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006af-e21d-7f0000032729-7f000001ba70-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:27 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	id 69b006ae-2367-7f0000032729-7f000001c97e-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:08 +0100
-Subject: [PATCH 42/61] pmdomain: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:48:59 +0100
+Subject: [PATCH 33/61] mm: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-42-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-33-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -72,21 +71,22 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1155; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=tuKkFaje3/67N7+EgH43toSki2nfSyvowNLdXGdESEg=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZkDlGRZW4plkDdO/q/5zI0Z5Mh3aiEDX5Kr
- HkD8tDHTjSJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGZAAKCRA0LQZT0ays
- 22gFCACOZ3xbUn7DVys9f0zhKrFg1046b9jGtTeftFIaZ4sDTERX+NnuADwMWlcQi8MAEiX00cR
- w7aw6Pu5UwlIY4a//xAXQOD0Vq3vR2NLs/mYfOXBEyx8uBUm6hnHex2/TV3VaisJJ0c/nDfxiVS
- PU0p02U0cgmDRMbp/b1fSLFHzNrm+hO/7LNRD9bLaqTjGpZUScyufroKDOn5G4AkEBqNVNB17jO
- VAtR0IXhgFW2Uuc0XEKCg+KHshTFKSAPvKPonnlie/OWxc6MLfJtX+Szyr9D2UStWTYIluWdysV
- 1svYEoMi2X+1/dEnsAW5QR9/oHEWtkGT2aoEyJlhPvAZyp4m
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3181; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=Axff4FnAHPNmyZXZ2vgEuavJkfKhCKJPqZGqnoou9Q8=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZGGzCaztqu0lpdWvBpBbRCmO+WdPRS9iZCq
+ y8ebihz4r+JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGRgAKCRA0LQZT0ays
+ 21/8B/wPP7xI3S+6VTDXKISgyNvBqi0UZCbrYypvYfajV0SZbWCEuGKdkXjsEnnFt9YRKxoHeyi
+ XmpmbA47CMrp+VNl6him9YVO8BEPZHU4T3m6BB2+Ps31+3rQDfYs7d+nPEStYiJ7CseLk0vc9Xu
+ aMyI8bSdyPpcRveFxPuH/uy4iV8zrSXLAoi0Ddm83MyR2aRNl2iCZfPRsvcbR2T8dPBVJjhKzKb
+ 5v+Zz66IZ/QArfKSmSkUD+nw+Micr3w6XFCa9e1WMrdcQ/Zh9MZx0TWZwcRgOAgfEwQG/fxgX8/
+ bLP83oq+8G1pw01czFBtKoe7eUKh6J8z9KOOUPoqLrMipRXq
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143727-E2654F2F-96715D38/0/0
+X-purgate-ID: 149429::1773143726-05CBBE1F-4CFCA352/0/0
 X-purgate-type: clean
-X-purgate-size: 1157
+X-purgate-size: 3183
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -94,32 +94,93 @@ X-purgate: clean
 Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 check.
 
-Change generated with coccinelle.
+Change generated with coccinelle and adapted by hand.
 
-To: Ulf Hansson <ulf.hansson@linaro.org>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: linux-pm@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
+To: Catalin Marinas <catalin.marinas@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/pmdomain/rockchip/pm-domains.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kmemleak.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-index 44d34840ede7a8f483930044c96042dda9290809..4352aa40298a3bcfde90811258bac20a86068c10 100644
---- a/drivers/pmdomain/rockchip/pm-domains.c
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -746,7 +746,7 @@ static int rockchip_pd_attach_dev(struct generic_pm_domain *genpd,
- 	}
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index d79acf5c51006c3ed42fd88a2246ca148e401999..91136be23a84d825698e98b4f2d0e666429dd593 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1092,7 +1092,7 @@ void __ref kmemleak_alloc(const void *ptr, size_t size, int min_count,
+ {
+ 	pr_debug("%s(0x%px, %zu, %d)\n", __func__, ptr, size, min_count);
  
- 	i = 0;
--	while ((clk = of_clk_get(dev->of_node, i++)) && !IS_ERR(clk)) {
-+	while (!IS_ERR_OR_NULL((clk = of_clk_get(dev->of_node, i++)))) {
- 		dev_dbg(dev, "adding clock '%pC' to list of PM clocks\n", clk);
- 		error = pm_clk_add_clk(dev, clk);
- 		if (error) {
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		create_object((unsigned long)ptr, size, min_count, gfp);
+ }
+ EXPORT_SYMBOL_GPL(kmemleak_alloc);
+@@ -1152,7 +1152,7 @@ void __ref kmemleak_free(const void *ptr)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_free_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_free_enabled && !IS_ERR_OR_NULL(ptr))
+ 		delete_object_full((unsigned long)ptr, 0);
+ }
+ EXPORT_SYMBOL_GPL(kmemleak_free);
+@@ -1170,7 +1170,7 @@ void __ref kmemleak_free_part(const void *ptr, size_t size)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		delete_object_part((unsigned long)ptr, size, 0);
+ }
+ EXPORT_SYMBOL_GPL(kmemleak_free_part);
+@@ -1238,7 +1238,7 @@ void __ref kmemleak_not_leak(const void *ptr)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		make_gray_object((unsigned long)ptr);
+ }
+ EXPORT_SYMBOL(kmemleak_not_leak);
+@@ -1255,7 +1255,7 @@ void __ref kmemleak_transient_leak(const void *ptr)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		reset_checksum((unsigned long)ptr);
+ }
+ EXPORT_SYMBOL(kmemleak_transient_leak);
+@@ -1287,7 +1287,7 @@ void __ref kmemleak_ignore(const void *ptr)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		make_black_object((unsigned long)ptr, 0);
+ }
+ EXPORT_SYMBOL(kmemleak_ignore);
+@@ -1307,7 +1307,7 @@ void __ref kmemleak_scan_area(const void *ptr, size_t size, gfp_t gfp)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && size && !IS_ERR(ptr))
++	if (kmemleak_enabled && size && !IS_ERR_OR_NULL(ptr))
+ 		add_scan_area((unsigned long)ptr, size, gfp);
+ }
+ EXPORT_SYMBOL(kmemleak_scan_area);
+@@ -1325,7 +1325,7 @@ void __ref kmemleak_no_scan(const void *ptr)
+ {
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
+ 
+-	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++	if (kmemleak_enabled && !IS_ERR_OR_NULL(ptr))
+ 		object_no_scan((unsigned long)ptr);
+ }
+ EXPORT_SYMBOL(kmemleak_no_scan);
 
 -- 
 2.43.0
