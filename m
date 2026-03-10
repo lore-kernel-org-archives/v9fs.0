@@ -1,38 +1,38 @@
 Received: from mail.avm.de (mail.avm.de [212.42.244.119])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7884611F9;
-	Tue, 10 Mar 2026 11:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9585C472775;
+	Tue, 10 Mar 2026 11:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143743; cv=none; b=POh6JcabG7r/ta7wAFpDOHmk6WmCVVws7IyBWqFusjU9PG/fmML6R+TG1Peq2Ua3RjwRQacK3qOH7q/1gpwpAuCNRfs56qefx0yuSZZvZvHH9yuj2ovX4yYy7awNeqfR2TccKY8audoJ/Rn+PiCA0pBzMXU7A2j3jwRb99TzTDM=
+	t=1773143747; cv=none; b=s3vll9cmJfJlWais9RKbDiYzcXgLoe5Yn/nMfEZweP8VqgcoWzsrd8e5T6a0r4SFLu8KHRWdN//R03zpJPTuRoztc5WOQpKzuEVnsMErryVc1dmPUK7FVslX4ZMdjF7q2efhQFmQHi4H4NRcaaLjdmuBSZYcV3i9vWjp4ncsPfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143743; c=relaxed/simple;
-	bh=x2oaB0qg8CghMqZVE4wv6e6u03uqEA8RFTswQdfTK1Q=;
+	s=arc-20240116; t=1773143747; c=relaxed/simple;
+	bh=MCi9bfMt/yjRjpkUd1ZhwbiaE2CmX7FKcN3LCeZC+s8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WrbEhGzqrXSkk22XfNx19tIl3M2mYM+V3+XFGw+UzfYFbSHWk56ZhyheiDMTiX6lUqH0O0bCK7/11vKTLqL3VueAybV6bp7Az8VJ47CgGeMK1V5TFnnGiIkjUK+/UPrLawuwjzAfATE53+d8TT4s+JSDgpBU+Mjq2BWr3CnnK3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=qDt+eOK1; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=ZGb9JsmVy4Ht4L/taRDy4aEo72uvrIvvGbB6Q9PLhgA4JQMcXlYcCUNYEkIc/K8cpaWowsCBA43ZNytregjtHTsHxoIvVayj7MAZ5cQMLPKa0oFqztFKUX1Axuu0JdhTS+ra/iK5+Q2WPbZCumH7Rg8kqHrsuSQ3OstuFRMZnPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=PKx4gVlk; arc=none smtp.client-ip=212.42.244.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="qDt+eOK1"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="PKx4gVlk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143725; bh=x2oaB0qg8CghMqZVE4wv6e6u03uqEA8RFTswQdfTK1Q=;
+	t=1773143726; bh=MCi9bfMt/yjRjpkUd1ZhwbiaE2CmX7FKcN3LCeZC+s8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qDt+eOK17tgbgqdmabp3KToGWo0cL117JvmRPKJVxtawLwwb7ps7z1wEd3vWO7I7I
-	 4b7B5Oqe+82BCygMvdbmbm7KFHTrarRdpcpv9cxBTuo4h8o6I4dLLRK4rlBY6AdxnJ
-	 EBWBkLJwSKE2HvUxw9o04CGzwbSOLqvvPPh3XW/0=
+	b=PKx4gVlkKTdBK4hC8DhkZHv6XjY3aXLFzpRRf+9yfpJ7sETH73wJIPUWVun5ApODc
+	 fB1HpEzfhSmPsza3W/UlEsW+FK27FdFsyHgYe+IbnAc85JpgiLO0UqynRTi7RRWY3c
+	 Qcjq/1RWaavgSPFWfIRpI/rqChIvo10IblUQ9PGA=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ad-2367-7f0000032729-7f0000019d98-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
+	id 69b006ae-2367-7f0000032729-7f000001c98c-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:52 +0100
-Subject: [PATCH 26/61] net/core: Prefer IS_ERR_OR_NULL over manual NULL
+Date: Tue, 10 Mar 2026 12:49:00 +0100
+Subject: [PATCH 34/61] arch/arm: Prefer IS_ERR_OR_NULL over manual NULL
  check
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-26-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-34-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -72,27 +72,21 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1267; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=x2oaB0qg8CghMqZVE4wv6e6u03uqEA8RFTswQdfTK1Q=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYuz1CTGrbQpXzwm84r9mgKg2KIh9nV8i33X
- Xzcah43D7uJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGLgAKCRA0LQZT0ays
- 231ZB/0bxZ/Qbs9IAD9kpPvo4QA+XnJGKWUdztF9j621/TW306I8+ggVrnqlG+FNuG2wVrw0WhJ
- ixcD9BMxptD/u4aa6XFjRfTlj5zAYq7AiLoV88hQ2zukJ0WZTgZ9ho7LLdTHbtDdQJg3IZi/ib8
- fJneCHe6P6SZ1m2EjqIO05fxr5kL7CgbuXZRdzSHe3+MgFHVghSrb0gT6dh9+gXstARt02FCx1t
- CbFc8t5W3HCfOWn15oLGczjOwJcE0jsoiVRPvvyO1awUr0bgUV2AJDFjkVpAz2ZTueHBx4ee0oO
- uXTsT9eV0KkVBz5xaaOgAyF5s8m06WIrMfH8OhTYPEwluE5m
+Cc: Russell King <linux@armlinux.org.uk>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=925; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=MCi9bfMt/yjRjpkUd1ZhwbiaE2CmX7FKcN3LCeZC+s8=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZJPXZg3WsXcrZtjOff8m1jvG6yKXz3axEvS
+ kboSQL/SpuJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGSQAKCRA0LQZT0ays
+ 2zfACACzyLECzgi3MrIMlJkcwSfYhn2m+PRIL8f9uOY3XlWqWmweHlYuZj3OMlVlJtGjvYSQaMR
+ 9+D2tmynuqJf309fIXDWVkgzjy8866w+a/UJmSXv/T4izax84D3f8LghtIzFi7mZ97slccnBaIH
+ bYp2esZnYrGMRYLzsh/aOQvmQdhErxNZysqZJWPMzNnDfK6XoXYg2wPfHrL2waLBmLBd1ruAh8/
+ q/1mTUtEwi8tnMzF9vKrDxFY8VrHUkQh/DKxepIobrtB7u/NL1zHZyVzUjIKrp3fP30IB0/fbFP
+ nBUcDJnBx61wdRtaxbBVJBgZihX6FfH11PRkPQUNc/WVeaiP
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-7ACF9E1F-2B37C654/0/0
+X-purgate-ID: 149429::1773143726-8AC99E1F-6B772227/0/0
 X-purgate-type: clean
-X-purgate-size: 1269
+X-purgate-size: 927
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -102,37 +96,27 @@ check.
 
 Change generated with coccinelle.
 
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: "David S. Miller" <davem@davemloft.net>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: Eric Dumazet <edumazet@google.com>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org
+To: Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- net/core/xdp.c | 2 +-
+ arch/arm/common/bL_switcher.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 9890a30584ba7b08b246dacb984b639908f16242..c92cac2ccdb759457c7ce6a38e04e20190dff2a3 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -101,7 +101,7 @@ static void mem_allocator_disconnect(void *allocator)
- 	do {
- 		rhashtable_walk_start(&iter);
- 
--		while ((xa = rhashtable_walk_next(&iter)) && !IS_ERR(xa)) {
-+		while (!IS_ERR_OR_NULL((xa = rhashtable_walk_next(&iter)))) {
- 			if (xa->allocator == allocator)
- 				mem_xa_remove(xa);
- 		}
+diff --git a/arch/arm/common/bL_switcher.c b/arch/arm/common/bL_switcher.c
+index d1e82a318e3b22bf6f54e9a8d5366ddc7a6e44ca..46cbb5caf9f17a22a7c42e4254cb68c6cdebc4e4 100644
+--- a/arch/arm/common/bL_switcher.c
++++ b/arch/arm/common/bL_switcher.c
+@@ -628,7 +628,7 @@ static void bL_switcher_disable(void)
+ 		t = &bL_threads[cpu];
+ 		task = t->task;
+ 		t->task = NULL;
+-		if (!task || IS_ERR(task))
++		if (IS_ERR_OR_NULL(task))
+ 			continue;
+ 		kthread_stop(task);
+ 		/* no more switch may happen on this CPU at this point */
 
 -- 
 2.43.0
