@@ -1,197 +1,144 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD50345CAB
-	for <v9fs@lists.linux.dev>; Wed, 11 Mar 2026 02:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194859; cv=pass; b=DOxKCw2NuL+CzT3ONAUgXIMYcrX3VMuAFIH7uhihGzC5k7OW4aNyIUIs8YuA22DI3N9BAKGHkXWiQQU7VlbqKnryLaIPoCjEshflf/z3a1bjgAjK2fje4As8LIQRm2mF5t2J1EQ9xjWEXH0Kjb2f49C+PvceY5CqG5eqO3YmGU0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194859; c=relaxed/simple;
-	bh=8UJnLa/DDQ+b65RDSHa97nR/Rm6zetnRjswOkVb13wc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l2g2yzZ4Dybh6kuhvcBULVguDYhdrEOCm8tFVHG5HxZiMK4r1ieV3XC7DvFbBP/+LmMwsbfu65u9ArSpCtaVdbPZteok84/rVMReHCYXmpmbYEy9zrdrliUY8eD89Ecnaq3KiIRSp5NcaBqhT+HUD7Ww+h1VR8ou9i4C8J9QSO4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=G46rxFFc; arc=pass smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A06918A6D4;
+	Wed, 11 Mar 2026 04:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773204586; cv=none; b=K1WQIxcK+274S/4Yob+0L8QqTWnTbH6JZTY2a91B5Fs2UGlJDBkW9z9RqjzEhPXkyCkQrfZDh0h3InO/B4lM38l9nRHl2idrlUDcwvBApwPhuIVsZCMXoVPT7NhPzOQ2AHc/fSFljcM5ao6JhkFuni+1HVGR7WJF6IKijwyGJFw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773204586; c=relaxed/simple;
+	bh=luNAMKvhT3g6lZj4Bklpxcu5kotaBTWCH9qLtXuXCaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iWiexXatlG0lDBTMMHKdtoF7FuzO2YGVnoVjgQZ0RnLl91hMAXEOtMpBAAQzRkAoDGVxUBLMqFIS4XwTQB6NzgImXWY8LqB64E3usefTgJcXVh1wATHLv3f/qa2wsUb4ksSAvkX5hCUrQHoX/IpgebZcx/LB3A8SkVtBQ+AlUgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=hwtIRhho; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="G46rxFFc"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a13d1c6f25so4703792e87.3
-        for <v9fs@lists.linux.dev>; Tue, 10 Mar 2026 19:07:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773194852; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DYWA7BR4QFBZmfkJu1T8f2+4GohzaUSufmiW7oJbalSUuPviVpMpgl4lQ+4YqRg25F
-         HWYTOze7cgClQ2OuF/wwO6gGrtJBeLniAWqsV+cXqoHXyvLeyB9lv2XZ0DmRHxScxQV3
-         OdM64H96XX58fhKp9slPw15SypjkIDmtA50rMddvWOxnBEHDMNMICnoEqZ9+CvG+Q1F5
-         hEc/eoaoTYnTYpF26tCQ5QKluOgsUBkRyVZJhRnTUJcTagQt95CxwMMnikfCOfmGMpaI
-         YPbLGiW29Nq1zaVr98lX67LlDlX2yRYdgs08RMQl3lEbCugeW5TtPqUyqWUEZHif595w
-         3ASA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        fh=L6oOYF7G895HWpQKhAqxZWColNkzpCBdXGO1/zg/wGI=;
-        b=f2EDO7wBzQBWJDTpwlDfOO6RHE7Rifp86XpE0zj3z3Hc8jNGKFr91jCRkOTsvUNdsl
-         9zmk2dHIgoE5fVWB69U+r/UXyNO0OijqDzjPkvp9ISWxf+zptFaeiFbri6I0/iN6RX5/
-         HaXAJrUZ8ox6xpjt1vvviJp4CtGHxbGWoUxhu6r4d7TRm29BjrNZP5DEVq7+w/kv1+D2
-         bjlb7KCTlhhvq9RcDGbKnFK4kKMqFm+ZjxoAnGJL5LDeEfV2M3CSF4fZjyqKRitO1knR
-         xyATvc0xM1MBZF6rHXxZk4xJvDyKqm3Gl86I3mqiPffm7KUJ3oRiyX4W5GY99309R3A5
-         1whg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773194852; x=1773799652; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=G46rxFFcX1hnQKxUUrTijJdlDpB5OBfdKVt7tJqloBNXcNg5JAjWvjlGBTrQCSFpEL
-         kw5r/kEngKAkJ0pkN558AqUScugTYRjvdhsBLXq38oLpcnNpxGDuEjo6TpPJTbZMKzhC
-         YhKhvGGnSCYDK9QQnvadjQAxBlN7qho59qSI0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773194852; x=1773799652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=YcXrjnhPxBBpeT8v0M/lLNIaUOzuvk/oUYqyREBe61x3wBYFl7Rd3sdXApazWwS1tP
-         DKrmaYoCCE0xVSK77CNOafVnuy5t3aRirR7rB6ZV97gYriwsr8dA7O/GQzlchEMvxeKY
-         Z92PHTPw931cfeplqi6OUVg1X6VROoaS16/MmgVC6iLj0+xbJeuN/aZffU9W1gFw/2M6
-         oNBr16V+tZIRbusBt0NP+tnhL3ZGFU5kC9gtMNZ9pY9R7rGl23iUci8A1oDfbYZXeqbo
-         keQUmQ+XWpkI/X89iLb7k6TwqoS0Rvl2lqXe+u3OWUIRiHxZH6IhUaamGXK1hDH6HHB+
-         gBsw==
-X-Forwarded-Encrypted: i=1; AJvYcCWVApDQ9EmY0IW52ov5obDZxu+G9WRscxuunBrv15ktffzh0nhCiDHQhgD6/+nsj5kQpGoQ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx55wFEhkE7z3MORMaqp7zrpMlFqJkJsry8K/NN5T05IE0aF9Bj
-	1uDIl6PjC9oFYEBko9wVs/LNRwtyLOh+S9VJNwDpqzzYDXtcmFVgSKFLY4aTWR2sqkMTAndEGOU
-	SnF//xnKLqYqmlCyBk68CfyA71kxRk7dLbGUxxGff
-X-Gm-Gg: ATEYQzx5wBkZ35f0hk4zL01SfVZdvlnp54p1iuwiMitXIVRS9qz9a8aAy+SdDhLu6vQ
-	/Bw6dZNHuLGlM8jzxQb53JMls6k84WItWSBvfe2S3+qnEIsbsMI4gauR1bH7NHuIk2PmMLVM4Q9
-	SGQqusyPOrDU6gXHimMwpYM1k2I3qBenzvUDp0A4A4zPydkXURU/s7f+iigihZ/u8HXP1KC62ip
-	d7fQhVhUnP/gSHoNsoJoXudYeKoVPT4OSHAMHRE5R3FCMjqS8OEUKOao7kE93w9Ku4rqjZauuuu
-	ci7kBObcIw==
-X-Received: by 2002:ac2:4427:0:b0:5a1:3134:9bac with SMTP id
- 2adb3069b0e04-5a156cbd1bbmr169453e87.28.1773194852284; Tue, 10 Mar 2026
- 19:07:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="hwtIRhho"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fVyvy3TbVz9v75;
+	Wed, 11 Mar 2026 05:49:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1773204574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jack6TdkHfubMZXj3t4BiSmX904hWsygllpLop+Gf9w=;
+	b=hwtIRhhoCxc2ZsNuUo0Icnvj7zQltMiaNclezRSyqc87wTc0wXe2NWtPTDDRE127dJXFTa
+	MCvirHZh8IiINxf7jg7PTdJYtUuDmCcpUYG4NR+HXoSIAKzshND6dvUCboZ1QPiY129i0p
+	vP6W/4Z8xKyvmGsmG0UVmuLtY8spR7CmaMu1rm8oyBUDj2N297M9U3vbYSmSuEgII2ps6v
+	EoQvRCIKwWGE9t+rxwSll9E6aSdYeE3eYYrNzVXpC0e5YOEIKqsC4w1Amkj3lkkGAd7FSr
+	N7xilzshuVk4hvo9TfDCZ4V5CdbP7DPW1inKdPlaPKLeY7uYE4a9QY7VVtwUug==
+Date: Wed, 11 Mar 2026 13:48:47 +0900
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>, 
+	Jeff Layton <jlayton@kernel.org>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, 
+	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+Message-ID: <2026-03-11-regular-sore-census-shops-DqYcUT@cyphar.com>
+References: <20260307140726.70219-1-dorjoychy111@gmail.com>
+ <20260307140726.70219-2-dorjoychy111@gmail.com>
+ <CALCETrXVBA9uGEUdQPEZ2MVdxjLwwcWi5kzhOr1NdOWSSRaROw@mail.gmail.com>
+ <801cf2c42b80d486726ea0a3774e52abcb158100.camel@kernel.org>
+ <CALCETrVt7o+7JCMfTX3Vu9PANJJgR8hB5Z2THcXzam61kG9Gig@mail.gmail.com>
+ <20260309-umsturz-herfallen-067eb2df7ec2@brauner>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Wed, 11 Mar 2026 11:07:21 +0900
-X-Gm-Features: AaiRm5028PWt8n-JnveiRgn8oYMksdR_-_nk4JOkvxMfplWs-GDr7RRk-OxICyw
-Message-ID: <CAGXv+5FQAVaJjqhv+Xq-ysOc4SHQn2mCNTgCAp8XocmWBWGGoA@mail.gmail.com>
-Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
-	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	v9fs@lists.linux.dev, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bywgq3w2vtdgrqnx"
+Content-Disposition: inline
+In-Reply-To: <20260309-umsturz-herfallen-067eb2df7ec2@brauner>
+
+
+--bywgq3w2vtdgrqnx
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+MIME-Version: 1.0
 
-On Tue, Mar 10, 2026 at 9:57=E2=80=AFPM Philipp Hahn <phahn-oss@avm.de> wro=
-te:
->
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
->
-> Semantich change: Previously the code only printed the warning on error,
-> but not when the pointer was NULL. Now the warning is printed in both
-> cases!
->
-> Change found with coccinelle.
->
-> To: Michael Turquette <mturquette@baylibre.com>
-> To: Stephen Boyd <sboyd@kernel.org>
-> To: Daniel Lezcano <daniel.lezcano@kernel.org>
-> To: Thomas Gleixner <tglx@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/clk/clk.c               | 4 ++--
->  drivers/clocksource/timer-pxa.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b72=
-23d4488a9216ed1 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
->         unsigned long flags;
->         const struct clk_ops *ops;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
->                 return;
->
->         clk_debug_unregister(clk->core);
-> @@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
->  {
->         struct module *owner;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+On 2026-03-09, Christian Brauner <brauner@kernel.org> wrote:
+> > > On Sat, 2026-03-07 at 10:56 -0800, Andy Lutomirski wrote:
+> > > > I think this needs more clarification as to what "regular" means,
+> > > > since S_IFREG may not be sufficient.  The UAPI group page says:
+> > > >
+> > > > Use-Case: this would be very useful to write secure programs that w=
+ant
+> > > > to avoid being tricked into opening device nodes with special
+> > > > semantics while thinking they operate on regular files. This is
+> > > > particularly relevant as many device nodes (or even FIFOs) come with
+> > > > blocking I/O (or even blocking open()!) by default, which is not
+> > > > expected from regular files backed by =E2=80=9Cfast=E2=80=9D disk I=
+/O. Consider
+> > > > implementation of a naive web browser which is pointed to
+> > > > file://dev/zero, not expecting an endless amount of data to read.
+> > > >
+> > > > What about procfs?  What about sysfs?  What about /proc/self/fd/17
+> > > > where that fd is a memfd?  What about files backed by non-"fast" di=
+sk
+> > > > I/O like something on a flaky USB stick or a network mount or FUSE?
+> > > >
+> > > > Are we concerned about blocking open?  (open blocks as a matter of
+> > > > course.)  Are we concerned about open having strange side effects?
+> > > > Are we concerned about write having strange side effects?  Are we
+> > > > concerned about cases where opening the file as root results in
+> > > > elevated privilege beyond merely gaining the ability to write to th=
+at
+> > > > specific path on an ordinary filesystem?
+>=20
+> I think this is opening up a barrage of question that I'm not sure are
+> all that useful. The ability to only open regular file isn't intended to
+> defend against hung FUSE or NFS servers or other random Linux
+> special-sauce murder-suicide file descriptor traps. For a lot of those
+> we have O_PATH which can easily function with the new extension. A lot
+> of the other special-sauce files (most anonymous inode fds) cannot even
+> be reopened via e.g., /proc.
 
-clk_get_optional() returns NULL if the clk isn't present.
+Indeed, I see OPENAT2_REGULAR as a way of optimising the tedious checks
+that userspace does using O_PATH+/proc/self/fd/$n re-opening when
+dealing with regular files.
 
-Drivers would just pass this to clk_put(). Your change here would cause
-this pattern to emit a very big warning.
+For the problem of stuck NFS handles and so on, an idea I've had on my
+backlog for a long time was RESOLVE_NO_REMOTE that would block those
+kinds of things. IMHO it doesn't make sense to block those things with
+an O_* flag because (especially in the NFS example) directory components
+can also cause the syscall to block indefinitely and so RESOLVE_* flags
+make more sense for this anyway. But in my mind this is a separate
+problem to OPENAT2_REGULAR.
 
-I don't think this change should be landed.
+--=20
+Aleksa Sarai
+https://www.cyphar.com/
 
+--bywgq3w2vtdgrqnx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-ChenYu
+-----BEGIN PGP SIGNATURE-----
 
->                 return;
->
->         clk_prepare_lock();
-> diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-=
-pxa.c
-> index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a=
-4c0fb08ba11c8f9 100644
-> --- a/drivers/clocksource/timer-pxa.c
-> +++ b/drivers/clocksource/timer-pxa.c
-> @@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem=
- *base)
->
->         timer_base =3D base;
->         clk =3D clk_get(NULL, "OSTIMER0");
-> -       if (clk && !IS_ERR(clk)) {
-> +       if (!IS_ERR_OR_NULL(clk)) {
->                 clk_prepare_enable(clk);
->                 pxa_timer_common_init(irq, clk_get_rate(clk));
->         } else {
->
-> --
-> 2.43.0
->
->
+iJEEABYKADkWIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCabD0LxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQKJf60rfpRG8NhAD+MfneuLAodU+abMZdkBr7
+4vpiPGD5MeVFeZmtEvqdIWkBAJeNjed85hr2GgmqbPaY2CpOcPAXut4kYqaCB9lM
+lHcK
+=vDl9
+-----END PGP SIGNATURE-----
+
+--bywgq3w2vtdgrqnx--
