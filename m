@@ -1,147 +1,106 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A306B3FBEA0
-	for <v9fs@lists.linux.dev>; Thu, 12 Mar 2026 16:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D43AC0E1;
+	Thu, 12 Mar 2026 19:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773334496; cv=none; b=Ow0tjo/0QjycP27xb8RzQ4Sd5pnDtB0D7iA7Mv+nqWuP6ZluztTNLRUKujnAsi1jmdmBwlLMagIcDyO+jgscqMg9BuaJwCjiSYVNJr8/I/LheQXtdc+xb8ecCwbT5hM+QOMpFa24CV7kwdKbi9mUPb0Z0FYK+g8GovYbxayrD+E=
+	t=1773344034; cv=none; b=j33607n42e689OLFpqcE53xFh+mXzT0DHyFuURweRJDCnHcwW3FtYJuTwAwE7ZtTqn92an8BownNrtmHLhnnlR6hLvKAuI+SoVXShgoz/FNRyMB49rWOhUxMnrt0E5LHZZe0uYfRusDdVxUM+4AJvAJQujoLYUQ8fY7Cwp76ZKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773334496; c=relaxed/simple;
-	bh=ENv0+4bH9YdpFLGeURNwJ3+rEUsnNn74RNCtOl26SEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uLHOY4o8TOr6v3YH2Gjig3gQY4nCW4XYMmvwi+87RTw4alCEUdnSFodDaEFpzbpvjuLPqmzdhhErFEZ9wLRRS/wijUkUzYd9wJToS75N40Akx9uWwrqOE5Vz+uriMs56cmMlhZprSvyiUR13uHoxVEylpNpxk+z4FCwB/0VCwL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XdvK8Dom; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XdvK8Dom"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-509164dce91so11154591cf.1
-        for <v9fs@lists.linux.dev>; Thu, 12 Mar 2026 09:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773334491; x=1773939291; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
-        b=XdvK8DomXzUZgO6AoDwb+gZ7o/ziIbnIXHeoewfKtBKE5xyNG2Zck6CmNzNDWec1SB
-         l6itnkZH4V9Sxuv0dVfHojcx0ZpqqhGCu/CZ5lz2UxM0wQMexAGfjHJyeFboOcff/WPI
-         JWK+J3NRN2leYxfwrsAMxhrjjfN+/EJv+9htug6y4h/ByTJ80eVLtuuGfD4FwFG/E8H4
-         +uJdLGbU04IwX90inux/pY/ZLtJN3b61jhvP7qTFaBcM7pf3RlEjLXo6caO0csHVqAxz
-         hJgxIdv6OCGWX2aaKuKGlaQjUc3E4H2ah716Fy2ZS8tSsepbC+HgAc1oQbQJOLyGhGnN
-         nYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773334491; x=1773939291;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
-        b=lOGgrlhMdePAi+ayXJi7mlWYseWPQsSm+TTXoj2OOHOtmIygaeAULLkBgWn+yug58E
-         fo/I8XwG7fYymupNJ4rPjIg6mVFGBS6hxhIyLSgZXWnR1vdAYaoG+qN9pAPqFkqO7bWb
-         OlWPQFkxteYi4DU+zv6mtMrTTt/I4i2Xu9cBmsovJu/Kzu2/nyMIouo4O/Wz2/ncuFa/
-         kJfZvKE3ngMkRRzU1bGpjZi9KyjfwyDOQlW4LQ5jYkmVlvRXlz00TFr8X4uNFoMhumpU
-         otA3nb7/8QVgmpQuA8Gkw1nPklRIvXlga2u5u9cPPCSyZ19uLiNYOQ1uyPZvBOyYpbh4
-         Oxrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHZcbA/FiXgPx4KVAolsab6Q88TMxoHl3DZAI8csaiM6ere1gg1ylSo5WzSCQcRYYHrWnx@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjbZxE8JMP/kdeTcS61vh1PBZgRonaqEomIjEknE1VfLJbMbE7
-	PODVu9hlTWLxCGLULHz4kxRnoLz/6FSGdK521RZ05l4vTc17mb+Nffhtjz5kfARe7zw=
-X-Gm-Gg: ATEYQzwW+O4EogY0dnG6BdyF6zAx9CgSZgBsD0yn+hTZL5RIIeg1t/0wH4ndINFNB2S
-	VQliTGU+g7Dod9JYp6D7lK1TzCwcKcpHEDnvJ+NvFT7shtZz3KiG+0Z3T2uOXdB8MW+tRrYr7PF
-	EyD6LGIGGqRlYVfSbCLHcAYc8JIo2sVw5z12jvst0Tsrbr/9zEwW8ld2tOaqTlRG4MIDULbliPo
-	DYqOSFhBBfZ6Li8QBvYU5yf+P7cScre14pwa8GORYIz0wUdl9nWGzCQXOQQg03wLQ4wbUBr6ju/
-	CroAqWkd/g0Cr/AZ8YEpPQP9RZiaEOZExi5zTcimzvqlBykPj2ypmbmhZHrYJWSlfAuRB7NMtLO
-	tvPriAtdGO51br69k6hG9nB1hKmTUmqMOHAbRXfRuhgNqHkDjPBzxChEgaI+LQKXmp9VNdhHlx5
-	JHhpuq2NaQkYkWZJvR0EBVm/pwL5bjKoOM1n6k8yiuY3D5ynSMttF4HB3tvdqu+e2dbiBYfNhBo
-	NKVAy4u8QulIgYVskk=
-X-Received: by 2002:a05:622a:289:b0:509:44c3:5ffa with SMTP id d75a77b69052e-50957e10673mr1403911cf.52.1773334490530;
-        Thu, 12 Mar 2026 09:54:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a119602sm36658181cf.28.2026.03.12.09.54.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 09:54:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w0jJA-00000006i8N-40X9;
-	Thu, 12 Mar 2026 13:54:48 -0300
-Date: Thu, 12 Mar 2026 13:54:48 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, Philipp Hahn <phahn-oss@avm.de>,
-	amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
- check - refactor
-Message-ID: <20260312165448.GN1469476@ziepe.ca>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <abBlpGKO842B3yl9@google.com>
- <20260312125730.GI1469476@ziepe.ca>
- <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
+	s=arc-20240116; t=1773344034; c=relaxed/simple;
+	bh=VQ4I1//oujMg/wMbvtHZ1fNg62i5rEhIWcPKRohhj4U=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ddy2a7nze40y2XOq6AzX5P+yK/YAMZEsZCu4is1ZBhMnJKS9vFgMZWqpirXNxVgz6pZsokw/214XhfsoPaQlvyfIqpgQ2GBgjj20XFkl4eJeH0Ugf3RmPz5wDBJf3rAKd+aMd7liJ/M4aSZTOFN9EXdHYYjti5z0jySqd1deAiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 4DE582C14A8;
+	Thu, 12 Mar 2026 20:33:44 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id yCwNT8mwVvHB; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 8A34D2C14AA;
+	Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3HN7guaAFMsE; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id ABF4A2C14A6;
+	Thu, 12 Mar 2026 20:33:42 +0100 (CET)
+Date: Thu, 12 Mar 2026 20:33:42 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx <amd-gfx@lists.freedesktop.org>, 
+	apparmor <apparmor@lists.ubuntu.com>, bpf <bpf@vger.kernel.org>, 
+	ceph-devel <ceph-devel@vger.kernel.org>, cocci <cocci@inria.fr>, 
+	dm-devel@lists.linux.dev, 
+	DRI mailing list <dri-devel@lists.freedesktop.org>, 
+	gfs2 <gfs2@lists.linux.dev>, 
+	intel-gfx <intel-gfx@lists.freedesktop.org>, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-block <linux-block@vger.kernel.org>, 
+	linux-bluetooth@vger.kernel.org, 
+	linux-btrfs <linux-btrfs@vger.kernel.org>, 
+	linux-cifs <linux-cifs@vger.kernel.org>, linux-clk@vger.kernel.org, 
+	linux-erofs <linux-erofs@lists.ozlabs.org>, 
+	linux-ext4 <linux-ext4@vger.kernel.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	linux-gpio@vger.kernel.org, 
+	linux-hyperv <linux-hyperv@vger.kernel.org>, 
+	linux-input@vger.kernel.org, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-leds@vger.kernel.org, 
+	linux-media <linux-media@vger.kernel.org>, 
+	linux-mips <linux-mips@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, linux-modules@vger.kernel.org, 
+	linux-mtd <linux-mtd@lists.infradead.org>, 
+	linux-nfs <linux-nfs@vger.kernel.org>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	linux-phy@lists.infradead.org, linux-pm <linux-pm@vger.kernel.org>, 
+	linux-rockchip <linux-rockchip@lists.infradead.org>, 
+	linux-s390 <linux-s390@vger.kernel.org>, 
+	linux-scsi <linux-scsi@vger.kernel.org>, linux-sctp@vger.kernel.org, 
+	LSM <linux-security-module@vger.kernel.org>, 
+	linux-sh <linux-sh@vger.kernel.org>, 
+	linux-sound <linux-sound@vger.kernel.org>, 
+	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
+	linux-usb@vger.kernel.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, ntfs3 <ntfs3@lists.linux.dev>, 
+	samba-technical <samba-technical@lists.samba.org>, 
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, v9fs <v9fs@lists.linux.dev>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <1584421372.26258.1773344022512.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
+Subject: Re: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
+Thread-Topic: Prefer IS_ERR_OR_NULL over manual NULL check
+Thread-Index: 0l8CyewQmrWlgaG6N3QgQFfukutRbA==
 
-On Thu, Mar 12, 2026 at 11:32:37AM -0400, James Bottomley wrote:
-> On Thu, 2026-03-12 at 09:57 -0300, Jason Gunthorpe wrote:
-> > On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
-> > 
-> > > IMHO, the necessity of IS_ERR_OR_NULL() often highlights a
-> > > confusing or flawed API design. It usually implies that the caller
-> > > is unsure whether a failure results in an error pointer or a NULL
-> > > pointer. 
-> > 
-> > +1
-> > 
-> > IS_ERR_OR_NULL() should always be looked on with suspicion. Very
-> > little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
-> > pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
-> > implies ERR and NULL are semanticly the same, so fix the things to
-> > always use ERR.
-> 
-> Not in any way supporting the original patch.  However, the pattern
-> ERR, NULL, PTR is used extensively in the dentry code of filesystems. 
-> See the try_lookup..() set of functions in fs/namei.c
-> 
-> The meaning is
-> 
-> PTR - I found it
-> NULL - It definitely doesn't exist
-> ERR - something went wrong during the lookup.
-> 
-> So I don't think you can blanket say this pattern is wrong.
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Philipp Hahn" <phahn-oss@avm.de>
+> -=09if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
+> +=09if (!IS_ERR_OR_NULL(gpiomtd->nwp))
 
-Lots of places also would return ENOENT, I'd argue that is easier to
-use..
+No, please don't.
 
-But yes, I did use the word "suspicion" not blanket wrong :)
+This makes reading the code not easier.
 
-Jason
+Thanks,
+//richard
