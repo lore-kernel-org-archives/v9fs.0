@@ -1,74 +1,72 @@
 Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3209F258CCC
-	for <v9fs@lists.linux.dev>; Sun, 15 Mar 2026 15:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1B5373C18
+	for <v9fs@lists.linux.dev>; Sun, 15 Mar 2026 17:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773589603; cv=none; b=s3tjPnEGrZZcD3G9/z1IGIz7az2YW0DGDWn4LG9zmdGXv5ZT0IhQv7PtGXnxweMnfYqH4NUqkvemLtcexJnO/o1YsfrMseftY2GcrcYf6d/upoYI6ObcgA+MiYo43/InLe7Qeu+kP/y7BPZ4hhsdgLIyt6EK+OjZ0RrOfRQZxFw=
+	t=1773594436; cv=none; b=KhcCbXRSar2IM3/KhAcWxZuk6zqivr/0M2HQFMZ6hyfMOQlFyMkMPGQcGVB/h1ishFHaBnHRy6NPlKBFrFi5Ebu6ZbNRdBBpiUbFrLRFO2LxYXxBAtuFFzgrJr3mSJ3JHV9ifoTlFdnx+C8fQki64QtjEeMTz2dvsxTFoMZabWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773589603; c=relaxed/simple;
-	bh=iAydSp2SOigKwiJIXzuzx6l3d9f7Vn/peXmnFUF3hCg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o7YPYJPTYev3kLNY9J3Ob1oXuLd5hJ7dLYjdvYKDklx/QqTOGfQsQeNCjY3lSIX5AGZUikfO5/qrRt+i0ieffYudnddUxz1U14xuzxhqIYb8Z24HHId00X5T42PiB3Lyx5MhAHEoo/PMVz5yEkIgGoBd0G4mP0rjtXerWXxoW7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TgvwQCvA; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1773594436; c=relaxed/simple;
+	bh=d/R4+TuBHELKkpXTQmZVyBd4sGccYCnSg+xWcrV6+VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyALk6Ao9UPwRp4XTCzWK46YPaP/pF1di7wNH+e4PVzXwTZ9H6VrOnQ3IGRFJwjVnZMV8/GwB3wa09wV9uvhScb3QmjG8lqXpdErZ1vzNtVkaymU45qL80e/W2DOhlEzeg9lQVedmnlggw3C7wg0OeYcvzpmSsQ+DRRMdBEusxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mc7odlh8; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TgvwQCvA"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4852fdb36a8so44756345e9.2
-        for <v9fs@lists.linux.dev>; Sun, 15 Mar 2026 08:46:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mc7odlh8"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-485409ab264so26141175e9.1
+        for <v9fs@lists.linux.dev>; Sun, 15 Mar 2026 10:07:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773589600; x=1774194400; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1773594433; x=1774199233; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=M6Ayv+qRbNpeH5TjyhcgtwmRoDj3PFSQoFhk2DqpBxA=;
-        b=TgvwQCvAeNiojr9O/HGPKLzBGVvBBQPtcba7slyTHKMFx7FH+8jHNdQIN8TC86VftJ
-         qOMuADHiSkr1UIeUPoTW/yid6UfUO8cu9p8ESpx2OmWnVYc+PuRdOMhLjWnPfCCQoEVY
-         S04nWphRBZli2Qp43LkcX9zakYhb1JroJB+f9O+zOPIteaUMCdC5JZxRipW/NAHcnHme
-         Eq8V2eHqZk67oxpx8mCzwzZmcTGnzhwgwN2rJmknCLzTztP9OV/fIgeXhYydtZzlZm/9
-         GcFCbQtnQMU9kLoiOi+WlfdDUXCxJxN06mtCk9LcCUrW4hiZ83KKWwFNvO9Qpg4racfa
-         ZEng==
+        bh=t9CtlmBlx+I8Ll0yQI7Nk9bmvuVR4UyWp0VZA4+45g4=;
+        b=mc7odlh8WjlK9WoVmo/9aZCn+sZqCuH5RoBH+vpd1K7eaxK9jxbvkYShMPSHDN9pLB
+         NV3hSgoJ5tRJa2HAKnwkBhnGCl6pi8XPIshz9hTfmNrDOnDyGvww9GZmW3PLHWxV1gMq
+         nsYCrWoC+X0XBgUyS04mxapSV7CUf06R3zF1R4yzfqK8fkN9z4cwPsRguzn+GTRLBAJj
+         n/eOWfJQaWs53v41BxNyVtyRna/8iYsgvMiQgYrD0M5/rSFuQM7EWRCPvF6s5//nKTYv
+         YIq6ZeHnWtq5eZvHcsf+RhpUs1KgpeB3KS0YPnxe2Ygac4cEzSqoB6szyoPOMdtyGwbe
+         /8Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773589600; x=1774194400;
+        d=1e100.net; s=20251104; t=1773594433; x=1774199233;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=M6Ayv+qRbNpeH5TjyhcgtwmRoDj3PFSQoFhk2DqpBxA=;
-        b=Fc0/vMIeAZ2QKr2+P4+VgrWIoXcZFMiCDEZCP41h3OxGLqcWickrYQdUBPMG02nBK+
-         YBcIcWyYlKzIdJK3+iNYWoFW3R8NxmpCh9SasrfWQ5eOQjb7h3Kv1cEdRdQpb7jvjjQY
-         bGZnp3C6sjxxnErqwlPizbh20ReCw7QcBcQYiAtj+yFliWNhOgn8iYQshd03VUlNxeN7
-         jsVgeeMv/rtUtDJveUnclydrJWNL89+IO7PixbN8LeZHXMHqKJqAiCuICOBOY7vhM7YX
-         SxqStN/n+jjLEOljCAXUFFnlRoSu8I/Z4KivEQrMKnUT2pm2wNy+1W5IO8mZUNDLXoYF
-         jnSg==
-X-Forwarded-Encrypted: i=1; AJvYcCVV0GZmZ1NWs8BIpty8agUju+4MRWLLb3SEU4qiGnXNDESu8w5i71i+gjsLBc0VK+xq8pJh@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5APVzkRKBhmrt+Gm1NTAYJi5LcVS+aZ6+FT+B47PmW2Nk/hGQ
-	dqumXNv+aG4tMwbQ3oGyEUDoq6XKchmdItsP5K4p/BrdbiMytLILhtrMn4wHtck2hE8=
-X-Gm-Gg: ATEYQzyMo69PFfC6gukfAUrpz4Sp9u/dkHX2CaPw0paBlc7Kmh0/Y4F7ENCMkUJoVhM
-	ILCiOQivLDJmstMxC5oae+8/l4ATvWGkVx7ALyoyNWGVIVu/4H1Iy7iwFHKuxglqAb28OZNMFYx
-	64WSZKme8Qmo9O5aC1x7P077+lprGwM01Z+pajUO43jsae7GxL6fhbA3oZ77qGz6vL1hRVYor1Y
-	J3cXjaBqEcKOxbpaMERuB+KUv+YodAQbQQ7lgChqKqA0eboFSEtvQu2IRaMw6O5UkQq9UUzu/p/
-	EThbV5Cu07hQYcJ/fGD6CLnlcdpAUxaqRArlY2h8ZB/UfIG9UxQNTdEX3j0Fd4HwHfM2ySA6TIr
-	W2GUhoApo7JDJ/xvhbF1tpub8IxkxETuzrs04xYnvgfalBOsqZ9d4OpQwuvf2L+pzGKIXrF+Mw3
-	ImxSSGD52YmROpTV2L4o4wU3IHPXkljrZQStmn/MSyJ8rpjiBPFwFAYGtEN9ebSM3T3gng11cy6
-	CVQfKZb7RD7u8D3BTcOuSBLAV14rA==
-X-Received: by 2002:a05:600c:4753:b0:485:531d:28b9 with SMTP id 5b1f17b1804b1-485566d709dmr166345485e9.14.1773589600414;
-        Sun, 15 Mar 2026 08:46:40 -0700 (PDT)
+        bh=t9CtlmBlx+I8Ll0yQI7Nk9bmvuVR4UyWp0VZA4+45g4=;
+        b=IVXhXNxfnPBdAyuhTHmOEkxU89qJOMWABW1QIeApcwVERLkx3WUuE6UvgMy3S9gMkO
+         S06ycc/8LddU20ohVmjwcL8DIQpmDiG0WaHIxQrnBNWd73XCaTJWj0tSYjnHsxo+oe/D
+         A1cIR8D1OvazEKRUE1/i+pEvPdwlSK+znNAXVFpx1U6HLDFlgyEsE5+Ult7yTQ4dx+Dh
+         DpWkNLa/6EP+QexFjcp8AGPsIKnlHogYdG62mgOJvCEHThbvjP+1fFKvGo2Tcn/dKOum
+         ivB4LbtkLEOM+J5/NYNCqQ6wVIqsS0SVFJi/3A7iyaCAXyfEa3VV8ShGmd0PhGnvl8Nu
+         VvDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKhiKfPYbevY+P85BlTjs/x1d3P47YQztZ/kB9xnG6JLEdVVxRW+wspY46NdjUre7HRYXT@lists.linux.dev
+X-Gm-Message-State: AOJu0YzzbX/fXVdftrPKF69FNY/vo4xRi4+6ToWMfv4VzmM5xzwd1b+7
+	lm1gKPSgZ+rQTJEEhAIHLY4HST5QjiYAq4bG05jS8fV9GO18wVfXIdzs
+X-Gm-Gg: ATEYQzy5FPfKoeW+Gbv4P63bM0PoOc+iDYtVZZGNNMZtE9sqyUbwgIht1igZ5PBe42c
+	aEjMOVY/Wr3HydAJ4O9FEfEeGdMvID0NO/gcYQC6mwz5s/CQQtkNGBlmz8Zd57uMnONfiAG2ZCd
+	iT/Q9NbF/CL8mihusZ8SvZaDoSnFvUvk1U6ncL1/ilHiQ20BXo7oXTQSnC9iJUebZTB/ZFgdNw6
+	Jl94EH4039pjzo4s+hI5tguoCr8Ldnzp6YhymjK/lLmi1UUUE1YMGDFm294Hqk+lANtGxV/NTUe
+	ndtIBb+lEqzeov/iPYeUFZTib3bPc16DDg3sYylLy5z9PQ7Fb4c7ONZ3vpxqX9Nh8HONRB3ldS4
+	MiIUDZVToiUg44TX1eiLxwj7+aK/9xLiTVp6zXckyFookbfYvHZSTaEdiZknFjmXSVDw5uiJ4/s
+	T9qS1nPm4xOnYoQEUq6wlonZ7QkhDPrCm5CvLQqIJu3XNtHmeJJQW2eofJ2INBzj/SnbJ7ARUpv
+	/yNKhMf2Phjgv8UpXPhfjoEHeK7Bw==
+X-Received: by 2002:a05:600c:1907:b0:485:50ac:b8cf with SMTP id 5b1f17b1804b1-48555a5689amr168059915e9.0.1773594432200;
+        Sun, 15 Mar 2026 10:07:12 -0700 (PDT)
 Received: from DESKTOP-TILNSD1.localdomain ([139.47.104.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b3d87b1fbsm9474540f8f.7.2026.03.15.08.46.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b5e912fsm940069515e9.2.2026.03.15.10.07.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 08:46:39 -0700 (PDT)
+        Sun, 15 Mar 2026 10:07:11 -0700 (PDT)
 From: Kit Dallege <xaum.io@gmail.com>
 To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
 	Dominique Martinet <asmadeus@codewreck.org>
 Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
 	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kit Dallege <xaum.io@gmail.com>,
-	Claude <noreply@anthropic.com>
-Subject: [PATCH 3/3] 9p: document missing enum values in kernel-doc comments
-Date: Sun, 15 Mar 2026 16:46:29 +0100
-Message-ID: <20260315154629.51013-1-xaum.io@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] 9p: document missing enum values in kernel-doc comments
+Date: Sun, 15 Mar 2026 18:07:02 +0100
+Message-ID: <20260315170702.65160-1-xaum.io@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -85,7 +83,7 @@ Add kernel-doc entries for all undocumented enum values:
 - p9_open_mode_t: P9L_MODE_MASK, P9L_DIRECT, P9L_NOWRITECACHE,
   P9L_LOOSE
 
-Assisted-by: Claude <noreply@anthropic.com>
+Assisted-by: Claude:claude-opus-4-6
 Signed-off-by: Kit Dallege <xaum.io@gmail.com>
 ---
  include/net/9p/9p.h | 32 ++++++++++++++++++++++++++++++++
