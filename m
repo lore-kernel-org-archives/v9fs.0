@@ -1,197 +1,160 @@
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7873CFF71
-	for <v9fs@lists.linux.dev>; Mon, 16 Mar 2026 17:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773681764; cv=pass; b=kZrrNhsuISEH4nO7BPBw8gmMUzPYmAonQPVjUQskLF91GjpFPmdQsHBsUSR++gye2jHXXljyd67OO7GAlL3b0VRyL62kb2bIi/KE31yZEz5h2S4LuBg2Fm5sW5qHXclCCZ4TESEz6OoOrvZcYh0pb6rv7SiB36EFSlAhpHqmsDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773681764; c=relaxed/simple;
-	bh=38YIF2h9LQRciTDudLh6dbVHlCWQ+CVfx4lmwVgz+TQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r4emgaLSmLv2vraSTJnFMb8WQ4+EtDT3jLWM/O3IUNzYo5fyaSfX1S9/pXm+6NDrMB0fiEcvfvUgMNBYCSOnkb67O+U0/yiohD1PyIOpWd2VcKNOJNMBXrpHq2wBO8qDhd0wRnbxZsVzpAvo1OOY3CVif6XxYBJyfUKEHPQl4ok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hK0fBCxI; arc=pass smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AAD139D;
+	Mon, 16 Mar 2026 22:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773699059; cv=none; b=Tn4g6yuQsrdprb0Bsx8F7QrQOodEARd0OnKV3QjRfxK6J6YrJpd21lzvfIzHZRo1o3IGrzoIqfrCL5odl6666mwSYGyf2TFtnrcxxkYYBfEdL78vw6eMID7uyzE63Hoh3B1eN98qirDXQGROu9Dkndtspi1VLDFq3hf+3Do+P7w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773699059; c=relaxed/simple;
+	bh=bR3l1XBxxG0Br6WPViaTYx4jBj801ByLeboUNggNeu4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IjPn0SMPb4DsgdJfGm14G8xAS4hIDAtI7biL4yhakfHBUxAM83Pb9JhZX6NCaMyu5mbB2wf3tY3MRXQ8FfTOra0ipiwzV1RyIYnPMOSih2WeYsp3aJ0L2Efs4UnUO6wffARmu+dFT2EulyYaRazBEVrfNw5FfnBiBlWhpKTr4LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=eyO5nsRG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=guCypQjf; arc=none smtp.client-ip=103.168.172.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hK0fBCxI"
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5ffa277c115so2635093137.3
-        for <v9fs@lists.linux.dev>; Mon, 16 Mar 2026 10:22:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773681761; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KyfN7wqAJrzog+1wgs7WuXltSwiKq40c0Zm7zKfuPRPw/0WcsQL0LqCicycj6Nb9mF
-         6XpI/4fE0o0uT/CBh2zLjRZhnwogKy9eFndTWjmZuFAV3GFMlBschlIoXExUZ3idPE2d
-         oveQuMvTys+MKPDhrPtLSmFNB648srSYdkVZ4IW2lKXMnRFDF1eyYQi4wcu1J3CHd53a
-         NNJ9juBgnxw4fZz8GQKfvI4zKTIvQcrQ9RTHvIkTafR0B8wvNWGH1+VTmqbEN2861X1i
-         1im0jSbou0BuuaoVTYDNSqpQ4Ujg3iHmwqsg6/Pmu/8WZNpxS0Fv5lwfne7e3ydAn3gQ
-         /oGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=y3DZPi773JGtMdvcTYXrz3SkUkUANIodCa33A4wwy7k=;
-        fh=IJtaa0Fte7ZOsS6vXe3ez54FiXfVUOngi5qfY5zhii0=;
-        b=aOgfT5o1dLYs4yzINFQ8U+oP7WKA1ZpCwJcRyPjPKrwvZKdOT7rk36k6o2KWNJ2qgN
-         jgjF5AEgBVQpSfrdpF43KqiOxKxxVbpiU9RjCIFcVn9ofGIuC98Xscg0rqjxFHdf/S28
-         QKJpMFWx6xCr0Yb59E61i6yusSTSi7gpZbccFZ5CgTgfX0UoGNA7qXHNEVSDkremkEg8
-         EQlGsSXI4EZQQ1hkN/nzNOt0DI87X1UfMn6kJ0/zMOodshAgkfRcA8+gwZji4hEaRfcj
-         lnaLHFNIFFt+UzkYSFvKV0Mxg49Cp1xMk4f6J5v4ytkctI6bjvi5jjspI5S2iy/X7EQN
-         j7YQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773681761; x=1774286561; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y3DZPi773JGtMdvcTYXrz3SkUkUANIodCa33A4wwy7k=;
-        b=hK0fBCxIwxOiBxPaMoqxQF+imiCcAxc/yw2H6LFTo6ba/Ze9JUzCoBXbgtNIUtA/wI
-         yt5M8ZHPxZ/Vu9TPHAfuIle8Yw/ktlFP15k+CxXFyhj9RMaxs6b2Y7Z7nfVo4GdLQUGf
-         APuolglyjkVqGcX1PmFRwBVzxhKMwq9kUzjRwg74JXgvW1qEqgBk0uibiZsn8+KUlEH5
-         45zSvjW/UUY43d8CYb2UeoJ0f0UA4z9kTkwSzoQBYXSW+y+klpKpgbhe/sr4L3RMElTa
-         kNUqNd6fSM2VoBk6ERn9cH8RxX6Oc5hijWe0AW3G/X6tZRfEEgI/Uk1et3aVgxX9AXQk
-         IP/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773681761; x=1774286561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=y3DZPi773JGtMdvcTYXrz3SkUkUANIodCa33A4wwy7k=;
-        b=EM72eKa8alkyecOIf4NHT72k2/ZgKVKzTFt0wZssUt6EQMbEQzFIsHo7E3evEFss0g
-         1NvpSxa9hYjVtmVtGwQnjfi6y5/VLfRLeDvxLJ4pCXtcjIqn7abnDW3dZLT/8kJIwrAT
-         QJuvqoBYQi4wlVYAh/9NNrIL6Ay9swKWRwh8BZDOecfz8hBzaxJdzlDEIPto+m129Y7W
-         hZaFBdvrze3qB/a1LI+92MwNOKhuFuBELLAM9PbR7VJQTXm/ljmnM3m+hD9EpLP2QGIR
-         ZjkgZEdbXN2HZC35SM4cOVUiwPg/ooD20aUwPYE8aXtRbakwy0FV0F+jOXIAX/XtTJOv
-         kihQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdLvZh3CLTJDe1in+3trrhfc40uwj5gDP0UIWgeDn6fZWzDD23HWB7WJtvXMVbMjmKKobF@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8QEP2fnpSLPjQAJWfGqBEIjl+MUk/qu52tV5VHa+vMYajV3N0
-	T7uDdg2P0AhvCP3N2/48TEuWNVJ8Qeuu9j03+MOfY8YKPgQqizPk34WUzSA3ZxFh7L788xydncg
-	8zolf1mVoc6rt8bdZoVvNOEAvTseHcPc=
-X-Gm-Gg: ATEYQzy36+UGvgMcmxOKPSmOeBgJT8lNF5IoTCoMcAmWM+TAgDPikM1DqF2NR+cejNj
-	OjDk8YmRYJcGuwWsUcNiNAaA7DOkzunM1zkIPyJT5+iFy+rwSNj26kG6VzyP1RRm2s14EHk5CwR
-	zYk1Q/MH7XWcrpAky8b35vTHWYAZjVx29e+oVl+6vaTIHvPTLit0R/1tFG9hgcO4SzqBjpJJWX6
-	sxga7XAOqpm/3KA1WOIuoQwSqCFQUbJW1dKznQVRelY7zbS4S2TGsft8mujwAi3GuKco1ylbAsL
-	SssZhUnc2BJtpiJNev315qteIutKJFLL8DLpXnIXTC1sEorpNaDiMx0=
-X-Received: by 2002:a05:6102:32c4:b0:5e1:866c:4f8a with SMTP id
- ada2fe7eead31-6020e52dbbamr5788771137.20.1773681761421; Mon, 16 Mar 2026
- 10:22:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="eyO5nsRG";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="guCypQjf"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id 96E81138028E;
+	Mon, 16 Mar 2026 18:10:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 16 Mar 2026 18:10:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773699056;
+	 x=1773706256; bh=pZj8f0JboyjKt94J8KB7OLIiCOoml43GOZ4w8rDpLPA=; b=
+	eyO5nsRGgscBaSPTlSrjx8D8qsmxFZTD+YBT90C8JLtkSU+JG9otBsGP68/aDjfq
+	Ip8/CY7pDqj8uLfl6tk9PaoCLmHFx9BmC+OLDsgQIKz5wruWwvglBIFTzX8Bgo1G
+	D7tyDhfcq/yYvbxAZYbPlVlov+W1BUQwVVZx34myYfSzzczy+o0TvO2AJR+dEy1d
+	h9Fy4zA0IHy3AyAu2lJw7cTPeRVsoH7Q9DZJUhPGVmEq8IZ5byXvr46eUf3RwYLV
+	Pd21rN+O2sxo21UD0KoApMpHYwnhY5vI1CKlHqs6nb1Q0ON5mjBcz18/WvPyI4M2
+	g7ed/wORmv3aHNEvlM9NEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773699056; x=
+	1773706256; bh=pZj8f0JboyjKt94J8KB7OLIiCOoml43GOZ4w8rDpLPA=; b=g
+	uCypQjfxr+Zi7JxdTC/p3wGQ4VV0q/Wv3rf4QuOSSvRwPZ4hwWoKXSQwRlJppx/A
+	eTD/kX8ytMBkqeeAHXi8QojGoDJPwhemKEl1A5BQyy+VTfQ0kjCklEhRU0D9TNU6
+	QzoouUhJdY7Fi24kVLMS4vkfF5Xif+sxcGuZ+ZH9bmNOAZhg/6jHFnuxjrIUYo4Y
+	sJAjmQ/c58h+MsTVokuL8c2t4xBbVGwnTgXIvKplEwnaY81NNzKXbPGa+zPU58N/
+	vwQ/zZfUYT5zYdyXfBWrfC5sZSkqzhpuD1WACxXIM/TD7Jh2N1ZXy8qS+O1DtSBY
+	h24uS6YuZ9c79L+rKNYRA==
+X-ME-Sender: <xms:73-4aYdtUUIQC679P0YPl8k6UZ10Tz8-qTD319yDZEtXusdBhZuXRA>
+    <xme:73-4aTUav9FvduIIOmc0jldmINr5W_MhUsWQFGzP1fBm1dpf8ggOxSMvCMHniLmCu
+    LbRPk360ujIo39hLA6fsP95YlnCLki5WcrUsiuRyEwh6NcxWlxF>
+X-ME-Received: <xmr:73-4aSY56rJyFtQwMFw-H9dfM29zbbMWxWkWrpi3kYaZ1kbqDyXdf5bHU5U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleelheegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopeehhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhhrghh
+    nhdqohhsshesrghvmhdruggvpdhrtghpthhtoheprghmugdqghhfgieslhhishhtshdrfh
+    hrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopegrphhprghrmhhorheslhhishht
+    shdruhgsuhhnthhurdgtohhmpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegtvghphhdquggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegtohgttghisehinhhrihgrrdhfrhdprhgtphhtthhopegumh
+    dquggvvhgvlheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegurhhiqdgu
+    vghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepgh
+    hfshdvsehlihhsthhsrdhlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:73-4aQltNdDVIdEqvCmz7Mlt0qW50NA4CHgJQUMNlacMN4MGiVKHfA>
+    <xmx:73-4acHdFw15OLpR73_B1AdIXJMG-pYssiD_C0T2dj2N-8ux7fVHFg>
+    <xmx:73-4aU6P6J2BtdvPwSPzfrUNjz9-qYacHOOWBucSAMlha23fXDTcIg>
+    <xmx:73-4aaO5YEqAXlnOLRO88GZx1RbxPW8QtXAeqZQNaqmxlgOL7PgFkQ>
+    <xmx:8H-4abIvs_QYur641c9BpnDuFQ6ssCC-7-o-rPLEHWyRxStBDxJEr6SL>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Mar 2026 18:10:52 -0400 (EDT)
+Date: Mon, 16 Mar 2026 16:10:50 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+ bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+ alex@shazbot.org
+Subject: Re: [PATCH 46/61] vfio: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+Message-ID: <20260316161050.01c82973@shazbot.org>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	<20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260307140726.70219-1-dorjoychy111@gmail.com>
- <20260307140726.70219-2-dorjoychy111@gmail.com> <5fcc2a6e6d92dae0601c6b3b8faa8b2f83981afb.camel@kernel.org>
-In-Reply-To: <5fcc2a6e6d92dae0601c6b3b8faa8b2f83981afb.camel@kernel.org>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Mon, 16 Mar 2026 23:22:29 +0600
-X-Gm-Features: AaiRm519sCKeQSwcsAIj83-gCCcOtyLCMrhp4On2ZfkD8pFyjWgcliN3tJw964Y
-Message-ID: <CAFfO_h5pyrTTwJ3swHNLT=ZyeTJG=eHw626bTqQqAh+GeN3PhA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
-To: Jeff Layton <jlayton@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
-	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
-	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
-	bharathsm@microsoft.com, shuah@kernel.org, miklos@szeredi.hu, 
-	hansg@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 16, 2026 at 10:53=E2=80=AFPM Jeff Layton <jlayton@kernel.org> w=
-rote:
->
-> On Sat, 2026-03-07 at 20:06 +0600, Dorjoy Chowdhury wrote:
-> > This flag indicates the path should be opened if it's a regular file.
-> > This is useful to write secure programs that want to avoid being
-> > tricked into opening device nodes with special semantics while thinking
-> > they operate on regular files. This is a requested feature from the
-> > uapi-group[1].
-> >
-> > A corresponding error code EFTYPE has been introduced. For example, if
-> > openat2 is called on path /dev/null with OPENAT2_REGULAR in the flag
-> > param, it will return -EFTYPE. EFTYPE is already used in BSD systems
-> > like FreeBSD, macOS.
-> >
-> > When used in combination with O_CREAT, either the regular file is
-> > created, or if the path already exists, it is opened if it's a regular
-> > file. Otherwise, -EFTYPE is returned.
-> >
-> > When OPENAT2_REGULAR is combined with O_DIRECTORY, -EINVAL is returned
-> > as it doesn't make sense to open a path that is both a directory and a
-> > regular file.
-> >
-> > [1]: https://uapi-group.org/kernel-features/#ability-to-only-open-regul=
-ar-files
-> >
-> > Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-> > ---
-> >  arch/alpha/include/uapi/asm/errno.h        |  2 ++
-> >  arch/alpha/include/uapi/asm/fcntl.h        |  1 +
-> >  arch/mips/include/uapi/asm/errno.h         |  2 ++
-> >  arch/parisc/include/uapi/asm/errno.h       |  2 ++
-> >  arch/parisc/include/uapi/asm/fcntl.h       |  1 +
-> >  arch/sparc/include/uapi/asm/errno.h        |  2 ++
-> >  arch/sparc/include/uapi/asm/fcntl.h        |  1 +
-> >  fs/ceph/file.c                             |  4 ++++
-> >  fs/gfs2/inode.c                            |  6 ++++++
-> >  fs/namei.c                                 |  4 ++++
-> >  fs/nfs/dir.c                               |  4 ++++
-> >  fs/open.c                                  |  4 +++-
-> >  fs/smb/client/dir.c                        | 14 +++++++++++++-
-> >  include/linux/fcntl.h                      |  2 ++
-> >  include/uapi/asm-generic/errno.h           |  2 ++
-> >  include/uapi/asm-generic/fcntl.h           |  4 ++++
-> >  tools/arch/alpha/include/uapi/asm/errno.h  |  2 ++
-> >  tools/arch/mips/include/uapi/asm/errno.h   |  2 ++
-> >  tools/arch/parisc/include/uapi/asm/errno.h |  2 ++
-> >  tools/arch/sparc/include/uapi/asm/errno.h  |  2 ++
-> >  tools/include/uapi/asm-generic/errno.h     |  2 ++
-> >  21 files changed, 63 insertions(+), 2 deletions(-)
-> >
-> >
->
-> I pointed Claude at this patch and got this back. Both issues that it
-> found will need to be fixed:
->
->   Analysis Summary
->
->   Commit: 7e7fa2653ca57 - openat2: new OPENAT2_REGULAR flag support
->
->   This patch adds a new OPENAT2_REGULAR flag for openat2() that restricts=
- opens to regular files only, returning a new
->   EFTYPE errno for non-regular files. It adds filesystem-specific checks =
-in ceph, gfs2, nfs, and cifs atomic_open paths,
->   plus a VFS-level fallback in do_open().
->
->   Issues found:
->
->   1. OPENAT2_REGULAR leaks into f_flags - do_dentry_open() strips open-ti=
-me-only flags (O_CREAT|O_EXCL|O_NOCTTY|O_TRUNC)
->   but does not strip OPENAT2_REGULAR. When a regular file is successfully=
- opened via openat2() with this flag, the bit
->   persists in file->f_flags and will be returned by fcntl(fd, F_GETFL).
->   2. BUILD_BUG_ON not updated - The compile-time guard checks upper_32_bi=
-ts(VALID_OPEN_FLAGS) but the code now accepts
->   VALID_OPENAT2_FLAGS. The guard should cover the expanded flag set.
->
+On Tue, 10 Mar 2026 12:49:12 +0100
+Philipp Hahn <phahn-oss@avm.de> wrote:
 
-Good catches! I guess for issue 1 I need to modify the line in
-do_dentry_open implementation to
-f->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | OPENAT2_REGULAR);
-right?
-And for issue 2, I should change the VALID_OPEN_FLAGS to
-VALID_OPENAT2_FLAGS in both build_open_flags in fs/open.c and in
-fcntl_init in fs/fcntl.c, correct?
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+> 
+> Change generated with coccinelle.
+> 
+> To: Alex Williamson <alex@shazbot.org>
+> Cc: kvm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/vfio/vfio_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 742477546b15d4dbaf9ebcfb2e67627db71521e0..d71922dfde5885967398deddec3e9e04b05adfec 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -923,7 +923,7 @@ vfio_ioctl_device_feature_mig_device_state(struct vfio_device *device,
+>  
+>  	/* Handle the VFIO_DEVICE_FEATURE_SET */
+>  	filp = device->mig_ops->migration_set_state(device, mig.device_state);
+> -	if (IS_ERR(filp) || !filp)
+> +	if (IS_ERR_OR_NULL(filp))
+>  		goto out_copy;
+>  
+>  	return vfio_ioct_mig_return_fd(filp, arg, &mig);
+> 
 
-Regards,
-Dorjoy
+As others have expressed in general, this doesn't seem to be cleaner
+and tends to mask that we consider IS_ERR() and NULL as separate cases
+in the goto.  This code looks like it could use some refactoring, and
+likely that refactoring should handle the IS_ERR() and NULL cases
+separately, but conflating them here is not an improvement.  Thanks,
+
+Alex
