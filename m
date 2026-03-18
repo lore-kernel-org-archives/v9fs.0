@@ -1,160 +1,310 @@
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AAD139D;
-	Mon, 16 Mar 2026 22:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FB3DA7CC
+	for <v9fs@lists.linux.dev>; Wed, 18 Mar 2026 14:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773699059; cv=none; b=Tn4g6yuQsrdprb0Bsx8F7QrQOodEARd0OnKV3QjRfxK6J6YrJpd21lzvfIzHZRo1o3IGrzoIqfrCL5odl6666mwSYGyf2TFtnrcxxkYYBfEdL78vw6eMID7uyzE63Hoh3B1eN98qirDXQGROu9Dkndtspi1VLDFq3hf+3Do+P7w=
+	t=1773844437; cv=none; b=B2Z3fMFuU7CZ+wxt7pGV7SR2IXlOI3Wi+q3Y0KUbFX/en9oZ8KHCE+fHzxnaeOXqlFuWs1KODFBAZV0rDO8EQMJr2YGue8tkZy4i41zGVO7dKUfhyfbqjMDrO37Wu0hVUmGZSwjXNvmsgIPe+DRbCwIerF/eWa3IXFQvdgaaeWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773699059; c=relaxed/simple;
-	bh=bR3l1XBxxG0Br6WPViaTYx4jBj801ByLeboUNggNeu4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IjPn0SMPb4DsgdJfGm14G8xAS4hIDAtI7biL4yhakfHBUxAM83Pb9JhZX6NCaMyu5mbB2wf3tY3MRXQ8FfTOra0ipiwzV1RyIYnPMOSih2WeYsp3aJ0L2Efs4UnUO6wffARmu+dFT2EulyYaRazBEVrfNw5FfnBiBlWhpKTr4LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=eyO5nsRG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=guCypQjf; arc=none smtp.client-ip=103.168.172.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="eyO5nsRG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="guCypQjf"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id 96E81138028E;
-	Mon, 16 Mar 2026 18:10:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 16 Mar 2026 18:10:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773699056;
-	 x=1773706256; bh=pZj8f0JboyjKt94J8KB7OLIiCOoml43GOZ4w8rDpLPA=; b=
-	eyO5nsRGgscBaSPTlSrjx8D8qsmxFZTD+YBT90C8JLtkSU+JG9otBsGP68/aDjfq
-	Ip8/CY7pDqj8uLfl6tk9PaoCLmHFx9BmC+OLDsgQIKz5wruWwvglBIFTzX8Bgo1G
-	D7tyDhfcq/yYvbxAZYbPlVlov+W1BUQwVVZx34myYfSzzczy+o0TvO2AJR+dEy1d
-	h9Fy4zA0IHy3AyAu2lJw7cTPeRVsoH7Q9DZJUhPGVmEq8IZ5byXvr46eUf3RwYLV
-	Pd21rN+O2sxo21UD0KoApMpHYwnhY5vI1CKlHqs6nb1Q0ON5mjBcz18/WvPyI4M2
-	g7ed/wORmv3aHNEvlM9NEQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773699056; x=
-	1773706256; bh=pZj8f0JboyjKt94J8KB7OLIiCOoml43GOZ4w8rDpLPA=; b=g
-	uCypQjfxr+Zi7JxdTC/p3wGQ4VV0q/Wv3rf4QuOSSvRwPZ4hwWoKXSQwRlJppx/A
-	eTD/kX8ytMBkqeeAHXi8QojGoDJPwhemKEl1A5BQyy+VTfQ0kjCklEhRU0D9TNU6
-	QzoouUhJdY7Fi24kVLMS4vkfF5Xif+sxcGuZ+ZH9bmNOAZhg/6jHFnuxjrIUYo4Y
-	sJAjmQ/c58h+MsTVokuL8c2t4xBbVGwnTgXIvKplEwnaY81NNzKXbPGa+zPU58N/
-	vwQ/zZfUYT5zYdyXfBWrfC5sZSkqzhpuD1WACxXIM/TD7Jh2N1ZXy8qS+O1DtSBY
-	h24uS6YuZ9c79L+rKNYRA==
-X-ME-Sender: <xms:73-4aYdtUUIQC679P0YPl8k6UZ10Tz8-qTD319yDZEtXusdBhZuXRA>
-    <xme:73-4aTUav9FvduIIOmc0jldmINr5W_MhUsWQFGzP1fBm1dpf8ggOxSMvCMHniLmCu
-    LbRPk360ujIo39hLA6fsP95YlnCLki5WcrUsiuRyEwh6NcxWlxF>
-X-ME-Received: <xmr:73-4aSY56rJyFtQwMFw-H9dfM29zbbMWxWkWrpi3kYaZ1kbqDyXdf5bHU5U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleelheegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
-    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
-    gprhgtphhtthhopeehhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhhrghh
-    nhdqohhsshesrghvmhdruggvpdhrtghpthhtoheprghmugdqghhfgieslhhishhtshdrfh
-    hrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopegrphhprghrmhhorheslhhishht
-    shdruhgsuhhnthhurdgtohhmpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopegtvghphhdquggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegtohgttghisehinhhrihgrrdhfrhdprhgtphhtthhopegumh
-    dquggvvhgvlheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegurhhiqdgu
-    vghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepgh
-    hfshdvsehlihhsthhsrdhlihhnuhigrdguvghv
-X-ME-Proxy: <xmx:73-4aQltNdDVIdEqvCmz7Mlt0qW50NA4CHgJQUMNlacMN4MGiVKHfA>
-    <xmx:73-4acHdFw15OLpR73_B1AdIXJMG-pYssiD_C0T2dj2N-8ux7fVHFg>
-    <xmx:73-4aU6P6J2BtdvPwSPzfrUNjz9-qYacHOOWBucSAMlha23fXDTcIg>
-    <xmx:73-4aaO5YEqAXlnOLRO88GZx1RbxPW8QtXAeqZQNaqmxlgOL7PgFkQ>
-    <xmx:8H-4abIvs_QYur641c9BpnDuFQ6ssCC-7-o-rPLEHWyRxStBDxJEr6SL>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 18:10:52 -0400 (EDT)
-Date: Mon, 16 Mar 2026 16:10:50 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
- bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
- dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
- alex@shazbot.org
-Subject: Re: [PATCH 46/61] vfio: Prefer IS_ERR_OR_NULL over manual NULL
- check
-Message-ID: <20260316161050.01c82973@shazbot.org>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-	<20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1773844437; c=relaxed/simple;
+	bh=cLufbcSTF3ZXxO63NfD5IE+LSmoBumdAAbnjhXQdd9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nqo/wgrFLVukspcpTJc9OTmRYJLOh0OR0o7n4IK20/Lw3gQVhzPRC1ZbfR5O7MG3tHVvfgq+YX2lXwKYDMczoGEOgMVFETqPxSpErMKxg3ewNQaXK7SXtyWISJkPfoo6ukwDqWtlx6ILKqMM+/g0Lp0l3IAvjjCux1V7FPX5ktQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxz-0001iL-6S; Wed, 18 Mar 2026 15:33:47 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxy-000vHs-1T;
+	Wed, 18 Mar 2026 15:33:46 +0100
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxy-00000009Ar4-1S7v;
+	Wed, 18 Mar 2026 15:33:46 +0100
+Date: Wed, 18 Mar 2026 15:33:46 +0100
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Hyungjung Joo <jhj140711@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+	linux_oss@crudebyte.com, gregkh@linuxfoundation.org,
+	v9fs@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
+Message-ID: <abq3yqrsQJGI71jz@pengutronix.de>
+References: <20260313171659.1225180-1-jhj140711@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="slHqKoTqpWZ+T6zB"
+Content-Disposition: inline
+In-Reply-To: <20260313171659.1225180-1-jhj140711@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-On Tue, 10 Mar 2026 12:49:12 +0100
-Philipp Hahn <phahn-oss@avm.de> wrote:
 
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
-> 
-> Change generated with coccinelle.
-> 
-> To: Alex Williamson <alex@shazbot.org>
-> Cc: kvm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/vfio/vfio_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 742477546b15d4dbaf9ebcfb2e67627db71521e0..d71922dfde5885967398deddec3e9e04b05adfec 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -923,7 +923,7 @@ vfio_ioctl_device_feature_mig_device_state(struct vfio_device *device,
->  
->  	/* Handle the VFIO_DEVICE_FEATURE_SET */
->  	filp = device->mig_ops->migration_set_state(device, mig.device_state);
-> -	if (IS_ERR(filp) || !filp)
-> +	if (IS_ERR_OR_NULL(filp))
->  		goto out_copy;
->  
->  	return vfio_ioct_mig_return_fd(filp, arg, &mig);
-> 
+--slHqKoTqpWZ+T6zB
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As others have expressed in general, this doesn't seem to be cleaner
-and tends to mask that we consider IS_ERR() and NULL as separate cases
-in the goto.  This code looks like it could use some refactoring, and
-likely that refactoring should handle the IS_ERR() and NULL cases
-separately, but conflating them here is not an improvement.  Thanks,
+Hi
 
-Alex
+I have some review feedback.
+
+On Sat, Mar 14, 2026 at 02:16:59AM +0900, Hyungjung Joo wrote:
+>p9_usbg_close() tears down the client transport, but usb9pfs keeps
+>using usb9pfs->client from asynchronous TX and RX completion handlers.
+>A late completion can therefore dereference a client that has already
+>been freed during mount teardown.
+>
+>Clear usb9pfs->client under usb9pfs->lock when closing the transport,
+>detach any pending TX request from in_req->context, and make the TX/RX
+>completion handlers bail out once the transport has been detached. This
+>keeps late completions from touching a freed or rebound p9_client.
+>
+>Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+>---
+> net/9p/trans_usbg.c | 63 +++++++++++++++++++++++++++++++++------------
+> 1 file changed, 47 insertions(+), 16 deletions(-)
+>
+>diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+>index 1ce70338999c..3c2aa1943f93 100644
+>--- a/net/9p/trans_usbg.c
+>+++ b/net/9p/trans_usbg.c
+>@@ -149,7 +149,8 @@ static void usb9pfs_tx_complete(struct usb_ep *ep, str=
+uct usb_request *req)
+> {
+> 	struct f_usb9pfs *usb9pfs =3D ep->driver_data;
+> 	struct usb_composite_dev *cdev =3D usb9pfs->function.config->cdev;
+>-	struct p9_req_t *p9_tx_req =3D req->context;
+>+	struct p9_client *client;
+>+	struct p9_req_t *p9_tx_req;
+> 	unsigned long flags;
+>
+> 	/* reset zero packages */
+>@@ -165,18 +166,27 @@ static void usb9pfs_tx_complete(struct usb_ep *ep, s=
+truct usb_request *req)
+> 		ep->name, req->status, req->actual, req->length);
+>
+> 	spin_lock_irqsave(&usb9pfs->lock, flags);
+>-	WRITE_ONCE(p9_tx_req->status, REQ_STATUS_SENT);
+>+	client =3D usb9pfs->client;
+>+	p9_tx_req =3D req->context;
+>+	req->context =3D NULL;
+>
+>-	p9_req_put(usb9pfs->client, p9_tx_req);
+>+	if (!client || !p9_tx_req) {
+
+Just goto unlock_complete;
+
+>+		spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>+		complete(&usb9pfs->send);
+>+		return;
+>+	}
+>
+>-	req->context =3D NULL;
+>+	WRITE_ONCE(p9_tx_req->status, REQ_STATUS_SENT);
+>+
+>+	p9_req_put(client, p9_tx_req);
+>
+
+unlock_complete:
+> 	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>
+> 	complete(&usb9pfs->send);
+> }
+>
+>-static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs, void=
+ *buf)
+>+static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs,
+>+					  struct p9_client *client, void *buf)
+
+I like this change but not in this patch. Since with your patch,
+rx_header will be called under locking context, this is not
+really a necessary change.
+
+I would keep it in another patch, though and move it before your change.
+
+> {
+> 	struct p9_req_t *p9_rx_req;
+> 	struct p9_fcall	rc;
+>@@ -202,7 +212,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		 "mux %p pkt: size: %d bytes tag: %d\n",
+> 		 usb9pfs, rc.size, rc.tag);
+>
+>-	p9_rx_req =3D p9_tag_lookup(usb9pfs->client, rc.tag);
+>+	p9_rx_req =3D p9_tag_lookup(client, rc.tag);
+> 	if (!p9_rx_req || p9_rx_req->status !=3D REQ_STATUS_SENT) {
+> 		p9_debug(P9_DEBUG_ERROR, "Unexpected packet tag %d\n", rc.tag);
+> 		return NULL;
+>@@ -212,7 +222,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		p9_debug(P9_DEBUG_ERROR,
+> 			 "requested packet size too big: %d for tag %d with capacity %zd\n",
+> 			 rc.size, rc.tag, p9_rx_req->rc.capacity);
+>-		p9_req_put(usb9pfs->client, p9_rx_req);
+>+		p9_req_put(client, p9_rx_req);
+> 		return NULL;
+> 	}
+>
+>@@ -220,7 +230,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		p9_debug(P9_DEBUG_ERROR,
+> 			 "No recv fcall for tag %d (req %p), disconnecting!\n",
+> 			 rc.tag, p9_rx_req);
+>-		p9_req_put(usb9pfs->client, p9_rx_req);
+>+		p9_req_put(client, p9_rx_req);
+> 		return NULL;
+> 	}
+>
+>@@ -231,8 +241,10 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+> {
+> 	struct f_usb9pfs *usb9pfs =3D ep->driver_data;
+> 	struct usb_composite_dev *cdev =3D usb9pfs->function.config->cdev;
+>+	struct p9_client *client;
+> 	struct p9_req_t *p9_rx_req;
+> 	unsigned int req_size =3D req->actual;
+>+	unsigned long flags;
+> 	int status =3D REQ_STATUS_RCVD;
+>
+> 	if (req->status) {
+>@@ -241,9 +253,16 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+> 		return;
+> 	}
+>
+>-	p9_rx_req =3D usb9pfs_rx_header(usb9pfs, req->buf);
+>-	if (!p9_rx_req)
+>+	spin_lock_irqsave(&usb9pfs->lock, flags);
+>+	client =3D usb9pfs->client;
+>+	if (!client) {
+>+		spin_unlock_irqrestore(&usb9pfs->lock, flags);
+> 		return;
+>+	}
+>+
+>+	p9_rx_req =3D usb9pfs_rx_header(usb9pfs, client, req->buf);
+>+	if (!p9_rx_req)
+>+		goto out_unlock;
+>
+> 	if (req_size > p9_rx_req->rc.capacity) {
+> 		dev_err(&cdev->gadget->dev,
+>@@ -257,8 +276,11 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+>
+> 	p9_rx_req->rc.size =3D req_size;
+>
+>-	p9_client_cb(usb9pfs->client, p9_rx_req, status);
+>-	p9_req_put(usb9pfs->client, p9_rx_req);
+>+	p9_client_cb(client, p9_rx_req, status);
+>+	p9_req_put(client, p9_rx_req);
+>+
+>+out_unlock:
+>+	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>
+> 	complete(&usb9pfs->received);
+> }
+>@@ -416,7 +438,9 @@ static int p9_usbg_create(struct p9_client *client, st=
+ruct fs_context *fc)
+> 		client->status =3D Disconnected;
+> 	else
+> 		client->status =3D Connected;
+>+	spin_lock_irq(&usb9pfs->lock);
+> 	usb9pfs->client =3D client;
+>+	spin_unlock_irq(&usb9pfs->lock);
+>
+> 	client->trans_mod->maxsize =3D usb9pfs->buflen;
+>
+>@@ -427,18 +451,25 @@ static int p9_usbg_create(struct p9_client *client, =
+struct fs_context *fc)
+>
+> static void usb9pfs_clear_tx(struct f_usb9pfs *usb9pfs)
+> {
+>+	struct p9_client *client;
+> 	struct p9_req_t *req;
+>+	unsigned long flags;
+>
+>-	guard(spinlock_irqsave)(&usb9pfs->lock);
+>+	spin_lock_irqsave(&usb9pfs->lock, flags);
+>+	client =3D usb9pfs->client;
+>+	usb9pfs->client =3D NULL;
+>+	req =3D usb9pfs->in_req ? usb9pfs->in_req->context : NULL;
+>+	if (usb9pfs->in_req)
+>+		usb9pfs->in_req->context =3D NULL;
+>+	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+
+Same applies here, it would be nice to seperate the changes of
+using the extra variable to a second patch.
+>
+>-	req =3D usb9pfs->in_req->context;
+>-	if (!req)
+>+	if (!req || !client)
+> 		return;
+>
+> 	if (!req->t_err)
+> 		req->t_err =3D -ECONNRESET;
+>
+>-	p9_client_cb(usb9pfs->client, req, REQ_STATUS_ERROR);
+>+	p9_client_cb(client, req, REQ_STATUS_ERROR);
+> }
+>
+> static void p9_usbg_close(struct p9_client *client)
+>--=20
+>2.34.1
+
+I tested your patch and like the changes, however I have some extra
+patches on top. Would you mind if I take your changes and include my
+suggestions. I would still keep you as author though. These changes would
+then be included in my series I will send today.
+
+Regards,
+Michael
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--slHqKoTqpWZ+T6zB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmm6t8cACgkQC+njFXoe
+LGR96xAAuLktJ1iOoveDgtn+MCY/pzKT+sHU0HgPMEpYA+hFu9hdt7kSH5pZwXhz
+sqGm4PH1j+F3mL5a55Tv2h5gjqafBLcN9HTMe9gUpjKuCPBo8NjIRZTgt2ozp60c
+7XyRqjNh2ButuN4aYLSJjfLhsSrVDlo4MuhmDltjXSjaHiuzi5iCdGnsvJY6zMF5
+4L9MhJU9HZT/xtjephHq9KYysaUwRK07ygYNDMTJJSaB5M7MRAFDp4a6m5oLH9G4
+odKKxavan2sfg/UkCSQKbahDsVlNDxNXn9TC6B/c2uweC76yNdTtzSiQ0v8PPDBU
+N5uK0EB47iDIPA6H51f9fTMsnJEgpn+X/QZEsXnUe514ShEsmwA5aU+A/A20LoRM
+VL4DpmuQMiC2AUC2OjSGeYVaZM8puh9BrY+HaD0ajMIT37fOjz5DUTx8GzJRfS5V
+9JuzJKE1/yhO7AHkjDQhRfrsHhmi+si7yqvqeMZDBm04kQEVApOIGnI1tlR7/iw5
+XD5Jqwn4mJyg2aX3Zwmw6nbNI+/i+3XE9EaUh7ywXpeNm9bswbhuNUytkeZnmQ9e
+gJEN1U/6dm+HNpTc+nczOlQ6JQ6cdugoxxICjQOSDh9czTarCZM/a+yw2z7Enh28
+eeAwYWN6UXSIMUscx23tNCn0S9gUjik/ZX6ZKFuoW4xGo41CcxU=
+=gES0
+-----END PGP SIGNATURE-----
+
+--slHqKoTqpWZ+T6zB--
