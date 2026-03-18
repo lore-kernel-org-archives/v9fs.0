@@ -1,115 +1,122 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD8D3DA7CC
-	for <v9fs@lists.linux.dev>; Wed, 18 Mar 2026 14:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845370; cv=pass; b=CYlYju0hLrkUdQWkNclt1fftlAtbTJgn2L/uS5GxGjMIaA6GWgbmxY6/z2SpNFNhY42ObibefKbvG7vaZCZU2PB1I/K5PUD2pZtB3u4iZprZFAvJFRs9xs9yMuMVNEXEuBAMgL9unOw0Rc2w+4IuTZS2SOiAitJFeeNyzQbFNc8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845370; c=relaxed/simple;
-	bh=dzt3L8FljthUJAGYI2jmUC2ThE71Y92qdrRQ4fCeeEE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=axEtFQkO0ERSUfJBnZCdyTaE1SkZxmkPmUeylMW72PZOm4UnfhFSCih5ADhYdqfwcYGSy1shyfkcPCGxuL5oZkMVtPGYu4vXZ3I7jYQjxHq6B/QC43wZXrb1YYojQ40NOf7SoHNYpihqsoNsd+Mkkba7otqjjPSRN8w7i7kipns=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYGKOsm0; arc=pass smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYGKOsm0"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35a1cc6e478so21004a91.0
-        for <v9fs@lists.linux.dev>; Wed, 18 Mar 2026 07:49:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773845364; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iVHsjXX7OUIs6Q311pf+0fufFFtT8HWcAGZQ4hiwdWCeg4IXJh/KFKCbWEAAO1qEJO
-         DMTP6kz3pdI4U/y7Ys+LQWUiaJi+tBSb8d+iQds+Gcq1YWVM/m2IiZ40oSvGqDbV+NkC
-         QGp6217FKwKA5sTTWcVdPqHz9QUFvoJeoOkgHjpU1QikZBJiNNSitB1P/Mrd0cRMznzr
-         LjEKEmWCuS4s4oELf/syiG5sksZUNJ+fgwFyG0digmWpBCXvJCzQLnr3vbTYSYfOPAbm
-         0iHLuGMPa979yRTzCFv4HotCa1Xq+qFyXlVKMQxnWHMhvS1IG9g141jrTnbiq2Cja7QN
-         IPRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dzt3L8FljthUJAGYI2jmUC2ThE71Y92qdrRQ4fCeeEE=;
-        fh=L0K1uLHUz9IdhC9tPAKMUN3DhoYrf6SEOgaNsv1VpRE=;
-        b=ViD45Q3HcqGyoNGf5MJK0BdutuY5cOhAYz+0LX1Vw0fWVlkez7+taFfPykKt58Qzw3
-         fnPSKWdK52krSWYlu7e8eisthRfrv6v8rSIEeOuYtIYx1NcL78YM83ZbW4Wl94eJaoiJ
-         hbociXfpwUjPvElzcpyhRpYFqjCh1LIYIo/pZUKfucoEH6E5pP2WmKpiwOcvoOsANMib
-         3kt+/QUzYLXQL1wstTyNL6SK+7heOoYInGqXAXlusRbkxMNWxOs+Hxla5cg8aqba6UNt
-         SauQKD3cfgQTigY3eNkpSy+QRgpmo2X9rJul9JEqUupsruMoKSSgHYy7tgOUuMJIHqB/
-         KjTg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773845364; x=1774450164; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dzt3L8FljthUJAGYI2jmUC2ThE71Y92qdrRQ4fCeeEE=;
-        b=NYGKOsm0c1TKEL+X1F4qIj1xvQtL8NC6hbFDy/xaH4ga45TH1ATYfpMuHVcF+K2FqF
-         i1lwZfWcfdRJLLuLI6JRQ+6DlcytGl6WDeWSIppo7+wWekXQp/KvLrJ4UEwb0qeLNEC2
-         3P9+LH2jvxiJ0wtZ0BWnr+T6fWR+xFlHZyBeriPXwDbMVOPa++Nx4klKCmkUKFgFNYe2
-         ibBLk0OJayDZZZYMz5kJQ7jlC2qhkIEkJdNN88EsB6k64J46MDe7rg3rmcUQdrRatLMx
-         m8B9Er6PxdnJm/3WPK/Vl0dAXZeQRkxF9l0wZYGz0e4H07LIhM1lfTbIKXcSRdB37C6d
-         UhWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773845364; x=1774450164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dzt3L8FljthUJAGYI2jmUC2ThE71Y92qdrRQ4fCeeEE=;
-        b=S4cCF1vKpJSx6q503+G+tRSwvEvwS7TfURu4yq2M1qGS6KtMEHKN+p3Pwcz9B1Qb0B
-         6UxfEIBTvlgzFO3FtpCOZBLPXfSMxbKdu+TAqPKuYWnRGKJRrU645rNsw1qJ8uUlmYgc
-         niI6rHWOsVcaNzE9vm6Tc2Xsjs9gSq7CB1e/kok7CFpspbHpxrTTl+XUxq/JW29vA08U
-         VRnu8xx20CHWVcYFRxif1cjrhqxSZABrE+ihCjIocbjQ3FTavmoTFr+hi+cfB55Ie9oj
-         fyrVLko/ASuwgyWbWZOM92Gu5KGaGnwBtsjZavozLv40SfYlezkjMDPczBgkaD/KmQ2W
-         ZvyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVF3N9Pw5fwuU41HcEqxAH/IKISdlBY65aIBl174LbWuzeL89u+D0LaPMBiBEpGKve3+1zX@lists.linux.dev
-X-Gm-Message-State: AOJu0Yydyg3AfLBHDFL0rEbbf4sUW+1qgbr/HTDLb7Ri/ur+GU+tDkUn
-	cS8v+W5JCy0mYABEnamIudMB8XZmmguqY9RPBmnJomf6txWryAD+CN7hvpAImmolQeIJAL1dY2E
-	A2CTtP+OTXERQr+adn68pVsGr+rcc+10=
-X-Gm-Gg: ATEYQzyaPprNvDCVOBQUOavJUB95bQRtg7ii1O02LV6JkYFcjGCDGZaPOklF5oHaRiu
-	4kV2Zh+g1TCwv6GMTXIxwkoFo0etYcpUg3NCprRFS6cEaU7+cDxGYGXQD3KNeSzl1Iwwa3mHpxe
-	OB9uSWQkoyjmv+2vEE6+TNJEQbeefy/AzLqv61IiXTLQy6udPpwT9N0Askja3klcHLmfUBSY8KU
-	msotTOOon8NDY4/B0aV322gmctCN6p1GZyfw+rRjQWh+Hr81OaSQT3j2qbzqzV9U7BHfEgJz0eI
-	A51gsQ==
-X-Received: by 2002:a17:90b:4a06:b0:35a:1762:92ed with SMTP id
- 98e67ed59e1d1-35bb9f5653dmr3408028a91.24.1773845364331; Wed, 18 Mar 2026
- 07:49:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EC52EC090
+	for <v9fs@lists.linux.dev>; Wed, 18 Mar 2026 23:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773876303; cv=none; b=Cybkgfw8e2H/6BscghJOmCtw0h/uk3It3ttkjvgQPzpZob1QHsb3a9oHi609xTbyJBOqND/5A8iz/q+JPpJRmQUGUeuqJ/4sWX7lHqUsQkpiMCd2eD+6lstVoX6+hErEV6ha0oAW8KYea4eYXblwWjDvaGoo5QzLWaA3grPa/Us=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773876303; c=relaxed/simple;
+	bh=Kd7BU1YGmlHSPedRbtFQWtnhOfWayICtYpeiwOagYS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PfPASNtVVc32ewGzvtbDaH6f45FT+4je8JvnPO5Kbb1Wjr4lRSDQnu0wXUWpZmfUtCen3yNoeAgY00cNQuJKZ8QghcbcIIhTZebLDpaQn7wi6DWhSvaWkxezujufPT+YO/EyRf2ggNtGIbNM0zcLfyuYlzxkVpQy+12jotcYbRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w30Fx-0004SV-0J; Thu, 19 Mar 2026 00:24:53 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w30Fw-000yxs-0I;
+	Thu, 19 Mar 2026 00:24:52 +0100
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w30Fv-00000009G77-48Le;
+	Thu, 19 Mar 2026 00:24:51 +0100
+Date: Thu, 19 Mar 2026 00:24:51 +0100
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Hyungjung Joo <jhj140711@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+	linux_oss@crudebyte.com, gregkh@linuxfoundation.org,
+	v9fs@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
+Message-ID: <abs0Q2Sw3WvLYFbe@pengutronix.de>
+References: <20260313171659.1225180-1-jhj140711@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260313171659.1225180-1-jhj140711@gmail.com> <abq3yqrsQJGI71jz@pengutronix.de>
-In-Reply-To: <abq3yqrsQJGI71jz@pengutronix.de>
-From: Hyungjung Joo <jhj140711@gmail.com>
-Date: Wed, 18 Mar 2026 23:49:12 +0900
-X-Gm-Features: AaiRm53b9VgQZBHhKpHk6qxeRQVGZED7vCl-Dy-q0bM0EzZVA_cnAyHZSDfEH2E
-Message-ID: <CAP_j_b_QYUJeszN63nkCd1wL0vH3fa8UwCpBxJG4FV9_ARTnHQ@mail.gmail.com>
-Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org, 
-	linux_oss@crudebyte.com, gregkh@linuxfoundation.org, v9fs@lists.linux.dev, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+erp7nSIvu7J2s4t"
+Content-Disposition: inline
+In-Reply-To: <20260313171659.1225180-1-jhj140711@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
+
+
+--+erp7nSIvu7J2s4t
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-Thank you for the feedback
+Hi
 
-2026=EB=85=84 3=EC=9B=94 18=EC=9D=BC (=EC=88=98) PM 11:33, Michael Grzeschi=
-k <mgr@pengutronix.de>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+On Sat, Mar 14, 2026 at 02:16:59AM +0900, Hyungjung Joo wrote:
+>p9_usbg_close() tears down the client transport, but usb9pfs keeps
+>using usb9pfs->client from asynchronous TX and RX completion handlers.
+>A late completion can therefore dereference a client that has already
+>been freed during mount teardown.
+>
+>Clear usb9pfs->client under usb9pfs->lock when closing the transport,
+>detach any pending TX request from in_req->context, and make the TX/RX
+>completion handlers bail out once the transport has been detached. This
+>keeps late completions from touching a freed or rebound p9_client.
+>
+>Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-> I tested your patch and like the changes, however I have some extra
-> patches on top. Would you mind if I take your changes and include my
-> suggestions. I would still keep you as author though. These changes would
-> then be included in my series I will send today.
+I wonder where greg did this review? Was this in another thread?
 
-That sounds good to me.
-Feel free to take my changes and include your suggestions and thanks
-for keeping me as the author.
+I will have to drop this anyway, when splitting it appart.
 
-Best regards,
-Hyungjung Joo
+>Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+>---
+> net/9p/trans_usbg.c | 63 +++++++++++++++++++++++++++++++++------------
+> 1 file changed, 47 insertions(+), 16 deletions(-)
+>
+
+=2E..
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--+erp7nSIvu7J2s4t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmm7NEAACgkQC+njFXoe
+LGS87RAAlXg50t73dUaoyzCA1jdI9UPra00KAQduhdJCA6lmuNIhjvfoORqsCzCv
+WYzfAWW+WjHSsNS+3BVPHtygcsqV/qhySKXfb2FJGmv104fHwACpTlENrEaczo8z
+vaSVO0DiYnIQcJaVjKz2IRVuYYPOGOupc+Uipv+/y6a1h1Gnzv65XgMA2rAMmx5g
+xKStC01/rXBtYJlMnwWn6jgRVquZ0zUhstm/4gPuplf7kN4e1NjZTLbbkHj2ERQg
+ltVjzmMpkYrYIfrBkaMRx3gAEsg4DPp1v2bZ8M87u/pLj3yXEPr9Iog7+Zg7Lhwt
+dC9u99dsLQAXYUylVWeoHLmuh1gwsPcSieUYG1x9L3FyTF5jaxu+cVq42IWpo6mZ
+eF2GpE1C3b/9cEMuAQ/AjPTqSIoDdN4ae0MkEp/o7+dCJWtzq7/I6WGnhTgOJkPD
+GFooKEUZvsMttQ1UAg+drK0MMzL3UATjwc3tRdBuSqp/H71X9CzHxFnrqmruWB86
+kyJxxVlT/6lpp0yjf0pPd1uogMxN5d0M7y6dFBDkB/ao7Wfx/hSyJwW7KvQuq7dH
+zgWH6hes0Om4qR0MOGeIkAB3D4U8h+kCWbDw3IiGqyNfOOt6pPemOeDvtcGrExQk
+QrRv8xm/SA52AiK263E8irdddJRBgxNM0Q916QpLoW7S/otbkBw=
+=DIlH
+-----END PGP SIGNATURE-----
+
+--+erp7nSIvu7J2s4t--
