@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661963B8BCF
-	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 09:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEAD37CD42
+	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 09:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912987; cv=none; b=Gr0yuzD2x7qcTEoqWdw+KCDR02UOc3LGzy/QJQiyM9txJxkp77qNrAGrFAJPhPNlVTx4x6v+1JMdAIFjVNY+EXm1kPrfz2hZHoc4BWIgNdx8TmdQdyjmJKrw4WdnK0Rh2lq83GHfwc/AXl1HQ6uw/Hm7/OIx/gGPzce90+MZ0HU=
+	t=1773913809; cv=none; b=Q2Ga7MSAWPhT4Rr7Wo87RmVHveLbSHUoZDIw7NFpfZbFhZH9n3C8Amc9h7i2naAp6KunrIYNRHbwzomS5FonMElojheHQJzEKCQzpkEXzHGpuC3tzgcfQzsM51Av6sqIuxmBtLtDeng5YULVVju+2fgnWRPZ5vwXZC8uhN02R1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773912987; c=relaxed/simple;
-	bh=gTVzdb8m7QG5g7UkDSopV2bxXllKZ06xKPWgp4i3Yyo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dWmARmw2q5T2ZKq6OdgsR2VT1UF0QN/EANNbzm8yqygHQ+5sm1IdnFiFN41CejpgcZ9qQVJFRhNt2y5BJzv9r8O7ixxbID/a3+v/5aj5B1pmbULpO5/SV+hubDfHxRrLPJ20DWBXDp1v+VowbNWYppcZgpCMccmKso7ENse94HM=
+	s=arc-20240116; t=1773913809; c=relaxed/simple;
+	bh=GyqDNhylFQSVWEuAeaqUwe51g5CUWJ9CALmCsPTp0C0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=p8oF+/9lERE+WELJwfPBK3D88Mw7sS8HE2pZXHkByOYaQBCtqpiHIQ3Ulx6roRZPxiOh1KLk1TXrdxZmun/b122E1F6Em2WYYSx7ssU13RZU7H4q7ogDS7FEwp89zJV9CFfYPMBOQJC19p7MmGGANiZc06hWLHL2t1T0Y1Q7yVQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,22 +18,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0003OA-P9; Thu, 19 Mar 2026 10:36:09 +0100
+	id 1w3A0w-0006Mb-Nd; Thu, 19 Mar 2026 10:50:02 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0013Da-10;
-	Thu, 19 Mar 2026 10:36:09 +0100
+	id 1w3A0w-0013Fo-1i;
+	Thu, 19 Mar 2026 10:50:02 +0100
 Received: from [::1] (helo=dude04.red.stw.pengutronix.de)
 	by dude04 with esmtp (Exim 4.98.2)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-00000008yzO-0W6D;
+	id 1w39nV-00000008yzO-0cjR;
 	Thu, 19 Mar 2026 10:36:09 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Subject: [PATCH 00/11] net/9p/usbg: series of fixes
-Date: Thu, 19 Mar 2026 10:35:57 +0100
-Message-Id: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
+Date: Thu, 19 Mar 2026 10:36:07 +0100
+Subject: [PATCH 10/11] tools/usb/p9_fwd: add daemon loop
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAH3Du2kC/2WMQQ7CIBBFr9LMWgxMCKmuvIfposLQzgYIVFLTc
- HexW5fv/5d3QKHMVOA+HJCpcuEYOqjLAHadw0KCXWdAiUYqHMUted6pCK3R4ui1NIjQ7ZTpPLr
- 8nDqvXLaYP2e4qt/636hKSOGMMsr5l5/JPhKF5b3lGHi/OoKptfYFlTDjwKMAAAA=
-X-Change-ID: 20260128-9pfixes-442c28f40622
+Message-Id: <20260319-9pfixes-v1-10-c977a7433185@pengutronix.de>
+References: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
+In-Reply-To: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
  Latchesar Ionkov <lucho@ionkov.net>, 
  Dominique Martinet <asmadeus@codewreck.org>, 
@@ -52,24 +51,23 @@ To: Eric Van Hensbergen <ericvh@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Hyungjung Joo <jhj140711@gmail.com>
 Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
- stable@vger.kernel.org
+ kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1425;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2227;
  i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=gTVzdb8m7QG5g7UkDSopV2bxXllKZ06xKPWgp4i3Yyo=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OEKlr52jwzP7/WaPgjjldxaqOsMqc7fToUN
- wl1jwJZp8CJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhAAKCRC/aVhE+XH0
- q6wOD/0V+1pb82HHuVL/IlBuBIwa83xMfszArPEDRYrkGxmgpO56ksPhsTVAN4jt+GsqmXnym3R
- veQfTDJsf1MqoWtb3pye7hVhQ834TOilgtlw8DstxHGMBrD9MZSoyd0yrIx8FM0rkDgfMQRXQap
- K2CCBf1umV2rCdu/f6rrogjvdXJfWKc3iRFi8zJQp+G3SlCYi0HyNJ6baBm2iJ87Hq4SuBHf3dR
- THvqfAPJYmv7jhcNNN/78ArviUWvbeQjEoFVf+OTl3KGzo86OQSFlIc4FMuFMNDifpI2RzPX6O1
- EZVm+zUvAZnAFQwgPLYuz/kKljrLWi3EsPS25/GAAeFI2gguQeiqgH/FjXW30pz8NrXv7yrOyU/
- eNcELJs4Pyw2tfG6xKzUaf4zwYnY/SXH36a5eCg7di1ne4hZeV7NxA8XcYID6THS26sWcE7BQgl
- 5zSbVsmUjWnTRo3NBZ1ZJyjFAQVvI3y+72V64pTFXl2Yjzc3KmmaMzxKomYspovAixHERsiz+g8
- qOt/EXR8gkOOR7UUvsPpKD89fPA5qez9KsVxtLSENHaXwYqNy13xXxgVXMHLTE94n6YePiDFVGg
- gTG++IlAm8mFFgt2bzsMbzqpYzbIRIh1ZaKQKQDQnwAETDJlr+E6ekQhBnBo8n1XNWE3EJHPGfq
- tOhZ1Hc8NNEMsRA==
+ bh=GyqDNhylFQSVWEuAeaqUwe51g5CUWJ9CALmCsPTp0C0=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OIBFaKA4+IRFrOKAmliuRxxT34zQ+thi9oi
+ xF/fOzejCOJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDiAAKCRC/aVhE+XH0
+ q8IGD/0WnYtjd0wNzcPnRzApl1ZUljnzV9mtwAkS5bo/uNkxSNQXuqp3xnxjIOf6aNNY8NMlt5d
+ b46WG6li+q3UdiZQYdgNNbRURS1r9M0LalasZmwIt+7xzR7Kxan8f9AgaDjbce1fz0PSusxFDHI
+ 3QFlu6PYHpaT7IdhlgCm3nPKMKMELTm1zrQGJPmwk9Xo2kCrvHbKGzTLyohrrAk+IJSTQ1HOAN7
+ Wu3fi6RHL68eN+Fwch6nOO1r6sJ9EKgSQ68iIHQQajqy4HuEO+pHbsixxVM9R4A8NdhSQ0Ym6WF
+ Pvx+fS9add/SF7vjlelkN23VHySVr3/eEIMegPwPm20NkadYY/SVq0aNXYjZ7oENAEOWbBzSFV1
+ 9u5z5XXZutD/d0Zq6UDecyY5pH4qXOYkqBygDMl7qNACj1xaq4k8B69ut0VD1s8mKSPjdFWbXvF
+ VZrs+xhIgu0ob+4NXLXR92gSGYubOcyshc5ANcUr8cpVLHiaN0ZFizzHGYN5XGs4zuA0ivxHGS8
+ aKP43THzWZZynb5rcmlMcnmbT+YdazaMnt8EFudJNEEWGy8wdRGzZQYCer5QHXKeZG4SqPpsPF/
+ lh2CnuI8ApHfN5pGoWib/OC3NfMDKj3UWxr7XbP7PjQryUFjM3X9tg8ZhjJ3RPYzsQnomzSJ0Ov
+ XlNRbWIqykKHIQg==
 X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -77,37 +75,75 @@ X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-This series contains a bunch of patches to make the trans_usbg
-interface more reliable. It adds some extra checks on critical
-pathes and also solves the overall synchronisation of the daemon
-with the gadget. The forwarder script also gained the daemon mode to
-be run and recover any kind of disconnection.
+When the tool is started always catch connection and transfer
+errors and recover. We also log in one line, how long the
+Forwarder was not able to connect.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-Hyungjung Joo (1):
-      net/9p/usbg: clear stale client pointer on close
+ tools/usb/p9_fwd.py | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-Michael Grzeschik (10):
-      net/9p/usbg: also disable endpoints on p9_usbg_close
-      net/9p/usbg: set client to Disconnected on usb9pfs_disable
-      net/9p/usbg: always reset completion when disconnecting
-      net/9p/usbg: only rely on one completion
-      net/9p/usbg: add timeout for usbg_request
-      net/9p/usbg: add extra interface for status change
-      tools/usb/p9_fwd: catch if claim_interface is not working
-      tools/usb/p9_fwd: catch write or read errors on disconnect
-      tools/usb/p9_fwd: add daemon loop
-      tools/usb/p9_fwd: set new introduced alt mode 1 on interface 1
+diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
+index c2c2afbf45df68376907ea2ae8c022614e4508f7..1b479c931df9bfb0f7e7f2cf5a612764408f0828 100755
+--- a/tools/usb/p9_fwd.py
++++ b/tools/usb/p9_fwd.py
+@@ -7,6 +7,7 @@ import logging
+ import socket
+ import struct
+ import time
++import sys
+ 
+ import usb.core
+ import usb.util
+@@ -59,7 +60,7 @@ class Forwarder:
+         if dev is None:
+             raise ValueError("Device not found")
+ 
+-        logging.info(f"found device: {dev.bus}/{dev.address} located at {path_from_usb_dev(dev)}")
++        logging.info(f"\nfound device: {dev.bus}/{dev.address} located at {path_from_usb_dev(dev)}")
+ 
+         # dev.set_configuration() is not necessary since g_multi has only one
+         usb9pfs = None
+@@ -201,16 +202,28 @@ def list_usb(args):
+ def connect(args):
+     vid, pid = [int(x, 16) for x in args.id.split(":", 1)]
+ 
+-    f = Forwarder(server=(args.server, args.port), vid=vid, pid=pid, path=args.path)
+-
+-    try:
+-        while True:
+-            f.c2s()
+-            f.s2c()
+-            f.log_stats_interval()
+-    finally:
+-        f.log_stats()
++    i = 0
++    while True:
++        try:
++            f = Forwarder(server=(args.server, args.port), vid=vid, pid=pid, path=args.path)
++        except ValueError as ve:
++            time.sleep(1)
++            print(f"\rdevice not found since {i} seconds, retrying",end="")
++            sys.stdout.flush()
++            i = i + 1
++            continue
+ 
++        try:
++            while True:
++                f.c2s()
++                f.s2c()
++                f.log_stats_interval()
++        except ValueError as ve:
++            logging.info("disconnected, retrying")
++            continue
++        finally:
++            i = 0
++            f.log_stats()
+ 
+ def main():
+     parser = argparse.ArgumentParser(
 
- net/9p/trans_usbg.c | 211 +++++++++++++++++++++++++++++++++++++++++-----------
- tools/usb/p9_fwd.py |  67 +++++++++++++----
- 2 files changed, 218 insertions(+), 60 deletions(-)
----
-base-commit: 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
-change-id: 20260128-9pfixes-442c28f40622
-
-Best regards,
 -- 
-Michael Grzeschik <m.grzeschik@pengutronix.de>
+2.47.3
 
