@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7903B8921
-	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 09:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B6C3A5E83
+	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 09:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912984; cv=none; b=Gk1h0YEqhSUurGvsqAVl4s1iRbGZX3kdYjqG0ee1yplpzOkBudpvpjTc6s1e9vD8CdiMGHjO58aOcRUbCtD5kN6LvzdPdyogGpQa7Hpta5OTkMDkWPH1J5nW+anK51vbeVxHGv+6TIowy980mXUmUnLZeCFv8w83Idy/zUDsZSY=
+	t=1773912984; cv=none; b=iC7mxP5gbQRHcg1TVrBvhhbCyG65z7u5VPtaa8DgZrCEY2+KOxi0v+YmV8hQKc6v/MQ5nDkdWlhOkdXm5FG+t+O9njGm3lX+TRDHYLkAudNU2aOI0DL14Aq+gonl4NmrxCZGLODJQg3SV4m0VWOFskGPUCOSLXseLHIEHlmO228=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773912984; c=relaxed/simple;
-	bh=wZ8kqff4Tn5aYGgU0or96rH1C5tq1zBPpMaQeLzDnK8=;
+	bh=m8AU9YbHCXej+SKSdGs3GzysiW4jTlyz0Bb9vHcmVTg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SlnId3VhPkod0ZrpQfWKPhejxlpQrMIeFwnFcVxTFT7PsZkLkcuCn4qXOtdjpCS2rAbEiBhIZCkDsBye8vrNXYskSNQU/xP1yybBBszPlLwT1Et15XkN73MYtsC98533MFtT2ABlkbdLzcMqc6kgj//OSAUgOb5ZfEXKbN8Lym8=
+	 In-Reply-To:To:Cc; b=iyVyFR+sB+aF7I4aVIVr8k20y+AgMDQCMN8X//dpqDsadiV6KdxASIhugq1n5zrPgHgz48+e5sbazyYD7vlonHVebbEkk1V5HVZDT5wqgJndKeDgiDSQCb6TscQCPwPSQYZQCMnAtDcwdWuKKIUtaKwOefF8huTl42/+jOZb0l8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,21 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0003OB-OQ; Thu, 19 Mar 2026 10:36:09 +0100
+	id 1w39nV-0003OD-Oe; Thu, 19 Mar 2026 10:36:09 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0013Df-0v;
+	id 1w39nV-0013Dc-0y;
 	Thu, 19 Mar 2026 10:36:09 +0100
 Received: from [::1] (helo=dude04.red.stw.pengutronix.de)
 	by dude04 with esmtp (Exim 4.98.2)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-00000008yzO-0ZiI;
+	id 1w39nV-00000008yzO-0YRi;
 	Thu, 19 Mar 2026 10:36:09 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 19 Mar 2026 10:36:02 +0100
-Subject: [PATCH 05/11] net/9p/usbg: only rely on one completion
+Date: Thu, 19 Mar 2026 10:36:00 +0100
+Subject: [PATCH 03/11] net/9p/usbg: set client to Disconnected on
+ usb9pfs_disable
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-9pfixes-v1-5-c977a7433185@pengutronix.de>
+Message-Id: <20260319-9pfixes-v1-3-c977a7433185@pengutronix.de>
 References: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 In-Reply-To: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
@@ -51,23 +52,24 @@ To: Eric Van Hensbergen <ericvh@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Hyungjung Joo <jhj140711@gmail.com>
 Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>
+ kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3023;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1044;
  i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=wZ8kqff4Tn5aYGgU0or96rH1C5tq1zBPpMaQeLzDnK8=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OGNztRgg/EXk9VNqRwfeW1udJUXzyrAXhWd
- VVpHetREjqJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhgAKCRC/aVhE+XH0
- q+eGEACGg+snTyz1zkgO7P0fmYFjKVjwlnqUj2Qrj7zH12UfYUVhOJbTJR+OO2dng/1NI/Y7PST
- oWw5pu3zhKm3IDF+W5Ly4cQfRXX4vRvt7tNTwRTR4UiOIweavIi877a3wm5QMlKFAoDV0+QNniv
- 0+csH68qj06ZabIwsGEQ7+NlBQ9WAp50g9cG2OJuvPOsy+F5tpRQNcVGn22SOusuttcsVsrfOxy
- QCDQMbq8ktM6KinH1wMYxVbmTFuLgQLKjuGKUEOB4K6j8zAuTKuOB6Mo1ePra6H1wiP1vyzpUGA
- FZsO3pdy2xYY2OLCj7b+rv5iy5DJ5GE8ll+5GtefmNoNbzfoU8LWwiQ5DuEVfJ39D1NRxXkj7W3
- yxPGmQ+eeSt4GWgBsqMFnb4/qJ9ilomR0zCVpHxwpfw+uMqiwkGgLDAC1xrEBqCO5+iYTZN/HDw
- 0HmQPMwIcycv6EYG9Ilmj+oK99b++3L1TCzFsc3ulPNlUSWhOMJCT+eYdkSQkNom+uXev5mm6i/
- nPQAuglAhvbwjn3t9mDSlUOYFpcjCub3GNxHnzZWQBQEVnRnDpCsUSISbFsJWPSnTas5rkDAX+1
- 5BG5YhWRFoo7PIAE3+EBvYuJerSh5QhnJGdn03NKOolFxbmfXJWz8umqp9ZriQFV4AaEtAQVSaK
- 5YjXGaFt67q9ydQ==
+ bh=m8AU9YbHCXej+SKSdGs3GzysiW4jTlyz0Bb9vHcmVTg=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OGeFFoIfyu6skOmAVIv8zLIPC2OixXRs8/M
+ HCyfLb38EuJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhgAKCRC/aVhE+XH0
+ q5OXD/4i2StoQqHTQLcFjy9uWad+Q4akq+NbiXpR+hAKVMZvo1NMRG6fP4p0VwTtRiSqgyl+1uB
+ 8kg6mfiL8fHzTKW6uuxPmGbNRplNGiAPvHLNQ3HFJ1NANliqCKcPSD9jx2r1kuYiPWAcWAa+JR3
+ zNrP06zURAIQSeFK4khpHpSsGsBRaEWl89UnPet/E5hdmuZaKj+EJWEtmByJqdAn/KtTx9fw+E8
+ 52yZ7v7193zimjiO3j1mbR9kNzxtIj1Y5CibpuND2R7mmBOAeqzb7/KXX/uirZHqXO0xvtEo3qA
+ e6PCKhXPYAd2gQu78mhuio4RIf8ezvsrjSQYY7kTso8l+2XDRc1aIsG81tUiaoNlP+XtWsyu8o6
+ N7kdxLUJETi9RDQZ6zZWW5OFF1TEJ67a9/CBa7NpoworeGRKlj350UJjn9zZ5/RU8DpOny0CNYt
+ ztJXre8Cv8ySRmS1nAmceg+hoEZTI3wnjuFUf+sdw0SZZ8Evofp1DIjQg9zN1Y6qU3CtWyzq+IO
+ kTui0ZHID5WzzUWeWozhTFpGuqgSp/vXRwGaXB2mMfK46CnullhloED/7OVxQh9zkw/G/70Svkt
+ ODES6423kxP4CW/e6U/5bAIU8uvOLn6UnbzLCs0HbWt8Qp0nDon/VcqmzV2mCHvs6+B9Qc0AP8s
+ ZFON1FLEfUYCi9A==
 X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -75,93 +77,33 @@ X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-The 9pfs protocol is specified that each request is answered with one
-response. Since there is only one pair of tx and rx requests for the usb
-stack, the stack complete callback of the tx request can be used to
-queue the response.
+This patch is setting the client status to Disconnected, when the
+client is still in use. Otherwiese a disconnected usb cable would run
+any use of the mount to faults.
 
-The current approach is using an extra completion barrier to ensure that
-the tx complete callback came back, before enqueuing the rx request.
-This all was done in the initial 9p_usbg_request callback of the 9pfs
-protocol.
-
-Moving the ep_queue of the rx request removes one extra completion
-barrier and is less complex. Other than the complete this call has to be
-guarded by the spinlock.
-
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Cc: stable@vger.kernel.org
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- net/9p/trans_usbg.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ net/9p/trans_usbg.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index d6391db6d5d96a1609a3405646f66d82c93d35f1..472f7452794d7ac0f7b1475f0da2f4605a28e062 100644
+index fb05198dc2a7d604cfad2db26a63e40e632651a2..6ddf6886dbadd7cdfdebb96dc767874169ccb16e 100644
 --- a/net/9p/trans_usbg.c
 +++ b/net/9p/trans_usbg.c
-@@ -50,7 +50,6 @@ struct f_usb9pfs {
- 	struct usb_ep *out_ep;
+@@ -779,7 +779,12 @@ static int usb9pfs_set_alt(struct usb_function *f,
+ static void usb9pfs_disable(struct usb_function *f)
+ {
+ 	struct f_usb9pfs *usb9pfs = func_to_usb9pfs(f);
++	unsigned long flags;
  
- 	struct completion send;
--	struct completion received;
- 
- 	unsigned int buflen;
- 
-@@ -180,7 +179,7 @@ static void usb9pfs_tx_complete(struct usb_ep *ep, struct usb_request *req)
- unlock_complete:
- 	spin_unlock_irqrestore(&usb9pfs->lock, flags);
- 
--	complete(&usb9pfs->send);
-+	usb9pfs_queue_rx(usb9pfs, usb9pfs->out_req, GFP_ATOMIC);
++	spin_lock_irqsave(&usb9pfs->lock, flags);
++	if (usb9pfs->client)
++		usb9pfs->client->status = Disconnected;
++	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+ 	usb9pfs_clear_tx(usb9pfs);
  }
- 
- static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs,
-@@ -280,7 +279,7 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
- out_unlock:
- 	spin_unlock_irqrestore(&usb9pfs->lock, flags);
- 
--	complete(&usb9pfs->received);
-+	complete(&usb9pfs->send);
- }
- 
- static void disable_ep(struct usb_composite_dev *cdev, struct usb_ep *ep)
-@@ -442,7 +441,7 @@ static int p9_usbg_create(struct p9_client *client, struct fs_context *fc)
- 
- 	client->trans_mod->maxsize = usb9pfs->buflen;
- 
--	complete(&usb9pfs->received);
-+	complete(&usb9pfs->send);
- 
- 	return 0;
- }
-@@ -508,7 +507,7 @@ static int p9_usbg_request(struct p9_client *client, struct p9_req_t *p9_req)
- 	if (client->status != Connected)
- 		return -EBUSY;
- 
--	ret = wait_for_completion_killable(&usb9pfs->received);
-+	ret = wait_for_completion_killable(&usb9pfs->send);
- 	if (ret)
- 		return ret;
- 
-@@ -516,11 +515,8 @@ static int p9_usbg_request(struct p9_client *client, struct p9_req_t *p9_req)
- 	if (ret)
- 		return ret;
- 
--	ret = wait_for_completion_killable(&usb9pfs->send);
--	if (ret)
--		return ret;
-+	return 0;
- 
--	return usb9pfs_queue_rx(usb9pfs, usb9pfs->out_req, GFP_ATOMIC);
- }
- 
- static int p9_usbg_cancel(struct p9_client *client, struct p9_req_t *req)
-@@ -802,7 +798,6 @@ static struct usb_function *usb9pfs_alloc(struct usb_function_instance *fi)
- 	spin_lock_init(&usb9pfs->lock);
- 
- 	init_completion(&usb9pfs->send);
--	init_completion(&usb9pfs->received);
- 
- 	usb9pfs_opts = container_of(fi, struct f_usb9pfs_opts, func_inst);
  
 
 -- 
