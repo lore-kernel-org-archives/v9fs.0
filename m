@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B6C3A5E83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A33F3B895E
 	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 09:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912984; cv=none; b=iC7mxP5gbQRHcg1TVrBvhhbCyG65z7u5VPtaa8DgZrCEY2+KOxi0v+YmV8hQKc6v/MQ5nDkdWlhOkdXm5FG+t+O9njGm3lX+TRDHYLkAudNU2aOI0DL14Aq+gonl4NmrxCZGLODJQg3SV4m0VWOFskGPUCOSLXseLHIEHlmO228=
+	t=1773912985; cv=none; b=kBoEITHH8CAvlzgmsVral7ZjXf6m7ujSFV/e5LeRTXRc5Nz+XcQz8hMXhh9X/7h9NZJDArcNIcFLxmY/uM8x01NKrsB8Ipmm8MWbwA02U8WnAX0xQdNy4oUeCXcsOVYx6Nv0Aef1SonY+mwlvahpBR1a9cbWLUhf12xvGwNshkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773912984; c=relaxed/simple;
-	bh=m8AU9YbHCXej+SKSdGs3GzysiW4jTlyz0Bb9vHcmVTg=;
+	s=arc-20240116; t=1773912985; c=relaxed/simple;
+	bh=iOsjrh+7fT7eBiA8uBPw6vm41mDYgIncXBJx75Kg3PI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iyVyFR+sB+aF7I4aVIVr8k20y+AgMDQCMN8X//dpqDsadiV6KdxASIhugq1n5zrPgHgz48+e5sbazyYD7vlonHVebbEkk1V5HVZDT5wqgJndKeDgiDSQCb6TscQCPwPSQYZQCMnAtDcwdWuKKIUtaKwOefF8huTl42/+jOZb0l8=
+	 In-Reply-To:To:Cc; b=kX27sntfhfzjzVeoTR7e8/GRTwkJtglUcBdb7ScBL80ZhRxjH/1/cdLdh6pcZBA9VTC/mMIVknAInwuV7kNR+JSViquc7bU4ssZ9u2Q5vsMcFro0ccY0CQbHcfr3YjAOu+pXVCOIHAX4/sg5sGl3gKhYUqxvN591ctGFbH7CGJk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +18,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0003OD-Oe; Thu, 19 Mar 2026 10:36:09 +0100
+	id 1w39nV-0003O7-OP; Thu, 19 Mar 2026 10:36:09 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-0013Dc-0y;
+	id 1w39nV-0013DZ-0u;
 	Thu, 19 Mar 2026 10:36:09 +0100
 Received: from [::1] (helo=dude04.red.stw.pengutronix.de)
 	by dude04 with esmtp (Exim 4.98.2)
 	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1w39nV-00000008yzO-0YRi;
+	id 1w39nV-00000008yzO-0Xqh;
 	Thu, 19 Mar 2026 10:36:09 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 19 Mar 2026 10:36:00 +0100
-Subject: [PATCH 03/11] net/9p/usbg: set client to Disconnected on
- usb9pfs_disable
+Date: Thu, 19 Mar 2026 10:35:59 +0100
+Subject: [PATCH 02/11] net/9p/usbg: also disable endpoints on p9_usbg_close
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-9pfixes-v1-3-c977a7433185@pengutronix.de>
+Message-Id: <20260319-9pfixes-v1-2-c977a7433185@pengutronix.de>
 References: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 In-Reply-To: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
@@ -55,21 +54,21 @@ Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
  kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1044;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=937;
  i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=m8AU9YbHCXej+SKSdGs3GzysiW4jTlyz0Bb9vHcmVTg=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OGeFFoIfyu6skOmAVIv8zLIPC2OixXRs8/M
- HCyfLb38EuJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhgAKCRC/aVhE+XH0
- q5OXD/4i2StoQqHTQLcFjy9uWad+Q4akq+NbiXpR+hAKVMZvo1NMRG6fP4p0VwTtRiSqgyl+1uB
- 8kg6mfiL8fHzTKW6uuxPmGbNRplNGiAPvHLNQ3HFJ1NANliqCKcPSD9jx2r1kuYiPWAcWAa+JR3
- zNrP06zURAIQSeFK4khpHpSsGsBRaEWl89UnPet/E5hdmuZaKj+EJWEtmByJqdAn/KtTx9fw+E8
- 52yZ7v7193zimjiO3j1mbR9kNzxtIj1Y5CibpuND2R7mmBOAeqzb7/KXX/uirZHqXO0xvtEo3qA
- e6PCKhXPYAd2gQu78mhuio4RIf8ezvsrjSQYY7kTso8l+2XDRc1aIsG81tUiaoNlP+XtWsyu8o6
- N7kdxLUJETi9RDQZ6zZWW5OFF1TEJ67a9/CBa7NpoworeGRKlj350UJjn9zZ5/RU8DpOny0CNYt
- ztJXre8Cv8ySRmS1nAmceg+hoEZTI3wnjuFUf+sdw0SZZ8Evofp1DIjQg9zN1Y6qU3CtWyzq+IO
- kTui0ZHID5WzzUWeWozhTFpGuqgSp/vXRwGaXB2mMfK46CnullhloED/7OVxQh9zkw/G/70Svkt
- ODES6423kxP4CW/e6U/5bAIU8uvOLn6UnbzLCs0HbWt8Qp0nDon/VcqmzV2mCHvs6+B9Qc0AP8s
- ZFON1FLEfUYCi9A==
+ bh=iOsjrh+7fT7eBiA8uBPw6vm41mDYgIncXBJx75Kg3PI=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OF8S1QKoQ23PyuWNvolvuq74l/AtJHo+WwI
+ fNs7nHMUByJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhQAKCRC/aVhE+XH0
+ q4iREACd4nb0rMWY8R5eaXv7LBnyJDWi9VS6cbJAqTyB1Wr0Ec3rEN258gDb2ZJMkJywVQPXzcE
+ EnvcLhDxd/aKSVpri7IV+MRGRInshl84WhMC4xTQBfBkO0ay1MGCktnHRVzuqOO1NrgTeodeNpQ
+ zT3qi1M4ECekponmuGekhyZvA8tcJqLic2M35mOH9gPrVK6F8rDwrcdCgX4Fjiipyk79gV0Z6ND
+ dntC3ZhpyOpOb0Em+s8nrEtS/wbyoJlHCNawwXMKmW0Y1YNVKE9pKkmuE2UvE8otJ7qokcfx+7M
+ DfF8/Iei5gDhfscxCPt9NL/vVrzCA5i/BdCNXSFvMD7MAD9irQEeP3GaPgZiAtuc/sq9gjbnkyD
+ pP7a7lj6q+bnxfI38Dhi8s99lGVyaa8srDX6USLpFitG97EgFGn1PensrMBJJKqCuKQzuMTVuN+
+ t9dk5YC4GRYl5Wq5eAwcLr2dIlkZ8Pi6UU6iA3XXobzs29C3/yMbA/EQGuOp6Irgt0fI6hyjITR
+ jDnyEHo8kpG3d9ickOR4J2ahV0JEWfQ1oWGYkoqa3H+zF5XLZQjwBo1hgnRs+i6a0/pjzVCUn8X
+ td0rRCspT304sUd3akU1YkPun/7RL5FIqPV3uSIYde3LpTtQQBADaIeWhhi78ypbHxJcL0MQ5M+
+ YKVTFbYhOlcR3qw==
 X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -77,34 +76,30 @@ X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-This patch is setting the client status to Disconnected, when the
-client is still in use. Otherwiese a disconnected usb cable would run
-any use of the mount to faults.
+The close function has to fully reverse the state change of 9p_create
+(mount) and the potential call of set_alt(1). This includes to ensure
+that the usage of the endpoints is not active any more.
 
 Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
 Cc: stable@vger.kernel.org
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- net/9p/trans_usbg.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/9p/trans_usbg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index fb05198dc2a7d604cfad2db26a63e40e632651a2..6ddf6886dbadd7cdfdebb96dc767874169ccb16e 100644
+index f7a94572013e7d1015d75fb5dbdde5eb81f7d7d0..fb05198dc2a7d604cfad2db26a63e40e632651a2 100644
 --- a/net/9p/trans_usbg.c
 +++ b/net/9p/trans_usbg.c
-@@ -779,7 +779,12 @@ static int usb9pfs_set_alt(struct usb_function *f,
- static void usb9pfs_disable(struct usb_function *f)
- {
- 	struct f_usb9pfs *usb9pfs = func_to_usb9pfs(f);
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&usb9pfs->lock, flags);
-+	if (usb9pfs->client)
-+		usb9pfs->client->status = Disconnected;
-+	spin_unlock_irqrestore(&usb9pfs->lock, flags);
- 	usb9pfs_clear_tx(usb9pfs);
+@@ -495,6 +495,8 @@ static void p9_usbg_close(struct p9_client *client)
+ 	mutex_lock(&usb9pfs_lock);
+ 	dev->inuse = false;
+ 	mutex_unlock(&usb9pfs_lock);
++
++	disable_usb9pfs(usb9pfs);
  }
  
+ static int p9_usbg_request(struct p9_client *client, struct p9_req_t *p9_req)
 
 -- 
 2.47.3
