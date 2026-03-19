@@ -1,122 +1,68 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EC52EC090
-	for <v9fs@lists.linux.dev>; Wed, 18 Mar 2026 23:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C41E832A
+	for <v9fs@lists.linux.dev>; Thu, 19 Mar 2026 00:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773876303; cv=none; b=Cybkgfw8e2H/6BscghJOmCtw0h/uk3It3ttkjvgQPzpZob1QHsb3a9oHi609xTbyJBOqND/5A8iz/q+JPpJRmQUGUeuqJ/4sWX7lHqUsQkpiMCd2eD+6lstVoX6+hErEV6ha0oAW8KYea4eYXblwWjDvaGoo5QzLWaA3grPa/Us=
+	t=1773880582; cv=none; b=I1PGEMY8Vl0H9aM+/dye1f74CFbsH1+53KpXKyftaXqnUDKiIQKwdJKbCJEFTMugpYx4h7JLgcRUSup2ycEi3bpnZgNN96Rqo8eotaq8SOzYV8aplEOu+LuHgpUwnBf3ZV3aKoAV5HQBkEUTrARa4kqnsGQIgRpblj57CEoIs9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773876303; c=relaxed/simple;
-	bh=Kd7BU1YGmlHSPedRbtFQWtnhOfWayICtYpeiwOagYS4=;
+	s=arc-20240116; t=1773880582; c=relaxed/simple;
+	bh=sg15wkzdDU/+fgt4D8W0wwPLm9Uid0O+IZLqWN1Ra4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfPASNtVVc32ewGzvtbDaH6f45FT+4je8JvnPO5Kbb1Wjr4lRSDQnu0wXUWpZmfUtCen3yNoeAgY00cNQuJKZ8QghcbcIIhTZebLDpaQn7wi6DWhSvaWkxezujufPT+YO/EyRf2ggNtGIbNM0zcLfyuYlzxkVpQy+12jotcYbRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1w30Fx-0004SV-0J; Thu, 19 Mar 2026 00:24:53 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1w30Fw-000yxs-0I;
-	Thu, 19 Mar 2026 00:24:52 +0100
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1w30Fv-00000009G77-48Le;
-	Thu, 19 Mar 2026 00:24:51 +0100
-Date: Thu, 19 Mar 2026 00:24:51 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Hyungjung Joo <jhj140711@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
-	linux_oss@crudebyte.com, gregkh@linuxfoundation.org,
-	v9fs@lists.linux.dev, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=WN+3k+EG+zEarnpi4Fv3Mtk6OGf26PY5+LzVY0KRiJCEKID54zGKtMt1tEHUUjYo/bEXVp7tuAsA6zE2zp2Af2SNXcYN7ENPsOGE3/pupPEUYMm0Qz7UhZQ8RptWxXMZlfIrjabqNohVQr2ZDMLjL+9/K+tKHTNV7EZgD30VYeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=htrSSy2e; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="htrSSy2e"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 512C114C2D6;
+	Thu, 19 Mar 2026 01:30:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1773880256;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wo80qY18WD/OuEcgD4zdP4oDkTaCc3WGmeSvHBenTag=;
+	b=htrSSy2eR/qEI91rUiPkCmsZHoM7GmnoZcssHmMYCymPhg7L6QWCvdncUJFRlHLKFOPTg5
+	Axl1gwbtb9FrVKmiDhA7hyB54bDk0Lh6CbbEX00QAOtxpqt4DdhhxfZEqqqwZqTfmyn3z/
+	srvVlM+aI6cc+VZ4ihrqm9dVuZLK5ZdJuWZJbMap0o2KXHRwSfn8LqY2X5DYS1KkwdLCiD
+	S/2TIdbdhm9I6MwSEmDV3cCk8o4dz24daHTGYuQQfuMuUpRvJ/+yyA7o1qLHpZJy1kyZBM
+	QJUKrmwU/OsyrL9l0uxwLmoCFXXxmjnGRztVXJRIraNAX6+ADI8XwMK2ZO126Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ee392a85;
+	Thu, 19 Mar 2026 00:30:51 +0000 (UTC)
+Date: Thu, 19 Mar 2026 09:30:36 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Michael Grzeschik <mgr@pengutronix.de>
+Cc: Hyungjung Joo <jhj140711@gmail.com>, ericvh@kernel.org,
+	lucho@ionkov.net, linux_oss@crudebyte.com,
+	gregkh@linuxfoundation.org, v9fs@lists.linux.dev,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
 Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
-Message-ID: <abs0Q2Sw3WvLYFbe@pengutronix.de>
+Message-ID: <abtDrEQ4ySmhujwG@codewreck.org>
 References: <20260313171659.1225180-1-jhj140711@gmail.com>
+ <abs0Q2Sw3WvLYFbe@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+erp7nSIvu7J2s4t"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260313171659.1225180-1-jhj140711@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: v9fs@lists.linux.dev
+In-Reply-To: <abs0Q2Sw3WvLYFbe@pengutronix.de>
 
+Michael Grzeschik wrote on Thu, Mar 19, 2026 at 12:24:51AM +0100:
+> On Sat, Mar 14, 2026 at 02:16:59AM +0900, Hyungjung Joo wrote:
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> I wonder where greg did this review? Was this in another thread?
 
---+erp7nSIvu7J2s4t
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, it was when Hyungjung Joo sent this to security@, so the review was
+not public
 
-Hi
-
-On Sat, Mar 14, 2026 at 02:16:59AM +0900, Hyungjung Joo wrote:
->p9_usbg_close() tears down the client transport, but usb9pfs keeps
->using usb9pfs->client from asynchronous TX and RX completion handlers.
->A late completion can therefore dereference a client that has already
->been freed during mount teardown.
->
->Clear usb9pfs->client under usb9pfs->lock when closing the transport,
->detach any pending TX request from in_req->context, and make the TX/RX
->completion handlers bail out once the transport has been detached. This
->keeps late completions from touching a freed or rebound p9_client.
->
->Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
->Cc: stable@vger.kernel.org
->Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-I wonder where greg did this review? Was this in another thread?
-
-I will have to drop this anyway, when splitting it appart.
-
->Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
->---
-> net/9p/trans_usbg.c | 63 +++++++++++++++++++++++++++++++++------------
-> 1 file changed, 47 insertions(+), 16 deletions(-)
->
-
-=2E..
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---+erp7nSIvu7J2s4t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmm7NEAACgkQC+njFXoe
-LGS87RAAlXg50t73dUaoyzCA1jdI9UPra00KAQduhdJCA6lmuNIhjvfoORqsCzCv
-WYzfAWW+WjHSsNS+3BVPHtygcsqV/qhySKXfb2FJGmv104fHwACpTlENrEaczo8z
-vaSVO0DiYnIQcJaVjKz2IRVuYYPOGOupc+Uipv+/y6a1h1Gnzv65XgMA2rAMmx5g
-xKStC01/rXBtYJlMnwWn6jgRVquZ0zUhstm/4gPuplf7kN4e1NjZTLbbkHj2ERQg
-ltVjzmMpkYrYIfrBkaMRx3gAEsg4DPp1v2bZ8M87u/pLj3yXEPr9Iog7+Zg7Lhwt
-dC9u99dsLQAXYUylVWeoHLmuh1gwsPcSieUYG1x9L3FyTF5jaxu+cVq42IWpo6mZ
-eF2GpE1C3b/9cEMuAQ/AjPTqSIoDdN4ae0MkEp/o7+dCJWtzq7/I6WGnhTgOJkPD
-GFooKEUZvsMttQ1UAg+drK0MMzL3UATjwc3tRdBuSqp/H71X9CzHxFnrqmruWB86
-kyJxxVlT/6lpp0yjf0pPd1uogMxN5d0M7y6dFBDkB/ao7Wfx/hSyJwW7KvQuq7dH
-zgWH6hes0Om4qR0MOGeIkAB3D4U8h+kCWbDw3IiGqyNfOOt6pPemOeDvtcGrExQk
-QrRv8xm/SA52AiK263E8irdddJRBgxNM0Q916QpLoW7S/otbkBw=
-=DIlH
------END PGP SIGNATURE-----
-
---+erp7nSIvu7J2s4t--
+-- 
+Dominique Martinet | Asmadeus
