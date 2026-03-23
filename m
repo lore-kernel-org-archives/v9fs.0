@@ -1,91 +1,96 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78B11A6830
-	for <v9fs@lists.linux.dev>; Sun, 22 Mar 2026 13:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703632F0C74
+	for <v9fs@lists.linux.dev>; Mon, 23 Mar 2026 18:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774187387; cv=none; b=ZFiLQNFH8RevCTPW/vE2nI6lUL/s3RL2SP3GOarBIrkTDJQ0A22Zd6g8kycFv9+fvj/c9JcqfTRI7jtFhXCENPRHe8dWPZTkq70xmmcfZADgTYvihvy2ONkB4niIBP6/qxYYEe8FNg1naDvT57+Wx3eqk/4RXmgXRXm+BHKrLxI=
+	t=1774291119; cv=none; b=m1nQpmC5Sld9+tSH2vhQz2siZPlGngy6Lb4S19eKIAyMAktGgs7XhcEW45tX8K4TrHepeGxCdVjyt3GWpDUj7f9u5ky/sAOLSycwV0UnguQE4jWv1kECqaMDPb+h4PAOFcQnQSOKMr0mLuMxntvES8YDUDyyWX0cfLxyzWHDPSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774187387; c=relaxed/simple;
-	bh=FVSkFX/IqiP5IlFX9L4xYVKjveHVRLXWHfeKXfoWQps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QIWY1Wd7yBUezRLkhG9iQAcU565AijiVfch2JVNpfyECV1ah6NMks6Ksq4Z0UgJUwgKbT0geHzuiGro8Kce61bhVFLM+SanDMlYAIgRBXx/D+vL5I4y6rKRXvM49yDINxDqxiwKb4WmbGklJpcbpbLXxr+ktsuGnyR1jt2i4Igk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=RwgNt6HM; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1774291119; c=relaxed/simple;
+	bh=9zAQOPPXZrLE9As8tHWODwXqS9OjumANAbv6fs3Mhnw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QV6fLbw7uLROA4SI9ZTplNgT67k59AAxrszYRI9PRGVJve6b+w8TMnDVeJCFxS8V6N1TnpwtjA1hK+FJ+L6c9MTzROmJc8uuJk9D4J4GusT53AncWYNG5oxmuqYeyVMDVu190ldvc5VIFbbAJVCAUyFGCkFzcIeAOHKsizloxJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=ihR/iwj9; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="RwgNt6HM"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 59CC214C2D6;
-	Sun, 22 Mar 2026 14:49:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1774187384;
+	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="ihR/iwj9"
+Message-ID: <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
+	s=key1; t=1774291104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VMfKtiW8+Sifw4U7XzgrxZNwyJwOmTDkHgh5A/ifgf0=;
-	b=RwgNt6HMuaPOAHdcU8YhJGrVXhKsNcdq9hy1/Rp3HbQ1W1Y54BbVAkwxghcRxoZ6+bCRxq
-	+cohryg5leFymBaYVmxbA4hiun/IK3XCO8vhibIy+yDJC4MG9OzkCxa3iR4pUo4lJcpwBr
-	ONdP5BzAKHYMlnhvr0QgdR0yI1L4Ner3Iej5tEPfLKyo1z8r97N9Ponbav4NG+wzEbiJlJ
-	n54ZQ0qF9QWlIkL9pRtznspsRq7QxyuVjaHUHRf9liNFf2fs0oXQeh3SPzgbtMufaHe3IT
-	xEh9t0209qUIwZcj4SibOg2ElunERI+yUnayC9mNYqv9iZj5OrFGiDpOWcu3Cg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7eb25bd0;
-	Sun, 22 Mar 2026 13:49:39 +0000 (UTC)
-Date: Sun, 22 Mar 2026 22:49:24 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hyungjung Joo <jhj140711@gmail.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 00/11] net/9p/usbg: series of fixes
-Message-ID: <ab_zZHWcM0UaIfPC@codewreck.org>
-References: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
+	bh=cr9/0LFyyYkqM0Pl3Rn47qpHPVg9ycKUoMlJD6pGGO8=;
+	b=ihR/iwj9opQaeC2aYOw/oDW4g6VvS0xc15eOo1h9NmBXhS7PQ3Y6TbVmve07OXXhbswZ5d
+	KV8v4hhNnyDvKhtuPIhhczStJwHvSMcbGHKHjbV0Kmm2+gJX3zSPXeel4drobTC8EAm99u
+	+gn4ki6o2knL38XpdrmHem1q50BIu7ymz8ZfrCr/hb0bm8YHHWYpjfqGRASgCxlpEsB8N6
+	CpnI4haCxZC5Qr+t1OIcWzTJ4cdAei6RZqJanVcl/47vkXEyc3RoLRSQsWL4LTFqeCEakZ
+	gbBXY6sPSaWG5WU54Nm70vLEl1W/eLU1cuIHRefQ7UX0kCe3O5Zqnkw5EIZFlQ==
+Date: Tue, 24 Mar 2026 02:37:27 +0800
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
+Subject: Re: [RFC PATCH 17/17] netfs: Combine prepare and issue ops and grab
+ the buffers on request
+To: David Howells <dhowells@redhat.com>, Matthew Wilcox
+ <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
+ Jens Axboe <axboe@kernel.dk>, Leon Romanovsky <leon@kernel.org>,
+ Steve French <smfrench@gmail.com>
+Cc: Christian Brauner <christian@brauner.io>,
+ Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paulo Alcantara <pc@manguebit.org>
+References: <20260304140328.112636-1-dhowells@redhat.com>
+ <20260304140328.112636-18-dhowells@redhat.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+In-Reply-To: <20260304140328.112636-18-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Michael Grzeschik wrote on Thu, Mar 19, 2026 at 10:35:57AM +0100:
-> This series contains a bunch of patches to make the trans_usbg
-> interface more reliable. It adds some extra checks on critical
-> pathes and also solves the overall synchronisation of the daemon
-> with the gadget. The forwarder script also gained the daemon mode to
-> be run and recover any kind of disconnection.
+Hi David,
 
-Thanks for the patches
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=netfs-next&id=a99af9686490fa9a099679bcbfa1b56c839b8d98
 
-I don't have much time to review right now, but I'll try to take a
-look... I still haven't gotten around to figure out how to make this
-work with qemu or taken the time to set it up on $work boards two years
-later so I'll have to trust you on actual tests, but it can't hurt to
-review.
+I reviewed this patch in your repository's netfs-next branch (it looks 
+slightly different from the version posted to the mailing list) and 
+found two issues, the following additional changes are needed:
 
-While I'm buying time here, I'm not one to praise our new robot
-overlords but since it made the news I had a look and noticed
-sashiko.dev ran on the patches:
-https://sashiko.dev/#/patchset/20260319-9pfixes-v1-0-c977a7433185%40pengutronix.de
-
-From a quick look of the above there are a lot of questions raised and I
-don't think it's necessarily worth the time to answer all of them, but
-if you have time to skim through them and pick up anything interesting
-please say so
-(as far as I'm concerned the usb setup is intended for a mostly trusted
-setup in the first place... But then again this patch series started
-with a security concern, so where do we start considering races could be
-an issue?)
-
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+```
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -161,8 +161,8 @@ static int netfs_unbuffered_write(struct 
+netfs_io_request *wreq)
+                                         break;
+                                 }
+                                 netfs_put_subrequest(subreq, 
+netfs_sreq_trace_put_failed);
+-                               subreq = NULL;
+                                 ret = subreq->error;
++                               subreq = NULL;
+                                 goto failed;
+                         }
+                         break;
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 697a47e96d2a..112363f17a84 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -808,6 +808,7 @@ struct netfs_writethrough 
+*netfs_begin_writethrough(struct kiocb *iocb, size_t l
+         if (bvecq_buffer_init(&wreq->load_cursor, GFP_NOFS) < 0) {
+                 netfs_put_failed_request(wreq);
+                 mutex_unlock(&ictx->wb_lock);
++               kfree(wthru);
+                 return ERR_PTR(-ENOMEM);
+         }
+```
