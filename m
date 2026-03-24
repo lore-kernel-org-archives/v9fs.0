@@ -1,36 +1,35 @@
 Received: from e3i468.smtp2go.com (e3i468.smtp2go.com [158.120.85.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96298322B7B
-	for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 20:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F4A3321C2
+	for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 20:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774382939; cv=none; b=Bri9icGCNtdNCCm0lZcdOZvnva9m/rPbWFqKPuOP94WoF2FO31SMSnbpSY0SfdhGLZBxrAH6sTVxCK6NvG+g2GxEYrM0m9yJnAcrt3kb5K/+CDb9c97o1Af0+i/VREN6N15B48YaeY0ELgo0FRVl5FKGGvFWPY+bnCP/5+FbCo0=
+	t=1774383242; cv=none; b=i137irz58P7dn81cRphGX4MNBlNaRmwKnNlnAJmKzdQO7EZ8hV4GWBOIYbgXXFaixvJMBhYtKwbFTO1X3Jh/DjKlp9jGU+8ZO5EL5dFsikJKkmruEPp7lDpIalFLUntBG2ZEk1f5X/mfrY4/hNnmgvg2RpyfU0ImL1erjqRRORo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774382939; c=relaxed/simple;
-	bh=04rlqeEDoFEVDEw1hjLSM2BNdr4PY2iqAtJpuU8Gc1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLiQkB8liTa1pwfVCVtGOUxSXkVbzPWum0ldEqhnZU8+Ao2pI184biSJ179JmjuuGPDT5o0sb3cRFzulS44uObZy1kOFwpVjvIhqnr28Yq5+kDVQW5hmtz2lW/N/M1xNERz87z9Lu7tHJmw+vT7q5T8dKfTgLXLWbvpdwlqiuTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=UhzU4ncb; arc=none smtp.client-ip=158.120.85.212
+	s=arc-20240116; t=1774383242; c=relaxed/simple;
+	bh=rWU0BDXIdkhvsMWjKAE7oErjKKIDezNVphcgQ/cMPN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nD9tDwgJVNfr8Y+dOsSoWGp2noYn+v0XQpBVR2CLBSQW8FZF9FjUxDQo1y1iHdd+w9d4M0MVtHgjEhZZiKS0wOH2GXvHgt9mnAP6DrXKxMFDbIAf24uUn998xIpdzXBYoLouIzq794d8SMvoktLD8qpH4ISvU0vvdaNKH7TPxxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=hjAsOSNI; arc=none smtp.client-ip=158.120.85.212
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="UhzU4ncb"
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="hjAsOSNI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1774382631; h=from : subject
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1774382614; h=from : subject
  : to : message-id : date;
- bh=6+CrdPGc6TTLNXNf+K/wu2w06OOSgORyO3HZ/p6Hwnw=;
- b=UhzU4ncb6HaNMEDQ4cMBCDmpqbYa0rRhBRyEuPmTjKCZi/6avv1UckpB4PB7M0V1xnu8t
- pS0XVUa886qDCH0M3GpHG9K67p4Ycl97PjilOmctGoJHa2te/1qLokTAE8dMy8M7Lb+0CKg
- vwmjdlSiamu5oPAWHi6yuY3mr+PebQq9tnC8PAvLNUee311DvZtKW6UMy2cJLfz17SBf9tX
- NpNi9CuGF2svwH1giviBx/tPY97/mTa1qPzjoAD/7y/BYvL7wVTEZfd7Ph+/zOY8aLLQsaY
- bvH9nuinzWLJ7laoibU8qpImK+s7RscS9WTpyj7SD9RbHUQh3A+ktzwE3j7w==
+ bh=pICmgTihhH4V5uQpv1GH01SeTCoMkq+MgUOUsiuSc1w=;
+ b=hjAsOSNIVucqTxqHb7gaK9MMaB4f7xD2a2Fp8whVoOXaWFNTOFr/Re6PYO1KokTgS6f4H
+ jWb+ovw0oSA1+jNpEuL7RsW4EZjoBj1YI0lR3WNFX5W2AmXM/mAZPdowVeodBTnk5S5aVGx
+ JHtq8WtYo3l4UaLHnpbJTotjzr5H/yLgggT5/YeG4HHu1pQTqnxKrwHwMNIuMNrcsLc08Qf
+ TzRz6EyW/6bk82UKZ3wQRrM5IL3kMZlv2xMTaUEttBKCH4QCCtMO1INu2uz+TZovZnsCx3L
+ idH0hdgNYrQW193mnUKTaNh7hPZDug1nCgSTNctJNM7S1bQ3mYRd48YQm7HQ==
 Received: from [10.12.239.196] (helo=localhost)
 	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.99.1-S2G)
 	(envelope-from <repk@triplefau.lt>)
-	id 1w57yV-FnQW0hPytxt-nY1Y;
-	Tue, 24 Mar 2026 20:03:39 +0000
+	id 1w57yQ-AIkwcC8oVVU-JS5z;
+	Tue, 24 Mar 2026 20:03:34 +0000
 From: Remi Pommarel <repk@triplefau.lt>
 To: v9fs@lists.linux.dev
 Cc: linux-fsdevel@vger.kernel.org,
@@ -40,12 +39,10 @@ Cc: linux-fsdevel@vger.kernel.org,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
 	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v4 4/4] 9p: Enable symlink caching in page cache
-Date: Tue, 24 Mar 2026 20:43:34 +0100
-Message-ID: <66244aac405ec1b61aab52ed80070b3cdcc7788b.1774380535.git.repk@triplefau.lt>
+Subject: [PATCH v4 0/4] 9p: Performance improvements for build workloads
+Date: Tue, 24 Mar 2026 20:43:30 +0100
+Message-ID: <cover.1774380535.git.repk@triplefau.lt>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1774380535.git.repk@triplefau.lt>
-References: <cover.1774380535.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,224 +51,106 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616suuub604Ee
-X-smtpcorp-track: BrBg903bhHgc.p-GD9-8epcoI._pX43g3H8Zn
+Feedback-ID: 510616m:510616apGKSTK:510616sZ-mK4wEkZ
+X-smtpcorp-track: -c99zSQVjpI4.Db7UES7DLSyt.KfjKowSNPRK
 
-Currently, when cache=loose is enabled, file reads are cached in the
-page cache, but symlink reads are not. This patch allows the results
-of p9_client_readlink() to be stored in the page cache, eliminating
-the need for repeated 9P transactions on subsequent symlink accesses.
+This patchset introduces several performance optimizations for the 9p
+filesystem when used with cache=loose option (exclusive or read only
+mounts). These improvements particularly target workloads with frequent
+lookups of non-existent paths and repeated symlink resolutions.
 
-This change improves performance for workloads that involve frequent
-symlink resolution.
+The very state of the art benchmark consisting of cloning a fresh
+hostap repository and building hostapd and wpa_supplicant for hwsim
+tests (cd tests/hwsim; time ./build.sh) in a VM running on a 9pfs rootfs
+(with trans=virtio,cache=loose options) has been used to test those
+optimizations impact.
 
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
- fs/9p/vfs_addr.c       | 29 +++++++++++++++--
- fs/9p/vfs_inode.c      |  6 ++--
- fs/9p/vfs_inode_dotl.c | 72 +++++++++++++++++++++++++++++++++++++-----
- 3 files changed, 94 insertions(+), 13 deletions(-)
+For reference, the build takes 0m56.492s on my laptop natively while it
+completes in 2m18.702sec on the VM. This represents a significant
+performance penalty considering running the same build on a VM using a
+virtiofs rootfs (with "--cache always" virtiofsd option) takes around
+1m32.141s. This patchset aims to bring the 9pfs build time close to
+that of virtiofs, rather than the native host time, as a realistic
+expectation.
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 862164181bac..339f0cfdcb7b 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -70,10 +70,24 @@ static void v9fs_issue_read(struct netfs_io_subrequest *subreq)
- {
- 	struct netfs_io_request *rreq = subreq->rreq;
- 	struct p9_fid *fid = rreq->netfs_priv;
-+	char *target;
- 	unsigned long long pos = subreq->start + subreq->transferred;
--	int total, err;
--
--	total = p9_client_read(fid, pos, &subreq->io_iter, &err);
-+	int total, err, len, n;
-+
-+	if (S_ISLNK(rreq->inode->i_mode)) {
-+		/* p9_client_readlink() must not be called for legacy protocols
-+		 * 9p2000 or 9p2000.u.
-+		 */
-+		BUG_ON(!p9_is_proto_dotl(fid->clnt));
-+		err = p9_client_readlink(fid, &target);
-+		len = strnlen(target, PAGE_SIZE - 1);
-+		n = copy_to_iter(target, len, &subreq->io_iter);
-+		if (n != len)
-+			err = -EFAULT;
-+		total = i_size_read(rreq->inode);
-+	} else {
-+		total = p9_client_read(fid, pos, &subreq->io_iter, &err);
-+	}
- 
- 	/* if we just extended the file size, any portion not in
- 	 * cache won't be on server and is zeroes */
-@@ -99,6 +113,7 @@ static void v9fs_issue_read(struct netfs_io_subrequest *subreq)
- static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
- {
- 	struct p9_fid *fid;
-+	struct dentry *dentry;
- 	bool writing = (rreq->origin == NETFS_READ_FOR_WRITE ||
- 			rreq->origin == NETFS_WRITETHROUGH ||
- 			rreq->origin == NETFS_UNBUFFERED_WRITE ||
-@@ -115,6 +130,14 @@ static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
- 		if (!fid)
- 			goto no_fid;
- 		p9_fid_get(fid);
-+	} else if (S_ISLNK(rreq->inode->i_mode)) {
-+		dentry = d_find_alias(rreq->inode);
-+		if (!dentry)
-+			goto no_fid;
-+		fid = v9fs_fid_lookup(dentry);
-+		dput(dentry);
-+		if (IS_ERR(fid))
-+			goto no_fid;
- 	} else {
- 		fid = v9fs_fid_find_inode(rreq->inode, writing, INVALID_UID, true);
- 		if (!fid)
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index c82db6fe0c39..98644f27d6f1 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -302,10 +302,12 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
- 			goto error;
- 		}
- 
--		if (v9fs_proto_dotl(v9ses))
-+		if (v9fs_proto_dotl(v9ses)) {
- 			inode->i_op = &v9fs_symlink_inode_operations_dotl;
--		else
-+			inode_nohighmem(inode);
-+		} else {
- 			inode->i_op = &v9fs_symlink_inode_operations;
-+		}
- 
- 		break;
- 	case S_IFDIR:
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 643e759eacb2..a286a078d6a6 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -686,9 +686,13 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 	int err;
- 	kgid_t gid;
- 	const unsigned char *name;
-+	umode_t mode;
-+	struct v9fs_session_info *v9ses;
- 	struct p9_qid qid;
- 	struct p9_fid *dfid;
- 	struct p9_fid *fid = NULL;
-+	struct inode *inode;
-+	struct posix_acl *dacl = NULL, *pacl = NULL;
- 
- 	name = dentry->d_name.name;
- 	p9_debug(P9_DEBUG_VFS, "%lu,%s,%s\n", dir->i_ino, name, symname);
-@@ -702,6 +706,14 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 
- 	gid = v9fs_get_fsgid_for_create(dir);
- 
-+	/* Update mode based on ACL value */
-+	err = v9fs_acl_mode(dir, &mode, &dacl, &pacl);
-+	if (err) {
-+		p9_debug(P9_DEBUG_VFS, "Failed to get acl values in mknod %d\n",
-+			 err);
-+		goto error;
-+	}
-+
- 	/* Server doesn't alter fid on TSYMLINK. Hence no need to clone it. */
- 	err = p9_client_symlink(dfid, name, symname, gid, &qid);
- 
-@@ -712,8 +724,30 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 
- 	v9fs_invalidate_inode_attr(dir);
- 
-+	/* instantiate inode and assign the unopened fid to the dentry */
-+	fid = p9_client_walk(dfid, 1, &name, 1);
-+	if (IS_ERR(fid)) {
-+		err = PTR_ERR(fid);
-+		p9_debug(P9_DEBUG_VFS, "p9_client_walk failed %d\n",
-+			 err);
-+		goto error;
-+	}
-+
-+	v9ses = v9fs_inode2v9ses(dir);
-+	inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
-+	if (IS_ERR(inode)) {
-+		err = PTR_ERR(inode);
-+		p9_debug(P9_DEBUG_VFS, "inode creation failed %d\n",
-+			 err);
-+		goto error;
-+	}
-+	v9fs_set_create_acl(inode, fid, dacl, pacl);
-+	v9fs_fid_add(dentry, &fid);
-+	d_instantiate(dentry, inode);
-+	err = 0;
- error:
- 	p9_fid_put(fid);
-+	v9fs_put_acl(dacl, pacl);
- 	p9_fid_put(dfid);
- 	return err;
- }
-@@ -853,24 +887,23 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
- }
- 
- /**
-- * v9fs_vfs_get_link_dotl - follow a symlink path
-+ * v9fs_vfs_get_link_nocache_dotl - Resolve a symlink directly.
-+ *
-+ * To be used when symlink caching is not enabled.
-+ *
-  * @dentry: dentry for symlink
-  * @inode: inode for symlink
-  * @done: destructor for return value
-  */
--
- static const char *
--v9fs_vfs_get_link_dotl(struct dentry *dentry,
--		       struct inode *inode,
--		       struct delayed_call *done)
-+v9fs_vfs_get_link_nocache_dotl(struct dentry *dentry,
-+			       struct inode *inode,
-+			       struct delayed_call *done)
- {
- 	struct p9_fid *fid;
- 	char *target;
- 	int retval;
- 
--	if (!dentry)
--		return ERR_PTR(-ECHILD);
--
- 	p9_debug(P9_DEBUG_VFS, "%pd\n", dentry);
- 
- 	fid = v9fs_fid_lookup(dentry);
-@@ -884,6 +917,29 @@ v9fs_vfs_get_link_dotl(struct dentry *dentry,
- 	return target;
- }
- 
-+/**
-+ * v9fs_vfs_get_link_dotl - follow a symlink path
-+ * @dentry: dentry for symlink
-+ * @inode: inode for symlink
-+ * @done: destructor for return value
-+ */
-+static const char *
-+v9fs_vfs_get_link_dotl(struct dentry *dentry,
-+		       struct inode *inode,
-+		       struct delayed_call *done)
-+{
-+	struct v9fs_session_info *v9ses;
-+
-+	if (!dentry)
-+		return ERR_PTR(-ECHILD);
-+
-+	v9ses = v9fs_inode2v9ses(inode);
-+	if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
-+		return page_get_link(dentry, inode, done);
-+
-+	return v9fs_vfs_get_link_nocache_dotl(dentry, inode, done);
-+}
-+
- int v9fs_refresh_inode_dotl(struct p9_fid *fid, struct inode *inode)
- {
- 	struct p9_stat_dotl *st;
+This first three patches in this series focus on keeping negative
+dentries in the cache, ensuring that subsequent lookups for paths known
+to not exist do not require redundant 9P RPC calls. This optimization
+reduces the time needed for the compiler to search for header files
+across known locations. The two first patches introduce a new mount
+option, ndentrycache, which specifies the number of ms to keep the
+dentry in the cache. Using ndentrycache without value (i.e. keeping the
+negative dentry indifinetly) shrunk build time to 1m46.198s. The third
+patch enable the negative dentry caching for 24 hours by default on
+cache=loose.
+
+The fourth patch extends page cache usage to symlinks by allowing
+p9_client_readlink() results to be cached. Resolving symlink is
+apparently something done quite frequently during the build process and
+avoiding the cost of a 9P RPC call round trip for already known symlinks
+helps reduce the build time to 1m26.602s, outperforming the virtiofs
+setup.
+
+Here is summary of the different hostapd/wpa_supplicant build times:
+
+  - Baseline (no patch): 2m18.702s
+  - negative dentry caching (patches 1-3): 1m46.198s (23% improvement)
+  - Above + symlink caching (patches 1-4): 1m26.302s (an additional 18%
+    improvement, 37% in total)
+
+With this ~37% performance gain, 9pfs with cache=loose can compete with
+virtiofs for (at least) this specific scenario. Although this benchmark
+is not the most typical, I do think that these caching optimizations
+could benefit a wide range of other workflows as well.
+
+Also sorry for the long delay for v4, it's been quite busy lately.
+
+Changes since v3:
+  - Go back to s32 ndentry timeout option, rename it to negtimeout so
+    its easier to grep
+  - Bring back the missing 4 letters for *_TIMEOUT_* macro name
+  - Fix some alignment/space issues
+
+Changes since v2:
+  - Rename v9fs_dentry_is_{expired,refresh} to ndentry
+  - Some grammatical fixes in couple of comments
+  - Rename the negative cache mount option to ndentrycache. Using
+    ndentrycache without value enable infinite caching while
+    ndentrycache=<time> enable caching for <time> milliseconds.
+    This allows the option to be unsigned.
+  - Make it more obvious v9fs_issue_read() is only called on dotl
+    symlinks
+
+Changes since v1:
+  - Rebase on 9p-next (with new mount API conversion)
+  - Integrated symlink caching with the network filesystem helper
+    library for robustness (a lot of code expects a valid netfs context)
+  - Instantiate symlink dentry at creation to avoid keeping a negative
+    dentry in cache
+  - Moved IO waiting time accounting to a separate patch series
+
+Thanks.
+
+
+Remi Pommarel (4):
+  9p: Cache negative dentries for lookup performance
+  9p: Add mount option for negative dentry cache retention
+  9p: Set default negative dentry retention time for cache=loose
+  9p: Enable symlink caching in page cache
+
+ Documentation/filesystems/9p.rst |   5 ++
+ fs/9p/fid.c                      |  11 ++--
+ fs/9p/v9fs.c                     |  27 +++++++-
+ fs/9p/v9fs.h                     |  28 ++++++---
+ fs/9p/v9fs_vfs.h                 |  15 +++++
+ fs/9p/vfs_addr.c                 |  29 ++++++++-
+ fs/9p/vfs_dentry.c               | 105 ++++++++++++++++++++++++++-----
+ fs/9p/vfs_inode.c                |  18 +++---
+ fs/9p/vfs_inode_dotl.c           |  72 ++++++++++++++++++---
+ fs/9p/vfs_super.c                |   1 +
+ include/net/9p/client.h          |   2 +
+ 11 files changed, 265 insertions(+), 48 deletions(-)
+
 -- 
 2.52.0
 
