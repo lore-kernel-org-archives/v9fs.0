@@ -1,146 +1,277 @@
-Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from e3i468.smtp2go.com (e3i468.smtp2go.com [158.120.85.212])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC8F390983
-	for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 15:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96298322B7B
+	for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 20:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774366239; cv=none; b=RVAYwekAxs+l9DdPiSXlpzd0Mr/804E2wGMtOfDHwIOncxf9H0vl/e7ykVwVazgy4ryhgex9wqQ8nfFT3ugprHyQaXMqrkotgbf/SDY4ObtoD+JlPi+894zJaZiF/QXeibcyHZZ75fHUfAVtymhAXwh6i1W9e4MpQnqi8aI3gLU=
+	t=1774382939; cv=none; b=Bri9icGCNtdNCCm0lZcdOZvnva9m/rPbWFqKPuOP94WoF2FO31SMSnbpSY0SfdhGLZBxrAH6sTVxCK6NvG+g2GxEYrM0m9yJnAcrt3kb5K/+CDb9c97o1Af0+i/VREN6N15B48YaeY0ELgo0FRVl5FKGGvFWPY+bnCP/5+FbCo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774366239; c=relaxed/simple;
-	bh=dLAX/MaLMsA55bQXtSczaYIpJZHd96/3ujOVO8C7BxA=;
+	s=arc-20240116; t=1774382939; c=relaxed/simple;
+	bh=04rlqeEDoFEVDEw1hjLSM2BNdr4PY2iqAtJpuU8Gc1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJlcohEhflrROTz7MWOoWmcKZVdipjoPBdh62YyC0emP37UUP284oUnyXDrh4wNr8I2clzl1aml3r11r2EZ+B3JySgYR8Dz6zApi1w29d29ZjgchEnu0zTCWkpdPLui0J8gb1MeFsNYeTi03K8WpgMLGELgcg6sGBJjpYl/GrP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2Bqa/Z1; arc=none smtp.client-ip=74.125.82.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=FLiQkB8liTa1pwfVCVtGOUxSXkVbzPWum0ldEqhnZU8+Ao2pI184biSJ179JmjuuGPDT5o0sb3cRFzulS44uObZy1kOFwpVjvIhqnr28Yq5+kDVQW5hmtz2lW/N/M1xNERz87z9Lu7tHJmw+vT7q5T8dKfTgLXLWbvpdwlqiuTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=UhzU4ncb; arc=none smtp.client-ip=158.120.85.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2Bqa/Z1"
-Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-2c0c955a481so5754226eec.1
-        for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 08:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774366236; x=1774971036; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k+MnIitRRQp1/N0eopQVQ2cUe8bKDReL4QPDo76ZT4M=;
-        b=d2Bqa/Z1U1x48Z5TcBNKOH1GpJp2qFl/GC374IwrOZN3MKoePkDD8D1/OgZxYoSXxp
-         CcOGCTV4fTWFa63xLmeUsHZNQ8SvkR4tctrSCE+cTNBZ47FMjsm/APL75Gp+Qzg1gXId
-         noo2uvdfxH6ZkWzDyIipapgDCpUbQ68DMl8g3N4fOs41GV2HifsxbpuMAVB00BrZkF5C
-         p/4m2JfMlx4w33dFeGWks9QBRzkmdFR/SGY91xoFvRmQi0dujPYo7RUkFROWhAxL2ttN
-         r2M6ZXRw3XePzerELNJhxQ0C4vYpOOzxMOOg8MEfPCMywhKU6CpiuC4xfh69cC+ExqjA
-         lbwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774366236; x=1774971036;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k+MnIitRRQp1/N0eopQVQ2cUe8bKDReL4QPDo76ZT4M=;
-        b=L/bwBFzrXhEfFk1pCm+hIx9DjLq//IjmtH3ZURiplc5ebD4wqB2UKmegzQQbiKiWcX
-         BWmewQ1kM1C0V7z75RKeeaImghkq9X1igFgirU5Kyc0BvTAkAxn5w+8WpUarpcGEgoRW
-         DEheY8e8FVADef7kW3hSk+uKddoN9zRhdGAhc9xzi35qx5NNzVw1JnOuf2/YIHgcfiQ1
-         b7lcFfuK1/SQWL6nOgAdDvdclTPQYMr9YROSTRJmBa9JAe4ZJARw8P5AxKYtR+LuD8Fa
-         zl3BBDHf1VQ2wc9TpVKA5zzV5q2+kmBktTqLRQISIQNmlGv/ntXcAHlyMm5A3Fi12am9
-         vBZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUma1HGWFV4scDFcJPh0ANeV3wO1LrbnTbWIUtgR3h6xEinq4exPaCzJaRk/MhsEtfsvsab@lists.linux.dev
-X-Gm-Message-State: AOJu0YwEEqzVwQ5u30n4LOol4AHuAY74DkI/XcfX+xQomQRhcWepMdwW
-	/F/XDJuVWMdWd7vWDv7we2hW9FvbBNfX6qFQOytj3EG15ABYb8cRVvFr
-X-Gm-Gg: ATEYQzzry2RJqHpFmABvvetcxNyLEQbVavAPPWbbvx2JqstQMGdNQ7y080Yxn6+59Ha
-	bx92jTWDXIgDsIyazzSzt0iKJUa3utHxMbP+H4WonEEuIqyrWFEeQCrRBI43txzIy5/9sImn4cL
-	csrOXrrGUNw9FLFiu0giIWPBXxpiHGHJxvkjXz6BENe/RjMsYTIyNYaK3ibkdAdDCJj9vmiMDti
-	ucUwsAoBVzZ7GlsdA2NSB5fcKAWiy5fIRKV14zgJ4wOkvU8DQoXeQBVxYjrpqka2GjsF7EWbfD6
-	uTFX4yJK7GXSX8s3eZDUOkwsS+SeimTs1urzSvEwGCxxgOIiky5o3t4GdOU3SHcgDk9wHtUa752
-	Z+sJNoOqulwXSqTPZx78djE0EcwsuolQh/UEBGOS1wIqfTDBkEiugcZ4Rh1lW5TECzgmxwy76a5
-	JRjop/Jg59tDT31Mq4EgxO0yru7U8nbh04TJVGMwz9p3hVzvMREATF+ASj4BIPtX3iGJUeRA==
-X-Received: by 2002:a05:7300:e2cc:b0:2bd:d04c:a430 with SMTP id 5a478bee46e88-2c1095fd85dmr9074373eec.12.1774366235748;
-        Tue, 24 Mar 2026 08:30:35 -0700 (PDT)
-Received: from localhost.localdomain ([38.244.25.197])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10aefd778sm20842577eec.0.2026.03.24.08.30.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 24 Mar 2026 08:30:35 -0700 (PDT)
-From: Eric-Terminal <ericterminal@gmail.com>
-To: asmadeus@codewreck.org,
-	ericvh@kernel.org,
-	lucho@ionkov.net
-Cc: stefano.stabellini@amd.com,
-	v9fs@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="UhzU4ncb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1774382631; h=from : subject
+ : to : message-id : date;
+ bh=6+CrdPGc6TTLNXNf+K/wu2w06OOSgORyO3HZ/p6Hwnw=;
+ b=UhzU4ncb6HaNMEDQ4cMBCDmpqbYa0rRhBRyEuPmTjKCZi/6avv1UckpB4PB7M0V1xnu8t
+ pS0XVUa886qDCH0M3GpHG9K67p4Ycl97PjilOmctGoJHa2te/1qLokTAE8dMy8M7Lb+0CKg
+ vwmjdlSiamu5oPAWHi6yuY3mr+PebQq9tnC8PAvLNUee311DvZtKW6UMy2cJLfz17SBf9tX
+ NpNi9CuGF2svwH1giviBx/tPY97/mTa1qPzjoAD/7y/BYvL7wVTEZfd7Ph+/zOY8aLLQsaY
+ bvH9nuinzWLJ7laoibU8qpImK+s7RscS9WTpyj7SD9RbHUQh3A+ktzwE3j7w==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.99.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1w57yV-FnQW0hPytxt-nY1Y;
+	Tue, 24 Mar 2026 20:03:39 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: v9fs@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yufan Chen <ericterminal@gmail.com>
-Subject: [PATCH v3 2/2] 9p/trans_xen: replace simple_strto* with kstrtouint
-Date: Tue, 24 Mar 2026 23:30:23 +0800
-Message-ID: <20260324153023.86853-3-ericterminal@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260324153023.86853-1-ericterminal@gmail.com>
-References: <20260324153023.86853-1-ericterminal@gmail.com>
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH v4 4/4] 9p: Enable symlink caching in page cache
+Date: Tue, 24 Mar 2026 20:43:34 +0100
+Message-ID: <66244aac405ec1b61aab52ed80070b3cdcc7788b.1774380535.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1774380535.git.repk@triplefau.lt>
+References: <cover.1774380535.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1856; i=ericterminal@gmail.com; h=from:subject; bh=J10JPVWKsVQanKp923Zl9fUFEZ4SGvBX5W7Guc7pfaU=; b=owGbwMvMwCXWM/dCzeS3H+sZT6slMWQeWqslevn97QnFyuvcPn1zXGlx4gPn3kMy/Or7fxctP Z0Vvjz1YsdEFgYxLgZLMUWWu//3zc31ujXnOvfhXJg5rEwgQ6RFGhiAgIWBLzcxr9RIx0jPVNtQ z9BIx0DHmIGLUwCmuleMkWG6nuTemQtvls2KNlu8teHmHK1NpntUJ7YzV61g3WjG/esHI8OBU0+ Cpiiy/2YI0tP9fEI3+rawbHSSw0HL42brpnN8ecUGAA==
-X-Developer-Key: i=ericterminal@gmail.com; a=openpgp; fpr=DDFFBE9D6D4ADA9CD70BC36D8C9DD07C93EDF17F
 Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616suuub604Ee
+X-smtpcorp-track: BrBg903bhHgc.p-GD9-8epcoI._pX43g3H8Zn
 
-From: Yufan Chen <ericterminal@gmail.com>
+Currently, when cache=loose is enabled, file reads are cached in the
+page cache, but symlink reads are not. This patch allows the results
+of p9_client_readlink() to be stored in the page cache, eliminating
+the need for repeated 9P transactions on subsequent symlink accesses.
 
-In xen_9pfs_front_init(), parse the backend version list as comma-separated
-tokens with kstrtouint(), keep strict token validation, and explicitly
-require protocol version 1 to be present.
+This change improves performance for workloads that involve frequent
+symlink resolution.
 
-This replaces the deprecated simple_strtoul(), improves error reporting
-consistency, and avoids partially parsed values in control paths.
-
-Signed-off-by: Yufan Chen <ericterminal@gmail.com>
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
-v3:
-- Split from mixed series into a dedicated 9p/trans_xen series.
-- Refined commit message to focus on 9p changes.
-- No functional changes since v2.
+ fs/9p/vfs_addr.c       | 29 +++++++++++++++--
+ fs/9p/vfs_inode.c      |  6 ++--
+ fs/9p/vfs_inode_dotl.c | 72 +++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 94 insertions(+), 13 deletions(-)
 
- net/9p/trans_xen.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 85b9ebfaa..f9fb2db7a 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -413,23 +413,29 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	int ret, i;
- 	struct xenbus_transaction xbt;
- 	struct xen_9pfs_front_priv *priv;
--	char *versions, *v;
--	unsigned int max_rings, max_ring_order, len = 0;
-+	char *versions, *v, *token;
-+	bool version_1 = false;
-+	unsigned int max_rings, max_ring_order, len = 0, version;
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 862164181bac..339f0cfdcb7b 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -70,10 +70,24 @@ static void v9fs_issue_read(struct netfs_io_subrequest *subreq)
+ {
+ 	struct netfs_io_request *rreq = subreq->rreq;
+ 	struct p9_fid *fid = rreq->netfs_priv;
++	char *target;
+ 	unsigned long long pos = subreq->start + subreq->transferred;
+-	int total, err;
+-
+-	total = p9_client_read(fid, pos, &subreq->io_iter, &err);
++	int total, err, len, n;
++
++	if (S_ISLNK(rreq->inode->i_mode)) {
++		/* p9_client_readlink() must not be called for legacy protocols
++		 * 9p2000 or 9p2000.u.
++		 */
++		BUG_ON(!p9_is_proto_dotl(fid->clnt));
++		err = p9_client_readlink(fid, &target);
++		len = strnlen(target, PAGE_SIZE - 1);
++		n = copy_to_iter(target, len, &subreq->io_iter);
++		if (n != len)
++			err = -EFAULT;
++		total = i_size_read(rreq->inode);
++	} else {
++		total = p9_client_read(fid, pos, &subreq->io_iter, &err);
++	}
  
- 	versions = xenbus_read(XBT_NIL, dev->otherend, "versions", &len);
- 	if (IS_ERR(versions))
- 		return PTR_ERR(versions);
--	for (v = versions; *v; v++) {
--		if (simple_strtoul(v, &v, 10) == 1) {
--			v = NULL;
--			break;
-+	for (v = versions; (token = strsep(&v, ",")); ) {
-+		if (!*token)
-+			continue;
-+
-+		ret = kstrtouint(token, 10, &version);
-+		if (ret) {
-+			kfree(versions);
-+			return ret;
+ 	/* if we just extended the file size, any portion not in
+ 	 * cache won't be on server and is zeroes */
+@@ -99,6 +113,7 @@ static void v9fs_issue_read(struct netfs_io_subrequest *subreq)
+ static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
+ {
+ 	struct p9_fid *fid;
++	struct dentry *dentry;
+ 	bool writing = (rreq->origin == NETFS_READ_FOR_WRITE ||
+ 			rreq->origin == NETFS_WRITETHROUGH ||
+ 			rreq->origin == NETFS_UNBUFFERED_WRITE ||
+@@ -115,6 +130,14 @@ static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
+ 		if (!fid)
+ 			goto no_fid;
+ 		p9_fid_get(fid);
++	} else if (S_ISLNK(rreq->inode->i_mode)) {
++		dentry = d_find_alias(rreq->inode);
++		if (!dentry)
++			goto no_fid;
++		fid = v9fs_fid_lookup(dentry);
++		dput(dentry);
++		if (IS_ERR(fid))
++			goto no_fid;
+ 	} else {
+ 		fid = v9fs_fid_find_inode(rreq->inode, writing, INVALID_UID, true);
+ 		if (!fid)
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index c82db6fe0c39..98644f27d6f1 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -302,10 +302,12 @@ int v9fs_init_inode(struct v9fs_session_info *v9ses,
+ 			goto error;
  		}
--	}
--	if (v) {
--		kfree(versions);
--		return -EINVAL;
-+		if (version == 1)
-+			version_1 = true;
- 	}
- 	kfree(versions);
-+	if (!version_1)
-+		return -EINVAL;
+ 
+-		if (v9fs_proto_dotl(v9ses))
++		if (v9fs_proto_dotl(v9ses)) {
+ 			inode->i_op = &v9fs_symlink_inode_operations_dotl;
+-		else
++			inode_nohighmem(inode);
++		} else {
+ 			inode->i_op = &v9fs_symlink_inode_operations;
++		}
+ 
+ 		break;
+ 	case S_IFDIR:
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 643e759eacb2..a286a078d6a6 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -686,9 +686,13 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ 	int err;
+ 	kgid_t gid;
+ 	const unsigned char *name;
++	umode_t mode;
++	struct v9fs_session_info *v9ses;
+ 	struct p9_qid qid;
+ 	struct p9_fid *dfid;
+ 	struct p9_fid *fid = NULL;
++	struct inode *inode;
++	struct posix_acl *dacl = NULL, *pacl = NULL;
+ 
+ 	name = dentry->d_name.name;
+ 	p9_debug(P9_DEBUG_VFS, "%lu,%s,%s\n", dir->i_ino, name, symname);
+@@ -702,6 +706,14 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ 
+ 	gid = v9fs_get_fsgid_for_create(dir);
+ 
++	/* Update mode based on ACL value */
++	err = v9fs_acl_mode(dir, &mode, &dacl, &pacl);
++	if (err) {
++		p9_debug(P9_DEBUG_VFS, "Failed to get acl values in mknod %d\n",
++			 err);
++		goto error;
++	}
 +
- 	max_rings = xenbus_read_unsigned(dev->otherend, "max-rings", 0);
- 	if (max_rings < XEN_9PFS_NUM_RINGS)
+ 	/* Server doesn't alter fid on TSYMLINK. Hence no need to clone it. */
+ 	err = p9_client_symlink(dfid, name, symname, gid, &qid);
+ 
+@@ -712,8 +724,30 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ 
+ 	v9fs_invalidate_inode_attr(dir);
+ 
++	/* instantiate inode and assign the unopened fid to the dentry */
++	fid = p9_client_walk(dfid, 1, &name, 1);
++	if (IS_ERR(fid)) {
++		err = PTR_ERR(fid);
++		p9_debug(P9_DEBUG_VFS, "p9_client_walk failed %d\n",
++			 err);
++		goto error;
++	}
++
++	v9ses = v9fs_inode2v9ses(dir);
++	inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
++	if (IS_ERR(inode)) {
++		err = PTR_ERR(inode);
++		p9_debug(P9_DEBUG_VFS, "inode creation failed %d\n",
++			 err);
++		goto error;
++	}
++	v9fs_set_create_acl(inode, fid, dacl, pacl);
++	v9fs_fid_add(dentry, &fid);
++	d_instantiate(dentry, inode);
++	err = 0;
+ error:
+ 	p9_fid_put(fid);
++	v9fs_put_acl(dacl, pacl);
+ 	p9_fid_put(dfid);
+ 	return err;
+ }
+@@ -853,24 +887,23 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ }
+ 
+ /**
+- * v9fs_vfs_get_link_dotl - follow a symlink path
++ * v9fs_vfs_get_link_nocache_dotl - Resolve a symlink directly.
++ *
++ * To be used when symlink caching is not enabled.
++ *
+  * @dentry: dentry for symlink
+  * @inode: inode for symlink
+  * @done: destructor for return value
+  */
+-
+ static const char *
+-v9fs_vfs_get_link_dotl(struct dentry *dentry,
+-		       struct inode *inode,
+-		       struct delayed_call *done)
++v9fs_vfs_get_link_nocache_dotl(struct dentry *dentry,
++			       struct inode *inode,
++			       struct delayed_call *done)
+ {
+ 	struct p9_fid *fid;
+ 	char *target;
+ 	int retval;
+ 
+-	if (!dentry)
+-		return ERR_PTR(-ECHILD);
+-
+ 	p9_debug(P9_DEBUG_VFS, "%pd\n", dentry);
+ 
+ 	fid = v9fs_fid_lookup(dentry);
+@@ -884,6 +917,29 @@ v9fs_vfs_get_link_dotl(struct dentry *dentry,
+ 	return target;
+ }
+ 
++/**
++ * v9fs_vfs_get_link_dotl - follow a symlink path
++ * @dentry: dentry for symlink
++ * @inode: inode for symlink
++ * @done: destructor for return value
++ */
++static const char *
++v9fs_vfs_get_link_dotl(struct dentry *dentry,
++		       struct inode *inode,
++		       struct delayed_call *done)
++{
++	struct v9fs_session_info *v9ses;
++
++	if (!dentry)
++		return ERR_PTR(-ECHILD);
++
++	v9ses = v9fs_inode2v9ses(inode);
++	if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
++		return page_get_link(dentry, inode, done);
++
++	return v9fs_vfs_get_link_nocache_dotl(dentry, inode, done);
++}
++
+ int v9fs_refresh_inode_dotl(struct p9_fid *fid, struct inode *inode)
+ {
+ 	struct p9_stat_dotl *st;
+-- 
+2.52.0
+
