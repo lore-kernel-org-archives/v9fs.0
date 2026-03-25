@@ -1,444 +1,428 @@
-Received: from e3i468.smtp2go.com (e3i468.smtp2go.com [158.120.85.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B02349AF4
-	for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 20:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C9C256D
+	for <v9fs@lists.linux.dev>; Wed, 25 Mar 2026 00:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774383535; cv=none; b=UMrrmDKkMUeOS/EuMc4VlewLNJVM/C+AErk9g82ZPne5zYF06+zqAN+TJswwxve2z0HPRpYJ1+lij8hBCtw5FgmTm/3bKVVI132tvS8sHUPjkLvTIAZTWGriEH0knJmrK8PWyjbMDJfeww5IWnIn0mHZe9i0s62G3phCiSG35Kg=
+	t=1774397128; cv=none; b=OBQKVMJa48VWVUlAK0C54ucO/MQvptkZUgqEkqMyvC/XoryMsMkM7XTtQWnTcjvpE3dEQyg1f6jwWiNLnRrVPMmf8cSfywnyaaAxMb1pZK5rDbYwbYZBwv0aUlP/RUR9XTrcj05xB6W81ZsUdkz6AqFrq6KTLItBVkpgR+OHwOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774383535; c=relaxed/simple;
-	bh=w4L9MSMJnZNgwwgRa2Cp3EqXBWzgSq7YTbDItn5maJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4tpuwjA2xFtK5Tce7RlmXx9wbsqW1kviEQdSyYoO6b21J9G2YQBGqRKixmHwk7UfYDRKPbDUsFTAJoM5yzk2If0YNrtMzSK9/UNy9fMwUQog4UCQaW6Uc//ARybP8AEfBsHfZZJ4R/LIZhRW8lK0I+TwXI7iGKMZRNp6em5y7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=ZRmSsy+/; arc=none smtp.client-ip=158.120.85.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="ZRmSsy+/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1774382616; h=from : subject
- : to : message-id : date;
- bh=7lzj3q0xX38ehrjTG5fEZM8az2dff5vLdLWZI2vPJ4g=;
- b=ZRmSsy+/dWPBvFXacdnaQYNu4ZB8bWUKcsLnkQaNcV/HxGbTx+nJEazdrAyMevWtUbyVC
- AfH3kfDNet5N/Yhgt0oQtPweBKypDB0fAGOoLXojOfu8+QcjelPyrtPt+pbJrHEj17ysnfQ
- bo8hZMsuZpvkJ1KDdYOpzbvq85Fce3IMQ68daHaLHayfOmo5f3F/IByL4iaY6rDNGj6X6yI
- dvZDW4NChu84iCPs7OwWLyYJ15e7gEOUg58S/rE8QO19La+T6wG1A2g9tZBzn948CUIXNtx
- 50Y27N4AcAfA0UwBu6L2iXqJwwzEfFtz+hvA2u8hK3KdgxSkdp5se/lYVm8Q==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.99.1-S2G)
-	(envelope-from <repk@triplefau.lt>)
-	id 1w57yR-AIkwcC8oVXU-IF2X;
-	Tue, 24 Mar 2026 20:03:35 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: v9fs@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v4 1/4] 9p: Cache negative dentries for lookup performance
-Date: Tue, 24 Mar 2026 20:43:31 +0100
-Message-ID: <551c057c5dbcc83f19b9c8a3b508bd971598f657.1774380535.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1774380535.git.repk@triplefau.lt>
-References: <cover.1774380535.git.repk@triplefau.lt>
+	s=arc-20240116; t=1774397128; c=relaxed/simple;
+	bh=Qis/xwDQjtjahTKq/oJTVKn8SM9HXW9eGysS/C2tVf4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=QAOkvDpc763Ami2CSIEHPO7SehAk75Wvdgv7ldfFasRs+Fl7AqpzHSiiS7EvTjfT962ReMxLcaLFcsqlhfuormK86RMAQs6hxofs5cLb0Qen1cWcqPQkIpc01gONPrTsbDGhDZUn6WGgWNGBcBoRyrSscilyghEvIYPEaRdv3Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-67deac23e02so18249116eaf.2
+        for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 17:05:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774397126; x=1775001926;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6QdPYOn+OeeYxpFk1PKytNGb1+ZHkIio2K+x5LjW11E=;
+        b=BhGmjgWkYERf7WlXtUok8JqVZiNHzuZMSn4mFQHCTDcBv3uOtnvslPtQ7+dXUzYg4c
+         2UEktg30iHRpLoADUYE25TruhB0J+xeUQvGrFTtMTGtpuiokbU5IjiwuJ0G2n/ZHG1hM
+         Wf/xIUe2vyICd44vOS0TdRm7raoVvKuA/R6KkntzVSPB3+1YCTesBV0OROVRrXcukxOW
+         KnbH5wtlpAnBg4hP0mYHUnmWTE7F6Bjjwos4kFjzOXyFyQ/TSB/D6mMgDAzF0dV8mety
+         aZXjM7dQL5RPdtsN/qbzqkYA0u4gaVAmulg7I8lKPdt4SzhYW/Kk1G2ntaIVMW7LNV6K
+         1KiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVgBjDegxu4Vdu5wxxQORrKAZFHkLVzDnVGi+FgLilgpLvZsqYw0M0NpLyziydhh3/EG5hf@lists.linux.dev
+X-Gm-Message-State: AOJu0YyVfk88klyROBt2LJOtvI/d70hSYGsriB5yA2KbWEyySIrxKenb
+	z0rFyo50uAV+khszFOL5bR9JZMw5j4aOHZVjAmhIt/R5p+E6zH05j5Zl+2V8m1PoVDjuwwfb5qw
+	1qbNXvcKOtUXMDfgPqkXybLVmEM4+DehDI6h8NBNDqtVOq6+b5iaTzELNX4w=
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sJNJeI5sog
-X-smtpcorp-track: Cnwz5T-A-9Up.eLXoX5m7CyCX.UwcQwgjN49n
+X-Received: by 2002:a05:6820:c98:b0:67d:e308:bad3 with SMTP id
+ 006d021491bc7-67dff51b7cbmr916421eaf.36.1774397126068; Tue, 24 Mar 2026
+ 17:05:26 -0700 (PDT)
+Date: Tue, 24 Mar 2026 17:05:26 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69c326c6.a70a0220.234938.003c.GAE@google.com>
+Subject: [syzbot] [v9fs?] possible deadlock in p9_client_destroy
+From: syzbot <syzbot+df530a47465deb7f0681@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Not caching negative dentries can result in poor performance for
-workloads that repeatedly look up non-existent paths. Each such
-lookup triggers a full 9P transaction with the server, adding
-unnecessary overhead.
+Hello,
 
-A typical example is source compilation, where multiple cc1 processes
-are spawned and repeatedly search for the same missing header files
-over and over again.
+syzbot found the following issue on:
 
-This change enables caching of negative dentries, so that lookups for
-known non-existent paths do not require a full 9P transaction. The
-cached negative dentries are retained for a configurable duration
-(expressed in milliseconds), as specified by the ndentry_timeout
-field in struct v9fs_session_info. If set to -1, negative dentries
-are cached indefinitely.
+HEAD commit:    c369299895a5 Linux 7.0-rc5
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1336f372580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5a3e5e8c17cc174e
+dashboard link: https://syzkaller.appspot.com/bug?extid=df530a47465deb7f0681
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-This optimization reduces lookup overhead and improves performance for
-workloads involving frequent access to non-existent paths.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9d585ef908bc/disk-c3692998.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4f1717666548/vmlinux-c3692998.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/59bbf85a6d46/bzImage-c3692998.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+df530a47465deb7f0681@syzkaller.appspotmail.com
+
+ubi31: attaching mtd0
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Tainted: G             L     
+------------------------------------------------------
+syz.2.6655/30581 is trying to acquire lock:
+ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
+ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4489 [inline]
+ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4843 [inline]
+ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
+
+but task is already holding lock:
+ffffffff8e979148 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x44/0x420 mm/slab_common.c:350
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #7 (slab_mutex){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+       kmem_cache_destroy mm/slab_common.c:557 [inline]
+       kmem_cache_destroy+0x59/0x180 mm/slab_common.c:527
+       p9_client_destroy+0x20c/0x3a0 net/9p/client.c:965
+       v9fs_session_close+0x49/0x2d0 fs/9p/v9fs.c:539
+       v9fs_kill_super+0x4d/0xa0 fs/9p/vfs_super.c:175
+       deactivate_locked_super+0xc1/0x1b0 fs/super.c:476
+       v9fs_get_tree+0x68c/0xb50 fs/9p/vfs_super.c:156
+       vfs_get_tree+0x92/0x320 fs/super.c:1754
+       fc_mount fs/namespace.c:1193 [inline]
+       do_new_mount_fc fs/namespace.c:3763 [inline]
+       do_new_mount fs/namespace.c:3839 [inline]
+       path_mount+0x7d0/0x23d0 fs/namespace.c:4159
+       do_mount fs/namespace.c:4172 [inline]
+       __do_sys_mount fs/namespace.c:4361 [inline]
+       __se_sys_mount fs/namespace.c:4338 [inline]
+       __x64_sys_mount+0x293/0x310 fs/namespace.c:4338
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #6 (cpu_hotplug_lock){++++}-{0:0}:
+       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
+       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
+       cpus_read_lock+0x42/0x170 kernel/cpu.c:490
+       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
+       nbd_reconnect_socket drivers/block/nbd.c:1342 [inline]
+       nbd_genl_reconfigure+0xd82/0x1a00 drivers/block/nbd.c:2431
+       genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
+       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+       genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
+       netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
+       netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+       sock_sendmsg_nosec net/socket.c:727 [inline]
+       __sock_sendmsg net/socket.c:742 [inline]
+       ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
+       ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+       __sys_sendmsg+0x170/0x220 net/socket.c:2678
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #5 (&nsock->tx_lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
+       nbd_queue_rq+0x428/0x1080 drivers/block/nbd.c:1207
+       blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
+       blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
+       blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
+       blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
+       blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
+       __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
+       blk_finish_plug block/blk-core.c:1257 [inline]
+       __submit_bio+0x584/0x6c0 block/blk-core.c:649
+       __submit_bio_noacct_mq block/blk-core.c:722 [inline]
+       submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
+       submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
+       blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
+       submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
+       submit_bh fs/buffer.c:2826 [inline]
+       block_read_full_folio+0x264/0x8e0 fs/buffer.c:2444
+       filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
+       do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
+       read_mapping_folio include/linux/pagemap.h:1028 [inline]
+       read_part_sector+0xd1/0x370 block/partitions/core.c:723
+       adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
+       check_partition block/partitions/core.c:142 [inline]
+       blk_add_partitions block/partitions/core.c:590 [inline]
+       bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
+       blkdev_get_whole+0x187/0x290 block/bdev.c:764
+       bdev_open+0x2c7/0xe40 block/bdev.c:973
+       blkdev_open+0x34e/0x4f0 block/fops.c:697
+       do_dentry_open+0x6d8/0x1660 fs/open.c:949
+       vfs_open+0x82/0x3f0 fs/open.c:1081
+       do_open fs/namei.c:4671 [inline]
+       path_openat+0x208c/0x31a0 fs/namei.c:4830
+       do_file_open+0x20e/0x430 fs/namei.c:4859
+       do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
+       do_sys_open fs/open.c:1372 [inline]
+       __do_sys_openat fs/open.c:1388 [inline]
+       __se_sys_openat fs/open.c:1383 [inline]
+       __x64_sys_openat+0x12d/0x210 fs/open.c:1383
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #4 (&cmd->lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+       nbd_queue_rq+0xba/0x1080 drivers/block/nbd.c:1199
+       blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
+       blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
+       blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
+       blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
+       blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
+       __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
+       blk_finish_plug block/blk-core.c:1257 [inline]
+       __submit_bio+0x584/0x6c0 block/blk-core.c:649
+       __submit_bio_noacct_mq block/blk-core.c:722 [inline]
+       submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
+       submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
+       blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
+       submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
+       submit_bh fs/buffer.c:2826 [inline]
+       block_read_full_folio+0x264/0x8e0 fs/buffer.c:2444
+       filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
+       do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
+       read_mapping_folio include/linux/pagemap.h:1028 [inline]
+       read_part_sector+0xd1/0x370 block/partitions/core.c:723
+       adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
+       check_partition block/partitions/core.c:142 [inline]
+       blk_add_partitions block/partitions/core.c:590 [inline]
+       bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
+       blkdev_get_whole+0x187/0x290 block/bdev.c:764
+       bdev_open+0x2c7/0xe40 block/bdev.c:973
+       blkdev_open+0x34e/0x4f0 block/fops.c:697
+       do_dentry_open+0x6d8/0x1660 fs/open.c:949
+       vfs_open+0x82/0x3f0 fs/open.c:1081
+       do_open fs/namei.c:4671 [inline]
+       path_openat+0x208c/0x31a0 fs/namei.c:4830
+       do_file_open+0x20e/0x430 fs/namei.c:4859
+       do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
+       do_sys_open fs/open.c:1372 [inline]
+       __do_sys_openat fs/open.c:1388 [inline]
+       __se_sys_openat fs/open.c:1383 [inline]
+       __x64_sys_openat+0x12d/0x210 fs/open.c:1383
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #3 (set->srcu){.+.+}-{0:0}:
+       srcu_lock_sync include/linux/srcu.h:199 [inline]
+       __synchronize_srcu+0xa1/0x2a0 kernel/rcu/srcutree.c:1505
+       blk_mq_wait_quiesce_done block/blk-mq.c:284 [inline]
+       blk_mq_wait_quiesce_done block/blk-mq.c:281 [inline]
+       blk_mq_quiesce_queue block/blk-mq.c:304 [inline]
+       blk_mq_quiesce_queue+0x149/0x1c0 block/blk-mq.c:299
+       elevator_switch+0x17b/0x7e0 block/elevator.c:576
+       elevator_change+0x352/0x530 block/elevator.c:681
+       elevator_set_default+0x29e/0x360 block/elevator.c:754
+       blk_register_queue+0x412/0x590 block/blk-sysfs.c:946
+       __add_disk+0x73f/0xe40 block/genhd.c:528
+       add_disk_fwnode+0x118/0x5c0 block/genhd.c:597
+       add_disk include/linux/blkdev.h:785 [inline]
+       nbd_dev_add+0x77a/0xb10 drivers/block/nbd.c:1984
+       nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
+       do_one_initcall+0x11d/0x760 init/main.c:1382
+       do_initcall_level init/main.c:1444 [inline]
+       do_initcalls init/main.c:1460 [inline]
+       do_basic_setup init/main.c:1479 [inline]
+       kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
+       kernel_init+0x1f/0x1e0 init/main.c:1582
+       ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #2 (&q->elevator_lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+       elevator_change+0x1bc/0x530 block/elevator.c:679
+       elevator_set_none+0x92/0xf0 block/elevator.c:769
+       blk_mq_elv_switch_none block/blk-mq.c:5110 [inline]
+       __blk_mq_update_nr_hw_queues block/blk-mq.c:5155 [inline]
+       blk_mq_update_nr_hw_queues+0x4c1/0x15f0 block/blk-mq.c:5220
+       nbd_start_device+0x1a6/0xbd0 drivers/block/nbd.c:1489
+       nbd_genl_connect+0xff2/0x1a40 drivers/block/nbd.c:2239
+       genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
+       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+       genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
+       netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
+       netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+       sock_sendmsg_nosec net/socket.c:727 [inline]
+       __sock_sendmsg net/socket.c:742 [inline]
+       ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
+       ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+       __sys_sendmsg+0x170/0x220 net/socket.c:2678
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&q->q_usage_counter(io)#49){++++}-{0:0}:
+       blk_alloc_queue+0x610/0x790 block/blk-core.c:461
+       blk_mq_alloc_queue+0x174/0x290 block/blk-mq.c:4429
+       __blk_mq_alloc_disk+0x29/0x120 block/blk-mq.c:4476
+       nbd_dev_add+0x492/0xb10 drivers/block/nbd.c:1954
+       nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
+       do_one_initcall+0x11d/0x760 init/main.c:1382
+       do_initcall_level init/main.c:1444 [inline]
+       do_initcalls init/main.c:1460 [inline]
+       do_basic_setup init/main.c:1479 [inline]
+       kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
+       kernel_init+0x1f/0x1e0 init/main.c:1582
+       ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain kernel/locking/lockdep.c:3908 [inline]
+       __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
+       lock_acquire kernel/locking/lockdep.c:5868 [inline]
+       lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
+       __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
+       fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
+       might_alloc include/linux/sched/mm.h:317 [inline]
+       slab_pre_alloc_hook mm/slub.c:4489 [inline]
+       slab_alloc_node mm/slub.c:4843 [inline]
+       kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
+       create_cache mm/slab_common.c:249 [inline]
+       __kmem_cache_create_args+0x366/0x420 mm/slab_common.c:380
+       __kmem_cache_create include/linux/slab.h:390 [inline]
+       alloc_ai drivers/mtd/ubi/attach.c:1464 [inline]
+       ubi_attach+0x32a/0x4d30 drivers/mtd/ubi/attach.c:1560
+       ubi_attach_mtd_dev+0x139f/0x32a0 drivers/mtd/ubi/build.c:1004
+       ctrl_cdev_ioctl+0x36a/0x400 drivers/mtd/ubi/cdev.c:1113
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl fs/ioctl.c:583 [inline]
+       __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> cpu_hotplug_lock --> slab_mutex
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(slab_mutex);
+                               lock(cpu_hotplug_lock);
+                               lock(slab_mutex);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+2 locks held by syz.2.6655/30581:
+ #0: ffffffff8f9168c8 (ubi_devices_mutex){+.+.}-{4:4}, at: ctrl_cdev_ioctl+0x323/0x400 drivers/mtd/ubi/cdev.c:1112
+ #1: ffffffff8e979148 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x44/0x420 mm/slab_common.c:350
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 30581 Comm: syz.2.6655 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_circular_bug.cold+0x178/0x1c7 kernel/locking/lockdep.c:2043
+ check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain kernel/locking/lockdep.c:3908 [inline]
+ __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
+ lock_acquire kernel/locking/lockdep.c:5868 [inline]
+ lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
+ __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
+ fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
+ might_alloc include/linux/sched/mm.h:317 [inline]
+ slab_pre_alloc_hook mm/slub.c:4489 [inline]
+ slab_alloc_node mm/slub.c:4843 [inline]
+ kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
+ create_cache mm/slab_common.c:249 [inline]
+ __kmem_cache_create_args+0x366/0x420 mm/slab_common.c:380
+ __kmem_cache_create include/linux/slab.h:390 [inline]
+ alloc_ai drivers/mtd/ubi/attach.c:1464 [inline]
+ ubi_attach+0x32a/0x4d30 drivers/mtd/ubi/attach.c:1560
+ ubi_attach_mtd_dev+0x139f/0x32a0 drivers/mtd/ubi/build.c:1004
+ ctrl_cdev_ioctl+0x36a/0x400 drivers/mtd/ubi/cdev.c:1113
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f161859c799
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f1619536028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f1618815fa0 RCX: 00007f161859c799
+RDX: 0000200000000040 RSI: 0000000040186f40 RDI: 0000000000000005
+RBP: 00007f1618632c99 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f1618816038 R14: 00007f1618815fa0 R15: 00007ffd8ac2d7d8
+ </TASK>
+ubi31: scanning is finished
+ubi31: empty MTD device detected
+ubi31: attached mtd0 (name "mtdram test device", size 0 MiB)
+ubi31: PEB size: 4096 bytes (4 KiB), LEB size: 3968 bytes
+ubi31: min./max. I/O unit sizes: 1/64, sub-page size 1
+ubi31: VID header offset: 64 (aligned 64), data offset: 128
+ubi31: good PEBs: 32, bad PEBs: 0, corrupted PEBs: 0
+ubi31: user volume: 0, internal volumes: 1, max. volumes count: 23
+ubi31: max/mean erase counter: 0/0, WL threshold: 4096, image sequence number: 3963432824
+ubi31: available PEBs: 28, total reserved PEBs: 4, PEBs reserved for bad PEB handling: 0
+
+
 ---
- fs/9p/fid.c             |  11 +++--
- fs/9p/v9fs.c            |   1 +
- fs/9p/v9fs.h            |   5 ++
- fs/9p/v9fs_vfs.h        |  15 ++++++
- fs/9p/vfs_dentry.c      | 105 ++++++++++++++++++++++++++++++++++------
- fs/9p/vfs_inode.c       |  12 +++--
- fs/9p/vfs_super.c       |   1 +
- include/net/9p/client.h |   2 +
- 8 files changed, 128 insertions(+), 24 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/9p/fid.c b/fs/9p/fid.c
-index f84412290a30..76242d450aa7 100644
---- a/fs/9p/fid.c
-+++ b/fs/9p/fid.c
-@@ -20,7 +20,9 @@
- 
- static inline void __add_fid(struct dentry *dentry, struct p9_fid *fid)
- {
--	hlist_add_head(&fid->dlist, (struct hlist_head *)&dentry->d_fsdata);
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-+
-+	hlist_add_head(&fid->dlist, &v9fs_dentry->head);
- }
- 
- 
-@@ -112,6 +114,7 @@ void v9fs_open_fid_add(struct inode *inode, struct p9_fid **pfid)
- 
- static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
- {
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
- 	struct p9_fid *fid, *ret;
- 
- 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p) uid %d any %d\n",
-@@ -119,11 +122,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
- 		 any);
- 	ret = NULL;
- 	/* we'll recheck under lock if there's anything to look in */
--	if (dentry->d_fsdata) {
--		struct hlist_head *h = (struct hlist_head *)&dentry->d_fsdata;
--
-+	if (!hlist_empty(&v9fs_dentry->head)) {
- 		spin_lock(&dentry->d_lock);
--		hlist_for_each_entry(fid, h, dlist) {
-+		hlist_for_each_entry(fid, &v9fs_dentry->head, dlist) {
- 			if (any || uid_eq(fid->uid, uid)) {
- 				ret = fid;
- 				p9_fid_get(ret);
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 057487efaaeb..c5dca81a553e 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -422,6 +422,7 @@ static void v9fs_apply_options(struct v9fs_session_info *v9ses,
- 	v9ses->cache = ctx->session_opts.cache;
- 	v9ses->uid = ctx->session_opts.uid;
- 	v9ses->session_lock_timeout = ctx->session_opts.session_lock_timeout;
-+	v9ses->ndentry_timeout_ms = ctx->session_opts.ndentry_timeout_ms;
- }
- 
- /**
-diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
-index 6a12445d3858..e630c5111d74 100644
---- a/fs/9p/v9fs.h
-+++ b/fs/9p/v9fs.h
-@@ -91,6 +91,7 @@ enum p9_cache_bits {
-  * @debug: debug level
-  * @afid: authentication handle
-  * @cache: cache mode of type &p9_cache_bits
-+ * @ndentry_timeout: Negative dentry lookup cache retention time in ms
-  * @cachetag: the tag of the cache associated with this session
-  * @fscache: session cookie associated with FS-Cache
-  * @uname: string user name to mount hierarchy as
-@@ -101,6 +102,7 @@ enum p9_cache_bits {
-  * @uid: if %V9FS_ACCESS_SINGLE, the numeric uid which mounted the hierarchy
-  * @clnt: reference to 9P network client instantiated for this session
-  * @slist: reference to list of registered 9p sessions
-+ * @ndentry_timeout_ms: Negative dentry caching retention time
-  *
-  * This structure holds state for each session instance established during
-  * a sys_mount() .
-@@ -116,6 +118,7 @@ struct v9fs_session_info {
- 	unsigned short debug;
- 	unsigned int afid;
- 	unsigned int cache;
-+	unsigned int ndentry_timeout_ms;
- #ifdef CONFIG_9P_FSCACHE
- 	char *cachetag;
- 	struct fscache_volume *fscache;
-@@ -133,6 +136,8 @@ struct v9fs_session_info {
- 	long session_lock_timeout; /* retry interval for blocking locks */
- };
- 
-+#define NDENTRY_TIMEOUT_NEVER (-1U)
-+
- /* cache_validity flags */
- #define V9FS_INO_INVALID_ATTR 0x01
- 
-diff --git a/fs/9p/v9fs_vfs.h b/fs/9p/v9fs_vfs.h
-index d3aefbec4de6..83c2335f438d 100644
---- a/fs/9p/v9fs_vfs.h
-+++ b/fs/9p/v9fs_vfs.h
-@@ -28,6 +28,19 @@
- /* flags for v9fs_stat2inode() & v9fs_stat2inode_dotl() */
- #define V9FS_STAT2INODE_KEEP_ISIZE 1
- 
-+/**
-+ * struct v9fs_dentry - v9fs specific dentry data
-+ * @head: List of fid associated with this dentry
-+ * @expire_time: Lookup cache expiration time for negative dentries
-+ * @rcu: used by kfree_rcu to schedule clean up job
-+ */
-+struct v9fs_dentry {
-+	struct hlist_head head;
-+	u64 expire_time;
-+	struct rcu_head rcu;
-+};
-+#define to_v9fs_dentry(d) ((struct v9fs_dentry *)((d)->d_fsdata))
-+
- extern struct file_system_type v9fs_fs_type;
- extern const struct address_space_operations v9fs_addr_operations;
- extern const struct file_operations v9fs_file_operations;
-@@ -35,6 +48,8 @@ extern const struct file_operations v9fs_file_operations_dotl;
- extern const struct file_operations v9fs_dir_operations;
- extern const struct file_operations v9fs_dir_operations_dotl;
- extern const struct dentry_operations v9fs_dentry_operations;
-+extern void v9fs_ndentry_refresh_timeout(struct dentry *dentry);
-+extern void v9fs_dentry_fid_remove(struct dentry *dentry);
- extern const struct dentry_operations v9fs_cached_dentry_operations;
- extern struct kmem_cache *v9fs_inode_cache;
- 
-diff --git a/fs/9p/vfs_dentry.c b/fs/9p/vfs_dentry.c
-index c5bf74d547e8..e549e222602e 100644
---- a/fs/9p/vfs_dentry.c
-+++ b/fs/9p/vfs_dentry.c
-@@ -23,6 +23,46 @@
- #include "v9fs_vfs.h"
- #include "fid.h"
- 
-+/**
-+ * v9fs_ndentry_is_expired - Check if negative dentry lookup has expired
-+ *
-+ * This should be called to know if a negative dentry should be removed from
-+ * cache.
-+ *
-+ * @dentry: dentry in question
-+ *
-+ */
-+static bool v9fs_ndentry_is_expired(struct dentry const *dentry)
-+{
-+	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-+
-+	if (v9ses->ndentry_timeout_ms == NDENTRY_TIMEOUT_NEVER)
-+		return false;
-+
-+	return time_before_eq64(v9fs_dentry->expire_time, get_jiffies_64());
-+}
-+
-+/**
-+ * v9fs_ndentry_refresh_timeout - Refresh negative dentry lookup cache timeout
-+ *
-+ * This should be called when a look up yields a negative entry.
-+ *
-+ * @dentry: dentry in question
-+ *
-+ */
-+void v9fs_ndentry_refresh_timeout(struct dentry *dentry)
-+{
-+	struct v9fs_session_info *v9ses = v9fs_dentry2v9ses(dentry);
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-+
-+	if (v9ses->ndentry_timeout_ms == NDENTRY_TIMEOUT_NEVER)
-+		return;
-+
-+	v9fs_dentry->expire_time = get_jiffies_64() +
-+				   msecs_to_jiffies(v9ses->ndentry_timeout_ms);
-+}
-+
- /**
-  * v9fs_cached_dentry_delete - called when dentry refcount equals 0
-  * @dentry:  dentry in question
-@@ -33,20 +73,15 @@ static int v9fs_cached_dentry_delete(const struct dentry *dentry)
- 	p9_debug(P9_DEBUG_VFS, " dentry: %pd (%p)\n",
- 		 dentry, dentry);
- 
--	/* Don't cache negative dentries */
--	if (d_really_is_negative(dentry))
--		return 1;
--	return 0;
--}
-+	if (!d_really_is_negative(dentry))
-+		return 0;
- 
--/**
-- * v9fs_dentry_release - called when dentry is going to be freed
-- * @dentry:  dentry that is being release
-- *
-- */
-+	return v9fs_ndentry_is_expired(dentry);
-+}
- 
--static void v9fs_dentry_release(struct dentry *dentry)
-+static void __v9fs_dentry_fid_remove(struct dentry *dentry)
- {
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
- 	struct hlist_node *p, *n;
- 	struct hlist_head head;
- 
-@@ -54,13 +89,54 @@ static void v9fs_dentry_release(struct dentry *dentry)
- 		 dentry, dentry);
- 
- 	spin_lock(&dentry->d_lock);
--	hlist_move_list((struct hlist_head *)&dentry->d_fsdata, &head);
-+	hlist_move_list(&v9fs_dentry->head, &head);
- 	spin_unlock(&dentry->d_lock);
- 
- 	hlist_for_each_safe(p, n, &head)
- 		p9_fid_put(hlist_entry(p, struct p9_fid, dlist));
- }
- 
-+/**
-+ * v9fs_dentry_fid_remove - Release all dentry's fids
-+ * @dentry: dentry in question
-+ *
-+ */
-+void v9fs_dentry_fid_remove(struct dentry *dentry)
-+{
-+	__v9fs_dentry_fid_remove(dentry);
-+}
-+
-+/**
-+ * v9fs_dentry_init - Initialize v9fs dentry data
-+ * @dentry: dentry in question
-+ *
-+ */
-+static int v9fs_dentry_init(struct dentry *dentry)
-+{
-+	struct v9fs_dentry *v9fs_dentry = kzalloc(sizeof(*v9fs_dentry),
-+						  GFP_KERNEL);
-+
-+	if (!v9fs_dentry)
-+		return -ENOMEM;
-+
-+	INIT_HLIST_HEAD(&v9fs_dentry->head);
-+	dentry->d_fsdata = (void *)v9fs_dentry;
-+	return 0;
-+}
-+
-+/**
-+ * v9fs_dentry_release - called when dentry is going to be freed
-+ * @dentry:  dentry that is being released
-+ *
-+ */
-+static void v9fs_dentry_release(struct dentry *dentry)
-+{
-+	struct v9fs_dentry *v9fs_dentry = to_v9fs_dentry(dentry);
-+
-+	__v9fs_dentry_fid_remove(dentry);
-+	kfree_rcu(v9fs_dentry, rcu);
-+}
-+
- static int __v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
- {
- 	struct p9_fid *fid;
-@@ -72,7 +148,7 @@ static int __v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
- 
- 	inode = d_inode(dentry);
- 	if (!inode)
--		goto out_valid;
-+		return !v9fs_ndentry_is_expired(dentry);
- 
- 	v9inode = V9FS_I(inode);
- 	if (v9inode->cache_validity & V9FS_INO_INVALID_ATTR) {
-@@ -112,7 +188,6 @@ static int __v9fs_lookup_revalidate(struct dentry *dentry, unsigned int flags)
- 			return retval;
- 		}
- 	}
--out_valid:
- 	p9_debug(P9_DEBUG_VFS, "dentry: %pd (%p) is valid\n", dentry, dentry);
- 	return 1;
- }
-@@ -139,12 +214,14 @@ const struct dentry_operations v9fs_cached_dentry_operations = {
- 	.d_revalidate = v9fs_lookup_revalidate,
- 	.d_weak_revalidate = __v9fs_lookup_revalidate,
- 	.d_delete = v9fs_cached_dentry_delete,
-+	.d_init = v9fs_dentry_init,
- 	.d_release = v9fs_dentry_release,
- 	.d_unalias_trylock = v9fs_dentry_unalias_trylock,
- 	.d_unalias_unlock = v9fs_dentry_unalias_unlock,
- };
- 
- const struct dentry_operations v9fs_dentry_operations = {
-+	.d_init = v9fs_dentry_init,
- 	.d_release = v9fs_dentry_release,
- 	.d_unalias_trylock = v9fs_dentry_unalias_trylock,
- 	.d_unalias_unlock = v9fs_dentry_unalias_unlock,
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 97abe65bf7c1..c82db6fe0c39 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -549,7 +549,7 @@ static int v9fs_remove(struct inode *dir, struct dentry *dentry, int flags)
- 
- 		/* invalidate all fids associated with dentry */
- 		/* NOTE: This will not include open fids */
--		dentry->d_op->d_release(dentry);
-+		v9fs_dentry_fid_remove(dentry);
- 	}
- 	return retval;
- }
-@@ -732,14 +732,16 @@ struct dentry *v9fs_vfs_lookup(struct inode *dir, struct dentry *dentry,
- 	name = dentry->d_name.name;
- 	fid = p9_client_walk(dfid, 1, &name, 1);
- 	p9_fid_put(dfid);
--	if (fid == ERR_PTR(-ENOENT))
-+	if (fid == ERR_PTR(-ENOENT)) {
- 		inode = NULL;
--	else if (IS_ERR(fid))
-+		v9fs_ndentry_refresh_timeout(dentry);
-+	} else if (IS_ERR(fid)) {
- 		inode = ERR_CAST(fid);
--	else if (v9ses->cache & (CACHE_META|CACHE_LOOSE))
-+	} else if (v9ses->cache & (CACHE_META|CACHE_LOOSE)) {
- 		inode = v9fs_get_inode_from_fid(v9ses, fid, dir->i_sb);
--	else
-+	} else {
- 		inode = v9fs_get_new_inode_from_fid(v9ses, fid, dir->i_sb);
-+	}
- 	/*
- 	 * If we had a rename on the server and a parallel lookup
- 	 * for the new name, then make sure we instantiate with
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 0a1c4f7cb001..3b2a906528cd 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -327,6 +327,7 @@ static int v9fs_init_fs_context(struct fs_context *fc)
- 	ctx->session_opts.uid = INVALID_UID;
- 	ctx->session_opts.dfltuid = V9FS_DEFUID;
- 	ctx->session_opts.dfltgid = V9FS_DEFGID;
-+	ctx->session_opts.ndentry_timeout_ms = 0;
- 
- 	/* initialize client options */
- 	ctx->client_opts.proto_version = p9_proto_2000L;
-diff --git a/include/net/9p/client.h b/include/net/9p/client.h
-index 838a94218b59..55c6cb54bd25 100644
---- a/include/net/9p/client.h
-+++ b/include/net/9p/client.h
-@@ -192,6 +192,7 @@ struct p9_rdma_opts {
-  * @dfltgid: default numeric groupid to mount hierarchy as
-  * @uid: if %V9FS_ACCESS_SINGLE, the numeric uid which mounted the hierarchy
-  * @session_lock_timeout: retry interval for blocking locks
-+ * @ndentry_timeout_ms: Negative dentry lookup cache retention time in ms
-  *
-  * This strucure holds options which are parsed and will be transferred
-  * to the v9fs_session_info structure when mounted, and therefore largely
-@@ -203,6 +204,7 @@ struct p9_session_opts {
- 	unsigned short debug;
- 	unsigned int afid;
- 	unsigned int cache;
-+	unsigned int ndentry_timeout_ms;
- #ifdef CONFIG_9P_FSCACHE
- 	char *cachetag;
- #endif
--- 
-2.52.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
