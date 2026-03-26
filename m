@@ -1,428 +1,390 @@
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C9C256D
-	for <v9fs@lists.linux.dev>; Wed, 25 Mar 2026 00:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026CD3845DB
+	for <v9fs@lists.linux.dev>; Thu, 26 Mar 2026 10:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774397128; cv=none; b=OBQKVMJa48VWVUlAK0C54ucO/MQvptkZUgqEkqMyvC/XoryMsMkM7XTtQWnTcjvpE3dEQyg1f6jwWiNLnRrVPMmf8cSfywnyaaAxMb1pZK5rDbYwbYZBwv0aUlP/RUR9XTrcj05xB6W81ZsUdkz6AqFrq6KTLItBVkpgR+OHwOw=
+	t=1774521974; cv=none; b=MW5EtNhQt0GuO3GPKwV2iWYGcU5gQ3NCrdAa4wO+XNIyumuZ1Uxwevt/RSzUvFosffPe9236BXRHJj4bMlDPe6FGrOjoxBKdVVcF7gxY1HnHjpVDB+yADqph7VI3yY4YvqVU5Wqtp1p+PAKJ0cb7WnWmgyL1WnAqQihoKX/CCm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774397128; c=relaxed/simple;
-	bh=Qis/xwDQjtjahTKq/oJTVKn8SM9HXW9eGysS/C2tVf4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=QAOkvDpc763Ami2CSIEHPO7SehAk75Wvdgv7ldfFasRs+Fl7AqpzHSiiS7EvTjfT962ReMxLcaLFcsqlhfuormK86RMAQs6hxofs5cLb0Qen1cWcqPQkIpc01gONPrTsbDGhDZUn6WGgWNGBcBoRyrSscilyghEvIYPEaRdv3Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-67deac23e02so18249116eaf.2
-        for <v9fs@lists.linux.dev>; Tue, 24 Mar 2026 17:05:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774397126; x=1775001926;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6QdPYOn+OeeYxpFk1PKytNGb1+ZHkIio2K+x5LjW11E=;
-        b=BhGmjgWkYERf7WlXtUok8JqVZiNHzuZMSn4mFQHCTDcBv3uOtnvslPtQ7+dXUzYg4c
-         2UEktg30iHRpLoADUYE25TruhB0J+xeUQvGrFTtMTGtpuiokbU5IjiwuJ0G2n/ZHG1hM
-         Wf/xIUe2vyICd44vOS0TdRm7raoVvKuA/R6KkntzVSPB3+1YCTesBV0OROVRrXcukxOW
-         KnbH5wtlpAnBg4hP0mYHUnmWTE7F6Bjjwos4kFjzOXyFyQ/TSB/D6mMgDAzF0dV8mety
-         aZXjM7dQL5RPdtsN/qbzqkYA0u4gaVAmulg7I8lKPdt4SzhYW/Kk1G2ntaIVMW7LNV6K
-         1KiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgBjDegxu4Vdu5wxxQORrKAZFHkLVzDnVGi+FgLilgpLvZsqYw0M0NpLyziydhh3/EG5hf@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVfk88klyROBt2LJOtvI/d70hSYGsriB5yA2KbWEyySIrxKenb
-	z0rFyo50uAV+khszFOL5bR9JZMw5j4aOHZVjAmhIt/R5p+E6zH05j5Zl+2V8m1PoVDjuwwfb5qw
-	1qbNXvcKOtUXMDfgPqkXybLVmEM4+DehDI6h8NBNDqtVOq6+b5iaTzELNX4w=
+	s=arc-20240116; t=1774521974; c=relaxed/simple;
+	bh=4HKk9ZJneo7yqa9sC78F9NzNtzyserlOTVs/NLobrIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=RnZo1Hp+Ls5SgduCR+YUvFW016ShZbH303Vnv9F2kYZzx7U3/ftRMxEchfS1ZBxTYMRgMOD4u2raKwnXTO5HCj8oyx3jo4reHeef8hfy3CN/ZmZLLUqXZs/VIWyzu3xg2mWeckmfM9nIZdRW7KYTyDqMptIs8/uh+x+RNEsVRqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FBqSeCNc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FBqSeCNc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774521971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I/AwaHoW8Vm6LNELS+H4YAEvj2gOr1h8Aehnm4TULKw=;
+	b=FBqSeCNcz90PcaWSMjnQLRgijS4LG4//ov8RkjTKKG5eBhRZ4HqYby8v56XsEmCB1pZ+MD
+	Qn/MNfZrKKeYwb9MhlJJqsmcCaL1KCkCNOo7nOXQYz0OEBUIqRTJu9zn6ualUuzv5g1KX+
+	L8Gxf6zUGgjVzCibyc8HWZr+VQXCqkw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-TtKMj9N8PJSjl2tFmZuZHQ-1; Thu,
+ 26 Mar 2026 06:46:07 -0400
+X-MC-Unique: TtKMj9N8PJSjl2tFmZuZHQ-1
+X-Mimecast-MFC-AGG-ID: TtKMj9N8PJSjl2tFmZuZHQ_1774521964
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19D0119560AE;
+	Thu, 26 Mar 2026 10:46:03 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.121])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 00A7E19560B1;
+	Thu, 26 Mar 2026 10:45:53 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/26] netfs: Keep track of folios in a segmented bio_vec[] chain
+Date: Thu, 26 Mar 2026 10:45:15 +0000
+Message-ID: <20260326104544.509518-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:c98:b0:67d:e308:bad3 with SMTP id
- 006d021491bc7-67dff51b7cbmr916421eaf.36.1774397126068; Tue, 24 Mar 2026
- 17:05:26 -0700 (PDT)
-Date: Tue, 24 Mar 2026 17:05:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c326c6.a70a0220.234938.003c.GAE@google.com>
-Subject: [syzbot] [v9fs?] possible deadlock in p9_client_destroy
-From: syzbot <syzbot+df530a47465deb7f0681@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: _kBPGViGecLvUbbWwMiTAN8fDmat7u2MJNhp6Wez6fI_1774521964
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello,
+Hi Christian,
 
-syzbot found the following issue on:
+Could you add these patches to the VFS tree for next?
 
-HEAD commit:    c369299895a5 Linux 7.0-rc5
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1336f372580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5a3e5e8c17cc174e
-dashboard link: https://syzkaller.appspot.com/bug?extid=df530a47465deb7f0681
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+The patches get rid of folio_queue, rolling_buffer and ITER_FOLIOQ,
+replacing the folio queue construct used to manage buffers in netfslib with
+one based around a segmented chain of bio_vec arrays instead.  There are
+three main aims here:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+ (1) The kernel file I/O subsystem seems to be moving towards consolidating
+     on the use of bio_vec arrays, so embrace this by moving netfslib to
+     keep track of its buffers for buffered I/O in bio_vec[] form.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9d585ef908bc/disk-c3692998.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/4f1717666548/vmlinux-c3692998.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/59bbf85a6d46/bzImage-c3692998.xz
+ (2) Netfslib already uses a bio_vec[] to handle unbuffered/DIO, so the
+     number of different buffering schemes used can be reduced to just a
+     single one.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+df530a47465deb7f0681@syzkaller.appspotmail.com
+ (3) Always send an entire filesystem RPC request message to a TCP socket
+     with single kernel_sendmsg() call as this is faster, more efficient
+     and doesn't require the use of corking as it puts the entire
+     transmission loop inside of a single tcp_sendmsg().
 
-ubi31: attaching mtd0
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Tainted: G             L     
-------------------------------------------------------
-syz.2.6655/30581 is trying to acquire lock:
-ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
-ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4489 [inline]
-ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4843 [inline]
-ffffffff8e9ab580 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
+For the replacement of folio_queue, a segmented chain of bio_vec arrays
+rather than a single monolithic array is provided:
 
-but task is already holding lock:
-ffffffff8e979148 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x44/0x420 mm/slab_common.c:350
+	struct bvecq {
+		struct bvecq		*next;
+		struct bvecq		*prev;
+		unsigned long long	fpos;
+		refcount_t		ref;
+		u32			priv;
+		u16			nr_segs;
+		u16			max_segs;
+		bool			inline_bv:1;
+		bool			free:1;
+		bool			unpin:1;
+		bool			discontig:1;
+		struct bio_vec		*bv;
+		struct bio_vec		__bv[];
+	};
 
-which lock already depends on the new lock.
+The fields are:
 
+ (1) next, prev - Link segments together in a list.  I want this to be
+     NULL-terminated linear rather than circular to make it possible to
+     arbitrarily glue bits on the front.
 
-the existing dependency chain (in reverse order) is:
+ (2) fpos, discontig - Note the current file position of the first byte of
+     the segment; all the bio_vecs in ->bv[] must be contiguous in the file
+     space.  The fpos can be used to find the folio by file position rather
+     then from the info in the bio_vec.
 
--> #7 (slab_mutex){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
-       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
-       kmem_cache_destroy mm/slab_common.c:557 [inline]
-       kmem_cache_destroy+0x59/0x180 mm/slab_common.c:527
-       p9_client_destroy+0x20c/0x3a0 net/9p/client.c:965
-       v9fs_session_close+0x49/0x2d0 fs/9p/v9fs.c:539
-       v9fs_kill_super+0x4d/0xa0 fs/9p/vfs_super.c:175
-       deactivate_locked_super+0xc1/0x1b0 fs/super.c:476
-       v9fs_get_tree+0x68c/0xb50 fs/9p/vfs_super.c:156
-       vfs_get_tree+0x92/0x320 fs/super.c:1754
-       fc_mount fs/namespace.c:1193 [inline]
-       do_new_mount_fc fs/namespace.c:3763 [inline]
-       do_new_mount fs/namespace.c:3839 [inline]
-       path_mount+0x7d0/0x23d0 fs/namespace.c:4159
-       do_mount fs/namespace.c:4172 [inline]
-       __do_sys_mount fs/namespace.c:4361 [inline]
-       __se_sys_mount fs/namespace.c:4338 [inline]
-       __x64_sys_mount+0x293/0x310 fs/namespace.c:4338
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+     If there's a discontiguity, this should break over into a new bvecq
+     segment with the discontig flag set (though this is redundant if you
+     keep track of the file position).  Note that the beginning and end
+     file positions in a segment need not be aligned to any filesystem
+     block size.
 
--> #6 (cpu_hotplug_lock){++++}-{0:0}:
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
-       cpus_read_lock+0x42/0x170 kernel/cpu.c:490
-       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
-       nbd_reconnect_socket drivers/block/nbd.c:1342 [inline]
-       nbd_genl_reconfigure+0xd82/0x1a00 drivers/block/nbd.c:2431
-       genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
-       netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
-       sock_sendmsg_nosec net/socket.c:727 [inline]
-       __sock_sendmsg net/socket.c:742 [inline]
-       ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
-       ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
-       __sys_sendmsg+0x170/0x220 net/socket.c:2678
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ (3) ref - Refcount.  Each bvecq keeps a ref on the next.  I'm not sure
+     this is entirely necessary, but it makes sharing slices easier.
 
--> #5 (&nsock->tx_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
-       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
-       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
-       nbd_queue_rq+0x428/0x1080 drivers/block/nbd.c:1207
-       blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
-       blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
-       blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
-       blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
-       blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
-       __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
-       blk_finish_plug block/blk-core.c:1257 [inline]
-       __submit_bio+0x584/0x6c0 block/blk-core.c:649
-       __submit_bio_noacct_mq block/blk-core.c:722 [inline]
-       submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
-       submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
-       blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
-       submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
-       submit_bh fs/buffer.c:2826 [inline]
-       block_read_full_folio+0x264/0x8e0 fs/buffer.c:2444
-       filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
-       do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
-       read_mapping_folio include/linux/pagemap.h:1028 [inline]
-       read_part_sector+0xd1/0x370 block/partitions/core.c:723
-       adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
-       check_partition block/partitions/core.c:142 [inline]
-       blk_add_partitions block/partitions/core.c:590 [inline]
-       bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
-       blkdev_get_whole+0x187/0x290 block/bdev.c:764
-       bdev_open+0x2c7/0xe40 block/bdev.c:973
-       blkdev_open+0x34e/0x4f0 block/fops.c:697
-       do_dentry_open+0x6d8/0x1660 fs/open.c:949
-       vfs_open+0x82/0x3f0 fs/open.c:1081
-       do_open fs/namei.c:4671 [inline]
-       path_openat+0x208c/0x31a0 fs/namei.c:4830
-       do_file_open+0x20e/0x430 fs/namei.c:4859
-       do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
-       do_sys_open fs/open.c:1372 [inline]
-       __do_sys_openat fs/open.c:1388 [inline]
-       __se_sys_openat fs/open.c:1383 [inline]
-       __x64_sys_openat+0x12d/0x210 fs/open.c:1383
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ (4) priv - Private data for the owner.  Dispensible; currently only used
+     for storing a debug ID for tracing in a patch not included here.
 
--> #4 (&cmd->lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
-       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
-       nbd_queue_rq+0xba/0x1080 drivers/block/nbd.c:1199
-       blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
-       blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
-       blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
-       blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
-       blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
-       __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
-       blk_finish_plug block/blk-core.c:1257 [inline]
-       __submit_bio+0x584/0x6c0 block/blk-core.c:649
-       __submit_bio_noacct_mq block/blk-core.c:722 [inline]
-       submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
-       submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
-       blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
-       submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
-       submit_bh fs/buffer.c:2826 [inline]
-       block_read_full_folio+0x264/0x8e0 fs/buffer.c:2444
-       filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
-       do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
-       read_mapping_folio include/linux/pagemap.h:1028 [inline]
-       read_part_sector+0xd1/0x370 block/partitions/core.c:723
-       adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
-       check_partition block/partitions/core.c:142 [inline]
-       blk_add_partitions block/partitions/core.c:590 [inline]
-       bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
-       blkdev_get_whole+0x187/0x290 block/bdev.c:764
-       bdev_open+0x2c7/0xe40 block/bdev.c:973
-       blkdev_open+0x34e/0x4f0 block/fops.c:697
-       do_dentry_open+0x6d8/0x1660 fs/open.c:949
-       vfs_open+0x82/0x3f0 fs/open.c:1081
-       do_open fs/namei.c:4671 [inline]
-       path_openat+0x208c/0x31a0 fs/namei.c:4830
-       do_file_open+0x20e/0x430 fs/namei.c:4859
-       do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
-       do_sys_open fs/open.c:1372 [inline]
-       __do_sys_openat fs/open.c:1388 [inline]
-       __se_sys_openat fs/open.c:1383 [inline]
-       __x64_sys_openat+0x12d/0x210 fs/open.c:1383
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ (5) max_segs, nr_segs.  The size of bv[] and the number of elements used.
+     I've assumed a maximum of 65535 bio_vecs in the array (which would
+     represent a ~1MiB allocation).
 
--> #3 (set->srcu){.+.+}-{0:0}:
-       srcu_lock_sync include/linux/srcu.h:199 [inline]
-       __synchronize_srcu+0xa1/0x2a0 kernel/rcu/srcutree.c:1505
-       blk_mq_wait_quiesce_done block/blk-mq.c:284 [inline]
-       blk_mq_wait_quiesce_done block/blk-mq.c:281 [inline]
-       blk_mq_quiesce_queue block/blk-mq.c:304 [inline]
-       blk_mq_quiesce_queue+0x149/0x1c0 block/blk-mq.c:299
-       elevator_switch+0x17b/0x7e0 block/elevator.c:576
-       elevator_change+0x352/0x530 block/elevator.c:681
-       elevator_set_default+0x29e/0x360 block/elevator.c:754
-       blk_register_queue+0x412/0x590 block/blk-sysfs.c:946
-       __add_disk+0x73f/0xe40 block/genhd.c:528
-       add_disk_fwnode+0x118/0x5c0 block/genhd.c:597
-       add_disk include/linux/blkdev.h:785 [inline]
-       nbd_dev_add+0x77a/0xb10 drivers/block/nbd.c:1984
-       nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
-       do_one_initcall+0x11d/0x760 init/main.c:1382
-       do_initcall_level init/main.c:1444 [inline]
-       do_initcalls init/main.c:1460 [inline]
-       do_basic_setup init/main.c:1479 [inline]
-       kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
-       kernel_init+0x1f/0x1e0 init/main.c:1582
-       ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ (6) bv, __bv, inline_bv.  bv points to the bio_vec[] array handled by
+     this segment.  This may begin at __bv and if it does inline_bv should
+     be set (otherwise it's impossible to distinguish a separately
+     allocated bio_vec[] that follows immediately by coincidence).
 
--> #2 (&q->elevator_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:614 [inline]
-       __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
-       elevator_change+0x1bc/0x530 block/elevator.c:679
-       elevator_set_none+0x92/0xf0 block/elevator.c:769
-       blk_mq_elv_switch_none block/blk-mq.c:5110 [inline]
-       __blk_mq_update_nr_hw_queues block/blk-mq.c:5155 [inline]
-       blk_mq_update_nr_hw_queues+0x4c1/0x15f0 block/blk-mq.c:5220
-       nbd_start_device+0x1a6/0xbd0 drivers/block/nbd.c:1489
-       nbd_genl_connect+0xff2/0x1a40 drivers/block/nbd.c:2239
-       genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
-       netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
-       sock_sendmsg_nosec net/socket.c:727 [inline]
-       __sock_sendmsg net/socket.c:742 [inline]
-       ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
-       ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
-       __sys_sendmsg+0x170/0x220 net/socket.c:2678
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ (7) free, unpin.  free is set if the memory pointed to by the bio_vecs
+     needs freeing in some way upon I/O completion.  unpin is set if this
+     means using GUP unpinning rather than put_page().
 
--> #1 (&q->q_usage_counter(io)#49){++++}-{0:0}:
-       blk_alloc_queue+0x610/0x790 block/blk-core.c:461
-       blk_mq_alloc_queue+0x174/0x290 block/blk-mq.c:4429
-       __blk_mq_alloc_disk+0x29/0x120 block/blk-mq.c:4476
-       nbd_dev_add+0x492/0xb10 drivers/block/nbd.c:1954
-       nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
-       do_one_initcall+0x11d/0x760 init/main.c:1382
-       do_initcall_level init/main.c:1444 [inline]
-       do_initcalls init/main.c:1460 [inline]
-       do_basic_setup init/main.c:1479 [inline]
-       kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
-       kernel_init+0x1f/0x1e0 init/main.c:1582
-       ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain kernel/locking/lockdep.c:3908 [inline]
-       __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
-       lock_acquire kernel/locking/lockdep.c:5868 [inline]
-       lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
-       __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
-       fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
-       might_alloc include/linux/sched/mm.h:317 [inline]
-       slab_pre_alloc_hook mm/slub.c:4489 [inline]
-       slab_alloc_node mm/slub.c:4843 [inline]
-       kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
-       create_cache mm/slab_common.c:249 [inline]
-       __kmem_cache_create_args+0x366/0x420 mm/slab_common.c:380
-       __kmem_cache_create include/linux/slab.h:390 [inline]
-       alloc_ai drivers/mtd/ubi/attach.c:1464 [inline]
-       ubi_attach+0x32a/0x4d30 drivers/mtd/ubi/attach.c:1560
-       ubi_attach_mtd_dev+0x139f/0x32a0 drivers/mtd/ubi/build.c:1004
-       ctrl_cdev_ioctl+0x36a/0x400 drivers/mtd/ubi/cdev.c:1113
-       vfs_ioctl fs/ioctl.c:51 [inline]
-       __do_sys_ioctl fs/ioctl.c:597 [inline]
-       __se_sys_ioctl fs/ioctl.c:583 [inline]
-       __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
-  fs_reclaim --> cpu_hotplug_lock --> slab_mutex
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(slab_mutex);
-                               lock(cpu_hotplug_lock);
-                               lock(slab_mutex);
-  lock(fs_reclaim);
-
- *** DEADLOCK ***
-
-2 locks held by syz.2.6655/30581:
- #0: ffffffff8f9168c8 (ubi_devices_mutex){+.+.}-{4:4}, at: ctrl_cdev_ioctl+0x323/0x400 drivers/mtd/ubi/cdev.c:1112
- #1: ffffffff8e979148 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x44/0x420 mm/slab_common.c:350
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 30581 Comm: syz.2.6655 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_circular_bug.cold+0x178/0x1c7 kernel/locking/lockdep.c:2043
- check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain kernel/locking/lockdep.c:3908 [inline]
- __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
- lock_acquire kernel/locking/lockdep.c:5868 [inline]
- lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
- __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
- fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
- might_alloc include/linux/sched/mm.h:317 [inline]
- slab_pre_alloc_hook mm/slub.c:4489 [inline]
- slab_alloc_node mm/slub.c:4843 [inline]
- kmem_cache_alloc_noprof+0x4c/0x6e0 mm/slub.c:4873
- create_cache mm/slab_common.c:249 [inline]
- __kmem_cache_create_args+0x366/0x420 mm/slab_common.c:380
- __kmem_cache_create include/linux/slab.h:390 [inline]
- alloc_ai drivers/mtd/ubi/attach.c:1464 [inline]
- ubi_attach+0x32a/0x4d30 drivers/mtd/ubi/attach.c:1560
- ubi_attach_mtd_dev+0x139f/0x32a0 drivers/mtd/ubi/build.c:1004
- ctrl_cdev_ioctl+0x36a/0x400 drivers/mtd/ubi/cdev.c:1113
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f161859c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f1619536028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f1618815fa0 RCX: 00007f161859c799
-RDX: 0000200000000040 RSI: 0000000040186f40 RDI: 0000000000000005
-RBP: 00007f1618632c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1618816038 R14: 00007f1618815fa0 R15: 00007ffd8ac2d7d8
- </TASK>
-ubi31: scanning is finished
-ubi31: empty MTD device detected
-ubi31: attached mtd0 (name "mtdram test device", size 0 MiB)
-ubi31: PEB size: 4096 bytes (4 KiB), LEB size: 3968 bytes
-ubi31: min./max. I/O unit sizes: 1/64, sub-page size 1
-ubi31: VID header offset: 64 (aligned 64), data offset: 128
-ubi31: good PEBs: 32, bad PEBs: 0, corrupted PEBs: 0
-ubi31: user volume: 0, internal volumes: 1, max. volumes count: 23
-ubi31: max/mean erase counter: 0/0, WL threshold: 4096, image sequence number: 3963432824
-ubi31: available PEBs: 28, total reserved PEBs: 4, PEBs reserved for bad PEB handling: 0
+I've also defined an iov_iter iterator type ITER_BVECQ to walk this sort of
+construct so that it can be passed directly to sendmsg() or block-based DIO
+(as cachefiles does).
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+This series makes the following changes to netfslib:
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+ (1) The folio_queue chain used to hold folios for buffered I/O is replaced
+     with a bvecq chain.  Each bio_vec then holds (a portion of) one folio.
+     Each bvecq holds a contiguous sequence of folios, but adjacent bvecqs
+     in a chain may be discontiguous.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+ (2) For unbuffered/DIO, the source iov_iter is extracted into a bvecq
+     chain.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+ (3) An abstract position representation ('bvecq_pos') is created that can
+     used to hold a position in a bvecq chain.  For the moment, this takes
+     a ref on the bvecq it points to, but that may be excessive.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+ (4) Buffer tracking is managed with three cursors:  The load_cursor, at
+     which new folios are added as we go; the dispatch_cursor, at which new
+     subrequests' buffers start when they're created; and the
+     collect_cursor, the point at which folios are being unlocked.
 
-If you want to undo deduplication, reply with:
-#syz undup
+     Not all cursors are necessarily needed in all situations and during
+     buffered writeback, we need a dispatch cursor per stream (one for the
+     network filesystem and one for the cache).
+
+ (5) ->prepare_read(), buffer setting up and ->issue_read() are merged, as
+     are the write variants, with the filesystem calling back up to
+     netfslib to prepare its buffer.  This simplifies the process of
+     setting up a subrequest.  It may even make sense to have the
+     filesystem allocate the subrequest.
+
+ (6) Retry dispatch tracking is added to netfs_io_request so that the
+     buffer preparation functions can find it.  Retry requires an
+     additional buffer cursor.
+
+ (7) Netfslib dispatches I/O by accumulating enough bufferage to dispatch
+     at least one subrequest, then looping to generate as many as the
+     filesystem wants to (they may be limited by other constraints,
+     e.g. max RDMA segment count or negotiated max size).  This loop could
+     be moved down into the filesystem.  A new method is provided by which
+     netfslib can ask the filesystem to provide an estimate of the data
+     that should be accumulated before dispatch begins.
+
+ (8) Reading from the cache is now managed by querying the cache to provide
+     a list of the next two data extents within the cache.
+
+ (9) AFS directories are switched to using a bvecq rather than a
+     folio_queue to hold their contents.
+
+(10) CIFS is switch to using a bvecq rather than a folio_queue for holding
+     a temporary encryption buffer.
+
+(11) CIFS RDMA is given the ability to extract ITER_BVECQ and support for
+     extracting ITER_FOLIOQ, ITER_BVEC and ITER_KVEC is removed.
+
+(12) All the folio_queue and rolling_buffer code is removed.
+
+Cachefiles is also modified:
+
+ (1) The object type in the cachefiles file xattr is now correctly set to
+     CACHEFILES_CONTENT_{SINGLE,ALL,BACKFS_MAP} rather than just being 0,
+     to indicate whether we have a single monolithic blob, all the data up
+     to cache i_size with no holes or a sparse file with the data mapped by
+     the backing file system (as currently upstream).
+
+ (2) For "ALL" type files, the cache's i_size is used to track how much
+     data is saved in the cache and no longer bears any relation to the
+     netfs i_size.  The actual object size is stored in the xattr.
+
+ (3) For most typical files which are contiguous and written progressively,
+     the object type is now set to "ALL".  For anything else, cachefiles
+     uses SEEK_DATA/HOLE to find extent outlines at before (this is the
+     current behaviour and needs to be fixed, but in a separate set of
+     patches as it's not trivial).
+
+Two further things that I'm working on (but not in this branch) are:
+
+ (1) Make it so that a filesystem can be given a copy of a subchain which
+     it can then tack header and trailer protocol elements upon to form a
+     single message (I have this working for cifs) and even join copies
+     together with intervening protocol elements to form compounds.
+
+ (2) Make it so that a filesystem can 'splice' out the contents of the TCP
+     receive queue into a bvecq chain.  This allows the socket lock to be
+     dropped much more quickly and the copying of data read to the
+     destination buffers to happen without the lock.  I have this working
+     for cifs too.  Kernel recvmsg() doesn't then block kernel sendmsg()
+     for anywhere near as long.
+
+There are also some things I want to consider for the future:
+
+ (1) Create one or more batched iteration functions to 'unlock' all the
+     folios in a bio_vec[], where 'unlock' is the appropriate action for
+     ending a read or a write.  Batching should hopefully also improve the
+     efficiency of wrangling the marks on the xarray.  Very often these
+     marks are going to be represented by contiguous bits, so there may be
+     a way to change them in bulk.
+
+ (2) Rather than walking the bvecq chain to get each individual folio out
+     via bv_page, use the file position stored on the bvecq and the sum of
+     bv_len to iterate over the appropriate range in i_pages.
+
+ (3) Change iov_iter to store the initial starting point and for
+     iov_iter_revert() to reset to that and advance.  This would (a) help
+     prevent over-reversion and (b) dispense with the need for a prev
+     pointer.
+
+ (4) Use bvecq to replace scatterlist.  One problem with replacing
+     scatterlist is that crypto drivers like to glue bits on the front of
+     the scatterlists they're given (something trivial with that API) - and
+     this is one way to achieve it.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next
+
+Thanks,
+David
+
+David Howells (22):
+  netfs: Fix read abandonment during retry
+  netfs: Fix the handling of stream->front by removing it
+  cachefiles: Fix excess dput() after end_removing()
+  cachefiles: Don't rely on backing fs storage map for most use cases
+  mm: Make readahead store folio count in readahead_control
+  netfs: Bulk load the readahead-provided folios up front
+  Add a function to kmap one page of a multipage bio_vec
+  iov_iter: Add a segmented queue of bio_vec[]
+  netfs: Add some tools for managing bvecq chains
+  netfs: Add a function to extract from an iter into a bvecq
+  afs: Use a bvecq to hold dir content rather than folioq
+  cifs: Use a bvecq for buffering instead of a folioq
+  cifs: Support ITER_BVECQ in smb_extract_iter_to_rdma()
+  netfs: Switch to using bvecq rather than folio_queue and
+    rolling_buffer
+  cifs: Remove support for ITER_KVEC/BVEC/FOLIOQ from
+    smb_extract_iter_to_rdma()
+  netfs: Remove netfs_alloc/free_folioq_buffer()
+  netfs: Remove netfs_extract_user_iter()
+  iov_iter: Remove ITER_FOLIOQ
+  netfs: Remove folio_queue and rolling_buffer
+  netfs: Check for too much data being read
+  netfs: Limit the the minimum trigger for progress reporting
+  netfs: Combine prepare and issue ops and grab the buffers on request
+
+Deepanshu Kartikey (2):
+  netfs: Fix NULL pointer dereference in netfs_unbuffered_write() on
+    retry
+  netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
+
+Paulo Alcantara (1):
+  netfs: fix error handling in netfs_extract_user_iter()
+
+Viacheslav Dubeyko (1):
+  netfs: fix VM_BUG_ON_FOLIO() issue in netfs_write_begin() call
+
+ Documentation/core-api/folio_queue.rst | 209 ------
+ Documentation/core-api/index.rst       |   1 -
+ fs/9p/vfs_addr.c                       |  49 +-
+ fs/afs/dir.c                           |  43 +-
+ fs/afs/dir_edit.c                      |  43 +-
+ fs/afs/dir_search.c                    |  33 +-
+ fs/afs/file.c                          |  27 +-
+ fs/afs/fsclient.c                      |   8 +-
+ fs/afs/inode.c                         |  20 +-
+ fs/afs/internal.h                      |  14 +-
+ fs/afs/write.c                         |  35 +-
+ fs/afs/yfsclient.c                     |   6 +-
+ fs/cachefiles/interface.c              |  82 +-
+ fs/cachefiles/internal.h               |  10 +-
+ fs/cachefiles/io.c                     | 486 ++++++++----
+ fs/cachefiles/namei.c                  |  55 +-
+ fs/cachefiles/xattr.c                  |  20 +-
+ fs/ceph/Kconfig                        |   1 +
+ fs/ceph/addr.c                         | 127 ++--
+ fs/netfs/Kconfig                       |   3 +
+ fs/netfs/Makefile                      |   4 +-
+ fs/netfs/buffered_read.c               | 524 ++++++++-----
+ fs/netfs/buffered_write.c              |  30 +-
+ fs/netfs/bvecq.c                       | 706 ++++++++++++++++++
+ fs/netfs/direct_read.c                 | 119 ++-
+ fs/netfs/direct_write.c                | 174 +++--
+ fs/netfs/fscache_io.c                  |   6 -
+ fs/netfs/internal.h                    |  89 ++-
+ fs/netfs/iterator.c                    | 305 +++-----
+ fs/netfs/misc.c                        | 147 +---
+ fs/netfs/objects.c                     |  21 +-
+ fs/netfs/read_collect.c                | 134 ++--
+ fs/netfs/read_pgpriv2.c                | 168 +++--
+ fs/netfs/read_retry.c                  | 227 +++---
+ fs/netfs/read_single.c                 | 170 +++--
+ fs/netfs/rolling_buffer.c              | 222 ------
+ fs/netfs/stats.c                       |   6 +-
+ fs/netfs/write_collect.c               | 126 +++-
+ fs/netfs/write_issue.c                 | 987 ++++++++++++++-----------
+ fs/netfs/write_retry.c                 | 135 ++--
+ fs/nfs/Kconfig                         |   1 +
+ fs/nfs/fscache.c                       |  24 +-
+ fs/smb/client/cifsglob.h               |   2 +-
+ fs/smb/client/cifssmb.c                |  13 +-
+ fs/smb/client/file.c                   | 146 ++--
+ fs/smb/client/smb2ops.c                |  78 +-
+ fs/smb/client/smb2pdu.c                |  28 +-
+ fs/smb/client/smbdirect.c              | 152 +---
+ fs/smb/client/transport.c              |  15 +-
+ include/linux/bvec.h                   |  21 +
+ include/linux/bvecq.h                  | 205 +++++
+ include/linux/folio_queue.h            | 282 -------
+ include/linux/fscache.h                |  17 +
+ include/linux/iov_iter.h               |  68 +-
+ include/linux/netfs.h                  | 145 ++--
+ include/linux/pagemap.h                |   1 +
+ include/linux/rolling_buffer.h         |  61 --
+ include/linux/uio.h                    |  17 +-
+ include/trace/events/cachefiles.h      |  17 +-
+ include/trace/events/netfs.h           | 123 ++-
+ lib/iov_iter.c                         | 395 +++++-----
+ lib/scatterlist.c                      |  57 +-
+ lib/tests/kunit_iov_iter.c             | 185 ++---
+ mm/readahead.c                         |   4 +
+ net/9p/client.c                        |   8 +-
+ 65 files changed, 4144 insertions(+), 3493 deletions(-)
+ delete mode 100644 Documentation/core-api/folio_queue.rst
+ create mode 100644 fs/netfs/bvecq.c
+ delete mode 100644 fs/netfs/rolling_buffer.c
+ create mode 100644 include/linux/bvecq.h
+ delete mode 100644 include/linux/folio_queue.h
+ delete mode 100644 include/linux/rolling_buffer.h
+
