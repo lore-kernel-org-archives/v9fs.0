@@ -1,89 +1,362 @@
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8AE3A4F54;
-	Mon, 30 Mar 2026 13:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774879073; cv=none; b=KS4yGh/ex8ephWK/UeLIewPIeiATS2bY+MJ6I/zw3bmyhyt5xH5TkJLmhtmUhl3kM+yUtEw9JnuLkkScYndN87t2F6FZRQ1yWU3V04pDUQagVLorpR66rJPbdJK0sA1RgLjjLPdStMLpOeJ/B10pmbDLrY8QqZfwSXpB/n0mWZg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774879073; c=relaxed/simple;
-	bh=pcW6LXETd4GRRYCmR8ynpqdeQSEEzpJd8b7cdKVtty8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SY0C3MfwyOtCEQPiI7597X2J+jA/BfqU/vc6Ahmr0riSzFqEHDW4ngmGgga9nLCCXeakwcNEmwqaeFOveIQjWfpaLGj66OBee/hub5i3If7Jbw7e0ZfStQx8c3j5jMjLEjgmW90zVz9St13YjznVs/HCOlbWvSZ0CAcFYyegcvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=lSYNp7Wf; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979383385B6
+	for <v9fs@lists.linux.dev>; Mon, 30 Mar 2026 15:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774883260; cv=pass; b=MZWV5rNjm3A2NZaNA/J0yry5iFyXKYLXa68VuEC3bxm6mkeaToOLmyOf8cR3LzjJmkMpTj4UdAQ+ks97b+2FFXscfcEBleJkSrKfExqi5wqJfBae4xP62bVRCnIf041MoWBWQzZxojSbYD+jT/saiNB7cppZkRnlHu9TNY5wFuI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774883260; c=relaxed/simple;
+	bh=/x13DKtZaVDG7yiVUGXh9eKmBd78HM6nIK9Tv56z6jQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p1WwhGdsFHqE+3lKjjFqVMKkKvFc55ja7J0PnWsZX+ucpDeeM2HmirnC4hkefCNEoKZbylA8Fi8STWcw/MfYKMkQDTefPhJvQtrwxU6urJcNsESmoQKrlqVRP7Q75mNht9JJcZuTA9V6iy3mulFi41/w8oQ/2TD7dkO/UBVvnqY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKERoQM1; arc=pass smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="lSYNp7Wf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=aHLXtwCMFeKjEs/VsnRh986+QoltAhaGyi5eb+m+M2o=; b=lSYNp7WftXgNZI9nAPuFMFcKqY
-	HEmA505012e9xqEKFQaNN1zovmIMMfDhNZY37xSKz2H2whDuvOmUZFmRxWz3Yaqnl/BelRXXp44rw
-	Y37GF+vBFdN1uNuw5CZTbr66zdDM08ln+E5ImeL4BcoAfP9R9v1BIE9GZHzP9ZWEWNuFwee+HjifT
-	Xpye22zs124AMG/L1f2BAIylpljBlz0jNngKSbDfSWKnSx4pR7WEfoAfIANLq+RGWwpoqALSvK5wq
-	QwAGdLAO0tdCgSWWQw5JXUdt7q4bCG8mpUq4nc5S1VfADIFpRkXiOCjGf6UJ/FNmqyfheFdUVwZu4
-	9mmWLziXMCsHMnERmzv106kqFnT+hqVLPuW/f84tnZfNDxT/oB25+Pw3ASTxShUG260kt9palsKsg
-	TN/W2lMJA++aKUig0vH7n6qlghHLahYcjmUvDxhrAIl/0/94Y9U77HhO+CgFinlTv1xR/drRKxmik
-	sB9oukHjqX3Ywk7rgEeGLZEC;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1w7D7b-000000055qd-0zuk;
-	Mon, 30 Mar 2026 13:57:39 +0000
-Message-ID: <9639cd12-5e9d-4eb4-9d9c-f5047ccad7b7@samba.org>
-Date: Mon, 30 Mar 2026 15:57:38 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKERoQM1"
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-953ac1602f8so1121352241.1
+        for <v9fs@lists.linux.dev>; Mon, 30 Mar 2026 08:07:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774883257; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XMGSJf6EEbW5leFMlXZqpHHef6u86CPBdaSwMEc/10ovk9dYV7CHAzt28mBfronexG
+         YEwa64EL0YcUNcoPNm/HS5EjELXlQrYGi42yqgXlwM6ncpksTOIOJ5tYC1RHc3y3lRhh
+         gM4apr8kylfxgMqtujoK5+9C0+iWuRXsD5PHGTd+D3W2EyvjtskLM7AAQxxciRSEumDC
+         zMRTVT1Kbv+vTJXMC9UxtgCIUMruNp1OdEWXfKQjdKTA3IP/OD+oaN4sVKCCcjTX18o6
+         UK7+gE0QlyJDnNsGew6pQuGQKM/QCCfxbC24B0GrQI7PXT6Chi74ds+awnfMpRpnSKi6
+         Y/vA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i27yBCASimAbh8aqvQTLYNbe/ak/AL7sQPeMVmtc+JI=;
+        fh=4TZyEB6urdFoMwJ47KsfAhXSagRyTwEX0ukQI8+GJlg=;
+        b=YRu2OGSAUgMO6UcqK40b8GoVAdoOKInL9cJqZTnfyitpp9RSpC+BeKESnQ/aYzmUkQ
+         CKj8r5P57flVh0RnEiAEqT3rwWCMNC+Zx987jRExO+y55caJ/5wqA0tus35tWlrFF1yo
+         u3TY1Y4pzPj45p0xe32+JxFZ6GeT/rq0scsZLj8nsGuy4zzLSgEoRlCTTGzdDD/++oiJ
+         I1xnHQl+axlO+zRLYsKaJPX4bmX0kOUB7SG7WPGMiOBf6yeDudQQD30QrGiH08hycANe
+         325yzEfDFvJ0og8rJXn/WsE/to+vA4PJDB7yT60Agiak2txle2htMT/3z+yBR1xUvKhY
+         yjAg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774883257; x=1775488057; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i27yBCASimAbh8aqvQTLYNbe/ak/AL7sQPeMVmtc+JI=;
+        b=qKERoQM1fVPBhTJQ9NOEB/hJZ4lRQ1vjUcbeqGdf6Asbcv5i2Z6Hzfj+Jz1/xOGVl7
+         fi5t7m0ZAfQuuoCyWJ2Xz3F7UG9ez1nZWBa7ZDBcutTdp0B8c5DUiNu7peIXvjs7tnrj
+         n6qJa4A0Q43iPSg2gFkU35lmy57GWlmupnGRLFPdtNkjI3hfi6DTp+fJYYdlfMssrpm2
+         0+Wni5leP7nc15i6AR/M8c16El+5ylR4YpjWK+IZ5h8AOxZBhJJoayT7U0tTmKYAtGNo
+         b95J97NunzQ4wLGF/eIx2F72lLpbxNzZCilzq82rXQ/0ClNtT3Rv1MMONFhf0Ks4wln/
+         5lpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774883257; x=1775488057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=i27yBCASimAbh8aqvQTLYNbe/ak/AL7sQPeMVmtc+JI=;
+        b=T0TXD2CW3jZueoylSWfjrZ+EL5A2Oqs/zqL4MyBsN9qvxGzHRZv6Mfg/SUK/iFYCCZ
+         SsXKSXLN0xGnKmHekJ8Gaz3jDnTpZ3gB6s3i8S5/0g2GcPXIiB/Q2pA9Q5HA5atjQOt/
+         RGOBYajPx3rGMFLDlHDqEItxHcSIA0N0gyuerQeq4wkM/xIqpo2b3/jHLEgVENKUyCty
+         7XFS6SG8u+JI0T9ePZ6TaTYpnRB4DxMWXARtAxn2bCvSrbc/Mm0YQwMvPH9crgfPq9g3
+         CQo8JE8RSqAfxVn5R3OUcxINl2wqfkEiDDh0GiUUaM/3yGIU+xb0QarpQEQwEOX3LPEv
+         SEdw==
+X-Forwarded-Encrypted: i=1; AJvYcCV57dAbABipMpsj2c7W/P+5c0MUCewTuZnWvyuvRcsFxQfazIjkMsAfaFMoQt7w5iZ4aRYe@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/96yBOh6lFGrPYMf+orwik8T1gGeHKRFpQvCRe27C/IkvBlF6
+	WzpwYpQoNCs/OqT5LbTRAVCIgEaEpejmVk/haDlFh2IBSKLtuPI8hP/tuND9eNoXe8B7weAxZbv
+	Sj1uR5jZaqLg3fYLBhdu1yBDhGIsnR3s=
+X-Gm-Gg: ATEYQzwlvbzKip+OwoF7BIFn7cA93CGpqzveehfDlDZBDl6s3LqNDB8g44sfDpDWONo
+	RfaQbET6pc56pfC4Z8F53/S6GIV/pLXb9b804Hq6/Bxftyx14cojR+zObHAZffXHl5C1tyHEDBg
+	+HZgj/R4B9nQFh5W8ZVwWV2nysvj9sSvDDKf63wqiD1eVrhZqJPkX9IEPmTj+YiKHLVJUtaI8xN
+	12qgpWQNBHek1Hm53CFOJF9NeQf+7SqtcF0nQlGhKbhCux0TOF6OyXQBilshlRBm3xRVpcXuqun
+	OOuKu2XILfHE0pI39nIfYy8yn7FxuzarBbbDBzXtOqc=
+X-Received: by 2002:a05:6102:84d1:b0:602:6ccd:7772 with SMTP id
+ ada2fe7eead31-604fbdd4504mr3414117137.2.1774883257420; Mon, 30 Mar 2026
+ 08:07:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] netfs: Keep track of folios in a segmented
- bio_vec[] chain
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>,
- Paulo Alcantara <pc@manguebit.com>, Jens Axboe <axboe@kernel.dk>,
- Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
- ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
- Marc Dionne <marc.dionne@auristor.com>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <52ad0aa6-d8dd-4ba1-adf2-f79128df9d90@samba.org>
- <20260326104544.509518-1-dhowells@redhat.com>
- <1180465.1774867781@warthog.procyon.org.uk>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <1180465.1774867781@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260328172314.45807-2-dorjoychy111@gmail.com> <e526fbdb450a593b575355c1c9ae21f286427275.camel@kernel.org>
+In-Reply-To: <e526fbdb450a593b575355c1c9ae21f286427275.camel@kernel.org>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Mon, 30 Mar 2026 21:07:25 +0600
+X-Gm-Features: AQROBzBiNZNQJDXYIA1g_QAQfKVpqrabu4vh65YgUWDTzh1Q_gvpOzHijv8ZYqQ
+Message-ID: <CAFfO_h75dF2s83VNtUaNuRmto1NVVcxo7kN6eAtNtN3ME8mPiQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
+	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
+	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
+	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
+	bharathsm@microsoft.com, shuah@kernel.org, miklos@szeredi.hu, 
+	hansg@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 30.03.26 um 12:49 schrieb David Howells:
-> Stefan Metzmacher <metze@samba.org> wrote:
-> 
->> Another possible way would be to skip this for now
->> cifs: Remove support for ITER_KVEC/BVEC/FOLIOQ from smb_extract_iter_to_rdma()
->> and I rebase my changes on top of Davids patches assuming they
->> will be stable commits (at least up to
->> cifs: Support ITER_BVECQ in smb_extract_iter_to_rdma())
-> 
-> I could certainly split my removal patch.  I want to remove FOLIOQ support,
-> but I can leave KVEC and/or BVEC if they're still needed.
+On Mon, Mar 30, 2026 at 5:49=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
+ote:
+>
+> On Sat, 2026-03-28 at 23:22 +0600, Dorjoy Chowdhury wrote:
+> > This flag indicates the path should be opened if it's a regular file.
+> > This is useful to write secure programs that want to avoid being
+> > tricked into opening device nodes with special semantics while thinking
+> > they operate on regular files. This is a requested feature from the
+> > uapi-group[1].
+> >
+> > A corresponding error code EFTYPE has been introduced. For example, if
+> > openat2 is called on path /dev/null with OPENAT2_REGULAR in the flag
+> > param, it will return -EFTYPE. EFTYPE is already used in BSD systems
+> > like FreeBSD, macOS.
+> >
+> > When used in combination with O_CREAT, either the regular file is
+> > created, or if the path already exists, it is opened if it's a regular
+> > file. Otherwise, -EFTYPE is returned.
+> >
+> > When OPENAT2_REGULAR is combined with O_DIRECTORY, -EINVAL is returned
+> > as it doesn't make sense to open a path that is both a directory and a
+> > regular file.
+> >
+> > [1]: https://uapi-group.org/kernel-features/#ability-to-only-open-regul=
+ar-files
+> >
+> > Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+> > ---
+> >  arch/alpha/include/uapi/asm/errno.h        |  2 ++
+> >  arch/alpha/include/uapi/asm/fcntl.h        |  1 +
+> >  arch/mips/include/uapi/asm/errno.h         |  2 ++
+> >  arch/parisc/include/uapi/asm/errno.h       |  2 ++
+> >  arch/parisc/include/uapi/asm/fcntl.h       |  1 +
+> >  arch/sparc/include/uapi/asm/errno.h        |  2 ++
+> >  arch/sparc/include/uapi/asm/fcntl.h        |  1 +
+> >  fs/ceph/file.c                             |  4 ++++
+> >  fs/fcntl.c                                 |  4 ++--
+> >  fs/gfs2/inode.c                            |  6 ++++++
+> >  fs/namei.c                                 |  4 ++++
+> >  fs/nfs/dir.c                               |  4 ++++
+> >  fs/open.c                                  |  8 +++++---
+> >  fs/smb/client/dir.c                        | 14 +++++++++++++-
+> >  include/linux/fcntl.h                      |  2 ++
+> >  include/uapi/asm-generic/errno.h           |  2 ++
+> >  include/uapi/asm-generic/fcntl.h           |  4 ++++
+> >  tools/arch/alpha/include/uapi/asm/errno.h  |  2 ++
+> >  tools/arch/mips/include/uapi/asm/errno.h   |  2 ++
+> >  tools/arch/parisc/include/uapi/asm/errno.h |  2 ++
+> >  tools/arch/sparc/include/uapi/asm/errno.h  |  2 ++
+> >  tools/include/uapi/asm-generic/errno.h     |  2 ++
+> >  22 files changed, 67 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/alpha/include/uapi/asm/errno.h b/arch/alpha/include/u=
+api/asm/errno.h
+> > index 6791f6508632..1a99f38813c7 100644
+> > --- a/arch/alpha/include/uapi/asm/errno.h
+> > +++ b/arch/alpha/include/uapi/asm/errno.h
+> > @@ -127,4 +127,6 @@
+> >
+> >  #define EHWPOISON    139     /* Memory page has hardware error */
+> >
+> > +#define EFTYPE               140     /* Wrong file type for the intend=
+ed operation */
+> > +
+> >  #endif
+> > diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/u=
+api/asm/fcntl.h
+> > index 50bdc8e8a271..fe488bf7c18e 100644
+> > --- a/arch/alpha/include/uapi/asm/fcntl.h
+> > +++ b/arch/alpha/include/uapi/asm/fcntl.h
+> > @@ -34,6 +34,7 @@
+> >
+> >  #define O_PATH               040000000
+> >  #define __O_TMPFILE  0100000000
+> > +#define OPENAT2_REGULAR      0200000000
+> >
+> >  #define F_GETLK              7
+> >  #define F_SETLK              8
+> > diff --git a/arch/mips/include/uapi/asm/errno.h b/arch/mips/include/uap=
+i/asm/errno.h
+> > index c01ed91b1ef4..1835a50b69ce 100644
+> > --- a/arch/mips/include/uapi/asm/errno.h
+> > +++ b/arch/mips/include/uapi/asm/errno.h
+> > @@ -126,6 +126,8 @@
+> >
+> >  #define EHWPOISON    168     /* Memory page has hardware error */
+> >
+> > +#define EFTYPE               169     /* Wrong file type for the intend=
+ed operation */
+> > +
+> >  #define EDQUOT               1133    /* Quota exceeded */
+> >
+> >
+> > diff --git a/arch/parisc/include/uapi/asm/errno.h b/arch/parisc/include=
+/uapi/asm/errno.h
+> > index 8cbc07c1903e..93194fbb0a80 100644
+> > --- a/arch/parisc/include/uapi/asm/errno.h
+> > +++ b/arch/parisc/include/uapi/asm/errno.h
+> > @@ -124,4 +124,6 @@
+> >
+> >  #define EHWPOISON    257     /* Memory page has hardware error */
+> >
+> > +#define EFTYPE               258     /* Wrong file type for the intend=
+ed operation */
+> > +
+> >  #endif
+> > diff --git a/arch/parisc/include/uapi/asm/fcntl.h b/arch/parisc/include=
+/uapi/asm/fcntl.h
+> > index 03dee816cb13..d46812f2f0f4 100644
+> > --- a/arch/parisc/include/uapi/asm/fcntl.h
+> > +++ b/arch/parisc/include/uapi/asm/fcntl.h
+> > @@ -19,6 +19,7 @@
+> >
+> >  #define O_PATH               020000000
+> >  #define __O_TMPFILE  040000000
+> > +#define OPENAT2_REGULAR      0100000000
+> >
+> >  #define F_GETLK64    8
+> >  #define F_SETLK64    9
+> > diff --git a/arch/sparc/include/uapi/asm/errno.h b/arch/sparc/include/u=
+api/asm/errno.h
+> > index 4a41e7835fd5..71940ec9130b 100644
+> > --- a/arch/sparc/include/uapi/asm/errno.h
+> > +++ b/arch/sparc/include/uapi/asm/errno.h
+> > @@ -117,4 +117,6 @@
+> >
+> >  #define EHWPOISON    135     /* Memory page has hardware error */
+> >
+> > +#define EFTYPE               136     /* Wrong file type for the intend=
+ed operation */
+> > +
+> >  #endif
+> > diff --git a/arch/sparc/include/uapi/asm/fcntl.h b/arch/sparc/include/u=
+api/asm/fcntl.h
+> > index 67dae75e5274..bb6e9fa94bc9 100644
+> > --- a/arch/sparc/include/uapi/asm/fcntl.h
+> > +++ b/arch/sparc/include/uapi/asm/fcntl.h
+> > @@ -37,6 +37,7 @@
+> >
+> >  #define O_PATH               0x1000000
+> >  #define __O_TMPFILE  0x2000000
+> > +#define OPENAT2_REGULAR      0x4000000
+> >
+> >  #define F_GETOWN     5       /*  for sockets. */
+> >  #define F_SETOWN     6       /*  for sockets. */
+> > diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+> > index 66bbf6d517a9..6d8d4c7765e6 100644
+> > --- a/fs/ceph/file.c
+> > +++ b/fs/ceph/file.c
+> > @@ -977,6 +977,10 @@ int ceph_atomic_open(struct inode *dir, struct den=
+try *dentry,
+> >                       ceph_init_inode_acls(newino, &as_ctx);
+> >                       file->f_mode |=3D FMODE_CREATED;
+> >               }
+> > +             if ((flags & OPENAT2_REGULAR) && !d_is_reg(dentry)) {
+> > +                     err =3D -EFTYPE;
+> > +                     goto out_req;
+> > +             }
+>
+> ^^^
+> This doesn't look quite right. Here's a larger chunk of the code:
+>
+> -------------------------8<--------------------------
+>         if (d_in_lookup(dentry)) {
+>                 dn =3D ceph_finish_lookup(req, dentry, err);
+>                 if (IS_ERR(dn))
+>                         err =3D PTR_ERR(dn);
+>         } else {
+>                 /* we were given a hashed negative dentry */
+>                 dn =3D NULL;
+>         }
+>         if (err)
+>                 goto out_req;
+>         if (dn || d_really_is_negative(dentry) || d_is_symlink(dentry)) {
+>                 /* make vfs retry on splice, ENOENT, or symlink */
+>                 doutc(cl, "finish_no_open on dn %p\n", dn);
+>                 err =3D finish_no_open(file, dn);
+>         } else {
+>                 if (IS_ENCRYPTED(dir) &&
+>                     !fscrypt_has_permitted_context(dir, d_inode(dentry)))=
+ {
+>                         pr_warn_client(cl,
+>                                 "Inconsistent encryption context (parent =
+%llx:%llx child %llx:%llx)\n",
+>                                 ceph_vinop(dir), ceph_vinop(d_inode(dentr=
+y)));
+>                         goto out_req;
+>                 }
+>
+>                 doutc(cl, "finish_open on dn %p\n", dn);
+>                 if (req->r_op =3D=3D CEPH_MDS_OP_CREATE && req->r_reply_i=
+nfo.has_create_ino) {
+>                         struct inode *newino =3D d_inode(dentry);
+>
+>                         cache_file_layout(dir, newino);
+>                         ceph_init_inode_acls(newino, &as_ctx);
+>                         file->f_mode |=3D FMODE_CREATED;
+>                 }
+>                 err =3D finish_open(file, dentry, ceph_open);
+>         }
+> -------------------------8<--------------------------
+>
+> It looks like this won't handle it correctly if the pathwalk terminates
+> on a symlink (re: d_is_symlink() case). You should either set up a test
+> ceph cluster on your own, or reach out to the ceph community and ask
+> them to test this.
+>
 
-Yes, please keep them, I guess we can removed unused stuff at the end of the
-merge window.
+Thanks for reviewing. The d_is_symlink() case seems to be calling
+finish_no_open so shouldn't this be okay?
 
-Any idea on how to resolve the actual conflict?
+> >               err =3D finish_open(file, dentry, ceph_open);
+> >       }
+> >  out_req:
+> > diff --git a/fs/fcntl.c b/fs/fcntl.c
+> > index beab8080badf..240bb511557a 100644
+> > --- a/fs/fcntl.c
+> > +++ b/fs/fcntl.c
+> > @@ -1169,9 +1169,9 @@ static int __init fcntl_init(void)
+> >        * Exceptions: O_NONBLOCK is a two bit define on parisc; O_NDELAY
+> >        * is defined as O_NONBLOCK on some platforms and not on others.
+> >        */
+> > -     BUILD_BUG_ON(20 - 1 /* for O_RDONLY being 0 */ !=3D
+> > +     BUILD_BUG_ON(21 - 1 /* for O_RDONLY being 0 */ !=3D
+> >               HWEIGHT32(
+> > -                     (VALID_OPEN_FLAGS & ~(O_NONBLOCK | O_NDELAY)) |
+> > +                     (VALID_OPENAT2_FLAGS & ~(O_NONBLOCK | O_NDELAY)) =
+|
+> >                       __FMODE_EXEC));
+> >
+> >       fasync_cache =3D kmem_cache_create("fasync_cache",
+> > diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+> > index 8344040ecaf7..4604e2e8a9cc 100644
+> > --- a/fs/gfs2/inode.c
+> > +++ b/fs/gfs2/inode.c
+> > @@ -738,6 +738,12 @@ static int gfs2_create_inode(struct inode *dir, st=
+ruct dentry *dentry,
+> >       inode =3D gfs2_dir_search(dir, &dentry->d_name, !S_ISREG(mode) ||=
+ excl);
+> >       error =3D PTR_ERR(inode);
+> >       if (!IS_ERR(inode)) {
+> > +             if (file && (file->f_flags & OPENAT2_REGULAR) && !S_ISREG=
+(inode->i_mode)) {
+>
+> Isn't OPENAT2_REGULAR getting masked off in ->f_flags now?
+>
+Yes, I thought the masking off was happening after this codepath got
+executed. Maybe it's better anyway to pass another flags param to this
+function and forward the flags from the gfs2_atomic_open function and
+in other call sites pass 0 ? What do you think?
 
-Thanks!
-metze
-
+Regards,
+Dorjoy
