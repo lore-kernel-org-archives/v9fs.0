@@ -1,174 +1,134 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7DE32AAB2
-	for <v9fs@lists.linux.dev>; Wed, 15 Apr 2026 10:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BE7303C8A
+	for <v9fs@lists.linux.dev>; Wed, 15 Apr 2026 15:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776249391; cv=none; b=sqlXJIDO7vD6LPzgWI80uro6ZOzn91QSekgMO4nymG7ObgBhF3YJ8WHAXRbnyTF1n0LwoTlxvqfMgW2Xqv3GeL1VmAtWVLKOMNTZqKhkbdbBl4aZoDuqim5lCiRP2uPbTBt2N9edidtr+Nn77S8oFMfLkMDSxAh5xX7Fgr3ZwC0=
+	t=1776268370; cv=none; b=i/ZQdpODoutYvCKVj0fZWr+3BUaVGWmcr09iupaqIRhnSAxc9t34siV5w5RV524nvHvyoRKpl6+kn2PLKcT3UJyUNr08bQxpVMa2UV4p3E0DpwI8F93nH7QeWVkl+q/yuu6B5y3O0xBtg9coxYGaSKXBy6yOHBqmzKdAvf1e2/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776249391; c=relaxed/simple;
-	bh=NxnF4CK1FqxBbrKmbiMurgO82lCtFPaN6WHaOcYG2EQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q1KFOke1EP5w62uPdJD5PxUj9N0si4borqCi7XdNo0cQT7CBL/5IbKQxqxTXPrYQO3XbwcZsa22Ci0NAsfQbt5DngVGRkT13uL/bSy6nfF2QFAlWCuS86u2+ZldhbVaH1EKaBbEkPISfCKX8j1WD1Wzo8tZN0y88nQ/6dPofVgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F80y9KA5; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F80y9KA5"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so88167945e9.2
-        for <v9fs@lists.linux.dev>; Wed, 15 Apr 2026 03:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776249387; x=1776854187; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uQsaK5fpmw9qRbAqGp4qBmJu047lOibXZ/dUKVuEGTc=;
-        b=F80y9KA5kvsHe/N/nW+FWAMEIGYQr0Ra5COaTVYMZQ3vIUiEehBqJRWdQk0ocloIjP
-         c1hRNZn/7os+/1B5cnl9lCbVaz8wnj2wDLCKdrw7MZNoM8csxVYMRxN6MZNkFYNpvOTb
-         GVbG+yJGgJbZ/uKPJdl3TC5RVrQZoOIi9y9OLKylKK/6zNUPxM6EtmMAWGVGDqam2g2M
-         ouYuuz4g1ZGOKAswoq38DY79gPfCIaO8tXO+f+inQSQUyM5/6E4bCk2jc+MoJ0VWscMu
-         2hJ6Mt4Q/fyAH6myMA/W/IHWbpaV6jDDzZt6UFtHduBBLluHmf5AOhriThaWegNTCrN/
-         JLNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776249387; x=1776854187;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uQsaK5fpmw9qRbAqGp4qBmJu047lOibXZ/dUKVuEGTc=;
-        b=JNkuwuVnPMw1O34JcaAyZhcQiYzxWWvz47aEIzFX88l9m7vCdUQ764gKr4HvGwTkCM
-         I8ZM27yuZgl+A2Mt6INfsiC0iwbqLXxvFxaH73xyK2zzZhmcG/vnQbNwzdh/niI9wsPX
-         9RMb6QDnMfDTZ3ckOO440np+zwiryHmgyeSXrLEvD8dM5coXU/Dkja4Lg3//EfbksF+9
-         yXKStojTf4iXWpOyT1uO5byo+AFMoywHtIpVz8k86olBJYvGjNF5qrAc+b7fzzaumpjK
-         kXVEN7pY6+CMTqMahlTDCmMKWn1EskIz0LfPvPSzjY5cF1p1AB4YkRuwnNDnw4Ij6dM1
-         LexA==
-X-Forwarded-Encrypted: i=1; AFNElJ/Y5d69msGSVWYJbQqhbdc248+wJA0VrFkqaUhGAl9uOtSafMPjOHzMgm1/S1ilOmgkNW+W@lists.linux.dev
-X-Gm-Message-State: AOJu0YzU07wpbx5vGSKTuJjAM09ozpRPMuW5D1PUbMynUraS4FnjX7s6
-	WAwtMNg5TlYOmgHeh/qwZEfL98SXfLzSiuQEkSI+7XyOGA3SeJhT4hbD
-X-Gm-Gg: AeBDieu6YSfAy9N2oqTOdEtvBpxpTbvvDZKJtuE0h9h9KUVZLI37eiBRKnOioMHXWor
-	tQd20Q69TWiLHDflwVHCzvCPIhcb3jfAZEVf7PJ5leCW1hJIuNliy/IwXzhCd7n/3eUZ/lQEDzD
-	bgj8nEktAoiUsk2lN9veuEFd/cr4BzQ50p4zCCYHCFqiKep3hDgsQu4Q/oQq82HiizEE1K2LtLv
-	CDSkhEevLrgPxppje93lTqru6af0caQQ18LMyebglfDYwck7eSuHSfkmmKf4/AkZry/MERvbSY5
-	voHSo1/u1kTKkV+adPMhJamMGha/c3RJEKAU5I4sLFRPG+U9o9pY2DOJqVFZgyffoLxCxVRNGc3
-	Fiz9euU92PYtLDq/k59hoyQblYaNdjb51o9L0K8/aYxvYS1TgsR0e/j43iAIh6RHZXaDnXU/ZWg
-	QN2s44DkEguXK4MyrJtPDY3+bjRMdMGy+0hbljL3xmcyn9MNXU0/07C4Zwg9q/ZlOmhJuOBZP9s
-	3w=
-X-Received: by 2002:a05:600c:64cd:b0:485:3cf3:1010 with SMTP id 5b1f17b1804b1-488d67df592mr298005975e9.2.1776249386934;
-        Wed, 15 Apr 2026 03:36:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3fd3b7sm4531195f8f.35.2026.04.15.03.36.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 03:36:26 -0700 (PDT)
-Date: Wed, 15 Apr 2026 11:36:25 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Pierre Barre" <pierre@barre.sh>
-Cc: "Eric Van Hensbergen" <ericvh@kernel.org>, "Latchesar Ionkov"
- <lucho@ionkov.net>, asmadeus <asmadeus@codewreck.org>, "Christian
- Schoenebeck" <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: use kvzalloc for readdir buffer
-Message-ID: <20260415113625.6d38441d@pumpkin>
-In-Reply-To: <a93672d6-1b99-4d4f-a8e4-c7f8b0d10b36@app.fastmail.com>
-References: <06399e04-b019-4c3d-b941-5771b6ac33c2@app.fastmail.com>
-	<20260415100157.4aa33364@pumpkin>
-	<a93672d6-1b99-4d4f-a8e4-c7f8b0d10b36@app.fastmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1776268370; c=relaxed/simple;
+	bh=qzhOZ/vRN8C1Lx17xBS+NxiV80zqkt3JD/d1NhOgYeg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KXVob9b5tKB0EjHeOdX2x6eaSAqikfAjTnYIdUoCZDWWrZrRyxsmznif2FV6xnTVvU4ED+GMmHC/VSgtOcvgupGBWUgDbqOBFNwF0uCs1tqiZXoCO7JxKCbdI6z5Z4mM+wLwSad9SsGPbUtiTuiOkHC26K9DgqY//dHNRt7kaGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 2FA51233BA;
+	Wed, 15 Apr 2026 18:52:38 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal signal
+Date: Wed, 15 Apr 2026 18:52:37 +0300
+Message-Id: <20260415155237.182891-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 15 Apr 2026 11:27:21 +0200
-"Pierre Barre" <pierre@barre.sh> wrote:
+When p9_client_rpc() is called with type P9_TFLUSH and the transport
+has no peer (e.g. fd transport backed by pipes with no 9p server),
+a fatal signal causes an infinite loop:
 
-> Hi David,
-> 
-> Perhaps what you describe can explain what I was seeing there:
-> https://lore.kernel.org/v9fs/496d10b9-40fe-4f81-8014-37497c37ff63@app.fastmail.com/
-(After seeking, getdents() returns stale cached entries instead of fetching from the new position.)
+  again:
+	err = io_wait_event_killable(req->wq, ...)
+	/* SIGKILL wakes the task, returns -ERESTARTSYS */
 
-Absolutely.
-But the fix probably isn't trivial.
-The offset that you need for the seek isn't directly related to the number
-of bytes copied to the user buffer - which is what I suspect ftell() (or
-whatever gets used) returns.
-I think there is some mechanism for arbitrary directory offsets; but IIRC that
-requires the code put the 'file system offset for the next directory entry'
-somewhere in the directory entry.
-Such an offset would have to be one the remote system would understand.
+	if (err == -ERESTARTSYS && c->status == Connected &&
+		type == P9_TFLUSH) {
+		sigpending = 1;
+		clear_thread_flag(TIF_SIGPENDING);
+		goto again;
+	}
 
-A partial 'non-fix' would be to reject seeks to other than offset 0.
+clear_thread_flag() clears TIF_SIGPENDING before jumping back to
+io_wait_event_killable(). signal_pending_state() checks TIF_SIGPENDING,
+finds it zero, and the task goes to sleep again. The task can only wake
+on the next signal delivery that calls signal_wake_up() and sets
+TIF_SIGPENDING again. When that happens the loop repeats, clears
+TIF_SIGPENDING, and sleeps again indefinitely.
 
-	David
+This is triggered in practice by coredump_wait(): when a thread in a
+multi-threaded process causes a coredump (e.g. via SIGSYS from Syscall
+User Dispatch), coredump_wait() sends SIGKILL to all other threads and
+waits for them to call mm_release(). If one of those threads is blocked
+in p9_client_rpc() over an fd transport with no peer, it enters the
+P9_TFLUSH loop and never calls mm_release(), so coredump_wait() stalls
+forever:
 
-> 
-> Thanks,
-> Pierre
-> 
-> On Wed, Apr 15, 2026, at 11:01, David Laight wrote:
-> > On Wed, 15 Apr 2026 07:45:08 +0200
-> > "Pierre Barre" <pierre@barre.sh> wrote:
-> >  
-> >> The readdir buffer is sized to msize, so kzalloc() can fail under
-> >> fragmentation with a page allocation failure in v9fs_alloc_rdir_buf()
-> >> / v9fs_dir_readdir_dotl().
-> >> 
-> >> The buffer is only a response sink and is never pack_sg_list()'d,
-> >> so kvzalloc() is safe for all transports, unlike the fcall buffers
-> >> fixed in e21d451a82f3.
-> >> 
-> >> Signed-off-by: Pierre Barre <pierre@barre.sh>
-> >> ---
-> >>  fs/9p/vfs_dir.c | 2 +-
-> >>  net/9p/client.c | 2 +-
-> >>  2 files changed, 2 insertions(+), 2 deletions(-)
-> >> 
-> >> diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-> >> index af7f72abbb76..487c177aae38 100644
-> >> --- a/fs/9p/vfs_dir.c
-> >> +++ b/fs/9p/vfs_dir.c
-> >> @@ -70,7 +70,7 @@ static struct p9_rdir *v9fs_alloc_rdir_buf(struct file *filp, int buflen)
-> >>         struct p9_fid *fid = filp->private_data;
-> >> 
-> >>         if (!fid->rdir)
-> >> -               fid->rdir = kzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);
-> >> +               fid->rdir = kvzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);  
-> >
-> > That code isn't really well thought out at all.
-> > The default for buflen seems to be 128k + 24 - 24.
-> > struct p9_rdir adds another 8 bytes, I'm not sure whether that doubles it to
-> > 128k or just adds an extra page (which might be 64k not 4k).
-> > It also looks as though the user can specify an arbitrary buffers size (min 4k).
-> > So who knows how big that (and other associated) buffers actually are.
-> >
-> > The buffer seems to persist across readdir() system calls.
-> > I can't see any code that might attempt to honour seekdir().
-> > I hope there is a global lock that stops multiple threads issuing readdir()
-> > on the same fd in parallel.
-> >
-> > 	David
-> >  
-> >>         return fid->rdir;
-> >>  }
-> >> 
-> >> diff --git a/net/9p/client.c b/net/9p/client.c
-> >> index f60d1d041adb..6d9b9054841e 100644
-> >> --- a/net/9p/client.c
-> >> +++ b/net/9p/client.c
-> >> @@ -765,7 +765,7 @@ static void p9_fid_destroy(struct p9_fid *fid)
-> >>         spin_lock_irqsave(&clnt->lock, flags);
-> >>         idr_remove(&clnt->fids, fid->fid);
-> >>         spin_unlock_irqrestore(&clnt->lock, flags);
-> >> -       kfree(fid->rdir);
-> >> +       kvfree(fid->rdir);
-> >>         kfree(fid);
-> >>  }
-> >> 
-> >> --
-> >> 2.51.0
-> >>  
+INFO: task syz.0.18:676 blocked for more than 143 seconds.
+      Not tainted 6.12.77+ #1
+task:syz.0.18 state:D stack:27600 pid:676 tgid:673 ppid:630 flags:0x00000004
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5344 [inline]
+ __schedule+0xcb4/0x5d50 kernel/sched/core.c:6724
+ __schedule_loop kernel/sched/core.c:6801 [inline]
+ schedule+0xe5/0x350 kernel/sched/core.c:6816
+ schedule_timeout+0x253/0x290 kernel/time/timer.c:2593
+ do_wait_for_common kernel/sched/completion.c:95 [inline]
+ __wait_for_common+0x409/0x600 kernel/sched/completion.c:116
+ wait_for_common kernel/sched/completion.c:127 [inline]
+ wait_for_completion_state+0x1d/0x40 kernel/sched/completion.c:264
+ coredump_wait fs/coredump.c:448 [inline]
+ do_coredump+0x854/0x4350 fs/coredump.c:629
+ get_signal+0x1425/0x2730 kernel/signal.c:2903
+ arch_do_signal_or_restart+0x81/0x880 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xf9/0x160 kernel/entry/common.c:218
+ do_syscall_64+0x102/0x220 arch/x86/entry/common.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+Fix: check fatal_signal_pending() before clearing TIF_SIGPENDING in the
+P9_TFLUSH retry loop. At that point TIF_SIGPENDING is still set, so
+fatal_signal_pending() works correctly. If a fatal signal is pending,
+jump to recalc_sigpending to restore TIF_SIGPENDING and return
+-ERESTARTSYS to the caller.
+
+The same defect is present in stable kernels back to 5.4. On those
+kernels the infinite loop is broken earlier by a second SIGKILL from
+the parent process (e.g. kill_and_wait() retrying after a timeout),
+resulting in a zombie process and a shutdown delay rather than a
+permanent D-state hang, but the underlying flaw is the same.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 91b8534fa8f5 ("9p: make rpc code common and rework flush code")
+Closes: https://syzkaller.appspot.com/bug?extid=3ce7863f8fc836a427e7
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ net/9p/client.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/9p/client.c b/net/9p/client.c
+index f0dcf252af7e..748b92d3f0c1 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -600,6 +600,8 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
+ 
+ 	if (err == -ERESTARTSYS && c->status == Connected &&
+ 	    type == P9_TFLUSH) {
++		if (fatal_signal_pending(current))
++			goto recalc_sigpending;
+ 		sigpending = 1;
+ 		clear_thread_flag(TIF_SIGPENDING);
+ 		goto again;
+-- 
+2.50.1
 
