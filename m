@@ -1,166 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13221256C;
-	Thu, 16 Apr 2026 12:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922734CFD1
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 12:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776342653; cv=none; b=BpLC0ibD52CUIy8KbC86N76NvLCW4umShQAcsp44UP6OODHNvLoy0MFi06L6nmNEy6QenxEV0PmCTY0VyLeG9krY1YUEXPYr2ab9KgqSmCtA6FVdLulH6sklAE09duHc311isI68hsXqE4wWz6E+d497/buXWYQhyf5u2mYc8mQ=
+	t=1776343806; cv=none; b=AyZ3OepS5txt5yO030iMzufM9S0SpAO3ue5MhdlPaj5uEmbFVo/nVw+asaSOFx0PmLrOTzs5nnS3P8kD/IzKBMCTYIMLPb3DeDVIFbx19GB7pHeaWbW5GfZEoYvlK+qmpRfnZ9wiAoz+MkIhRUxK/1TxxtKPsQ/W0ChH3HmiLWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776342653; c=relaxed/simple;
-	bh=0+upWZt1SQSfIz6OgmfLK1joGZgudnQ2lP+Bv+7s1DM=;
+	s=arc-20240116; t=1776343806; c=relaxed/simple;
+	bh=sNx2BMzxPSaSJr9GxeLMneyvSbcCwdFfrWEjQDBqmfE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uY5j+eRGJwaUdgIOC2wLp7JJWLC8KQMerzLOZh5DMvxrB6t2JpmbgQo4UGJl3ZxmdQG9NKK0xe399S40n2RHiyoBpEp85ydqeSaOEqsvaCTpw1iILu6o9zQb2ZHR7YZXH1zQFt28BRMIAOSMt8WojY9cLwve3nXYQDHjoMWxcpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aREs4pY9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aREs4pY9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8D2C2BCAF;
-	Thu, 16 Apr 2026 12:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776342653;
-	bh=0+upWZt1SQSfIz6OgmfLK1joGZgudnQ2lP+Bv+7s1DM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aREs4pY9AFWiyPis1yCUHi655kH6F2cmateO3OS3vwiWh4XGstegazkXh9fTeJRQW
-	 F7PNlGo+5uv4JS1ghUA7GmLt/nGdKTIiz0N3eNo0k9qdgxnlZ6UVo1xvuY/jm0Jsgz
-	 6OXZlHvLM95FlzgQqthFFGhbIejPY5s4jQOos8SHiaMv+4GNWDNJ4NBjKmastJKLl9
-	 B+kLcT7cwceOa9aKNihg3CZG+65E3BtgCcBvAVf5SIS4E47zAqVB8uUKfjkayyutdK
-	 0Jj6v6r/4toyxe6BrveBQ3dEYq/LaiTL2nhXiDsBmOQK54Y4zcD7qDew9ISAzQHpha
-	 d9g1fsIICa3fA==
-Message-ID: <1fba96bd-124d-431d-8de8-78688c248600@kernel.org>
-Date: Thu, 16 Apr 2026 14:30:37 +0200
+	 In-Reply-To:Content-Type; b=YcENPu0TzP934TgvdnsYmHrPaTziP0OoW1ieRw6dj3141tKIXSIIxxlwiLI7f8FkPq2ybtX2U71EbKWVqNosQM4ch6wWvW25whHNPwDNWyOp+XYiYkvZoDSfAFe2N3RKd26YFFzcuhTg78U30WhHFnVKi5g1uAPZ8qChi2UqYXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from [10.88.129.127] (obninsk.basealt.ru [217.15.195.17])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 8D21D2333B;
+	Thu, 16 Apr 2026 15:49:59 +0300 (MSK)
+Message-ID: <e3e9146a-d820-d35d-cebd-e7e7e4a2fa24@basealt.ru>
+Date: Thu, 16 Apr 2026 15:49:59 +0300
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/61] Coccinelle: Prefer IS_ERR_OR_NULL over manual NULL
- check
-To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
- apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
- cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Cc: Julia Lawall <Julia.Lawall@inria.fr>,
- Nicolas Palix <nicolas.palix@imag.fr>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal
+ signal
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+References: <20260415155237.182891-1-kovalev@altlinux.org>
+ <aeA-WpUyfWrYrvaE@codewreck.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-Content-Type: text/plain; charset=UTF-8
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+In-Reply-To: <aeA-WpUyfWrYrvaE@codewreck.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/03/2026 12:48, Philipp Hahn wrote:
-> Find and convert uses of IS_ERR() plus NULL check to IS_ERR_OR_NULL().
+Hi Dominique,
+
+On 4/16/26 04:41, Dominique Martinet wrote:
+> Vasiliy Kovalev wrote on Wed, Apr 15, 2026 at 06:52:37PM +0300:
+>> The same defect is present in stable kernels back to 5.4. On those
+>> kernels the infinite loop is broken earlier by a second SIGKILL from
+>> the parent process (e.g. kill_and_wait() retrying after a timeout),
+>> resulting in a zombie process and a shutdown delay rather than a
+>> permanent D-state hang, but the underlying flaw is the same.
+>>
+>> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 > 
-> There are several cases where `!ptr && WARN_ON[_ONCE](IS_ERR(ptr))` is
-> used:
-> - arch/x86/kernel/callthunks.c:215 WARN_ON_ONCE
-> - drivers/clk/clk.c:4561 WARN_ON_ONCE
-> - drivers/interconnect/core.c:793 WARN_ON
-> - drivers/reset/core.c:718 WARN_ON
-> The change is not 100% semantical equivalent as the warning will now
-> also happen when the pointer is NULL.
-> 
-> To: Julia Lawall <Julia.Lawall@inria.fr>
-> To: Nicolas Palix <nicolas.palix@imag.fr>
-> Cc: cocci@inria.fr
-> Cc: linux-kernel@vger.kernel.org
-> 
-> ---
-> drivers/clocksource/mips-gic-timer.c:283 looks suspicious: ret != clk,
-> but Daniel Lezcano verified it as cottect.
-> 
-> There are some cases where the checks are part of a larger expression:
-> - mm/kmemleak.c:1095
-> - mm/kmemleak.c:1155
-> - mm/kmemleak.c:1173
-> - mm/kmemleak.c:1290
-> - mm/kmemleak.c:1328
-> - mm/kmemleak.c:1241
-> - mm/kmemleak.c:1310
-> - mm/kmemleak.c:1258
-> - net/netlink/af_netlink.c:2670
-> Thanks to Julia Lawall for the help to also handle them.
-> 
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  scripts/coccinelle/api/is_err_or_null.cocci | 125 ++++++++++++++++++++++++++++
->  1 file changed, 125 insertions(+)
+> It's unfortunately not that simple, just leaving here will leak things.
+
+Following up on your concern about leaking things (as mentioned in the
+thread with Shigeru Yoshida's patch) - I did some tracing with `printk`
+inside `p9_req_put` and `p9_tag_remove` to see exactly what happens to
+the request lifecycle with my proposed patch vs Shigeru's approach:
+
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 748b92d3f0c1..4e8f4e0195b4 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -274,10 +274,13 @@ static void p9_tag_remove(struct p9_client *c, 
+struct p9_req_t *r)
+         spin_lock_irqsave(&c->lock, flags);
+         idr_remove(&c->reqs, tag);
+         spin_unlock_irqrestore(&c->lock, flags);
++       printk("tag %d removed from IDR\n", tag);
+  }
+
+  int p9_req_put(struct p9_client *c, struct p9_req_t *r)
+  {
++       printk("p9_req_put req %p tag %d refcount before=%d\n",
++         r, r->tc.tag, refcount_read(&r->refcount));
+         if (refcount_dec_and_test(&r->refcount)) {
+                 p9_tag_remove(c, r);
+
+There is a significant difference.
+
+If we use Shigeru's approach [1] (preventing the flush from being
+sent/processed using `!fatal_signal_pending(current)` in the condition),
+the original request (tag 0) is never freed from the IDR. It creates a
+definitive memory and tag leak:
+
+[root@localhost]# ./repro
+executing program
+[   50.613200] p9_req_put req ff11000110157cb0 tag 65535 refcount before=3
+[   50.663513] p9_req_put req ff11000110157cb0 tag 65535 refcount before=2
+[   50.665156] p9_req_put req ff11000110157cb0 tag 65535 refcount before=1
+[   50.666593] tag 65535 removed from IDR
+executing program
+[   50.688232] p9_req_put req ff11000110157ba0 tag 65535 refcount before=3
+[   50.739634] p9_req_put req ff11000110157ba0 tag 65535 refcount before=2
+[   50.741170] p9_req_put req ff11000110157ba0 tag 65535 refcount before=1
+[   50.742587] tag 65535 removed from IDR
+executing program
+[   50.775708] p9_req_put req ff11000110157a90 tag 65535 refcount before=3
+[   50.825104] p9_req_put req ff11000110157a90 tag 65535 refcount before=2
+[   50.827719] p9_req_put req ff11000110157a90 tag 65535 refcount before=1
+[   50.830432] tag 65535 removed from IDR
+executing program
+...
+
+[1] 
+https://lore.kernel.org/all/20260322111848.2837057-1-syoshida@redhat.com/
+
+However, with my patch (jumping to `recalc_sigpending` *inside* the
+`P9_TFLUSH` wait loop), the logic works cleanly due to the `refcount`
+mechanism:
+
+[root@localhost]# ./repro
+executing program
+[   48.875093] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=3
+[   48.925981] p9_req_put req ff110001056fdba0 tag 0 refcount before=3
+[   53.873969] p9_req_put req ff110001056fdba0 tag 0 refcount before=2
+[   53.876638] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=2
+[   53.879882] p9_req_put req ff110001056fdba0 tag 0 refcount before=1
+[   53.882505] tag 0 removed from IDR
+[   53.884184] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=1
+[   53.886905] tag 65535 removed from IDR
+executing program
+[   53.914764] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=3
+[   53.967191] p9_req_put req ff1100010ca97980 tag 0 refcount before=3
+[   58.909626] p9_req_put req ff1100010ca97980 tag 0 refcount before=2
+[   58.912420] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=2
+[   58.915358] p9_req_put req ff1100010ca97980 tag 0 refcount before=1
+[   58.918478] tag 0 removed from IDR
+[   58.920730] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=1
+[   58.923715] tag 65535 removed from IDR
+executing program
+[   58.946905] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=3
+[   58.998260] p9_req_put req ff1100010c5a3760 tag 0 refcount before=3
+[   63.945960] p9_req_put req ff1100010c5a3760 tag 0 refcount before=2
+[   63.948549] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=2
+[   63.951153] p9_req_put req ff1100010c5a3760 tag 0 refcount before=1
+[   63.953651] tag 0 removed from IDR
+[   63.957254] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=1
+[   63.960655] tag 65535 removed from IDR
+executing program
+...
+
+1. The dying thread breaks out of the loop and calls `p9_req_put()`.
+The refcount correctly drops from 2 to 1.
+
+2. The tag is NOT removed from the IDR yet, preventing any Use-After-Free.
+The request is safely "orphaned".
+
+3. Shortly after, when the parent process closes the pipe/socket (or the
+transport is torn down due to process exit), the transport layer cleans up
+the pending requests. It calls the final `p9_req_put()`, refcount hits 0,
+and the tag is properly removed from the IDR.
+
+My logs clearly show `refcount before=1 -> tag 0 removed from IDR` upon
+transport teardown, proving there is no permanent leak when breaking out
+of the `TFLUSH` loop this way.
+
+Since this safely resolves the permanent D-state hang during
+`coredump_wait()` without causing the UAF or leaks that plagued earlier
+kernels (pre-`728356dedeff` ("9p: Add refcount to p9_req_t")), do you
+think this pragmatic fix is acceptable for mainline and stable?
+
+> There was another patch last month, help is welcome,
+> please see https://lore.kernel.org/r/ab_b-95Ok9zLQCdn@codewreck.org
+
+While the ideal long-term goal is the asynchronous implementation (as
+seen in your 9p-async-v2 branch [2]), this patch serves as a reliable
+intermediate solution for a critical regression.
+
+[2] https://github.com/martinetd/linux/commits/9p-async-v2
+
+> (By the way, what's with the rekindled interest on this?...)
 > 
 
-Neither this, nor try from 2011, nor any future try should be accepted,
-because it creates impression IS_ERR_OR_NULL is somehow okay. No, it is
-not okay, it is a discouraged pattern leading to less readable and
-maintainable code. We should not have therefore any tools suggesting
-usage of IS_ERR_OR_NULL, because people will be converting poor code
-into that, instead of fixing that poor code.
+The issue was identified by Syzkaller, and I have a stable C reproducer
+that consistently triggers the hang. There is also a similar report on
+Syzbot with a nearly identical reproducer:
+https://syzkaller.appspot.com/text?tag=ReproC&x=156aa534580000
 
-Best regards,
-Krzysztof
+-- 
+Thanks,
+Vasiliy
