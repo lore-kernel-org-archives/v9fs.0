@@ -1,146 +1,159 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6419039B4A0
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 09:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B72C334C17
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 09:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776331098; cv=none; b=T3CdhEeLOCyrxXlOUb/NxEWWVPuc7iTMDsGq84M205kxgYVmezmVK0fFPkpsH2H/S2YVPy5OIwpn6a0g3hzR0W5+oP99b9A0pqSnyxj2PE+CP/cUbTJo0/YvtPrOcdXHr2DM69qnaGRx5KZSmfuDixFTEjbbFuLBpetPebAZjtk=
+	t=1776333369; cv=none; b=VBsBL/kULpxQLT/Pi+4iWVJwLbjpuYqOoyjQsI0v9J6bs4/rrChyd0acj1U+ccbdNzPDZLqx66nhzgDS75jkyxFyHgf7tE6rwvcnzJ4+15gMdnCioSD+Lb8Uxw7iw7mlrPOU1qzVl+VG+LeljUk/dzsR7Xc9neoqunupN5H6x0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776331098; c=relaxed/simple;
-	bh=xRvxm8qG7RvcSNR6TnRYUMXS6QVlm2Lz0dsVOitMLK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K+vFEAjv/uP1ITvpEodqBiKcPDW5MK5+Swvc1mI0f+OhbJtHz//Qpsswhc84/R14vXMW/Em5Lu9Ve4zsk/m1qde4E2EWPy4VWI3j0+uevOR7/auTZmOkdXwOOFa7Gbwh2Wrwy3XpNYEfl3qC3kiClNuzR5pg/z6Y0LuuM3sXy3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxbgSsUp; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxbgSsUp"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b8efed61so4538065e9.1
-        for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 02:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776331095; x=1776935895; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IuZQZL889ZnDbuNbGRRXjZqQbzzmhhDBl+7CF09awAs=;
-        b=cxbgSsUpNj6Ik9JJVnma90QWBYN4mQMJDyDWROx3+08+LMJXGz1Pmjy8o8QleGl7jC
-         GBKMqBEAnQ1zdixBfaL4AVwJiSAWS9buCLvpmp4j10CMEtD1j9SDga7oyQ1ViLsF+oro
-         B5DtZ6HG2v+5WGbAbHHnBNSUgrjP/9kEEIrzGN4bC8pIU95WTH5BTH7Em0ot5GkvFL3Q
-         h85fH3PQRjTOmcWn3rFFV0p12OHtEunA9dqjrSSBBj2/sdjc5gKzXcp4swJeUcIp7wxs
-         Nf4fSeMLpxbjf2Sg5uciuGcXfVMk6kRz+7gGu9pFuab5r/CbvPpJ67F873ggsRkzVef1
-         +1aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776331095; x=1776935895;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IuZQZL889ZnDbuNbGRRXjZqQbzzmhhDBl+7CF09awAs=;
-        b=RpdML+vAP9a0aPWFRp3yEfNrZzr9eBwh/G38Vb4N00DSQuf/MdYTLo7ARmuCFqM8mF
-         uvv67gej1PV33zMdCEJERS53bAQcSBpK8xE+9bbfjRmzu1plqXpxyQW77XmAzk15zULg
-         wJt1aMdnMN8v1xqdSeAJW5kshNP60nlKE1ewTxBUu8vx7vUyzKedb68lBEwUgrKaXVmS
-         WeRujFq2JkO/cwl6GNKqB+0Mn9IQrSZK/63cNeKpz9RJRHg1hBwGWmlA0acwl12Ellry
-         //FAdjrWwPThDbY3ga6dN5At/OKG444LdnkxYi5zx3hT2krFTolrkPwWE8Fx5qtB4Q07
-         R7og==
-X-Forwarded-Encrypted: i=1; AFNElJ+btmY6UGy7IZaNMMQjCT4eeCkFtE+sebNJVEXeodlaoml4zE9XUx/YVsds5ZrnVRd23LrR@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOJxMg+butKvOusve/6cVNzbmuSN3odJVZaNpCowi+y7h24KMy
-	sRxnYu+ovkN4QujZJ/jTxtl/PeOWt3UnCvmgHOiTEbkUkh4iA9fuyPt1ruMAAWBe
-X-Gm-Gg: AeBDietctRjts0tDCR/WkG68P7t3aamrgGV3z+Swdm9OmSq+qBIMyZBUaxE0MRF0pHa
-	pw4mkhZo6V3rcHqd0Q4w1aCcG7pqVX/Gp4VfTb8RZ8TmEEYZW8KlHF9ot8ryo7aESgaAh6ZPgC7
-	T1HjjDq9EoH/XZj6vAI+XNz8jT8tuw1shZGnTuQmwdJTisK9SXCgpq4/Lr+4esTmgtAAuL6VxBq
-	jfwcmJJijxGQQzZbN7TiNyTlP0UWeE1y+CdRWUWgd3cUetiihOsIEt/IltKoYsnhKYi70UUJLwC
-	FMyaymbZ0YHJo9zdIMoJYLzhroZqSpPTE0C6OHLJwaDa7vIxBCEQH34vAOb2Qq05CIE/Diln1aJ
-	frcEjs1YUXBBC15QNlW63MmM3dqD1ziF/cKcFbFNC1b5TDTRxQ+mW0EGKLoxh9N72hHdipB3T1D
-	nPW44AD4vc/7IXgoBx1KbqZNPgnnrqh7vY4aH3GL4J6VehvcrLHuyDYSOGS4BzWBKE
-X-Received: by 2002:a05:600c:1e28:b0:488:9c3b:ff40 with SMTP id 5b1f17b1804b1-488f4829bc6mr34154325e9.15.1776331094504;
-        Thu, 16 Apr 2026 02:18:14 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5827da4sm35917145e9.14.2026.04.16.02.18.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 02:18:13 -0700 (PDT)
-Date: Thu, 16 Apr 2026 10:18:12 +0100
-From: David Laight <david.laight.linux@gmail.com>
+	s=arc-20240116; t=1776333369; c=relaxed/simple;
+	bh=k+Y6VnPryLUzw8oRXtv+RXbcFKzrzOgcSLkbwdOUzjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioYsKVSxxR0qCv2IeNG4A6jq1KwQltgmQs+RoS2DlPD5InLrTEe+kQQjAy/UvMvawXhSgq2WhyrfVYLt6VK4sL6KuLCMvtK5MHcXWzWCF7HZqBOOgyiOYWRrkV3UD+6XWQsZH5i38qvMQTtpjLg4NWXCkbgUfNMB5HFd6NRv8TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1wDJS8-000382-Om; Thu, 16 Apr 2026 11:56:04 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1wDJS7-005enY-2B;
+	Thu, 16 Apr 2026 11:56:03 +0200
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1wDJS7-0000000DfDZ-2Otg;
+	Thu, 16 Apr 2026 11:56:03 +0200
+Date: Thu, 16 Apr 2026 11:56:03 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
 To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Pierre Barre <pierre@barre.sh>, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck
- <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: use kvzalloc for readdir buffer
-Message-ID: <20260416101812.59e857d3@pumpkin>
-In-Reply-To: <aeBJ5pT0WtMp-LO5@codewreck.org>
-References: <06399e04-b019-4c3d-b941-5771b6ac33c2@app.fastmail.com>
-	<20260415100157.4aa33364@pumpkin>
-	<a93672d6-1b99-4d4f-a8e4-c7f8b0d10b36@app.fastmail.com>
-	<20260415113625.6d38441d@pumpkin>
-	<aeBJ5pT0WtMp-LO5@codewreck.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+Cc: v9fs@lists.linux.dev, ericvh@kernel.org, lucho@ionkov.net,
+	linux_oss@crudebyte.com, Pierre Barre <pierre@barre.sh>,
+	sandeen@redhat.com, Remi Pommarel <repk@triplefau.lt>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: 9p patches in flight recap/what did I miss
+Message-ID: <aeCyM2ReRaofLO2h@pengutronix.de>
+References: <aeBToj14IBI6jh6Q@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MX7ilkxMjicSZ20D"
+Content-Disposition: inline
+In-Reply-To: <aeBToj14IBI6jh6Q@codewreck.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: v9fs@lists.linux.dev
 
-On Thu, 16 Apr 2026 11:31:02 +0900
-Dominique Martinet <asmadeus@codewreck.org> wrote:
 
-> David Laight wrote on Wed, Apr 15, 2026 at 11:36:25AM +0100:
-> > > Perhaps what you describe can explain what I was seeing there:
-> > > https://lore.kernel.org/v9fs/496d10b9-40fe-4f81-8014-37497c37ff63@app.fastmail.com/  
-> > (After seeking, getdents() returns stale cached entries instead of fetching from the new position.)
-> > 
-> > Absolutely.
-> > But the fix probably isn't trivial.
-> > The offset that you need for the seek isn't directly related to the number
-> > of bytes copied to the user buffer - which is what I suspect ftell() (or
-> > whatever gets used) returns.
-> > I think there is some mechanism for arbitrary directory offsets; but IIRC that
-> > requires the code put the 'file system offset for the next directory entry'
-> > somewhere in the directory entry.
-> > Such an offset would have to be one the remote system would understand.
-> > 
-> > A partial 'non-fix' would be to reject seeks to other than offset 0.  
-> 
-> 
-> Thank you both for working on this and reviewing -- this is all
-> historical code that hasn't seen much love.
-> 
-> 
-> 9p Treaddir sends an offset on each call, so I think it'd be fine to
-> invalidate buffer/remember whatever the client set in a custom llseek
-> function and send this to the server on readdir call, but I honestly
-> didn't give this any more thought than the past 2 mintes (I'm totally
-> swamped and can't keep up/didn't even notice the bug report this
-> december, sorry :/)
+--MX7ilkxMjicSZ20D
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The problem is you need to get the correct offsets for the various calls.
-So the directory entry sent to the user needs the correct offset the
-server would use for the (next) directory entry.
-If the latter aren't byte offsets into the buffer it probably impossible.
+On Thu, Apr 16, 2026 at 12:12:34PM +0900, Dominique Martinet wrote:
+>Hi all,
+>
+>This is mostly for myself as I can't keep up, please tell me if I'm
+>missing anything obvious.
+>
+>I have these queued for 7.1-rc1 (will send early next week to Linus)
+>
+>https://lore.kernel.org/r/20260225135745.351984-1-sashal@kernel.org/
+>* 0fd76f1be20d 9p: fix memory leak in v9fs_init_fs_context error path
+>https://lore.kernel.org/r/0ddc72da-d196-4f01-8755-0086f670e779@app.fastmai=
+l.com/
+>* da2346a48a5a 9p: fix access mode flags being ORed instead of replaced
+>https://lore.kernel.org/r/20260315190633.73536-1-xaum.io@gmail.com/
+>* 890d56964c62 9p: document missing enum values in kernel-doc comments
+>https://lore.kernel.org/r/20260324153023.86853-2-ericterminal@gmail.com/
+>* 72cb9ee4f6d8 9p/trans_xen: make cleanup idempotent after dataring alloc =
+errors
+>* 8fc518e489c1 9p/trans_xen: replace simple_strto* with kstrtouintq
+>
+>I have these queued for 7.2
+>
+>https://lore.kernel.org/r/551c057c5dbcc83f19b9c8a3b508bd971598f657.1774380=
+535.git.repk@triplefau.lt/
+>* fabe6e8af53a 9p: Cache negative dentries for lookup performance
+>* 2e624a12ba29 9p: Add mount option for negative dentry cache retention
+>* 060ba5a058cb 9p: Set default negative dentry retention time for cache=3D=
+loose
+>* 47a37d360868 9p: Enable symlink caching in page cache
+>
+>And these that need some work/help sorting out
+>- usb fixes 20260319-9pfixes-v1-0-c977a7433185@pengutronix.de
+>** I don't have the bandwidth for such a big rework, happy to just trust
+>Michael here given I can't test usb...
 
-I have a vague recollection of some fs encoding 'directory block number'
-and 'offset in directory block' into the 'file offset' for directory fd.
+I just worked in some feedback from sashiko. And sashiko really got some
+points. Although I have embedded devices to further test this, I am
+about to leave Pengutronix in the end of April I don't know if I will be
+able to solve all the obstacles in the series until then.
 
-> I think some filesystems only allow seeks to 0 already? So given there
-> is a precendent this might be fine, but I don't see the harm in allowing
-> custom offsets: the server needs to be able to deal with junk offsets in
-> read requests anyway, so it's not a problem for me if userspace can set
-> something invalid and get itself stuck on EINVAL or whatever.
-> 
-> 
-> As for locking the vfs takes the file's f_lock for seek, but there
-> doesn't seem to be anything in the readdir path that would do that, so I
-> guess it probably would blow up with parallel readdirs on the same fd,
-> and could use improving...
+>- writeback corruption 20251227083751.715152-1-pierre@barre.sh
+>** David sent another patch but honestly it's too complex for a quick
+>review, my gut feeling is to prefer Pierre's simpler approach first and
+>take the time to iterate (if we ever find time to...), but I just
+>haven't the time to check even that.
+>- lifting virtio msize limit
+>cover.1657920926.git.linux_oss@crudebyte.com and/or virtio buffer
+>iteration 20251214-virtio_trans_iter-v2-1-f7f7072e8c15@codewreck.org
+>** Once again ENOTIME stikes so I didn't check, but do your patches also
+>address the invalid access problem? Should we get Chris to test with
+>your patches?
+>I still think it's a shame to duplicate all this code and it should be
+>possible to do a bit better, but I agree improving sg_table is an
+>elephant I don't want to fight...
+>
+>
+>Thank you all,
+>
+>by the way if anyone wants to take over for (at least) the next few
+>cycles I wouldn't mind at all, having a shiny new baby and a jealous 3yo
+>doesn't help :p
+>--=20
+>Dominique
+>
+>
 
-There might be something, file->offset needs protecting for readdir()
-the same as for read() (but not pread()).
-At least once (for some filesystem on some unix variant) readdir() would
-have been pretty much the same as read().
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-	David
+--MX7ilkxMjicSZ20D
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmngsisACgkQC+njFXoe
+LGSRFxAAv93Ad029XMJRQuagh0PG1SmJzH3sbutesRUqDKLLZGqbVQAvwp1qDCao
+Vb16QQekWz4am68sEFkMnrxmZ+uRA5x21/vLNz6UaL5OW8vW+LeLGqtY7vRZScdj
+zELyxR8+U3KWGYrXjgNMQ1M93HMpXvp/A9obUS3el7ysMMyzCnMZmxQSxBFvE31R
+bo0qpachlWpMglK/V3gyZaP5/lTP/IMu9lj4tu1Xg7PtmHruLHFnFQ5A6sog4I2i
+soWe813t8hPQTwH0B6d233E4OukO1DBIlFZqI3TxFQ5LQbtMY3WOEQVZJ/GXXVf+
+yqGjNoWyRpZ4nt6blvLVcnrGAzFHgCKLjY9WNZbMCaPdF1OmboT+vUza58kZpqef
+U0+YPFxJom5QlBpW9uVCDxNRXtAUJ1tTl8tpRwlUG2sGRhemQ4kWuFWjW20PNLco
+jtFkNtkiv0PY8zq/fiM17oPMQuV+UEuGLidIDBFGdYs1+MBe7I8tT3naxio+wtxr
+kfxlAoSccDEaR9Ae8Civ+JwaXvs+imSUX5dz9UG2QeQEOnow4DfgK8q4Y2CaPXIi
+y7pIfx2PI4MHyjixyKb3QNv0fO9D+c4e+XMsHG/X/9hLlg3b3m04oaDfCHUW461L
+p2p4mAVg+fLXKtDrfSqoDBYYuGOnAv5KvoaW602JOqYHwNIrE4Y=
+=1uoj
+-----END PGP SIGNATURE-----
+
+--MX7ilkxMjicSZ20D--
