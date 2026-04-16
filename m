@@ -1,49 +1,51 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C273B28D
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 02:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C713B58C
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 02:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776305720; cv=none; b=LQfOG8dRHIhBsUNGkcgVkkzCpmlYEotox/K810LsOFP1KeI2Qg5GMDLxTu8hEWDbKUSoP39/Mc5PWcuJjLu4SHAQ3E5T5H9LdYX9K3X+0bPw1fFn3eXBMIzH4voKwX+Seynzu6Kwbhp9X351/F3YvGffn/x3D93hEfPPwNhqP7I=
+	t=1776306684; cv=none; b=o+ry7zNOR4dDHnxf8BIDDzmM3sYWVikluPmjrWPHlkajEcChUQeuRLzcI5Som0saBpEX3RNh1AkUpBo8k2dZS2aJnLAoM58BSG8meQZqRqHmMMqGeq1NMC1I0jsvRsAdfNkIjUfSjID1+igy3Yg+vdH/DL+FH/7f8JBjGxYcwK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776305720; c=relaxed/simple;
-	bh=3M9x4Wpaitxqa4NUY6ik4dbt5WDukItbvnuHbKMs8M8=;
+	s=arc-20240116; t=1776306684; c=relaxed/simple;
+	bh=L3nEwYYKWud213QiKCH5nXb/f5LifqJnwiHbz8UTZRo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9BlWgZ/2tBzqKOSTnPDYzypbUvJO4ki+6i2F3M6oqyPn6V7rZpY2ETX+AVoBwTqaVwMAswdpueg+cFN4J6rNt0op6RenPubrsiGSIQvzCY0HCADoA+baSZW3vXCczkGGTxCCiVHcY2I0u1rg10lCfsEcQa4OEBs8u+UM96WXuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=mP87qPgm; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=ImeuO3lc3/GtTY2+DILfsEMydpKQncXgS1vqS1YsuJtH52PPl8csZ7Y+5LdkP8tfofg/HYbeSY6BRv55RsnNzUs1lNtU1ySTS8JY/0HfOx6bSD0E00h0x39+NEP1G64G8OtDoAXrSjHwYVJi7oPVsyUGT93VEn1FIDY/ITf0PSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=UMSl+nVt; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="mP87qPgm"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="UMSl+nVt"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 2916F14C2D6;
-	Thu, 16 Apr 2026 04:15:14 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id D860314C2D6;
+	Thu, 16 Apr 2026 04:31:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1776305717;
+	s=2; t=1776306681;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZUfJyO+B4NVQDlG68Pr9dSyQjk5jcqH8CJuvkJPJBqU=;
-	b=mP87qPgmOqpsTGXSQin/KpeRSSrdk+DrakZLYW2TIqcx7X4inIXcLlHBbhZIYcVCnK0wuH
-	l2+xEiEk+0/g3XCJ8T2wWZQ6TYxp/AzZ+ykNEgOlwtP+JoiNGVSNXeiHHphgwXu0AJdxFl
-	gDSTzJAj3TwhSQTn0EgeHpFBL/RLsfxcKrMh1tZsT8V7Kx39hV+C3LLWV8NBCUPQ/XFoNv
-	usgYpVm6OKxUCnoQN2RoG7AVWBuJiAgajpYG/ZChXKCmWEctfpfWhXM9ng05vlNxCBpIPQ
-	OxrFUgHwBh7HJVc1mzf6FN11vcXi5iyj4Gv54MNob1S/k+XLmhephYXAufEDfA==
+	bh=vNFEcECLkjmnMv99mmT0WHYpKeBUVEBRN0ugXn5t+4c=;
+	b=UMSl+nVt9lCTbm8mIYkAIGPpXue81qi83faRmu3X3JBh1EjlBsYDDcFLYFpFbIOBxHoaML
+	AeyO07anqPRrWIMmWadxaqLqC3LGQFbdE2byIdz/oK1wkQefORikFV0XQTqxQZGkPIUmzt
+	NrrM3Acq1iRAfBvnwGSnW6A1+Tir0TeFuKNBNkoDZsvROCAlxdQ2gNjByeXnjxDDGk2lUL
+	KECLzywcxgq4CNn+tnv9zhQQGV0Lk/bNMpAcblX7QgWrK3ZRaQ5uV6CV51h8EZgRV5CIh4
+	GEGVetS/uIllVHvVLYHH1lDJT4AacDnqd0BWFwn+3MxrxCoxKoQUPQd5BgOqzg==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 2d7f01e9;
-	Thu, 16 Apr 2026 02:15:13 +0000 (UTC)
-Date: Thu, 16 Apr 2026 11:14:58 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e2e13278;
+	Thu, 16 Apr 2026 02:31:17 +0000 (UTC)
+Date: Thu, 16 Apr 2026 11:31:02 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Remi Pommarel <repk@triplefau.lt>
-Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Pierre Barre <pierre@barre.sh>, Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH v4 0/4] 9p: Performance improvements for build workloads
-Message-ID: <aeBGIg9aEPFbzZuZ@codewreck.org>
-References: <cover.1774380535.git.repk@triplefau.lt>
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: use kvzalloc for readdir buffer
+Message-ID: <aeBJ5pT0WtMp-LO5@codewreck.org>
+References: <06399e04-b019-4c3d-b941-5771b6ac33c2@app.fastmail.com>
+ <20260415100157.4aa33364@pumpkin>
+ <a93672d6-1b99-4d4f-a8e4-c7f8b0d10b36@app.fastmail.com>
+ <20260415113625.6d38441d@pumpkin>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -52,21 +54,47 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1774380535.git.repk@triplefau.lt>
+In-Reply-To: <20260415113625.6d38441d@pumpkin>
 
-Remi Pommarel wrote on Tue, Mar 24, 2026 at 08:43:30PM +0100:
-> Also sorry for the long delay for v4, it's been quite busy lately.
+David Laight wrote on Wed, Apr 15, 2026 at 11:36:25AM +0100:
+> > Perhaps what you describe can explain what I was seeing there:
+> > https://lore.kernel.org/v9fs/496d10b9-40fe-4f81-8014-37497c37ff63@app.fastmail.com/
+> (After seeking, getdents() returns stale cached entries instead of fetching from the new position.)
+> 
+> Absolutely.
+> But the fix probably isn't trivial.
+> The offset that you need for the seek isn't directly related to the number
+> of bytes copied to the user buffer - which is what I suspect ftell() (or
+> whatever gets used) returns.
+> I think there is some mechanism for arbitrary directory offsets; but IIRC that
+> requires the code put the 'file system offset for the next directory entry'
+> somewhere in the directory entry.
+> Such an offset would have to be one the remote system would understand.
+> 
+> A partial 'non-fix' would be to reject seeks to other than offset 0.
 
-Thank you for this v4; I've been busy myself so can't complain...
 
-I think we've iterated enough on this for now, so I'll tentatively pick
-this up for -next shortly, but there are a few fixes I'd like to get in
-first and we're a bit late to send this for 7.1, so this cache change
-will be for 7.2 in a couple of months
+Thank you both for working on this and reviewing -- this is all
+historical code that hasn't seen much love.
 
-Meanwhile if there are other comments etc we can always iterate (with
-either a v5 or pilling patches on top)
 
-Thanks,
+9p Treaddir sends an offset on each call, so I think it'd be fine to
+invalidate buffer/remember whatever the client set in a custom llseek
+function and send this to the server on readdir call, but I honestly
+didn't give this any more thought than the past 2 mintes (I'm totally
+swamped and can't keep up/didn't even notice the bug report this
+december, sorry :/)
+I think some filesystems only allow seeks to 0 already? So given there
+is a precendent this might be fine, but I don't see the harm in allowing
+custom offsets: the server needs to be able to deal with junk offsets in
+read requests anyway, so it's not a problem for me if userspace can set
+something invalid and get itself stuck on EINVAL or whatever.
+
+
+As for locking the vfs takes the file's f_lock for seek, but there
+doesn't seem to be anything in the readdir path that would do that, so I
+guess it probably would blow up with parallel readdirs on the same fd,
+and could use improving...
+
 -- 
-Dominique
+Dominique Martinet | Asmadeus
