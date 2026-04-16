@@ -1,187 +1,192 @@
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922734CFD1
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 12:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DBC3B52E6;
+	Thu, 16 Apr 2026 13:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776343806; cv=none; b=AyZ3OepS5txt5yO030iMzufM9S0SpAO3ue5MhdlPaj5uEmbFVo/nVw+asaSOFx0PmLrOTzs5nnS3P8kD/IzKBMCTYIMLPb3DeDVIFbx19GB7pHeaWbW5GfZEoYvlK+qmpRfnZ9wiAoz+MkIhRUxK/1TxxtKPsQ/W0ChH3HmiLWQ=
+	t=1776344760; cv=none; b=FFvJ87rxyKAzRZRFBWxQxUV/0nhQ4YY917DRppVRISOVRXSf1x41G5czwU1gWRl3fF6LkRBVtxKcuqrYGNLH3YJyYpkk5MMIs6bsiZ3gP/tuyarI41MZGNyhnry/tyXQ/bvcub7z9DRCdSEODol0Jq3uiCJLsIcE095c3O7BO/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776343806; c=relaxed/simple;
-	bh=sNx2BMzxPSaSJr9GxeLMneyvSbcCwdFfrWEjQDBqmfE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YcENPu0TzP934TgvdnsYmHrPaTziP0OoW1ieRw6dj3141tKIXSIIxxlwiLI7f8FkPq2ybtX2U71EbKWVqNosQM4ch6wWvW25whHNPwDNWyOp+XYiYkvZoDSfAFe2N3RKd26YFFzcuhTg78U30WhHFnVKi5g1uAPZ8qChi2UqYXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from [10.88.129.127] (obninsk.basealt.ru [217.15.195.17])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 8D21D2333B;
-	Thu, 16 Apr 2026 15:49:59 +0300 (MSK)
-Message-ID: <e3e9146a-d820-d35d-cebd-e7e7e4a2fa24@basealt.ru>
-Date: Thu, 16 Apr 2026 15:49:59 +0300
+	s=arc-20240116; t=1776344760; c=relaxed/simple;
+	bh=LKqiYtCSdYGhCyBf/mMMNOBQugaqjT2Dib6bCbcxP/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fLs2heSrx5Sj7StokVR2KgosRn+fZrcjQBnVyl0R8RIylnPayzaCJpi1f8tMZPviCETr8w09gDTQMyIEE/qOZJXcZZAd5BUiV5fULZeJ6V0ZEzuGF9XcUDwYHHQCk7dzr+iRapkj5yzEAa7HEExjOIL4H1H/w2XjPcKr3LE0AAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=Ofuf1/2e; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="Ofuf1/2e"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4fxJD11Fnvz9trN;
+	Thu, 16 Apr 2026 15:05:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1776344753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j3SVhaxoe6KpS7BWIdNtnzlL4xk1+jeKHvu5tT02YlI=;
+	b=Ofuf1/2e7ix58a6QMnjoZqNi0IkQDsa4ZwzLticveCI0rqjUCCCttZsEArNllde0VXuvNC
+	06uqhm88AO/DtfQqy7VsqR5v0Bkuy4Jp3LHh8K6W5shnGlaHY4q/0VImNPonJF1+hdUkYW
+	7Y4SK+8qK0OPTqi70cxSoyKfSrWGlZzHD4gpd21bm6Iw6jhUDEbIvLXe8/cUg/urCs3bxJ
+	AxwpmKv53w1vvfF6M6yzU+RNtAqAhygVMWhK1JjjxPhWIJFtMaCCEvG5paRmyd2BVvsyee
+	Qmzo80CrRuAb8PsaduekY0cMCxq1B3EIA0DadMN5CChtpgNH/bQxuOpBX0aQ/Q==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of cyphar@cyphar.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=cyphar@cyphar.com
+Date: Thu, 16 Apr 2026 23:05:08 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, chuck.lever@oracle.com, 
+	alex.aring@gmail.com, arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, 
+	smfrench@gmail.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
+	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, trondmy@kernel.org, 
+	anna@kernel.org, sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
+	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, shuah@kernel.org, 
+	miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+Message-ID: <2026-04-16-raunchy-random-curfew-guide-GmtLJR@cyphar.com>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260328172314.45807-2-dorjoychy111@gmail.com>
+ <2026-04-16-selfless-milky-wasps-shin-p6liRL@cyphar.com>
+ <CAFfO_h5kWCYszymaY=tPAbpU=PjLFxsND+CWSYtypN4iuW+qPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal
- signal
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-References: <20260415155237.182891-1-kovalev@altlinux.org>
- <aeA-WpUyfWrYrvaE@codewreck.org>
-Content-Language: en-US
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <aeA-WpUyfWrYrvaE@codewreck.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iix77o3fx2yurggd"
+Content-Disposition: inline
+In-Reply-To: <CAFfO_h5kWCYszymaY=tPAbpU=PjLFxsND+CWSYtypN4iuW+qPw@mail.gmail.com>
+X-Rspamd-Queue-Id: 4fxJD11Fnvz9trN
 
-Hi Dominique,
 
-On 4/16/26 04:41, Dominique Martinet wrote:
-> Vasiliy Kovalev wrote on Wed, Apr 15, 2026 at 06:52:37PM +0300:
->> The same defect is present in stable kernels back to 5.4. On those
->> kernels the infinite loop is broken earlier by a second SIGKILL from
->> the parent process (e.g. kill_and_wait() retrying after a timeout),
->> resulting in a zombie process and a shutdown delay rather than a
->> permanent D-state hang, but the underlying flaw is the same.
->>
->> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> It's unfortunately not that simple, just leaving here will leak things.
+--iix77o3fx2yurggd
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+MIME-Version: 1.0
 
-Following up on your concern about leaking things (as mentioned in the
-thread with Shigeru Yoshida's patch) - I did some tracing with `printk`
-inside `p9_req_put` and `p9_tag_remove` to see exactly what happens to
-the request lifecycle with my proposed patch vs Shigeru's approach:
+On 2026-04-16, Dorjoy Chowdhury <dorjoychy111@gmail.com> wrote:
+> On Thu, Apr 16, 2026 at 5:41=E2=80=AFPM Aleksa Sarai <cyphar@cyphar.com> =
+wrote:
+> >
+> > On 2026-03-28, Dorjoy Chowdhury <dorjoychy111@gmail.com> wrote:
+> > > This flag indicates the path should be opened if it's a regular file.
+> > > This is useful to write secure programs that want to avoid being
+> > > tricked into opening device nodes with special semantics while thinki=
+ng
+> > > they operate on regular files. This is a requested feature from the
+> > > uapi-group[1].
+> > >
+> > > A corresponding error code EFTYPE has been introduced. For example, if
+> > > openat2 is called on path /dev/null with OPENAT2_REGULAR in the flag
+> > > param, it will return -EFTYPE. EFTYPE is already used in BSD systems
+> > > like FreeBSD, macOS.
+> > >
+> > > When used in combination with O_CREAT, either the regular file is
+> > > created, or if the path already exists, it is opened if it's a regular
+> > > file. Otherwise, -EFTYPE is returned.
+> > >
+> > > When OPENAT2_REGULAR is combined with O_DIRECTORY, -EINVAL is returned
+> > > as it doesn't make sense to open a path that is both a directory and a
+> > > regular file.
+> > >
+> > > [1]: https://uapi-group.org/kernel-features/#ability-to-only-open-reg=
+ular-files
+> > >
+> > > Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+> > > ---
+> >
+> > Aside from the nit below, feel free to take a
+> >
+> > Reviewed-by: Aleksa Sarai <aleksa@amutable.com>
+> >
+>=20
+> Thanks for reviewing!
+>=20
+> > > diff --git a/fs/open.c b/fs/open.c
+> > > index 681d405bc61e..a6f445f72181 100644
+> > > --- a/fs/open.c
+> > > +++ b/fs/open.c
+> > > @@ -960,7 +960,7 @@ static int do_dentry_open(struct file *f,
+> > >       if (f->f_mapping->a_ops && f->f_mapping->a_ops->direct_IO)
+> > >               f->f_mode |=3D FMODE_CAN_ODIRECT;
+> > >
+> > > -     f->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC);
+> > > +     f->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | OPENA=
+T2_REGULAR);
+> >
+> > It's not clear to me why you dropped this, I didn't see a review
+> > mentioning it either. (General note: Ideally the cover letter changelog
+> > would mention who suggested a change in brackets after the changelog
+> > line so it's easier to track where a change might've come from.)
+> >
+>=20
+> Thanks for the general note. I will keep that in mind.
+>=20
+> The review was from Jeff Layton in v5
+> https://lore.kernel.org/linux-fsdevel/5fcc2a6e6d92dae0601c6b3b8faa8b2f839=
+81afb.camel@kernel.org/
+> " 1. OPENAT2_REGULAR leaks into f_flags - do_dentry_open() strips
+> open-time-only flags (O_CREAT|O_EXCL|O_NOCTTY|O_TRUNC)
+>   but does not strip OPENAT2_REGULAR. When a regular file is
+> successfully opened via openat2() with this flag, the bit
+>   persists in file->f_flags and will be returned by fcntl(fd, F_GETFL)."
+>=20
+> I think it makes sense to strip off as OPENAT2_REGULAR is an open time
+> only flag (like O_CREAT and the others already), right?
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 748b92d3f0c1..4e8f4e0195b4 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -274,10 +274,13 @@ static void p9_tag_remove(struct p9_client *c, 
-struct p9_req_t *r)
-         spin_lock_irqsave(&c->lock, flags);
-         idr_remove(&c->reqs, tag);
-         spin_unlock_irqrestore(&c->lock, flags);
-+       printk("tag %d removed from IDR\n", tag);
-  }
+Well, O_DIRECTORY isn't stripped so if we want to mirror that behaviour
+then it shouldn't be stripped either IMHO.
 
-  int p9_req_put(struct p9_client *c, struct p9_req_t *r)
-  {
-+       printk("p9_req_put req %p tag %d refcount before=%d\n",
-+         r, r->tc.tag, refcount_read(&r->refcount));
-         if (refcount_dec_and_test(&r->refcount)) {
-                 p9_tag_remove(c, r);
+O_NOCTTY and O_TRUNC make sense to strip (they are not relevant to the
+file after it was opened -- truncation only happens at open time and you
+can always set your controlling TTY later).
 
-There is a significant difference.
+The story with O_CREAT and O_EXCL is a bit more complicated. They are
+stripped but the history there is unclear -- the line was added in Linux
+0.98.4(!) with no mention in the release note at the time. (Linus: I
+wonder if you remember why this was changed at the time? Sorry for the
+trip down memory lane...)
 
-If we use Shigeru's approach [1] (preventing the flush from being
-sent/processed using `!fatal_signal_pending(current)` in the condition),
-the original request (tag 0) is never freed from the IDR. It creates a
-definitive memory and tag leak:
+However, the existence of F_CREATED_QUERY kind of shows that these kinds
+of checks are stuff that userspace can find handy (though FMODE_CREATED
+is more useful than O_CREAT|O_EXCL anyway). O_EXCL is used internally
+for stuff so it can be re-exposed, I'm just not sure it's a good
+precedent to make a decision based on.
 
-[root@localhost]# ./repro
-executing program
-[   50.613200] p9_req_put req ff11000110157cb0 tag 65535 refcount before=3
-[   50.663513] p9_req_put req ff11000110157cb0 tag 65535 refcount before=2
-[   50.665156] p9_req_put req ff11000110157cb0 tag 65535 refcount before=1
-[   50.666593] tag 65535 removed from IDR
-executing program
-[   50.688232] p9_req_put req ff11000110157ba0 tag 65535 refcount before=3
-[   50.739634] p9_req_put req ff11000110157ba0 tag 65535 refcount before=2
-[   50.741170] p9_req_put req ff11000110157ba0 tag 65535 refcount before=1
-[   50.742587] tag 65535 removed from IDR
-executing program
-[   50.775708] p9_req_put req ff11000110157a90 tag 65535 refcount before=3
-[   50.825104] p9_req_put req ff11000110157a90 tag 65535 refcount before=2
-[   50.827719] p9_req_put req ff11000110157a90 tag 65535 refcount before=1
-[   50.830432] tag 65535 removed from IDR
-executing program
-...
+Then again, userspace can check with fstat(2) so it's not the end of the
+world, but I don't really see a strong reason to hide information from
+userspace. Since the mail was from Claude (and it tends to give silly
+nits like that) I'm not sure whether Jeff would agree with my view or
+not.
 
-[1] 
-https://lore.kernel.org/all/20260322111848.2837057-1-syoshida@redhat.com/
+--=20
+Aleksa Sarai
+https://www.cyphar.com/
 
-However, with my patch (jumping to `recalc_sigpending` *inside* the
-`P9_TFLUSH` wait loop), the logic works cleanly due to the `refcount`
-mechanism:
+--iix77o3fx2yurggd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[root@localhost]# ./repro
-executing program
-[   48.875093] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=3
-[   48.925981] p9_req_put req ff110001056fdba0 tag 0 refcount before=3
-[   53.873969] p9_req_put req ff110001056fdba0 tag 0 refcount before=2
-[   53.876638] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=2
-[   53.879882] p9_req_put req ff110001056fdba0 tag 0 refcount before=1
-[   53.882505] tag 0 removed from IDR
-[   53.884184] p9_req_put req ff110001056fdcb0 tag 65535 refcount before=1
-[   53.886905] tag 65535 removed from IDR
-executing program
-[   53.914764] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=3
-[   53.967191] p9_req_put req ff1100010ca97980 tag 0 refcount before=3
-[   58.909626] p9_req_put req ff1100010ca97980 tag 0 refcount before=2
-[   58.912420] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=2
-[   58.915358] p9_req_put req ff1100010ca97980 tag 0 refcount before=1
-[   58.918478] tag 0 removed from IDR
-[   58.920730] p9_req_put req ff1100010ca97a90 tag 65535 refcount before=1
-[   58.923715] tag 65535 removed from IDR
-executing program
-[   58.946905] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=3
-[   58.998260] p9_req_put req ff1100010c5a3760 tag 0 refcount before=3
-[   63.945960] p9_req_put req ff1100010c5a3760 tag 0 refcount before=2
-[   63.948549] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=2
-[   63.951153] p9_req_put req ff1100010c5a3760 tag 0 refcount before=1
-[   63.953651] tag 0 removed from IDR
-[   63.957254] p9_req_put req ff1100010c5a3870 tag 65535 refcount before=1
-[   63.960655] tag 65535 removed from IDR
-executing program
-...
+-----BEGIN PGP SIGNATURE-----
 
-1. The dying thread breaks out of the loop and calls `p9_req_put()`.
-The refcount correctly drops from 2 to 1.
+iJEEABYKADkWIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCaeDegxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQKJf60rfpRG/oDAD+OTut8n70aNHtOfSq9HfZ
+Nqs1285ca/4efdXyrzF6TdsA/Rq1PeAKk1gWARrfSWVj0XaRIK8fqL+aRFpJp6Xk
+SgwB
+=KY3X
+-----END PGP SIGNATURE-----
 
-2. The tag is NOT removed from the IDR yet, preventing any Use-After-Free.
-The request is safely "orphaned".
-
-3. Shortly after, when the parent process closes the pipe/socket (or the
-transport is torn down due to process exit), the transport layer cleans up
-the pending requests. It calls the final `p9_req_put()`, refcount hits 0,
-and the tag is properly removed from the IDR.
-
-My logs clearly show `refcount before=1 -> tag 0 removed from IDR` upon
-transport teardown, proving there is no permanent leak when breaking out
-of the `TFLUSH` loop this way.
-
-Since this safely resolves the permanent D-state hang during
-`coredump_wait()` without causing the UAF or leaks that plagued earlier
-kernels (pre-`728356dedeff` ("9p: Add refcount to p9_req_t")), do you
-think this pragmatic fix is acceptable for mainline and stable?
-
-> There was another patch last month, help is welcome,
-> please see https://lore.kernel.org/r/ab_b-95Ok9zLQCdn@codewreck.org
-
-While the ideal long-term goal is the asynchronous implementation (as
-seen in your 9p-async-v2 branch [2]), this patch serves as a reliable
-intermediate solution for a critical regression.
-
-[2] https://github.com/martinetd/linux/commits/9p-async-v2
-
-> (By the way, what's with the rekindled interest on this?...)
-> 
-
-The issue was identified by Syzkaller, and I have a stable C reproducer
-that consistently triggers the hang. There is also a similar report on
-Syzbot with a nearly identical reproducer:
-https://syzkaller.appspot.com/text?tag=ReproC&x=156aa534580000
-
--- 
-Thanks,
-Vasiliy
+--iix77o3fx2yurggd--
