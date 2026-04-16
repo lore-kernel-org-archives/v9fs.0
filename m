@@ -1,73 +1,77 @@
 Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6E379EFE
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 07:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C5A38A70C
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 07:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776324437; cv=none; b=n7shiwFGTqfxMGUT+7BP1n9gRI6kliTBSwLmMd/Q6tZQwV8DwOdhVQu+0GWb6waGdEVHSfCYo6tuTuOvcOfnOkDcueoaaK7yJ1sdJ+9x/O8H6OuPxur5bf5URGjmm0GxmUUvk7vq5NX/YUOSl0b4ObG8zB9avXRSTZ32WIP+8PM=
+	t=1776324448; cv=none; b=S5S80qDNvTHZYPf4lqddssIr7tdHdP7GdpyJDxJHCEjFlPspR2wQ+QdlnxOztaL4C7rEgxQiPPgidVy5QyRat2t60VD5TAVqRYCVDIdKKhvfM66PEaMa4cbLCmL/BIfCwa6N1iQ5+GXJ5eCawYzi5yVdQpg2ktRIR9lFfkYi2t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776324437; c=relaxed/simple;
-	bh=ZhMOLgpHN3yGIaFbzkPMqmq8a+N6nFyZrLu0eAaI2vs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BkOpmwgmzo1ssAGshLy3Dv+MbvXOhLkqRo3kVNccgMDhTOEErJZ2I19GYrnPsjicLSr+oB1GSVsOvQbtORk73dGoHzpwo01Ydm1b75JhN6NTyOAF+MGyBS9C+SbO9ZelUq5FPjhVTuTXIjhfNQQFD3Y2wiLBPegEO1IRc59wiOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=mMWEOjbC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A63FBYPt; arc=none smtp.client-ip=202.12.124.146
+	s=arc-20240116; t=1776324448; c=relaxed/simple;
+	bh=yzyp5TtG8KO8PXFy2cNiXRvALkQJEbVPLcMuFJ6rabw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KO0Xx0UtCwuzD3FKK+WHjumUmOeYFTWuMxKBN+gIBh5YTrgfBKOWKOfyrNbakCfkRTnoXwnDTO/G0Ur2R0ZBA+W176nX3nGISA5VqUZ+WbWvnYzd1Ol4vbUqVFTCt9KGrFHAjKD7/fBGMnePEcR+Tx7+DVcTrMPNECGk6AU+Ovs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=gn57vM3l; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=S4zBfNEa; arc=none smtp.client-ip=202.12.124.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="mMWEOjbC";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="A63FBYPt"
+	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="gn57vM3l";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="S4zBfNEa"
 Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id B4AC11D00276;
-	Thu, 16 Apr 2026 03:27:14 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id BAA9A1D001B6;
+	Thu, 16 Apr 2026 03:27:26 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Thu, 16 Apr 2026 03:27:15 -0400
+  by phl-compute-09.internal (MEProxy); Thu, 16 Apr 2026 03:27:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
 	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1776324434; x=1776410834; bh=RK9ZLoaLKywcyvi9A6tiR
-	/lDfk5nhl6XccwMuMNUmYM=; b=mMWEOjbCrU1LcdzXl7Z2QLPXwOrJE+V0cW406
-	NuzBtTnYzI7AKxwvUvc49FZGW3NQbYVZrB2CyUHYbpHvXTMVPQ0zXRYMTWEDNs56
-	upibv0nFzi6tXysHXIwRQYEFvX5cCx+IYjd3ZX1KS4s+WbPNcyuVXg2TXMslg2wi
-	Wfk6Ov48j6YO2Aex47hg1H/L3hYqiyrZQoSfWQ0fXT89YEwn2mWdKY/FvxBbdDIx
-	u980J961+Wc0Vod6wTUQUZtsQm8XQakvoCmQeHsH9PfXbyxYdX6BlEeQmISMIG4f
-	veFriNVftUH4RDllel3/jYYn7rPqGz1B68vnBnYnf24DfS7ug==
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1776324446; x=
+	1776410846; bh=dgvzRwZdYZ3Z6iSEHBbWUhlt8GLz6wdKPIaN9UoA0QU=; b=g
+	n57vM3lpKO4xdtbix1QT5vlvByJWfdCXY6Z0AUqU7N80ZKVl8bzoXOpYKV27W4Yo
+	O398JOViaMaCz0xkGnEfx7OdMaASGObrVJ9blchNQiKuhq7AXJupRw6BBsvMpIF/
+	GveWB2nqVVXnicWXyNnKaaN0fSk8v1Iw/kf3x43DsAUUPe4CI0dPzSUnOkwXdCsd
+	BL3G9GGGQZgyLXvkOrp0kix+Ssfdg1sHNvueBAw7VtELRN1cxHjRTv5q8NSBn2Y8
+	tKFy6J1eqbRWbjmUNLrUralOBs286xYyTVYFvkrtGYcMxgaW5dIo0VA+f0BybaiU
+	4SrjEf8qieDbD5Yzpc+Mg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776324434; x=1776410834; bh=RK9ZLoaLKywcyvi9A6tiR/lDfk5nhl6Xccw
-	MuMNUmYM=; b=A63FBYPt/Hc9lpRKHeNCzVfFa+1TLb2bL8xP1fiXK1UI9aBmxvb
-	BGIFylqWRTNsMWac4DN3ovhGAfrSu6PXhamYIB35s0L0mY01uEtmujJNYaRfK656
-	G2m8XRlyf4W73uvLiyn8LKqYKNSKNXLtghNaPOLMp8d/UzjRCtAQhKj5C2HR0fPs
-	BU0YCNnznv5urEpOYcOu3CHV1diaBQC80484YYpHAISAZmBSjx577KTc/zWsdEoS
-	+bI68StifFz7LzZfi06ZI1ugHiVNx1YigQ5WEc33Q8LjSiU6y/ZQ+pdp1rf9NJOE
-	w7F18hS5yROILbcIufbIQ13S5UGopkZT6Rg==
-X-ME-Sender: <xms:UY_gabyfDSjUcDeMoNreo8iEg5pmsoNKb1Q58DNAMiCakD2haOr7IQ>
-    <xme:UY_gaT9ZTyPqVmhmv3aqcKaxRSXHqOntljTtiLBxkJFjBUZeL2ClLKS70q3bISxNv
-    fz2oxujbQOQ22r-BjzJJVdeBze-uE6Jo9H-xK1Fht6oSmvVfX4BmWsq>
-X-ME-Received: <xmr:UY_gaThuwILz9yO82k4E-J_7ZDoEuLnhxQuDV-WDfhec7bQEeiO0ZISgZoWFMO4IoF3Zl6N3YtFpzlTHf_Vqqdluk7nJw0duZk2C_xHagoNYl4EpOb9OgQ>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1776324446; x=1776410846; bh=d
+	gvzRwZdYZ3Z6iSEHBbWUhlt8GLz6wdKPIaN9UoA0QU=; b=S4zBfNEalqRedLWNz
+	swhbWsfYpeENZ46/VZRSAunFGG9r2LUqvItwyQwfhsoTlNSbGGCYhfiA6n0fyqyJ
+	XMVCHFYgHthjiIrnOy5i3l5Yfe6ibcUvHwvuWg9g1KqVREugrGW7JlerhRGUNb+V
+	Tu+LSPYjpwZebBZgLiZgvDRqfHF1nOo/6VMCt6S5G1h4voLj92uvITugjf7PPKl5
+	8cuppHPoP07PdG96my0eiZf9al0RlOFerWrDaewJsqFbupjU7iLIg7sjyj3afaAR
+	5pt6EDdBVrULjxQ1dm4eYxv9RWiCbCaL/poqjMoEGvcncniJfS6xEjce3p2bGBG8
+	D7Mqw==
+X-ME-Sender: <xms:Xo_gaX1rvRvJX4QEldxQWr9pgMUXlGP_SpKmDLJSinqKCKRwtUchcA>
+    <xme:Xo_gaWyAJApiNbmWe-gkrnk4I-c_wzkLK-21Gk05Qji6czPqPQ1cUGH6HwnP2LtO2
+    FyyHt1Vv7C07YrcNNjbvzz8yhD7QVsxngCMJJWe-vrSfC-LKuU5DuI>
+X-ME-Received: <xmr:Xo_gaWGKMHBfYvVPLyFTnYFCSpKwv4jGFdQzcF7JHEnh3oW4DCMID_eb5oWrrH6ecOnfR72J-DKUs7dAl1DfmWjy0pnQT90l-3cs4gLtE_cpAQVGpB8vSw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegieegtdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgggfestdekredtredttd
-    enucfhrhhomheprfhivghrrhgvuceurghrrhgvuceophhivghrrhgvsegsrghrrhgvrdhs
-    hheqnecuggftrfgrthhtvghrnhepueekiefggfelueeihedvtdfhvddutdejfefhueevhf
-    ehjedvuddvgeevkeehgffgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
-    rghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtghpthhtohepje
-    dpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphhtthhope
-    grshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhig
-    pghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepvhelfhhssehlihhsth
-    hsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphhivghrrhgvsegsrghrrhgvrdhshh
-X-ME-Proxy: <xmx:UY_gaaGd4gxkXb4drgXTmyr1JQ0_lwyk9RF-pdiXoZX_YySYQ2ts7w>
-    <xmx:UY_gaS8fYnjjHZmV2pnr8y_CsIsNhFJcf4Fo_Shbpb4UlItvSiBV6g>
-    <xmx:UY_gaRx8iHncQ18Se-Oy4zx8Hc3rs2O_ds1aoRE2063McFgk80ssyw>
-    <xmx:UY_gaeO9-qMkresOW3LyFRzvSwNXIyILKqMXRRBeUXJZDJ-OdOCujA>
-    <xmx:Uo_gaULexyfzbAyFwkFbRWSvXLPKt_5lrKY_J_sEM4nUg8OePRH9RXCU>
+    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgjfhgggfestdekredtre
+    dttdenucfhrhhomheprfhivghrrhgvuceurghrrhgvuceophhivghrrhgvsegsrghrrhgv
+    rdhshheqnecuggftrfgrthhtvghrnhephfejfffggfehjeejgfekhfeludelheevieefge
+    eugeffleetgeeuiefgueffheejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
+    pehmrghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtghpthhtoh
+    epjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvghrihgtvhhhsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphhtth
+    hopegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhn
+    uhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepvhelfhhssehlih
+    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphhivghrrhgvsegsrghrrhgvrd
+    hshh
+X-ME-Proxy: <xmx:Xo_gaRZxt2JFgJQy4Jx1N1dQxNzmhVyPv3wDRNw-X8BBh90bC5V50A>
+    <xmx:Xo_gaQBG15-aaiX1SPw6OaQtOjIxs67waIZfJtKTzpXQadJmvho7sw>
+    <xmx:Xo_gaRnJ9Y3DKD7cLny3RfElzn5D03tli-bCBySQmMt7a0DfBwuFew>
+    <xmx:Xo_gaZzT6-gCB12AtEK3zZnHr-8PWQWhI6r0BbgeHyEHeTgc3jRgBw>
+    <xmx:Xo_gaafU-8kLgEKeZ2lA9vALP8ZlByKDTJd0zVVxwXm00LmWixK6B2Hz>
 Feedback-ID: i97614980:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 03:27:12 -0400 (EDT)
+ 16 Apr 2026 03:27:25 -0400 (EDT)
 From: Pierre Barre <pierre@barre.sh>
 To: ericvh@kernel.org,
 	lucho@ionkov.net,
@@ -76,10 +80,12 @@ Cc: linux_oss@crudebyte.com,
 	v9fs@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Pierre Barre <pierre@barre.sh>
-Subject: [PATCH 1/2] 9p: use kvzalloc for readdir buffer
-Date: Thu, 16 Apr 2026 07:26:18 +0000
-Message-ID: <20260416072619.14241-1-pierre@barre.sh>
+Subject: [PATCH 2/2] 9p: invalidate readdir buffer on llseek
+Date: Thu, 16 Apr 2026 07:26:19 +0000
+Message-ID: <20260416072619.14241-2-pierre@barre.sh>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260416072619.14241-1-pierre@barre.sh>
+References: <20260416072619.14241-1-pierre@barre.sh>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -88,46 +94,116 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The readdir buffer is sized to msize, so kzalloc() can fail under
-fragmentation with a page allocation failure in v9fs_alloc_rdir_buf()
-/ v9fs_dir_readdir_dotl().
+v9fs_dir_operations{,_dotl} use generic_file_llseek, which updates
+f_pos but does not invalidate fid->rdir. After an lseek on a
+directory fd, the next getdents64 continues draining stale cached
+entries instead of refetching from the server at the new offset.
+This causes xfstests generic/637 to fail.
 
-The buffer is only a response sink and is never pack_sg_list()'d,
-so kvzalloc() is safe for all transports, unlike the fcall buffers
-fixed in e21d451a82f3.
+Replace generic_file_llseek with a custom v9fs_dir_llseek that
+resets rdir->head and rdir->tail when the position changes,
+following the same f_lock pattern used by nfs_llseek_dir.
+
+Also change the readdir refetch condition from == to >= to prevent
+an infinite loop if lseek races with an in-progress readdir.
 
 Signed-off-by: Pierre Barre <pierre@barre.sh>
 ---
- fs/9p/vfs_dir.c | 2 +-
- net/9p/client.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/9p/vfs_dir.c | 53 +++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 4 deletions(-)
 
 diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-index af7f72abbb76..487c177aae38 100644
+index 487c177aae38..b0f8913380bc 100644
 --- a/fs/9p/vfs_dir.c
 +++ b/fs/9p/vfs_dir.c
-@@ -70,7 +70,7 @@ static struct p9_rdir *v9fs_alloc_rdir_buf(struct file *filp, int buflen)
- 	struct p9_fid *fid = filp->private_data;
+@@ -103,7 +103,7 @@ static int v9fs_dir_readdir(struct file *file, struct dir_context *ctx)
+ 	kvec.iov_len = buflen;
  
- 	if (!fid->rdir)
--		fid->rdir = kzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);
-+		fid->rdir = kvzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);
- 	return fid->rdir;
+ 	while (1) {
+-		if (rdir->tail == rdir->head) {
++		if (rdir->head >= rdir->tail) {
+ 			struct iov_iter to;
+ 			int n;
+ 
+@@ -162,7 +162,7 @@ static int v9fs_dir_readdir_dotl(struct file *file, struct dir_context *ctx)
+ 		return -ENOMEM;
+ 
+ 	while (1) {
+-		if (rdir->tail == rdir->head) {
++		if (rdir->head >= rdir->tail) {
+ 			err = p9_client_readdir(fid, rdir->buf, buflen,
+ 						ctx->pos);
+ 			if (err <= 0)
+@@ -195,6 +195,51 @@ static int v9fs_dir_readdir_dotl(struct file *file, struct dir_context *ctx)
  }
  
-diff --git a/net/9p/client.c b/net/9p/client.c
-index f60d1d041adb..6d9b9054841e 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -765,7 +765,7 @@ static void p9_fid_destroy(struct p9_fid *fid)
- 	spin_lock_irqsave(&clnt->lock, flags);
- 	idr_remove(&clnt->fids, fid->fid);
- 	spin_unlock_irqrestore(&clnt->lock, flags);
--	kfree(fid->rdir);
-+	kvfree(fid->rdir);
- 	kfree(fid);
- }
  
++/**
++ * v9fs_dir_llseek - seek on a directory
++ * @filp: file structure
++ * @offset: new position
++ * @whence: SEEK_SET or SEEK_CUR
++ *
++ * Invalidate the readdir buffer when the position changes so the next
++ * getdents call refetches from the server at the new offset.
++ */
++
++static loff_t v9fs_dir_llseek(struct file *filp, loff_t offset, int whence)
++{
++	struct p9_fid *fid = filp->private_data;
++
++	switch (whence) {
++	default:
++		return -EINVAL;
++	case SEEK_SET:
++		if (offset < 0)
++			return -EINVAL;
++		spin_lock(&filp->f_lock);
++		break;
++	case SEEK_CUR:
++		if (offset == 0)
++			return filp->f_pos;
++		spin_lock(&filp->f_lock);
++		offset += filp->f_pos;
++		if (offset < 0) {
++			spin_unlock(&filp->f_lock);
++			return -EINVAL;
++		}
++	}
++	if (offset != filp->f_pos) {
++		struct p9_rdir *rdir = fid->rdir;
++
++		filp->f_pos = offset;
++		if (rdir) {
++			rdir->head = 0;
++			rdir->tail = 0;
++		}
++	}
++	spin_unlock(&filp->f_lock);
++	return offset;
++}
++
+ /**
+  * v9fs_dir_release - close a directory or a file
+  * @inode: inode of the directory or file
+@@ -238,7 +283,7 @@ int v9fs_dir_release(struct inode *inode, struct file *filp)
+ 
+ const struct file_operations v9fs_dir_operations = {
+ 	.read = generic_read_dir,
+-	.llseek = generic_file_llseek,
++	.llseek = v9fs_dir_llseek,
+ 	.iterate_shared = v9fs_dir_readdir,
+ 	.open = v9fs_file_open,
+ 	.release = v9fs_dir_release,
+@@ -247,7 +292,7 @@ const struct file_operations v9fs_dir_operations = {
+ 
+ const struct file_operations v9fs_dir_operations_dotl = {
+ 	.read = generic_read_dir,
+-	.llseek = generic_file_llseek,
++	.llseek = v9fs_dir_llseek,
+ 	.iterate_shared = v9fs_dir_readdir_dotl,
+ 	.open = v9fs_file_open,
+ 	.release = v9fs_dir_release,
 -- 
 2.51.0
 
