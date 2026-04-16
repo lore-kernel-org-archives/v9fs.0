@@ -1,154 +1,133 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173523E334
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 06:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6E379EFE
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 07:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776321798; cv=none; b=rYpnitVaf/5JNmZKDeP69PS8PU3jXnm7STTorWt05X39Edi/M8q15tc8LvqZsyApoYmWbZnEj6yRDBBh4hLZnWEamL/2oCHNbzchbaC9lkLtGVZjgbG14xeH4YTPyl282L0VIxSelc9mMeoVeygISKJYTkNGJg3C/28lyj8Hg9A=
+	t=1776324437; cv=none; b=n7shiwFGTqfxMGUT+7BP1n9gRI6kliTBSwLmMd/Q6tZQwV8DwOdhVQu+0GWb6waGdEVHSfCYo6tuTuOvcOfnOkDcueoaaK7yJ1sdJ+9x/O8H6OuPxur5bf5URGjmm0GxmUUvk7vq5NX/YUOSl0b4ObG8zB9avXRSTZ32WIP+8PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776321798; c=relaxed/simple;
-	bh=EL43GC42YmxIDGnguK6h2F5qT/m6cfOybkmqCOGETKs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=IWX8OH1p6hKwJL8ZbIIcncTWhcLIFtRYscj/cv+E4Vg3rb2J8bdRcB5hwdSsY6IHZct+DXVnyR79JsNykJHFS7MOl18Vd75v0skpdGozkOjBBlXUq66zmi7oTqaDINW7BKQ8L2/+5U6qBm6VytY55MQsPVTqvUQenkBrzWuOnH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=b1RzviSq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hKe9p2/3; arc=none smtp.client-ip=202.12.124.157
+	s=arc-20240116; t=1776324437; c=relaxed/simple;
+	bh=ZhMOLgpHN3yGIaFbzkPMqmq8a+N6nFyZrLu0eAaI2vs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BkOpmwgmzo1ssAGshLy3Dv+MbvXOhLkqRo3kVNccgMDhTOEErJZ2I19GYrnPsjicLSr+oB1GSVsOvQbtORk73dGoHzpwo01Ydm1b75JhN6NTyOAF+MGyBS9C+SbO9ZelUq5FPjhVTuTXIjhfNQQFD3Y2wiLBPegEO1IRc59wiOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=mMWEOjbC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A63FBYPt; arc=none smtp.client-ip=202.12.124.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="b1RzviSq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hKe9p2/3"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 10EE57A00DE;
-	Thu, 16 Apr 2026 02:43:15 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-06.internal (MEProxy); Thu, 16 Apr 2026 02:43:16 -0400
+	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="mMWEOjbC";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="A63FBYPt"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id B4AC11D00276;
+	Thu, 16 Apr 2026 03:27:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Thu, 16 Apr 2026 03:27:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776321795;
-	 x=1776408195; bh=UQSNmbFciiajEDdF1z12iE2Vg6YGNrx/vVkrhizzi7M=; b=
-	b1RzviSqdJ07i176zIamh8AmCmNCm/jB7+REjW/PQ+iXF+UzJup2bPgTaGqshfoh
-	oHkySQ3j/7lNBsxSClrRyw9UHvPuIcfDVbp9EfJdalRQFwoh6UacxEwBjyaorx3E
-	ZFD3auDKOWUxaQLujVf+0QIEBhaoKpLZPsIHTsjkMdn4jSYSOlHFaA8+cyH6gy5/
-	KnOEssCcJQf86C64XvK5MG58YmQ0e9+GSoNpvSuHExCYr1NZZrJaOFfEyhNvz7rS
-	Me6C7pu64lPD4eDGKbO+F9E6Sgbsi1y56CB96t+1uc9vhpUb5GWy66EIULIOqbe6
-	vNl0++Io7QrZjJY8XM5+UQ==
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1776324434; x=1776410834; bh=RK9ZLoaLKywcyvi9A6tiR
+	/lDfk5nhl6XccwMuMNUmYM=; b=mMWEOjbCrU1LcdzXl7Z2QLPXwOrJE+V0cW406
+	NuzBtTnYzI7AKxwvUvc49FZGW3NQbYVZrB2CyUHYbpHvXTMVPQ0zXRYMTWEDNs56
+	upibv0nFzi6tXysHXIwRQYEFvX5cCx+IYjd3ZX1KS4s+WbPNcyuVXg2TXMslg2wi
+	Wfk6Ov48j6YO2Aex47hg1H/L3hYqiyrZQoSfWQ0fXT89YEwn2mWdKY/FvxBbdDIx
+	u980J961+Wc0Vod6wTUQUZtsQm8XQakvoCmQeHsH9PfXbyxYdX6BlEeQmISMIG4f
+	veFriNVftUH4RDllel3/jYYn7rPqGz1B68vnBnYnf24DfS7ug==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776321795; x=
-	1776408195; bh=UQSNmbFciiajEDdF1z12iE2Vg6YGNrx/vVkrhizzi7M=; b=h
-	Ke9p2/3QCK/07FK9Zd3cjjH+zZm/I/yU1iH7a5kC4+BppBStmYbMC/0XKnBMqIsk
-	/rIAn+E58rbI6Axyq7+L9QXRs3OIVhlxutEGxvsjyKb4AvkSHpfvB0NZcJ+LEsBH
-	Pi8mnUqOkUnOMu+CRYqGWyeTOWTKSVFrazGTQ1sCtlb/RQHgkTiILBZ2o7rxZyIU
-	dYHf+xTIysZvfB1DlOT9GjvXEnr7rxU4wDh2c3xnTa5gNxy+ui9AYEjB+II5JoIp
-	bqP6IMXKAnlS5s6S+YdoQOf+ru1hY0py3EhDAaKBkA8qZtQ//Dr9FnC84N4aBItH
-	9+4tuVWPRd3beuQrfJgCQ==
-X-ME-Sender: <xms:A4XgaXsJ13y1vbXRGoC6Rxx5ofPDvz7iLQJlhZp-uN4FB21cJ3_pAg>
-    <xme:A4XgaTRfBp1ScnygtUyh_DjnXICozw7TgpYz8M1luzPmAbW108gyF2fl1lQS4Loux
-    BSWCfGocKP3315Ao7H7Fx3z6tUlIf7IBlfZTBfYN0QOR0OiCJUvXZ7b>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegieefudcutefuodetggdotefrod
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1776324434; x=1776410834; bh=RK9ZLoaLKywcyvi9A6tiR/lDfk5nhl6Xccw
+	MuMNUmYM=; b=A63FBYPt/Hc9lpRKHeNCzVfFa+1TLb2bL8xP1fiXK1UI9aBmxvb
+	BGIFylqWRTNsMWac4DN3ovhGAfrSu6PXhamYIB35s0L0mY01uEtmujJNYaRfK656
+	G2m8XRlyf4W73uvLiyn8LKqYKNSKNXLtghNaPOLMp8d/UzjRCtAQhKj5C2HR0fPs
+	BU0YCNnznv5urEpOYcOu3CHV1diaBQC80484YYpHAISAZmBSjx577KTc/zWsdEoS
+	+bI68StifFz7LzZfi06ZI1ugHiVNx1YigQ5WEc33Q8LjSiU6y/ZQ+pdp1rf9NJOE
+	w7F18hS5yROILbcIufbIQ13S5UGopkZT6Rg==
+X-ME-Sender: <xms:UY_gabyfDSjUcDeMoNreo8iEg5pmsoNKb1Q58DNAMiCakD2haOr7IQ>
+    <xme:UY_gaT9ZTyPqVmhmv3aqcKaxRSXHqOntljTtiLBxkJFjBUZeL2ClLKS70q3bISxNv
+    fz2oxujbQOQ22r-BjzJJVdeBze-uE6Jo9H-xK1Fht6oSmvVfX4BmWsq>
+X-ME-Received: <xmr:UY_gaThuwILz9yO82k4E-J_7ZDoEuLnhxQuDV-WDfhec7bQEeiO0ZISgZoWFMO4IoF3Zl6N3YtFpzlTHf_Vqqdluk7nJw0duZk2C_xHagoNYl4EpOb9OgQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegieegtdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertd
-    ertddtnecuhfhrohhmpedfrfhivghrrhgvuceurghrrhgvfdcuoehpihgvrhhrvgessggr
-    rhhrvgdrshhhqeenucggtffrrghtthgvrhhnpeetgeeivdffhfeihedvkeefueekgeeivd
-    ekheekjeeuieejiedtffdtjeetvdffjeenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpehpihgvrhhrvgessggrrhhrvgdrshhhpdhnsggprhgtph
-    htthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushes
-    tghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhigpghoshhssegtrhhuug
-    gvsgihthgvrdgtohhmpdhrtghpthhtoheplhhutghhohesihhonhhkohhvrdhnvghtpdhr
-    tghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsh
-    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsrghnuggvvghnsehrvggu
-    hhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrgh
-X-ME-Proxy: <xmx:A4XgacdMFvtmAtD977tuDhllkROdtZBEkBecpr6cQurEszRn3VYCoQ>
-    <xmx:A4XgaQxboX17cvL5vkET90e77067Kn2FEwKstx3aWOIia7NokjDq_A>
-    <xmx:A4XgaRJhrlPoPQmvaV4yPIUtm9hV6HlYEZF39KXbZs3J1HOyKHgW6g>
-    <xmx:A4XgaSE2mnIf_3j57-8VtRxwcmIwzd_OTMg7cczGIzNIYQkpgH59qw>
-    <xmx:A4XgaQpwFBfRmbQIDK1nK1oFjbT8m0qfg0bNuTtbAlPaH8x9n1KopFlb>
+    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgggfestdekredtredttd
+    enucfhrhhomheprfhivghrrhgvuceurghrrhgvuceophhivghrrhgvsegsrghrrhgvrdhs
+    hheqnecuggftrfgrthhtvghrnhepueekiefggfelueeihedvtdfhvddutdejfefhueevhf
+    ehjedvuddvgeevkeehgffgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtghpthhtohepje
+    dpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphhtthhope
+    grshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhig
+    pghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepvhelfhhssehlihhsth
+    hsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphhivghrrhgvsegsrghrrhgvrdhshh
+X-ME-Proxy: <xmx:UY_gaaGd4gxkXb4drgXTmyr1JQ0_lwyk9RF-pdiXoZX_YySYQ2ts7w>
+    <xmx:UY_gaS8fYnjjHZmV2pnr8y_CsIsNhFJcf4Fo_Shbpb4UlItvSiBV6g>
+    <xmx:UY_gaRx8iHncQ18Se-Oy4zx8Hc3rs2O_ds1aoRE2063McFgk80ssyw>
+    <xmx:UY_gaeO9-qMkresOW3LyFRzvSwNXIyILKqMXRRBeUXJZDJ-OdOCujA>
+    <xmx:Uo_gaULexyfzbAyFwkFbRWSvXLPKt_5lrKY_J_sEM4nUg8OePRH9RXCU>
 Feedback-ID: i97614980:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F21CDB6006E; Thu, 16 Apr 2026 02:43:14 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Apr 2026 03:27:12 -0400 (EDT)
+From: Pierre Barre <pierre@barre.sh>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org
+Cc: linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Pierre Barre <pierre@barre.sh>
+Subject: [PATCH 1/2] 9p: use kvzalloc for readdir buffer
+Date: Thu, 16 Apr 2026 07:26:18 +0000
+Message-ID: <20260416072619.14241-1-pierre@barre.sh>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 16 Apr 2026 08:42:54 +0200
-From: "Pierre Barre" <pierre@barre.sh>
-To: asmadeus <asmadeus@codewreck.org>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, sandeen@redhat.com
-Message-Id: <799434da-ec7b-4e97-aeb1-e60927138233@app.fastmail.com>
-In-Reply-To: <aeBPEcmAaVv5Vt5d@codewreck.org>
-References: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
- <2406037.ElGaqSPkdT@weasel> <aeBPEcmAaVv5Vt5d@codewreck.org>
-Subject: Re: [PATCH] 9p: fix access mode flags being ORed instead of replaced
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-> Note your patch converted tabs to space and couldn't be applied -- if
-> you have to send patches by web mail please attach them instead, that'll
-> be easier to apply than a corrupted patch, even if some tooling like
-> sashiko won't run (it doesn't run on corrupted patches anyway..)
+The readdir buffer is sized to msize, so kzalloc() can fail under
+fragmentation with a page allocation failure in v9fs_alloc_rdir_buf()
+/ v9fs_dir_readdir_dotl().
 
-Argh, I'll just commit to using git-send-email from now on.
+The buffer is only a response sink and is never pack_sg_list()'d,
+so kvzalloc() is safe for all transports, unlike the fcall buffers
+fixed in e21d451a82f3.
 
-> If you're fine with my wording for the comment I'll modify it in place,
+Signed-off-by: Pierre Barre <pierre@barre.sh>
+---
+ fs/9p/vfs_dir.c | 2 +-
+ net/9p/client.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Sounds great, thank you.
+diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
+index af7f72abbb76..487c177aae38 100644
+--- a/fs/9p/vfs_dir.c
++++ b/fs/9p/vfs_dir.c
+@@ -70,7 +70,7 @@ static struct p9_rdir *v9fs_alloc_rdir_buf(struct file *filp, int buflen)
+ 	struct p9_fid *fid = filp->private_data;
+ 
+ 	if (!fid->rdir)
+-		fid->rdir = kzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);
++		fid->rdir = kvzalloc(sizeof(struct p9_rdir) + buflen, GFP_KERNEL);
+ 	return fid->rdir;
+ }
+ 
+diff --git a/net/9p/client.c b/net/9p/client.c
+index f60d1d041adb..6d9b9054841e 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -765,7 +765,7 @@ static void p9_fid_destroy(struct p9_fid *fid)
+ 	spin_lock_irqsave(&clnt->lock, flags);
+ 	idr_remove(&clnt->fids, fid->fid);
+ 	spin_unlock_irqrestore(&clnt->lock, flags);
+-	kfree(fid->rdir);
++	kvfree(fid->rdir);
+ 	kfree(fid);
+ }
+ 
+-- 
+2.51.0
 
-Pierre.
-
-On Thu, Apr 16, 2026, at 04:53, Dominique Martinet wrote:
-> Christian Schoenebeck wrote on Thu, Apr 09, 2026 at 04:51:07PM +0200:
->> > diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
->> > index 057487efaaeb..05a5e1c4df35 100644
->> > --- a/fs/9p/v9fs.c
->> > +++ b/fs/9p/v9fs.c
->> > @@ -413,7 +413,11 @@ static void v9fs_apply_options(struct v9fs_session_info
->> > *v9ses, /*
->> >          * Note that we must |= flags here as session_init already
->> >          * set basic flags. This adds in flags from parsed options.
->> > +        * Access flags are mutually exclusive, so clear any access
->> > +        * bits set by session_init before applying the user's choice.
->> 
->> That phrase is a bit suboptimal, because V9FS_ACCESS_ANY is actually a bit
->> combination of single, user and client. But OK, I currently don't have a
->> better phrase for it since the access fields have to be replaced altogether.
->
-> Yeah, it's not so much that they're mutually exclusive that we need to
-> clear the default value before applying the settings.
-> The key distinction here is that it's not "any access bits set" -- if it
-> were arbitrary values then it wouldn't be acceptable to just or the
-> flags out, you could risk e.g. creating a client with 2000L but setting
-> another protocol in the flags and there'd be no end of things to check.
->
-> Something like this?
->            * Default access flags must be cleared if session options
-> 	   * change them to avoid mangling the setting.
->
->> As for the actual behaviour change; makes sense to me:
->
-> Yes, that works for me.
->
-> Note your patch converted tabs to space and couldn't be applied -- if
-> you have to send patches by web mail please attach them instead, that'll
-> be easier to apply than a corrupted patch, even if some tooling like
-> sashiko won't run (it doesn't run on corrupted patches anyway..)
->
->
-> If you're fine with my wording for the comment I'll modify it in place,
-> otherwise we have a few more days to discuss this before I sent to Linus
-> for 7.1-rc1
-> (and I'm really sorry for my lack of reactivity, I'm sure I'll miss some
-> patches anyway...)
->
-> -- 
-> Dominique Martinet | Asmadeus
