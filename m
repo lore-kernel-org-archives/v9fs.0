@@ -1,51 +1,45 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C713B58C
-	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 02:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8933022A80D
+	for <v9fs@lists.linux.dev>; Thu, 16 Apr 2026 02:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776306684; cv=none; b=o+ry7zNOR4dDHnxf8BIDDzmM3sYWVikluPmjrWPHlkajEcChUQeuRLzcI5Som0saBpEX3RNh1AkUpBo8k2dZS2aJnLAoM58BSG8meQZqRqHmMMqGeq1NMC1I0jsvRsAdfNkIjUfSjID1+igy3Yg+vdH/DL+FH/7f8JBjGxYcwK4=
+	t=1776307877; cv=none; b=VCvMlkHS42jl3onDMPVEFbQhVi5BdHNw1SicqdLSj6dg+H5ZG8HzY8PIQdXqoEQX7QG4xVG8B7NMfIJ27ANEORxr/csf7CpUdnWzZOJgJiLwhMrTjliJ7IQgonFP4HazT8sBmA7KUVtdLp/mQcXQ6xoIQEgRP7BnInSmxRmgGoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776306684; c=relaxed/simple;
-	bh=L3nEwYYKWud213QiKCH5nXb/f5LifqJnwiHbz8UTZRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ImeuO3lc3/GtTY2+DILfsEMydpKQncXgS1vqS1YsuJtH52PPl8csZ7Y+5LdkP8tfofg/HYbeSY6BRv55RsnNzUs1lNtU1ySTS8JY/0HfOx6bSD0E00h0x39+NEP1G64G8OtDoAXrSjHwYVJi7oPVsyUGT93VEn1FIDY/ITf0PSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=UMSl+nVt; arc=none smtp.client-ip=62.210.214.84
+	s=arc-20240116; t=1776307877; c=relaxed/simple;
+	bh=y+Ef5kH15T2AjREG9WQzH8MNHkHoe+kN7ICTGcQy+Cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=mg46TVpdvPx0PqdrU7D/hZg3ZsxbPEOmCiia7ZaAdNwDt0jEAxs/j/vvg1C0KvnjwQVWUtUFRtfQ/Pkkist6Z3YNDt8bNq9SPfJQj07Mhqnv5UxVa8zylPNzMnpLoYeUoqQHrIdmy1Qtvpoe4xUdmRswPKEwILsrlEpkg6mS1eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=biPZPh4t; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="UMSl+nVt"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="biPZPh4t"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D860314C2D6;
-	Thu, 16 Apr 2026 04:31:18 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 7C81114C2D6;
+	Thu, 16 Apr 2026 04:51:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1776306681;
+	s=2; t=1776307873;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vNFEcECLkjmnMv99mmT0WHYpKeBUVEBRN0ugXn5t+4c=;
-	b=UMSl+nVt9lCTbm8mIYkAIGPpXue81qi83faRmu3X3JBh1EjlBsYDDcFLYFpFbIOBxHoaML
-	AeyO07anqPRrWIMmWadxaqLqC3LGQFbdE2byIdz/oK1wkQefORikFV0XQTqxQZGkPIUmzt
-	NrrM3Acq1iRAfBvnwGSnW6A1+Tir0TeFuKNBNkoDZsvROCAlxdQ2gNjByeXnjxDDGk2lUL
-	KECLzywcxgq4CNn+tnv9zhQQGV0Lk/bNMpAcblX7QgWrK3ZRaQ5uV6CV51h8EZgRV5CIh4
-	GEGVetS/uIllVHvVLYHH1lDJT4AacDnqd0BWFwn+3MxrxCoxKoQUPQd5BgOqzg==
+	 in-reply-to:in-reply-to; bh=2NB+91A3mwaf9NC5STh1hest8k+EshMt+yzn+tknsVE=;
+	b=biPZPh4t3/awuznRBtAzsjetfIirxn579q07N8v4qBW5MIeLFGsaQ/gOdj/SVxKwsT5Mmi
+	D3ydCCUB3nx6RzB6iXK1U8oboqwsrStWJxjMMTUzWgxDGYJe3dekNFT4i0M8iY/uHnEOUm
+	DQjo0xEPMLJ4PeVuIRGEp3XsmK/msMAlwmVwHkxJHEwJhj6TwA+hpYw0Si/WUguZUIYPeA
+	xcNBzTh1plxoNkMrAr2AH5cA7r4cllioORzH8CvOeajTGku3/ZjNyEs5areJ8LfEsRY4Aq
+	WwjeT51DvnvrMMBaDHfNfXdyPIB6n8Y7nheqo2vCp369YerfYmH1RMgJDq14HQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e2e13278;
-	Thu, 16 Apr 2026 02:31:17 +0000 (UTC)
-Date: Thu, 16 Apr 2026 11:31:02 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 0d4300c3;
+	Thu, 16 Apr 2026 02:51:09 +0000 (UTC)
+Date: Thu, 16 Apr 2026 11:50:54 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Pierre Barre <pierre@barre.sh>, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
+To: Baran Arda <baran9arda@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
 	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: use kvzalloc for readdir buffer
-Message-ID: <aeBJ5pT0WtMp-LO5@codewreck.org>
-References: <06399e04-b019-4c3d-b941-5771b6ac33c2@app.fastmail.com>
- <20260415100157.4aa33364@pumpkin>
- <a93672d6-1b99-4d4f-a8e4-c7f8b0d10b36@app.fastmail.com>
- <20260415113625.6d38441d@pumpkin>
+Subject: Re: [PATCH] fs/9p: remove unnecessary extern keywords from header
+ files
+Message-ID: <aeBOjl59tgjvGkU1@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,47 +48,16 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260415113625.6d38441d@pumpkin>
+In-Reply-To: <20260410202651.60818-1-baran9arda@gmail.com>
 
-David Laight wrote on Wed, Apr 15, 2026 at 11:36:25AM +0100:
-> > Perhaps what you describe can explain what I was seeing there:
-> > https://lore.kernel.org/v9fs/496d10b9-40fe-4f81-8014-37497c37ff63@app.fastmail.com/
-> (After seeking, getdents() returns stale cached entries instead of fetching from the new position.)
-> 
-> Absolutely.
-> But the fix probably isn't trivial.
-> The offset that you need for the seek isn't directly related to the number
-> of bytes copied to the user buffer - which is what I suspect ftell() (or
-> whatever gets used) returns.
-> I think there is some mechanism for arbitrary directory offsets; but IIRC that
-> requires the code put the 'file system offset for the next directory entry'
-> somewhere in the directory entry.
-> Such an offset would have to be one the remote system would understand.
-> 
-> A partial 'non-fix' would be to reject seeks to other than offset 0.
+Dominique Martinet wrote on Thu, Apr 16, 2026 at 10:55:09AM +0900:
+> Sure, why not, will send in next batch to Linus
 
+Actually scratch that, many of these are not function
+definitions but external variables, the extern
 
-Thank you both for working on this and reviewing -- this is all
-historical code that hasn't seen much love.
-
-
-9p Treaddir sends an offset on each call, so I think it'd be fine to
-invalidate buffer/remember whatever the client set in a custom llseek
-function and send this to the server on readdir call, but I honestly
-didn't give this any more thought than the past 2 mintes (I'm totally
-swamped and can't keep up/didn't even notice the bug report this
-december, sorry :/)
-I think some filesystems only allow seeks to 0 already? So given there
-is a precendent this might be fine, but I don't see the harm in allowing
-custom offsets: the server needs to be able to deal with junk offsets in
-read requests anyway, so it's not a problem for me if userspace can set
-something invalid and get itself stuck on EINVAL or whatever.
-
-
-As for locking the vfs takes the file's f_lock for seek, but there
-doesn't seem to be anything in the readdir path that would do that, so I
-guess it probably would blow up with parallel readdirs on the same fd,
-and could use improving...
+This also conflicts (trivially) with the negative dentry cache patch so
+it's not worth the effort, I'm dropping it for now
 
 -- 
 Dominique Martinet | Asmadeus
