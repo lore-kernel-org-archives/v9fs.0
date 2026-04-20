@@ -1,170 +1,147 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2536B3AB269
-	for <v9fs@lists.linux.dev>; Mon, 20 Apr 2026 14:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776695496; cv=pass; b=oapF5DnXOhjqsIHdMAR6hngyMmbWmFvZTxKQ9TJas5/GR1bqrD+svlJY9Ssr7C/bXtfwzhs8f/yij/ugY7qDCIs2GUmOMI9TupRx0nAvNWbb1Z380VLADMMuZr+tsjuH6wosC29nnJJrf/r7VJeNF/1/oK6sOzHm8IJyuYPY9XQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776695496; c=relaxed/simple;
-	bh=kqPRzU1r8Upp5TYgefpiWZ9RVnkrVKI+N7GY819VmUg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eFXcJhOm/+2N0UBabcvd7/sAfTBRd/k5qwdc0OqN4Alot6YxDuUFpAxPkXFIkSc0SBGXUz4/iUtIpxEdbJCeOQGua9FILbK/34kR7DFaFVDJZFQ3qCDQwV2j0pS8LyI55GsjqW7YnZtlTXWxsgwosxojGH3o+DDDl2IrKLyPJR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGFqUsO5; arc=pass smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB33AC0ED;
+	Mon, 20 Apr 2026 14:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776695502; cv=none; b=ldG8croggPkKtByVRnkbBo7Rz8VZRMDTnZgdCNbfeDI8eM0iFP12RAPRIhWHjf24nGGE4xz6oulL7mgufRA+AbsXmKa8LYHGgRjdNym2wKsg78y6oEr+Xi4cZSGRW8I308HJjEyZsbctFOHWJd9SBf6W/Zu4QqfxnYk0MXdl+cY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776695502; c=relaxed/simple;
+	bh=x+JqpWLPmdef5FaSoZXOfjYFpxRINfunce0VlJIENXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sblBAjSn3rrtvbiBkjaiJqOVnheDjl4rISbwsqqR1Ma3nV8iLgDJl9Ov62Q3TXyvyRIkpSm4j0j0cQGcgufTH86sIElejdcN9P1A0OiZqFEuLuUac6Hymz9zg9U7kNimoDInlLV/V9Y0LEZNshKF+iXlySlwzxMobFumnY6RN5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=vjil2/RS; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGFqUsO5"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-56739adfa1aso2340587e0c.0
-        for <v9fs@lists.linux.dev>; Mon, 20 Apr 2026 07:31:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776695494; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aiC9eOI5s11XZXHXINdfp3tTOkKLshxQq3qSnpdZxXMbkiJrxAfJNOFCfzjwWtJw7A
-         10Ck59ybxp6N5R+ClnG8q0AB7Cf0CXwA2QCXvQaIOEHB64yPfqk/ukbBDaWFUYVHa1VU
-         lSWz85SH90BpHVNEqHpcePUjlpz5XJBcSLCfWyoHCYlMILtR97wEajX+TcXr3jINupSd
-         w5I0pRpXEAlMXiW0edsN2y2A9BoHP9l4F2A5JkvvsI0tzRC8JTrdpkNQBMqzF1kXs1kc
-         XfJNXBLo/xfB38tzLoixri0JygnvybBJjNR4R06+Ibvty0p69uEGAH6NIAKRAIRIa1gv
-         42NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4O8Xd8WCONGvKBMRsNl+HFLA/9jUjeJYvKk/a3SZv7Q=;
-        fh=7mjFreQLLePXbyhIYvo8GcNwwTaKfMB66MaGZHCTBmo=;
-        b=Y5xa7xFjJKoRVhmD54K8eJESKpkXu2/5Styu108AunQn7Rh193Fz+6lIRcmT4ExcF9
-         heOhNTJbqipxQ9lqsNxhA/1IYGaeXvB3AVvZk3mqdDaltZ6gj1qQ5ued0qUQtpsqt7wF
-         wcuesegl7hqRsZ32yW5fw42kVRq7Za7tX0BIhbSD6z4EzgUbpeBHp3nlE1FKWSpNsl6h
-         6G7BZFmc9h9zVKtNUfaT9qDANo/+bvVY+qCAskTprm4TGOg3hlIcvMzKDzOP2fdPtTtC
-         DkazhPs80QIjROsI5TO9dqvJjZPAnWvcUVYlmm0yfRNLD6oj1z6GLZ1jsp/YCrBv5dLM
-         7DiQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776695494; x=1777300294; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4O8Xd8WCONGvKBMRsNl+HFLA/9jUjeJYvKk/a3SZv7Q=;
-        b=bGFqUsO579jKt+4QLU5K8qN4nb5sYUgm73Uri+tyEYPrOBpuTzBD2PK0NT2hgqK+EU
-         xPWdejDY6RxIyMp4XF6loohWSyTjCXrvf8Y4sj9eH5f3tCobPFT1U6smV9+EpdHZLS17
-         etm1D/xRh9FLAwLn9vxF0b6GOLJD5Z4G4V8HkqYoy/dBZriLbEpwtcE7uywo52jl5RKI
-         1v3zrkjBjUqLYXzszdro/ASblVBLxcvTv9OGgUOlPYflskqKseD6udIstweo0WtNg66I
-         TiyNx5dhkaMkLd9BcPnQv4mcPBUS0d5eIgmlaNsBuXfhQNLkAom16E6BsloYMTWRJTz9
-         y5wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776695494; x=1777300294;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4O8Xd8WCONGvKBMRsNl+HFLA/9jUjeJYvKk/a3SZv7Q=;
-        b=ddeoGWgqWyhtzA7BVwNUXyMrbBUcLnRpaTnCF16JzILI8XnGFjMEzaXsrq47dGlwDs
-         ec1n2Eb3t+8EyYc4w4IWK1xzlHyTWHjwnkZtqtFrf/gPjTMa7VatB2TID3ZrJzc7Lz69
-         WIUdX6j7II1IMbKMYyRDGk6zrywxooK34uhir847tbeL8SfwTDuDvzlWd+YSv0D3iefa
-         oTei37Xg5gUoU7/QYTPMhEeyltOBsXmyM6nT53zjpZJXKbBZCsNyee0KAkyLprj7RNT3
-         nG5j2FfMPMj/lmMHGHFx7tjvrGL9lRQ98grq8Hk2SMULFHfzTaDB0EuyLGDCwJG0NsB7
-         W94w==
-X-Forwarded-Encrypted: i=1; AFNElJ9fMz3mY42Ke5epiR1j1FqyEPAyLaAhgw44Y4wQ2GgHoIkWFOqxkJSSGX+e/WhkSV8/p/Yc@lists.linux.dev
-X-Gm-Message-State: AOJu0YxIsIrQwGNAaG+IvzvCT++S/bhoy7836OPtDpf7YcutBBNy8W1q
-	aCiMTh0pzYAe81uR7mJNiBMC7QBTu9hrRJETO15e2Ke8uRD9dQoH6PmZLw45O7flQ3F9zyE59d0
-	O3AgRBNIl5LDiwF/VN4qy/bsWS5eCRYI=
-X-Gm-Gg: AeBDies67vzTn22053Y7CaG8PoNVFqTjpxu+Y6Jff4wspXhSzuGFho47KtbJ4w/DO0U
-	aCGfGu/RtkGnK9HoWJ5X6oNYyiIy9YfuQAWZ/r5ArBFo1OXLE5cOLVhlqWGR/xAy3wQQvigKes7
-	qlwqVjtqhIWEtrXwKG+7BHmc0R2VEMIPBHr/jI/+suaI0kkgAvamsV7WrmDJicKQIHPqr39cBQm
-	p5RQ76p6oLM5FC6ZXhS1TEzSCvJqT3wTTijyqMxD6H143GLH2EEtqdLf1g2igDHFq3UWIkhi1/J
-	DpFnlHuzwBJOa6PXOagV/PCVgJviKfw9W8bjsW/eagMoyUXAFXde
-X-Received: by 2002:a05:6122:4d12:b0:56f:9512:145 with SMTP id
- 71dfb90a1353d-56fa5a39aa7mr6593038e0c.13.1776695494119; Mon, 20 Apr 2026
- 07:31:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="vjil2/RS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=H1wF9YisyBqnifw1s1SsCk/hmOi0Yw7A60SKrkB8C1s=; b=vjil2/RSRyNRQIpQdt2FsHBH5g
+	d0ZcavK3y6ll2lHgkBygEt0IMAq4KdJUWwcvd39F4j46gtmJBepdXOyUC5PQjBzj2JrLAU1G2leoK
+	jIE43wMzIpnAuJ1FcD2XQLD/sHem4eS9ah1UMAT8mvp+6R6bV7ndztm7GLyLaqEOxEptInsvIEEh4
+	qRDgaEe1wMrSWydljQ6HovBlUXZE0TwhYeU8J0JJqgmPzpSXaggSsYv6tBPJ8Hwehc41oaW/e/hgV
+	QQ+UtklCX8Q13WjFe/KD8Gz7o5ScpS+3zk6fTFSHCiUxfDsqnExcp+YerkY8Sbg3ZUcfaSD7Z2zDw
+	7UtV029g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wEpeh-0009Gr-2o;
+	Mon, 20 Apr 2026 14:31:20 +0000
+Date: Mon, 20 Apr 2026 07:31:14 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eryu Guan <eguan@linux.alibaba.com>, 
+	Yiwen Jiang <jiangyiwen@huawei.com>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] 9p: fix WARN_ON when dropping nlink on files with nlink=0
+Message-ID: <aeY32gOaV5jw1s8F@gmail.com>
+References: <20260126-9p-v1-1-dc234d53ae87@debian.org>
+ <aZGRkaFZPXfZW8a0@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260328172314.45807-1-dorjoychy111@gmail.com>
- <20260416-abgraben-seeweg-a44ce660957f@brauner> <CAFfO_h5mORm0OuK-d4thzBWWySmyvLSVeVa7phZc4Df-8D=1Cg@mail.gmail.com>
- <20260420-laufen-einzeln-4cf4bb364a5d@brauner>
-In-Reply-To: <20260420-laufen-einzeln-4cf4bb364a5d@brauner>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Mon, 20 Apr 2026 20:31:23 +0600
-X-Gm-Features: AQROBzDP8Lx2bqkiL-O80tZkD0rFOUG8sjvNKKIkhcPgFqdc6FHkIJDo6D1Xn7k
-Message-ID: <CAFfO_h5FH36eqYuuoYy2eVRXGytmQHLfz5p7fLi+3wHmQN9MnA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] OPENAT2_REGULAR flag support for openat2
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, 
-	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, 
-	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
-	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
-	bharathsm@microsoft.com, shuah@kernel.org, miklos@szeredi.hu, 
-	hansg@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZGRkaFZPXfZW8a0@codewreck.org>
+X-Debian-User: leitao
 
-On Mon, Apr 20, 2026 at 7:20=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> On Thu, Apr 16, 2026 at 09:22:03PM +0600, Dorjoy Chowdhury wrote:
-> > On Thu, Apr 16, 2026 at 7:07=E2=80=AFPM Christian Brauner <brauner@kern=
-el.org> wrote:
-> > >
-> > > On Sat, 28 Mar 2026 23:22:21 +0600, Dorjoy Chowdhury wrote:
-> > > > I came upon this "Ability to only open regular files" uapi feature =
-suggestion
-> > > > from https://uapi-group.org/kernel-features/#ability-to-only-open-r=
-egular-files
-> > > > and thought it would be something I could do as a first patch and g=
-et to
-> > > > know the kernel code a bit better.
-> > > >
-> > > > The following filesystems have been tested by building and booting =
-the kernel
-> > > > x86 bzImage in a Fedora 43 VM in QEMU. I have tested with OPENAT2_R=
-EGULAR that
-> > > > regular files can be successfully opened and non-regular files (dir=
-ectory, fifo etc)
-> > > > return -EFTYPE.
-> > > > - btrfs
-> > > > - NFS (loopback)
-> > > > - SMB (loopback)
-> > > >
-> > > > [...]
-> > >
-> > > - I've added an explanation why OPENAT2_REGULAR is only needed for so=
-me
-> > >   ->atomic_open() implementers but not others. What I don't like is t=
-hat
-> > >   we need all that custom handling in there but it's managable.
-> > >
-> > > - I dropped the topmost style conversions. They really don't belong
-> > >   there and if we switch to something better we should use (1 << <nr>=
-).
-> > >
-> > > - I split the EFTYPE errno introduction into a separate patch.
-> > >
-> > > ---
-> >
-> > Thanks for fixing up and picking this one up!
-> >
-> > >
-> > > Applied to the vfs-7.2.openat.regular branch of the vfs/vfs.git tree.
-> > > Patches in the vfs-7.2.openat.regular branch should appear in linux-n=
-ext soon.
-> > >
-> >
-> > I don't see a vfs-7.2.openat.regular branch in vfs/vfs.git tree in
-> > git.kernel.org.  Maybe this hasn't been pushed yet?
->
-> Nothing will get pushed prior to -rc1 which is due this Sunday.
+hello Dominique,
 
-Understood. Thanks!
+On Sun, Feb 15, 2026 at 06:27:45PM +0900, Dominique Martinet wrote:
+> Thanks for the patch and sorry for the delay
 
-Regards,
-Dorjoy
+I had this fix in my tree, and I had forgot about. Now that I moved to
+the 7.1, I started seeing it again, so, let's revamp this.
+
+> hmm.. I'm not actually sure if we should call drop_nlink() at all in
+> cacheless mode, actually..
+> We don't really care about nlink in this context, as inode should be
+> gone immediately anyway, or does nlink hitting zero imply something
+> else?
+> 
+> So we could get the v9fs_session_info out of the inode
+> (v9fs_inode2v9ses) and just return if CACHE_META is set?
+
+Agreed -- in cacheless mode the server is authoritative and the inode is
+on its way out, so adjusting i_nlink locally buys us nothing. I don't
+see anything else keying off nlink hitting zero in that path.
+
+> Others opinion would be great, but I get the feeling that just checking
+> before update only makes the race smaller, and not totally fixed.
+
+What about sometehing like:
+
+commit 369beed134ff0b7ce1cf68d0c46b08ec07d625db
+Author: Breno Leitao <leitao@debian.org>
+Date:   Mon Jan 26 02:23:37 2026 -0800
+
+    9p: skip nlink update in cacheless mode to fix WARN_ON
+    
+    v9fs_dec_count() unconditionally calls drop_nlink() on regular files,
+    even when the inode's nlink is already zero. In cacheless mode the
+    client refetches inode metadata from the server (the source of truth)
+    on every operation, so by the time v9fs_remove() returns, the locally
+    cached nlink may already reflect the post-unlink value:
+    
+      1. Client initiates unlink, server processes it and sets nlink to 0
+      2. Client refetches inode metadata (nlink=0) before unlink returns
+      3. Client's v9fs_remove() completes successfully
+      4. Client calls v9fs_dec_count() which calls drop_nlink() on nlink=0
+    
+    This race is easily triggered under heavy unlink workloads, such as
+    stress-ng's unlink stressor, producing the following warning:
+    
+      WARNING: fs/inode.c:417 at drop_nlink+0x4c/0xc8
+      Call trace:
+       drop_nlink+0x4c/0xc8
+       v9fs_remove+0x1e0/0x250 [9p]
+       v9fs_vfs_unlink+0x20/0x38 [9p]
+       vfs_unlink+0x13c/0x258
+       ...
+    
+    In cacheless mode the server is authoritative and the inode is on its
+    way out, so locally adjusting nlink buys nothing. Skip v9fs_dec_count()
+    entirely when neither CACHE_META nor CACHE_LOOSE is set, which both
+    avoids the warning and removes a class of nlink races (two concurrent
+    unlinkers observing nlink > 0 and both calling drop_nlink()) that an
+    nlink == 0 guard alone would only narrow rather than close.
+    
+    Fixes: ac89b2ef9b55 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
+    Cc: stable@vger.kernel.org
+    Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+    Signed-off-by: Breno Leitao <leitao@debian.org>
+
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index d1508b1fe1092..50cf837979d9c 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -488,10 +488,19 @@ static int v9fs_at_to_dotl_flags(int flags)
+  * - ext4 (with dir_nlink feature enabled) sets nlink to 1 if a dir has more
+  *   than EXT4_LINK_MAX (65000) links.
+  *
++ * In cacheless mode the server is the source of truth for nlink and the
++ * inode is going away immediately, so locally adjusting i_nlink buys
++ * nothing and races with concurrent metadata fetches that may already
++ * have observed the post-unlink value (nlink == 0).
++ *
+  * @inode: inode whose nlink is being dropped
+  */
+ static void v9fs_dec_count(struct inode *inode)
+ {
++	struct v9fs_session_info *v9ses = v9fs_inode2v9ses(inode);
++
++	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
++		return;
+ 	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+ 		drop_nlink(inode);
+ }
