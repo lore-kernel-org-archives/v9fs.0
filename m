@@ -1,106 +1,100 @@
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C682918C2C
-	for <v9fs@lists.linux.dev>; Sun, 19 Apr 2026 08:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516313A3810;
+	Mon, 20 Apr 2026 13:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776586944; cv=none; b=STkZ1boNMjtqGNH8B7+QtcL5QAd5pVKmeeeHXZhjNOFGfoObRf0sesHWv3j8dKLwEF+xSQWbmktBcHjcJkroQnlbhFtZg1uHK6qhGFVksQQtDNZZhpLvcZNYZMHnKnMdWDVFSh2WOELQgcgrIbJJjSJmloG9pejvHYKlswkZRs0=
+	t=1776691227; cv=none; b=NyG28+6LOXzj1uRNIYKpImFIWfmXVyrsAbcqLsugoY/Bso4GHy1B9ZvUm1HWhRPWthsQPs4seatHvYW+ux4DlKogFviIGEyoGmR8sX448TBVf4//QN7BGeQ+pPMlygYFIsoiomcxXKYYoN0dNBQOFuqeTtLXxFSh7d85pZO9jpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776586944; c=relaxed/simple;
-	bh=yaw1wXzy4/getzhUa3oF7rpNZQK3hNRQnIdjQy4bpgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VA3RV2TjQT8bKFCor2ckI5PllbOyujVxeh0lPWeGua0JXmUMFun0TPs7H0o89TYY5zRgs+UPI7Evj1s0gDkQflXNon781AbUUShNIEi9DNUkpwACt/LlR81xhmLjSr03F4MxSeohHPMNizLxW0zp86lgcF7pmFSSe2XAKD38iaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from [10.88.16.7] (unknown [193.43.11.2])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 71C7C23375;
-	Sun, 19 Apr 2026 11:22:12 +0300 (MSK)
-Message-ID: <bd83eb25-3142-3d91-f605-4d6f01182d03@basealt.ru>
-Date: Sun, 19 Apr 2026 11:22:11 +0300
+	s=arc-20240116; t=1776691227; c=relaxed/simple;
+	bh=kRWmMUrKQhCcXsNj5gvf2DeCpyxg39zc5I1mOBXFzBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WXDy0vtPSoCtdVkI++1zn26J3u9Ot7Piw3dMmFUftAaLWFlsm/a1Nkj7QXI5jti/Vd8xV3Jw4gA3/HOLvV2N3Y6iV9InNBmGOeRNBslJzBbI0smzhmsHC9t6LMnbiLfIeVF7Cf7ZQJt41hPg1bpPs0jc+G83YRAmtwu5/zoG340=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhpJLaE/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhpJLaE/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B117C2BCB4;
+	Mon, 20 Apr 2026 13:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776691227;
+	bh=kRWmMUrKQhCcXsNj5gvf2DeCpyxg39zc5I1mOBXFzBI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KhpJLaE/kYJkAk598rwPEJ5O6S/vqTqpLxnnHSXxnk9Cri0j4gy7bMyYG8F49O2va
+	 Bxeixi62jf25y9uRkCSdmpa5jTioC3fHCxLWCsLN/Kg02M6dwhf2+Xaa37H9OQ5AQF
+	 FCOQ+xLc8bBprPWT5Q4yrBIK049tr5JtOJFv7g3IeVYYHrT26LMeOCG760Uh6qt0vD
+	 jMPBv1LODhtZwfMICOgq5W2jtc5kdps7YgYVfTMghk/iM5u5/5jr7SNliMR1qc1Ruh
+	 O/s7NJvHFQxaCz8IgjwEfGrGKjbY5d3kJtS3KQF+2YL2aIiMLBnWiZBaJEBZ8Zzfs3
+	 bK5BJuuS2b4QQ==
+Date: Mon, 20 Apr 2026 15:20:14 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, 
+	chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, adilger@dilger.ca, 
+	mjguzik@gmail.com, smfrench@gmail.com, richard.henderson@linaro.org, 
+	mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v6 0/4] OPENAT2_REGULAR flag support for openat2
+Message-ID: <20260420-laufen-einzeln-4cf4bb364a5d@brauner>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260416-abgraben-seeweg-a44ce660957f@brauner>
+ <CAFfO_h5mORm0OuK-d4thzBWWySmyvLSVeVa7phZc4Df-8D=1Cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal
- signal
-Content-Language: en-US
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-References: <20260415155237.182891-1-kovalev@altlinux.org>
- <aeA-WpUyfWrYrvaE@codewreck.org>
- <e3e9146a-d820-d35d-cebd-e7e7e4a2fa24@basealt.ru>
- <aeFoRIOUNQZWmTG5@codewreck.org>
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <aeFoRIOUNQZWmTG5@codewreck.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFfO_h5mORm0OuK-d4thzBWWySmyvLSVeVa7phZc4Df-8D=1Cg@mail.gmail.com>
 
-On 4/17/26 01:52, Dominique Martinet wrote>
-> So if I understand this right, with a sane server, the tag will be used
-> until umount or a reply (to either the flush or the original request)?
+On Thu, Apr 16, 2026 at 09:22:03PM +0600, Dorjoy Chowdhury wrote:
+> On Thu, Apr 16, 2026 at 7:07 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On Sat, 28 Mar 2026 23:22:21 +0600, Dorjoy Chowdhury wrote:
+> > > I came upon this "Ability to only open regular files" uapi feature suggestion
+> > > from https://uapi-group.org/kernel-features/#ability-to-only-open-regular-files
+> > > and thought it would be something I could do as a first patch and get to
+> > > know the kernel code a bit better.
+> > >
+> > > The following filesystems have been tested by building and booting the kernel
+> > > x86 bzImage in a Fedora 43 VM in QEMU. I have tested with OPENAT2_REGULAR that
+> > > regular files can be successfully opened and non-regular files (directory, fifo etc)
+> > > return -EFTYPE.
+> > > - btrfs
+> > > - NFS (loopback)
+> > > - SMB (loopback)
+> > >
+> > > [...]
+> >
+> > - I've added an explanation why OPENAT2_REGULAR is only needed for some
+> >   ->atomic_open() implementers but not others. What I don't like is that
+> >   we need all that custom handling in there but it's managable.
+> >
+> > - I dropped the topmost style conversions. They really don't belong
+> >   there and if we switch to something better we should use (1 << <nr>).
+> >
+> > - I split the EFTYPE errno introduction into a separate patch.
+> >
+> > ---
+> 
+> Thanks for fixing up and picking this one up!
+> 
+> >
+> > Applied to the vfs-7.2.openat.regular branch of the vfs/vfs.git tree.
+> > Patches in the vfs-7.2.openat.regular branch should appear in linux-next soon.
+> >
+> 
+> I don't see a vfs-7.2.openat.regular branch in vfs/vfs.git tree in
+> git.kernel.org.  Maybe this hasn't been pushed yet?
 
- From what I tested — until a reply. Tested on latest master.
-
-Added virtio-9p to QEMU cmdline:
-
-   -virtfs 
-local,path=/tmp/shared,mount_tag=p9host,security_model=none,id=p9host
-
-Mounted in VM:
-
-   mount -t 9p -o trans=virtio,version=9p2000.L,access=any p9host 
-/mnt/p9real
-
-Tested with and without patch:
-
-   # SIGKILL
-   dd if=/dev/zero of=/mnt/p9real/bigfile bs=1M count=500 &
-   PID=$!; sleep 1 && kill -KILL $PID; wait $PID
-
-   # SIGINT
-   dd if=/dev/zero of=/mnt/p9real/bigfile bs=1M count=500 &
-   PID=$!; sleep 1 && kill -INT $PID
-
-SIGKILL — transport cleanup picks up the remaining ref:
-
-   p9_req_put req ff11000108aa8... tag 0 refcount before=2
-   p9_req_put req ff11000108aa8... tag 0 refcount before=2
-   tag 0 removed from IDR
-   [1]+  Killed  dd ...
-
-SIGINT — server replies and drops the last ref:
-
-   p9_req_put req ff1100010e073... tag 0 refcount before=2
-   p9_req_put req ff1100010e073... tag 0 refcount before=1
-   tag 0 removed from IDR
-   1+0 records in
-   [1]+  Interrupt  dd ...
-
-No hangs, no leaks, no regressions with or without patch in either case.
-
-Syzkaller reproducer (trans=fd, no peer): without patch — permanent
-D-state, process never exits. With patch, each iteration completes
-cleanly and both tags are properly removed from IDR:
-
-   p9_req_put tag 65535 refcount 3->2->1, removed from IDR
-   p9_req_put tag 0     refcount 3->2->1, removed from IDR
-
-Also verified forced kill of the reproducer — tags cleaned up correctly.
-
-Severity is low and likely unreachable in production, but it slows
-down syzkaller — the hung process ties up a worker slot until the
-harness kills it by timeout (143s on our setup).
-
--- 
-Thanks,
-Vasiliy
+Nothing will get pushed prior to -rc1 which is due this Sunday.
