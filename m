@@ -1,78 +1,153 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0C4341ADF;
-	Mon, 20 Apr 2026 16:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3801A332ED3;
+	Tue, 21 Apr 2026 09:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776702383; cv=none; b=WyJTlX4Nf7ThEYiewAXMqiAZXJ2BzKl8CiJCpUmJrLcup1t2cqSImKQSUpZEs+mLf6si9PXfcq9hr+T3YR6xqZY5hKf7FNqgG9lkJwaYx6zi//bo1SgyEZ6K42dIEXVb64+vuQFEcbTv3Gz6W6OQpFxqt2E9MA3TCOecRFYhHfo=
+	t=1776764505; cv=none; b=V8SrULfcOtmxqqyBlWhdlq7eUXk2V4wNv6/L786lDwBa1vjnRFrFG538Vl0jJLgup5EiG2z3RmS3qV+o2yZsdhy6g3rsSlvtmDIMOU0qcfGDC3UugUZZ5+fdk/7NvyK6eHxFV+WKs9qVq8lQzq6MuK/vyzADVORSSqZwh6EPCds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776702383; c=relaxed/simple;
-	bh=WCG/mn04EZT2PRnQNwFez5dDdE2fCsqKIJdB0Yt9OAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SXv/fy7sbL/Hg70zml5gG84ug3e38iZNrBZbori9Qyq8iV4pHLpCtnArs9FiadG1INLfRKAvCWz0W/I7Q9p3yIXCXgq65/P1k6OCU+RAsrRBd9CNPkMSH+RWKL2A3jzXdFH8iGBI2V391Unq03fARwWdW8C5WoexRcM8mS+J0vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=dDEIDvLa; arc=none smtp.client-ip=82.195.75.108
+	s=arc-20240116; t=1776764505; c=relaxed/simple;
+	bh=JtZM9aTSz8yK4rHeAwrmAl94o0eBk1H1KWyGvEsBPBM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eqbVkDg7MAEQaVwmg5T459XewdL+p0AXOl9QwHCnNFNLuOu5dXesRrApeOvI2+3FUwGSRvbXZO43nrNDsf2C4TizjbkIlbQHMZEneFqQ5IUwsARscIYqJLjbIbYjJAEkBDnB7pv4MzbiTSW1W89O8mX1gtily5HMSApcev30yqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=D45rKCkE; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="dDEIDvLa"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="D45rKCkE"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bfKBlctQH+DmmbUOLO8Xd/pZe8bt+P73byWQDYXv2Ho=; b=dDEIDvLaGT8anzdW64LzJBghhD
-	bAMMg/WEt8K0RZLsWc3EGO07rUMbbVTP99T7SmkyttKSTLblp0v2+UPjQZb6AoVZuCj+t3td1GkK/
-	9MdaSPhJhI7hBV6CZYP77X2Cv6ixpsI1oJighWOHGRKS/QIGzbqRCk67FYymmet8icBFObT2NWUzV
-	KVaIbzEoLKtVPmG8yBZ4Mw4rMmd/sVwyjJx3abjOHmhIyKadJEQB9wsTXMjHMKt6Axq5yRAzaCx/p
-	uhBDgM+Xb916WXQfHfUgDXr8OwBaXIoxONTxpbusAMQKjaH5zro6ib54iFW+RdMqq6QXmhzYYwJIF
-	wbA1t39w==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=1AZv7glXXlYuoeujUmkd6+9Sul8gz7rUm4PpTOVY99A=; b=D45rKCkEC2hIDeqTr9WECulTgl
+	AOnqCCQhghQUkvm+OvznY0fh8Zq3CdpVOUq5Z60tNI8mGLPPpqRmeqxiedlpwypF4V3KXEj7/gIq7
+	oXJTE+j8ZEndv0j+4PwphZhw96xbmvXXXAL1FwV7waF098b1c7jBa5Al7Gbnde0scL3Adf1YsBSEA
+	rzl5Du/urztC75pT7lICcfC5MlVNYOtz/BLh6z4mUl3wOcOrBL0ZKCKnkqcqDK/wS3pEkmUAnlOMI
+	ZSMJY+5/dbAVUGpJ9o5Rge0zzzKpPZGMJNB5EUgqw+Lj2ZJz6IuXt6a4xoGtlCZ2vi7ENzIO2XifM
+	1bHlJCUQ==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wErRm-000DAP-3B;
-	Mon, 20 Apr 2026 16:26:07 +0000
-Date: Mon, 20 Apr 2026 09:26:02 -0700
+	id 1wF7bf-000lLt-2U;
+	Tue, 21 Apr 2026 09:41:24 +0000
 From: Breno Leitao <leitao@debian.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eryu Guan <eguan@linux.alibaba.com>, 
-	Yiwen Jiang <jiangyiwen@huawei.com>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] 9p: fix WARN_ON when dropping nlink on files with nlink=0
-Message-ID: <aeZTjeyiYOnTLBVT@gmail.com>
-References: <20260126-9p-v1-1-dc234d53ae87@debian.org>
- <aZGRkaFZPXfZW8a0@codewreck.org>
- <aeY32gOaV5jw1s8F@gmail.com>
- <aeZNdxmYw1K0Swg9@codewreck.org>
+Date: Tue, 21 Apr 2026 02:41:09 -0700
+Subject: [PATCH v2] 9p: skip nlink update in cacheless mode to fix WARN_ON
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeZNdxmYw1K0Swg9@codewreck.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260421-9p-v2-1-48762d294fad@debian.org>
+X-B4-Tracking: v=1; b=H4sIADRG52kC/1WNQQ6CMBBFr9LMmpp2kKpdeQ/DAugUxkUhLRIN6
+ d1NceXyJ++/t0OiyJTAih0ibZx4DmAFVgKGqQsjSXZgBaBCozQaeVtkoxwqQ+iNN1AJWCJ5fh+
+ SR/vb6dU/aVjLsxATp3WOn6Oy6cL9CTcttXQD1mfX1B1dL3dHPXfhNMcR2pzzF7DeRnmnAAAA
+X-Change-ID: 20260126-9p-50d206e2f6f6
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Eryu Guan <eguan@linux.alibaba.com>, Yiwen Jiang <jiangyiwen@huawei.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, stable@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2984; i=leitao@debian.org;
+ h=from:subject:message-id; bh=JtZM9aTSz8yK4rHeAwrmAl94o0eBk1H1KWyGvEsBPBM=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp50Y/VesljEpa6r/Tx1dCF9nHcEYwr+11jlF5b
+ ZOtuIAPc9aJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaedGPwAKCRA1o5Of/Hh3
+ bU6WEACm9YISEbR6uyUkeMKR+ckR8bxwJqzqeIGTd3Z2Bu4liCzmIe0xul/aUjucn8hTc1taKPj
+ qgGot3mH/Ejd1jVLR5YDTJl2rRg7QGQaOnHQBapU50XUDc/Fcu5D6oQYduCfP7NzNqKRXsXDDI5
+ AWqZijYErdFYlKY/GOSSDBX4qIDaQSvIT/1ZeSqLaCphyFqcG3u90HsY9twxBoRHFtGBffCiuuK
+ o2oZIZ/teDw0ApGvxOTd2KG+GEfvf4+0FELwr5AshnkkBNyRa+FdtDb2GYNMxHCGSGJpfJuRqKm
+ FKHDTBc+3X6Yljz0vSfQ1EFE/Lihag4fjgLiAtlLsT9pgv5H2xTqbwgApy6Hqs5aMuw9tsWS2Eo
+ o7w77Rk1h6qtCX2xmGKiz/zxvwRtRjAgC2ytOViMBluGpGC1GzDFpnoz0B0TIBlqqJctG8cckdy
+ YUa82mmRf+Wij3QAwQeSQhNUU1avNIq2VcWowYVusZHdWqLGjOx3vOSFfgckOCR6I20AOAV1qvB
+ SzmXDa7qV02bbDgM3u8QDRgwAoHhYk0XAe6VIsFjwvFtlkfPQbB6eGVDEYIQvFxP3zDHDiLNE85
+ TJJRsBTOZGfxD9NtCOiaumMlsl7I/efw1+OI9G2vv1i7wur8u9+krkKWK5wtILsI9G7zOaHP2HE
+ BOI2CwfO1zhXGLw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-On Tue, Apr 21, 2026 at 12:59:51AM +0900, Dominique Martinet wrote:
-> Breno Leitao wrote on Mon, Apr 20, 2026 at 07:31:14AM -0700:
-> >     In cacheless mode the server is authoritative and the inode is on its
-> >     way out, so locally adjusting nlink buys nothing. Skip v9fs_dec_count()
-> >     entirely when neither CACHE_META nor CACHE_LOOSE is set, which both
-> >     avoids the warning and removes a class of nlink races (two concurrent
-> >     unlinkers observing nlink > 0 and both calling drop_nlink()) that an
-> >     nlink == 0 guard alone would only narrow rather than close.
-> 
-> I need to check this doesn't actually leak memory or something but this
-> sounds better to me, thanks.
-> 
-> Please send as a proper PATCH mail and I'll tentatively apply for 7.2
-> (a bit too late for 7.1)
+v9fs_dec_count() unconditionally calls drop_nlink() on regular files,
+even when the inode's nlink is already zero. In cacheless mode the
+client refetches inode metadata from the server (the source of truth)
+on every operation, so by the time v9fs_remove() returns, the locally
+cached nlink may already reflect the post-unlink value:
 
-Ack, 7.2 is more than fine.
+  1. Client initiates unlink, server processes it and sets nlink to 0
+  2. Client refetches inode metadata (nlink=0) before unlink returns
+  3. Client's v9fs_remove() completes successfully
+  4. Client calls v9fs_dec_count() which calls drop_nlink() on nlink=0
 
-Thanks for your help,
---breno
+This race is easily triggered under heavy unlink workloads, such as
+stress-ng's unlink stressor, producing the following warning:
+
+  WARNING: fs/inode.c:417 at drop_nlink+0x4c/0xc8
+  Call trace:
+   drop_nlink+0x4c/0xc8
+   v9fs_remove+0x1e0/0x250 [9p]
+   v9fs_vfs_unlink+0x20/0x38 [9p]
+   vfs_unlink+0x13c/0x258
+   ...
+
+In cacheless mode the server is authoritative and the inode is on its
+way out, so locally adjusting nlink buys nothing. Skip v9fs_dec_count()
+entirely when neither CACHE_META nor CACHE_LOOSE is set, which both
+avoids the warning and removes a class of nlink races (two concurrent
+unlinkers observing nlink > 0 and both calling drop_nlink()) that an
+nlink == 0 guard alone would only narrow rather than close.
+
+Fixes: ac89b2ef9b55 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
+Cc: stable@vger.kernel.org
+Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- Skip v9fs_dec_count() entirely in cacheless mode — server is
+  authoritative, so it fixes the WARN and closes the race class.
+- Link to v1:
+  https://patch.msgid.link/20260126-9p-v1-1-dc234d53ae87@debian.org
+---
+ fs/9p/vfs_inode.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 97abe65bf7c1f..197a155a4e8b5 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -488,10 +488,19 @@ static int v9fs_at_to_dotl_flags(int flags)
+  * - ext4 (with dir_nlink feature enabled) sets nlink to 1 if a dir has more
+  *   than EXT4_LINK_MAX (65000) links.
+  *
++ * In cacheless mode the server is the source of truth for nlink and the
++ * inode is going away immediately, so locally adjusting i_nlink buys
++ * nothing and races with concurrent metadata fetches that may already
++ * have observed the post-unlink value (nlink == 0).
++ *
+  * @inode: inode whose nlink is being dropped
+  */
+ static void v9fs_dec_count(struct inode *inode)
+ {
++	struct v9fs_session_info *v9ses = v9fs_inode2v9ses(inode);
++
++	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
++		return;
+ 	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+ 		drop_nlink(inode);
+ }
+
+---
+base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
+change-id: 20260126-9p-50d206e2f6f6
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
