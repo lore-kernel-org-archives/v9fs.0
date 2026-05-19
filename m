@@ -1,192 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EED833F5BE
-	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 08:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E730B3DB62B
+	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 11:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779181017; cv=none; b=TFi5xOfaYpnlrkhZJ+7h3hhyh3jwyUzVbKXvgZC/LwPOKkLvujPTYIadq6UUfOAWeOTTuN648WlrPZoSa+xi07Jglyv+RM25I2MTXtQ/88zfm7GIINkFo9dMtKeXClVyl9e4oo/ontcUFEgMnyXxxhKO3Av4z8uMtHBv6tfoMaU=
+	t=1779191862; cv=none; b=XDGeXvuYQZ/CCKWYxDdlBU6C7sCxVeJBzAG5j9ae3SvfAYL13109bK7EPNMD3qlsraKUJ2iSnLzzGvmna0L+D8OUrK2nuSdrkHWrnkiGxhT8To/dPXBdfLGn/W5cf/D6SXcB2s4FuN3E6w7jgg5PRJPxFJG7CxICmDMSIra7/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779181017; c=relaxed/simple;
-	bh=wRI1yFQg6noXLaY9c7oF4pZjyPbVoNbfTSXBmOEYMic=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=revFAmh433kcTHIrPO8bvbsCQt/Nu3fTwiS9V4Odft9V0W7EgZc8A5Njj/i4DWnor61MgOrons3ANQZ6R4eB2Jw4hdjyJc2WrrMdSRwPD91wGdrXbFo+roZhykX4AFIwZxhEuMq/N7EQXynsFVQ8ZZnHq/fadhF2ih7TpwRzCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a6Q9IJB3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779191862; c=relaxed/simple;
+	bh=4dPKQ9opV6gOooBUTbLMR8rKLrGkspBje29ouV83hm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UFYMUvT1dBT5qjUy+vWkXWK+/um6B6LYv5Y1QAIYy6Y7ubpux92sp4wPiZE45y1U16vcznjWF1RxvSVxBnwZAVsTQ8GYJMiUfuXpjw/Es+4TMhAbp9L5dJWrMNPqQx2Kw8dlSMZH22qk5DnUFxR+KwFQ/eN0uR0no/9kp3O0Ybs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=NHH0yM0O; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a6Q9IJB3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779181015;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="NHH0yM0O"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 24C4314C2D6;
+	Tue, 19 May 2026 13:57:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1779191851;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6LiaT+p5JzjhgPYdEvk6JkqtTVDPOsp8ZYFdDo/6RaY=;
-	b=a6Q9IJB3QX+2EDpzVm7OYIK1csH3lOhm9dC+VVy4/ZG9z9gS0kTG2OGirZke+jX5OTsIrF
-	5MfXbs/Nm17Xopm8Ek7RhwPfd+ge+cMpRSIrNbPMCC3MAF0kwXr+VlNNFhkjmQnPIiuG9g
-	wMEMFp97V6HP0p8nM4dZ1Ph9GvP7TNI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-kyoVeZ09Ov2A6xqp-vQlCw-1; Tue,
- 19 May 2026 04:56:50 -0400
-X-MC-Unique: kyoVeZ09Ov2A6xqp-vQlCw-1
-X-Mimecast-MFC-AGG-ID: kyoVeZ09Ov2A6xqp-vQlCw_1779181008
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5786B1956052;
-	Tue, 19 May 2026 08:56:46 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.33])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3932B1800352;
-	Tue, 19 May 2026 08:56:36 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20260519091545.171c4b85@pumpkin>
-References: <20260519091545.171c4b85@pumpkin> <20260518222959.488126-1-dhowells@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Matthew Wilcox <willy@infradead.org>,
-    Christoph Hellwig <hch@infradead.org>,
-    Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
-    Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
-    ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Trond Myklebust <trondmy@kernel.org>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/21] netfs: Keep track of folios in a segmented bio_vec[] chain
+	bh=Chm15fitpyfQYupOgZiAfu0H10bNgX3DVvg0qzfbx2w=;
+	b=NHH0yM0OKo4wFpr6rJ6zyYaVznF99lZm8vpNIg4UEnlueLqHvB2L9e+euQn+EYkDpp9DUZ
+	/ey30D2vBAiOvYLSGDKIbOi1zY31WIAkbaV7oqQIYsJNzc+Hj4VIixn3vZX3KGWoXeXA/u
+	sFlzqYw8Kqfjfx0Nrk8RmLfRWvV9Y2o3Tk1TBnfZtVoHcPYYR/v49Un+IWmf0qbcFb/HSP
+	eo+CxPzFewLLpP1pnehJYvQYgM0uJdmvmbK0Fb0Y+zy7YvYcBJdpSK+dSuiafFEe4cZz/X
+	E5odtDZB7DsXIuvwTL5Jru2Bgg/qfSB/MMNX+bios5XereWgh3Tn7THVCrKSWQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7a5442b8;
+	Tue, 19 May 2026 11:57:27 +0000 (UTC)
+Date: Tue, 19 May 2026 20:57:12 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	v9fs@lists.linux.dev
+Subject: Re: [PATCH net-next] net/9p/usbg: Constify struct
+ configfs_item_operations
+Message-ID: <agxQGEpSE9ytZSDV@codewreck.org>
+References: <2478bdabd7d169a686879c049f11dc307b5debbd.1778922467.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 19 May 2026 09:56:35 +0100
-Message-ID: <586308.1779180995@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: J-FsxB1MKTK1dpfZsAhUvmBO6P37BgVtgmtMMTC_K88_1779181008
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <586307.1779180995.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2478bdabd7d169a686879c049f11dc307b5debbd.1778922467.git.christophe.jaillet@wanadoo.fr>
 
-David Laight <david.laight.linux@gmail.com> wrote:
+Christophe JAILLET wrote on Sat, May 16, 2026 at 11:08:28AM +0200:
+> 'struct configfs_item_operations' is not modified in this driver.
+> 
+> Constifying this structure moves some data to a read-only section, so
+> increases overall security, especially when the structure holds some
+> function pointers.
+> 
+> On a x86_64, with allmodconfig:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>   25167	   9336	    256	  34759	   87c7	net/9p/trans_usbg.o
+> 
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>   25231	   9272	    256	  34759	   87c7	net/9p/trans_usbg.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-> > =09struct bvecq {
-> > =09=09struct bvecq=09=09*next;
-> > =09=09struct bvecq=09=09*prev;
-> > =09=09unsigned long long=09fpos;
-> > =09=09refcount_t=09=09ref;
-> > =09=09u32=09=09=09priv;
-> > =09=09u16=09=09=09nr_segs;
-> > =09=09u16=09=09=09max_segs;
-> > =09=09enum bvecq_mem=09=09mem_type:2;
-> > =09=09bool=09=09=09inline_bv:1;
-> > =09=09bool=09=09=09discontig:1;
->=20
-> There doesn't seem to be any point using bitfields.
-> There is a massive hole here anyway.
+Thanks, this makes sense -- I've picked it up in the 9p tree
 
-Depends on how you define "massive".  On a 64-bit machine, the whole thing
-fits into 48 bytes - 6 words (or 3 bio_vec slots).  next, prev, fpos, bv an=
-d
-ref+priv take up 5 of those words; nr_segs and max_segs take up half of the
-6th, leaving a 4 byte hole.
-
-You're right, though, I could make them all non-bitfields as the enum is
-marked mode(byte).
-
-> >  (1) next, prev - Link segments together in a list.  I want this to be
-> >      NULL-terminated linear rather than circular to make it possible to
-> >      arbitrarily glue bits on the front.
->=20
-> Do you ever need to follow the list backwards?
-
-iov_iter_revert() exists, unfortunately, but yes, I would like to avoid hav=
-ing
-a prev pointer.
-
-I have a couple of ideas on how to get rid of that - or at least store the
-start in struct iov_iter and always work forwards - but I haven't got round=
- to
-trying that yet.
-
-> >  (2) fpos, discontig - Note the current file position of the first byte=
- of
-> >      the segment; all the bio_vecs in ->bv[] must be contiguous in the =
-file
-> >      space.  The fpos can be used to find the folio by file position ra=
-ther
-> >      then from the info in the bio_vec.
->=20
-> Should fpos be off_t (or u64) rather than 'long long' (they are all the
-> same underlying type).
-
-It's not 'long long' and off_t is actually 'long' in asm-generic.  Actually=
-, I
-should probably switch to using uoff_t.  Note that this file position shoul=
-d
-never be seen as negative; I think loff_t should only really be used in
-llseek.
-
-> >      If there's a discontiguity, this should break over into a new bvec=
-q
-> >      segment with the discontig flag set (though this is redundant if y=
-ou
-> >      keep track of the file position).  Note that the beginning and end
-> >      file positions in a segment need not be aligned to any filesystem
-> >      block size.
->=20
-> At this point you lose me :-)
-
-Apologies, but I'm trying to define how a bvecq chain works.  I need to cod=
-ify
-it more coherently.
-
-So there's a number of reasons I want to be able to maintain the file posit=
-ion
-information in the chain:
-
- (1) I can treat buffered writeback and DIO write more similarly if there's=
- no
-     requirement to access the folios in the list to get file position
-     information.
-
- (2) When cleaning up lists of folios in buffered writeback, the file posit=
-ion
-     is needed to access the i_pages xarray in order to clean up the marks =
-on
-     it.  This means I don't need to go from my list to access each folio, =
-but
-     can look them up through the xarray instead.
-
- (3) Some network filesystems, e.g. ceph, allow discontiguous (sparse) writ=
-es
-     to be made to the server in a single RPC operation.  This gives a mean=
-s
-     to convey that information to them, but then allows the data to be
-     conveyed in a single blob to the socket (the mapping between blob offs=
-ets
-     and file regions is tabulated separately within the RPC call).
-
-Note that some of this also applies to reads too.
-
-The last bit about filesystem block size alignment is because network
-filesystems don't typically require any block alignment, doing RMW locally =
-on
-the server.  I should really have separated that from the discontiguity bit=
-.
-
-David
-
+-- 
+Dominique
