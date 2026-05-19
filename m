@@ -1,116 +1,175 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54374F797A
-	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 13:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779195730; cv=none; b=DQmyF6R4Opvj73ksFSirDf/6m4N/LZgggBV6ePIXSBcWZ2yELx2qvVA76cZhTI4e+jSpVVgeT2D6JzZhXE2GxM5RPFEfi15vdZm54u/prc0RuWiU9J2z1xJz/UblrioIyPLGL65JsOGIC7aGWIuW8JgmYPdMsI5Fb8SkRIeMg6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779195730; c=relaxed/simple;
-	bh=fsL6R78yo1XIwU0DoOtvi4ZpYkwPnM2HAW93yVOxuYk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Fhd/8CO5YsBVoX8uAytmWiRliwwSl/86/eFehHtlVswxgSOlK077X84/ozNVlimFYtEEEzVAF1N+zX+iob4xpIwZDDSSIA7vAZfmVH/+djfcw5Y/SJYC7cF+d9Xz/41ZOztZOm5dzsxnBSwavRBimtXGA907haAjPgyedDeHK88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=sqjMiLHW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=b/NR7CVK; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719713ED3AC
+	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 13:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779198833; cv=pass; b=ixZ0qcSbD6d0bP1eu63FK82YOxERJD166GOCkNOrt2C3mZ3z4w+WHJmEAY3y/4RTX/3dz9NAn0c8u1z3oiSggr6Ndv+YDQ2gAGHKa3mN3iF1afokwTrAcCXQTZ/Aaz0R52ldDKk6R+SO8Dt4MNoqhQhfoA8wYVoH2FmhDnZ4xy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779198833; c=relaxed/simple;
+	bh=QJ4KJ/g3fInpA9dxwtg4On7IOQL0oq1w0hyYLSGGBq4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AidrWOk7Ly4QYV8FJhNoZlllWfeCIurRekH99R3f/XHHuG8VNTo5QU3mHC6fz/bLZmdMspqfmCRjqUKqxuJuOfn/AygSQ0h6izvGM97/aqzHCBoe1dL8Q947v5My7uNlgI4M+8y7tSqdJjgMy2xk4JcM/B8d1h4AuWAcFesM72c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3qXy0rX; arc=pass smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="sqjMiLHW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="b/NR7CVK"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D29057A002B;
-	Tue, 19 May 2026 09:02:07 -0400 (EDT)
-Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-06.internal (MEProxy); Tue, 19 May 2026 09:02:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779195727;
-	 x=1779282127; bh=+0MRqd1OjWt8SYiTt49fm/XBiRze4j1TMiYODb85HtM=; b=
-	sqjMiLHWDNc+riMvYWWdRDCKGXDbCgSqLwoIGKgeXyfvkMeVgmeEFiuWQGdqTYTu
-	RmomLFBRr5usn2DYCKvxLFxqDs2r3USu8g+x6o/n351QmndoPXFoXmX49XN1Omta
-	RRQ0jyAEgfEo5Ro8dRdFpFozu5aJ7UgHWvs95DpJXmgGQ1sHjB37LoMinUN8ibnt
-	m/QHBk1THpM7Wf9C3dGUzbwAPcacD/J7tXSm32iu3hkoV987YdWC+xoS5gcjChE5
-	tNz8Nh84xZ393oyi6dGNXFZNWh1NvZP53Nve0BcX1i7E0iwWCKIkzaTOGBiAceZp
-	Vs2eTDU0cnW/IzMMHDvWPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779195727; x=
-	1779282127; bh=+0MRqd1OjWt8SYiTt49fm/XBiRze4j1TMiYODb85HtM=; b=b
-	/NR7CVKXoZd4ttVCFvT8rZuw0uwGUDERo1YEa7i6KrvyI4H4Qp08rfJjw5hRZdaF
-	vfGLZc5ZahbhiOcJdpk6Hb5jgorOX5Qfs2Avq+zfwF5I8hpP82y57hpJs3ZjTsLH
-	TKOwSi1goLFZskNbvFSk8v1MJHPNcUYAh/b+BdRWeyEyN9xnbapoLOvTTZ6bhZ60
-	kjcdYrPyt3l+qU9boQOjMlg03mWXt+5Z98d457K2OkEkcq8wrA752sFAXY7KKFE0
-	n3Zc6Qy9+fa8r+bRp3Qj3tqcUkiiv60iZuBoOvDn6UObh9m1cYCKO+Di1l8EBKbp
-	EUYd7OocQmj5FIQ3V1pVg==
-X-ME-Sender: <xms:T18Maq1-BpbpbilKVzzzGuHMRWAK1E44umymG7QzTHhck0d_VcUAcA>
-    <xme:T18Man4xnl8RreoxunfUtSEP_k-GuF5jKkc_3YhpvTxcIMXt73OKwPpg0YnpTt1KQ
-    ffkiIxXzZIZ56tsK6JG_qeRYmmWzEZFjO2ukM_CJalh42Yk3kgysA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugedukedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfrfhivghr
-    rhgvuceurghrrhgvfdcuoehpihgvrhhrvgessggrrhhrvgdrshhhqeenucggtffrrghtth
-    gvrhhnpeetgeeivdffhfeihedvkeefueekgeeivdekheekjeeuieejiedtffdtjeetvdff
-    jeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehpih
-    gvrhhrvgessggrrhhrvgdrshhhpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprh
-    gtphhtthhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthht
-    ohepuggrvhhiugdrlhgrihhghhhtrdhlihhnuhigsehgmhgrihhlrdgtohhmpdhrtghpth
-    htoheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtohepvghrihgtvhhhsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsheslhhishhtshdrlhhinhhugidrug
-    gvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrgh
-X-ME-Proxy: <xmx:T18MasfABFdzd_E5vPQfLtvlAwLE5GeajO9A_B4zEHA0gaNwmEy_OA>
-    <xmx:T18MaoQ--u09csj5zOcB-S6xQqY0dHPoIsiumCf8r25pVOcK8YqdAA>
-    <xmx:T18MataRQbWo_Dh6og_9SVIBwdo2ZJ_AR6NXFmsMwVJxjhxPqiz3cw>
-    <xmx:T18MajdXoqnJ-8jviuldDM0hfQBU82KrONmr9WtSMiuJJ8mzhsK_WQ>
-    <xmx:T18Malk3lIxVNC64p3LmguNIIRJZED6QAM4_czPqlEphsEf-MvfNYzoM>
-Feedback-ID: i97614980:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 271DE216008A; Tue, 19 May 2026 09:02:07 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3qXy0rX"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45d96d21e82so2118711f8f.0
+        for <v9fs@lists.linux.dev>; Tue, 19 May 2026 06:53:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779198829; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IpmC1twa2Ze/H1QpaRboMULfOvvxB3jBiyTyrbiVSKbe4SKDJwSd3wSznUzOTi76zd
+         w8AzDzU1DYEnuewZ08hF2JTg7LcRL9w/5a9JwIL7QfpIJghnaly7RFBhOAZ+4NoURQl6
+         89FbdtGAlZzC7cGLVqPMvp3oB45NPslkF/Z6LK/z71SBR5ESPyg8dA53coWHw90Nq/cT
+         K04WexmFRVRl366kjJSM4SONcDowH2riSwO/ucA2CljercLelWRVifLfox4UVqlvtLt8
+         7ESQknwZkRDeWvsAlqOqUXFuU5WcX6W6NU3nuYalmTWj+jNLDPVAuAvui+1GxieTk/iS
+         d0pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=n1LQyxnpPi+Z+D/FQN9BLFSwJyyBjmHjXirs065b7UU=;
+        fh=zROF+UN7UbQYXKg8uTEnFlxUVHea5wswon5K3A5k9Ok=;
+        b=kVe6AxnWiR7mHlogPR017RtNXhmEQteBMj9sXN+AiPjaUsmUfWUIKf7v0eVGIxiSZo
+         Mt+98hljfK3uSV355+Mvk10b1IpDcwGhJH4SQR1yFtJ0POpSFp3DLBG35O5i2/Sie0x5
+         bMyyckkGm2uoJ8PT1zEOVRJL/8iFmtu8TC3S02y6HKEsPJ9IlC3WmbmEqczNkBxmq2Nx
+         /+HNtQM7+834tcGlsZcdsULt1TiSKcCwqMojzE0wts7Oe0IKN21SuwgLfi/LBOTLwRuD
+         TTX2FyOig0+FwN8eLy8qVLPALuj3snZxXdS69QL9n59PSd4wcp70jKZjesNcS4RjyEz9
+         lHUw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779198829; x=1779803629; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=n1LQyxnpPi+Z+D/FQN9BLFSwJyyBjmHjXirs065b7UU=;
+        b=A3qXy0rX9P9tjqsf9hCxqqW9YcKlSqQbVowlz43y7Reay3MuYj/qA3U8RIRrLKTNkC
+         hGrC/g53KQJHAVApi639mxP3JMzDxWDw+PwuOpDFlr8oyl72hfD7p5LSeaniYICqgBMs
+         +PA6dPAWtcGX3nHzcBA4cvj8T+BJKnnXRiNlXTG3Fv7iWE99RKoNa0wcYnTipUbKo/5P
+         gCAGyJFMPSC7hnahhV95L5huMCOPxNWrKvwSSWeOnVUs2xXJNdNge69I4bCDtvtQhjol
+         o7yAhJTf2YAFcQtqZViAbLtxGNP0t+sFKd/fUDh2RtQPQ3+HnNizUZ8jj7giItMf+zw8
+         VaPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779198829; x=1779803629;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n1LQyxnpPi+Z+D/FQN9BLFSwJyyBjmHjXirs065b7UU=;
+        b=Pe5/7qNGPFYXVmYMwAOlYm59lVOoGEEn/w69Qt2EzOMcSL57G9U9v9ildPAoq5eNFx
+         qvzohQgf7yQHKN+hmI8fYV0bD1xyfLyjrYQ9Q0/wKQQS+qFcqvyOGTB505L4Dor175aR
+         phQpWj816gRW9369hbKJexVMR/frXHnRW37PiBd4cr2PsVafokJDNt/yAfZZ8giHKcBN
+         uNZXaaXMdB/tc9Ws0kr1fOdCUlVvJwYdQctm5MzY2F++iN9Ho13Rm0wrQWWNvXCxVtdx
+         HxXKiJlgik7wExG+RT9bL4FiFWmSkVYLb7HEAcaaRwOvB6Lxj+HcoOPGNW5JBIro8X6b
+         E3DA==
+X-Forwarded-Encrypted: i=1; AFNElJ+UpgLc6oHgk3rtm93FhD4R6aNuErI4ss+BbDf8rgOtuN8ZVaPFCDxrS7oDbTwHYprOV1wk@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9W8omqZa7q1WNf58s5dxHSrls/C/Z9dRbR3l/xcRfBtMvMnrC
+	y29birqofo7wsJ9SXTNzqKjaieXewuc9ZdmQkQDTit/CgDESmgrZ8FDE0MuDiTKQXona1YUGYOZ
+	Y6jMgsGqCaUshpd1iuOLb/ftqWC3PbVc=
+X-Gm-Gg: Acq92OF/UupdyKg+nupb9rolKYpo5LQy7EIGlD1Lcca3/XJtncMOmdXRvPKECzNmVZE
+	ZEIBIMJzMFj5Iooed6lOVwbfT6qDlduiRUCKKDPSJw4vY+OK8mjTABrPlC4G6ztcRBds/tVDX7O
+	3tswSn2FmiIf8Y1q0nQLy1+qfEHjqwPpTpuea7ixTLGXejwqX8R0uVpAHvw/R0KqGlzKoOW0mSF
+	mQkJZf55Kty206FNmnPJwJIaVWKjHokVn+BLTN4aaJLhcN16Uwd21Hbvu0vT+vs9E6iPYJ1b0fJ
+	l9iStbDo4LKJOVlwPoJh
+X-Received: by 2002:a5d:5d0d:0:b0:43c:f583:126a with SMTP id
+ ffacd0b85a97d-45e5c5a0cf8mr32574801f8f.14.1779198828486; Tue, 19 May 2026
+ 06:53:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 19 May 2026 15:01:46 +0200
-From: "Pierre Barre" <pierre@barre.sh>
-To: asmadeus <asmadeus@codewreck.org>
-Cc: "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>,
- "David Laight" <david.laight.linux@gmail.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Message-Id: <babcc401-e78b-4086-80b0-087e927806dd@app.fastmail.com>
-In-Reply-To: <agxXUItqeMqTrESo@codewreck.org>
-References: <20260512132032.369281-1-pierre@barre.sh>
- <agxXUItqeMqTrESo@codewreck.org>
-Subject: Re: [PATCH 1/2] 9p: use kvzalloc for readdir buffer
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260510182856.17569-1-aayushpatilsch@gmail.com>
+ <agxW8An7fRApCY1r@codewreck.org> <CABc3pKGKCLydod2NOgETP-z0T5BHep8hyy7z2UF3o+DrWEh5yw@mail.gmail.com>
+In-Reply-To: <CABc3pKGKCLydod2NOgETP-z0T5BHep8hyy7z2UF3o+DrWEh5yw@mail.gmail.com>
+From: Aayush Patil <aayushpatilsch@gmail.com>
+Date: Tue, 19 May 2026 19:23:38 +0530
+X-Gm-Features: AVHnY4JUcQHxE5CA2_Z-v_KfhWRQX-KRwhVLbvEnNr1BdXF7V1KcN6mL2SfXxH8
+Message-ID: <CABc3pKEY8QvQzWPeU9QGBFG1dtGSdseTRdXF_5MUX1MeNBV5QQ@mail.gmail.com>
+Subject: Re: [PATCH] docs/filesystems/9p: fix broken external links
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, v9fs@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thanks!
+Hi Dominique,
 
-On Tue, May 19, 2026, at 14:28, Dominique Martinet wrote:
-> Pierre Barre wrote on Tue, May 12, 2026 at 01:20:31PM +0000:
->> The readdir buffer is sized to msize, so kzalloc() can fail under
->> fragmentation with a page allocation failure in v9fs_alloc_rdir_buf()
->> / v9fs_dir_readdir_dotl().
->> 
->> The buffer is only a response sink and is never pack_sg_list()'d,
->> so kvzalloc() is safe for all transports, unlike the fcall buffers
->> fixed in e21d451a82f3 ("9p: Use kvmalloc for message buffers on
->> supported transports").
+Thanks for the review! Yes, the trailing S is a typo.
+
+Regarding the replacement links, should I include them in v2 or leave
+those entries removed since you're not sure if they're the same files?
+Happy to go either way.
+
+Aayush
+
+
+On Tue, 19 May 2026 at 19:14, Aayush Patil <aayushpatilsch@gmail.com> wrote:
 >
-> Thanks, I need to run some tests but picked both patchs up for testing
-> When Time Allows before pushing to -next;
-> I think they're sane enough in this version.
+> Hi Dominique,
 >
-> -- 
-> Dominique
+> Thanks for the review!
+>
+> Regarding the replacement links, should I include them in v2 or leave those entries removed since you're not sure if they're the same files? Happy to go either way.
+>
+> Aayush
+>
+>
+> On Tue, 19 May 2026 at 17:56, Dominique Martinet <asmadeus@codewreck.org> wrote:
+>>
+>> Aayush Patil wrote on Sun, May 10, 2026 at 11:58:56PM +0530:
+>> > The xcpu.org links for xcpu-talk, kvmfs, and cellfs-talk are dead
+>> > with no archived snapshots available on the Wayback Machine, so
+>> > remove them. The PROSE I/O link redirects to a dead server; replace
+>> > it with an archived version from web.archive.org.S
+>>
+>> (I assume the final S is a typo here)
+>>
+>> Eric, it looks like you're the one who added these links, would you
+>> happen to have a copy around if you care about keeping these?
+>> Otherwise I'm not sure of the value of listing the papers without the
+>> actual files available, but I don't mind either way.
+>>
+>> I agree dead links are of little value though so will pick this up if
+>> there's no reply in a while
+>>
+>> >
+>> > Signed-off-by: Aayush Patil <aayushpatilsch@gmail.com>
+>> > ---
+>> >  Documentation/filesystems/9p.rst | 5 +----
+>> >  1 file changed, 1 insertion(+), 4 deletions(-)
+>> >
+>> > diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+>> > index be3504ca034a..65809a1dad21 100644
+>> > --- a/Documentation/filesystems/9p.rst
+>> > +++ b/Documentation/filesystems/9p.rst
+>> > @@ -23,13 +23,10 @@ the 9p client is available in the form of a USENIX paper:
+>> >  Other applications are described in the following papers:
+>> >
+>> >       * XCPU & Clustering
+>> > -       http://xcpu.org/papers/xcpu-talk.pdf
+>>
+>> I found http://mirtchovski.postnix.pw/p9/xcpu-talk.pdf but I'm not sure
+>> if it's the same file
+>>
+>> >       * KVMFS: control file system for KVM
+>> > -       http://xcpu.org/papers/kvmfs.pdf
+>>
+>> Looks close but perhaps not the same as
+>> https://www.kernel.org/doc/ols/2007/ols2007v2-pages-59-64.pdf ?
+>>
+>> >       * CellFS: A New Programming Model for the Cell BE
+>> > -       http://xcpu.org/papers/cellfs-talk.pdf
+>>
+>> Couldn't find anything fo this one
+>>
+>> >       * PROSE I/O: Using 9p to enable Application Partitions
+>> > -       http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
+>> > +       http://web.archive.org/web/20110101152020/http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
+>> >       * VirtFS: A Virtualization Aware File System pass-through
+>> >         https://kernel.org/doc/ols/2010/ols2010-pages-109-120.pdf
+>> >
+>>
+>> --
+>> Dominique Martinet | Asmadeus
