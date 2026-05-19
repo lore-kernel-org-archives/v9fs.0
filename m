@@ -1,78 +1,116 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F515352026
-	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 12:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54374F797A
+	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 13:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194162; cv=none; b=nnbyLridqnljmi/zns3q0r3TwokFrVfF3lJqyf7Hb5qolDTEfS7OnNjglXnjtzknjSMIs++1sXLpv+5DxkF36tJYXHqx4eu4Z7RrqsA4LWP0CfKwmu+OfRElh2n8dYkHezHt1WFYJfqhQ5C7KXcoKQSlt6AFvHxwDPehz5DGq74=
+	t=1779195730; cv=none; b=DQmyF6R4Opvj73ksFSirDf/6m4N/LZgggBV6ePIXSBcWZ2yELx2qvVA76cZhTI4e+jSpVVgeT2D6JzZhXE2GxM5RPFEfi15vdZm54u/prc0RuWiU9J2z1xJz/UblrioIyPLGL65JsOGIC7aGWIuW8JgmYPdMsI5Fb8SkRIeMg6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194162; c=relaxed/simple;
-	bh=v2IJJKa65PGELO+zy+ENnwYxaK4FHBgJetKS55J4vis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7OmErcukuZiPkBJeFLOdiWPalBYlFDH8JbmXolg5xKWFG6YPXjCmGBhk/4PWQlFMjt8hjkUDcN9N4Go6KUYOBjB8fRRIQSUSbVl7E/lPyC0mdq6ZY4+KHK0v4gN4xbiyygwSgQaG2/nYf/dgIRLB4QVX2Ycs+DgXcpm4Ha+oU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hTYfUCeH; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1779195730; c=relaxed/simple;
+	bh=fsL6R78yo1XIwU0DoOtvi4ZpYkwPnM2HAW93yVOxuYk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Fhd/8CO5YsBVoX8uAytmWiRliwwSl/86/eFehHtlVswxgSOlK077X84/ozNVlimFYtEEEzVAF1N+zX+iob4xpIwZDDSSIA7vAZfmVH/+djfcw5Y/SJYC7cF+d9Xz/41ZOztZOm5dzsxnBSwavRBimtXGA907haAjPgyedDeHK88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=sqjMiLHW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=b/NR7CVK; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hTYfUCeH"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 9708414C2D6;
-	Tue, 19 May 2026 14:35:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1779194155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7JDmLr7pMdRJfXYzICEsaNOuMVwfLxAfSSJysngH1uU=;
-	b=hTYfUCeHvISkDIOVYy3FQ/HQQWUiCdmqd4V85+jzpX4aelDii7BHEDnYC48CqdXlnO2sqq
-	2NzkVPp8WT5OTG3XkClXz5v6MRGS1n5J11TvOc9njznmGQhhAH1LKPxMxIR33u0EgGUXd8
-	VgCfIuRrcNzJMG/CIyGsGxPIgr5xwjKNS/0mLaJnLxV4Cyi+FEadpvc4gQXPf2c62Cn9i+
-	MAkjrWBZXrQHWYwvtHDICnkH7EfHV9t3udZ+b2D4Ggn5D34kkT+qER8L8zZC7Di76pYgRs
-	nLx/cMuxJJUzXE49SN+nYbmt508vKtANta8LJRL0RG/CTLN6EbkzTWn4cAGr1w==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 74cd3d4c;
-	Tue, 19 May 2026 12:35:51 +0000 (UTC)
-Date: Tue, 19 May 2026 21:35:36 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal
- signal
-Message-ID: <agxZGDFdOHnODKqO@codewreck.org>
-References: <20260415155237.182891-1-kovalev@altlinux.org>
- <aeA-WpUyfWrYrvaE@codewreck.org>
- <e3e9146a-d820-d35d-cebd-e7e7e4a2fa24@basealt.ru>
- <aeFoRIOUNQZWmTG5@codewreck.org>
- <bd83eb25-3142-3d91-f605-4d6f01182d03@basealt.ru>
+	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="sqjMiLHW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="b/NR7CVK"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D29057A002B;
+	Tue, 19 May 2026 09:02:07 -0400 (EDT)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-06.internal (MEProxy); Tue, 19 May 2026 09:02:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779195727;
+	 x=1779282127; bh=+0MRqd1OjWt8SYiTt49fm/XBiRze4j1TMiYODb85HtM=; b=
+	sqjMiLHWDNc+riMvYWWdRDCKGXDbCgSqLwoIGKgeXyfvkMeVgmeEFiuWQGdqTYTu
+	RmomLFBRr5usn2DYCKvxLFxqDs2r3USu8g+x6o/n351QmndoPXFoXmX49XN1Omta
+	RRQ0jyAEgfEo5Ro8dRdFpFozu5aJ7UgHWvs95DpJXmgGQ1sHjB37LoMinUN8ibnt
+	m/QHBk1THpM7Wf9C3dGUzbwAPcacD/J7tXSm32iu3hkoV987YdWC+xoS5gcjChE5
+	tNz8Nh84xZ393oyi6dGNXFZNWh1NvZP53Nve0BcX1i7E0iwWCKIkzaTOGBiAceZp
+	Vs2eTDU0cnW/IzMMHDvWPQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779195727; x=
+	1779282127; bh=+0MRqd1OjWt8SYiTt49fm/XBiRze4j1TMiYODb85HtM=; b=b
+	/NR7CVKXoZd4ttVCFvT8rZuw0uwGUDERo1YEa7i6KrvyI4H4Qp08rfJjw5hRZdaF
+	vfGLZc5ZahbhiOcJdpk6Hb5jgorOX5Qfs2Avq+zfwF5I8hpP82y57hpJs3ZjTsLH
+	TKOwSi1goLFZskNbvFSk8v1MJHPNcUYAh/b+BdRWeyEyN9xnbapoLOvTTZ6bhZ60
+	kjcdYrPyt3l+qU9boQOjMlg03mWXt+5Z98d457K2OkEkcq8wrA752sFAXY7KKFE0
+	n3Zc6Qy9+fa8r+bRp3Qj3tqcUkiiv60iZuBoOvDn6UObh9m1cYCKO+Di1l8EBKbp
+	EUYd7OocQmj5FIQ3V1pVg==
+X-ME-Sender: <xms:T18Maq1-BpbpbilKVzzzGuHMRWAK1E44umymG7QzTHhck0d_VcUAcA>
+    <xme:T18Man4xnl8RreoxunfUtSEP_k-GuF5jKkc_3YhpvTxcIMXt73OKwPpg0YnpTt1KQ
+    ffkiIxXzZIZ56tsK6JG_qeRYmmWzEZFjO2ukM_CJalh42Yk3kgysA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugedukedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfrfhivghr
+    rhgvuceurghrrhgvfdcuoehpihgvrhhrvgessggrrhhrvgdrshhhqeenucggtffrrghtth
+    gvrhhnpeetgeeivdffhfeihedvkeefueekgeeivdekheekjeeuieejiedtffdtjeetvdff
+    jeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehpih
+    gvrhhrvgessggrrhhrvgdrshhhpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopegrshhmrgguvghushestghouggvfihrvggtkhdrohhrghdprh
+    gtphhtthhopehlihhnuhigpghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthht
+    ohepuggrvhhiugdrlhgrihhghhhtrdhlihhnuhigsehgmhgrihhlrdgtohhmpdhrtghpth
+    htoheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtohepvghrihgtvhhhsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsheslhhishhtshdrlhhinhhugidrug
+    gvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrgh
+X-ME-Proxy: <xmx:T18MasfABFdzd_E5vPQfLtvlAwLE5GeajO9A_B4zEHA0gaNwmEy_OA>
+    <xmx:T18MaoQ--u09csj5zOcB-S6xQqY0dHPoIsiumCf8r25pVOcK8YqdAA>
+    <xmx:T18MataRQbWo_Dh6og_9SVIBwdo2ZJ_AR6NXFmsMwVJxjhxPqiz3cw>
+    <xmx:T18MajdXoqnJ-8jviuldDM0hfQBU82KrONmr9WtSMiuJJ8mzhsK_WQ>
+    <xmx:T18Malk3lIxVNC64p3LmguNIIRJZED6QAM4_czPqlEphsEf-MvfNYzoM>
+Feedback-ID: i97614980:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 271DE216008A; Tue, 19 May 2026 09:02:07 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bd83eb25-3142-3d91-f605-4d6f01182d03@basealt.ru>
+Date: Tue, 19 May 2026 15:01:46 +0200
+From: "Pierre Barre" <pierre@barre.sh>
+To: asmadeus <asmadeus@codewreck.org>
+Cc: "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "David Laight" <david.laight.linux@gmail.com>, v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Message-Id: <babcc401-e78b-4086-80b0-087e927806dd@app.fastmail.com>
+In-Reply-To: <agxXUItqeMqTrESo@codewreck.org>
+References: <20260512132032.369281-1-pierre@barre.sh>
+ <agxXUItqeMqTrESo@codewreck.org>
+Subject: Re: [PATCH 1/2] 9p: use kvzalloc for readdir buffer
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Vasiliy Kovalev wrote on Sun, Apr 19, 2026 at 11:22:11AM +0300:
-> On 4/17/26 01:52, Dominique Martinet wrote>
-> > So if I understand this right, with a sane server, the tag will be used
-> > until umount or a reply (to either the flush or the original request)?
-> 
-> From what I tested — until a reply. Tested on latest master.
+Thanks!
 
-Thanks for all the tests and following up
-
-I'm still a little scared of this but I can't fault what you've found,
-I've picked this up for testing When I Find Time™ and will submit to
-Linus hopefully for next cycle if you don't hear back from me
-
--- 
-Dominique
+On Tue, May 19, 2026, at 14:28, Dominique Martinet wrote:
+> Pierre Barre wrote on Tue, May 12, 2026 at 01:20:31PM +0000:
+>> The readdir buffer is sized to msize, so kzalloc() can fail under
+>> fragmentation with a page allocation failure in v9fs_alloc_rdir_buf()
+>> / v9fs_dir_readdir_dotl().
+>> 
+>> The buffer is only a response sink and is never pack_sg_list()'d,
+>> so kvzalloc() is safe for all transports, unlike the fcall buffers
+>> fixed in e21d451a82f3 ("9p: Use kvmalloc for message buffers on
+>> supported transports").
+>
+> Thanks, I need to run some tests but picked both patchs up for testing
+> When Time Allows before pushing to -next;
+> I think they're sane enough in this version.
+>
+> -- 
+> Dominique
