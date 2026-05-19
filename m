@@ -1,47 +1,47 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332254DA537
-	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 12:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF2B4A341E
+	for <v9fs@lists.linux.dev>; Tue, 19 May 2026 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779193302; cv=none; b=PfyGye9DyMHxS2E3dD3DDMlh9jFCzaeVUJXdcYA/PFNW8qWl5nCnM9YK0WYTT1iOGuUdeuPY1z+r+CvthCdQGmgVr7V1IVPE4FycPNK2cMOuRBM0BI7KmDFhE94TfTc5XCcB7yzYbaLX85SwBseFnyc64aLWuEYYAGOIbXyB57g=
+	t=1779193607; cv=none; b=HeSe0x9xLM5Z8WMX2DrtQXuWKi/PRvagMNeb6/r6PpP7sn7aGiur+bfUqruXGnKwVv6i5K9AJSX+QOFZIlsRmnYt8JhhT8YSdZ8f8WSt1VZr3ou0qOhql6Co+KDBF5/NLHAvcgau22AB/FkS132FnWbEgJmeQAfGvsD/b1y/AyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779193302; c=relaxed/simple;
-	bh=zFh639qGz3CEz/3Gvm6szzdZ9VJbRCiu8Zjxvv3Nvho=;
+	s=arc-20240116; t=1779193607; c=relaxed/simple;
+	bh=mRba9h2gfvXWw5pBqvzT+wX9InA2J38+IlZ4u6dwt8c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EUmEJzGSONJiFXQM65l0dVaT5dVJnAVKUaiwtobJ7UlFSXaMdg3uq8aXqkwIUxTgflpFJo6NbTA1o9IK9KRvZTuup1t7c1XIoqhNTSM2ReU1gP9uyylnD/DnzrotU6sWcJcQd19jOnXrlXovpYiOihz/3Ye/yQOK2IoIy43km+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=twIqwkEn; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=IunFg2NdauPufw3TcQOAFk5KppRuYonm8JLmXWVrmQoPJvtxHBNbpuGGl6gXtVNTnWBDEA4LFawbBXEXQChTye2EqDhmMffXTBK8kFIsdBi4Bmtnkic/Yc8r6+bQ0p1Fwfrk+v4DOnzJ00Nx2fYsRQFsqa85RTWHUvxCXT3wzm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=GYp3AcZJ; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="twIqwkEn"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="GYp3AcZJ"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 60AF214C2D6;
-	Tue, 19 May 2026 14:21:35 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 43AB814C2D6;
+	Tue, 19 May 2026 14:26:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1779193297;
+	s=2; t=1779193603;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=paOQL+N3fqGK+M295z44zR/gj6eiXSuES86oNJZmkNs=;
-	b=twIqwkEnh2aP66ys9fq0BbMH/rrAUxkntjWLRUti+VSXeK44nW1S5zu4z/HgptIzQ4lwjj
-	d/b7/uswXw8wJRYhnHlEBtDP/QcjupSOy4Ee3l10aZywj2talH/w+7qfBugBQYlL5+zii8
-	azezgPryLyHUfsaybisQIYQ5cyrwGYI8rmU3eqKgOBV+G/sUaYJeumRhrWDjLm4bbKdrPp
-	B6yNOvusDZ6+FxaVkRsYOuR5WFurG4qoBzYcLdsIq9cYI62Y2wRA4pIC5TtBIvO+1Wk7fe
-	2mU/S/Np5lOh7k+m82TYpoW7aG6av7++EltuJda21BFRNI5xUxhlcAoCMM0gKw==
+	bh=n96hixq1CKIOyyia02VL4n7Ha7jZSPQbAVaxVmHdhVc=;
+	b=GYp3AcZJOKPiNX0Ate2YF09BFlIDEEb51ldjcIKFo2xdSBc6ceWn79kihimAYeNTcFilGi
+	QQkgQHR1ZwboXxwm7C1jXxI6AuggT0YVEdJJhvvQpWHOBPx0Lxqsi219BcQFYvQumPTj6Q
+	feQ5c7nG2aVnpGPQlfiQ+JYr3+p17+SoGeF+z9g+A4lDA/IFqSuALAfgD7f80S4d3njkst
+	MvadhpZWQKYEb1PRF4zY0eDOSjfYnw8/KgZhWEaU3Yg7tvkWC/14NOu49mSmLAnybO/zzP
+	0BHj1jQ7kOQ88GoOq42tPXEW1qjk1poRcIS/dnICmPKygz/KysZ5EO907MvvdQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e5384688;
-	Tue, 19 May 2026 12:21:33 +0000 (UTC)
-Date: Tue, 19 May 2026 21:21:18 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 3d4f33a4;
+	Tue, 19 May 2026 12:26:39 +0000 (UTC)
+Date: Tue, 19 May 2026 21:26:24 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	zhongling0719@126.com
-Subject: Re: [PATCH v1] 9p: Fix mkdir to return NULL on success
-Message-ID: <agxVvu6on5BXqb2J@codewreck.org>
-References: <20260511061830.38373-1-zenghongling@kylinos.cn>
+To: ericvh@kernel.org, Aayush Patil <aayushpatilsch@gmail.com>
+Cc: lucho@ionkov.net, linux_oss@crudebyte.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs/filesystems/9p: fix broken external links
+Message-ID: <agxW8An7fRApCY1r@codewreck.org>
+References: <20260510182856.17569-1-aayushpatilsch@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,28 +50,60 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260511061830.38373-1-zenghongling@kylinos.cn>
+In-Reply-To: <20260510182856.17569-1-aayushpatilsch@gmail.com>
 
-Hongling Zeng wrote on Mon, May 11, 2026 at 02:18:30PM +0800:
-> When mkdir succeeds, v9fs_vfs_mkdir_dotl() and v9fs_vfs_mkdir() return
-> ERR_PTR(0) which is incorrect. They should return NULL instead for
-> success and ERR_PTR() only with negative error codes for failure.
-> 
-> Return NULL instead of passing to ERR_PTR while err is zero
-> Fixes smatch warnings:
->   fs/9p/vfs_inode_dotl.c:420 v9fs_vfs_mkdir_dotl() warn: passing zero to 'ERR_PTR'
->   fs/9p/vfs_inode.c:695 v9fs_vfs_mkdir() warn: passing zero to 'ERR_PTR'
-> 
-> This change does not alter the runtime behavior since ERR_PTR(0) and NULL
-> are equivalent. However, it improves code readability and silences static
-> analyzer warnings.
-> 
-> Fixes: 88d5baf69082 ("Change inode_operations.mkdir to return struct dentry *")
-> Acked-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+Aayush Patil wrote on Sun, May 10, 2026 at 11:58:56PM +0530:
+> The xcpu.org links for xcpu-talk, kvmfs, and cellfs-talk are dead
+> with no archived snapshots available on the Wayback Machine, so
+> remove them. The PROSE I/O link redirects to a dead server; replace
+> it with an archived version from web.archive.org.S
 
-Thanks, I've picked this up with s/Fix/make/ in the commit subject, as I
-(subjectively) don't consider this a fix given it's only a style change
+(I assume the final S is a typo here)
+
+Eric, it looks like you're the one who added these links, would you
+happen to have a copy around if you care about keeping these?
+Otherwise I'm not sure of the value of listing the papers without the
+actual files available, but I don't mind either way.
+
+I agree dead links are of little value though so will pick this up if
+there's no reply in a while
+
+> 
+> Signed-off-by: Aayush Patil <aayushpatilsch@gmail.com>
+> ---
+>  Documentation/filesystems/9p.rst | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+> index be3504ca034a..65809a1dad21 100644
+> --- a/Documentation/filesystems/9p.rst
+> +++ b/Documentation/filesystems/9p.rst
+> @@ -23,13 +23,10 @@ the 9p client is available in the form of a USENIX paper:
+>  Other applications are described in the following papers:
+>  
+>  	* XCPU & Clustering
+> -	  http://xcpu.org/papers/xcpu-talk.pdf
+
+I found http://mirtchovski.postnix.pw/p9/xcpu-talk.pdf but I'm not sure
+if it's the same file
+
+>  	* KVMFS: control file system for KVM
+> -	  http://xcpu.org/papers/kvmfs.pdf
+
+Looks close but perhaps not the same as
+https://www.kernel.org/doc/ols/2007/ols2007v2-pages-59-64.pdf ?
+
+>  	* CellFS: A New Programming Model for the Cell BE
+> -	  http://xcpu.org/papers/cellfs-talk.pdf
+
+Couldn't find anything fo this one
+
+>  	* PROSE I/O: Using 9p to enable Application Partitions
+> -	  http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
+> +	  http://web.archive.org/web/20110101152020/http://plan9.escet.urjc.es/iwp9/cready/PROSE_iwp9_2006.pdf
+>  	* VirtFS: A Virtualization Aware File System pass-through
+>  	  https://kernel.org/doc/ols/2010/ols2010-pages-109-120.pdf
+>  
 
 -- 
-Dominique
+Dominique Martinet | Asmadeus
