@@ -1,32 +1,32 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCCD258EC1
-	for <v9fs@lists.linux.dev>; Wed, 20 May 2026 01:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394901CAA6C
+	for <v9fs@lists.linux.dev>; Wed, 20 May 2026 01:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779240321; cv=none; b=fqWwjjQ01NcpCFAiYNtA2CWybFyA4rIgAydLIZAhEfha3dttKBaco0DB/KfJqfBu86UyyTqvAUO71GRlIYkQvFIuJET9hrf23qdvyKC3p/elUyvFHuR4kMAN2qnNmdmZdkUhbETJhZsohWgoVexXUAUfk6O73vlLZPQNGwMVxiQ=
+	t=1779241409; cv=none; b=gjsg42r/7F2Jq9EmrlDLP1YXcE1DcIL8xEjTMyxFDUUpoMij2ncY4qCEI6ZccfbQ2L2kgnzOEECyuBukVBo4GZkNpGWwlRRa4j6H7kDLzCKD6K8AxqP1MIWS5/EXcJtyShK8Y0h9kdlD108VWQGfwYZ+8r7/Aubdk6Gnk9f4i0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779240321; c=relaxed/simple;
-	bh=Ayg9QZdfhHbEDzBPSbJd/qQ+4muJCh55LSQVLcIAu1o=;
+	s=arc-20240116; t=1779241409; c=relaxed/simple;
+	bh=y4ymFFk/MOyr0eZKFha4UOJPPaUP2MhOPzFuKOqTFZg=;
 	h=Message-ID:Date:From:MIME-Version:To:CC:Subject:References:
-	 In-Reply-To:Content-Type; b=DhHBWLc45o+ImRkQGsJRwHyEfhgQh9m+pjWrIIMqLXT/OMXV+NDu0JTtHxaZoV3I2hhGC5pOEb/4fXuc7XF2h850BY6blmAM5rZ8Xu88sTjpO1pBg6KCXr6fxXL60ExpbLEqvdFsMX9odMb1kwB6nZprvdzqhW9yhBYbXjrq+mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=aiszmvCe; arc=none smtp.client-ip=220.197.31.7
+	 In-Reply-To:Content-Type; b=IXJ3Rw8pcX/JR+7Hl6oX3QdQUN1Ka67Oc9Z54wEj3IlqW2m7DlzK4/P+Ot1c6JKJY30ZV5gyPKc/CytsgDK7f1wquwYB0yS7mr/OA7VCjAweBDw9i6m+p0ifsWkqZneROhjezspNsEzvn4/1us1Fffq/rFiOONkuKsI81ZJczbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=nwDNkISC; arc=none smtp.client-ip=220.197.31.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="aiszmvCe"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="nwDNkISC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
 	s=s110527; h=Message-ID:Date:From:MIME-Version:To:Subject:
-	Content-Type; bh=c6oI5kdk7nCao8oggoBmpnu2ZOCQfYXqNXrFl4cQe0M=;
-	b=aiszmvCeJFeUtZeYumTfWgEWO3nfRpW6Bzx7iS4F3Ciug+nywYWYYfEJORXmKv
-	H8hECbPWFTKImAKNNIaphmDdejSJiLJ+0u6TZIWuY14L2Te/a8PrQedeYesG70sE
-	CP7AXDhadDghlYjsWKb592qcTUv5Czro7zX5vQQGU/SGY=
+	Content-Type; bh=Y025+LnTwh/7ShQnSI1+4ZX/UDIlzb8hBuO/2oM7ckE=;
+	b=nwDNkISCaDKDso+riVQHducAkpY/zzGWHIxGO4pHm6irgTEwZ0OnxRLEhpZ3Si
+	hwDLlk22TmG2o6FdlkdjGAtXxHqPwPnMC4/3WTD8EgLD+mA4Z7G7RsVyKXm9dIxz
+	yU9Z9gvyA5Lb8mnl5DAUCQBa3/4JT83q+tkVMUyv8y0kQ=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PikvCgDnz7JUDQ1qtFOGFw--.58608S2;
-	Wed, 20 May 2026 09:24:36 +0800 (CST)
-Message-ID: <6A0D0D5E.5070900@126.com>
-Date: Wed, 20 May 2026 09:24:46 +0800
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnLyKWEQ1qY0XFBw--.27471S2;
+	Wed, 20 May 2026 09:42:47 +0800 (CST)
+Message-ID: <6A0D119D.3070900@126.com>
+Date: Wed, 20 May 2026 09:42:53 +0800
 From: Hongling Zeng <zhongling0719@126.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 Precedence: bulk
@@ -35,37 +35,35 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-To: David Laight <david.laight.linux@gmail.com>, 
+To: Dominique Martinet <asmadeus@codewreck.org>, 
  Hongling Zeng <zenghongling@kylinos.cn>
-CC: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org, 
- linux_oss@crudebyte.com, v9fs@lists.linux.dev, 
- linux-kernel@vger.kernel.org
+CC: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, 
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v1] 9p: Fix mkdir to return NULL on success
-References: <20260511061830.38373-1-zenghongling@kylinos.cn> <20260519183532.04e8e8f2@pumpkin>
-In-Reply-To: <20260519183532.04e8e8f2@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20260511061830.38373-1-zenghongling@kylinos.cn> <agxVvu6on5BXqb2J@codewreck.org>
+In-Reply-To: <agxVvu6on5BXqb2J@codewreck.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PikvCgDnz7JUDQ1qtFOGFw--.58608S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCry8ZFWrCr4DCr4kJFyDGFg_yoWrGF17pF
-	W8GF1vyFs8X34xWF4SkF4UX3WSqF43Kr48Wr1xKasYy3ZIqr1UtF48G34Yk3Z5Cr48Gw1Y
-	qF4j93Z5uF4fCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j-WrJUUUUU=
-X-CM-SenderInfo: x2kr0wpolqwiqxrzqiyswou0bp/xtbBrhU2B2oNDVU-IAAA3q
+X-CM-TRANSID:_____wDnLyKWEQ1qY0XFBw--.27471S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uryDAw1kWw1UGr1DXry7Jrb_yoW8Gw1rpF
+	WUtwn8tas8J3s7Cws7GF43Xw1YqaySk397Jw1Sk34DZ3ZIk3W8Xr10g3sY93W8Wr4rtw45
+	Za1xCwn5Gan8Cr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j-sqJUUUUU=
+X-CM-SenderInfo: x2kr0wpolqwiqxrzqiyswou0bp/xtbBrxdHGGoNEZeSrAAA34
 
-   Thank you for the review. You're right about the unnecessary err variable
-   and NULL check - v9fs_create() never returns NULL and p9_fid_put() 
-handles
-   both NULL and IS_ERR cases internally.
+  Hi Dominique,
 
-   I'll prepare a v2 patch with the simplified implementation as suggested.
+   Thanks for picking this up!
 
-   Regards,
-   Hongling Zeng
+   I received David feedback suggesting to simplify v9fs_vfs_mkdir()
+   by removing the 'err' variable and using ERR_CAST(). Since v1 is
+   already merged, would you still like a v2, or shall I submit it 
+separately?
 
-在 2026年05月20日 01:35, David Laight 写道:
-> On Mon, 11 May 2026 14:18:30 +0800
-> Hongling Zeng <zenghongling@kylinos.cn> wrote:
->
+   Best regards,
+   Hongling
+在 2026年05月19日 20:21, Dominique Martinet 写道:
+> Hongling Zeng wrote on Mon, May 11, 2026 at 02:18:30PM +0800:
 >> When mkdir succeeds, v9fs_vfs_mkdir_dotl() and v9fs_vfs_mkdir() return
 >> ERR_PTR(0) which is incorrect. They should return NULL instead for
 >> success and ERR_PTR() only with negative error codes for failure.
@@ -82,89 +80,7 @@ handles
 >> Fixes: 88d5baf69082 ("Change inode_operations.mkdir to return struct dentry *")
 >> Acked-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 >> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
->>
->> ---
->> change inv1:
->> - Add clarification in commit message that this is not a functional
->>    change, as suggested by Christian Schoenebeck.
->> - Add acked-by.
->> ---
->> ---
->>   fs/9p/vfs_inode.c      | 5 ++---
->>   fs/9p/vfs_inode_dotl.c | 4 ++--
->>   2 files changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
->> index d1508b1fe109..d2d18c796b58 100644
->> --- a/fs/9p/vfs_inode.c
->> +++ b/fs/9p/vfs_inode.c
->> @@ -672,13 +672,12 @@ v9fs_vfs_create(struct mnt_idmap *idmap, struct inode *dir,
->>   static struct dentry *v9fs_vfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->>   				     struct dentry *dentry, umode_t mode)
->>   {
->> -	int err;
->> +	int err = 0;
->>   	u32 perm;
->>   	struct p9_fid *fid;
->>   	struct v9fs_session_info *v9ses;
->>   
->>   	p9_debug(P9_DEBUG_VFS, "name %pd\n", dentry);
->> -	err = 0;
->>   	v9ses = v9fs_inode2v9ses(dir);
->>   	perm = unixmode2p9mode(v9ses, mode | S_IFDIR);
->>   	fid = v9fs_create(v9ses, dir, dentry, NULL, perm, P9_OREAD);
->> @@ -692,7 +691,7 @@ static struct dentry *v9fs_vfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->>   
->>   	if (fid)
->>   		p9_fid_put(fid);
->> -	return ERR_PTR(err);
->> +	return err ? ERR_PTR(err) : NULL;
->>   }
-> That function is odd, it ends:
-> 	fid = v9fs_create(v9ses, dir, dentry, NULL, perm, P9_OREAD);
-> 	if (IS_ERR(fid)) {
-> 		err = PTR_ERR(fid);
-> 		fid = NULL;
+> Thanks, I've picked this up with s/Fix/make/ in the commit subject, as I
+> (subjectively) don't consider this a fix given it's only a style change
 >
-> A 'return' here would solve the mess later on.
->
-> 	} else {
-> 		inc_nlink(dir);
-> 		v9fs_invalidate_inode_attr(dir);
-> 	}
->
-> Can v9fs_create() even return NULL?
-> In any case p9_fid_put() already contains an (inline) check for both
-> NULL and IS_ERR() so the 'if (fid)' and 'fid == NULL' (above) are pointless.
->
-> 	if (fid)
-> 		p9_fid_put(fid);
-> 	return ERR_PTR(err);
->
-> -- David
->
->>   
->>   /**
->> diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
->> index 71796a89bcf4..83a52a85ce08 100644
->> --- a/fs/9p/vfs_inode_dotl.c
->> +++ b/fs/9p/vfs_inode_dotl.c
->> @@ -349,7 +349,7 @@ static struct dentry *v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
->>   					  struct inode *dir, struct dentry *dentry,
->>   					  umode_t omode)
->>   {
->> -	int err;
->> +	int err = 0;
->>   	struct v9fs_session_info *v9ses;
->>   	struct p9_fid *fid = NULL, *dfid = NULL;
->>   	kgid_t gid;
->> @@ -412,7 +412,7 @@ static struct dentry *v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
->>   	p9_fid_put(fid);
->>   	v9fs_put_acl(dacl, pacl);
->>   	p9_fid_put(dfid);
->> -	return ERR_PTR(err);
->> +	return err ? ERR_PTR(err) : NULL;
->>   }
->>   
->>   static int
 
