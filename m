@@ -1,173 +1,89 @@
-Received: from e3i421.smtp2go.com (e3i421.smtp2go.com [158.120.85.165])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E676D381B07
-	for <v9fs@lists.linux.dev>; Thu, 21 May 2026 10:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877053859FA;
+	Thu, 21 May 2026 10:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779357787; cv=none; b=q5xeHXDKmYTwJ4ZQnEmnBQSPK136q8hRatfpuDQ5Qdr9NcakkFlR/SiVnHq2MIruoYhPPA8yC07JMFuLHBxUoAOaVe/O3a16/D+K6MTW5L3qD1b4UB0iOIh9EWSsCd2ggABzhxRmlK5SEFPcrwVGZGytN5DMFSEYceOQ0k2eHzE=
+	t=1779360849; cv=none; b=AiwPHxNfR/8E5vElKjlBZ+GtAytjkb01jMwdufSnxogVZBeepLEtATAMLG/jfuCVp7aPVUjZQikAk/t6jgrFqz4c85kMnJ37P7yPwbPqmT4L+2Uc8uT8cVMfX0cviwFkvmrlAAlw4qnwWvH5/r7g3jM3Ql4EZ8UOUKVgk9Tl1Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779357787; c=relaxed/simple;
-	bh=MfQGZIxI9A29hv1LOrOjD3QrG0VRUrGqpTflTgdTdk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CXEqacacDaS/8IjKEqmeYt8/AwPrBWIQFrENFJ15+hRKR59ktO7GVkFYtWGYZTYe/5i0ZGzNprAnRw7Q9ou2LPMo+ORNorabTs/moSSc6jTjlBn8+WZ0nw+rgNOk48pwVDHLluZOHqb7Vwpj8DTJevCU2HPavA7jS8bcPB+kNuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Om/1FGQ3; arc=none smtp.client-ip=158.120.85.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+	s=arc-20240116; t=1779360849; c=relaxed/simple;
+	bh=tMnuYwHgo7w7gPx8laBi+vh4biK3BacbRE3N0c3HULA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=axyV6XOy9rnkopkiUzgQlJzH80gVIDis2YjiL0TxlZ1Qp4eHJW1LIkHtHJryI8ClKe3bnE3Cz3unmbpFCQHkLT/Pdga2LsI2dusfEBreHSGtAr5Ei3dDbuFilLNoud3ks+MyKqltDJJcq+n141622JrR513e4K86hYo44V33nfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8rOS1cG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Om/1FGQ3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1779357783; h=from : subject
- : to : message-id : date;
- bh=n8ErHmL4PAnj7mjZlBR2cqWJagQgAcSy/x6jNKL6WI0=;
- b=Om/1FGQ3KuBhdsnvo2VR5WxviucEi+RZUeJuT3Q+m3gggEdXjviuR/VCa0/b+SPLiGLJr
- JelaOUlW889iSEBrT3DNorlStPs57MKYhF+O51MXfYYR4Nv+Fsbihr6XXJeEaWaeG77WlTh
- P8yUAE50y+kpqtXpoB3+zt4DTBKI+kFG5mQYkh/Wob+nPQ6xlmPyGPMAfip9mc3DGQSOGdB
- Qbki6/KfjfuFBLztYOKlq8TFsIiiO/GvPbthxzIccaBwJGMoBKosWVisXLvMdmQNIeLx6Me
- ZnhdYuj47WSMpbCmUtiL+ReICM70M0bYTbhuimkgTIq3ME0VG7jKCBBM9R9w==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.99.2)
-	(envelope-from <repk@triplefau.lt>)
-	id 1wQ0El-AIkwcC8nod9-JU2k;
-	Thu, 21 May 2026 10:02:43 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: v9fs@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v7 0/4] 9p: Performance improvements for build workloads
-Date: Thu, 21 May 2026 11:40:28 +0200
-Message-ID: <cover.1779355927.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8rOS1cG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284D11F000E9;
+	Thu, 21 May 2026 10:53:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779360848;
+	bh=hReAb/JnSiPheNetMpN9KuPDi9ArATr3SUITGa4P4hY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A8rOS1cGqyEFWheeZg7Gevs8sfK5NeBIFPOWaiaMtEpuax0stwjgnfBRYXfe42fw+
+	 PkNdqWpTczhnsT+5zzafbfYYvZnE4lsb8LCl3MbH4SiEBUzeWbsTW/TwyEUH0EIWI7
+	 rXjTEEae4IQY/alXlNlwPRciBuM89DudZ/0g8hE6byUVFb4DnQ8vNmVB3OHZAvQaOL
+	 XbhBeyiBJWf6wy9ijtvnhwfR525PNDcFDIE5KN6Tbtkp0Pynq0S6/Wx6IaNQC4z55O
+	 nUvMijOU4uSW0CyHmDv2UcBnjr0lOBq1iiL/FkAZ6Ns5OmsYyneoVPjm5n+3fraI/R
+	 kde4w0nv6lkqw==
+Date: Thu, 21 May 2026 12:53:56 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org, 
+	Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com, 
+	alex.aring@gmail.com, arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, 
+	smfrench@gmail.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
+	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, trondmy@kernel.org, 
+	anna@kernel.org, sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
+	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, shuah@kernel.org, 
+	miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v6 0/4] OPENAT2_REGULAR flag support for openat2
+Message-ID: <20260521-grube-leitfaden-0e5420c9bedc@brauner>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260416-abgraben-seeweg-a44ce660957f@brauner>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sw9KHkqZ4z
-X-smtpcorp-track: S3T4DXv7-_19.TW3xRuzOXgMc.9N8m0gqS9Ws
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260416-abgraben-seeweg-a44ce660957f@brauner>
 
-This patchset introduces several performance optimizations for the 9p
-filesystem when used with cache=loose option (exclusive or read only
-mounts). These improvements particularly target workloads with frequent
-lookups of non-existent paths and repeated symlink resolutions.
+On Thu, Apr 16, 2026 at 03:07:12PM +0200, Christian Brauner wrote:
+> On Sat, 28 Mar 2026 23:22:21 +0600, Dorjoy Chowdhury wrote:
+> > I came upon this "Ability to only open regular files" uapi feature suggestion
+> > from https://uapi-group.org/kernel-features/#ability-to-only-open-regular-files
+> > and thought it would be something I could do as a first patch and get to
+> > know the kernel code a bit better.
+> > 
+> > The following filesystems have been tested by building and booting the kernel
+> > x86 bzImage in a Fedora 43 VM in QEMU. I have tested with OPENAT2_REGULAR that
+> > regular files can be successfully opened and non-regular files (directory, fifo etc)
+> > return -EFTYPE.
+> > - btrfs
+> > - NFS (loopback)
+> > - SMB (loopback)
+> > 
+> > [...]
+> 
+> - I've added an explanation why OPENAT2_REGULAR is only needed for some
+>   ->atomic_open() implementers but not others. What I don't like is that
+>   we need all that custom handling in there but it's managable.
+> 
+> - I dropped the topmost style conversions. They really don't belong
+>   there and if we switch to something better we should use (1 << <nr>).
+> 
+> - I split the EFTYPE errno introduction into a separate patch.
 
-The very state of the art benchmark consisting of cloning a fresh
-hostap repository and building hostapd and wpa_supplicant for hwsim
-tests (cd tests/hwsim; time ./build.sh) in a VM running on a 9pfs rootfs
-(with trans=virtio,cache=loose options) has been used to test those
-optimizations impact.
-
-For reference, the build takes 0m56.492s on my laptop natively while it
-completes in 2m18.702sec on the VM. This represents a significant
-performance penalty considering running the same build on a VM using a
-virtiofs rootfs (with "--cache always" virtiofsd option) takes around
-1m32.141s. This patchset aims to bring the 9pfs build time close to
-that of virtiofs, rather than the native host time, as a realistic
-expectation.
-
-This first three patches in this series focus on keeping negative
-dentries in the cache, ensuring that subsequent lookups for paths known
-to not exist do not require redundant 9P RPC calls. This optimization
-reduces the time needed for the compiler to search for header files
-across known locations. The two first patches introduce a new mount
-option, ndentrycache, which specifies the number of ms to keep the
-dentry in the cache. Using ndentrycache without value (i.e. keeping the
-negative dentry indifinetly) shrunk build time to 1m46.198s. The third
-patch enable the negative dentry caching for 24 hours by default on
-cache=loose.
-
-The fourth patch extends page cache usage to symlinks by allowing
-p9_client_readlink() results to be cached. Resolving symlink is
-apparently something done quite frequently during the build process and
-avoiding the cost of a 9P RPC call round trip for already known symlinks
-helps reduce the build time to 1m26.602s, outperforming the virtiofs
-setup.
-
-Here is summary of the different hostapd/wpa_supplicant build times:
-
-  - Baseline (no patch): 2m18.702s
-  - negative dentry caching (patches 1-3): 1m46.198s (23% improvement)
-  - Above + symlink caching (patches 1-4): 1m26.302s (an additional 18%
-    improvement, 37% in total)
-
-With this ~37% performance gain, 9pfs with cache=loose can compete with
-virtiofs for (at least) this specific scenario. Although this benchmark
-is not the most typical, I do think that these caching optimizations
-could benefit a wide range of other workflows as well.
-
-Changes since v6 (address more relevant sashiko.dev remarks):
-  - Don't do strict length check in v9fs_issue_read(), if the file
-    changed on server side truncate the link instead as it is done
-    for files
-  - Allow page_get_link() to be called during the lockless RCU-walk
-    (with NULL dentry) theoretically improving performaces further
-Changes since v5 (address relevant sashiko.dev remarks):
-  - Replace forgotten ndentrycache with negtimeout wording in
-    documentation
-  - Rework v9fs_issue_read() to perform proper offset and length
-    validation, remove PAGE_SIZE truncation, and use the actual copied
-    length rather than the expected one.
-  - Use d_find_any_alias() instead of d_find_alias() to avoid unhashed
-    dentry race in v9fs_init_request().
-
-Changes since v4:
-  - Fix potential uninitialized access in v9fs_issue_read() and
-    v9fs_vfs_symlink_dotl()
-  - Fix potential memory leak in v9fs_issue_read()
-
-Changes since v3:
-  - Go back to s32 ndentry timeout option, rename it to negtimeout so
-    its easier to grep
-  - Bring back the missing 4 letters for *_TIMEOUT_* macro name
-  - Fix some alignment/space issues
-
-Changes since v2:
-  - Rename v9fs_dentry_is_{expired,refresh} to ndentry
-  - Some grammatical fixes in couple of comments
-  - Rename the negative cache mount option to ndentrycache. Using
-    ndentrycache without value enable infinite caching while
-    ndentrycache=<time> enable caching for <time> milliseconds.
-    This allows the option to be unsigned.
-  - Make it more obvious v9fs_issue_read() is only called on dotl
-    symlinks
-
-Changes since v1:
-  - Rebase on 9p-next (with new mount API conversion)
-  - Integrated symlink caching with the network filesystem helper
-    library for robustness (a lot of code expects a valid netfs context)
-  - Instantiate symlink dentry at creation to avoid keeping a negative
-    dentry in cache
-  - Moved IO waiting time accounting to a separate patch series
-
-Thanks.
-
-Remi Pommarel (4):
-  9p: Cache negative dentries for lookup performance
-  9p: Add mount option for negative dentry cache retention
-  9p: Set default negative dentry retention time for cache=loose
-  9p: Enable symlink caching in page cache
-
- Documentation/filesystems/9p.rst |   5 ++
- fs/9p/fid.c                      |  11 ++--
- fs/9p/v9fs.c                     |  27 +++++++-
- fs/9p/v9fs.h                     |  28 ++++++---
- fs/9p/v9fs_vfs.h                 |  15 +++++
- fs/9p/vfs_addr.c                 |  38 ++++++++++-
- fs/9p/vfs_dentry.c               | 105 ++++++++++++++++++++++++++-----
- fs/9p/vfs_inode.c                |  18 +++---
- fs/9p/vfs_inode_dotl.c           |  54 ++++++++++++++--
- fs/9p/vfs_super.c                |   1 +
- include/net/9p/client.h          |   2 +
- 11 files changed, 259 insertions(+), 45 deletions(-)
-
--- 
-2.52.0
-
+So I've massaged this series a bit in that I moved OPENAT2_REGULAR into
+the upper 64-bit and internally use a __O_REGULAR bit. After having
+thought about it makes a lot more sense to move the openat2() only
+features into the upper 32-bit for the uapi space. I also ported the
+selftests to the TEST* framework to fit with Aleksa's recent rework.
