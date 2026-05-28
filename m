@@ -1,116 +1,110 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E452E92BA
-	for <v9fs@lists.linux.dev>; Thu, 28 May 2026 05:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E081343D8A
+	for <v9fs@lists.linux.dev>; Thu, 28 May 2026 06:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779946783; cv=none; b=DMdALB+YSYynV8/PiSLEL4WJHEVUf915Vn3Q0erx8S8XZhmsQ7HKFtmTfn1KTPKjmbm0htpnJhrHfqdx2M1cSthn7HlNw7nK8cd8ehg29DEDllSjxgjDc8P7+uYyZz0KIEBMLrjh1QXzHvIqyFkq6ejM7S6p67/hXTPLHw6S12A=
+	t=1779951351; cv=none; b=u4qGtpGb8Db6L/B23QmQPy5JkMrbTlVtUzRGP6ing0PR6kQqU/w0Bw7EFGo1wZ1wPNdRKyJuztvji1eBe/uqZ47Ru1BDClcDuxBcDw9khVKiKUBbgXtnoSAhOn2YzmdwrzwAFdxkLMkRF8dEieIO8Pscx0xQ6wypMBZbjDwNOgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779946783; c=relaxed/simple;
-	bh=7B9rAloplA1r0RcsAVNw91QYS8XurF/90pYnFiAZW68=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JWXL9ChppkENwVLwAaLEXlquyzLamt7fw2jRCvEiP2+qqQ3CvVzDflTWvgpQXxy1cJWSccTqVxe+7uVSCI9kwiTirU67aJgdPLrDPm93wqhcKt2zfHDkiKPl0f777AkPEYziNkscQs4VNonqAk8x6hqxyxOaFilbIVtb31Ek8gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=Jsc6McTB; arc=none smtp.client-ip=13.76.78.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1779951351; c=relaxed/simple;
+	bh=SVXTfhF2wAhS5kAQWIwVdr9J705bGFJMrvzUErxndb8=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aFjtGbfNW7XvA7Dj5Ie9i8YdVFxBe1zzs7FHsuzYm27PadaVT/qiIw2hdPfVePfRz3trM7wGd3EEjd3JvtLzfpBRfKyNVjAsueaWO3QQU0lVICPfwRRQG9403qE4Ez7xEqBbIpkoUYlfGx/OAsUnrzf2AiBp7RS2MI+hoW5aTAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qJv8k4v3; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="Jsc6McTB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qJv8k4v3"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7dccb5f4b1cso1696387b3.3
+        for <v9fs@lists.linux.dev>; Wed, 27 May 2026 23:55:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=t9xPm
-	cjXLaN1tlmUCZXzsomKbqKsGYPnhhUGNiUjI60=; b=Jsc6McTBAMSFbr21qEvhV
-	X0xou8zwKbWrU9pChKGtjgKt+x7trzLSIeT8cczQjIYTofHsV7pZ7QmU1VMlYSod
-	UiK4cAK+laVYx+iJxvq4FUek5RCloUaEYAGckaXkqJHV9u9wa25nIFs8528u1kay
-	g7fb14BwigwXi6RF4QJSQc=
-Received: from localhost.localdomain (unknown [59.66.142.89])
-	by web3 (Coremail) with SMTP id ygQGZQCn8o8L1RdqWOP0AQ--.36784S2;
-	Thu, 28 May 2026 13:39:24 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: v9fs@lists.linux.dev
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH] 9p: avoid putting oldfid in p9_client_walk() error path
-Date: Thu, 28 May 2026 13:39:16 +0800
-Message-ID: <20260528053918.53550-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+        d=gmail.com; s=20251104; t=1779951350; x=1780556150; darn=lists.linux.dev;
+        h=mime-version:content-transfer-encoding:msip_labels:content-language
+         :accept-language:in-reply-to:references:message-id:date:thread-index
+         :thread-topic:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SVXTfhF2wAhS5kAQWIwVdr9J705bGFJMrvzUErxndb8=;
+        b=qJv8k4v3tz9VpmcjXW7pj5Nf8yiTpcoSCoD4GJmqjY0B36QNonakvVWTGyZZ90OHAD
+         TshIuGeyhtVfvDECLQV6jJ9t+UqngjS8Ni+VCY1uRQKHvziC/qL1xA/oNHSdRZz8I475
+         Fn+ZZQy9I5MsGHUF6fBH3zvKECIASuWw28Vhg3DWYSpJVtlG8wLZDgRLHXDi5l3dSVjK
+         CSIX8VjIxJps0XuMarG8Tj2MUq3TVsHDUF0VZLBuF9FcZ0DKVvzMZYHc4XOxDh4uxM8N
+         A2RTpnXaR7cYliqTNsdBINKFlhB3kYpMldL0F1qawIXXg7NN2yYnHlfCMGPMBe3M+857
+         MIqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779951350; x=1780556150;
+        h=mime-version:content-transfer-encoding:msip_labels:content-language
+         :accept-language:in-reply-to:references:message-id:date:thread-index
+         :thread-topic:subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SVXTfhF2wAhS5kAQWIwVdr9J705bGFJMrvzUErxndb8=;
+        b=ZGwKPZH5fNONfD3LlNRnlmdN/qyAxM6RgSsSYoJEfQ7uGLiZTomUSfbegEKVgHgTEv
+         dLnYF526oAHXk71WXTB4c2GhxDRrTmXTde/opd1r4yuiVnO2QgD+RXnywTz32Qndx8tu
+         TeeAhhdaQkpUtFKp3t+idkSaRNas0+hFrPw6jF+/My7Ukud2jUDW/CQShDHKgOWiViol
+         2l/CQytgHFKqK4yImp1jJyzwAYsHINZAZAlpFDo4Nxb7F6PcloYiTEVQYzT0M6E5M6Zj
+         bKga8QiNtPXE926TC8UbdKvVwu7DQivvgxQ/ugamIEVM0g7208txWpRoDNm3ts/L4n2c
+         bHiw==
+X-Gm-Message-State: AOJu0YyqSnOc/t+Gg/VScUjS9ycqrG+3u6XXTNhfaaRCJbaNiHk7dHed
+	D+xpRe5heetYaN73MqYxUdYcQg0oqNDbj/WcHtzqg/6lf2An0dkwx7vB8Eutavdq
+X-Gm-Gg: Acq92OGe60AXaGzVgBLxlytJv6ObGVRA4AK6b5+MyETibiucP//GEjURfA0yQB1O75G
+	ll/GthbGK/FBwdgPFkFdPQfaYT/dJW5oLFph9mNvU+8+G2VmJM0DRMH84MkhcL1oOWkp5jfZvDq
+	NF1LM2dbIqoEXIuBGRoGcgXbXSzGcrxXW7Ol6yZX6Rg9ZPea48yc7PXz3hgoe5w49SMlrIOE97/
+	yTWm8+ZNmih+dSWWS+Jx00KSka6Ay/dptciXlwQltscDXJHF9eTQD/Pdp7+S4Btb0n5ifd6S9+5
+	FesUSlMURGWR6uFjG6e83CJhvS2TN3RQAVXtLCLHcAG9Q9VdjECwgooQJNBq3mzlaHRWYUQ+ds+
+	oBkIXkBa1MI50OahsCzHPLQtSA+BFgzwFyZnzemfkMh4Dmy3pmJKQpb3nzQUlL4zH74MPWVBODa
+	4HxC9x/MiWjZBkQdxRJ0z8K4kW0dCyibBPnPrqmip1tMU1U831xylHSjp1R0/3yE8nlFc86vvhj
+	RFoZrELB5/W4veN9GX1jJPhme3dQX4A
+X-Received: by 2002:a05:690c:3388:b0:7bd:9ce7:164c with SMTP id 00721157ae682-7d338682c32mr285621267b3.43.1779951349489;
+        Wed, 27 May 2026 23:55:49 -0700 (PDT)
+Received: from SE1P216MB1244.KORP216.PROD.OUTLOOK.COM ([2603:1046:c07:800::5])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d389d173eesm86768307b3.15.2026.05.27.23.55.47
+        for <v9fs@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 23:55:49 -0700 (PDT)
+From: =?utf-8?B?S2jDoW5oIFRy4bqnbiBOZ+G7jWM=?= <khanhtranngoccva@gmail.com>
+To: "v9fs@lists.linux.dev" <v9fs@lists.linux.dev>
+Subject: [BUG] 9p filesystem does not honor turning off O_APPEND if a file
+ handle is opened with O_APPEND
+Thread-Topic: [BUG] 9p filesystem does not honor turning off O_APPEND if a
+ file handle is opened with O_APPEND
+Thread-Index: AQHc7khWLsIDxr7DvUCTuneUjnkjzbYjAM5V
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date: Thu, 28 May 2026 06:55:45 +0000
+Message-ID:
+	<SE1P216MB1244C510206B0E41478E1843FB092@SE1P216MB1244.KORP216.PROD.OUTLOOK.COM>
+References:
+	<SE1P216MB12443CDB57EA1BD32A45FAEFFB092@SE1P216MB1244.KORP216.PROD.OUTLOOK.COM>
+In-Reply-To:
+	<SE1P216MB12443CDB57EA1BD32A45FAEFFB092@SE1P216MB1244.KORP216.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator:
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+msip_labels:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQCn8o8L1RdqWOP0AQ--.36784S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kry8KFy8Kw1xGr4xuw4rKrg_yoW8ArWfpF
-	W7CFsxKF95Zry2yan7Ka4xXryrGrZ5CFyrKrWjyw42v3Z8JF1ktF4kK34fur9IkwnrKFWU
-	tFWDKFWj9F1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xS
-	Y4AK67AK6r4rMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JjV1v3UUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQMBAWoXbq7SMwAAse
 
-When p9_client_walk() is called with clone set to false, fid aliases
-oldfid. If the walk subsequently fails after the request has been sent,
-the error path jumps to clunk_fid, which currently calls p9_fid_put(fid)
-unconditionally.
-
-This drops a reference to oldfid even though ownership of oldfid remains
-with the caller. If this is the last reference, oldfid can be clunked and
-destroyed while the caller still expects it to be valid. A later use or
-put of oldfid can then trigger a use-after-free or refcount underflow.
-
-Fix this by only putting fid in the clunk_fid error path when it does not
-alias oldfid, matching the existing guard in the error path below.
-
-This can be triggered when a multi-component walk is split into multiple
-p9_client_walk() calls and a later non-cloning walk fails. A reproducer
-and refcount warning logs are available on request.
-
-Fixes: b48dbb998d70 ("9p fid refcount: add p9_fid_get/put wrappers")
-Cc: stable@vger.kernel.org
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM 5.1
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
- net/9p/client.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/9p/client.c b/net/9p/client.c
-index f0dcf25..4b942d0 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1092,7 +1092,8 @@ struct p9_fid *p9_client_walk(struct p9_fid *oldfid, uint16_t nwname,
- 
- clunk_fid:
- 	kfree(wqids);
--	p9_fid_put(fid);
-+	if (fid != oldfid)
-+		p9_fid_put(fid);
- 	fid = NULL;
- 
- error:
--- 
-2.43.0
-
+SGVsbG8sCgpJIHJlY2VudGx5IGZvdW5kIGEgYnVnIHdoaWxlIGludGVyYWN0aW5nIHdpdGggOXAg
+ZmlsZXN5c3RlbXMgb24gV1NMLiBJZiBhIGhhbmRsZSBpcyBvcGVuZWQgd2l0aCBPX0FQUEVORCwg
+dGhlbiB0aGlzIGZsYWcgY2FuIG5vIGxvbmdlciBiZSByZW1vdmVkIHVzaW5nIEZfU0VURkwgZGVz
+cGl0ZSA5cGZzIG1pc3JlcG9ydGluZyB0aGF0IHRoZSBmbGFnIHdhcyByZW1vdmVkIHN1Y2Nlc3Nm
+dWxseS4gVGhlIHVuZGVybHlpbmcgZmlsZXN5c3RlbSBjb250aW51ZXMgdG8gYXBwZW5kIHRvIHRo
+ZSBlbmQgd2hpbGUgdGhlIE9fQVBQRU5EIGZsYWcgaXMgZ29uZSB3aGVuIEZfR0VURkwgaXMgY2Fs
+bGVkLCBhbmQgdGhlIHNlZWsgY3Vyc29yIGNvbnRpbnVlcyB0byBwcm9ncmVzcyBhcyBpZiByZW1v
+dmluZyBPX0FQUEVORCBhY3R1YWxseSB3b3JrZWQuCgpJZiByZW1vdmluZyBPX0FQUEVORCBpcyBu
+b3QgbWVhbnQgdG8gYmUgc3VwcG9ydGVkLCBGX1NFVEZMIHNob3VsZCBoYXZlIHJldHVybmVkIGFu
+IGVycm9yIChFUEVSTSBzZWVtcyB0byBiZSB0aGUgbW9zdCBzdWl0YWJsZSBhcyB0aGF0IGhhbmRs
+ZSBtYXkgb25seSBhcHBlbmQgZGF0YSkuwqAKClRlc3RlZCBlbnZpcm9ubWVudDoKV1NMIHZlcnNp
+b246IDIuNi4zLjAKS2VybmVsIHZlcnNpb246IDYuNi44Ny4yLTEKV1NMZyB2ZXJzaW9uOiAxLjAu
+NzEKTVNSREMgdmVyc2lvbjogMS4yLjYzNTMKRGlyZWN0M0QgdmVyc2lvbjogMS42MTEuMS04MTUy
+ODUxMQpEWENvcmUgdmVyc2lvbjogMTAuMC4yNjEwMC4xLTI0MDMzMS0xNDM1LmdlLXJlbGVhc2UK
+V2luZG93cyB2ZXJzaW9uOiAxMC4wLjI2MjAwLjg0NTcKCk9yaWdpbmFsIGlzc3VlOiBodHRwczov
+L2dpdGh1Yi5jb20vbWljcm9zb2Z0L1dTTC9pc3N1ZXMvNDA2NDkKClRoYW5rcywKCktoYW5o
