@@ -1,75 +1,45 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2587E33A9C4
-	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 07:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA840DF59
+	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 08:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780041332; cv=none; b=iaZuFZLJmnmrTVPGAehnDDNLvCgNdB8d6H7s7xHce7o2E0+78FVsKPAcUdQV0dNVEZTpWIw5orBt3NDHV7NL6flBuftKZXwhn5059TfD8CpBOxQKkkeIiZN+qPwqAjCqcRF2MUCwk87OkoI/P8ifw25SnuFsZJ3ucsl+FJz6zzA=
+	t=1780042262; cv=none; b=TtOGEB8yhJ+3sdHy8hzsQxMS5U8Ed6SIUkRhBLC5OmQbn5NKZ8TiCErGfkcjjqAGyzAByqs1iKD9FydPt8qMmty4VmcxRHMSOkKf9K4UX2imz0SsJQTGIgsDDznRT6yDmp+PzL1zmW3oZGzVsUyKG5/hvuT7GYUH0jCzhuPZBTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780041332; c=relaxed/simple;
-	bh=wiOX5OOwxHyJmC+THIaXZ1d8e2aCROCqgR8RKeF2ACo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XDPFFm22oSlYXaVE6IeQExX6EVKInza5WmE/iCFsSSabZbLSo5aFQ5w8ZFO6dPc5qEVXjbpENKPzLwJOy0QowwSfuAbl/IGlenihn+SW27eGqyXiTB86B9jZdG54jG4XuhOe4VRHrnk6sxabHFnNjT1gtMw/C7229mrDA9pDt7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=glwn/818; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780042262; c=relaxed/simple;
+	bh=ITEBlMVQV23uhpIcHzjn7ubI5My9ug0oqJMfaXXgkBM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MI/C4Pzw0FGRv0ljNPGyVo/qt6+nJPa3NRS0HWBJlH/P/ptVh2We6yP8KEwgMs1+NfuoDpbirdVlkficovIj4kk+Winku+utrvD1VhIrlencqf+9CNhxi8kt2UBwMwU7IpsDMqrDdnsujompAhYCi8e4ETZuusCaFvdW5X6ZbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=TBW9J5ZK; arc=none smtp.client-ip=52.175.55.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glwn/818"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c85625854d3so666326a12.2
-        for <v9fs@lists.linux.dev>; Fri, 29 May 2026 00:55:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="TBW9J5ZK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780041330; x=1780646130; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOIlhV4TyHKTC2O9h1+JZXa0pc9hghpuCyvPU98in4A=;
-        b=glwn/818kwkgQPvqcCLGz3N5sxCr/LYY0kGu5Tdm42A/DxR/FNBb0t+BIFGelH+k2O
-         xyPvrHHKRtxp4EV2/ssJHUAi+E7/AhBYPy3D1v2QfMcI6GJPClFyjVVzPVkxBUSUWf4X
-         P3diwFpdursRkZEtEpzjNLS/tHlxnogXH91kYWjJ2DH6VZjz/3CNTzaDSFWTduo8IBJE
-         KqIvkdYP9fHrxXZfOBaBUdGWM9qjr2Uppurysu0RkleTS2MF1Tr/uoSN1DdQiKMoO0DH
-         0ozf4cwNa76g3w8IWfn3XmFj1kFzv6nhBSRZMLzc7ykoLnhqJVvqRAdcmbeD90U6TJIR
-         kDog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780041330; x=1780646130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EOIlhV4TyHKTC2O9h1+JZXa0pc9hghpuCyvPU98in4A=;
-        b=DmY7Y6iAEwpxbv82JRFTHmDaa02pIxWbgBl/W662iz7E1HRPfJ8iyrRUkFYD7tcOEQ
-         yGanJo4e/HaxXKUjUV/sLiERhKVLVm92ebUP5rpcgRTPAQOYiW2LaHwj49B5CC0d4vWp
-         tV+hPm26XjAibPiKPkzBXCi65a9CSo/nlncsKohJo9XdsCLVwfjgtnVKasE7mv5PgAj3
-         XjSFNwBdy6jSR2GS4KNhwWn4lNC/+rcohEQZi1CcvcEL1JIq/3BCgNiWXxldW1PkF/wx
-         iqjKVQ3//AuXuxBi0RGLgPSE30cW1a1PsUk4tKTDkGq4+8Ci1cEWgOkAdJAJxn+UuVFV
-         fvOA==
-X-Forwarded-Encrypted: i=1; AFNElJ9YU/m74xX8JAqyMVUR1/tvgAvk2efPxQrDMXAI5Ub5My7vXVw168yKAkI7ACSHKbRwWAVA@lists.linux.dev
-X-Gm-Message-State: AOJu0YyWSyLsfOl0sPSeNU1rYQLOvhoYvGaP+6mVJ1u3cBbM6N89/KJ2
-	dBuZSDuiInEFbKHoaCHuXHimGXo3HdhY217kPdxJ3aKom0/Q8IY8Y970
-X-Gm-Gg: Acq92OGGW8yeNZu31q8+78XmU6mJSEJOYjgAgiLwcGJ2sEnrIxjEkjbpZqRqC3vyBOl
-	ddn+eOH3UhAALiiMTvSLHDUItMlSh9eV2fZq1i6zL+U+YiCCsgKfzf55oUsdZEriPesuYGdeS+w
-	TuO4HPlG7yAZoyhB5KqAvSE9RgScLraJw6nQtwK0hbMVcwQb14ZoPLIDdvLO95ymTtGMYq6VQzT
-	CaeXF8d6WTwW+VQoAurhAyReDlKDMdvmzn9r+RWxvGmaGoGFWMnxC89aIhBtj5Ic2IH8CAYl+uC
-	A0hfZh0CeY8gAxUQZmqlyhDQP6riaET0O1ToeVrfuRjQMUIH1t9q9KNjnMj8uCA1OK9AljpCovo
-	iPQzDyqjakxMXxYlpFS0+N5FXmdrutIP5uZwsjVCeCii5NW01yW+ZoyGnaG75sRrPRFUmqhqwXr
-	XxaLzEND78IAS3EX3ON5dudwqKxxYc1xvxKXhdqZ8uXSqMIDe6mZki5wi+FCh5YkrqATPOdBkC2
-	xKfOtIjBlFE1iFMwx4Lwc2v+IRqHEQkWjwjcd+vgZyy3ku8rPcJw/iYU5xQl7wHig==
-X-Received: by 2002:a05:6a21:6e04:b0:3a2:d629:16a2 with SMTP id adf61e73a8af0-3b411c02000mr2163499637.10.1780041330263;
-        Fri, 29 May 2026 00:55:30 -0700 (PDT)
-Received: from bass-virtual-machine.. ([163.61.198.28])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85772d9d35sm975539a12.29.2026.05.29.00.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 00:55:29 -0700 (PDT)
-From: Gui-Dong Han <hanguidong02@gmail.com>
-To: ericvh@kernel.org,
-	lucho@ionkov.net,
-	asmadeus@codewreck.org
-Cc: linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev,
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=C//xU
+	g1N9wqZvnee7tLgvPUP+p1K4Vl1lKin6lXAIPI=; b=TBW9J5ZKlhglh8yVSLlwA
+	GKKThsi0SSI8ISVB2LAjFaM5Iqw7uUepjpnlRv5Rk42fYiDwg8+PTwNsOu/jY7Fv
+	pkCc5uR3S0ekFj+g0y+MWbXPKxUwulq1ApE+fV+rUANfI/bdjzl+LTSoeJZ64HfV
+	FOpk3sovJ7DGTS8ratOqrY=
+Received: from localhost.localdomain (unknown [211.102.241.99])
+	by web5 (Coremail) with SMTP id zAQGZQAHvr0GShlq3_33AQ--.44568S2;
+	Fri, 29 May 2026 16:10:46 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: v9fs@lists.linux.dev
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
 	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Gui-Dong Han <hanguidong02@gmail.com>
-Subject: [PATCH] 9p: Add missing read barrier in virtio zero-copy path
-Date: Fri, 29 May 2026 15:54:41 +0800
-Message-Id: <20260529075441.233369-1-hanguidong02@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>
+Subject: [PATCH] net/9p/usbg: Fix use-after-free on usb9pfs_clear_tx
+Date: Fri, 29 May 2026 16:10:25 +0800
+Message-ID: <20260529081026.77732-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -77,40 +47,87 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zAQGZQAHvr0GShlq3_33AQ--.44568S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw4kCry7Cr15GF48ZF47Arb_yoW5JFyxpa
+	y2krsYyF98Gr1Iy3yqyFyDJw18AF4kAayjgr1jkFn8C3ZxG3s5tF10y34kZrsxA3yIkr18
+	tr1qqFWjyrn7CrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjXTm3UU
+	UUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgICAWoZNcA3gAAAsy
 
-Commit 2b6e72ed747f ("9P: Add memory barriers to protect request
-fields over cb/rpc threads handoff") added a read barrier after
-p9_client_rpc() waits for req->status, pairing with the write barrier in
-p9_client_cb(). The virtio zero-copy wait path was missed.
+When p9_usbg_close() is called, it invokes usb9pfs_clear_tx() but does
+not clear usb9pfs->client nor usb9pfs->in_req->context afterwards.
+The 9p client core (p9_client_destroy) calls close() and then
+kfree(clnt), so after p9_usbg_close returns the client struct is freed.
 
-Add the same read barrier after the zero-copy wait before reading the
-completed request.
+If the USB gadget is later disabled (e.g., host disconnect),
+usb9pfs_disable calls usb9pfs_clear_tx again, which passes the dangling
+usb9pfs->client pointer to p9_client_cb. Inside p9_client_cb,
+p9_req_put(c, req) dereferences the freed client to access its reqs IDR,
+causing a use-after-free.
 
-Fixes: abfa034e4b8e ("fs/9p: Update zero-copy implementation in 9p")
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Additionally, usb9pfs_clear_tx does not clear usb9pfs->in_req->context
+after calling p9_client_cb, so a second invocation finds a stale request
+pointer and attempts double-completion, further compounding the UAF risk.
+
+Fix by:
+1. Clearing usb9pfs->in_req->context to NULL in usb9pfs_clear_tx()
+   before checking usb9pfs->client, so that even if the client is gone
+   the stale request pointer is consumed and cannot cause
+   double-completion.
+2. Adding a NULL check on usb9pfs->client in usb9pfs_clear_tx() to skip
+   p9_client_cb() when the client has already been destroyed.
+3. Setting usb9pfs->client = NULL in p9_usbg_close() after calling
+   usb9pfs_clear_tx(), to prevent any subsequent call from dereferencing
+   the freed client pointer.
+
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:GLM-5.1
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
-Found by auditing READ_ONCE() used for synchronization.
-A similar fix can be found in 8df672bfe3ec.
----
- net/9p/trans_virtio.c | 5 +++++
- 1 file changed, 5 insertions(+)
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 1ce7033..c75de5c 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -435,6 +435,11 @@ static void usb9pfs_clear_tx(struct f_usb9pfs *usb9pfs)
+ 	if (!req)
+ 		return;
+ 
++	usb9pfs->in_req->context = NULL;
++
++	if (!usb9pfs->client)
++		return;
++
+ 	if (!req->t_err)
+ 		req->t_err = -ECONNRESET;
+ 
+@@ -457,6 +462,7 @@ static void p9_usbg_close(struct p9_client *client)
+ 	client->status = Disconnected;
+ 
+ 	usb9pfs_clear_tx(usb9pfs);
++	usb9pfs->client = NULL;
+ 
+ 	opts = container_of(usb9pfs->function.fi,
+ 			    struct f_usb9pfs_opts, func_inst);
 
-diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index 4cdab7094b27..b0d0094ec8e2 100644
---- a/net/9p/trans_virtio.c
-+++ b/net/9p/trans_virtio.c
-@@ -532,6 +532,11 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
- 	p9_debug(P9_DEBUG_TRANS, "virtio request kicked\n");
- 	err = io_wait_event_killable(req->wq,
- 				     READ_ONCE(req->status) >= REQ_STATUS_RCVD);
-+	/*
-+	 * Make sure our req is coherent with regard to updates in other
-+	 * threads - echoes to wmb() in the callback
-+	 */
-+	smp_rmb();
- 	// RERROR needs reply (== error string) in static data
- 	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
- 	    unlikely(req->rc.sdata[4] == P9_RERROR))
--- 
-2.34.1
+--
+2.43.0
 
