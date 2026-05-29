@@ -1,51 +1,47 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B335DA53
-	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 01:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D9635200C
+	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 01:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780019485; cv=none; b=P4yJqSvFdp6BMrKqY3aqRofKZImNJPgseNBPz3kaU2r4jOgDoASyJHGDfMV1Rp0R255UoXSXaTqxbiBwJD2Zsiz2+ojw4DYqiSjA/AwugdJ9n2JquVACjiUCvKS1gssupO3ao7SAuQaIzrM+a/zLcsN4C3DWpAGXg/7spAezHgc=
+	t=1780019756; cv=none; b=jQukjVdJ7TG6R5tWN5IbRYUAsz1AyiDdoAq14c1HiH2/EltAHUz8RSMgKsPG3XCe1IcHjjG+2dsSL22GdNyfAKOoQGV3MQzu/wrHr5RIKex9NC2iXOsEmGFsWEnEBf6Se6TMp+tHGbWwrCWMXIx0I2WhYrpvwOHMIuPwZ+o6B/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780019485; c=relaxed/simple;
-	bh=fqq21v15RPx1Rh84bVvFeMQ9Bl5lBwGOOcLH5C32L08=;
+	s=arc-20240116; t=1780019756; c=relaxed/simple;
+	bh=BokC5YcE9dLmWV3dKA4g9fWBviGtcpu9HIVzdHN5iSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XNrAnaM+BjBabIRpKoagZz5yEYa5q2bt45B/9faJxrAE1oCuRJ7U+AigTrfMDwlijiV6yv3/5BYkWZBbpt0NYXclCFQOx2DtC6kyruTT1q5H++J6pL80S1KqqJQ4LubOL4fdmBM4JaIl5jCTyEjDaPZp/Te8/xWNd5fPVjqnMyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=3l1ccd/s; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=LpYAQ32des3bBCBIhJ6UwE1C/Uv+jWPe+nhW9o7ejFij8Ngi4LoyDzfb4+oKvLFeoYNSUiyCFaZXyjEhhq0JbZ7TkQfNo2dJtNTXJGBXsItaiKtncJby9TXK5ys39EktpwDlD5skfVksEsbP94JqnY/utZfnPN+AJJXAB7A17Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=zfvWLCob; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="3l1ccd/s"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="zfvWLCob"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 1CCE214C2DE;
-	Fri, 29 May 2026 03:51:15 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id C7E9814C2DF;
+	Fri, 29 May 2026 03:55:50 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1780019479;
+	s=2; t=1780019753;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kZxdwFMzc6brX3cLB9sUc8WNeZOIPdhM8Hcj9v1X2TI=;
-	b=3l1ccd/suhuJaUEEnBVwNc0ku1zS0kePM/evo1sgCSC82YxXSvg0ya/50+jrUzq80PvqKU
-	esu6GruCKBSsvxITCAxWI3e85bkXbhQ2wYLZiX6V5pdKXJJiALD6Pje/qJkZvPR2gNyyym
-	V/sVQOZc2vj6C8ft+hAfMw7hpeStIga/trltLirvjlKNF/MKPqXFl/+LyqCRHXnQI/iIvi
-	yFkvTtVr8dNQ7I9jAeNfwYZwTN9tUiHfFGQMgI6DYQGuWXStc+ecjRReRMzIkRqRVjkmFk
-	x8/nclytoZcbHh5sHjNu0uRNjZgCXeGfllIB2rJORC7lfo/2JxKyl1UEDe8h1w==
+	bh=K9rGhV6A2tWnycYhVa6BLhuk5wk5IYG9DpGJAANNf6Q=;
+	b=zfvWLCob+y/K0Eu/i/5Oy1+Wo9FIF/dQBAtP1+NP/2aIGUT+I7S7rFW3Ta1KefFrH+mv0v
+	ulAo2GuCtNyhrcSHpusrQd1RIXNMOXthbQyQFzasGsMXyCD0wup89DFSO+Nud1O9vEGNGP
+	aFS4E+Ie7eCxt5uRtRtQ3L7CZ8bAKOUUS4Q/BCl2LvUQQ06Hfc5sKZaX9d34Pvo8sGv8pL
+	RPxz9Prdr+Hei+W1yB0dKR3l/LjXjCv9BPsAonyKChvhvJnaH94IWiOBEkG8lsIRBNpTYf
+	jlQgSJfXHVNxnP/rMfFQjgfBimbYrrZrLWZd15lj00HcUKnLExcJbuqx60+kaA==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 9d59e7a5;
-	Fri, 29 May 2026 01:51:14 +0000 (UTC)
-Date: Fri, 29 May 2026 10:50:59 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e2359820;
+	Fri, 29 May 2026 01:55:49 +0000 (UTC)
+Date: Fri, 29 May 2026 10:55:34 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
-Subject: Re: [PATCH] 9p: avoid putting oldfid in p9_client_walk() error path
-Message-ID: <ahjxA57V3QkISzR2@codewreck.org>
-References: <20260528053918.53550-1-zhaoyz24@mails.tsinghua.edu.cn>
+To: Hongling Zeng <zenghongling@kylinos.cn>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	zhongling0719@126.com, David Laight <david.laight.linux@gmail.com>
+Subject: Re: [PATCH v2] 9p: avoid returning ERR_PTR(0) from mkdir operations
+Message-ID: <ahjyFpRxu03SuyMA@codewreck.org>
+References: <20260520022650.14217-1-zenghongling@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,57 +50,32 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260528053918.53550-1-zhaoyz24@mails.tsinghua.edu.cn>
+In-Reply-To: <20260520022650.14217-1-zenghongling@kylinos.cn>
 
-Yizhou Zhao wrote on Thu, May 28, 2026 at 01:39:16PM +0800:
-> When p9_client_walk() is called with clone set to false, fid aliases
-> oldfid. If the walk subsequently fails after the request has been sent,
-> the error path jumps to clunk_fid, which currently calls p9_fid_put(fid)
-> unconditionally.
+Hongling Zeng wrote on Wed, May 20, 2026 at 10:26:50AM +0800:
+> When mkdir succeeds, v9fs_vfs_mkdir_dotl() and v9fs_vfs_mkdir() return
+> ERR_PTR(0) which is incorrect. They should return NULL instead for
+> success and ERR_PTR() only with negative error codes for failure.
 > 
-> This drops a reference to oldfid even though ownership of oldfid remains
-> with the caller. If this is the last reference, oldfid can be clunked and
-> destroyed while the caller still expects it to be valid. A later use or
-> put of oldfid can then trigger a use-after-free or refcount underflow.
+> Return NULL instead of passing to ERR_PTR while err is zero
+> Fixes smatch warnings:
+>   fs/9p/vfs_inode_dotl.c:420 v9fs_vfs_mkdir_dotl() warn: passing zero to 'ERR_PTR'
+>   fs/9p/vfs_inode.c:695 v9fs_vfs_mkdir() warn: passing zero to 'ERR_PTR'
 > 
-> Fix this by only putting fid in the clunk_fid error path when it does not
-> alias oldfid, matching the existing guard in the error path below.
+> This change does not alter the runtime behavior since ERR_PTR(0) and NULL
+> are equivalent. However, it improves code readability and silences static
+> analyzer warnings.
 > 
-> This can be triggered when a multi-component walk is split into multiple
-> p9_client_walk() calls and a later non-cloning walk fails. A reproducer
-> and refcount warning logs are available on request.
-> 
-> Fixes: b48dbb998d70 ("9p fid refcount: add p9_fid_get/put wrappers")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Ao Wang <wangao@seu.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Assisted-by: GLM 5.1
-> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Fixes: 88d5baf69082 ("Change inode_operations.mkdir to return struct dentry *")
+> Suggested-by: David Laight <david.laight.linux@gmail.com>
+> Acked-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 
-This makes sense, thanks.
-Queueing the patch.
+Thanks for the v2, this looks correct to me.
 
-> ---
->  net/9p/client.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/9p/client.c b/net/9p/client.c
-> index f0dcf25..4b942d0 100644
-> --- a/net/9p/client.c
-> +++ b/net/9p/client.c
-> @@ -1092,7 +1092,8 @@ struct p9_fid *p9_client_walk(struct p9_fid *oldfid, uint16_t nwname,
->  
->  clunk_fid:
->  	kfree(wqids);
-> -	p9_fid_put(fid);
-> +	if (fid != oldfid)
-> +		p9_fid_put(fid);
->  	fid = NULL;
->  
->  error:
+The commit message should mention that v9fs_create() never returns NULL
+and v9fs_vfs_mkdir() can be simplified accordingly, but I'll fix that on
+my end
 
 -- 
-Dominique Martinet | Asmadeus
+Dominique
