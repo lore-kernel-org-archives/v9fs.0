@@ -1,45 +1,75 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B3737DEA3
-	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 07:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2587E33A9C4
+	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 07:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780040391; cv=none; b=tN6wCgQnaVYs3S3Uu/cdmZ4XPYU6eIPOpZ/Rrq15zoSkRzyOqmIDVfUCx+qLB8ACFcP7gn61PI1qD3GtrMC9Uf3HTyi1dhmnT9bSdR84FlWx+39os5ka88Y0CZz9JpcA4snf05nKYxlOMPxtcTTNATqHe41NP8+Gge1yDkbrKok=
+	t=1780041332; cv=none; b=iaZuFZLJmnmrTVPGAehnDDNLvCgNdB8d6H7s7xHce7o2E0+78FVsKPAcUdQV0dNVEZTpWIw5orBt3NDHV7NL6flBuftKZXwhn5059TfD8CpBOxQKkkeIiZN+qPwqAjCqcRF2MUCwk87OkoI/P8ifw25SnuFsZJ3ucsl+FJz6zzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780040391; c=relaxed/simple;
-	bh=ZU8pjSZB5U3XQV00fnQiHR5T2wpBPIiZ0NtmDwJuuqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUBQvUZrDCQIfkwFPdm7EeWtvxLn4wU9g+s0SrG8J4nrarqb769ge/PnhPFFcefGwmfQ2OI1bDPZtRFWFvKmZhCENmryqRRvPbBicFUXE6MrMGUJ0pxHY1+u21BsSDJj4GMF1EnMhZVTe+GleQe55BOxJHtJ2mEuvOhIUGKyUEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=p6HIh5BE; arc=none smtp.client-ip=13.76.78.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1780041332; c=relaxed/simple;
+	bh=wiOX5OOwxHyJmC+THIaXZ1d8e2aCROCqgR8RKeF2ACo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XDPFFm22oSlYXaVE6IeQExX6EVKInza5WmE/iCFsSSabZbLSo5aFQ5w8ZFO6dPc5qEVXjbpENKPzLwJOy0QowwSfuAbl/IGlenihn+SW27eGqyXiTB86B9jZdG54jG4XuhOe4VRHrnk6sxabHFnNjT1gtMw/C7229mrDA9pDt7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=glwn/818; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="p6HIh5BE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glwn/818"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c85625854d3so666326a12.2
+        for <v9fs@lists.linux.dev>; Fri, 29 May 2026 00:55:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=2KhHp
-	2JpnKBTlJlBO6xU1UCIRNUADti6PIN2CrNN788=; b=p6HIh5BEcq96VRkRoTNps
-	swgfbh0Jrz4jslvgU+oOPZvpx+IX7aFB9GXo1S+rCu5V4D4bKIodeODowpEKwDaf
-	csfEMlbIB7911XnVY6GpIMqp2f0Ym1iUPFpbHooFJDiK3fHGzU+alN3Fy6V15qiF
-	Tyk48r3Kg+o/p8m2bf8Hs4=
-Received: from localhost.localdomain (unknown [211.102.241.99])
-	by web3 (Coremail) with SMTP id ygQGZQCn9ZK3Qhlq9Wz7AQ--.48237S2;
-	Fri, 29 May 2026 15:39:36 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: v9fs@lists.linux.dev
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
+        d=gmail.com; s=20251104; t=1780041330; x=1780646130; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOIlhV4TyHKTC2O9h1+JZXa0pc9hghpuCyvPU98in4A=;
+        b=glwn/818kwkgQPvqcCLGz3N5sxCr/LYY0kGu5Tdm42A/DxR/FNBb0t+BIFGelH+k2O
+         xyPvrHHKRtxp4EV2/ssJHUAi+E7/AhBYPy3D1v2QfMcI6GJPClFyjVVzPVkxBUSUWf4X
+         P3diwFpdursRkZEtEpzjNLS/tHlxnogXH91kYWjJ2DH6VZjz/3CNTzaDSFWTduo8IBJE
+         KqIvkdYP9fHrxXZfOBaBUdGWM9qjr2Uppurysu0RkleTS2MF1Tr/uoSN1DdQiKMoO0DH
+         0ozf4cwNa76g3w8IWfn3XmFj1kFzv6nhBSRZMLzc7ykoLnhqJVvqRAdcmbeD90U6TJIR
+         kDog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780041330; x=1780646130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EOIlhV4TyHKTC2O9h1+JZXa0pc9hghpuCyvPU98in4A=;
+        b=DmY7Y6iAEwpxbv82JRFTHmDaa02pIxWbgBl/W662iz7E1HRPfJ8iyrRUkFYD7tcOEQ
+         yGanJo4e/HaxXKUjUV/sLiERhKVLVm92ebUP5rpcgRTPAQOYiW2LaHwj49B5CC0d4vWp
+         tV+hPm26XjAibPiKPkzBXCi65a9CSo/nlncsKohJo9XdsCLVwfjgtnVKasE7mv5PgAj3
+         XjSFNwBdy6jSR2GS4KNhwWn4lNC/+rcohEQZi1CcvcEL1JIq/3BCgNiWXxldW1PkF/wx
+         iqjKVQ3//AuXuxBi0RGLgPSE30cW1a1PsUk4tKTDkGq4+8Ci1cEWgOkAdJAJxn+UuVFV
+         fvOA==
+X-Forwarded-Encrypted: i=1; AFNElJ9YU/m74xX8JAqyMVUR1/tvgAvk2efPxQrDMXAI5Ub5My7vXVw168yKAkI7ACSHKbRwWAVA@lists.linux.dev
+X-Gm-Message-State: AOJu0YyWSyLsfOl0sPSeNU1rYQLOvhoYvGaP+6mVJ1u3cBbM6N89/KJ2
+	dBuZSDuiInEFbKHoaCHuXHimGXo3HdhY217kPdxJ3aKom0/Q8IY8Y970
+X-Gm-Gg: Acq92OGGW8yeNZu31q8+78XmU6mJSEJOYjgAgiLwcGJ2sEnrIxjEkjbpZqRqC3vyBOl
+	ddn+eOH3UhAALiiMTvSLHDUItMlSh9eV2fZq1i6zL+U+YiCCsgKfzf55oUsdZEriPesuYGdeS+w
+	TuO4HPlG7yAZoyhB5KqAvSE9RgScLraJw6nQtwK0hbMVcwQb14ZoPLIDdvLO95ymTtGMYq6VQzT
+	CaeXF8d6WTwW+VQoAurhAyReDlKDMdvmzn9r+RWxvGmaGoGFWMnxC89aIhBtj5Ic2IH8CAYl+uC
+	A0hfZh0CeY8gAxUQZmqlyhDQP6riaET0O1ToeVrfuRjQMUIH1t9q9KNjnMj8uCA1OK9AljpCovo
+	iPQzDyqjakxMXxYlpFS0+N5FXmdrutIP5uZwsjVCeCii5NW01yW+ZoyGnaG75sRrPRFUmqhqwXr
+	XxaLzEND78IAS3EX3ON5dudwqKxxYc1xvxKXhdqZ8uXSqMIDe6mZki5wi+FCh5YkrqATPOdBkC2
+	xKfOtIjBlFE1iFMwx4Lwc2v+IRqHEQkWjwjcd+vgZyy3ku8rPcJw/iYU5xQl7wHig==
+X-Received: by 2002:a05:6a21:6e04:b0:3a2:d629:16a2 with SMTP id adf61e73a8af0-3b411c02000mr2163499637.10.1780041330263;
+        Fri, 29 May 2026 00:55:30 -0700 (PDT)
+Received: from bass-virtual-machine.. ([163.61.198.28])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85772d9d35sm975539a12.29.2026.05.29.00.55.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 00:55:29 -0700 (PDT)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org
+Cc: linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH] net/9p: fix race condition on rdma->state in trans_rdma.c
-Date: Fri, 29 May 2026 15:39:31 +0800
-Message-ID: <20260529073933.77315-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH] 9p: Add missing read barrier in virtio zero-copy path
+Date: Fri, 29 May 2026 15:54:41 +0800
+Message-Id: <20260529075441.233369-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -47,132 +77,40 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQCn9ZK3Qhlq9Wz7AQ--.48237S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF13tw13Kr1kWF47tr1xuFg_yoWrWF4xpa
-	95WanIkF9Yvr4UZ3s7W3WUWrsIkan5urW7GrWFk3W3Aan0gF98XF48Ja4avrWYkr97GF13
-	JFyjqF90vFs8Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbqNt7UU
-	UUU==
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQECAWoZNVkmKgAAsQ
 
-The rdma->state field is modified without holding req_lock in both
-recv_done() and p9_cm_event_handler(), while rdma_request() accesses
-the same field under the req_lock spinlock. This inconsistent locking
-creates a race condition:
+Commit 2b6e72ed747f ("9P: Add memory barriers to protect request
+fields over cb/rpc threads handoff") added a read barrier after
+p9_client_rpc() waits for req->status, pairing with the write barrier in
+p9_client_cb(). The virtio zero-copy wait path was missed.
 
-- recv_done() running in softirq completion context sets
-  rdma->state = P9_RDMA_FLUSHING without acquiring req_lock
+Add the same read barrier after the zero-copy wait before reading the
+completed request.
 
-- p9_cm_event_handler() modifies rdma->state at multiple points
-  (ADDR_RESOLVED, ROUTE_RESOLVED, ESTABLISHED, CLOSED) without
-  req_lock
-
-- rdma_request() uses spin_lock_irqsave(&rdma->req_lock, flags) to
-  protect the read-modify-write of rdma->state
-
-The race can cause lost state transitions: recv_done() or the CM
-event handler could set state to FLUSHING/CLOSED while rdma_request()
-is concurrently checking or modifying state under the lock, leading to
-the FLUSHING transition being silently overwritten by CLOSING. This
-corrupts the connection state machine and can cause use-after-free on
-RDMA request objects during teardown.
-
-Fix by adding req_lock protection to all rdma->state modifications in
-recv_done() and p9_cm_event_handler(), matching the pattern already
-used in rdma_request(). Use spin_lock_irqsave/spin_unlock_irqrestore
-in the CM event handler since it can race with recv_done() which runs
-in softirq context.
-
-Tested with a kernel module that races two threads (simulating
-rdma_request and recv_done/CM handler) on rdma->state with proper
-locking: 5.5M+ FLUSHING writes over 27M iterations with 0 lost
-transitions.
-
-Fixes: 473c7dd1d7b5 ("9p/rdma: remove useless check in cm_event_handler")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM:GLM-5.1
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Fixes: abfa034e4b8e ("fs/9p: Update zero-copy implementation in 9p")
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 ---
-diff --git a/net/9p/trans_rdma.c b/net/9p/trans_rdma.c
-index aa5bd74..b4274f1 100644
---- a/net/9p/trans_rdma.c
-+++ b/net/9p/trans_rdma.c
-@@ -128,25 +128,36 @@ p9_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- {
- 	struct p9_client *c = id->context;
- 	struct p9_trans_rdma *rdma = c->trans;
-+	unsigned long flags;
-+
- 	switch (event->event) {
- 	case RDMA_CM_EVENT_ADDR_RESOLVED:
-+		spin_lock_irqsave(&rdma->req_lock, flags);
- 		BUG_ON(rdma->state != P9_RDMA_INIT);
- 		rdma->state = P9_RDMA_ADDR_RESOLVED;
-+		spin_unlock_irqrestore(&rdma->req_lock, flags);
- 		break;
- 
- 	case RDMA_CM_EVENT_ROUTE_RESOLVED:
-+		spin_lock_irqsave(&rdma->req_lock, flags);
- 		BUG_ON(rdma->state != P9_RDMA_ADDR_RESOLVED);
- 		rdma->state = P9_RDMA_ROUTE_RESOLVED;
-+		spin_unlock_irqrestore(&rdma->req_lock, flags);
- 		break;
- 
- 	case RDMA_CM_EVENT_ESTABLISHED:
-+		spin_lock_irqsave(&rdma->req_lock, flags);
- 		BUG_ON(rdma->state != P9_RDMA_ROUTE_RESOLVED);
- 		rdma->state = P9_RDMA_CONNECTED;
-+		spin_unlock_irqrestore(&rdma->req_lock, flags);
- 		break;
- 
- 	case RDMA_CM_EVENT_DISCONNECTED:
--		if (rdma)
-+		if (rdma) {
-+			spin_lock_irqsave(&rdma->req_lock, flags);
- 			rdma->state = P9_RDMA_CLOSED;
-+			spin_unlock_irqrestore(&rdma->req_lock, flags);
-+		}
- 		c->status = Disconnected;
- 		break;
- 
-@@ -184,6 +195,7 @@ recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	struct p9_req_t *req;
- 	int err = 0;
- 	int16_t tag;
-+	unsigned long flags;
- 
- 	req = NULL;
- 	ib_dma_unmap_single(rdma->cm_id->device, c->busa, client->msize,
-@@ -220,7 +232,10 @@ recv_done(struct ib_cq *cq, struct ib_wc *wc)
-  err_out:
- 	p9_debug(P9_DEBUG_ERROR, "req %p err %d status %d\n",
- 			req, err, wc->status);
--	rdma->state = P9_RDMA_FLUSHING;
-+	spin_lock_irqsave(&rdma->req_lock, flags);
-+	if (rdma->state < P9_RDMA_FLUSHING)
-+		rdma->state = P9_RDMA_FLUSHING;
-+	spin_unlock_irqrestore(&rdma->req_lock, flags);
- 	client->status = Disconnected;
- 	goto out;
- }
+Found by auditing READ_ONCE() used for synchronization.
+A similar fix can be found in 8df672bfe3ec.
+---
+ net/9p/trans_virtio.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---
-2.43.0
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index 4cdab7094b27..b0d0094ec8e2 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -532,6 +532,11 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
+ 	p9_debug(P9_DEBUG_TRANS, "virtio request kicked\n");
+ 	err = io_wait_event_killable(req->wq,
+ 				     READ_ONCE(req->status) >= REQ_STATUS_RCVD);
++	/*
++	 * Make sure our req is coherent with regard to updates in other
++	 * threads - echoes to wmb() in the callback
++	 */
++	smp_rmb();
+ 	// RERROR needs reply (== error string) in static data
+ 	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
+ 	    unlikely(req->rc.sdata[4] == P9_RERROR))
+-- 
+2.34.1
 
