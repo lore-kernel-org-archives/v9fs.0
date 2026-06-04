@@ -1,184 +1,155 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153603CEBA7
-	for <v9fs@lists.linux.dev>; Fri, 29 May 2026 10:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8820F43C061
+	for <v9fs@lists.linux.dev>; Thu,  4 Jun 2026 14:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780050888; cv=none; b=NHoBNujzVkdWIepcHHSaAlzZOH0iIbOBzVYCRCjOv5nl7ad6apPeo6sA68Z5m+u5SsTWDgyPqjpJ90Is1evn/hWlAAXCqqhx7mYLhORvhle/y2wM9PmBUG2oNKfZM+xWEnGC/tCY3aBs495bTdmIaOCi23tXyJ2ZNppDa2qQZFA=
+	t=1780583164; cv=none; b=JJ1pWknU7g45jBNOE2oF9ZWi00osf/Q7/3BrF9BWSJqH22NapJJO+SLHxykc5WvA7ltnzdcIq/AORgBZsTP7DuQFpDzD1Q2nhwErziMFRjAKWf1zwH15fpNCncB7iJkX684yGKEo8YaRBDc1SyoydNqJQXlhQb+58gmE3Tp8pEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780050888; c=relaxed/simple;
-	bh=apB7UWVudIhcvCYkDQZaxA+dOF2rDha0JrKplcLUz0w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJmaYBhbLLn8xfS38YKSirRz+Q8Wo4bEpR6ivztGg9ETznxppm7LnzYJVNmUqiwezM3EfkqavdNGrjKMC49Ny6g/i2QjYqKg+5wePGdLTD70Z7pPeLivQDmn6prNdUymOi0VsDxXK2pTKVOABZFGMTd/2deSsV55vJxrrTNQMAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=daVQw007; arc=none smtp.client-ip=52.229.168.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1780583164; c=relaxed/simple;
+	bh=oyupZJcjxvClYUnY8PtlxQPfTXtc+rhg1VGXf1uiPhY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=Ut6vKBlOOHtBtXUdOnAn+Whr7UKUFZqe/4rXfimaZZJpe6JXXVm9OqPjMpXTnw/MxxJaVpgeKz9JrjvKsJFT233UrDjhJocZ22qjM9DacBjy6mkHGfwO6I9SLH5XrfGCuIgiFCbobdPeYktTSqpsEdW1fovzdic7Wzmm0s94UAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rd0D6pk9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="daVQw007"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=odjJw
-	XKJYvoieuC6wwW6F9NYI05mPDG8W4gzYFAIsmw=; b=daVQw007auHph6v328aVV
-	SfB4eFZVI9pJV7ockWrHclTR9Fk/occpskiOQK7EEndTQMatgVNLK8FAMXlGz+mi
-	zKl7NgST/ngCe08CBKP0HBRwIK0teAjj52hKxVyKbiNh3RNOJh1H+yW1tanUYxLM
-	MhoxG9ImR5Eklpl6C35tAk=
-Received: from localhost.localdomain (unknown [211.102.241.99])
-	by web5 (Coremail) with SMTP id zAQGZQB3McG4axlqRdX4AQ--.48756S2;
-	Fri, 29 May 2026 18:34:33 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: v9fs@lists.linux.dev
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH] 9p/xen: fix use-after-free in p9_xen_request
-Date: Fri, 29 May 2026 18:34:15 +0800
-Message-ID: <20260529103416.81378-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rd0D6pk9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780583162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+hEgi4Js9Sg/b57dL6O3ikI5IA10/Ul0ztOGbyS/4bs=;
+	b=Rd0D6pk9ezXR9DRBhwXcjG+TRvoJ78ukJRv2vZCGq1DU0SWCMsHYSqGOwddCAuF5q3H+dw
+	1nC8lzuo9tnLelYP9ltW79A+weK9tMLrZEaTi/vv32OVBhJmf67UjGwt1fbyqlaxUHzTV7
+	ElVC0lqAmJd9KPKKzwQpANy1A1pFesI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-010EzjtuPq6sAk9ZnnOTDQ-1; Thu,
+ 04 Jun 2026 10:26:00 -0400
+X-MC-Unique: 010EzjtuPq6sAk9ZnnOTDQ-1
+X-Mimecast-MFC-AGG-ID: 010EzjtuPq6sAk9ZnnOTDQ_1780583158
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2813A1956094;
+	Thu,  4 Jun 2026 14:25:56 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.50.14])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F3B2130001A1;
+	Thu,  4 Jun 2026 14:25:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ahPodavlA-gt44FO@infradead.org>
+References: <ahPodavlA-gt44FO@infradead.org> <20260518222959.488126-1-dhowells@redhat.com> <20260518222959.488126-6-dhowells@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Matthew Wilcox <willy@infradead.org>,
+    Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
+    Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
+    ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    Trond Myklebust <trondmy@kernel.org>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-block@vger.kernel.org
+Subject: Re: [PATCH v2 05/21] Add a function to kmap one page of a multipage bio_vec
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zAQGZQB3McG4axlqRdX4AQ--.48756S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXw45XF45Xr1fCF45ArWfuFg_yoWrWFy8pa
-	18AFZ8AFWDJr17JFn5tFykZ3WFyr4kJry2gFy2yw4fAwnxJFykXFWvyryjg345ArZYgFn5
-	Jr1DtFWUKFZruw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_Gw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUj_Oz7UU
-	UUU==
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQECAWoZNVmO0wAAsB
+Date: Thu, 04 Jun 2026 15:25:46 +0100
+Message-ID: <127138.1780583146@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: WXLszuOdamIbSQYnAFgEXPYbqqlAKM3hyg2E0OfFpAQ_1780583158
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <127137.1780583146.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-p9_xen_request() looks up the transport private data in xen_9pfs_devs
-under xen_9pfs_lock, but drops the lock before using the returned
-pointer.
+Christoph Hellwig <hch@infradead.org> wrote:
 
-This means the lookup only protects the list traversal. It does not pin
-the lifetime of the object. If xen_9pfs_front_remove() runs after the
-read lock is dropped, it can remove the entry from the list and free the
-private data and its rings while p9_xen_request() is still about to use
-them.
+> > +static inline void *kmap_local_bvec(struct bio_vec *bvec, size_t offse=
+t)
+>=20
+> The name is rather confusing for something that does not map the entire
+> bvec, and is an anagram of the existing bvec_kmap_local.  So please
+> rename it to bvec_kmap_partial or something.
 
-Fix this by adding a kref to xen_9pfs_front_priv. Take a reference while
-still holding xen_9pfs_lock, and drop it after the request has finished.
-Make the remove path drop the list reference instead of freeing the
-object directly, so the final free is deferred until any in-flight
-p9_xen_request() users have released their references.
+Sure...  But it then differs in pattern from the various kmap_local_*() tha=
+t
+we have.
 
-Fixes: f023f18ddf41 ("xen/9pfs: send requests to the backend")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM:GLM-5.1
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
- net/9p/trans_xen.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+> > +{
+> > +=09offset +=3D bvec->bv_offset;
+> > +
+> > +=09return kmap_local_page(bvec->bv_page + offset / PAGE_SIZE) + offset=
+ % PAGE_SIZE;
+>=20
+> ...  Also this can use shits and byte masking to be a tad more efficient =
+and
+> matching the rest of the bvec code.
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 47af5a1..abdc652 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -14,6 +14,7 @@
- #include <xen/interface/io/9pfs.h>
+PAGE_SIZE is a constant power-of-2, so it shouldn't make a difference if th=
+e
+compiler is doing its job properly, but okay.
 
- #include <linux/module.h>
-+#include <linux/kref.h>
- #include <linux/spinlock.h>
- #include <linux/fs_context.h>
- #include <net/9p/9p.h>
-@@ -54,6 +55,7 @@ struct xen_9pfs_front_priv {
- 	struct xenbus_device *dev;
- 	char *tag;
- 	struct p9_client *client;
-+	struct kref refcount;
+One thought: I could just give bvec_kmap_local() an offset parameter and us=
+e
+that instead.
 
- 	struct xen_9pfs_dataring *rings;
- };
-@@ -114,6 +116,8 @@ static bool p9_xen_write_todo(struct xen_9pfs_dataring *ring, RING_IDX size)
- 		xen_9pfs_queued(prod, cons, XEN_9PFS_RING_SIZE(ring)) >= size;
- }
+> Users of this would be interesting
 
-+static void xen_9pfs_front_release(struct kref *ref);
-+
- static int p9_xen_request(struct p9_client *client, struct p9_req_t *p9_req)
- {
- 	struct xen_9pfs_front_priv *priv;
-@@ -128,9 +132,12 @@ static int p9_xen_request(struct p9_client *client, struct p9_req_t *p9_req)
- 		if (priv->client == client)
- 			break;
- 	}
--	read_unlock(&xen_9pfs_lock);
--	if (list_entry_is_head(priv, &xen_9pfs_devs, list))
-+	if (list_entry_is_head(priv, &xen_9pfs_devs, list)) {
-+		read_unlock(&xen_9pfs_lock);
- 		return -EINVAL;
-+	}
-+	kref_get(&priv->refcount);
-+	read_unlock(&xen_9pfs_lock);
+It's used four times in patch 10 ("afs: Use a bvecq to hold dir content rat=
+her
+than folioq").  I could merge this patch (patch 5) into one of the other
+patches, it's just been more convenient for it not be in a later patch when
+flipping backwards and forwards to cut down on recompiling.
 
- 	num = p9_req->tc.tag % XEN_9PFS_NUM_RINGS;
- 	ring = &priv->rings[num];
-@@ -165,6 +172,7 @@ static int p9_xen_request(struct p9_client *client, struct p9_req_t *p9_req)
- 	spin_unlock_irqrestore(&ring->lock, flags);
- 	notify_remote_via_irq(ring->irq);
- 	p9_req_put(client, p9_req);
-+	kref_put(&priv->refcount, xen_9pfs_front_release);
+> and why you're not simply using a bvec_iter at page granularity, which is
+> what other block kmap code does.
 
- 	return 0;
- }
-@@ -309,6 +317,13 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
- 	kfree(priv);
- }
+Because for the most part I don't want to do linear iteration.  There are a
+number of cases:
 
-+static void xen_9pfs_front_release(struct kref *ref)
-+{
-+	struct xen_9pfs_front_priv *priv =
-+		container_of(ref, struct xen_9pfs_front_priv, refcount);
-+	xen_9pfs_front_free(priv);
-+}
-+
- static void xen_9pfs_front_remove(struct xenbus_device *dev)
- {
- 	struct xen_9pfs_front_priv *priv;
-@@ -323,7 +338,7 @@ static void xen_9pfs_front_remove(struct xenbus_device *dev)
- 	list_del(&priv->list);
- 	write_unlock(&xen_9pfs_lock);
+ (*) Read-link and follow-link: For symlinks, there will only be a single
+     block and it will fit within PAGE_SIZE.
 
--	xen_9pfs_front_free(priv);
-+	kref_put(&priv->refcount, xen_9pfs_front_release);
- }
+ (*) Readdir and dir checking: I iterate over the directory contents using
+     iov_iter and iterate_bvecq(), though I could also use bvec_iter inside=
+ a
+     loop to step through the bvecq chain.
 
- static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
-@@ -421,6 +436,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 	if (!priv)
- 		return -ENOMEM;
- 	priv->dev = dev;
-+	kref_init(&priv->refcount);
- 	priv->rings = kzalloc_objs(*priv->rings, XEN_9PFS_NUM_RINGS);
- 	if (!priv->rings) {
- 		kfree(priv);
---
-2.43.0
+ (*) Lookup: Follows the hash chain in the directory rather than searching
+     linearly.
+
+ (*) Editing of local directory copy: Doesn't do linear iteration, but rath=
+er
+     does random access of blocks in the directory.  (This is to avoid havi=
+ng
+     to reload the dir from the server when doing mkdir, rename, etc.)
+
+Note that directories are 2K, not PAGE_SIZE, and, when editing, I may need =
+to
+modify more than one block in a directory operation and they may share a pa=
+ge
+(which may be part of a higher order page).  Can we drop 32-bit arches yet =
+-
+or, at least, highem support?
+
+David
 
