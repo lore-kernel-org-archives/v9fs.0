@@ -1,115 +1,87 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4493C553B;
-	Sat,  6 Jun 2026 20:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024CE3A2E33
+	for <v9fs@lists.linux.dev>; Sun,  7 Jun 2026 12:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780777681; cv=none; b=Rlp6BzYzUyswxU2Btu1ExrqsApp0fzAIGdSNEMZ1yxOpbSG5Xyy0hv013xFmOp00lJbZx5ff8RxhfZZN+qXE17ka0+nYvtirBcM8xC1Fr60jn1b406dCMPumcc0XQJXsYVS6I3S9Oi5Da9mYvZSzhKRGLSYDukZHAfS33MT97AI=
+	t=1780834681; cv=none; b=kPs0cDiA+Mbqw3kld7q98STCTfreD1XwtHqgAV5ellqlDlqupRHaSrBEpKpYyQpjqnfh/2WyWkFZPftE+fVfoZrx2JhXq1J5aQLKdrt2aMb9zFiK6yITwWy/bdOI5hroCCxvnWJVDbyyHPPztagqvl0Li1XGA4S1o75MjT6UDIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780777681; c=relaxed/simple;
-	bh=nzAXMyQtvONhOFol2DVk8uLXsudCxo9a1AXzAWb5ODI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DzNoziC278S/U2H9Nbw3cbOLQrWMOoN3N1Ssw/GalyVKZuOZfFVldw9C4PNabsOL29pw4/7rjiINgYwEV+PlhsEx+v4ycjWdgar/984ONI+eWikqpnzJPcj2uIvunUzCGPa8WAsk1Q/4hd6W4Bi3NYgfoUhKc5AHiW27vXpd1OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=ECi8Yru1; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	s=arc-20240116; t=1780834681; c=relaxed/simple;
+	bh=t2kT6ShKybkMO5M6yb/Apz3xgBUgTXClyy1kXUIo5eE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gls8U+Q1npyZlFq3UUlN82zdA/OpLZ8qR564XZ3upen0oPECxowrfmSdNs3SBBhPxclucJ0BFDlRGZ4JhgPbLQgxjMlkBjINHRizLBROcJHM2W9L61p6JQUKjk6yjBpvjL2Z13vAaFj3+8KaExGsemI3dtGYZNuS4VDRViqQYa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=FVr/s3P9; arc=none smtp.client-ip=52.229.168.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="ECi8Yru1"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxcb-007NWp-T5; Sat, 06 Jun 2026 22:27:57 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=yNltE5qiBWrLVbrV36NtLKHukaDNa2lljdTajRs9uEg=; b=ECi8Yr
-	u1WgPxW/vKcUfMt6JBQEQzaDe2bi1CD2mcYh2FWr34G7mZr2UQRQP0HDbY26FJmByDzrjuAYuMvNH
-	xhcchHJnEqgq4E0hZ496YiWlnU+5mQWve2SiyuUhiJbXgAYV0IZDkhAApNxi+Ui0Aax2U7JS75ZCH
-	e1G0YI8YLnOF4aNByq9wj1D9+x1VBPvgtQWIAl5+BWroKHIj6eKr9pwh6TvKUkzCzYLXRCxSMyV/g
-	WO/6luhUltlfrDh8zJ/VIOy2P+mrhpn7vWP7DNPEGFhfPoNt1r0xQVNp25dviMm6G/6+EAyGIO1D/
-	ZJpr70z4xW6bd5kvWo2X5FI0xt3A==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxcb-0000vs-8X; Sat, 06 Jun 2026 22:27:57 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wVxcU-006elj-Pm;
-	Sat, 06 Jun 2026 22:27:50 +0200
-From: david.laight.linux@gmail.com
-To: Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Arnd Bergmann <arnd@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev
-Cc: Dominique Martinet <asmadeus@codewreck.org>,
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="FVr/s3P9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Fixes:Reported-by:Reported-by:
+	Reported-by:Reported-by:Reported-by:Reported-by:Assisted-by:
+	Signed-off-by:Content-Transfer-Encoding; bh=F1YNUv9O1Yd4034X0Yct
+	yewFcLtSLMDpTndmgPSX0F8=; b=FVr/s3P9lE2olx/DDcSgFmJbmH0Yqqjw2+N5
+	KMkmhkblrGk6Gcs0QPSDfuyYtiRXy/0wGDwNxgn4OWKb82X53t/rx187JBPqPCAz
+	jd8ZYgJZawcArro564LxtEmKdOLNkCBcm2x7GpU6ulyAonxXOJqLvGSxhFdEnGy0
+	Mt+kr3I=
+Received: from localhost.localdomain (unknown [101.5.11.216])
+	by web4 (Coremail) with SMTP id ywQGZQA3HJxmYSVqva4TAg--.42907S2;
+	Sun, 07 Jun 2026 20:17:43 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: v9fs@lists.linux.dev
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] net/9p: Replace strlen() strcpy() pair with strscpy()
-Date: Sat,  6 Jun 2026 21:27:42 +0100
-Message-Id: <20260606202744.5113-3-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net/9p/usbg: fix prefix matching in device lookup
+Date: Sun,  7 Jun 2026 20:17:24 +0800
+Message-ID: <20260607121726.11749-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:GLM-5.1
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ywQGZQA3HJxmYSVqva4TAg--.42907S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYp7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcV
+	AFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280
+	aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwV
+	AKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6x8ErcxFaVAv8VW8Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrw
+	ACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK67AK
+	6ryUMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCF54CYxVCY1x
+	0262kKe7AKxVWUtVW8ZwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64
+	vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
+	vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0Jj4q2_UUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQYLAWokna+E8AAAsF
 
-From: David Laight <david.laight.linux@gmail.com>
-
-Use the result of strscpy() for the overflow check.
-
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
-This is one of a group of patches that remove potentially unbounded
-strcpy() calls.
-
-They are mostly replaced by strscpy() or, when strlen() has just been
-called, with memcpy() (usually including the '\0').
-
-Calls with copy string literals into arrays are left unchanged.
-They are safe and easily detected as such.
-
-The changes were made by getting the compiler to detect the calls and
-then fixing the code by hand.
-
-Note that all the changes are only compile tested.
-
-Some Makefiles were changed to allow files to contain strcpy().
-As well as 'difficult to fix' files, this included 'show' functions
-as they really need to use sysfs_emit() or seq_printf().
-
-All the patches are being sent individually to avoid very long cc lists.
-Apologies for the terse commit messages and likely unexpected tags.
-(There are about 100 patches in total.)
-
- net/9p/trans_fd.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index dbad3213ba84..eb685b52aeb2 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -940,14 +940,12 @@ p9_fd_create_unix(struct p9_client *client, struct fs_context *fc)
- 	if (!addr || !strlen(addr))
- 		return -EINVAL;
- 
--	if (strlen(addr) >= UNIX_PATH_MAX) {
-+	sun_server.sun_family = PF_UNIX;
-+	if (strscpy(sun_server.sun_path, addr) < 0) {
- 		pr_err("%s (%d): address too long: %s\n",
- 		       __func__, task_pid_nr(current), addr);
- 		return -ENAMETOOLONG;
- 	}
--
--	sun_server.sun_family = PF_UNIX;
--	strcpy(sun_server.sun_path, addr);
- 	err = __sock_create(current->nsproxy->net_ns, PF_UNIX,
- 			    SOCK_STREAM, 0, &csocket, 1);
- 	if (err < 0) {
+ 	list_for_each_entry(dev, &usbg_instance_list, usb9pfs_instance) {
+-		if (!strncmp(devname, dev->tag, strlen(devname))) {
++		if (!strcmp(devname, dev->tag)) {
+ 			if (!dev->inuse) {
+ 				dev->inuse = true;
+ 				found = 1;
 -- 
-2.39.5
+2.43.0
 
