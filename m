@@ -1,28 +1,28 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA681A6822
-	for <v9fs@lists.linux.dev>; Sun,  7 Jun 2026 13:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD927E1C5
+	for <v9fs@lists.linux.dev>; Sun,  7 Jun 2026 14:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780837302; cv=none; b=upirO+sAjBJhPFwUTrJcYZAztapYDtMONnDI3p7AvUk1tRhzPIuwL2oMB2W9vmzZRrEBHIsLnG/G4DXfSh82It+jUVto6ZE5Tgp9QkU4S/QVRyMCCeIs2CskpdUoiF1QWng6Vx3dZMyT/cXtE90dCT7NONfI3iEcSuzT6dcRUJs=
+	t=1780841186; cv=none; b=byaRVbnEaZE4ijlRoJJWGia4T8eE+hjrB4ufmWiwH8NA0MHS1rgEWG9hImxbtrS9fhEWZHPGfENzMf75drYM2EcfgHoy77FmC5B6xxNwdlqdeuS1ate/YYNRqAPSFJJi35R0/mTIGpND6GJa80/53BRUF0jRc8/6K6VSRtfyPLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780837302; c=relaxed/simple;
-	bh=sCQWvrOwyzOu0il+mTFkDGuqasbhT3DyEXaV/X+xHAA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tyb1b2p8iKe2JKeQIwKoFP8fLQXyCo6ORRMAmzyvRt/6HotocEvjgMJohn2gnq5hzTx9YNTqfObVzENv0+svIW9q4kBEvgwa7ghCTr+9gUGruFbPCC+76fu48NsKo512o8USkfydY4Hwo4I3kWStVjMG3upimDDOTT/X44eUQC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=jMwSe8gS; arc=none smtp.client-ip=4.193.249.245
+	s=arc-20240116; t=1780841186; c=relaxed/simple;
+	bh=82cCKqg3MsQt7vqnMwzDOcjZFWNjFzl70JEqvhPLtKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKRo1anAVBNrdtAa1d5oYgjupqEq7bnsIdSSmqZ8jV3SjgVzQxfCATpv7a/6kgP56RRvNFgBajJlXcjMs5CzznIotnWHY1xq/9YJSicSRgSbcnvkyMQyXitjDLIRVosJV/Dy4w52NoEMiZ6KTGU3Qdpi7UcnKyuntyX37bK1TVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=BO66CT3O; arc=none smtp.client-ip=209.97.182.222
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="jMwSe8gS"
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="BO66CT3O"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=wy4Pj
-	RKnyBWkiFf6A6DugXQqGmLPNMoUQDUhuKI3GcU=; b=jMwSe8gSIDf+ARf8uzemg
-	ckDTkml6h6Y40vnF+LV8vucHKTTVYMvjgGdcsS1ZTjRyt7dB5cQmv9r0I3uB1K65
-	wl5CZXQXCfiCZPFm8UvgAaBRcHzWOmk8xYoeW9XQ5DofJAlJY99/9BV5mKvAKAXC
-	5BS6p6fFlJ6ye1fQHvDLyY=
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=xkBxb
+	Q0JR0YQ17xyn75o2TAfaxhSYTjMP4T2rs5jitw=; b=BO66CT3OJnfNzJUf/ltWv
+	LgD61H+ExFzHwOwIvSVQGcEfTJWQ0z+A5h5/KzeuU4ZMO2LXsP9kIELM7jgq/hJl
+	C6trxodIlJ/OnpDJAO9ET0INhw/6V7PfvZCKMKqUh/dCytTW24XuqDJS08WTZ0tN
+	S+Vy6+CxPYS7Dj/lQfLZiU=
 Received: from localhost.localdomain (unknown [101.5.11.216])
-	by web3 (Coremail) with SMTP id ygQGZQDHE5GlayVqeLw4Ag--.6443S2;
-	Sun, 07 Jun 2026 21:01:25 +0800 (CST)
+	by web4 (Coremail) with SMTP id ywQGZQCnbKHWeiVqiTQUAg--.36200S2;
+	Sun, 07 Jun 2026 22:06:14 +0800 (CST)
 From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 To: v9fs@lists.linux.dev
 Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
@@ -37,9 +37,9 @@ Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
 	Qi Li <qli01@tsinghua.edu.cn>,
 	Ke Xu <xuke@tsinghua.edu.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] net/9p/usbg: Fix use-after-free in disable_usb9pfs()
-Date: Sun,  7 Jun 2026 21:01:16 +0800
-Message-ID: <20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn>
+Subject: [PATCH] 9p/trans_virtio: bound RERROR copy by mapped pages
+Date: Sun,  7 Jun 2026 22:06:01 +0800
+Message-ID: <20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -48,49 +48,44 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQDHE5GlayVqeLw4Ag--.6443S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7trW8urWfuw4fCw45JFy7Jrb_yoW5JF4kpa
-	y3JFWFyrZxWryjva4ktr1vqF18Ar4kAryxtryjg3sxuanIqw1ktF48Kr9YvFs8A392ya47
-	AFs2q3yDur1kurDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+X-CM-TRANSID:ywQGZQCnbKHWeiVqiTQUAg--.36200S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw4xAryrZw1rZF1ruF4DJwb_yoW5XFWxpF
+	W5AwnayFZ5JFy2y3Z7Aayqvr47AFs3ArWxGryUZa43Z3Z8tFyIqFy0g34S9F4DCrW0gFy8
+	trZFvryUC3WDur7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9v1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
 	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xS
-	Y4AK67AK6ry8MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0Jj7SdkUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQILAWokna+N0wAAsr
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
+	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
+	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
+	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
+	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Av
+	z4vE14v_Xryl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU0hSdPUUUUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgELAWoknpuZngAAsF
 
-disable_usb9pfs() frees the IN and OUT usb_request objects before it
-disables the corresponding endpoints. If either request is still queued,
-the later usb_ep_disable() call cancels the endpoint queue and the UDC
-driver can still access the already freed request.
+handle_rerror() copies the variable-length error string of a zero-copy
+RERROR response from the receive pages into the request's static response
+buffer.  The amount copied is bounded by P9_ZC_HDR_SZ, so the data can
+span at most two pages, but the helper is not told how many receive pages
+were actually mapped.
 
-With dummy_hcd and KASAN, this is reproducible by queueing the OUT
-request and then disconnecting the configfs gadget:
+If a malicious or broken virtio 9p device reports an RERROR length that
+exceeds the remaining bytes in the first mapped receive page, the error
+string is treated as crossing into a second page.  When only one receive
+page was mapped, handle_rerror() still advances the page pointer and
+dereferences the next entry, reading past the allocated in_pages array.
 
-  BUG: KASAN: slab-use-after-free in dummy_disable+0x2b4/0x300
-  Read of size 8 at addr ffff888009702400 by task sh/1
-  usb_ep_disable+0x8e/0x1f0
-  usb9pfs_func_unbind+0x193/0x350
-  gadget_dev_desc_UDC_store+0x135/0x280
+Pass the number of mapped receive pages to handle_rerror().  If the error
+string would cross a page boundary but only one page is available, copy the
+bytes that fit in that page and leave the response truncated, matching the
+existing behavior for overlong RERROR messages.  Otherwise continue with
+the second-page copy as before.
 
-dummy_free_request() also warns because the request is freed while its
-queue entry is still linked.
-
-Disable both endpoints before freeing the request objects. This lets
-usb_ep_disable() cancel any queued transfers and invoke the completion
-callback while the request storage is still valid. The request objects
-are then freed only after they have been removed from the endpoint
-queues.
-
-Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Fixes: f615625a44c4 ("9p: handling Rerror without copy_from_iter_full()")
 Cc: stable@vger.kernel.org
 Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
@@ -101,33 +96,40 @@ Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
 Assisted-by: GLM:GLM-5.1
 Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
- net/9p/trans_usbg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/9p/trans_virtio.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 1ce70338999c..5d0d6add150e 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -278,6 +278,9 @@ static void disable_usb9pfs(struct f_usb9pfs *usb9pfs)
- 	struct usb_composite_dev *cdev =
- 		usb9pfs->function.config->cdev;
- 
-+	disable_ep(cdev, usb9pfs->in_ep);
-+	disable_ep(cdev, usb9pfs->out_ep);
-+
- 	if (usb9pfs->in_req) {
- 		usb_ep_free_request(usb9pfs->in_ep, usb9pfs->in_req);
- 		usb9pfs->in_req = NULL;
-@@ -287,9 +290,6 @@ static void disable_usb9pfs(struct f_usb9pfs *usb9pfs)
- 		usb_ep_free_request(usb9pfs->out_ep, usb9pfs->out_req);
- 		usb9pfs->out_req = NULL;
- 	}
--
--	disable_ep(cdev, usb9pfs->in_ep);
--	disable_ep(cdev, usb9pfs->out_ep);
- 	dev_dbg(&cdev->gadget->dev, "%s disabled\n",
- 		usb9pfs->function.name);
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index 4cdab7094b27..a71ce8870c53 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -377,7 +377,7 @@ static int p9_get_mapped_pages(struct virtio_chan *chan,
  }
+ 
+ static void handle_rerror(struct p9_req_t *req, int in_hdr_len,
+-			  size_t offs, struct page **pages)
++			  size_t offs, struct page **pages, int in_nr_pages)
+ {
+ 	unsigned size, n;
+ 	void *to = req->rc.sdata + in_hdr_len;
+@@ -398,6 +398,8 @@ static void handle_rerror(struct p9_req_t *req, int in_hdr_len,
+ 	n = PAGE_SIZE - offs;
+ 	if (size > n) {
+ 		memcpy_from_page(to, *pages++, offs, n);
++		if (in_nr_pages < 2)
++			return;
+ 		offs = 0;
+ 		to += n;
+ 		size -= n;
+@@ -535,7 +537,7 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
+ 	// RERROR needs reply (== error string) in static data
+ 	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
+ 	    unlikely(req->rc.sdata[4] == P9_RERROR))
+-		handle_rerror(req, in_hdr_len, offs, in_pages);
++		handle_rerror(req, in_hdr_len, offs, in_pages, in_nr_pages);
+ 
+ 	/*
+ 	 * Non kernel buffers are pinned, unpin them
 -- 
 2.43.0
 
