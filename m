@@ -1,119 +1,114 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008D43D7D69
-	for <v9fs@lists.linux.dev>; Wed, 10 Jun 2026 11:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781091733; cv=none; b=kzGOdm2hZIjzKqnWf+lAQF5o1mnvbbziG67wSCkNoP+bzkXwxDf2AJfOMYfH5uTdBPrBRtpMxW29SOQ+aTyrYUPEbBYU5PjGexIXxFoTM6V7clxmSsRLPL9OR1iFueXACvhZ/AEhvXAQwWIgWK5bGdvdKHx9lp4Gue+7unBZ9Ek=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781091733; c=relaxed/simple;
-	bh=jgKmE1kKV3b0d5YkmqgCMwOqD04XBbTPa52jDu60x38=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tmh0ZOW//oHHNNAG68WpEV8TYCxhVkO4mZeMtWW9pRR/UhG7CO/zvqp4cbfQVy14iPFZFOsZm9hOYT96d6mizDulBts2E2j8gsDhD4lMP0cvqTzzyJZtK80AWInTwGrWZqR6niTftxFGEzrfyW9gmJAZax+3rhrwrl1WUlX1rvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bXMQki93; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7334E3ED5AE
+	for <v9fs@lists.linux.dev>; Wed, 10 Jun 2026 16:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781107264; cv=pass; b=ayBUu4VljvFm7dplHB2gwFQ0W5uV4O0Cgd2Ix1cpsxqSVAVlTJsXZWNMcG5p3S8Z3kibhMJKbSjff75X2pMwJBTeB040zIBtkZfVdbZ3/Sp2N2bWaH86mfXXH2S31+xBR60ItYWmwB7g5sbBZwFy4XJoj6/hyEQGEryo6pMwRoI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781107264; c=relaxed/simple;
+	bh=bB3xA/MHCU+PelFiFJxUbLWzHMG3lJQds9/bzXf05H8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=plGnXbpJa9u7n4RDoCeOAA6Gn95RVocmQrRkfHuyETAkuiFtCT4ff5GPvU4KIcoLv8EntVO2v7tYUVLbVcOK4js8iQ3JcaeLyAvDR2lpJgAYkFNzTfOLQLaPXL5XFYums1uZX9wZGAhdU1tqJEFWUpg/NjPuWBfj8zJhw9dh54k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IYb5UzX7; arc=pass smtp.client-ip=74.125.224.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bXMQki93"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-517b1f2c6adso34965401cf.2
-        for <v9fs@lists.linux.dev>; Wed, 10 Jun 2026 04:42:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IYb5UzX7"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-660456349d9so6742489d50.3
+        for <v9fs@lists.linux.dev>; Wed, 10 Jun 2026 09:01:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781107262; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Hdbaz+eXUnWRgd9dJgVSN1GS24cWtDpFEyaY9aLip6fD4BygchQVU5+Vg3t5r9WsxD
+         OQKnl9Y9viqDMFOtL9gy+BchQls1JNk2CKAlAFnuSQjfeIXcimrLJ5bdJCZuurY1YNRX
+         gkY0xZA+gbZn8QQu17BZr75Tn8+8l0/9HWre0EmHX7qeG3WJlCwWdkKEHVvabEs3uslY
+         rZQ6IrJPDqVczUjh6zeie+xeCdwESVMBQ+fixquYShxm/YDXU3xbosSC5xhTqzus/QZj
+         6Jeea978eKSe/BZpM1WI1cbSsKCfvU9xSX9XANviZDMD6Bn5WhU8tNguekkwWPDp2lB3
+         e/pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bB3xA/MHCU+PelFiFJxUbLWzHMG3lJQds9/bzXf05H8=;
+        fh=y5nFYLrFUnVX1UIUIGdMbH6Sd6WyEpc8KRUgwVdWZqc=;
+        b=YtLgOslstGQvQ8LXM2VbK0FBVikSOGfxMqFHXZeNam0jyqv4LxBI1lccMevdLkzMyd
+         guhr6r2rv7+h29tln7zDyyJ/s0Wf1TfnoSBh/u93Jf2yIGMANix0Fk8rj0tcOHc9k3kj
+         QYrRD9Ywnr1gbYY9YE5e9H2R9Ykz+pF4AnL0hDHQJjCILeqYIbxD10dTAazMoCB4zem7
+         8vp/U24IYALvPtGsvfsS7THlgUehkn+L2HD/opBSMuGFF1SIeIM3Ow7bbxFbGhEpb4fa
+         aJ7uX77WZd1Or95OfZ9xxrLp+C4+8TzHxuROw/gPlQpRx1I1rIRBWOJ8GlEwuRrL4MJ5
+         LemQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781091731; x=1781696531; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6hVbBOpXU3AVgTPjwcETSFcTXwEq2neK+pOPLd5Ot08=;
-        b=bXMQki93bgOHWWSI1qIU9XPp2HbPiCS1UW5+RoOBayuLKKQRm89oIYTmQE+LrUPlqU
-         jUw/dok0+tfmsazit+otwJ4cClnUPqgRWxmheJ8vyo0VQWM4TlVU+r0Jmwl9kmY+MQOR
-         ZzyouVMo5NlgkKQ9DgjuLfBoI4sSowsDl0sNvlchONWWIugzNcyxhv+qjTjYJ3wl7hYd
-         HMjqCnJ+1tYwaSOSJP+J+2PwqkBp2DyGPR1te9p4WdHNjFjkmKYmp0YqfsZltvdfoiWY
-         dhsu2diXsAsqI2leVmy+AVhGhuWTPXXJmwfEWANHMiyRGcQ9uu1VPotMmCxovkbCPGbE
-         tvOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781091731; x=1781696531;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781107262; x=1781712062; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6hVbBOpXU3AVgTPjwcETSFcTXwEq2neK+pOPLd5Ot08=;
-        b=eqLKdHJ5gCNz1s4n7I1M7SsD6FGaNqHCX7Qu1Hthv5DM42tjFyI7cNaRMhZd2jbUzm
-         fNqbzEbVn34Q8XIAMwMnk4r9A6Nzicjk6l2bbapnDVXFTkpOV9DSHzBRqgsylT3lgXwg
-         Jl1w3p+G29vjKS296fkCcTLHIF71ASqyLN1zkxir5qs6QR1uZg2Sxx6xbPO3wfNVHgrW
-         RZynnEsl0isTYQb4iisiWRCCgducsY0Rl6u099bhIq+QXn3j2BduUkmxQZgDpB1W6WVw
-         rNiCqmwyxyA9CCFDeMGobK4iHzf2Z6FIyTW+T23UkE3YShwdgcf0Lt16pdIwXTnQbqLH
-         SqzQ==
-X-Gm-Message-State: AOJu0YwM1dFbEpMlbFsmx+jC5MQ2OqlyyoyAskJPgFNfexRvefVD6b/v
-	TUvYXxajAAwGegffLtc3xL/lZKsYNK7my3muBsQjz17ElDY8FcTrIDQL
-X-Gm-Gg: Acq92OFXvAR6e+QQj4Qmb0jF5/SgchSygSszOFiNBCtPspvZe11P7PafYe3uXwIpzee
-	ghGURDezR+IgViHEygK40VDfT/e7VDfK1ID/H5nalrQjG9/1OD8c8bmQ/oKDyA3pnLtFq9fU8Pk
-	M7xEhv0gGU2ObctoWtd3Xu6NiKrCOR52x+P5ewkvUisv1XdrNGdfIF+leZ5uCcd5YETE8r4a6JL
-	ZLcWW9098JD1AnAxu3zz2RhMOxsZ1NymISswQR8MOpMwraLB50fmlet3+sUJS72qkagsuGu8Vdm
-	ayAVlYUgX6NIBFkPGMm0xnZmnY1VUYQgCXZ4GfNm0VBveRm8vjNIWxMsxGVDRLtfdbOS7479h3z
-	IM3jMhGxXJ61anFKVjG2DILXwfab9JKxxJsm47wE3ahXPV+nMrg6vAFRNC5ykMjPYyXpDzj2b7G
-	g6LaL9rRA4GcVTwuf9XEhrlwaUl6hm8QArU7z0VMSc6oO8eUsIVuaJhZKlwFLv/51ZCLHvPhxo7
-	I5Md67Ko15oIkUjrVI15zoP+owxv8M=
-X-Received: by 2002:a05:622a:8d04:b0:517:a02f:171e with SMTP id d75a77b69052e-517a02f1fb5mr305363591cf.30.1781091730803;
-        Wed, 10 Jun 2026 04:42:10 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c07e91sm216095931cf.4.2026.06.10.04.42.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 04:42:09 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] 9p/trans_virtio: bound mount_tag show copy to one page
-Date: Wed, 10 Jun 2026 07:42:06 -0400
-Message-ID: <20260610114206.3749904-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=bB3xA/MHCU+PelFiFJxUbLWzHMG3lJQds9/bzXf05H8=;
+        b=IYb5UzX7q0BK6U/MUM8CDgQ1bQh7oVeQ5xP0sXpYoCayD8pBY+HuPTvEl9OyXIZG0n
+         Rvn7DyPEkmCsGLjyocAB88msP0b8+99jzaWBgC1KC9L+paljPYs9tgevMWDZj5FSxD9E
+         Ok8QpWzaeNFiom3cbTbNOc8Onl1PSffrTeCd0bvuAt1vs/nmFgwCczAT7gxbqSHVb3W4
+         5g5u2P4wX6i72bE2L9OOtk8DY6W6JS7VDNdsFYvlBb5FngDIOc/FLjpI8BbvgNmxeWDB
+         BK+PDXMfaonFBUV5oQCUPNNNnUowBdUvDhkLlJvuQ6boAo5ZTcTobRApwFdDdbds80a1
+         Z6jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781107262; x=1781712062;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bB3xA/MHCU+PelFiFJxUbLWzHMG3lJQds9/bzXf05H8=;
+        b=a41917LM3yWvX7hYrGswCYLLDlhPUHJ8DEJ2UQsyQ+beYGw8nebdjuBKkIW4XrMluq
+         2twwKAri2vq3BYlM0FClqJEeekYnS7cOF4YYIYBRDQX4YWbZB0HxmFe7qOITk4aVGLC9
+         rM1b0hRAxlU7qGYMLIHWUUCVFWblFYFfjI80Gkk0g7uDGY1DUaamokUWQP8kgOq+fvNm
+         5Hl7XGzMaL06oAagHuq3Zfob6l+wCx7KjdB+tnQVPa5076yJf1QIvLzqAceyXgB42aGz
+         M59+Ceh8EFTHZ6V0IGbi+R0IQj+QG8bUKX1kdHn2KZS1vh3dr967yxuVsRwBVQezvXfB
+         NfXA==
+X-Forwarded-Encrypted: i=1; AFNElJ9mr6DJGPPKX6jfjx6b012UN4mkWpW0aADUbIbkMGp01/zJ9bGegJTh4YAvgfXkVGUL51PJ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5UubBM75hMhxP6x1XXFz+20zDEN1He85PF45nDDZpz8Fekcc3
+	brFLcFJgl1vPF0xcTJP+47NiHEW3S/zZeZJYp3UdSa9+7xfVs59aZtNe+/xTAOm6OrlqanuIEhX
+	KztwYNHw7qsUYgHdnWU6Rv/T/Ki22TSU=
+X-Gm-Gg: Acq92OHT9bS7yNr5ncaLUVS3Roezbo3ktLzmx2zbM2/EotpLm4bqF0uheFW47DahIAH
+	GX236fi2pd4jS/M9rFBhMRHCJ+3HdIdzegDDn/8wMsIMXWUS5a8xkkSA871WSc1MC/Y+wZ6vNRF
+	RfnHaCk7fDvpzXAK5q7FtVHg71Bsu1QqoZjR+9KuhND6x8CxS5dHbE4CY2oE9OMmyfTEwyYm6Ng
+	lUtFPN6XBs333TS36U1hzYmbSLYYPnfArcW0MPBlOn9GtjPA0quVsDjV19fB86WkV2V4i92zP2U
+	j7bm0wjvXnpdSwqrw98Ppt2FORMuNpjoFz0ozIBkHy7DwKk=
+X-Received: by 2002:a53:d845:0:b0:660:56ee:ec03 with SMTP id
+ 956f58d0204a3-66106e5b480mr18896264d50.21.1781107261714; Wed, 10 Jun 2026
+ 09:01:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20260610114206.3749904-1-michael.bommarito@gmail.com> <1962500.CQOukoFCf9@weasel>
+In-Reply-To: <1962500.CQOukoFCf9@weasel>
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Wed, 10 Jun 2026 12:00:50 -0400
+X-Gm-Features: AVVi8CfE6Z8Gd2v7H8nISX8O4sfO8iVy30cFRa5xdFkX4tgN_Vkz1s3oigsZeEA
+Message-ID: <CAJJ9bXz=01tvoUTF8cQ6rUiCbsyYQbGKTcXD7LwJSwBu6y=unw@mail.gmail.com>
+Subject: Re: [PATCH] 9p/trans_virtio: bound mount_tag show copy to one page
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-p9_mount_tag_show() copies strlen(chan->tag) + 1 bytes into the
-single-page buffer the sysfs core provides, with no upper bound. The
-mount tag length comes from virtio_9p_config.tag_len, a 16-bit field read
-from the device at probe in p9_virtio_probe() with no cap. Under the
-confidential-computing threat model, where the guest does not trust the
-host, a malicious or compromised host can present a 65535-byte tag with
-no embedded NUL. A read of the world-readable /sys/.../mount_tag
-attribute (udev reads it at probe) then copies ~64 KiB into the 4 KiB
-sysfs page, a slab-out-of-bounds write of host-controlled content.
+On Wed, Jun 10, 2026 at 11:46=E2=80=AFAM Christian Schoenebeck
+<linux_oss@crudebyte.com> wrote:
+> I would say no, a 64k tag is at least suspicious, if not even hostile.
+>
+> Therefore: what about simply rejecting the device at probe time if its ta=
+g is
+> beyond a certain length?
 
-Bound the copy to the page size in the show handler.
+I think that's much cleaner if the user base really can't think of any
+legitimate purpose here (or in userspace utils).
 
-Fixes: 179a5bc4b8cb ("net/9p: use memcpy() instead of snprintf() in p9_mount_tag_show()")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- net/9p/trans_virtio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+FWIW, on a similar Xen issue, we're also talking about blacklisting,
+which is one step even further.
 
-diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index 4cdab7094b273..b62aa7b309f1c 100644
---- a/net/9p/trans_virtio.c
-+++ b/net/9p/trans_virtio.c
-@@ -573,7 +573,11 @@ static ssize_t p9_mount_tag_show(struct device *dev,
- 	chan = vdev->priv;
- 	tag_len = strlen(chan->tag);
- 
--	memcpy(buf, chan->tag, tag_len + 1);
-+	if (tag_len > PAGE_SIZE - 2)
-+		tag_len = PAGE_SIZE - 2;
-+
-+	memcpy(buf, chan->tag, tag_len);
-+	buf[tag_len] = '\0';
- 
- 	return tag_len + 1;
- }
--- 
-2.53.0
-
+Thanks,
+Mike
