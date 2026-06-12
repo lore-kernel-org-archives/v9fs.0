@@ -1,125 +1,278 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A2931F9A2;
-	Wed, 10 Jun 2026 16:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592E93A0B3B
+	for <v9fs@lists.linux.dev>; Fri, 12 Jun 2026 20:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781108741; cv=none; b=mG+Wt7JtaHca991jaXtLkRhmCaQiyU7GH4txcMZx3yt31PfogcxfT9Sn9UtVQZuK/pyJvDBZ5/NPU1eHgzj8udNwIp8YS3Iu9OIKhHlf7lTmC6WPBAhfkXZ53Xn40eu112XfWZ/X2oLh9dV55X9ZlGcysbZgtQL5rO3UpLzk4kY=
+	t=1781296075; cv=none; b=lnmcjAQZHoNOlocJSIdbVADG5iGvFBiJoXR6o6ldWeBkCIv/fOs7CFwAQNPph5YV59AgW6O62ElRXsWuI8vSv3sAk3g4ygVn6gK0KJg7wuqeELCYGIAhatK1OFTi0sf6R7HdkiIiILRbNCLszbJtSDS5JdbTZ5wqSPB2makhcvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781108741; c=relaxed/simple;
-	bh=htM2khgHfnUWMbxF5QO2EKmsTuEgphGXBdpgWSrVaMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dZrCtoWLkszv/1rYQFqCpVLiU8ScU7Viar6C82d+/eojS30sy0ozICjvaDoZe54hEKhDF1qJgAcfOxScdpFG6/N9a19DpV2wOcPpOLxfW1DEjBNaVIfMZJ0IKNhYKTjRmtSa1n2j6KwStXzYSbQhRCIGsl/u/BvKBX00dfgMR6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=cTJA+mxY; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1781296075; c=relaxed/simple;
+	bh=N3nic8JmeC1ouJbyETsDlLm18jMUO230zcLlyspEUFE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YwPxFrxR2I8Y8F+TBKIE8jA0bauM9Yw2wMxPTCijXpX+HftRCzHWr1MzOF/YEwnuAXFZQ14hjILSqjd/PYbTbX81xKW16qkb5uTqZEX4jh3qrWCSNJsuHeXitwImZ7WV9X7h47ortZFg+d55qNJPmO+tnWoP7KE1o5kbFdXTAdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=o8lbDGsH; arc=none smtp.client-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="cTJA+mxY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=KfS3ig5mGkyyFPWW4cNnCQUNTT0//5Cf3AvgXx33nes=; b=cTJA+mxYjbBuaNXV0SH0a+A6jL
-	smB44HSPEerkEBSBM6zbvzNWyP1oBLeY65DKP4tlyiA4v3/I2TsLGb6kGOusZC+oKQTIATfkDOtZF
-	BC0vhqReWRlQEGzE9BxUG3jEHTUTOtm3oxGXBO+mor6haVWdyIhcw3PNnV3okahmBIEngTxH/30oA
-	daJ6DPmStx59GaXzgN4ARaR/4KCam5nk973OCaZDaYG0iqOKlvISaG5i0w5SiBiTJa2guG6wqWmGD
-	RKW6aBzLtlsXy6165oTAMEExNOcZKYjdgfuByKfDwFA1vGU0FTwKNqdyIi04luJv+UmW785o/CCl6
-	4pDwBLhLjEHEQEsdaQ4b3VyODUoAanUG/WvWi4wPvi2FbW69MjOhVEH5/ozWPr6S5tVwLvgeJ0d9N
-	gybbDJCPTlccA5CYyZiqo3RC6kT+eYk+ry+2tWc/QTqrGXgZQ7tLutTrKejTMf5M8VsCDiU3rCPY6
-	FB5aVRu/0TSUnlSKqi+SClXC0/uSFBaQDFDXapPdjy/je8W9PHkYYbaSPTreXiIGNr3rgT1+iOIX7
-	/UHFybMlScO3JYE1tZUjVHYcStaXzYuuBO/u82CK+C4SSof20BtimM4bHssryD+ZjVz76NIREwTXu
-	iTbbqWWrryQkoljrMGI0e1WDEttJSs+xX+PaB1DOw=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Michael Bommarito <michael.bommarito@gmail.com>
-Cc: v9fs@lists.linux.dev, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] 9p/trans_virtio: bound mount_tag show copy to one page
-Date: Wed, 10 Jun 2026 17:46:13 +0200
-Message-ID: <1962500.CQOukoFCf9@weasel>
-In-Reply-To: <20260610114206.3749904-1-michael.bommarito@gmail.com>
-References: <20260610114206.3749904-1-michael.bommarito@gmail.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="o8lbDGsH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1781296062; bh=mxrm+dl2sD1cDmi3XtnLbtaSzLTSu6lFdCHpekktzQs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=o8lbDGsHRdsbfXVccvSwxUpdn46Y3AE8srpeFsMWs0sCJuuilu2aHbvj0wLSf3eyx
+	 7KSnazjLh3olfO+BTg3zWALRrq/7/mDJTY1zahHU8iluRKg8Ekk6ajbUqiACfrwtT0
+	 tBVHsk3OotyU8PaN+KjcNTH6/kQocLQOfP3dIoXU=
+Received: from [192.168.1.102] ([183.95.73.181])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 6E6B18BE; Sat, 13 Jun 2026 04:27:38 +0800
+X-QQ-mid: xmsmtpt1781296058t3kwpnw9i
+Message-ID: <tencent_CC4B1079E0461B8950A0CA98790792059109@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLY/8ptFdiYfot3PH0aAZVgSDFvrcw22vklIzEbZ0gzuYGs81xlU
+	 ktucM2XYWZaLv//f9Koixmr2ax1DUFXYECuFQCz2V5fOXaVCK46BD6KzM0Lcpa7czl0nIuppETxi
+	 I9VShB39j9aBS3nJ737Vbl0N2LrBt1f03R5j2rI74R2vj/78yCNbDB5bJoPa0T6FNosceKhDz3cb
+	 ZyMUR/W8Ssso29WVMkkVDQCeWkGqlSZZagcKkaRkDknWYjTw8d9OWnCjfrOX9brLfJlLCCuNuTME
+	 Av5WRu+Ag+bVfgXq3o8jaFCTkcZ7TcVch++zWKZhgnnZKzrWpazGkGThnQTlyemqU8eNI1OKIiw4
+	 CZZWNaimkRuVG5o/3Sz4Sgzt37tV8X8uyATJOYSixEbaA1FlxohB2Lq22qkQfZGrhX40rabLZC19
+	 n936rApcqWOL6QFaXonsqsjXRTYvmMm/NfkOlD2iQP6bkqBBxUtwJu/FfVuUQm/ieNNfpi2RcXfJ
+	 odgDPc6gvRatpccpKMaldT/T1HPR/DFWSMqCN4CykIQkBx5yqIwtv1u1Sef59+EkDK+bUw03N0EI
+	 QKfWgkahxASKlYmkpiT7KNrXjHzFIIVCvNGB4C3ZCGAU7qAr5aNwwhlytfKzyvh60vV6OapEB3Iq
+	 VYOdduPNMvuirQ5nvQZpQYbqgxEtbSxRlvZNnM6hcVkQhb8narcYu6zTO/7T/E5NSfZPQvstXlcu
+	 m5lINn33MBG9VWVip8KzqJB8DlVhCSBZaEopPeru9byVvTcvLVQ5PgBz6Gox5k2DLFceXKxgL9Ke
+	 gxUZJP+1oMPxTNRo7tLoNxv5b4IUlkxqIBmOX8Ux8KKZvmIuFjC98Mldkfxs9sZZFEgP6kTX4JYv
+	 Pggc9tkzL9aBMEtlYJBoN/sKRQRickWt6NpYjMB3bFbynpT0LvK2wFHyOPnjw7AX8fmplOsNHEbs
+	 sAAfgUEthxO7bSoF7G4SXVUMLbOsnmFsVg4WJmMpjCdaDAwY1fBCnxDuyCXJzVHrFEeq/qefZQ/2
+	 JsDEJSSFv0DJPG9sZf5o5B5AvbW5ZAFTdPMpbWmo+OJzpUH/zgr1NlxwVTXPjSH3bliZPNTKWXbS
+	 UGopzg2f1qlNhuKzg=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-OQ-MSGID: <3fce84da-5d35-4a8e-81fe-9b08ec4de7ec@qq.com>
+Date: Sat, 13 Jun 2026 04:27:38 +0800
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/9p/usbg: Fix use-after-free in disable_usb9pfs()
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, v9fs@lists.linux.dev
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ linux-kernel@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+ Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+ Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
+ stable@vger.kernel.org
+References: <20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn>
+From: XIAO WU <xiaowu.417@qq.com>
+In-Reply-To: <20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wednesday, 10 June 2026 13:42:06 CEST Michael Bommarito wrote:
-> p9_mount_tag_show() copies strlen(chan->tag) + 1 bytes into the
-> single-page buffer the sysfs core provides, with no upper bound. The
-> mount tag length comes from virtio_9p_config.tag_len, a 16-bit field read
-> from the device at probe in p9_virtio_probe() with no cap. Under the
-> confidential-computing threat model, where the guest does not trust the
-> host, a malicious or compromised host can present a 65535-byte tag with
-> no embedded NUL. A read of the world-readable /sys/.../mount_tag
-> attribute (udev reads it at probe) then copies ~64 KiB into the 4 KiB
-> sysfs page, a slab-out-of-bounds write of host-controlled content.
-> 
-> Bound the copy to the page size in the show handler.
-> 
-> Fixes: 179a5bc4b8cb ("net/9p: use memcpy() instead of snprintf() in
-> p9_mount_tag_show()") Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
->  net/9p/trans_virtio.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index 4cdab7094b273..b62aa7b309f1c 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -573,7 +573,11 @@ static ssize_t p9_mount_tag_show(struct device *dev,
->  	chan = vdev->priv;
->  	tag_len = strlen(chan->tag);
-> 
-> -	memcpy(buf, chan->tag, tag_len + 1);
-> +	if (tag_len > PAGE_SIZE - 2)
-> +		tag_len = PAGE_SIZE - 2;
-> +
-> +	memcpy(buf, chan->tag, tag_len);
-> +	buf[tag_len] = '\0';
-> 
->  	return tag_len + 1;
->  }
+Hi Yizhou,
 
-Given that this has already seen some rotations, it is worth to think a bit 
-more about it:
+On Sun, Jun 07, 2026 at 09:01:16PM +0800, Yizhou Zhao wrote:
+ > disable_usb9pfs() frees the IN and OUT usb_request objects before it
+ > disables the corresponding endpoints. If either request is still queued,
+ > the later usb_ep_disable() call cancels the endpoint queue and the UDC
+ > driver can still access the already freed request.
 
-1. Destination buffer being PAGE_SIZE large is an implementation detail of 
-seq_file. If the latter is changed, this code breaks (again) silently without 
-anybody noticing.
+This patch correctly moves disable_ep() before usb_ep_free_request() to
+prevent the use-after-free in the endpoint cancellation path.
 
-2. memcpy() was introduced by 179a5bc4b8cb because chan->tag was not NULL 
-terminated. However since edcd9d977354 it *is* NULL terminated.
+However, while verifying this patch with KASAN and dummy_hcd, I found a
+separate bug in the alloc_requests() error path that still leads to a
+kernel panic in usb9pfs_clear_tx() during gadget unbind.
 
-Given those two, an alternative would be:
+The root cause is that alloc_requests() frees in_req on failure but
+does not set usb9pfs->in_req to NULL, leaving a dangling pointer.
+Later, when the gadget is unbound via configfs, the call chain
+reset_config() -> usb9pfs_clear_tx() dereferences the dangling
+in_req->context and crashes:
 
-  len = sysfs_emit(buf, "%s", chan->tag);
+   Oops: general protection fault, probably for non-canonical address
+     0xdffffc0000000060: 0000 [#1] SMP KASAN NOPTI
+   KASAN: null-ptr-deref in range [0x0000000000000300-0x0000000000000307]
+   CPU: 0 UID: 0 PID: 10145 Comm: rm Not tainted 7.1.0-rc6 #1
+   RIP: 0010:strcmp+0x5b/0xb0
+   Call Trace:
+    <TASK>
+    look_up_lock_class+0x6b/0x130
+    register_lock_class+0x2cb/0x540
+    __lock_acquire+0xac/0x2730
+    lock_acquire+0x1ae/0x360
+    __wake_up+0x21/0x60
+    p9_client_cb+0x59/0x80
+    usb9pfs_clear_tx+0xe1/0x150      <-- dereferences dangling 
+in_req->context
+    reset_config+0xbe/0x2b0
+    __composite_disconnect+0xb6/0x160
+    configfs_composite_disconnect+0xed/0x130
+    usb_gadget_disconnect_locked+0x214/0x500
+    gadget_unbind_driver+0xe2/0x520
+    ...
+    configfs_unlink+0x3f6/0x840
+    vfs_unlink+0x2f5/0xbd0
+    Kernel panic - not syncing: Fatal exception
 
-As it already handles the PAGE_SIZE limit inside its implementation.
+The reproducer:
 
-However, still ...
+   1. Create a USB gadget with the usb9pfs function
+   2. Set buflen=0 so that alloc_ep_req() fails inside alloc_requests()
+   3. Link the function and enable the UDC (enable_usb9pfs() fails)
+   4. Unbind the gadget (configfs unlink or echo "" > UDC)
 
-3. Is it a good idea to just *silenty* truncate a very long tag to something 
-else just to avoid an OOB? It would at least break auto mount rules, as the 
-truncated tag would not match device's real tag.
+I wrote the following PoC to trigger this bug.  It creates a USB
+gadget with a usb9pfs function, sets buflen=0 so that alloc_ep_req()
+fails in alloc_requests(), which frees in_req without NULLing the
+pointer, then unbinds the gadget to trigger usb9pfs_clear_tx() on the
+dangling in_req.
 
-4. And most importantly: Would a sane 9p device *ever* use a 64k tag, if yes 
-what for?
+---8<--- poc.c ---
+/*
+  * PoC: Dangling pointer dereference in usb9pfs_clear_tx()
+  *      via alloc_requests() failure path.
+  *
+  * Patch: net/9p/usbg: Fix use-after-free in disable_usb9pfs()
+  *
+  * alloc_requests()'s fail_in path frees usb9pfs->in_req without
+  * NULLing the pointer.  Later, when the gadget is unbound,
+  * usb9pfs_clear_tx() dereferences the dangling pointer.
+  *
+  * Trigger:
+  *   1. Create USB gadget with usb9pfs function
+  *   2. Set buflen=0 so alloc_ep_req fails -> alloc_requests fails
+  *      -> in_req freed, NOT NULLed (dangling pointer)
+  *   3. Link function, enable UDC
+  *   4. Disable UDC -> unbind -> usb9pfs_clear_tx -> CRASH
+  *
+  * Build:  gcc -Wall -O2 -o poc poc.c
+  * Run:    ./poc   (root, KASAN-enabled kernel, dummy_hcd loaded)
+  */
 
-I would say no, a 64k tag is at least suspicious, if not even hostile.
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdarg.h>
+#include <fcntl.h>
 
-Therefore: what about simply rejecting the device at probe time if its tag is 
-beyond a certain length?
+static int do_cmd(const char *fmt, ...)
+{
+     char cmd[1024];
+     va_list ap;
+     va_start(ap, fmt);
+     vsnprintf(cmd, sizeof(cmd), fmt, ap);
+     va_end(ap);
+     return system(cmd);
+}
 
-/Christian
+int main(void)
+{
+     printf("=== USB9PFS Dangling Pointer PoC ===\n\n");
+
+     system("rm -rf /sys/kernel/config/usb_gadget/g1 2>/dev/null");
+     system("rmdir /sys/kernel/config/usb_gadget/g1 2>/dev/null");
+
+     /* Create gadget */
+     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/configs/c.1/"
+            "strings/0x409");
+     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/functions/"
+            "usb9pfs.gg");
+     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/strings/0x409");
+     do_cmd("echo 0x1d6b > "
+            "/sys/kernel/config/usb_gadget/g1/idVendor");
+     do_cmd("echo 0x0104 > "
+            "/sys/kernel/config/usb_gadget/g1/idProduct");
+     do_cmd("echo 0x0200 > "
+            "/sys/kernel/config/usb_gadget/g1/bcdUSB");
+     do_cmd("echo 1234 > /sys/kernel/config/usb_gadget/g1/strings/"
+            "0x409/serialnumber");
+     do_cmd("echo test > /sys/kernel/config/usb_gadget/g1/strings/"
+            "0x409/manufacturer");
+     do_cmd("echo test > /sys/kernel/config/usb_gadget/g1/strings/"
+            "0x409/product");
+     do_cmd("echo Config1 > /sys/kernel/config/usb_gadget/g1/configs/"
+            "c.1/strings/0x409/configuration");
+
+     /* buflen=0 causes alloc_ep_req() -> alloc_requests() failure */
+     printf("[*] Set buflen=0\n");
+     do_cmd("echo 0 > /sys/kernel/config/usb_gadget/g1/functions/"
+            "usb9pfs.gg/buflen");
+
+     /* Link function */
+     printf("[*] Link function\n");
+     do_cmd("ln -s /sys/kernel/config/usb_gadget/g1/functions/"
+            "usb9pfs.gg "
+            "/sys/kernel/config/usb_gadget/g1/configs/c.1/");
+
+     /* Enable: in_req freed but not NULLed */
+     printf("[*] Enable UDC\n");
+     do_cmd("echo dummy_udc.0 > "
+            "/sys/kernel/config/usb_gadget/g1/UDC");
+     sleep(1);
+
+     /* Disable: triggers unbind -> usb9pfs_clear_tx -> KASAN */
+     printf("[*] Disable UDC (expect KASAN report)\n");
+     do_cmd("echo '' > /sys/kernel/config/usb_gadget/g1/UDC");
+     sleep(1);
+
+     printf("[*] Done. Check dmesg for KASAN null-ptr-deref.\n");
+     return 0;
+}
+---8<---
+
+Step 2 triggers the fail_in error path in alloc_requests():
+
+   static int alloc_requests(struct f_usb9pfs *usb9pfs)
+   {
+       usb9pfs->in_req = usb_ep_alloc_request(usb9pfs->in_ep, GFP_KERNEL);
+       ...
+       usb9pfs->out_req = alloc_ep_req(usb9pfs->out_ep, usb9pfs->buflen);
+       if (!usb9pfs->out_req)     // buflen=0 causes this to fail
+           goto fail_in;
+       ...
+   fail_in:
+       usb_ep_free_request(usb9pfs->in_ep, usb9pfs->in_req);
+       // BUG: usb9pfs->in_req is NOT set to NULL here
+   fail:
+       return ret;
+   }
+
+usb9pfs->in_req now points to freed memory.  In step 4, the composite
+framework calls usb9pfs_disable() -> usb9pfs_clear_tx(), which does:
+
+   guard(spinlock_irqsave)(&usb9pfs->lock);
+   req = usb9pfs->in_req->context;   // dangling pointer dereference
+
+This is a regression from a3be076dc174 ("net/9p/usbg: Add new usb gadget
+function transport").  The fix is to set usb9pfs->in_req = NULL after
+freeing it in the error path:
+
+   fail_in:
+       usb_ep_free_request(usb9pfs->in_ep, usb9pfs->in_req);
++     usb9pfs->in_req = NULL;
+   fail:
+       return ret;
+
+A prior review on Sashiko[1] also identified this issue and noted
+several other problems in the same file (double-free in the
+disable_usb9pfs() path after an alloc_requests failure, missing cleanup
+in tx/rx completion error paths, and a potential deadlock in
+p9_usbg_request).  The alloc_requests error path NULL fix is the
+minimum fix needed for the crash reported here.
+
+[1] 
+https://sashiko.dev/#/patchset/20260607130118.16579-1-zhaoyz24%40mails.tsinghua.edu.cn
+
+
+Hope this is helpful for further fix, thanks.
+
+
+Best,
+
+Xiao
+
 
 
