@@ -1,278 +1,121 @@
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592E93A0B3B
-	for <v9fs@lists.linux.dev>; Fri, 12 Jun 2026 20:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB1B3A0E8D
+	for <v9fs@lists.linux.dev>; Sat, 13 Jun 2026 12:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781296075; cv=none; b=lnmcjAQZHoNOlocJSIdbVADG5iGvFBiJoXR6o6ldWeBkCIv/fOs7CFwAQNPph5YV59AgW6O62ElRXsWuI8vSv3sAk3g4ygVn6gK0KJg7wuqeELCYGIAhatK1OFTi0sf6R7HdkiIiILRbNCLszbJtSDS5JdbTZ5wqSPB2makhcvk=
+	t=1781354927; cv=none; b=WpgNxKZ0zeDxtxLciWjuoGPp/zvQS6X25XG0vIsW1wg+MBDgm+JPZcu9jo21PcAfozgdGhPx7f0tCXm2F/6lhBkGDY1L1GcujFRBy0/JwWk9cc2hhaogWCexAOytThKgy3AmeJEQX6frmByq+fBaHkqryZGPz1JS6K44MFzywOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781296075; c=relaxed/simple;
-	bh=N3nic8JmeC1ouJbyETsDlLm18jMUO230zcLlyspEUFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YwPxFrxR2I8Y8F+TBKIE8jA0bauM9Yw2wMxPTCijXpX+HftRCzHWr1MzOF/YEwnuAXFZQ14hjILSqjd/PYbTbX81xKW16qkb5uTqZEX4jh3qrWCSNJsuHeXitwImZ7WV9X7h47ortZFg+d55qNJPmO+tnWoP7KE1o5kbFdXTAdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=o8lbDGsH; arc=none smtp.client-ip=162.62.57.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1781354927; c=relaxed/simple;
+	bh=U0WyzZ17yXkey+M4HF+ZBSIWRHabhAxTSQcnOAD8gDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fwC2ixb6LY9ukS3EU5DHm1xG2XveMa1sn9CNhesXI18MXpDUwKaoT1METAPXYeKSVfISMWnkmAAS64beo1O9gFkqGZ1CH30NE6ipNK0w2rde/8iAcFIJRTNsoqcjLBh1PHGM9xEIwhTDda2Rrlo+OQbt+9NFMfY4trtq3H0vN1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=SqOgOxVI; arc=none smtp.client-ip=4.193.249.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="o8lbDGsH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1781296062; bh=mxrm+dl2sD1cDmi3XtnLbtaSzLTSu6lFdCHpekktzQs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=o8lbDGsHRdsbfXVccvSwxUpdn46Y3AE8srpeFsMWs0sCJuuilu2aHbvj0wLSf3eyx
-	 7KSnazjLh3olfO+BTg3zWALRrq/7/mDJTY1zahHU8iluRKg8Ekk6ajbUqiACfrwtT0
-	 tBVHsk3OotyU8PaN+KjcNTH6/kQocLQOfP3dIoXU=
-Received: from [192.168.1.102] ([183.95.73.181])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 6E6B18BE; Sat, 13 Jun 2026 04:27:38 +0800
-X-QQ-mid: xmsmtpt1781296058t3kwpnw9i
-Message-ID: <tencent_CC4B1079E0461B8950A0CA98790792059109@qq.com>
-X-QQ-XMAILINFO: NnYhxYSyuBnLY/8ptFdiYfot3PH0aAZVgSDFvrcw22vklIzEbZ0gzuYGs81xlU
-	 ktucM2XYWZaLv//f9Koixmr2ax1DUFXYECuFQCz2V5fOXaVCK46BD6KzM0Lcpa7czl0nIuppETxi
-	 I9VShB39j9aBS3nJ737Vbl0N2LrBt1f03R5j2rI74R2vj/78yCNbDB5bJoPa0T6FNosceKhDz3cb
-	 ZyMUR/W8Ssso29WVMkkVDQCeWkGqlSZZagcKkaRkDknWYjTw8d9OWnCjfrOX9brLfJlLCCuNuTME
-	 Av5WRu+Ag+bVfgXq3o8jaFCTkcZ7TcVch++zWKZhgnnZKzrWpazGkGThnQTlyemqU8eNI1OKIiw4
-	 CZZWNaimkRuVG5o/3Sz4Sgzt37tV8X8uyATJOYSixEbaA1FlxohB2Lq22qkQfZGrhX40rabLZC19
-	 n936rApcqWOL6QFaXonsqsjXRTYvmMm/NfkOlD2iQP6bkqBBxUtwJu/FfVuUQm/ieNNfpi2RcXfJ
-	 odgDPc6gvRatpccpKMaldT/T1HPR/DFWSMqCN4CykIQkBx5yqIwtv1u1Sef59+EkDK+bUw03N0EI
-	 QKfWgkahxASKlYmkpiT7KNrXjHzFIIVCvNGB4C3ZCGAU7qAr5aNwwhlytfKzyvh60vV6OapEB3Iq
-	 VYOdduPNMvuirQ5nvQZpQYbqgxEtbSxRlvZNnM6hcVkQhb8narcYu6zTO/7T/E5NSfZPQvstXlcu
-	 m5lINn33MBG9VWVip8KzqJB8DlVhCSBZaEopPeru9byVvTcvLVQ5PgBz6Gox5k2DLFceXKxgL9Ke
-	 gxUZJP+1oMPxTNRo7tLoNxv5b4IUlkxqIBmOX8Ux8KKZvmIuFjC98Mldkfxs9sZZFEgP6kTX4JYv
-	 Pggc9tkzL9aBMEtlYJBoN/sKRQRickWt6NpYjMB3bFbynpT0LvK2wFHyOPnjw7AX8fmplOsNHEbs
-	 sAAfgUEthxO7bSoF7G4SXVUMLbOsnmFsVg4WJmMpjCdaDAwY1fBCnxDuyCXJzVHrFEeq/qefZQ/2
-	 JsDEJSSFv0DJPG9sZf5o5B5AvbW5ZAFTdPMpbWmo+OJzpUH/zgr1NlxwVTXPjSH3bliZPNTKWXbS
-	 UGopzg2f1qlNhuKzg=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-OQ-MSGID: <3fce84da-5d35-4a8e-81fe-9b08ec4de7ec@qq.com>
-Date: Sat, 13 Jun 2026 04:27:38 +0800
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="SqOgOxVI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	Content-Transfer-Encoding; bh=mo1J0807K/uGm7dxm5vkx+ugAfm+jhFxnJ
+	vZdSbv/0w=; b=SqOgOxVIqV8sHRam1EydO5OGxAESIKIIQp0hbH4dr6ATAy7cJ9
+	PouYiEtP0wSrWm9inkhtwSJxPTOq/yHMXxpSQRkPwHwLi0csefdbab3pjf9+/GSh
+	Q8j6JrA7lG+Ou6LbKINFXUbgItSeRY0ARJYXGxU6FQf8k0nrfUqBKRbtk=
+Received: from localhost.localdomain (unknown [101.5.13.242])
+	by web4 (Coremail) with SMTP id ywQGZQD3CJ6eUS1qfMU+Ag--.36758S2;
+	Sat, 13 Jun 2026 20:48:30 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: xiaowu.417@qq.com
+Cc: asmadeus@codewreck.org,
+	ericvh@kernel.org,
+	fengxw06@126.com,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	qli01@tsinghua.edu.cn,
+	stable@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	wangao@seu.edu.cn,
+	xuke@tsinghua.edu.cn,
+	yangyx22@mails.tsinghua.edu.cn,
+	zhaoyz24@mails.tsinghua.edu.cn
+Subject: Re: [PATCH] net/9p/usbg: Fix use-after-free in disable_usb9pfs()
+Date: Sat, 13 Jun 2026 20:48:24 +0800
+Message-ID: <20260613124831.7674-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <tencent_CC4B1079E0461B8950A0CA98790792059109@qq.com>
+References: <tencent_CC4B1079E0461B8950A0CA98790792059109@qq.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/9p/usbg: Fix use-after-free in disable_usb9pfs()
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, v9fs@lists.linux.dev
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- linux-kernel@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
- Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
- Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
- stable@vger.kernel.org
-References: <20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn>
-From: XIAO WU <xiaowu.417@qq.com>
-In-Reply-To: <20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ywQGZQD3CJ6eUS1qfMU+Ag--.36758S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1fWw4Uur1fGr4ruFW8Crg_yoW8CF1xpa
+	yIgw1FyFWDtFy2kF4qy34UJay0ya18CrWUKF45Wr1Yy345Wr9Y9F18Kws5ua1qvFn3Cr10
+	yr1qq3yDCrsrAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
+	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
+	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
+	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
+	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xS
+	Y4AK67AK6ryUMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0Jj4a0QUUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQMRAWoshq+0-AAAs1
 
-Hi Yizhou,
+Hi Xiao,
 
-On Sun, Jun 07, 2026 at 09:01:16PM +0800, Yizhou Zhao wrote:
- > disable_usb9pfs() frees the IN and OUT usb_request objects before it
- > disables the corresponding endpoints. If either request is still queued,
- > the later usb_ep_disable() call cancels the endpoint queue and the UDC
- > driver can still access the already freed request.
+Thanks for the PoC. I re-tested it on a fresh upstream tree
+(2d3090a8aeb5, 7.1.0-rc7-00016-g2d3090a8aeb5) with KASAN and lockdep
+enabled, and I can reproduce the reported call trace:
 
-This patch correctly moves disable_ep() before usb_ep_free_request() to
-prevent the use-after-free in the endpoint cancellation path.
+  strcmp
+  look_up_lock_class
+  register_lock_class
+  __lock_acquire
+  lock_acquire
+  __wake_up
+  p9_client_cb
+  usb9pfs_clear_tx
 
-However, while verifying this patch with KASAN and dummy_hcd, I found a
-separate bug in the alloc_requests() error path that still leads to a
-kernel panic in usb9pfs_clear_tx() during gadget unbind.
+Without lockdep, the same PoC reaches the same usb9pfs_clear_tx() ->
+p9_client_cb() -> __wake_up() path, but it shows up as an RCU stall
+instead of the lockdep/strcmp crash.
 
-The root cause is that alloc_requests() frees in_req on failure but
-does not set usb9pfs->in_req to NULL, leaving a dangling pointer.
-Later, when the gadget is unbound via configfs, the call chain
-reset_config() -> usb9pfs_clear_tx() dereferences the dangling
-in_req->context and crashes:
+On Sat, Jun 13, 2026 at 04:27:38AM +0800, XIAO WU wrote:
+> I wrote the following PoC to trigger this bug.  It creates a USB
+> gadget with a usb9pfs function, sets buflen=0 so that alloc_ep_req()
+> fails in alloc_requests(), which frees in_req without NULLing the
+> pointer, then unbinds the gadget to trigger usb9pfs_clear_tx() on the
+> dangling in_req.
 
-   Oops: general protection fault, probably for non-canonical address
-     0xdffffc0000000060: 0000 [#1] SMP KASAN NOPTI
-   KASAN: null-ptr-deref in range [0x0000000000000300-0x0000000000000307]
-   CPU: 0 UID: 0 PID: 10145 Comm: rm Not tainted 7.1.0-rc6 #1
-   RIP: 0010:strcmp+0x5b/0xb0
-   Call Trace:
-    <TASK>
-    look_up_lock_class+0x6b/0x130
-    register_lock_class+0x2cb/0x540
-    __lock_acquire+0xac/0x2730
-    lock_acquire+0x1ae/0x360
-    __wake_up+0x21/0x60
-    p9_client_cb+0x59/0x80
-    usb9pfs_clear_tx+0xe1/0x150      <-- dereferences dangling 
-in_req->context
-    reset_config+0xbe/0x2b0
-    __composite_disconnect+0xb6/0x160
-    configfs_composite_disconnect+0xed/0x130
-    usb_gadget_disconnect_locked+0x214/0x500
-    gadget_unbind_driver+0xe2/0x520
-    ...
-    configfs_unlink+0x3f6/0x840
-    vfs_unlink+0x2f5/0xbd0
-    Kernel panic - not syncing: Fatal exception
+However, I think the actual trigger is slightly different from the
+allocation-failure path described in the mail. Setting buflen to 0 does
+not make alloc_ep_req() fail in my test: usb_ep_align(..., 0) produces a
+zero length, and kmalloc(0) returns ZERO_SIZE_PTR rather than NULL. So
+alloc_requests() still succeeds.
 
-The reproducer:
+The failure seems to happen because in_req->context is still initialized
+as the f_usb9pfs pointer. During disconnect, usb9pfs_clear_tx() treats
+that context as a struct p9_req_t * and passes it to p9_client_cb(),
+which eventually calls wake_up() on a bogus req->wq. With lockdep
+enabled, that bogus waitqueue/lock state leads to the strcmp ->
+register_lock_class() crash.
 
-   1. Create a USB gadget with the usb9pfs function
-   2. Set buflen=0 so that alloc_ep_req() fails inside alloc_requests()
-   3. Link the function and enable the UDC (enable_usb9pfs() fails)
-   4. Unbind the gadget (configfs unlink or echo "" > UDC)
+So I agree that the PoC exposes a real usb9pfs teardown/context bug, but
+it looks independent from the endpoint-disable/free-ordering UAF fixed by
+my patch. I think it would be clearer to handle it in a separate patch, 
+with a commit message describing the actual trigger path.
 
-I wrote the following PoC to trigger this bug.  It creates a USB
-gadget with a usb9pfs function, sets buflen=0 so that alloc_ep_req()
-fails in alloc_requests(), which frees in_req without NULLing the
-pointer, then unbinds the gadget to trigger usb9pfs_clear_tx() on the
-dangling in_req.
-
----8<--- poc.c ---
-/*
-  * PoC: Dangling pointer dereference in usb9pfs_clear_tx()
-  *      via alloc_requests() failure path.
-  *
-  * Patch: net/9p/usbg: Fix use-after-free in disable_usb9pfs()
-  *
-  * alloc_requests()'s fail_in path frees usb9pfs->in_req without
-  * NULLing the pointer.  Later, when the gadget is unbound,
-  * usb9pfs_clear_tx() dereferences the dangling pointer.
-  *
-  * Trigger:
-  *   1. Create USB gadget with usb9pfs function
-  *   2. Set buflen=0 so alloc_ep_req fails -> alloc_requests fails
-  *      -> in_req freed, NOT NULLed (dangling pointer)
-  *   3. Link function, enable UDC
-  *   4. Disable UDC -> unbind -> usb9pfs_clear_tx -> CRASH
-  *
-  * Build:  gcc -Wall -O2 -o poc poc.c
-  * Run:    ./poc   (root, KASAN-enabled kernel, dummy_hcd loaded)
-  */
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdarg.h>
-#include <fcntl.h>
-
-static int do_cmd(const char *fmt, ...)
-{
-     char cmd[1024];
-     va_list ap;
-     va_start(ap, fmt);
-     vsnprintf(cmd, sizeof(cmd), fmt, ap);
-     va_end(ap);
-     return system(cmd);
-}
-
-int main(void)
-{
-     printf("=== USB9PFS Dangling Pointer PoC ===\n\n");
-
-     system("rm -rf /sys/kernel/config/usb_gadget/g1 2>/dev/null");
-     system("rmdir /sys/kernel/config/usb_gadget/g1 2>/dev/null");
-
-     /* Create gadget */
-     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/configs/c.1/"
-            "strings/0x409");
-     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/functions/"
-            "usb9pfs.gg");
-     do_cmd("mkdir -p /sys/kernel/config/usb_gadget/g1/strings/0x409");
-     do_cmd("echo 0x1d6b > "
-            "/sys/kernel/config/usb_gadget/g1/idVendor");
-     do_cmd("echo 0x0104 > "
-            "/sys/kernel/config/usb_gadget/g1/idProduct");
-     do_cmd("echo 0x0200 > "
-            "/sys/kernel/config/usb_gadget/g1/bcdUSB");
-     do_cmd("echo 1234 > /sys/kernel/config/usb_gadget/g1/strings/"
-            "0x409/serialnumber");
-     do_cmd("echo test > /sys/kernel/config/usb_gadget/g1/strings/"
-            "0x409/manufacturer");
-     do_cmd("echo test > /sys/kernel/config/usb_gadget/g1/strings/"
-            "0x409/product");
-     do_cmd("echo Config1 > /sys/kernel/config/usb_gadget/g1/configs/"
-            "c.1/strings/0x409/configuration");
-
-     /* buflen=0 causes alloc_ep_req() -> alloc_requests() failure */
-     printf("[*] Set buflen=0\n");
-     do_cmd("echo 0 > /sys/kernel/config/usb_gadget/g1/functions/"
-            "usb9pfs.gg/buflen");
-
-     /* Link function */
-     printf("[*] Link function\n");
-     do_cmd("ln -s /sys/kernel/config/usb_gadget/g1/functions/"
-            "usb9pfs.gg "
-            "/sys/kernel/config/usb_gadget/g1/configs/c.1/");
-
-     /* Enable: in_req freed but not NULLed */
-     printf("[*] Enable UDC\n");
-     do_cmd("echo dummy_udc.0 > "
-            "/sys/kernel/config/usb_gadget/g1/UDC");
-     sleep(1);
-
-     /* Disable: triggers unbind -> usb9pfs_clear_tx -> KASAN */
-     printf("[*] Disable UDC (expect KASAN report)\n");
-     do_cmd("echo '' > /sys/kernel/config/usb_gadget/g1/UDC");
-     sleep(1);
-
-     printf("[*] Done. Check dmesg for KASAN null-ptr-deref.\n");
-     return 0;
-}
----8<---
-
-Step 2 triggers the fail_in error path in alloc_requests():
-
-   static int alloc_requests(struct f_usb9pfs *usb9pfs)
-   {
-       usb9pfs->in_req = usb_ep_alloc_request(usb9pfs->in_ep, GFP_KERNEL);
-       ...
-       usb9pfs->out_req = alloc_ep_req(usb9pfs->out_ep, usb9pfs->buflen);
-       if (!usb9pfs->out_req)     // buflen=0 causes this to fail
-           goto fail_in;
-       ...
-   fail_in:
-       usb_ep_free_request(usb9pfs->in_ep, usb9pfs->in_req);
-       // BUG: usb9pfs->in_req is NOT set to NULL here
-   fail:
-       return ret;
-   }
-
-usb9pfs->in_req now points to freed memory.  In step 4, the composite
-framework calls usb9pfs_disable() -> usb9pfs_clear_tx(), which does:
-
-   guard(spinlock_irqsave)(&usb9pfs->lock);
-   req = usb9pfs->in_req->context;   // dangling pointer dereference
-
-This is a regression from a3be076dc174 ("net/9p/usbg: Add new usb gadget
-function transport").  The fix is to set usb9pfs->in_req = NULL after
-freeing it in the error path:
-
-   fail_in:
-       usb_ep_free_request(usb9pfs->in_ep, usb9pfs->in_req);
-+     usb9pfs->in_req = NULL;
-   fail:
-       return ret;
-
-A prior review on Sashiko[1] also identified this issue and noted
-several other problems in the same file (double-free in the
-disable_usb9pfs() path after an alloc_requests failure, missing cleanup
-in tx/rx completion error paths, and a potential deadlock in
-p9_usbg_request).  The alloc_requests error path NULL fix is the
-minimum fix needed for the crash reported here.
-
-[1] 
-https://sashiko.dev/#/patchset/20260607130118.16579-1-zhaoyz24%40mails.tsinghua.edu.cn
-
-
-Hope this is helpful for further fix, thanks.
-
-
-Best,
-
-Xiao
-
-
+Thanks,
+Yizhou
 
