@@ -1,128 +1,80 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DEB24E4B4
-	for <v9fs@lists.linux.dev>; Mon, 15 Jun 2026 13:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09873EDAA3;
+	Mon, 15 Jun 2026 13:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781531120; cv=none; b=GhKZd5utUa9KIXaIPvJGriNQ25/3yONwg+EMicm6sZfnrieyxhXy1gxGcoagqBE1IGpG6K+eoXFi/3J8VllIRwK3AcUidVQm74i94aVTjMZXb9aQESulo2ujSFnfpJm1tpnPPXCTSBG5kgCOmTK2pWpPv8mVBYscbx/Jvvl5zeA=
+	t=1781531905; cv=none; b=TG5DjSmuEiHy9rvkArV8EfsNZ5GolXJKxjPcc/w5YrKqM/fKoyhId3I+YTDqhwPDXRpf79CNz6CSNvsgyUJWFuO8p0dvnVXvHwccVMPMh77fYO60L42qN4Eeb7lKUwpr+gsPFrr+QRsRdrO1zQdPORit6SpkOBlrMUALXCZ5WI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781531120; c=relaxed/simple;
-	bh=vrYOAAg4u0P4XHB8NOhF0JGzheIdmPHfS45M+tKWvRc=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YUT7UJGLCSnFHgckTkNUYLGbPosn8mKsxoKJCv3pfNlly8JL12ge4SgA01Q5KIxsPEAgM6ME0C/VsN3IV1xVXzN9FgTtmjalTGhV47cGdMZRxnMuT0iSmnY6uJ8fTOR0srE7ibdEZ2quorI4wAG0OoLapzdIKIqmRu6N/0vxrv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=NBeqcNV3; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1781531905; c=relaxed/simple;
+	bh=kVwPPwNyAeWGI2+qh3hL/g8B12MS6vl5MsKNv7jf5NM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eGCM+gcJdIz1jH2c6ZhY4ZQUobfBbfGYVk3cIPmox7yM8OpyvTwnMAI8xOzFsiXwMnt4W04lK9d8clQcaY2mB0ID1ANUQlsT3+apYCXHTKvTQv76aRaoelXgfTdTEok2K86QY1YBADrtte8oCOY0O2zhIib3ICbQUNnuiemneFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Mm4YyDFj; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="NBeqcNV3"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D5FD414C2D6
-	for <v9fs@lists.linux.dev>; Mon, 15 Jun 2026 15:45:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1781531117;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=k0nFDGIqVDSHajASSrnx/lB8xFBnegP7KqiFH9KKHUo=;
-	b=NBeqcNV37UrhnQXwDBO1Kex+3QVhlAqhcVgZRGrLJhy0DN79946qwckCHBIDGpIgeOii/4
-	B3G4IL2WBu4GJA8EgcciJX99ImEJ379gMj78ItsjGxigAX9Mxf0yo6Mgaz2SfSIECxNU8u
-	t8lQ3WVfDUm0CaSCv7em+mfB6Kea8NluDY2V+HSICJHvmL+4mltqkG174gWdOm78kpkeNI
-	yD+8HQJxJKsiKtef+WAcJQSVkkqDR9GwCFMsffIeOK3eaYaA78S/00Jh2Wy/C33VO2wUu+
-	ko4o4GGsNRfLbXR+VsR4mw2qzMhfWfwNjDD5YiG8cTjcUjCFMh8DAyzsfR6OAg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a81f99e8
-	for <v9fs@lists.linux.dev>;
-	Mon, 15 Jun 2026 13:45:15 +0000 (UTC)
-Date: Mon, 15 Jun 2026 22:45:00 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: v9fs@lists.linux.dev
-Subject: 9p patches for 7.2 (recap/heads up)
-Message-ID: <ajAB3PMI_8O28a4m@codewreck.org>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Mm4YyDFj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ju4T+RVYyWMpT3dI6nGVGRDOuCutXNq5/3aIQaCuSDQ=; b=Mm4YyDFjTRnOQh+Dst7wqeKRG0
+	K3GOie8OQjDG9Jf2fVKx4MkdyBKxclbWBypf5D2BAGVMa21e2EGFf5LGm1cW3cRIIvtLhRbzeuSA9
+	sGSbjszPdUa3zQlVJtEzFAIyZOy0KyxBUlnHefaM3cADMwA68GS3NPuuAaJXtHNiHMIyMkokfHPNB
+	3I3N56O1mzOXbSSpyp4jHxRjegRsNdiYf8wJg0DnHIGDKPfx3zY+wRVj6OxUjok77A4EStsGXZQyd
+	TGaG+H9DoL89Lp+aveXD3EY9t+Yo4rpTzhLQhQFMyeGxADtC99d6gw7k8GkSuhF0mxn6mIm6NRVxQ
+	gegGid3A==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wZ7pJ-00D7Yh-24;
+	Mon, 15 Jun 2026 13:58:09 +0000
+Date: Mon, 15 Jun 2026 06:58:03 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eryu Guan <eguan@linux.alibaba.com>, 
+	Yiwen Jiang <jiangyiwen@huawei.com>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] 9p: fix WARN_ON when dropping nlink on files with nlink=0
+Message-ID: <ajAE36BxIdkLEToh@gmail.com>
+References: <20260126-9p-v1-1-dc234d53ae87@debian.org>
+ <aZGRkaFZPXfZW8a0@codewreck.org>
+ <aeY32gOaV5jw1s8F@gmail.com>
+ <aeZNdxmYw1K0Swg9@codewreck.org>
+ <ai-842Shp-LJIOBD@gmail.com>
+ <ai_77Gr0h_n5SkET@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <ai_77Gr0h_n5SkET@codewreck.org>
+X-Debian-User: leitao
 
-Like last time I'm still under water, so tracking a bit what I've picked
-up and not...
+On Mon, Jun 15, 2026 at 10:19:40PM +0900, Dominique Martinet wrote:
+> Breno Leitao wrote on Mon, Jun 15, 2026 at 01:51:09AM -0700:
+> > > Please send as a proper PATCH mail and I'll tentatively apply for 7.2
+> > > (a bit too late for 7.1)
+> > 
+> > Please, don't forget this one for 7.2. This is one is hurting me from
+> > time to time.
+> 
+> Thanks for the reminder, that did fall through the cracks, with the
+> dozen of LLM-generated patches that came in lately and my attention
+> being more than limited..
 
-No time to review usbg or xen things that aren't trivial (some usbg in
-here can likely be considered trivial but I'm not comfortable without
-someone who can test it, I've seen someone use dummy_udc to test in a
-recent review "poc" and I'd like to make time to try with that
-eventually but I didn't have time yet)
+I know what you mean! :-)
 
-xen - both look sane enough to me at first glance but someone
-testing/another pair of eyes would be appreciated
-- 20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn 9p/xen: drain
-response work after unbinding IRQ
-- 20260529103416.81378-1-zhaoyz24@mails.tsinghua.edu.cn 9p/xen: fix
-use-after-free in p9_xen_request
+> I've picked 20260421-9p-v2-1-48762d294fad@debian.org up, and will send
+> it to Linus at the end of the week unless something bad happens
 
-
-usbg
-- 20260529081026.77732-1-zhaoyz24@mails.tsinghua.edu.cn net/9p/usbg: Fix
-use-after-free on usb9pfs_clear_tx
-didn't take time to wrap my head around this one...
-- 20260529081817.77898-1-zhaoyz24@mails.tsinghua.edu.cn net/9p/usbg: Fix
-use-after-free in usb9pfs_free_func
-can't hurt?
-- 20260607121907.12588-1-zhaoyz24@mails.tsinghua.edu.cn net/9p/usbg: fix
-prefix matching in device lookup
-likely ok? couldn't find "the configfs tag lookup path" the commit
-message talks about in 5 mins and gave up...
-- 20260607130118.16579-1-zhaoyz24@mails.tsinghua.edu.cn net/9p/usbg: Fix
-use-after-free in disable_usb9pfs()
-had fallout and
-
-
-others: 
-- vsock transport 20260527073447.86538-1-skvarlamatus@gmail.com had
-comments to address and no v2
-
-- 20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn 9p/trans_virtio:
-bound RERROR copy by mapped pages
-might be correct, but I need more brain cells to consider it right now
-
-- 20260610114206.3749904-1-michael.bommarito@gmail.com 9p/trans_virtio:
-bound mount_tag show copy to one page
-I agree with Christian, better to reject any such mount so we don't have
-to worry about it in tag_show()
-
-
-The rest I *think* I picked up and hopefully didn't miss much, here's my
-short log before testing:
-* 5bf46ec0f86b (HEAD) 9p: Add missing read barrier in virtio zero-copy path
-* a472a0f7cceb net/9p: Replace strlen() strcpy() pair with strscpy()
-* f2ae8be77c17 9p: skip nlink update in cacheless mode to fix WARN_ON
-* 3cb6b464435f net/9p: fix race condition on rdma->state in trans_rdma.c
-* b2b130e101dd 9p: v9fs_file_do_lock: replace WARN_ONCE with p9_debug
-* 3ec9e935015b (martinetd/HEAD, martinetd/9p-next) 9p: Enable symlink caching in page cache
-* 64a0eb2b2224 9p: Set default negative dentry retention time for cache=loose
-* 7025a34eda23 9p: Add mount option for negative dentry cache retention
-* e7b0c932b719 9p: Cache negative dentries for lookup performance
-* 6077a40933a9 9p: avoid returning ERR_PTR(0) from mkdir operations
-* aeb815e3abe8 9p: avoid putting oldfid in p9_client_walk() error path
-* 6335c463f916 iov_iter: iov_folioq_get_pages: don't leave empty slot behind
-* 6b4f48728faa net/9p: fix infinite loop in p9_client_rpc on fatal signal
-* 38ba49580e87 docs/filesystems/9p: fix broken external links
-* e661e17ddbed 9p: invalidate readdir buffer on seek
-* b4d71bea1445 9p: use kvzalloc for readdir buffer
-* 9061075b4f0a net/9p/usbg: Constify struct configfs_item_operations
-
-the top commits didn't get any test yet, I'll try to find time to test a
-bit tomorrow before pushing to next, and will send to Linus next Monday
-
-
-If I missed something you care about please reply on patch I missed or
-here
-
-
-That's more patches than we've had in a while and I'm not quite keeping
-up...
--- 
-Dominique Martinet | Asmadeus
+Thanks!
+--breno
