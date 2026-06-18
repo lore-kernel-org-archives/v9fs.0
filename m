@@ -1,133 +1,122 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504D23FB067
-	for <v9fs@lists.linux.dev>; Wed, 17 Jun 2026 12:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781700943; cv=pass; b=fd0je2NHqwrS0G13bCj/Lh616nH87WUqbUqvyws37xGMA4LLzfMBPsuMZ7KX4/pBZIkZNdGuJQPnS4DGQz0+CaHvZW8Y+A6ZGhVopfvVf86ojGDJl5nzSC46IW18gn9WG1lvX6bOvliTgNKCyP9yF7MtJ3qz6hkzdUrSOUN6uqQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781700943; c=relaxed/simple;
-	bh=cWa4NW/PhtHnvNqrgN9YSlooiI4wAnqIY2PvS0bcMdI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qfKDcznYRbFMNqq5yQp3as7+jAUFKC85VsQ0K56FcFczVz5MUo2og9dWgukpUgjtWi6IgDn1Ibjtwpnh+BHsol5JadqpylUXn9wlAbDPw6waRgMpC70HWMZuASn2i90FR/Pq1JzwuKFQ/0jiHeBRSyshfCfckBkOZiN/dJeeEes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QhS+NDwb; arc=pass smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A1038945A
+	for <v9fs@lists.linux.dev>; Thu, 18 Jun 2026 12:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781785148; cv=none; b=SfbyO/aOMrbccv/wujwf2mje5uMxYSOa6/9qMI7jo+dqdWXpDb8xXuGwAJa2h3BP/OyBx3s7By2DvZef07V6iOIqkqXtec7usPkNi+LbSYSQ+O1QKSjQCdox6lfm6nXYhYZr4N5O3P35kK/tj5stm247gpNEQVyimqHJln662lE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781785148; c=relaxed/simple;
+	bh=1h85HEiwu5SrvP6LXSFmCX8HYJCZmpF9jCx93UjL+R4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k1vZWbA2GHET3EZK8fB6L1Xrf4O3Xy5y3FBFDTwUz2oV0k0Y/VsQBgJGIJ8na6AUuplCh5UkJi9z6yoLEMlMn+b+kwmEtJ3KLb6a7wczhEZZtzHJHa+8rhdXvu6Cwbmhgo6GDJjjjgmh/C/fNrxyvUPhqI0LZpP9Fk21fClwtmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ku5Aiv8s; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QhS+NDwb"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-485ecc0f2dfso3721714b6e.3
-        for <v9fs@lists.linux.dev>; Wed, 17 Jun 2026 05:55:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781700940; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JMVIgFFiDF5xKD71gzl2FOWbOr0EWg2RmKT9B9ZBg2aKCe5PsBKG8MYAHDsN3ZLAXr
-         YYIaUbSa1UUlIfoEmJk6YA0MmCAzwh53qlagsMWjZh707MKCwTKsoADqGNHCNgjU4MTS
-         ureWofD67B41/B35PhL/dWNMlSy40PtntAYXWSIGrWEB8l4pA+25b+U3SkgSE8SYxvmB
-         V2dB/GmD7invstRJIuErpYGc5q7DOdQ9MZPS40lv4UxbwcqJ3CxpC7vhpLd3WTVvTnsb
-         REE+0SwECn08BbKgcrFOsoxiMsoCDtPsFzSIhWzYcN6yE+PVsPnofRTc7sKDrDS1FRzw
-         StoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cWa4NW/PhtHnvNqrgN9YSlooiI4wAnqIY2PvS0bcMdI=;
-        fh=zXvAPHtmq4w5f3HreLUOLn16wT62ZQwifej/AoZ/YB4=;
-        b=YurlIbE/AEOEJnrLMcWTX6+Zp9ya3zI+kmhLCp9O/f2Yo+41ey7MWv7cWB1z+s/xpv
-         ktDMGdAZoCLiqweMw4VTorzxjdNWbCok5ZX+3mKJcJRNWKzLFfwXUbCO4U7/T8GzwFb7
-         0QOmocjXvZUQil+ei7yKyp85kI5D9aWhFsf0KCFcQvf/s2PNNOst2IRxrXkyGqm1iKbT
-         ftPuOf1pzYf0NFdWGDOGYBGJVipWPM501faL2XlZZBT9DNLM7gWQ6Oq3q8/2EaQEg56Y
-         2aKMzrLb14t7NV69jZDoFsagu8k5ZIrmahDvCK7mrnok0JEAylCr+fajCcBV5iE1zCRQ
-         sEFg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ku5Aiv8s"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa68cfc182so968762e87.0
+        for <v9fs@lists.linux.dev>; Thu, 18 Jun 2026 05:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781700940; x=1782305740; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cWa4NW/PhtHnvNqrgN9YSlooiI4wAnqIY2PvS0bcMdI=;
-        b=QhS+NDwboq2O2wDqNfqrgEfLGKWHJHcnw4owkdzXcEPrH4jCOWvB+4qPVaXGfSccnk
-         EvsUDO/NjQVEBxB+fuuX6ELktbl91nxu7/bOCewud6/nWOl8MVtVjrt6mFAEm1dGpq+C
-         IJCVafr5S3Y4i49cx9DtOtaFx/yOoiik9mjhpKUBw1/jXKGUuKq2iKrcuwPlQw9FdH8j
-         vM50lVVvWQiTAJFRN7sOfXfT4qDIoHos8tI81B+/UsVfUrAzJhO9uXFaiwrV2WY2Y/zv
-         lMKsBpddZ0bYII5oiEJzkcQ/Nry/S2Pusg8y3IYkxvGj57LEH+ZaZSdOIRIIFaVb+t+G
-         L8Fg==
+        d=gmail.com; s=20251104; t=1781785145; x=1782389945; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UqmSWHmzTjiXv/ea7OlEQSmT2M86q0mo+1Enkd+tLH4=;
+        b=Ku5Aiv8s7XRxxmduVs+0KDLzFa0d51pHSq7P/Q9QjE/4Aq6HRRX0m5N6tDXIP9t6u6
+         AKVEcsiQWPmdvk2xx3/fGffPI2nBo7J/uvcMDzIRBeI2qr5gpL7vrhm226ZKzRLjq8DY
+         N4pPVGW2psrPMsORXqh2usWvVXGY8y7oTN1PN0JI832lO8/qzeAl+JnJLglGNs5yowfx
+         N/LXxdf0PRks/A1XHLZxVYWTF++00lh4MPdC0OvMWOGS4l8fac7D3NJH2XankpLE4Exp
+         xZeoW2RiCUBrlFubCpqOptyRFB888bXgehHFR1deIw6YkIEG0IFy6g6Aq5pZz+eHOJq2
+         u6jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781700940; x=1782305740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cWa4NW/PhtHnvNqrgN9YSlooiI4wAnqIY2PvS0bcMdI=;
-        b=JF9xn6jbVbYgX9cyQCkGLUL0jTkYGifl8wq/arxnQOn8YAgC/FqH3oGviYT3cNYKXZ
-         ss/EwQlGs0aWVQ5Xvnq8/fiTBg8qZeBx/YGzecGefiqsRMFjmPJhGz6y4YjVBAMp48Tz
-         lzTdVUVQw6IiiRra1RFVqS0/HWKf+ivgzOcbeB2/ruoRaIaei4IYAVtgqoYK7sukvNUI
-         WTfF8uLO9d2VqqCVLBluZ5ZWbx6aVccajIJauwqkDOa3ecpObqcZC9XN2lOGsc4Sh2Bh
-         n+mmynlWnzrxn07+YoWpnN4h+0q8Bl4uZ5Fd7lebMuBxa7Lc+gCx7gZfqbf5SmagxqyV
-         SXdA==
-X-Forwarded-Encrypted: i=1; AFNElJ9G85H7iEegspPUK9Ri0AYqIGOcXmrZ6Y7PAxS+Xs46ZIFCX+JamBzXbe5hHmDoGzxbnsxf@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyc8VmWveLGHHAUUtoEWenA3AXVPiBD+0uwYnuZQZAJLQ5xRylS
-	PzZXNjvP9bjcULYTQaPO+7pOrRj8FUyYBncbKK0XP9GOmvTQsqBSkXr+zrGghM207wvAM5HbxPx
-	Pus09ozpOKGzOMsOLgwojiciFVzijBq6KvKGi
-X-Gm-Gg: Acq92OFC0hl6xcEFHBIUnHNELYQKbedymPCfLzB8Dpr9tR+Oa8rBOtZ2UxNijncsFyk
-	w/qI6FXg3MRTwacV1CttXXIk/WwpuLCO8Lfz2TFeHCrT3OfOzttUY0NknbosWrXSWe7Lmv+75Gv
-	jJ0iOr0DzyvfZtBd9bz9FA0v4emgvvL9xtNDprphzc33xbeUMqZ5tnECZsB/LVpGnCfuA89vEZ5
-	qfSSeCLjwh0CcAWWCJWZ90Hg7fTWeZKiqpBxtAydFPF5uPrGhYnTAgFg4rFkk8IhdOTx4b46gGV
-	ETGUMx5jUWBm7B0t3Qr3T9Ek+Z9x7rtY9PyQKrkuRVCXgXMXyLytfzUE/fe+WiPZHy7F6L5MlVv
-	bhyJYsNBP6STlAKegOkZVANS7BgleHIFyEIA=
-X-Received: by 2002:a05:6808:170e:b0:486:50c7:7f9b with SMTP id
- 5614622812f47-489428d4a3cmr3098102b6e.19.1781700940222; Wed, 17 Jun 2026
- 05:55:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781785145; x=1782389945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UqmSWHmzTjiXv/ea7OlEQSmT2M86q0mo+1Enkd+tLH4=;
+        b=BYesoAxt6VUFxszrfoiOa05c0VvI9VBCjbTKjlslzuFYjQPlOu+UXc5wKgQP5hDFmW
+         hmQ5Gb7kspAFmHe2dHhbmL4A7pjT9wNFOV/5pV8dFE5TsnJcsb9K4A451ol8UE0e2xfJ
+         bLVEo4GFmnNMIZEXNjp9L+FzHtHGzQOSc8lHaH6IUBtWbJWR64lKw+sKKZbF/e92GkX8
+         zN11Q/Z803McjeeAB0ulViDsSxsKeSDqNyPuXKXViry67MeJ8sEnCMMjI3fDmHHQijzH
+         P0mdXwVOLxC63Qfxe7p7q0Ot4HpqayP4zUEmTg2Xztdcdyp9S9eURaTBWzSr6nSuVoo7
+         7u9g==
+X-Forwarded-Encrypted: i=1; AFNElJ/b0/7ypvF5MwdKkx6dLNVHZSxOLhbx4zE0Qb7rVO3yoFRghXWW5UF3awwr+UIY7gvFnLTc@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQlzyCMNSO7dLASm0rXA57ta8IeNebZUyXcL/7NhTofcotwLql
+	N4xNXZ4e89/IdRsFXITNX9/AKy7CzTDLPDpwKkZGEevFO8bWUWoL3+ay
+X-Gm-Gg: AfdE7ckG2kZR+LhpCkGLTFOHqIC950BhDoJiFLpq7WOvFH5CIzkYkCSIX0t/Uw8FHxF
+	5KVBdykkNF+Tm977fuGmNbR5LwHzEbvQfFhaUzY9kQhBiW6wxzeZYnqV6UydmPlmgeWmxnbA/Gl
+	DMd+rCYqy5VhydWoz+zrnloj3SGQQNaUB96PiormOikhpwERBG+Iyr5DaLKNvzsmky++KhCCgu2
+	E9LVXH40naFhIwmmVjYD6ihuI3JuTSXo3dGlQ5IOTcjmT6fPsD/4cFuFhgrbKjlrbdWICUwMwcX
+	/JHcu/z30i8FJTz5Niz2DXjJn8UiP89PWFFWMMQe03593bI3lM2t/nKBKyatxBmPo1hrh1L/2AE
+	+mbQz6E4qjq1rIViZARYQ88Hs0rr5oDEho3k1mRvG2EDuJrDQnrkxXDjjLGW7AjGJMTEEoHKDd/
+	pUCGWB4B9GLXsflsj8Bbe5swwr6O+eHw==
+X-Received: by 2002:a05:6512:3509:b0:5ad:3035:fa47 with SMTP id 2adb3069b0e04-5ad4dadd259mr879893e87.53.1781785144944;
+        Thu, 18 Jun 2026 05:19:04 -0700 (PDT)
+Received: from grower.astralinux.ru ([81.9.21.4])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad4eb57734sm657424e87.34.2026.06.18.05.19.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 05:19:04 -0700 (PDT)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
+	Eric Van Hensbergen <ericvh@gmail.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Tomas Bortoli <tomasbortoli@gmail.com>,
+	v9fs-developer@lists.sourceforge.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	lvc-project@linuxtesting.org,
+	Hangyu Hua <hbh25y@gmail.com>
+Subject: [PATCH 5.10] net: 9p: fix refcount leak in p9_read_work() error handling
+Date: Thu, 18 Jun 2026 15:19:21 +0000
+Message-ID: <20260618151940.76321-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260529075441.233369-1-hanguidong02@gmail.com> <ai_6e8Rhfq1coHw_@codewreck.org>
-In-Reply-To: <ai_6e8Rhfq1coHw_@codewreck.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Wed, 17 Jun 2026 20:55:29 +0800
-X-Gm-Features: AVVi8CdELcVuYnaTn5Vp76bwRJoO3UxIOogF1FUXII2lUEsUHPQulmMzjqWfWi4
-Message-ID: <CALbr=LbuWzRo+fndQFEnhVJTfSPsEfKqwUri9ovyUe+dkXXx9g@mail.gmail.com>
-Subject: Re: [PATCH] 9p: Add missing read barrier in virtio zero-copy path
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, 
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 15, 2026 at 9:13=E2=80=AFPM Dominique Martinet
-<asmadeus@codewreck.org> wrote:
->
-> Gui-Dong Han wrote on Fri, May 29, 2026 at 03:54:41PM +0800:
-> > Commit 2b6e72ed747f ("9P: Add memory barriers to protect request
-> > fields over cb/rpc threads handoff") added a read barrier after
-> > p9_client_rpc() waits for req->status, pairing with the write barrier i=
-n
-> > p9_client_cb(). The virtio zero-copy wait path was missed.
-> >
-> > Add the same read barrier after the zero-copy wait before reading the
-> > completed request.
-> >
-> > Fixes: abfa034e4b8e ("fs/9p: Update zero-copy implementation in 9p")
->
-> This doesn't make sense, the wmb was added a few years later, so I guess
-> this should be
-> Fixes: 2b6e72ed747f ("9P: Add memory barriers to protect request fields o=
-ver cb/rpc threads handoff")
->
-> With that said, a rmb here makes sense, so picking up (with fix tag
-> fixed up)
+From: Hangyu Hua <hbh25y@gmail.com>
 
-Hi Dominique,
+commit 4ac7573e1f9333073fa8d303acc941c9b7ab7f61 upstream.
 
-Thanks for taking it.
+p9_req_put need to be called when m->rreq->rc.sdata is NULL to avoid
+temporary refcount leak.
 
-I was also unsure about the Fixes tag. abfa034e4b8e introduced the
-lockless zero-copy path, while 2b6e72ed747f introduced the wmb/rmb
-handoff rule completed here. Your choice makes sense to me.
+Link: https://lkml.kernel.org/r/20220712104438.30800-1-hbh25y@gmail.com
+Fixes: 728356dedeff ("9p: Add refcount to p9_req_t")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+[Dominique: commit wording adjustments, p9_req_put argument fixes for rebase]
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+[Alexander: this branch doesn't contain 8b11ff098af4 ("9p: Add client parameter
+ to p9_req_put()"), therefore the parameter is removed from the added line]
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+---
+Backport fix for CVE-2022-50114
+ net/9p/trans_fd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I understand you will fix it up when applying the patch. I can also send
-a v2 if you prefer.
-
-Thanks,
-Gui-Dong Han
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 40d458c438df..bd6a54e6f427 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -346,6 +346,7 @@ static void p9_read_work(struct work_struct *work)
+ 			p9_debug(P9_DEBUG_ERROR,
+ 				 "No recv fcall for tag %d (req %p), disconnecting!\n",
+ 				 m->rc.tag, m->rreq);
++			p9_req_put(m->rreq);
+ 			m->rreq = NULL;
+ 			err = -EIO;
+ 			goto error;
+-- 
+2.47.3
