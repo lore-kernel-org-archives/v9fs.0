@@ -1,53 +1,45 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDD42B9BA
-	for <v9fs@lists.linux.dev>; Sun, 21 Jun 2026 13:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08652459FE
+	for <v9fs@lists.linux.dev>; Sun, 21 Jun 2026 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782046846; cv=none; b=fp6yGbq+n/04EofPuVSZkETRKEmVHjO1bohfIvSXHfjRb9HXHe0qocAd7WA7/FzJa1qOKzd8r5Ym4JnNa6Qf4f+fpqNrXdByxewOTyeoRBHDjypYHedzJAyeIioD7HqYtI40vsltr0WBHnh8Idpi4bjWm1mbYAFPyfiRC6eObGM=
+	t=1782047950; cv=none; b=SFemz0nr72bAs3PnFg+ihGZmGiRJKvTEUqEmZ6eTzMfXhhkBd6jF9dYIEUzyWZohrvW01EH2mH7MepXLtAHOdOYjp6uACFPe/RpMtDXcI/MKNXe+/ZJ9ScnZ3BKmb8271dUyzZDOFE/9uPN1p80xuLE3Tol8y2uKU23Q+ufYRNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782046846; c=relaxed/simple;
-	bh=TL6aRohAjLVeqIYRHBGQZyWb46j2PNJfru5U8AgJY7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D++E1Oy5m/9MAnNozTJb0zXKm0sGapFJ5943rXAkXFbVRi3rJ+n+oPG8xdpB7AI28nyGViiAafJCoJVggtewyok7U0O8I2PJ9U9CEQqk1virOxhfLFdlR1Dt+IWeB7HmogDtrrsbi0vvErSSciKrRFAopvAYILeDt7mUTBlh9bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=JSzyasJi; arc=none smtp.client-ip=62.210.214.84
+	s=arc-20240116; t=1782047950; c=relaxed/simple;
+	bh=/Pm/iE/XsgTNm1IJVDaGCkCxIDlYq6Rws2aZLy8Q4fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QH1zu68w9hns7lrrqqqke3nXwndB529GVD1mDNwSmvyeeRlfsNKE+oXOkvDHw5R9jpfm9Zx1tk+1WuHiuVWWQ7zXawnUdWQIbSuDUnfi8cmCDkcz3iEQH0KQH8Z2vQu2L+CgLuYz3psTAIP2nr05wK1bNxJN0X3hyNvNkk25XKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=x9UV+euZ; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JSzyasJi"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="x9UV+euZ"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3A71214C2D6;
-	Sun, 21 Jun 2026 15:00:38 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id B1FAB14C2D6;
+	Sun, 21 Jun 2026 15:19:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1782046841;
+	s=2; t=1782047947;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pYT/k7gnFOeT8ek+DUY4zKbtckl0T+W+A82T5fk5CNE=;
-	b=JSzyasJiHA9Rf8Hb81yqXvA1WKgyfqTg8+gFfisBf6TyqfEAhIVPozSRWtE5ZFKHzQfQPv
-	3ZKH79/RrUBDf3Lgp3oFJDODpagDDU0rGzoEgmdgsqcB4M6MaXlOQaF1HMRyUSfEdR+Apc
-	RpjvD2oMoKjwpYxWPMeJxAPjycquYmXVKDGRllh4/qFLCrnj8ocM0K1Oi6lazuXYHqSUa1
-	0rK/b8D1zKUJdzeUwoiTqeYHL1B8Shvg+XXmMPQjxBFWFk5s/g7wAfsGPzK/j+Kgh3jtbm
-	5TcZFicrWK+eFn+hcQBVbr2ZgtYki5XQMP4A4L1ZpsTJtuiTovZQrvztLMWjyw==
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=liQ5jB33jAAcOLk8emX5dp7cKV6efHPOI1wHywnlGRk=;
+	b=x9UV+euZBYKdoGZDGUgUmcKipKVpUPsSh8n4iYDfokF3+OmW6vWmQXwbrUFUrSPB/Rdfr3
+	wv7Rly7Vfpp/ywXZmBKtKSNuympSaoHelAOGJL4GfE5O0MytQhIHdRBUAtHe6oWWxw/pci
+	JHJ1vy3JkIJ/eQH1C6runFgQf6BqgzN9n8/7K0vSuu+SNG/Ji5h4iTTs0B7EgzNTlg2ts4
+	bMtoIt7eYA5J/vZ5TAa7ThKsmXLhYecQNnRueYarldaXeUvVE8clRREE8v2FatlLHoVydL
+	yuIpdWgd85Dl2eAljuekjYypMokzxT3Nn2lxJ5O+pYPXI6vOOSiIw8A3II2csA==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 66f442af;
-	Sun, 21 Jun 2026 13:00:37 +0000 (UTC)
-Date: Sun, 21 Jun 2026 22:00:22 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c62a2421;
+	Sun, 21 Jun 2026 13:19:04 +0000 (UTC)
+Date: Sun, 21 Jun 2026 22:18:49 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] net/9p: fix infinite loop in p9_client_rpc on fatal
- signal
-Message-ID: <ajfgZs23wKUUG6IW@codewreck.org>
-References: <20260415155237.182891-1-kovalev@altlinux.org>
- <aeA-WpUyfWrYrvaE@codewreck.org>
- <e3e9146a-d820-d35d-cebd-e7e7e4a2fa24@basealt.ru>
- <aeFoRIOUNQZWmTG5@codewreck.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p fixes for 7.2-rc1
+Message-ID: <ajfkuS-kgmJXentl@codewreck.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -56,66 +48,106 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aeFoRIOUNQZWmTG5@codewreck.org>
 
-Dominique Martinet wrote on Fri, Apr 17, 2026 at 07:52:52AM +0900:
-> >  While the ideal long-term goal is the asynchronous implementation (as
-> > seen in your 9p-async-v2 branch [2]), this patch serves as a reliable
-> > intermediate solution for a critical regression.
-> > [2] https://github.com/martinetd/linux/commits/9p-async-v2
-> 
-> iirc one of the problem with the async branch is that the process would
-> quit immediately on, say, ^C, before the IO has completed, but it's
-> possible for the server to process the IO (and not the flush) afterwards
-> and you'd get something that's not supposed to happen e.g.
-> 
-> p1             p2
-> 
-> write(1)
-> ^C/sigkill
-> flush sent but process exit without waiting for server ack
->                1 not written yet
->                write(2) in same spot
->                write(2) done
-> write(1) completes
-> data isn't 2 as expected after p2 completed
-> 
-> 
-> So it's quite possible async isn't the way to go, but that there is no
-> good solution for this
-> (given this is true even without async on sigkill: if we have something
-> that works safely, there's no reason to wait only for non-fatal signals...)
+Hi Linus,
 
-Sorry to come back to this after two months but I'm still a bit worried
-about this patch, and just came back to it as I'm about to send the PR
-to Linus...
-And I'm still thinking about the problem above, or rather possible
-variants involving cache (e.g. write going through the server, but
-client believing it didn't because the response didn't make it in time)
+same report as usual with barely keeping up: there's actually another
+half a dozen of LLM patches I didn't pick up for this cycle and will try
+to find time to review for next one, and I'm not as happy as I want to
+be about how thoroughly I've checked the patches that did get in (please
+let me know if you'd rather I drop the "fix infinite loop in
+p9_client_rpc on fatal signal" patch I mentioned in the tag, I think
+the patch should be ok, but I don't necessarily judge the risk the same
+as you would)
 
-.. But the thing is, I couldn't actually hit the `if
-(fatal_signal_pending(current))` you added (adding some print
-statement):
-- if cache is enabled, the actual I/Os are done by the vfs in the
-background, so any kill to user processes won't have any impact (and
-thus I guess my main worry about cache is alleviated there)
-- with cache=none I'm not sure why I can't hit it, I tried with an
-external server, breaking on the write() call while running dd, and
-killing dd with SIGKILL a few times but that doesn't appear to be
-enough? (task still stuck in write > rpc > flush > rpc, but it doesn't
-appear to ever get out of io_wait_event_killable() even when I hammer it
-with more signals?)
+The commit date being a bit earlier today was just me dropping a commit
+I hadn't intended to send, nothing else was reworked recently.
 
-So, given that my worry with cache is irrelevant (runs in background &
-won't ever hit this), I can't seem to hit this with what I consider
-to be normal workloads, and assuming it does fix your problems given you
-were able to test it... I'll leave it in and send to Linus now but I'd
-appreciate clarifications on how to test this more thoroughly as time
-permits...
-(I honestly probably should drop the patch at this point, but it'll
-still be time to revert if I figure something out in the next few weeks
-given it's been in -next for almost 2 months already)
+-------
+The following changes since commit 8fc518e489c1386fd0cf7f4256d055960ed6a2e4:
 
-Thanks,
+  9p/trans_xen: replace simple_strto* with kstrtouint (2026-04-16 02:57:01 +0000)
+
+are available in the Git repository at:
+
+  https://github.com/martinetd/linux tags/9p-for-7.2-rc1
+
+for you to fetch changes up to aa88278693cbfaf7a2acf961379973fbb63b165c:
+
+  9p: Add missing read barrier in virtio zero-copy path (2026-06-21 05:22:57 +0000)
+
+----------------------------------------------------------------
+Asides of the avalanche of LLM-driven fixes, there are a couple of
+big changes this cycle:
+
+- negative dentry and symlink cache
+- a way out of the unkillable "io_wait_event_killable" (because it
+  looped around waiting for the request flush to come back from
+  server; this has been bugging syzcaller folks since forever):
+  I'm still not 100% sure about this patch, but I think it's as
+  good as we'll ever get, and will keep testing a bit further in the
+  coming weeks
+
+The rest is more noisy than usual, but shouldn't cause any trouble.
+
+----------------------------------------------------------------
+Aayush Patil (1):
+      docs/filesystems/9p: fix broken external links
+
+Breno Leitao (1):
+      9p: skip nlink update in cacheless mode to fix WARN_ON
+
+Christophe JAILLET (1):
+      net/9p/usbg: Constify struct configfs_item_operations
+
+David Laight (1):
+      net/9p: Replace strlen() strcpy() pair with strscpy()
+
+Dominique Martinet (1):
+      9p: v9fs_file_do_lock: replace WARN_ONCE with p9_debug
+
+Gui-Dong Han (1):
+      9p: Add missing read barrier in virtio zero-copy path
+
+Hongling Zeng (1):
+      9p: avoid returning ERR_PTR(0) from mkdir operations
+
+Pierre Barre (2):
+      9p: use kvzalloc for readdir buffer
+      9p: invalidate readdir buffer on seek
+
+Remi Pommarel (4):
+      9p: Cache negative dentries for lookup performance
+      9p: Add mount option for negative dentry cache retention
+      9p: Set default negative dentry retention time for cache=loose
+      9p: Enable symlink caching in page cache
+
+Vasiliy Kovalev (1):
+      net/9p: fix infinite loop in p9_client_rpc on fatal signal
+
+Yizhou Zhao (2):
+      9p: avoid putting oldfid in p9_client_walk() error path
+      net/9p: fix race condition on rdma->state in trans_rdma.c
+
+ Documentation/filesystems/9p.rst |  10 +++++---
+ fs/9p/fid.c                      |  11 +++++----
+ fs/9p/v9fs.c                     |  27 ++++++++++++++++++++-
+ fs/9p/v9fs.h                     |  28 +++++++++++++--------
+ fs/9p/v9fs_vfs.h                 |  15 ++++++++++++
+ fs/9p/vfs_addr.c                 |  36 +++++++++++++++++++++++++--
+ fs/9p/vfs_dentry.c               | 105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ fs/9p/vfs_dir.c                  |  14 ++++++++++-
+ fs/9p/vfs_file.c                 |   2 +-
+ fs/9p/vfs_inode.c                |  46 ++++++++++++++++++++---------------
+ fs/9p/vfs_inode_dotl.c           |  58 ++++++++++++++++++++++++++++++++++++++------
+ fs/9p/vfs_super.c                |   1 +
+ include/net/9p/client.h          |   2 ++
+ net/9p/client.c                  |   7 ++++--
+ net/9p/trans_fd.c                |   6 ++---
+ net/9p/trans_rdma.c              |  19 +++++++++++++--
+ net/9p/trans_usbg.c              |   2 +-
+ net/9p/trans_virtio.c            |   5 ++++
+ 18 files changed, 320 insertions(+), 74 deletions(-)
+
 -- 
-Dominique Martinet
+Dominique Martinet | Asmadeus
