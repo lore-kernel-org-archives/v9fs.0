@@ -1,153 +1,63 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08652459FE
-	for <v9fs@lists.linux.dev>; Sun, 21 Jun 2026 13:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B04F1BBBE5;
+	Sun, 21 Jun 2026 17:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782047950; cv=none; b=SFemz0nr72bAs3PnFg+ihGZmGiRJKvTEUqEmZ6eTzMfXhhkBd6jF9dYIEUzyWZohrvW01EH2mH7MepXLtAHOdOYjp6uACFPe/RpMtDXcI/MKNXe+/ZJ9ScnZ3BKmb8271dUyzZDOFE/9uPN1p80xuLE3Tol8y2uKU23Q+ufYRNQ=
+	t=1782063055; cv=none; b=VDoQfo5ok+9qhKauy8zsEkfuevB8Io8NwoyEf04o7ehsje5/j36DxA/s40W38NX02wCPISizfvm8kup1YNoe5X1rcsydl3V4VHmXIxEOXWSNCSFV/O4XvQWbsk5l9YdIippqRsPaZ7cw+3CmUqZYaKJ9wASDtuW2/pwdVPhrBm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782047950; c=relaxed/simple;
-	bh=/Pm/iE/XsgTNm1IJVDaGCkCxIDlYq6Rws2aZLy8Q4fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QH1zu68w9hns7lrrqqqke3nXwndB529GVD1mDNwSmvyeeRlfsNKE+oXOkvDHw5R9jpfm9Zx1tk+1WuHiuVWWQ7zXawnUdWQIbSuDUnfi8cmCDkcz3iEQH0KQH8Z2vQu2L+CgLuYz3psTAIP2nr05wK1bNxJN0X3hyNvNkk25XKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=x9UV+euZ; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1782063055; c=relaxed/simple;
+	bh=sbGI0tv/SW4taB+npdsRjS3Hrhq1s3Lp9JKm95I/o2k=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=a0EGNQco+YmvXC169joPiq/yx4Z3+H3wXHoMTipvtemix/+9qee5MMAJ+Q8BcwJ6IFt5BmgkNo9cl9J6AmxvIeikTxuql2VKzCIM1WfCiTl+C5ZnuHsHj+Qh+xLTZ4/MHXC/MnYf/qJP3ivFo1k6QznI3STTQHzupXtWM3Q4o9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmjkX7tM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="x9UV+euZ"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id B1FAB14C2D6;
-	Sun, 21 Jun 2026 15:19:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1782047947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=liQ5jB33jAAcOLk8emX5dp7cKV6efHPOI1wHywnlGRk=;
-	b=x9UV+euZBYKdoGZDGUgUmcKipKVpUPsSh8n4iYDfokF3+OmW6vWmQXwbrUFUrSPB/Rdfr3
-	wv7Rly7Vfpp/ywXZmBKtKSNuympSaoHelAOGJL4GfE5O0MytQhIHdRBUAtHe6oWWxw/pci
-	JHJ1vy3JkIJ/eQH1C6runFgQf6BqgzN9n8/7K0vSuu+SNG/Ji5h4iTTs0B7EgzNTlg2ts4
-	bMtoIt7eYA5J/vZ5TAa7ThKsmXLhYecQNnRueYarldaXeUvVE8clRREE8v2FatlLHoVydL
-	yuIpdWgd85Dl2eAljuekjYypMokzxT3Nn2lxJ5O+pYPXI6vOOSiIw8A3II2csA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c62a2421;
-	Sun, 21 Jun 2026 13:19:04 +0000 (UTC)
-Date: Sun, 21 Jun 2026 22:18:49 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] 9p fixes for 7.2-rc1
-Message-ID: <ajfkuS-kgmJXentl@codewreck.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmjkX7tM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2759C1F000E9;
+	Sun, 21 Jun 2026 17:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782063054;
+	bh=49+ax6ZatzmLLx9u3Mxnyp3axRZcs/JJf/JDqeWoTNg=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=SmjkX7tMsTD0tWhcqKZ1GHQkjFPNKsLhDKsbVVzu8hl6pkZw52ZCVsHNXmr4901qA
+	 ZvgSu9YXgEHLgWNQnPDGA05TFXuEw7EoqSDSx2pBZSFuLH2PwbJDZe6eJrpKPrzOOO
+	 FMzpSh9haXwFZtzEWlB/Aq0xQplE2Lrhb8zHb+1Fp+kiMHL9zlgO5MzLGODF4zN3Xc
+	 txThF92WiuworXXY9Ow3Mmz83OB1ibBFNoG7N7+2FqVeQ1ge6hYaOEXOK2Y3Cep6Jp
+	 X2XMLc+yJqK6ZvOS/4NQ7n4u5MLO4KXFwxgin/MVpv98BqNqd5y4+8LbA9pCuIbaWx
+	 XcM3t5pms5tUg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0D0C3AAA6E4;
+	Sun, 21 Jun 2026 17:30:46 +0000 (UTC)
+Subject: Re: [GIT PULL] 9p fixes for 7.2-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ajfkuS-kgmJXentl@codewreck.org>
+References: <ajfkuS-kgmJXentl@codewreck.org>
+X-PR-Tracked-List-Id: <v9fs.lists.linux.dev>
+X-PR-Tracked-Message-Id: <ajfkuS-kgmJXentl@codewreck.org>
+X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-7.2-rc1
+X-PR-Tracked-Commit-Id: aa88278693cbfaf7a2acf961379973fbb63b165c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 1bc18858358d7a4e263a63b59a12cbfd25c16670
+Message-Id: <178206304530.449871.7463982446953774485.pr-tracker-bot@kernel.org>
+Date: Sun, 21 Jun 2026 17:30:45 +0000
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 
-Hi Linus,
+The pull request you sent on Sun, 21 Jun 2026 22:18:49 +0900:
 
-same report as usual with barely keeping up: there's actually another
-half a dozen of LLM patches I didn't pick up for this cycle and will try
-to find time to review for next one, and I'm not as happy as I want to
-be about how thoroughly I've checked the patches that did get in (please
-let me know if you'd rather I drop the "fix infinite loop in
-p9_client_rpc on fatal signal" patch I mentioned in the tag, I think
-the patch should be ok, but I don't necessarily judge the risk the same
-as you would)
+> https://github.com/martinetd/linux tags/9p-for-7.2-rc1
 
-The commit date being a bit earlier today was just me dropping a commit
-I hadn't intended to send, nothing else was reworked recently.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/1bc18858358d7a4e263a63b59a12cbfd25c16670
 
--------
-The following changes since commit 8fc518e489c1386fd0cf7f4256d055960ed6a2e4:
-
-  9p/trans_xen: replace simple_strto* with kstrtouint (2026-04-16 02:57:01 +0000)
-
-are available in the Git repository at:
-
-  https://github.com/martinetd/linux tags/9p-for-7.2-rc1
-
-for you to fetch changes up to aa88278693cbfaf7a2acf961379973fbb63b165c:
-
-  9p: Add missing read barrier in virtio zero-copy path (2026-06-21 05:22:57 +0000)
-
-----------------------------------------------------------------
-Asides of the avalanche of LLM-driven fixes, there are a couple of
-big changes this cycle:
-
-- negative dentry and symlink cache
-- a way out of the unkillable "io_wait_event_killable" (because it
-  looped around waiting for the request flush to come back from
-  server; this has been bugging syzcaller folks since forever):
-  I'm still not 100% sure about this patch, but I think it's as
-  good as we'll ever get, and will keep testing a bit further in the
-  coming weeks
-
-The rest is more noisy than usual, but shouldn't cause any trouble.
-
-----------------------------------------------------------------
-Aayush Patil (1):
-      docs/filesystems/9p: fix broken external links
-
-Breno Leitao (1):
-      9p: skip nlink update in cacheless mode to fix WARN_ON
-
-Christophe JAILLET (1):
-      net/9p/usbg: Constify struct configfs_item_operations
-
-David Laight (1):
-      net/9p: Replace strlen() strcpy() pair with strscpy()
-
-Dominique Martinet (1):
-      9p: v9fs_file_do_lock: replace WARN_ONCE with p9_debug
-
-Gui-Dong Han (1):
-      9p: Add missing read barrier in virtio zero-copy path
-
-Hongling Zeng (1):
-      9p: avoid returning ERR_PTR(0) from mkdir operations
-
-Pierre Barre (2):
-      9p: use kvzalloc for readdir buffer
-      9p: invalidate readdir buffer on seek
-
-Remi Pommarel (4):
-      9p: Cache negative dentries for lookup performance
-      9p: Add mount option for negative dentry cache retention
-      9p: Set default negative dentry retention time for cache=loose
-      9p: Enable symlink caching in page cache
-
-Vasiliy Kovalev (1):
-      net/9p: fix infinite loop in p9_client_rpc on fatal signal
-
-Yizhou Zhao (2):
-      9p: avoid putting oldfid in p9_client_walk() error path
-      net/9p: fix race condition on rdma->state in trans_rdma.c
-
- Documentation/filesystems/9p.rst |  10 +++++---
- fs/9p/fid.c                      |  11 +++++----
- fs/9p/v9fs.c                     |  27 ++++++++++++++++++++-
- fs/9p/v9fs.h                     |  28 +++++++++++++--------
- fs/9p/v9fs_vfs.h                 |  15 ++++++++++++
- fs/9p/vfs_addr.c                 |  36 +++++++++++++++++++++++++--
- fs/9p/vfs_dentry.c               | 105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
- fs/9p/vfs_dir.c                  |  14 ++++++++++-
- fs/9p/vfs_file.c                 |   2 +-
- fs/9p/vfs_inode.c                |  46 ++++++++++++++++++++---------------
- fs/9p/vfs_inode_dotl.c           |  58 ++++++++++++++++++++++++++++++++++++++------
- fs/9p/vfs_super.c                |   1 +
- include/net/9p/client.h          |   2 ++
- net/9p/client.c                  |   7 ++++--
- net/9p/trans_fd.c                |   6 ++---
- net/9p/trans_rdma.c              |  19 +++++++++++++--
- net/9p/trans_usbg.c              |   2 +-
- net/9p/trans_virtio.c            |   5 ++++
- 18 files changed, 320 insertions(+), 74 deletions(-)
+Thank you!
 
 -- 
-Dominique Martinet | Asmadeus
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
