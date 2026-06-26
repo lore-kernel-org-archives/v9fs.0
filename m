@@ -1,76 +1,159 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B967F332EC1
-	for <v9fs@lists.linux.dev>; Thu, 25 Jun 2026 20:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7123F1ADB
+	for <v9fs@lists.linux.dev>; Fri, 26 Jun 2026 11:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782420820; cv=none; b=fJQ1AMgyQ8r42U1g7iNfoEgVU2lKZ9rNWjEhWn4deUaNCnOP+I4UgLWwbDPCuedo7/x6G8/ECGq0bNttYORIwoMeSiqbe/xP0RsUxXI7AwrLn3QLHAwmB4wcxWcxefiAjg0XepvkisxHc5zJSPQlzpre/X/LLAhsu2IeE3SORjc=
+	t=1782472753; cv=none; b=TDhxybKwsAvU1I4YTon+eX+AIrjZQMBosZHrfk2JJ6QyqBZI6N974UumaumXShl8FT6BTFE+SpiOBV/qF6Z+RCj/c7F5vejxJxKyptrxIi+iBiSLWGgWTWQE+53Ygpu1pHQeoK6gUbdz414qF6wC4r0qj994bU+TGPllEaTMIOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782420820; c=relaxed/simple;
-	bh=yg90jpABlr98aAenod1BqfhSCtt/y6hBL7Vo94eGWd8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqhMfP1PWk8IXjpTU4xWZU8bPBovce5GKWs/HXJGo8b64JbSRACJJ27NOhZaZJ8nAOJKEfHBlYk1DrCsbsPopk+XDoS4Fy7ZIAYVyZMgNIm0jgz0kPBgoROAr2GFKrImq/DZ3DBDOQTKSZgmLeFjlUGygBd+T1q09hb2oPlFhfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=n1ENh5Zy; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1782472753; c=relaxed/simple;
+	bh=2UyjZknl2q29KoZjZWSz+LeCKEJtIqh7DEpIeME1drE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m8A9yOrmjySvRiU7JqG2aoCml9TMbvTzM95v4aLnBC1nSEQq64mCf0RtiU46ZL+y7fVX55Jb3hBNNbCQaRsaf+x3D7Fg5OQhnWZEfLBC0r8jgdBbnbhNfndZ6IWhmDh16AJijv+lf0pW6AL+HXZgYcTlvxQsPwCelNLLZMChj/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pFZsM33t; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="n1ENh5Zy"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 1F58014C2D6;
-	Thu, 25 Jun 2026 22:53:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1782420808;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmsKDYLrWXSsy8bCSaEi30AD6M9x7X1yvrgyqIhpyw0=;
-	b=n1ENh5Zy7OaVlmGcObYysVC5lX2+AT4b7lY3zH8SKLPv+hhpLPUoIIEU9YMhg5FMKEpGrh
-	Dfmz2DJhQkyXBMBuI/eu4fAMrj/5KYIJ5f358EFB5F4dlPYml87wbZfUqKgGCJL1Wi5ZgR
-	cAdR+FfeiQZdPo9G5XLDEp6A/iY6wP/8vwPQ34m2AkPyQGWCEUByNwkK4DBRCzcTsiMpaN
-	DSTWT6UhuaIYw8Q5ZERonZSWwgvqoFmc+eDPikTJl8atsGP3lqfC9j543AkK7OQHgugnHe
-	Z9Wb9V66vSfZnbosZjhPmotYmIoXwVA482j4KnKXrw2IMo3zpaRTv0Wq4Qpa/Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e313b8bb;
-	Thu, 25 Jun 2026 20:53:24 +0000 (UTC)
-Date: Fri, 26 Jun 2026 05:53:09 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: skvarlamatus@gmail.com
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	stefanha@redhat.com, sgarzare@redhat.com,
-	linux-kernel@vger.kernel.org, v9fs@lists.linux.dev
-Subject: Re: [PATCH] net/9p: add vsock transport
-Message-ID: <aj2VNVzCXTELZpG4@codewreck.org>
-References: <20260527073447.86538-1-skvarlamatus@gmail.com>
- <20260625151636.26449-1-skvarlamatus@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pFZsM33t"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8dd586317ccso9233716d6.2
+        for <v9fs@lists.linux.dev>; Fri, 26 Jun 2026 04:19:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782472750; x=1783077550; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f0mgUs8CYGhV8MV2nU3223A01RDP1NyxjcxAJ3tAP28=;
+        b=pFZsM33tdivJ94MOS1rOxva9oVjj2zh2tWWczt8+MQz5497/6t55Gg5u22rR7YdKMa
+         ThuqcOJvHwhBO0xBfQMTKqmVqU6WjS82IrnqsGtLFb49W/EhQBjdmcagKLvPYIQo0tlf
+         5nyd93fPBQigoU9iUO0zZOT+C+obU6JyXn9jaoyuXDknewV92zfRGkxHSb350EQ6Rah9
+         XnJZh2G+jFk1hcngBOVUNTyHHCMF2Bx8dhFlmWBQ+169CyCxXGiC/KJ+tBS2iK1+CPxd
+         dB86FxlblNLBRa6Ycy8nuL+JOfmWVwuq8FadnBTpkLPg2xsewT5OJLF2T8UTQt6ceTMU
+         IRlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782472750; x=1783077550;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f0mgUs8CYGhV8MV2nU3223A01RDP1NyxjcxAJ3tAP28=;
+        b=cviZ2V9OzEzuA54nhzIe351cFgnUkNDUkA45Eo31WZJlnHIjRqnEyrY+mgXX+JEFl+
+         zjOZ4VLar7Mqj4W2qms5tOsWnj2Wn0+7RiE1jEC5n54UfSXK1zsKHtsbneoKk1WiFN2w
+         2/+xNR/gM/Tfi5YGUUMwcF13Om/5BVkBJjumVvEuNpzCpDkctISokjrik1P/748F/zfy
+         DuCemk6ZvLX6+EBh55zXbLZ4lyJ7PeFGpOfp/HZNOp5M36dwRmTBaVbHJbDz6cGr6l7D
+         7QrEtRHLEiuLXTvLOCv9niYPTa/XAs4oP/d/nTW0oerLc2azwMJHEjp/WfJguTISGKsl
+         qAEg==
+X-Gm-Message-State: AOJu0YyfTtbjxghIzdKuQb+jF3mrzSQJKQEUt1PLogY1o3HbH9LEJQw6
+	YcXOz08x10JYz6iXwV2e1T0FIM259eD7DkEHXpZs6PIN3P04UZqibRVu
+X-Gm-Gg: AfdE7ckwQxfvtMNdyopVxzJeOwENSPs2KkZNGHGOJ+4xuxyrZTjFd5oae1K/5gvF5bw
+	Nu1WFtSim3e8D4fpI/cn0I6Sd3pMgQtkfpq4HlVqMhDTgcC6PfiI0ZDCUBID30wCfZywmOd55zX
+	H4E8WTOgmVZeU3Z9wpx4NtrmiZPxb+9Mnq+xhQ1DH/sH1rSX/ue3xg32+zVHX9IW2JIXniVfSBY
+	qhILkQWuisqmazb6u8VG8DxMBQfh7FYGey+z6sxoTdr3W/9HSaisohkIUHP6hruH9IRhkVu25hP
+	VfeFUWvb9hN6XhCWKz1Xi+lPAJh+IBfrUXofG88z9RlgdT+UDCJ1ZIz77MbgBKOrAV/kf5uDOye
+	YBHh++vbpydHNcrK/vFcgMKhRi2zI3eclJSu3yLHh0LSjEuQTID6RiAXerUSL55C0ZqJ1Du/qyU
+	U+LS0iRVHJ6G9K/7rY1SXS6X07utascZbOPrP7U6+5IL2XRYESSWgwcP/RMQPVv3LmxhaoxIFj8
+	r1qpjPFNiynzQfJVOzD26JhiaMSw24x
+X-Received: by 2002:a05:6214:4e02:b0:8e7:f480:b180 with SMTP id 6a1803df08f44-8e7f480b8femr45637436d6.11.1782472749589;
+        Fri, 26 Jun 2026 04:19:09 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81cdf302sm220342656d6.30.2026.06.26.04.19.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 04:19:08 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] 9p/trans_virtio: reject mount tags that cannot fit a sysfs page
+Date: Fri, 26 Jun 2026 07:19:06 -0400
+Message-ID: <20260626111906.801890-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260610114206.3749904-1-michael.bommarito@gmail.com>
+References: <20260610114206.3749904-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260625151636.26449-1-skvarlamatus@gmail.com>
+Content-Transfer-Encoding: 7bit
 
-skvarlamatus@gmail.com wrote on Thu, Jun 25, 2026 at 05:16:36PM +0200:
-> I wanted to ask you about your opinions on the issue with
-> port number truncation. The port number is parsed from mount
-> options as u16, which is sufficient for TCP, but vsock uses u32.
-> 
-> I see two ways to resolve this. One is adding a new command line
-> option for vsock only that would be stored in a u32. The other is
-> changing the type of the port variable to u32, and adding a range
-> check for TCP.
-> 
-> Personally, I would lean towards the second option.
+p9_virtio_probe() reads the mount tag length from the device's
+virtio_9p_config.tag_len, a 16-bit field, and accepts any value up to
+65535 with no upper bound:
 
-Actually the port is already parsed as u32 and silently truncated, so
-you don't need to worry too much about it (I just tried mounting with
-port=0x120235 and it mounted on port 0x234=564 successfully)
+	virtio_cread(vdev, struct virtio_9p_config, tag_len, &tag_len);
+	...
+	tag = kzalloc(tag_len + 1, GFP_KERNEL);
 
-We can add a check for tcp/rdma truncation later if someone complains
-about it, just make the vsock port type u32
+The tag is later emitted through the world-readable
+/sys/.../mount_tag attribute by p9_mount_tag_show(), which copies the
+whole NUL-terminated tag into the single PAGE_SIZE buffer that the
+sysfs core provides:
 
+	tag_len = strlen(chan->tag);
+	memcpy(buf, chan->tag, tag_len + 1);
+
+A tag longer than the page therefore overruns the sysfs buffer. Under
+the confidential-computing threat model, where the guest does not
+trust the host, a malicious or compromised host can advertise a
+~64 KiB tag; the first read of mount_tag (udev reads it at probe) then
+copies host-controlled content past the end of the 4 KiB page, a slab
+out-of-bounds write.
+
+A tag that large can never be rendered through the single-page sysfs
+attribute and is not usable as a real mount tag, so a tag at or beyond
+PAGE_SIZE is at best malfunctioning and at worst hostile. Reject such a
+device at probe time rather than truncating the value in the show
+handler, which would silently break auto-mount rules that match on the
+real tag. The probe-time bound makes the existing p9_mount_tag_show()
+copy safe at its source, so the show handler is left unchanged.
+
+Fixes: 179a5bc4b8cb ("net/9p: use memcpy() instead of snprintf() in p9_mount_tag_show()")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+v3: Reject an oversized tag at probe time instead of touching the
+    show handler at all, following Christian Schoenebeck's review of
+    v1: a sane 9p device would never use a ~64 KiB tag, silently
+    truncating it (as v1, and as the held v2 sysfs_emit() reroll both
+    did) would break auto-mount rules that match on the real tag, so
+    the device is simply refused. This supersedes the v2 sysfs_emit()
+    patch, which is dropped in favour of the probe-time bound
+    Schoenebeck preferred.
+    v1: https://lore.kernel.org/v9fs/20260610114206.3749904-1-michael.bommarito@gmail.com/
+    review: https://lore.kernel.org/v9fs/1962500.CQOukoFCf9@weasel/
+
+Compile-tested (ARCH=um, W=1) on torvalds/master, no new warnings.
+The original overflow was reproduced before the fix with an in-tree
+KUnit driver under UML+KASAN (a 65535-byte non-NUL tag drove a KASAN
+slab-out-of-bounds write into the 4 KiB sysfs page). With this patch
+the probe rejects such a device, so the show handler never sees an
+out-of-page tag and the memcpy stays in bounds.
+
+ net/9p/trans_virtio.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index b0d0094ec8e2c..15568f40509c4 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -633,6 +633,11 @@ static int p9_virtio_probe(struct virtio_device *vdev)
+ 		err = -EINVAL;
+ 		goto out_free_vq;
+ 	}
++	if (tag_len >= PAGE_SIZE) {
++		dev_err(&vdev->dev, "mount tag too long (%u bytes)\n", tag_len);
++		err = -EINVAL;
++		goto out_free_vq;
++	}
+ 	tag = kzalloc(tag_len + 1, GFP_KERNEL);
+ 	if (!tag) {
+ 		err = -ENOMEM;
+
+base-commit: 4edcdefd4083ae04b1a5656f4be6cd83ae919ef4
 -- 
-Dominique Martinet | Asmadeus
+2.53.0
+
