@@ -1,112 +1,96 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428763D9042
-	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 14:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B153D3D0924
+	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 14:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783089091; cv=none; b=ExNgO6gg2B8YQaHcpgRXgc7wS/219kw/5DAzy9CCjCyw9H/pLD4miFyq1K24dwr2Has23X3ctE8YjOB7EqIc3rNxHNhKdeIFJ//6hPyGGyyha8Jq5LUqCZle5VaLX9mG+m4Qa4D8UtmvAY1sJk5Lj9c9qilb0RtCcU4RIMg2O70=
+	t=1783089439; cv=none; b=qYvZ9wpY01BvdrL+15PeARwn6vBZBO1TWY2OlioYGHViDXLwRwTDlbdZMMwbCePxONCjb8dNXisOEErimwdTEikbClnbHNJoKPmsaZA4dKj7irtfrYbxoZ2NjkguMnuNqk0BiANySaWEju5kHzcj1AvLd18h1YJW5d52uiZhVxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783089091; c=relaxed/simple;
-	bh=DxKl22WYMhwSk+H0tEAS+Ng9aN14mc5J8WkinkLUPmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkGmHtLjk6fliprrqLg2kD/LYIuyz40iywEM2pK3ERTTOlYbuO7I+b3zehBFAjgu+DwH7ylkSFz3rgjxjaDb9ZEs7zZm6+yWjc7Rwfb1ZeK2o+z7d8UcXQskTaK0zUYypEAO3/gpMlBWFbE1m0vMOXN2pmECivBRFDS8T+PrTwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDFfarsE; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783089439; c=relaxed/simple;
+	bh=0bYcjdMU8nZjeGHjRt8fT03r0N1EGRblyjn1+jFpPmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OK0Pk7W4hKKwslvWONL0Hu5LpB0C3asTzQ5cvf6v3ZYm2OYgfq8sU/v2cPz2xifpWpngxY/AVtoNvbNxCxWo2gP3ifDELWVfffcWH4C7/sxnXckvazZ+3sOXba9gSf7dW5yZHJqviIz9u0ROJEDtjii+qdSyqc7NzVqhcRGFL88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=r/H3NdDt; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDFfarsE"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so4726465e9.1
-        for <v9fs@lists.linux.dev>; Fri, 03 Jul 2026 07:31:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783089088; x=1783693888; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9VsT/jI0COZ96KSJ5oT4I95zT2XH8sWJVztlvb5FlAM=;
-        b=gDFfarsEdWG/A/xJHSJCi4x07bTGOFjv/m0iNBc57URsFyFQl5hu8axG0iVjii7zt4
-         qNNFQnUOETcg8OE4XtVxAAXq+KdoWxECq87ja879l/V8jC6pGwoh0vwU6OaF0p4eDdDM
-         /f22Mh7chA6cglefkw8k/SJ80MI0wS0/lOJqKV7YHhERo1/6JIIoCGpbK3/Q7uJYIMQq
-         ZAA1bZtTPnFVEvMtCLUe4kQtORXJooi7GuIY4aG7h8u0jKLiYjO2I7F01b6AnHwcwrM9
-         A9XmUm4n/kb8q/hGElqI9/wmeX9Kp4azG1f1V+Kk5JWQAEd4aWwOS5W0e+oLuuhdb1Du
-         3Q7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783089088; x=1783693888;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9VsT/jI0COZ96KSJ5oT4I95zT2XH8sWJVztlvb5FlAM=;
-        b=pfmlFgKjI+VktivQZYvxhT13WwwlwLWYy0z/YDJM95fW3YnFfDTvHi/OpNTIMypRO3
-         HB/4fgqiedX2MrAXMBFS4sazYocVNzMcXUHAA55mr6g6arxx2l3a7QQC1E78xPVQpHgJ
-         8x84oOPQPlJ+2TA4hLlTNTuogdtAEWmAqHbBIN72p8fKlR9qeE8AILqNQEOSOYKHd6UJ
-         OgaqYgIECF/WysD+H8HQkRi/KUifbNa+nrrlktI6pd10qDyURBIRsp2NU7GS1mfuoMfy
-         BNl3aLde0Yv2nc51kO3NZMvxVh1TtdwASfPzfJprBFFYjLu1Y960o9xbbj+dCc+7C7Rk
-         U3PA==
-X-Forwarded-Encrypted: i=1; AFNElJ9AP4fAhKduVxI1kQ04bx3ofEkyhIRA8Ib+O1KDhRhGm8THwlZozCpvecMeo9ayhPzV6ZBx@lists.linux.dev
-X-Gm-Message-State: AOJu0YzCYlx5RDkZLgpWVgdy59vDXMxq7zINHLj0LvcjSBclRE1LNe2S
-	jQYUz3pZ8s8n3aJO/63/bKiEtM52R5wfbsJ17XfA7GU0gz0qr3fNpT55
-X-Gm-Gg: AfdE7ck1kprT5zumUJmSmBEMs7fU8uB3jApVK4o/xURUz46ILwyR9mUqfut78ithXtB
-	sVzvl6ILH7OnAakg2jTpdCGyy16exHTZjjQmWwDwhuvBPnJplo/YcA5umNP+7FY7n37WkEJOZj0
-	6IbGPJv9+20/qiSCPJEfqkPuRZDdNL+/Fr9hKHzzUNx1iiqma54+T4Be/XNuVM0giVX6FwctgFY
-	uuRAveVIxcXWDKG2WJuFbGo7YqucPooPHTMukLJGmIjWBTxaZezF5ILMrEB2OuI8AJWJHlCbeyV
-	cgsNESa4r5VcPe2xNNxgp9edI2xJEd9sa0gHU52i3/5cKzQwWOm3nkx2au/EfpgAVimH/19rY2j
-	ri1oda5Nky6k+kP0G3vfUVROBdCTK2QJyQyNC+rhvthI7nBntT1ajCw1dkV75MFKxsx5n3eyZau
-	/kMmjMQUbyDHp31gaNoZ9nknlB3qPPBi0AWZkIblnBWi5uQxLexG6yuqkOt3txVTOQvmpVMg==
-X-Received: by 2002:a05:600c:698d:b0:492:66fb:5dc5 with SMTP id 5b1f17b1804b1-493d0f34376mr1059005e9.24.1783089087448;
-        Fri, 03 Jul 2026 07:31:27 -0700 (PDT)
-Received: from localhost.localdomain ([85.193.42.161])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbc75sm19462711f8f.5.2026.07.03.07.31.26
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 03 Jul 2026 07:31:27 -0700 (PDT)
-From: skvarlamatus@gmail.com
-To: sgarzare@redhat.com
-Cc: asmadeus@codewreck.org,
-	ericvh@kernel.org,
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="r/H3NdDt"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id A4A8914C2D6;
+	Fri,  3 Jul 2026 16:37:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1783089436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pA0/ba17RWp2ZgWnK76QRKy9Ps5y3w/m9RWFXMSbtdM=;
+	b=r/H3NdDtU/W3eEL5MJVLYpKGXX3WAlu/ZfXGdtMGCekrFnsU4mR3tF10SYaLYaLpxlHqqN
+	k764WxSImkondWR1WRs5/OBgtoAI8HwgE79rUG6Yx/ooJmfWjPaXNNoyfs2Fa8dGs+d7Gb
+	SDHiqKH2m485TEvpPNQKePy6Bmyu4slExCSuKoeU8WdCJ6w6bNKixds1oavyud/bukdv3S
+	+uoKnueXbngjJCppk7CA1GhPt5nkV/97lcLw2J2zD0zzpIcyNVZQLuspGZrUXxeYm4TXgM
+	BN0h7uhoBBVo7Rg+0IAhz/bOfkXSW+beMDGLb/RX4tyj2AmoxHtNCFZsM+pGNA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d63071f8;
+	Fri, 3 Jul 2026 14:37:11 +0000 (UTC)
+Date: Fri, 3 Jul 2026 23:36:56 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Remi Pommarel <repk@triplefau.lt>, David Howells <dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com,
-	lucho@ionkov.net,
-	skvarlamatus@gmail.com,
-	stefanha@redhat.com,
-	v9fs@lists.linux.dev
-Subject: Re: [PATCH v2] net/9p: add vsock transport
-Date: Fri,  3 Jul 2026 16:31:25 +0200
-Message-ID: <20260703143125.45423-1-skvarlamatus@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <akd7QliTAWpkmE0Q@sgarzare-redhat>
-References: <akd7QliTAWpkmE0Q@sgarzare-redhat>
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: Re: [PATCH v7 4/4] 9p: Enable symlink caching in page cache
+Message-ID: <akfJCNdLhWX8RHYk@codewreck.org>
+References: <cover.1779355927.git.repk@triplefau.lt>
+ <982462d17c0c0d2856763266a25eb04d080c1dbb.1779355927.git.repk@triplefau.lt>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <982462d17c0c0d2856763266a25eb04d080c1dbb.1779355927.git.repk@triplefau.lt>
 
-On Fri, Jul 03, 2026 at 09:12 +0000, sgarzare@redhat.com wrote:
-> >The privport mount option is not currently supported for vsock and
-> >returns -EOPNOTSUPP if specified.
->
-> Why not?
+Remi Pommarel wrote on Thu, May 21, 2026 at 11:40:32AM +0200:
+> Currently, when cache=loose is enabled, file reads are cached in the
+> page cache, but symlink reads are not. This patch allows the results
+> of p9_client_readlink() to be stored in the page cache, eliminating
+> the need for repeated 9P transactions on subsequent symlink accesses.
+> 
+> This change improves performance for workloads that involve frequent
+> symlink resolution.
 
-The existing p9_bind_privport() implementation is TCP-specific
-(uses inet_pton and struct sockaddr_in), so it cannot be reused
-for vsock directly. Per Stefan Hajnoczi's suggestion, I opted to
-reject the option cleanly for now rather than leave it silently
-ignored. Support can be added in a follow-up if needed.
+Hi Remi, David,
 
-> >-			fd   	  used passed file descriptors for connection
-> >+			fd   	  uses passed file descriptors for connection
->
-> nit: unrelated change?
+This is similar to what is being discussed in [1] about file size not
+matching data in sysfs, but this breaks symlinks there as well because
+they have a size of 0...
+[1] https://lore.kernel.org/all/akfHGcqke9qixd3Q@codewreck.org/
 
-I noticed it as I was adding the vsock line below, but you're right,
-it's not related, so I'll drop it in v3.
 
-> The rest LGTM, so for vsock point of view:
->
-> Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+With /sys exported with tag 'test':
+-virtfs local,path=/sys,mount_tag=test,security_model=none,multidevs=forbid
 
-Thank you!
+Then
+# mount -t 9p -o cache=loose test /mnt
+# ls -l /mnt/class/net
+total 0
+lrwxrwxrwx 1 nobody nogroup 0 Apr 30 22:07 lo -> ''
+lrwxrwxrwx 1 nobody nogroup 0 Apr 30 22:07 dummy0 -> ''
 
---
-Matus
+
+I think we could just straight up ignore the size for symlinks and just
+try to read it like we do with cache=none (that still works)?
+
+OTOH someone mounting /sys with cache is likely to get rough surprises
+so I'm not sure it's worth spending much time on such bogus files,
+leaving this up to you, but wanted to bring symlinks up separately as
+it's a new feature
+
+Thanks,
+-- 
+Dominique Martinet | Asmadeus
