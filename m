@@ -1,91 +1,112 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB393E3173
-	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 14:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428763D9042
+	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 14:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783088943; cv=none; b=uODjJHOU01dWgrWmCxoK7YT8g4FT8prRxN7Q6fHcOOIcsN/JYruOKzOOIgS/qDOMJtrQDZ9PwzqM0xqYLeUlQMW5jxro3T8wjKMPRw8rAvNkZxko29zhNeBJzgXh/+mYWKbYfwVPW4Sts2W9TYVbTchLQ5MO47vC5ICVpLPnULg=
+	t=1783089091; cv=none; b=ExNgO6gg2B8YQaHcpgRXgc7wS/219kw/5DAzy9CCjCyw9H/pLD4miFyq1K24dwr2Has23X3ctE8YjOB7EqIc3rNxHNhKdeIFJ//6hPyGGyyha8Jq5LUqCZle5VaLX9mG+m4Qa4D8UtmvAY1sJk5Lj9c9qilb0RtCcU4RIMg2O70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783088943; c=relaxed/simple;
-	bh=y58A4R/lV+32ja/Aqt/oT42dGyKO0Q3lrcXoR2g/MdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=txKwwh4E8lKmC32+DPmDhbnoQ/p8V8dm6rkZq3At9pdM1sArzYQXTCMI6805uSnwKfPHzOxVoWEZ4r31fu0/0Ug/6TVPt36/1XpNXwSDzSHad01uIrrMH9zLGGEIIYm09082z83v8xAsSAn5mKb9hL+71Zp4QNB4G8cLqXaYojo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ivQut5dT; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1783089091; c=relaxed/simple;
+	bh=DxKl22WYMhwSk+H0tEAS+Ng9aN14mc5J8WkinkLUPmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IkGmHtLjk6fliprrqLg2kD/LYIuyz40iywEM2pK3ERTTOlYbuO7I+b3zehBFAjgu+DwH7ylkSFz3rgjxjaDb9ZEs7zZm6+yWjc7Rwfb1ZeK2o+z7d8UcXQskTaK0zUYypEAO3/gpMlBWFbE1m0vMOXN2pmECivBRFDS8T+PrTwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDFfarsE; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ivQut5dT"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 435C914C2D6;
-	Fri,  3 Jul 2026 16:28:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1783088940;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YulAujzo35NDsDUK+zyEr88HJR/1QI1Hzab6PKjSfdo=;
-	b=ivQut5dTNu94NAN4UEvRqsPhB25acGTxSaRvT8VMjITJHbfuC/ODQZ9WO+BjLftgN3wzBW
-	M/qU+qsrYzUfOOFM8W95JiYk8MQJQ2V1P2S5h+Nd3he7GBj8O/2fG2x9o6R4f8UQ4rZ4EX
-	AnFLqnRBhEsbn8uG+RrmFbhOU4/nlXqIZW2tK7SOmEzf3eNlW5FmGzh8N9k3F8Tl5Z5+Md
-	FgqTHHsNHyVfSei8wtRmDhZRnWoEuD0UFyUshpL3N0KExjfdBXrG5/ir4Fwq5PIDtOEVX8
-	Or5YySwagPLVQyp+suFZxVX4b/TU4K8Ux7XI+OmZOB96uy03/+SjKss2mHPSgg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4caf23c9;
-	Fri, 3 Jul 2026 14:28:56 +0000 (UTC)
-Date: Fri, 3 Jul 2026 23:28:41 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Howells <dhowells@redhat.com>, Barret Rhoden <brho@google.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: treat read return values of 0 as EOF
-Message-ID: <akfHGcqke9qixd3Q@codewreck.org>
-References: <20260702090941.1298188-1-brho@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDFfarsE"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so4726465e9.1
+        for <v9fs@lists.linux.dev>; Fri, 03 Jul 2026 07:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783089088; x=1783693888; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9VsT/jI0COZ96KSJ5oT4I95zT2XH8sWJVztlvb5FlAM=;
+        b=gDFfarsEdWG/A/xJHSJCi4x07bTGOFjv/m0iNBc57URsFyFQl5hu8axG0iVjii7zt4
+         qNNFQnUOETcg8OE4XtVxAAXq+KdoWxECq87ja879l/V8jC6pGwoh0vwU6OaF0p4eDdDM
+         /f22Mh7chA6cglefkw8k/SJ80MI0wS0/lOJqKV7YHhERo1/6JIIoCGpbK3/Q7uJYIMQq
+         ZAA1bZtTPnFVEvMtCLUe4kQtORXJooi7GuIY4aG7h8u0jKLiYjO2I7F01b6AnHwcwrM9
+         A9XmUm4n/kb8q/hGElqI9/wmeX9Kp4azG1f1V+Kk5JWQAEd4aWwOS5W0e+oLuuhdb1Du
+         3Q7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783089088; x=1783693888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9VsT/jI0COZ96KSJ5oT4I95zT2XH8sWJVztlvb5FlAM=;
+        b=pfmlFgKjI+VktivQZYvxhT13WwwlwLWYy0z/YDJM95fW3YnFfDTvHi/OpNTIMypRO3
+         HB/4fgqiedX2MrAXMBFS4sazYocVNzMcXUHAA55mr6g6arxx2l3a7QQC1E78xPVQpHgJ
+         8x84oOPQPlJ+2TA4hLlTNTuogdtAEWmAqHbBIN72p8fKlR9qeE8AILqNQEOSOYKHd6UJ
+         OgaqYgIECF/WysD+H8HQkRi/KUifbNa+nrrlktI6pd10qDyURBIRsp2NU7GS1mfuoMfy
+         BNl3aLde0Yv2nc51kO3NZMvxVh1TtdwASfPzfJprBFFYjLu1Y960o9xbbj+dCc+7C7Rk
+         U3PA==
+X-Forwarded-Encrypted: i=1; AFNElJ9AP4fAhKduVxI1kQ04bx3ofEkyhIRA8Ib+O1KDhRhGm8THwlZozCpvecMeo9ayhPzV6ZBx@lists.linux.dev
+X-Gm-Message-State: AOJu0YzCYlx5RDkZLgpWVgdy59vDXMxq7zINHLj0LvcjSBclRE1LNe2S
+	jQYUz3pZ8s8n3aJO/63/bKiEtM52R5wfbsJ17XfA7GU0gz0qr3fNpT55
+X-Gm-Gg: AfdE7ck1kprT5zumUJmSmBEMs7fU8uB3jApVK4o/xURUz46ILwyR9mUqfut78ithXtB
+	sVzvl6ILH7OnAakg2jTpdCGyy16exHTZjjQmWwDwhuvBPnJplo/YcA5umNP+7FY7n37WkEJOZj0
+	6IbGPJv9+20/qiSCPJEfqkPuRZDdNL+/Fr9hKHzzUNx1iiqma54+T4Be/XNuVM0giVX6FwctgFY
+	uuRAveVIxcXWDKG2WJuFbGo7YqucPooPHTMukLJGmIjWBTxaZezF5ILMrEB2OuI8AJWJHlCbeyV
+	cgsNESa4r5VcPe2xNNxgp9edI2xJEd9sa0gHU52i3/5cKzQwWOm3nkx2au/EfpgAVimH/19rY2j
+	ri1oda5Nky6k+kP0G3vfUVROBdCTK2QJyQyNC+rhvthI7nBntT1ajCw1dkV75MFKxsx5n3eyZau
+	/kMmjMQUbyDHp31gaNoZ9nknlB3qPPBi0AWZkIblnBWi5uQxLexG6yuqkOt3txVTOQvmpVMg==
+X-Received: by 2002:a05:600c:698d:b0:492:66fb:5dc5 with SMTP id 5b1f17b1804b1-493d0f34376mr1059005e9.24.1783089087448;
+        Fri, 03 Jul 2026 07:31:27 -0700 (PDT)
+Received: from localhost.localdomain ([85.193.42.161])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbc75sm19462711f8f.5.2026.07.03.07.31.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 03 Jul 2026 07:31:27 -0700 (PDT)
+From: skvarlamatus@gmail.com
+To: sgarzare@redhat.com
+Cc: asmadeus@codewreck.org,
+	ericvh@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	skvarlamatus@gmail.com,
+	stefanha@redhat.com,
+	v9fs@lists.linux.dev
+Subject: Re: [PATCH v2] net/9p: add vsock transport
+Date: Fri,  3 Jul 2026 16:31:25 +0200
+Message-ID: <20260703143125.45423-1-skvarlamatus@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <akd7QliTAWpkmE0Q@sgarzare-redhat>
+References: <akd7QliTAWpkmE0Q@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260702090941.1298188-1-brho@google.com>
+Content-Transfer-Encoding: 8bit
 
-Barret Rhoden wrote on Thu, Jul 02, 2026 at 09:09:32AM +0000:
-> If your 9p server shares a synthetic file system such as sysfs, the file
-> size from stat often disagrees with the actual file size.
-> 
-> Treat non-error reads of 0 as EOF, except in the case where the request
-> was for 0 bytes.
+On Fri, Jul 03, 2026 at 09:12 +0000, sgarzare@redhat.com wrote:
+> >The privport mount option is not currently supported for vsock and
+> >returns -EOPNOTSUPP if specified.
+>
+> Why not?
 
-> Tested:
-> 	git@github.com:hugelgupf/p9.git, served "/" on 10.0.2.2
-> 
-> 	bash-5.3# mount -t 9p -o trans=tcp,port=12345,cache=none 10.0.2.2 /tmp/foo
-> 	bash-5.3# cat /tmp/foo/sys/devices/system/cpu/online
-> 	0-47
+The existing p9_bind_privport() implementation is TCP-specific
+(uses inet_pton and struct sockaddr_in), so it cannot be reused
+for vsock directly. Per Stefan Hajnoczi's suggestion, I opted to
+reject the option cleanly for now rather than leave it silently
+ignored. Support can be added in a follow-up if needed.
 
-David,
-that looks like something that should be handled in netfs - is it right
-to do this on the 9p side?
+> >-			fd   	  used passed file descriptors for connection
+> >+			fd   	  uses passed file descriptors for connection
+>
+> nit: unrelated change?
 
-I've just tried with qemu and with cache=none I get ENODATA, with
-cache=loose I get the data followed by 4094 zeroes...
+I noticed it as I was adding the vsock line below, but you're right,
+it's not related, so I'll drop it in v3.
 
-Interestingly there also are files with 0 size e.g.
-/sys/devices/virtual/net/br0/brforward,
-and for this one with cache=none I can read it fine, but with
-cache=loose I get an empty file.
+> The rest LGTM, so for vsock point of view:
+>
+> Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 
+Thank you!
 
-Barret,
-thanks for the patch, please give us a bit of time to check; I'm
-sometimes slow to reply (like for your sending the patch first without
-the [PATCH] tag in subject) but I did see it, just hard to find time to
-review...
-
-Cheers,
--- 
-Dominique
+--
+Matus
