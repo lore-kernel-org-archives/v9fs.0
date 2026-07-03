@@ -1,54 +1,76 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78D0330301
-	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 05:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C5139E9BF
+	for <v9fs@lists.linux.dev>; Fri,  3 Jul 2026 09:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057304; cv=none; b=EN7m3pLQvOTODFevMN2BUuCRC0OQx2oQ6ZTX7HM2GWSGwADqCjaLNuA+wK1Qisua1JBvjeMMxrEVZMLukP+fa98fN9Db4klGSaFSuAqG4y7nV3QxCsNqaap5nmB8U1TXT7URx39g5cl2KccjPOtke/Kf8NhqGJmbHXr5oj0W4iw=
+	t=1783069969; cv=none; b=mplfFNpzPIBDMcTExzVWl6OF0aRN75zIjajS69dxyJ6UXYCXzkSADY1ZvwJl10KrEdNgW9FxBX2NL3fnR6lt91yRU/WhKepwAdPS3/PHSfHvCVc0oDxU26k3y2vUi+7curzeYrTUnaThhNoRG51NOCmJbDfncH9mal9nVSBp6V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057304; c=relaxed/simple;
-	bh=h+fQ99qrEfGvjKV0AR3JOEG4em0edW4iby5ipZEoibM=;
+	s=arc-20240116; t=1783069969; c=relaxed/simple;
+	bh=OYXbkZRCmj0Vtl5yt/RR3TrcrmDsqtUig1eeG145l/I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s+IBUh6QQ5lGjhO9Hwts9wjRJH5bWiyKuiAJOka+z9rZ6u++jHebKpCF2e5CmvXl+U5DrTqfO62bui+eSxJ1SerCPBxv2qfFpoSxvwKqY0JYnTsanGp4bpOBUfsPw9ttL+QXMmg0PKLgtxUZojs+HBSM117Ob2PA+GKvUofCfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JSPR15w4; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=ppDEWR2ce/oHkKnP7UoBInO6c2iqLJez0ATCsa6TRHqu19iNPi/zPlSuvWqY/zxssC9pE6YPNpBQzXo9oOhhCFybYUmgmv30vzA92XHeOoYf5igKsji2JLMQYvI4pcU5Jn9dKkdFBxysslWI23LgK9M65dLLZvkbGDbqDL66cqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GJVoGYNe; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JSPR15w4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GJVoGYNe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783057301;
+	s=mimecast20190719; t=1783069967;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OLp7JBppxrQNeK2bkAKu3qTx9JCltO+cf9OJPQmO7Is=;
-	b=JSPR15w4k089YVMMvqAdopdpGG4uK4PWwtpUoa2bWHDI6AYTetrYzzKBEFv6XBN9vIsm2N
-	aujtVWXgYQkZDUsyaPSYHogETBEGXMZKs5fY/bqZ+ZGwRIydymTz3v+Do9oHkw0dYIGgJm
-	QzN8IcovZxzlizm5H9mfdnHs3D6blyE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-DBZLwBiUNoCms8btFa7OAQ-1; Fri,
- 03 Jul 2026 01:41:38 -0400
-X-MC-Unique: DBZLwBiUNoCms8btFa7OAQ-1
-X-Mimecast-MFC-AGG-ID: DBZLwBiUNoCms8btFa7OAQ_1783057297
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 57B3B193E8B1;
-	Fri,  3 Jul 2026 05:41:36 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.24])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD2EE1800592;
-	Fri,  3 Jul 2026 05:41:34 +0000 (UTC)
-Date: Fri, 3 Jul 2026 07:41:33 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
+	bh=rTpObJaVrcNKVP17RC5GvTDRVbm9gpukLCyO+TLMZDw=;
+	b=GJVoGYNePU4mbqzVePPsEumnZ+5ZCPJIJuV4L+pIIPktxTlvfcXL8DjcOuingUL8eauxFI
+	cghjdpQU0BUP0E3ph1aiK0oIqi2xEGLs/0Y9nZQtMrbUbYyPMkr0vYNTfjvm6PRM299g9X
+	PsbuFd57QGQw+/9VgpU+OvlaiexwmVA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-9YYX7aaFNKqs5ORfOGdoJw-1; Fri, 03 Jul 2026 05:12:46 -0400
+X-MC-Unique: 9YYX7aaFNKqs5ORfOGdoJw-1
+X-Mimecast-MFC-AGG-ID: 9YYX7aaFNKqs5ORfOGdoJw_1783069965
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493b786d550so3502615e9.0
+        for <v9fs@lists.linux.dev>; Fri, 03 Jul 2026 02:12:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783069965; x=1783674765;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rTpObJaVrcNKVP17RC5GvTDRVbm9gpukLCyO+TLMZDw=;
+        b=dpJRpp18JwqpTkD6Lvb7s2//RNEtZmNkq0uVjPVw7jQqjiJxNmQi2KTK6d1y0qzVsK
+         bGFgCtuNxZuI0i1vQC+Msr5ENputBRtH3msPU8dvB4Xt3iclZoC6VqxHBRKZPqF9pFQE
+         KA2uRKj50BcQW1LMAjYBFY7cmpJ7odQutsRA0mTsVUEoc0aAlkTTWlLjtSkUkVjrHfp5
+         6Ev6fKRNe8oVEQjg9dpUr7qu7dwezGe6yyplsQFPb4KOi6sFz2Ba+ScqeXDrWlaqx3RN
+         LX4/duHTjKE1rLm8mELDPtVrL8d9S0FFXmnre0eG91IemadDS12YCevlprKz1zVteIuE
+         r1eA==
+X-Forwarded-Encrypted: i=1; AFNElJ/flV0cTmGekz4byuSRc7Mj5G/JzCN8dH/vom9R+LG8/NmZ6DbM3bPweMhcizf6k4T+a8r/@lists.linux.dev
+X-Gm-Message-State: AOJu0YwnHf8NQRhn7gE/x5eZKymCGcDTEfvAWuU2iUung6+3PtR3J2ES
+	j1rd/E3UlbUJJOu2loIauuLmdiAN2fIkrz6ZdEWoR4GoGO5fINC4rhKigG3sB2PocvjCCZ76vif
+	Qp2MGT03dFgZIEVEbwrHCc+nuRz7D4rqmnj7TMLIrNzr6jEZKnj4Qytc=
+X-Gm-Gg: AfdE7ckolPcDmr4z5T8xO9LadRi2ewJaeo0BW1bpHUAgSJzk5yFWe3oTpJbXGAMogex
+	vT+MCExWXaSMUdtPozU90FSLAoXydxMP9m+R0uzr2GLgPnDuhqEk6sGHhjc90JU7L/pzGojFhAM
+	d8osOX5CJqbM65H4N9JjzNWF/it+jmw8jsoPGp9B/QKNoF4xZIv/KTgQczVyv0CIKlzsblcIhZZ
+	2HA+2civLErbjtqkRhKdyYuAZTDC1wgW0g9O3lfBlqHBY2H9dGlrEJ7e/FF1yDb0ot2VpirAJIE
+	VqVC34zax8iGc/JrMXzwRfzM2Foy9jqztFAQhKtftBCDeSGZRcJ8Knc9LnXIbmWgZUn2CsE71eR
+	OHrALIoEy5etrhKBL0HUrhoP2AzpetxyeqLS5uM4Rdi7elX9et5obt9Vkw45u
+X-Received: by 2002:a05:600c:8715:b0:493:bed7:6d7c with SMTP id 5b1f17b1804b1-493c2b8943dmr130142255e9.25.1783069964669;
+        Fri, 03 Jul 2026 02:12:44 -0700 (PDT)
+X-Received: by 2002:a05:600c:8715:b0:493:bed7:6d7c with SMTP id 5b1f17b1804b1-493c2b8943dmr130141635e9.25.1783069963996;
+        Fri, 03 Jul 2026 02:12:43 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dba0esm15938954f8f.7.2026.07.03.02.12.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 02:12:43 -0700 (PDT)
+Date: Fri, 3 Jul 2026 11:12:39 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
 To: skvarlamatus@gmail.com
-Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
-	linux_oss@crudebyte.com, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, sgarzare@redhat.com
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org, 
+	linux_oss@crudebyte.com, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stefanha@redhat.com
 Subject: Re: [PATCH v2] net/9p: add vsock transport
-Message-ID: <20260703054133.GB448934@fedora>
+Message-ID: <akd7QliTAWpkmE0Q@sgarzare-redhat>
 References: <20260701155922.95502-1-skvarlamatus@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
@@ -56,102 +78,90 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7+83Ftc4nKYQpn3M"
-Content-Disposition: inline
 In-Reply-To: <20260701155922.95502-1-skvarlamatus@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-
-
---7+83Ftc4nKYQpn3M
-Content-Type: text/plain; charset=us-ascii
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dEi5wZjfi9BPImt3lp6qvTajHQ4dEBiRwC3i5_sMy-E_1783069965
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
 On Wed, Jul 01, 2026 at 05:59:22PM +0200, skvarlamatus@gmail.com wrote:
-> From: Matus Skvarla <skvarlamatus@gmail.com>
->=20
-> Add vsock as a transport option for 9P client connections. This
-> allows mounting 9P filesystems over VM sockets without requiring TCP/IP
-> networking or additional userspace tools.
->=20
-> The implementation extends trans_fd.c with vsock support, reusing the
-> existing socket infrastructure. A new p9_fd_create_vsock() function
-> handles vsock connection setup by parsing the CID from the mount source,
-> creating an AF_VSOCK socket, and connecting to the specified endpoint.
-> All other transport operations (close, request, cancel) use the shared
-> fd transport implementation.
->=20
-> The privport mount option is not currently supported for vsock and
-> returns -EOPNOTSUPP if specified.
->=20
-> Add CONFIG_NET_9P_VSOCK option that conditionally compiles vsock support
-> into 9pnet_fd.ko. This follows the pattern where socket-based transports
-> (TCP, Unix, vsock) share trans_fd.c, while specialized hardware transports
-> (virtio, xen, rdma) have dedicated files.
->=20
-> Usage:
->   mount -t 9p -o trans=3Dvsock[,port=3D<port>] <CID> /mnt/point
->=20
-> Signed-off-by: Matus Skvarla <skvarlamatus@gmail.com>
-> ---
-> Changes in v2:
->   - Add depends on NET_9P_FD to Kconfig
->   - Use #include <uapi/linux/vm_sockets.h>
->   - Reject privport option with -EOPNOTSUPP
->   - Use fc->net_ns instead of current->nsproxy->net_ns
->   - Widen vsock port to u32 to match sockaddr_vm.svm_port
->   - Widen p9_fd_opts.port to u32 and port_str buffer accordingly (in p9_f=
-d_create_tcp())
->   - Add vsock to Documentation/filesystems/9p.rst
-> Link to v1: https://lore.kernel.org/v9fs/20260527073447.86538-1-skvarlama=
-tus@gmail.com/
-> ---
->  Documentation/filesystems/9p.rst | 12 +++-
->  include/net/9p/client.h          | 10 +++-
->  net/9p/Kconfig                   | 10 ++++
->  net/9p/trans_fd.c                | 97 +++++++++++++++++++++++++++++++-
->  4 files changed, 124 insertions(+), 5 deletions(-)
->=20
-> diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems=
-/9p.rst
-> index 3f65db648db0..d1bac30b3c9d 100644
-> --- a/Documentation/filesystems/9p.rst
-> +++ b/Documentation/filesystems/9p.rst
-> @@ -50,6 +50,14 @@ mount points. Each 9P export is seen by the client as =
-a virtio device with an
->  associated "mount_tag" property. Available mount tags can be
->  seen by reading /sys/bus/virtio/drivers/9pnet_virtio/virtio<n>/mount_tag=
- files.
-> =20
-> +For server accessible over vsock (VM sockets)::
-> +
-> +	mount -t 9p -o trans=3Dvsock <CID> /mnt/9
+>From: Matus Skvarla <skvarlamatus@gmail.com>
+>
+>Add vsock as a transport option for 9P client connections. This
+>allows mounting 9P filesystems over VM sockets without requiring TCP/IP
+>networking or additional userspace tools.
+>
+>The implementation extends trans_fd.c with vsock support, reusing the
+>existing socket infrastructure. A new p9_fd_create_vsock() function
+>handles vsock connection setup by parsing the CID from the mount source,
+>creating an AF_VSOCK socket, and connecting to the specified endpoint.
+>All other transport operations (close, request, cancel) use the shared
+>fd transport implementation.
+>
+>The privport mount option is not currently supported for vsock and
+>returns -EOPNOTSUPP if specified.
 
-If you respin this patch, please add the port=3D option because it is
-absent from this example and it could be missed if one doesn't read the
-paragraph below carefully:
+Why not?
 
-  mount -t 9p -o trans=3Dvsock[,port=3D<port>] <CID> /mnt/9
+I'm no expert on 9p; it's just out of curiosity.
 
-Other than that:
+>
+>Add CONFIG_NET_9P_VSOCK option that conditionally compiles vsock support
+>into 9pnet_fd.ko. This follows the pattern where socket-based transports
+>(TCP, Unix, vsock) share trans_fd.c, while specialized hardware transports
+>(virtio, xen, rdma) have dedicated files.
+>
+>Usage:
+>  mount -t 9p -o trans=vsock[,port=<port>] <CID> /mnt/point
+>
+>Signed-off-by: Matus Skvarla <skvarlamatus@gmail.com>
+>---
+>Changes in v2:
+>  - Add depends on NET_9P_FD to Kconfig
+>  - Use #include <uapi/linux/vm_sockets.h>
+>  - Reject privport option with -EOPNOTSUPP
+>  - Use fc->net_ns instead of current->nsproxy->net_ns
+>  - Widen vsock port to u32 to match sockaddr_vm.svm_port
+>  - Widen p9_fd_opts.port to u32 and port_str buffer accordingly (in p9_fd_create_tcp())
+>  - Add vsock to Documentation/filesystems/9p.rst
+>Link to v1: https://lore.kernel.org/v9fs/20260527073447.86538-1-skvarlamatus@gmail.com/
+>---
+> Documentation/filesystems/9p.rst | 12 +++-
+> include/net/9p/client.h          | 10 +++-
+> net/9p/Kconfig                   | 10 ++++
+> net/9p/trans_fd.c                | 97 +++++++++++++++++++++++++++++++-
+> 4 files changed, 124 insertions(+), 5 deletions(-)
+>
+>diff --git a/Documentation/filesystems/9p.rst b/Documentation/filesystems/9p.rst
+>index 3f65db648db0..d1bac30b3c9d 100644
+>--- a/Documentation/filesystems/9p.rst
+>+++ b/Documentation/filesystems/9p.rst
+>@@ -50,6 +50,14 @@ mount points. Each 9P export is seen by the client as a virtio device with an
+> associated "mount_tag" property. Available mount tags can be
+> seen by reading /sys/bus/virtio/drivers/9pnet_virtio/virtio<n>/mount_tag files.
+>
+>+For server accessible over vsock (VM sockets)::
+>+
+>+	mount -t 9p -o trans=vsock <CID> /mnt/9
+>+
+>+where CID is the vsock Context ID of the remote endpoint (2 for host from
+>+a guest VM, 3+ for guest VMs from the host). The port to connect to can be
+>+specified with the port option (default: 564).
+>+
+> USBG Usage
+> ==========
+>
+>@@ -115,8 +123,10 @@ Options
+> 			========  ============================================
+> 			unix 	  specifying a named pipe mount point
+> 			tcp	  specifying a normal TCP/IP connection
+>-			fd   	  used passed file descriptors for connection
+>+			fd   	  uses passed file descriptors for connection
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+nit: unrelated change?
 
---7+83Ftc4nKYQpn3M
-Content-Type: application/pgp-signature; name=signature.asc
+The rest LGTM, so for vsock point of view:
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmpHS40ACgkQnKSrs4Gr
-c8jW4wf/RNJsWNQHO3OkT+F6Ic6uLAOH3Kh05rIv0UnodXFsTyK1MfqOiYOedI01
-I2tAhOU3DB3sW13b78tlOB22FCc2sN5l9UMQB58UkdrKJIPX5JaTdzwosuMASIRo
-t0k7ctM2TETGhIqn0FwxsFs5dUXmdQJDkRjXqfbL/udVhr+OiBn6faT7bxwO/PLH
-fjtEVDT8No++IF1Fyw+cXXjHCD/az/jshxdyOs8Lih8W835vNO8SFLVlXgEZRQ1Z
-qJwjjNLxrOAOfCdbpMUu5VkyNBPnTGh8qVxBVdvJrV6HM/RbL/5aDc0GkO8Rz18C
-xknZPlvBRQSHcKaLyg6PP8TVbJVS/A==
-=R738
------END PGP SIGNATURE-----
-
---7+83Ftc4nKYQpn3M--
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 
