@@ -1,117 +1,99 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1591F54785;
-	Fri,  3 Jul 2026 15:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E200B305678
+	for <v9fs@lists.linux.dev>; Sun,  5 Jul 2026 21:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783093631; cv=none; b=DoC5L9G933QCU2UN8C42zL1HN8ldeYdfbyHnK5IbpifH7V5im9RqsDvkclwqa1D+IHlE4P2ta63gLSONcvH86dTlwsuVRAEbaPjsM47RSCNp4+hXT6Ru7DqINfkRK6Ap4clw2gkvfW6TGJT9dHF89/GqFGU9Ny3h5n6GJtZy1yI=
+	t=1783286585; cv=none; b=bPZPfB6rYJBx5jVtiy3gcay+uS8L4UkdNMCCmLolt347QkdSAcvNroFpYGQNIBc2K6yCw2lJqDlLt/4VSSNLPmLlAZZh+5m6sTgsRRnFa+Um3LJUc3BZBrVZfW8+8hSvSGyeJWD7tZJjeNOamnH8rMKOedzUqINtWMYScLZMXz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783093631; c=relaxed/simple;
-	bh=Rv1Rf07/5G8ZHCa1NcsYTUuzs5DOal8Bqb9q5OjJxXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J+qzVKPkur84cNOD3G+YfNQ/Ae+krFFdk2L8ihXe2oO3LGnavLyiamVnd1vP5MFX4XImmJK9UXbRDJDetkWpR1HD6ZANVHnBlAWFA+JE84zGemCk+nectyHGWuf2EMtvTknguWvKcV6VFcm82ZZ6HgXnkCkmqgxpYbT6To80opk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=AvKRG2le; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1783286585; c=relaxed/simple;
+	bh=vH+eOgrF8FVWrBN++mA+QX7ihOZ6DLzDCoGhIdIdN0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cBicw16mIZxRFVE9/EJTZ8XCoLGhuSNTb77zpFf2AW+F70fMftyKXbm9Y8k23gjPRlvFtZqoraVz41z2YVATQeyWbH8qH9RlAl45fpv4a7Cs722oqvcB6fliWXZQYvq0NRStVsGCbGVe9pnD+S6oxD1Ij1yt8okuxzYUD+LDsn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kYgK09SB; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="AvKRG2le"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=DIsXCV9qjmanPKNVgpMGlx8XZlt9xnowLh8jTe4nwqM=; b=AvKRG2lexRTfwD5kzSo3FtnhoF
-	PkXQcdfDO6aYn+6dlmPZcDEkfdUQWrgvu7ZqL+bk87pb1OW5aE75oixEUOVO6LgJNHJKjpLft9arg
-	v8fofTMVW5D65SDwgqHXpKA9rhq/RrlizHA+jWI5KCgOnUz9xKhJU4NZ11cO92lPdJPB4fNJlpyiJ
-	NP9apm8s5DFoVSIMq1HeBD2mYqYpCU8CiAc/c8dK52/tu8W3MJsS3kClTgxIN5ixcRV03V6aYLfPx
-	7eCx/XxVSDYm044TdHo5WAdwlioXj99gglVeNWUwCAftmqHyn5Qd9ZVjhwyhum47zdB64d+5nQP6K
-	X1Swz+r79RaFxFeITkXzPM43sy9ANW3dP2Si7TnPJAsn/1aiPvxHFuG/K4OrPqFbBCClmGu4hDX4g
-	8bUkDu0rP1y8fRzBDJLbqDhxE9Z6Ds04RtHI0t43GVs6TaOTylafdJekIQgVCX3idx7AJoXEo8FK5
-	WzCEp+jv94rvkE71QqddMy9Z0TRBN6u4GvzurIn2t12RxG671OuhZXCyAQwSFNeKOkPwRHZix6nmF
-	bAqAhC7kYEvB1NYNHx4cBC8Ne5CzXY+h+RKpDSXH4QMXlmcKLGgF1fUlL6F3CQzND3duzY79u9uzb
-	H6sXd3Mh74HXGtOZFYNuGePPz153JSQn8b92gEaac=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Michael Bommarito <michael.bommarito@gmail.com>
-Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v4] 9p/trans_virtio: reject mount tags longer than NAME_MAX at
- probe
-Date: Fri, 03 Jul 2026 17:14:01 +0200
-Message-ID: <4770766.cEBGB3zze1@weasel>
-In-Reply-To: <20260627211012.4042372-1-michael.bommarito@gmail.com>
-References:
- <20260626111906.801890-1-michael.bommarito@gmail.com>
- <20260627211012.4042372-1-michael.bommarito@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kYgK09SB"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c81db32393so410095ad.0
+        for <v9fs@lists.linux.dev>; Sun, 05 Jul 2026 14:23:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783286583; x=1783891383; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=a5qWio7s6GPHBlGPQg3ZP+USmFc8rp3BGSQUCn40Klk=;
+        b=kYgK09SBtulXfnCjIVDamnt0vlgl6Mg4yWxu98bNnu2lvaIIWqTfHXTtKYqQPh7kmp
+         KusuQ/lG8ySgNPFNWXbXY8dQ/9JE79O0YwcNjyXRM/5OebeEE3VdC/TQVAKfkl/qZzUt
+         eTWApqSiM1ufS1Rq5xp6ALKQ6+5IQHPoc4G/phCxUy1oVC8QopHhHpm68UumSFz9J//H
+         tzfF41aNHG+I18n8OY4gR6A61o/olnwgJ6NCpaWu2TKBjUTv+Rpa/tYio9nxqwhr0gtj
+         QItH17gFd4MHa+AQfDY5BCzVsp1RIVLog9+iHNDYT9QBjBvI/nLbI7/ClKkxdbb9sNyA
+         hlOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783286583; x=1783891383;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=a5qWio7s6GPHBlGPQg3ZP+USmFc8rp3BGSQUCn40Klk=;
+        b=r58wl9bRpurkkRbYI6IU5TO7qkBJhnWu0w6Sw4gzf5cE+slLM/6UPwndA+GaH8Qig5
+         dqWHOhghWOYnc+iUJ+D/2W2n4MQLhU27izkOYbubDWyXYfkCIzNCkn7yZHte4FNezqsi
+         sK/UnzHNUwMMjm9dv/k2jZgzNCNt8EpaC1fFzLAb0s7IKi64eBr1g1vneieWjnoAxn0L
+         xUWsWddLLp8lbDD+knQJsavtifOkW09KHE5RrkHeFfhDDnYCsNulw9NofKZ5p2oTM9FK
+         IFJTesQDDogB7Mia06pRmoNz+XHyFDagkHxDLEx5MF3XMKDxawzXIU+TG4/U5TL+9Tgo
+         XwBg==
+X-Forwarded-Encrypted: i=1; AHgh+RraIQkQb8l0S/GB54/MclCm/gqfeoaoO8tJg+Cm5mjbN1t5au+dEIqS2nc8CbTJfeRhIpuE@lists.linux.dev
+X-Gm-Message-State: AOJu0YyWAmL5LkCTH+3PksjRx67A5tv3BTPaZ3VdgyGdJfF7/pJ90+KQ
+	RvNlpY71yt3uO30Ns6f+cSur2fkY1mHpY3Xl+Crf3gQoPzIy3/q40QiJ9+jSnGGp4w==
+X-Gm-Gg: AfdE7ckuvrUMmT7a+iCbllbrEUeICiUmMkNdPuI3w4i/pzR0RVrlGKm16ph3mUVFutC
+	d8ctIz9aOe9r68b/FmU4fSMpvBsi5dwOOt1HMJqG1LE5Hoa+fWz0DpZGSjO3cdxnf8XIN3NOvEa
+	hcJF92aKKiWuojHm5rwqUgmm4DdbqVkCwAZ/32F519el7pNSI1oViOIcClpVACCqfFUvL/Lv0og
+	7d3sAUEES3x9ScmGRpvDnwXxW9ydivx0zk7Mft4yXNrqa/1NvLEEhU2h06l/NLKddD4FXlgWpcC
+	PEiXiHlsr9V4Ho26A8nn+nRJCQLPq6uu32cB76uWxEZb4aLAtlmFVe1vp6gOI4SkTR3i3VCmoFT
+	TQ8R8BbAVInkwUVDB98y1zaXpWY6tP83hGW54l/+a6+I8jwEtwo+lKJc6VKdcS2dH1UB2g4ej1f
+	ts2SwzfH3NW7jjtjeievXqGWvMqh5UfDL72hYaF8ra9kkhim6WvVkMAr0=
+X-Received: by 2002:a17:903:244b:b0:2ca:be81:b469 with SMTP id d9443c01a7336-2cb14c67133mr2481995ad.0.1783286582754;
+        Sun, 05 Jul 2026 14:23:02 -0700 (PDT)
+Received: from ?IPV6:2405:6583:a4a0:700:8702:66a3:f0a0:ec6a? ([2405:6583:a4a0:700:8702:66a3:f0a0:ec6a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f4cd4b1sm4905767a12.12.2026.07.05.14.22.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Jul 2026 14:23:01 -0700 (PDT)
+Message-ID: <b19a121d-4559-4310-833c-7947b8bf027d@google.com>
+Date: Mon, 6 Jul 2026 06:22:54 +0900
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] 9p: treat read return values of 0 as EOF
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: David Howells <dhowells@redhat.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260702090941.1298188-1-brho@google.com>
+ <akfHGcqke9qixd3Q@codewreck.org>
+From: Barret Rhoden <brho@google.com>
+Content-Language: en-US
+In-Reply-To: <akfHGcqke9qixd3Q@codewreck.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Saturday, 27 June 2026 23:10:12 CEST Michael Bommarito wrote:
-> p9_virtio_probe() reads a 16-bit mount tag length (tag_len) from the
-> device config and kzalloc()s tag_len + 1 bytes for chan->tag with no
-> upper bound. A malicious or compromised host can present a tag of up to
-> 65535 bytes; that tag is later copied into the single-page sysfs buffer
-> by p9_mount_tag_show() (memcpy(buf, chan->tag, tag_len + 1)), a
-> host-controlled out-of-bounds write of up to ~64 KiB past the PAGE_SIZE
-> attribute buffer.
-> 
-> Reject an overlong tag at probe time. A 9p mount tag is a name-like
-> identifier, so bound it by NAME_MAX (255): that limit is independent of
-> the sysfs/seq_file page size and is far above any legitimate mount tag,
-> which keeps p9_mount_tag_show() safe at the root without hard-coding a
-> seq_file implementation detail.
-> 
-> Fixes: 179a5bc4b8cb ("net/9p: use memcpy() instead of snprintf() in
-> p9_mount_tag_show()") Cc: stable@vger.kernel.org
-> Suggested-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+On 7/3/26 10:28 AM, Dominique Martinet wrote:
+...
+> Barret,
+> thanks for the patch, please give us a bit of time to check; I'm
+> sometimes slow to reply (like for your sending the patch first without
+> the [PATCH] tag in subject) but I did see it, just hard to find time to
+> review...
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+no problem - i thought it might have gotten missed due to the lack of 
+[PATCH].  my bad on that.
 
-> ---
-> v4: bound tag_len by NAME_MAX (255) instead of PAGE_SIZE, per Christian
->     Schoenebeck's review of v3 -- a 9p mount tag is a name-like identifier,
-> and NAME_MAX avoids hard-coding the seq_file page-size implementation
-> detail (which could change and silently break the bound) and resolves the
-> off-by-one he noted.
-> v3: reject at probe time (PAGE_SIZE) instead of truncating in show().
-> v2: sysfs_emit() in show() -- dropped; probe-time rejection preferred.
-> v1: bound the show() copy.
-> 
-> Build-tested ARCH=um (net/9p/trans_virtio.o, W=1, clean; NAME_MAX resolves
-> with no new include). The original ~64 KiB OOB write was reproduced
-> pre-fix; with the probe bound a tag_len > 255 device is refused, so the
-> show handler never sees an out-of-page tag.
-> 
->  net/9p/trans_virtio.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index b0d0094ec8e2c..9fa63e3ebf673 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -633,6 +633,11 @@ static int p9_virtio_probe(struct virtio_device *vdev)
->  		err = -EINVAL;
->  		goto out_free_vq;
->  	}
-> +	if (tag_len > NAME_MAX) {
-> +		dev_err(&vdev->dev, "mount tag too long (%u bytes)\n", tag_len);
-> +		err = -EINVAL;
-> +		goto out_free_vq;
-> +	}
->  	tag = kzalloc(tag_len + 1, GFP_KERNEL);
->  	if (!tag) {
->  		err = -ENOMEM;
-> 
-> base-commit: 4edcdefd4083ae04b1a5656f4be6cd83ae919ef4
+let me know if i can test anything too.
 
-
+thanks,
+barret
