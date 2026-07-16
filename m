@@ -1,157 +1,177 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FE23BB123
-	for <v9fs@lists.linux.dev>; Thu, 16 Jul 2026 07:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF90F40A934
+	for <v9fs@lists.linux.dev>; Thu, 16 Jul 2026 10:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784187111; cv=none; b=CHLhhv3XNX9aCIAP8aWAGNhMRAaezhFiLykaIXPbhLddWyf2aTmRRYxdCXKlec+eB94WPjqzpCPlLqeEDUwckdO3s4pAaM3IGci6oZtS/JYuT9jn+gxCqN7n7mFdYhXhMqj71DQNv+djqdxwgQir3lLz4FYM/JGYKlwUJhTAe1Q=
+	t=1784197866; cv=none; b=jPcfcp24cAg6lLqM1qAEb4+eA8hC5FptnDyoun0RUKAiQEBh5Swg2oXO8DlqVLvijrP9pPp6MWzAnnYFF5ypMZX10yE0o+Aj6qL3XMJTqBm6lnIOm9CUCHMEShFmWs6QITq/luw8Q6is0pZVUQNJnl1YaAZ+vGsoS1WetSTqSb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784187111; c=relaxed/simple;
-	bh=wvOTet2COjQxObQt2JQi4y7BKSVg+1xPLpR5TuZYq+8=;
+	s=arc-20240116; t=1784197866; c=relaxed/simple;
+	bh=WnUrIoFsPW78MzYAVx0FrQKBJh5ob5aqpScAtxwFRGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrZ0HzUt1Glw1m+OPzwOaOfA+d9+fJgi8yvD1aeNw2ugZGCmOPPv2Zq6OBffHMlzahGN9iVxtBmXX2bYZgrt8SqAcYDh5SL1p/RFM6J1ol5FJvsS5KDoeii5/0yZusDqRzD/I1JZjTpScFSdHarR44q/5sqnfZcbUlgJsXe6scU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 6269a1c280e811f1aa26b74ffac11d73-20260716
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_UNTRUSTED
-	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:08c1430d-7250-42ec-9231-691bd82a05d5,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:08c1430d-7250-42ec-9231-691bd82a05d5,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:559c1f64010f1d2917c446ad2bb6711f,BulkI
-	D:260716153142MPI5CV9J,BulkQuantity:0,Recheck:0,SF:10|38|66|78|81|82|102|1
-	27|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:
-	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
-	RE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6269a1c280e811f1aa26b74ffac11d73-20260716
-X-User: tanze@kylinos.cn
-Received: from desktop-od00ebi.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
-	(envelope-from <tanze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2133234266; Thu, 16 Jul 2026 15:31:39 +0800
-From: Ze Tan <tanze@kylinos.cn>
-To: ericvh@kernel.org,
-	lucho@ionkov.net,
-	asmadeus@codewreck.org,
-	linux_oss@crudebyte.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
+	 MIME-Version:content-type; b=qMd0xlPdgwFC82OJtJuIGX73fSCa+/djWbt7MvRHJ3vaRzmmnivq8YsZ7cwP+vNaLQiMzBK7TTdjoYiThorOUlfK1koKusP9xPjJ+V15xrGaV6g+0brDoscp7lGtwSgVWHJQP1pBPY92IRyJX59SQdnfU53a3AFlsl6BHX/l3II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bkim58eI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bkim58eI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784197863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oAh3PBs47lZUHcwbeGXM5gS5ZzePV60tR0gQfqSs8Ac=;
+	b=bkim58eIusOju1h8Ubr8q2xyQl9A7IgXXJnybp9CZw7RXoi3nDxNYz5TeMlN26A4MVTLFr
+	5Zt62cIbdb8xnAWeVJzvIXHAkIu5amBfSdKY0rvOlLyprHTyyaxXfqBJaWkN1GqWbnls2n
+	4AjituqG/O+GsphPVfllCtJCLUny8BA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-t8HdhapWPiGaIYNsjldZrA-1; Thu,
+ 16 Jul 2026 06:30:58 -0400
+X-MC-Unique: t8HdhapWPiGaIYNsjldZrA-1
+X-Mimecast-MFC-AGG-ID: t8HdhapWPiGaIYNsjldZrA_1784197855
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25FA11800663;
+	Thu, 16 Jul 2026 10:30:54 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.159])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 44DE830040BE;
+	Thu, 16 Jul 2026 10:30:45 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
 	v9fs@lists.linux.dev,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	tanze@kylinos.cn
-Subject: [PATCH v2 3/3] net/9p: abort interrupted fd RPCs on fatal signals
-Date: Thu, 16 Jul 2026 15:30:51 +0800
-Message-ID: <ab39e9af6d4d3d31f9f4b4a85c17c5b905f7e4f8.1784186316.git.tanze@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1784186316.git.tanze@kylinos.cn>
-References: <cover.1784186316.git.tanze@kylinos.cn>
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v6 01/24] mm: Make readahead store folio count in readahead_control
+Date: Thu, 16 Jul 2026 11:30:00 +0100
+Message-ID: <20260716103030.3065561-2-dhowells@redhat.com>
+In-Reply-To: <20260716103030.3065561-1-dhowells@redhat.com>
+References: <20260716103030.3065561-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: WHMxuqbwTZV9LKbfSYJm59xIMIIVh_3b3Iqy06GQ4cg_1784197855
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Syzkaller reported a hung task while a thread group was dumping core. One
-thread was blocked in p9_client_rpc() on a 9p fd mount while another
-thread entered coredump_wait(). The coredump path sent a fatal signal to
-the blocked thread and waited for it to exit, but the 9p client sent TFLUSH
-and waited for an unresponsive server to acknowledge it.
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-  INFO: task syz.1.4497:22259 blocked for more than 143 seconds.
-  Call trace:
-   __switch_to
-   __schedule
-   schedule
-   schedule_timeout
-   __wait_for_common
-   wait_for_completion_state
-   vfs_coredump
-   get_signal
-   do_notify_resume
+This is cleared by read_pages() in case it is called from a loop.
 
-Commit 6b4f48728faa ("net/9p: fix infinite loop in p9_client_rpc on fatal
-signal") stopped retrying an interrupted TFLUSH when a fatal signal is
-pending. The original non-flush RPC can still enter the TFLUSH path first,
-which needlessly depends on the server while the task is trying to exit.
+The count is accessed by the filesystem with readahead_folio_count().
 
-For transports that explicitly retain sent requests across an
-asynchronous abort, cancel unsent requests as usual and mark sent requests
-aborted without issuing TFLUSH. The fd receive or teardown path keeps the
-request and tag alive until it releases the transport reference.
-
-Do not enable this path for zero-copy RPCs or transports without the
-required lifetime guarantee.
-
-Fixes: 91b8534fa8f5 ("9p: make rpc code common and rework flush code")
-Signed-off-by: Ze Tan <tanze@kylinos.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
 ---
- net/9p/client.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index b9860ccb224b..47353cf0750d 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -538,6 +538,22 @@ static struct p9_req_t *p9_client_prepare_req(struct p9_client *c,
- 	return ERR_PTR(err);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 2c3718d592d6..e1e51bace388 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1348,6 +1348,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1527,6 +1528,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
  }
  
-+static void p9_client_abort(struct p9_client *c, struct p9_req_t *req)
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
 +{
-+	/*
-+	 * A fatal signal cannot wait for TFLUSH, but a sent request must keep
-+	 * its tag until a late reply arrives or the transport is torn down.
-+	 */
-+	if (!c->trans_mod->supports_async_abort ||
-+	    READ_ONCE(req->status) >= REQ_STATUS_RCVD)
-+		return;
-+
-+	if (!c->trans_mod->cancel(c, req))
-+		return;
-+
-+	cmpxchg(&req->status, REQ_STATUS_SENT, REQ_STATUS_ABORTED);
++	return rac->_nr_folios;
 +}
 +
- /**
-  * p9_client_rpc - issue a request and wait for a response
-  * @c: client session
-@@ -617,6 +633,15 @@ p9_client_rpc(struct p9_client *c, int8_t type, const char *fmt, ...)
- 			goto recalc_sigpending;
- 		}
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 558c92957518..069ded56fd80 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
  
-+		if (fatal_signal_pending(current) &&
-+		    c->trans_mod->supports_async_abort) {
-+			p9_debug(P9_DEBUG_MUX, "fatal signal: skip flush\n");
-+			p9_client_abort(c, req);
-+			if (READ_ONCE(req->status) == REQ_STATUS_RCVD)
-+				err = 0;
-+			goto recalc_sigpending;
-+		}
-+
- 		p9_debug(P9_DEBUG_MUX, "flushing\n");
- 		sigpending = 1;
- 		clear_thread_flag(TIF_SIGPENDING);
--- 
-2.43.0
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
