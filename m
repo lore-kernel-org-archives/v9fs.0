@@ -1,168 +1,122 @@
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35ED5378814
-	for <v9fs@lists.linux.dev>; Fri, 24 Jul 2026 05:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8666C33372A
+	for <v9fs@lists.linux.dev>; Sat, 25 Jul 2026 01:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784870794; cv=none; b=j8xCBVmZ0Vy9aJL1aqALzfkoT2eA9TG2+q/5lrq54oq18AlDFSgEvPUOXwaoKdGML/J/apPz+AmEG2LJomVsof71LaclTBIy9X3lzX00vNKaW160rxj4HVA0JSKVVgGuu2isA7Y4AJRuppGZAEGnm0KHukqlG/xIm/mHjdU3TaE=
+	t=1784943899; cv=none; b=I4geGwXieHhSuQYbSIlD+ODflyhtk/WTIq/wYtIO5DYtJDBNUSKnxIh8vafCwnFOoz2R7kx7A8PHE5sdmns73wUuEtvkcnHPRITWSRZX3ciLMZoG2l8sY1sHP/cerZ+GMeW0VgcoKUozhdNTJFkwQLE4e1zO7v68fwfVvg91A+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784870794; c=relaxed/simple;
-	bh=aF5rDTTyCrjXazZxKss3GLaAIfwD/vVgzxocUX41xQI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GRjlNu6Wb/S/smoULE8YoE0KWZI5w4xTSyuQpLuClvDGFwOAt/ifFHmKxy1e3n+AcSUe32BT6NUIBCn0WaB+KIjXiTgR/mhSL2vZqEfEVANwiwUN17zVuixwLuw6EaFHICjQggLRqQZwyBw/kT/WlH8HwDQhudpttJuT0mw6Ssc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-4a41e3d6fe9so1689026b6e.2
-        for <v9fs@lists.linux.dev>; Thu, 23 Jul 2026 22:26:32 -0700 (PDT)
+	s=arc-20240116; t=1784943899; c=relaxed/simple;
+	bh=JC1RPRMvNmvIV9WziwHo2xygwz477pttSg/6YpjAA0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bTCq295skXhUi9a1kI22CIq4lOaK0ivX0OLeiBzcvgm8bEPxbrzCbTEYf/eSq7Bh8Vw9RoJfYFDsX67ajsUK/P+E/KFexlnM5AxxVmBuAM9LdvaaKJfUcBxJ/275lSe638TYbsvyThHYZTWykDdAdXM3NUtLbWJnVJ5DhAf8cJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+HnB2Rp; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+HnB2Rp"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c9fe3c9bd5fso1392805a12.0
+        for <v9fs@lists.linux.dev>; Fri, 24 Jul 2026 18:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784943898; x=1785548698; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SsycQkK3K/Sg2WBClWyOTHAiyU64+SefL9aiA1MnBEs=;
+        b=O+HnB2RpOta652nqv7wK4j65F5Q9Mtln/mcuLM7Dqsx+kqWk5tx/Av+I3v7vQujCnf
+         iD8044EgcWhO8T7f5o1P9pgGboGsSPkOltoIP0Efgh0GBx/67rK6xAaEpKxMX/f58kIb
+         ywgVDRlAJi0H4ruHMLAjp4zki9ui8fx26KYIPErRYMqQv4uzBGuv1WjqNn7cLhMY/Kdn
+         gJFRBz7qjwG1tjtDnkteq/iI/XXUgllG2oZREKKEdtdEmYZzcVSuKygCWGZAgyR3052o
+         cvILhlu8hEUNb1/KW62V53v+g/YYiD/aZtjZx/kLfSfkOsQuFfkV14tgX7/gM5wOf7Iv
+         CrrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784870792; x=1785475592;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nmUFzu43pABgV2pRLEWsoSw9dcXXBe1fYb+qPcLhuMQ=;
-        b=cQlcT/23mU4QzEptuPipAy3voobjZIpWfpJYqjnOkO7L5AAguj9iv1Te10oVEH0Gdn
-         EJGf4YJpEGXBUg0pCoDUEBRHIZ9PVFhDzAtvvElEEMB9qI3+LVwHHerhJqL4YlkuV6FQ
-         je6AXjlY/DjlE/ROKPO9iRWF2AdhXMmEQ/+NE+qwa1ex0Efk3hXO20UG/NvOWQaQjdCT
-         6JTLTBsuOI3xFZ13ZUjtrXWT3WQB1X3FpGmFQk4p3sjQH58mlIY0Dt8SWFyYO2xw0hQL
-         3SwNp/42raukOooCKEGyjxBZxY0+vSjp6zjqY/gBysndpMST+TpOkoyMg6DnR6hTm8v4
-         ddQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrlZFNCtEASHNekceUwAXULkDY77hcrpRLoAVdPbaQW0v/vKKCoBEO2gTxyZW9aaYtWhMfA@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5aKY04eGYs6qw20RH0X91pquM7wC595RnrzWkiVvLrPAZMaC6
-	ViRZXruaBUE+mi908sMBNa3563eNidjdalNMds1W+Z8Q2w0x8IWvG/g66S00EQpcQ8cjQJbkk42
-	W3Cv7Lrh3axmsnwqK7MEPntR2Xlkn2W+B/p75HJZkW9Q1Twf91KMWo56DS1w=
+        d=1e100.net; s=20251104; t=1784943898; x=1785548698;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SsycQkK3K/Sg2WBClWyOTHAiyU64+SefL9aiA1MnBEs=;
+        b=HldlyGDSl05Z6cK9xxqoW67TWEXb7hLKrfOHxBy9a8/jk+iW6TrICcGGaTW9dEUakG
+         DYm7LY42psMmeMgoQFxP6A4W1TUVQ8ebLCjX1OwGAaHna+kNPBBM6+M0zwqXvPBzHsWR
+         YIq+JCkzX3YlQ49tU2lvNboKmvWd0Y8RsbwMVU1x95aFdWir+jxESQKEH5ePOR6Be3Q6
+         GJQGbrx1jEw16cXd2KuTdfFB0si28om0Bg6HLCSFEAGu7ahh7kwCDRYGBN3J1kyiQbBx
+         tNVeeFdPTmcCJq/GHauQgJCjRyKS3JUfKNjtppejIKOLKPIHZq0/cslzyHZtLStySPwU
+         z9Bw==
+X-Gm-Message-State: AOJu0Yy2eYb+oUy3CoONKClhkn8AFzzP8EyurNNilYs5enl7XEmRXxIF
+	OhV1oGODdF/nNiVuQaiPsvGjr5aSE8ncu2+zbj8fPWNYJhsGwEi3RFKF
+X-Gm-Gg: AR+sD11fnINRlGDcu6XY8dPlwlwZfbSnkhmJoVPjJlFpCdC/DC2csDP4K8U31eo1CYI
+	g9q7jNuBQXSRo8XI3omxwwYCT4HmuWqkZk3X8bXxtTNAfOstvgx4renLGgBUYSkeIn0xAYRv35Z
+	+lFggYvTci0GRE8ojD+L5ATyji2PR0jGuLa0JrWbqduygL9blBwhN8xm8D3lSbyMJpQxE7046Uf
+	ciOqIfmXPMSGsTQVsDyGmqTD6ZrPPUp1E5pvWLcLS8j5VHyp1ST9wM396LvKU6qH73lpN9fD5oo
+	LUUNrliYo5JIIeb05LxVT1uQqRYsEf7b0oCWah1IOy7bZLKQ9tTjbFfIbSSLhwTE75/DfoHcAsG
+	XM8P3cOPznr7hC03vxm0BQyKYPg5yH4NunjSHFcRg1ST76DX02nsOwG9Uq3Kkj3nluWdPoODZq+
+	1P2u93h7k7CzjdxFnm/9BCc9UbNC78F9Guau3WMU8cj2eymHRcde1wdtDI5Nk=
+X-Received: by 2002:a17:90b:380e:b0:37f:e5b1:ec4b with SMTP id 98e67ed59e1d1-38f1eaaa3e2mr2990188a91.5.1784943897637;
+        Fri, 24 Jul 2026 18:44:57 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2401:4900:30d2:c11f:7948:960a:6d92:5986])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e53094d65sm1378443c88.13.2026.07.24.18.44.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 18:44:56 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com
+Cc: v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+344c09c64fcd8d3d2782@syzkaller.appspotmail.com
+Subject: [PATCH] 9p: don't WARN_ONCE on racy symlink fid lookup failure
+Date: Sat, 25 Jul 2026 07:14:48 +0530
+Message-ID: <20260725014448.18711-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1909:b0:4a4:989:bb20 with SMTP id
- 5614622812f47-4ab353f0b8amr4188739b6e.24.1784870792044; Thu, 23 Jul 2026
- 22:26:32 -0700 (PDT)
-Date: Thu, 23 Jul 2026 22:26:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a62f788.dde6c935.cf6c8.000e.GAE@google.com>
-Subject: [syzbot] [v9fs?] WARNING in v9fs_init_request (2)
-From: syzbot <syzbot+344c09c64fcd8d3d2782@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+v9fs_init_request() WARN_ONCE()s when v9fs_fid_lookup() fails for a
+symlink read via the page cache. This is a benign TOCTOU race: a
+concurrent unlink()/rename() can remove the target between the walk
+finding the dentry and p9_client_walk() completing, so the lookup
+legitimately fails with -ENOENT (observed: dentry=/file0, err=-2).
 
-syzbot found the following issue on:
+With panic_on_warn=1, this WARN escalates to a full kernel panic --
+an unprivileged local DoS reachable by racing mount() against a
+concurrent unlink/rename.
 
-HEAD commit:    1590cf032971 Linux 7.2-rc4
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1446a746580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=48ef5c5c0f192153
-dashboard link: https://syzkaller.appspot.com/bug?extid=344c09c64fcd8d3d2782
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1632bc32580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13e0b789580000
+Return the error directly instead of WARN_ONCE().
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-1590cf03.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3ad7477f3064/vmlinux-1590cf03.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/8e7a9174d4d6/bzImage-1590cf03.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
 Reported-by: syzbot+344c09c64fcd8d3d2782@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-folio expected an open fid inode->i_ino=4580113
-WARNING: fs/9p/vfs_addr.c:168 at v9fs_init_request+0x451/0x540 fs/9p/vfs_addr.c:168, CPU#2: syz.0.21/5945
-Modules linked in:
-CPU: 2 UID: 0 PID: 5945 Comm: syz.0.21 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:v9fs_init_request+0x455/0x540 fs/9p/vfs_addr.c:168
-Code: 48 b8 00 00 00 00 00 fc ff df 48 8d 7b 40 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 db 00 00 00 48 8d 3d bf b1 20 0d 48 8b 73 40 <67> 48 0f b9 3a bb ea ff ff ff e9 41 fe ff ff e8 f7 98 ff fd be 02
-RSP: 0018:ffffc90003c5f778 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff888056c2d240 RCX: ffffffff840a4337
-RDX: 1ffff1100ad85a50 RSI: 0000000004580113 RDI: ffffffff912af550
-RBP: fffffffffffffffe R08: 0000000000000007 R09: fffffffffffff000
-R10: fffffffffffffffe R11: 0000000000000000 R12: ffff888038e04178
-R13: ffff888050c78e41 R14: ffff888050c78bd0 R15: ffff888056c2d240
-FS:  00007ff5dd1fe6c0(0000) GS:ffff8880d5fe6000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff5dd1bbff8 CR3: 000000003d81d000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- netfs_alloc_request+0x71c/0xcb0 fs/netfs/objects.c:72
- netfs_read_folio+0x20c/0x13f0 fs/netfs/buffered_read.c:513
- filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2510
- do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4140
- read_mapping_folio include/linux/pagemap.h:1015 [inline]
- __page_get_link.isra.0+0x30/0x350 fs/namei.c:6336
- page_get_link+0x44/0xf0 fs/namei.c:6366
- v9fs_vfs_get_link_dotl+0x27b/0x310 fs/9p/vfs_inode_dotl.c:930
- pick_link+0xd17/0x13c0 fs/namei.c:2068
- step_into_slowpath+0x9ba/0xf90 fs/namei.c:2127
- step_into fs/namei.c:2152 [inline]
- walk_component fs/namei.c:2288 [inline]
- lookup_last fs/namei.c:2789 [inline]
- path_lookupat+0x58b/0xc40 fs/namei.c:2813
- filename_lookup+0x202/0x590 fs/namei.c:2842
- user_path_at+0x3c/0x60 fs/namei.c:3641
- do_mount fs/namespace.c:4171 [inline]
- __do_sys_mount fs/namespace.c:4390 [inline]
- __se_sys_mount fs/namespace.c:4367 [inline]
- __x64_sys_mount+0x1fb/0x310 fs/namespace.c:4367
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff5ddb9de99
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff5dd1fe028 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007ff5dde25fa0 RCX: 00007ff5ddb9de99
-RDX: 00002000000004c0 RSI: 0000200000000480 RDI: 0000000000000000
-RBP: 00007ff5ddc33eaf R08: 0000200000000c00 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff5dde26038 R14: 00007ff5dde25fa0 R15: 00007ffc18202cd8
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-   7:	fc ff df
-   a:	48 8d 7b 40          	lea    0x40(%rbx),%rdi
-   e:	48 89 fa             	mov    %rdi,%rdx
-  11:	48 c1 ea 03          	shr    $0x3,%rdx
-  15:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
-  19:	0f 85 db 00 00 00    	jne    0xfa
-  1f:	48 8d 3d bf b1 20 0d 	lea    0xd20b1bf(%rip),%rdi        # 0xd20b1e5
-  26:	48 8b 73 40          	mov    0x40(%rbx),%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	bb ea ff ff ff       	mov    $0xffffffea,%ebx
-  34:	e9 41 fe ff ff       	jmp    0xfffffe7a
-  39:	e8 f7 98 ff fd       	call   0xfdff9935
-  3e:	be                   	.byte 0xbe
-  3f:	02                   	.byte 0x2
-
-
+Closes: https://syzkaller.appspot.com/bug?extid=344c09c64fcd8d3d2782
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/9p/vfs_addr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 1ac0b3dcc077..121679488ab9 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -140,13 +140,16 @@ static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
+ 			goto no_fid;
+ 		p9_fid_get(fid);
+ 	} else if (S_ISLNK(rreq->inode->i_mode)) {
++		/* racing unlink/rename can make this fail with -ENOENT;
++		 * that's expected, not a kernel bug, so don't WARN
++		 */
+ 		dentry = d_find_any_alias(rreq->inode);
+ 		if (!dentry)
+ 			goto no_fid;
+ 		fid = v9fs_fid_lookup(dentry);
+ 		dput(dentry);
+ 		if (IS_ERR(fid))
+-			goto no_fid;
++			return PTR_ERR(fid);
+ 	} else {
+ 		fid = v9fs_fid_find_inode(rreq->inode, writing, INVALID_UID, true);
+ 		if (!fid)
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
