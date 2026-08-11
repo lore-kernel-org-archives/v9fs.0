@@ -1,84 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADB3306776;
-	Tue, 11 Aug 2026 07:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F561DB92C;
+	Tue, 11 Aug 2026 14:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786433227; cv=none; b=GK4ADPMF+aXYIFVTG2TZOFycC2pZI7O0z66AQOtpT/WjV32Zrpvxuyxv/C6beG775tidR0vksfmAA0yM4lyzSoVGcULJIB9hus+jvhZKYZO9Bkqvxf/RI+CjAUZrtBRe01108htADRivZ3il/pBn454Ey9c/HNq79LuHhZo5MPM=
+	t=1786459804; cv=none; b=Iuf1CwLSNVly7XGua4yhDeHNBnBlx3istW4sOuGhqj1xWWo80JhWHGwNo3PbiSzQxMZC8J4UVCHNEwstWlTsVOQBHYA9vFlr3L6DN4ezl9BzZLGvM9oabSqAhZ4eBTMyNnz9VMjRO9YdN9UrRnzdKECxJe5wKQoLKcYrTQ1yYT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786433227; c=relaxed/simple;
-	bh=SbLo78Cr2HW2DkoM+Zu8uqrpTL6/jkg7YGLG/5Ws134=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=fQraOK32pApFCkl3sNbHYCw47sSuOGjFK5h6iQZqoUdB5BY+YxsyMy3k2psrs1le/s3jHdpqN/MfkOs0k6UKGszHLjfG+fFdlJxYrWr6gqZRs/5NaOXg6reW11Ia7sne7D2SXetxEavbA6whnbbluqCQ6cxANrEXvq++STT3J4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jyhX1YFr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786459804; c=relaxed/simple;
+	bh=zRwE3xlnsm+jC7icMPSdXXnkc0ck3+TtXumWQ9paDYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c8gF7APDoxq33x0oEomqfuuhOrLvfiU04qSSujWDR14ysEHPFxLMY0SpelZUIz0NUtHTa+CCh493pnpEULp2k37RVvXe1XO2uPhsrSLsr0rpo/YYGYSGbe6YZq4pFiBjLXrUuXqg3oW2Mt/uMH5YRvlzC4WveF9YkIpUt4e2cxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=if5MxDxH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jyhX1YFr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881E11F000E9;
-	Tue, 11 Aug 2026 07:27:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="if5MxDxH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497FC1F000E9;
+	Tue, 11 Aug 2026 14:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786433226;
-	bh=K66bNXWEf3y6O/2oqZ+5XO0lv/SJwQqJyQa/tQNc0AA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=jyhX1YFrrnq1wTxRvMX2adEyfpPN3v/LJ7/qtkjf+TYdWFsYYIcugMNXAPa+bsGb/
-	 K/t7nFn3T7LYAgj/TynmyrcK3PZxbWxXlwHLiiQ/Y4kFCPNuv5IEcYsHUfdEiW+Pxp
-	 2RhUyax+NkA0059s4IyvBX9JhRD7NVUe85TJCyjg2CMsC5MBqQh8WBd5CwGBSBdCdn
-	 GQxT+li/hISZxCSp6HCFTAYrjNCgXdi7JRHv3tHOS34+Nlo8+p2FgK40/y3WWGPwhg
-	 Nkpi9xSZrGb1Uc0q5QOmLvYqQAzyBiUYoHN0fp5YJ46Or6u9LTuAuZTuOub0fsdPN0
-	 xQoweGsA1+/VA==
+	s=k20260515; t=1786459803;
+	bh=+GV3pM78AH/wU7QdIrvRueXFbVGczAPa7x+8KVjGSzU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=if5MxDxHil54txAn2+jeNYH/t9yh1CHjV4NqM7iaCZWG5zPYQRsvn4BxqIkyHb5Sp
+	 zjM3+KdaQQIrVDlZzG8oWaNT1dXGmXrujNUUadqEKNFfdAM1p0B6ggVdoA7TBZ4LEq
+	 bHha+twfG29cOjxuRz8C0FRAQWQPYJbC7PYTjx0OdaChqqL2GcoIEbNjo0rQfuqxxj
+	 wy0OkkN83LOLGirr1LNHtT/Qdyt7LkAHBtB5n4ZvYuQgDeCVrPh0NUDyv66Ljni53c
+	 hEg2ryFh1BWgHIBZexkJhOfJZLw+2XQ85684zy8CCgh4LEj51hWUnUJ67+BzoebRdx
+	 UuokgaVt7WRYQ==
+Date: Tue, 11 Aug 2026 16:49:57 +0200
+From: Michael Grzeschik <mgr@kernel.org>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net/9p/usbg: fix descriptor cleanup use-after-free
+Message-ID: <ansuE8ZWqWueu-fE@line.checkpat.ch>
+References: <20260731150414.3135662-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v9 00/26] netfs: Keep track of folios in a segmented
- bio_vec[] chain
-From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: David Howells <dhowells@redhat.com>, 
- Christian Brauner <christian@brauner.io>, 
- Matthew Wilcox <willy@infradead.org>, Paulo Alcantara <pc@manguebit.org>, 
- Jens Axboe <axboe@kernel.dk>, Leon Romanovsky <leon@kernel.org>, 
- Steve French <sfrench@samba.org>, 
- ChenXiaoSong <chenxiaosong@chenxiaosong.com>, 
- Marc Dionne <marc.dionne@auristor.com>, Stefan Metzmacher <metze@samba.org>, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
- linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <annlWwsCPjNgcKa-@infradead.org>
-References: <20260810144746.574036-1-dhowells@redhat.com>
- <annlWwsCPjNgcKa-@infradead.org>
-Date: Tue, 11 Aug 2026 09:26:58 +0200
-Message-Id: <20260811-wegkommen-unfehlbar-selektiert-547aaf3c775b@brauner>
-X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=600; i=brauner@kernel.org;
- h=from:subject:message-id; bh=SbLo78Cr2HW2DkoM+Zu8uqrpTL6/jkg7YGLG/5Ws134=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRVnTv6756TAWNwzpYbp6uPrDGo4imQ/fbk+jW7DUsuL
- b71cnIze0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEFv5n+KftNFM8KmD21nd8
- 72qdX0/+//vls7jriRGWqee6nD1evXJi+Kef+vzIchGNyFqW00a/fZW2Xk22O79bdrrI22h3iYi
- zz9gA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731150414.3135662-1-nicoyip.dev@gmail.com>
 
-> this is a bad idea.  This is a giant series that also touches core code
-> with no review whatsoever.  And I repeatedly asked for:
-
-Since it's post the cut off point the series does not make the coming
-merge window. It's also not in -next on purpose. The series was just
-pulled for testing.
-
+On Fri, Jul 31, 2026 at 11:04:14PM +0800, Chengfeng Ye wrote:
+> usb9pfs_free_func() frees the f_usb9pfs object before calling
+> usb_free_all_descriptors().  The usb_function passed to the latter is
+> embedded in the freed object, so removing the function from a gadget
+> dereferences freed memory.
 > 
->  1) the core changes to be split out
->  2) come up with users for this very core primitive in the hot path
->     (iov_iter) that are not just for your rather niche use case
+> The failing teardown sequence is:
 > 
-> There's been absolutely no follow on to this, and we should not treat
-> the absolute core I/O path like this.
+>   configfs unlink
+>     usb9pfs_free_func()
+>       kfree(usb9pfs)
+>       usb_free_all_descriptors(f)
+>         dereference the embedded usb_function
+> 
+> KASAN reported:
+> 
+>   BUG: KASAN: slab-use-after-free in usb_free_all_descriptors+0x138/0x190
+>   Read of size 8 at addr ffff888106a73088 by task poc/95
+>   Call Trace:
+>    usb_free_all_descriptors+0x138/0x190
+>    config_usb_cfg_unlink+0x1f0/0x2f0
+>    configfs_unlink+0x321/0x6f0
+> 
+> Free the descriptors before freeing their containing object.
 
+Although this is a copy of https://lore.kernel.org/all/20260529081817.77898-1-zhaoyz24@mails.tsinghua.edu.cn/
+which actually came earlier than your, I like the commit message here better.
+
+Acked-by: Michael Grzeschik <mgr@kernel.org>
+
+> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+>  net/9p/trans_usbg.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+> index 419cda13a7b5..8c2f0d8592c8 100644
+> --- a/net/9p/trans_usbg.c
+> +++ b/net/9p/trans_usbg.c
+> @@ -725,8 +725,6 @@ static void usb9pfs_free_func(struct usb_function *f)
+>  	struct f_usb9pfs *usb9pfs = func_to_usb9pfs(f);
+>  	struct f_usb9pfs_opts *opts;
+>  
+> -	kfree(usb9pfs);
+> -
+>  	opts = container_of(f->fi, struct f_usb9pfs_opts, func_inst);
+>  
+>  	mutex_lock(&opts->lock);
+> @@ -734,6 +732,7 @@ static void usb9pfs_free_func(struct usb_function *f)
+>  	mutex_unlock(&opts->lock);
+>  
+>  	usb_free_all_descriptors(f);
+> +	kfree(usb9pfs);
+>  }
+>  
+>  static int usb9pfs_set_alt(struct usb_function *f,
