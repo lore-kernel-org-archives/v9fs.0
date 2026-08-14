@@ -1,106 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F561DB92C;
-	Tue, 11 Aug 2026 14:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D0C1A682E
+	for <v9fs@lists.linux.dev>; Fri, 14 Aug 2026 04:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459804; cv=none; b=Iuf1CwLSNVly7XGua4yhDeHNBnBlx3istW4sOuGhqj1xWWo80JhWHGwNo3PbiSzQxMZC8J4UVCHNEwstWlTsVOQBHYA9vFlr3L6DN4ezl9BzZLGvM9oabSqAhZ4eBTMyNnz9VMjRO9YdN9UrRnzdKECxJe5wKQoLKcYrTQ1yYT0=
+	t=1786680577; cv=none; b=ZsBHRcZjuTme5wIpYLOjlpPLY0ehpoJ0p/nRx7zJsueajC8iIaUQFNGaTy5w//fF6Y0JNmccIb6T83tOoLYHR706tVUrrNNcT3W57S8G4qo56nBfb2qkmzGjtbXEy6qAWv3+OywI7YzcpraGweEyK3ORbFPZ7WUILYj+TbArAKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459804; c=relaxed/simple;
-	bh=zRwE3xlnsm+jC7icMPSdXXnkc0ck3+TtXumWQ9paDYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c8gF7APDoxq33x0oEomqfuuhOrLvfiU04qSSujWDR14ysEHPFxLMY0SpelZUIz0NUtHTa+CCh493pnpEULp2k37RVvXe1XO2uPhsrSLsr0rpo/YYGYSGbe6YZq4pFiBjLXrUuXqg3oW2Mt/uMH5YRvlzC4WveF9YkIpUt4e2cxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=if5MxDxH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786680577; c=relaxed/simple;
+	bh=tlVdFl6hUxGVjFRXuOznxbth6/nhaj9rJTNS8zrlhrc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EF0LbZgUjzmSDvjY398jR4bcpXoFvH3tGNgXfe8ivpMAWk5QkWAyHcWMVEA9A+OmLrChN7I1PZlggW+oTSO34lasTwqCNJPNXfGCaCwBJXwbsLUexSqLr5wz7SenQoHU4hHmA5CNgFQutSb/eNJ1O7wfJFozCJn9OBGqFnuNkyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=l/tlOVIB; arc=none smtp.client-ip=178.154.239.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="if5MxDxH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497FC1F000E9;
-	Tue, 11 Aug 2026 14:50:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786459803;
-	bh=+GV3pM78AH/wU7QdIrvRueXFbVGczAPa7x+8KVjGSzU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=if5MxDxHil54txAn2+jeNYH/t9yh1CHjV4NqM7iaCZWG5zPYQRsvn4BxqIkyHb5Sp
-	 zjM3+KdaQQIrVDlZzG8oWaNT1dXGmXrujNUUadqEKNFfdAM1p0B6ggVdoA7TBZ4LEq
-	 bHha+twfG29cOjxuRz8C0FRAQWQPYJbC7PYTjx0OdaChqqL2GcoIEbNjo0rQfuqxxj
-	 wy0OkkN83LOLGirr1LNHtT/Qdyt7LkAHBtB5n4ZvYuQgDeCVrPh0NUDyv66Ljni53c
-	 hEg2ryFh1BWgHIBZexkJhOfJZLw+2XQ85684zy8CCgh4LEj51hWUnUJ67+BzoebRdx
-	 UuokgaVt7WRYQ==
-Date: Tue, 11 Aug 2026 16:49:57 +0200
-From: Michael Grzeschik <mgr@kernel.org>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net/9p/usbg: fix descriptor cleanup use-after-free
-Message-ID: <ansuE8ZWqWueu-fE@line.checkpat.ch>
-References: <20260731150414.3135662-1-nicoyip.dev@gmail.com>
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="l/tlOVIB"
+Received: from mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1c:3033:0:640:ec58:0])
+	by forward103b.mail.yandex.net (postfix) with ESMTPS id 32B08C0079;
+	Fri, 14 Aug 2026 07:09:25 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (smtp) with ESMTPSA id M9IIFbad5eA0-qR4lmRfT;
+	Fri, 14 Aug 2026 07:09:24 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1786680564; bh=Qpsbks4+D1vK8OMuZD9dOsWGbGGdWD19O8XU8KIZoY8=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=l/tlOVIB+df1rb2sQB61DJnXWGkYgJjZDpBybDKnmv5P8P25C6udSnKI2euvnoCQg
+	 QIGOrKrsA83CdDGo76ilLrWZDQXmDO3RQ+A9Oua74fZgPZAYFOMAK3MiH71H+pYKvN
+	 5nvum+2KIpcy3PprnXGAJ1ztU38b2zIjMSFBcLJA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] 9p: simplify v9fs_cache_session_get_cookie()
+Date: Fri, 14 Aug 2026 07:08:26 +0300
+Message-ID: <20260814040826.1213127-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731150414.3135662-1-nicoyip.dev@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 31, 2026 at 11:04:14PM +0800, Chengfeng Ye wrote:
-> usb9pfs_free_func() frees the f_usb9pfs object before calling
-> usb_free_all_descriptors().  The usb_function passed to the latter is
-> embedded in the freed object, so removing the function from a gadget
-> dereferences freed memory.
-> 
-> The failing teardown sequence is:
-> 
->   configfs unlink
->     usb9pfs_free_func()
->       kfree(usb9pfs)
->       usb_free_all_descriptors(f)
->         dereference the embedded usb_function
-> 
-> KASAN reported:
-> 
->   BUG: KASAN: slab-use-after-free in usb_free_all_descriptors+0x138/0x190
->   Read of size 8 at addr ffff888106a73088 by task poc/95
->   Call Trace:
->    usb_free_all_descriptors+0x138/0x190
->    config_usb_cfg_unlink+0x1f0/0x2f0
->    configfs_unlink+0x321/0x6f0
-> 
-> Free the descriptors before freeing their containing object.
+Use the convenient 'strreplace()' to simplify
+'v9fs_cache_session_get_cookie()'.
 
-Although this is a copy of https://lore.kernel.org/all/20260529081817.77898-1-zhaoyz24@mails.tsinghua.edu.cn/
-which actually came earlier than your, I like the commit message here better.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ fs/9p/cache.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Acked-by: Michael Grzeschik <mgr@kernel.org>
+diff --git a/fs/9p/cache.c b/fs/9p/cache.c
+index 12c0ae29f185..cb0e5b61e131 100644
+--- a/fs/9p/cache.c
++++ b/fs/9p/cache.c
+@@ -20,18 +20,15 @@ int v9fs_cache_session_get_cookie(struct v9fs_session_info *v9ses,
+ 				  const char *dev_name)
+ {
+ 	struct fscache_volume *vcookie;
+-	char *name, *p;
++	char *name;
+ 
+ 	name = kasprintf(GFP_KERNEL, "9p,%s,%s",
+ 			 dev_name, v9ses->cachetag ?: v9ses->aname);
+ 	if (!name)
+ 		return -ENOMEM;
+ 
+-	for (p = name; *p; p++)
+-		if (*p == '/')
+-			*p = ';';
+-
+-	vcookie = fscache_acquire_volume(name, NULL, NULL, 0);
++	vcookie = fscache_acquire_volume(strreplace(name, '/', ';'),
++					 NULL, NULL, 0);
+ 	p9_debug(P9_DEBUG_FSC, "session %p get volume %p (%s)\n",
+ 		 v9ses, vcookie, name);
+ 	if (IS_ERR(vcookie)) {
+-- 
+2.55.0
 
-> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
->  net/9p/trans_usbg.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-> index 419cda13a7b5..8c2f0d8592c8 100644
-> --- a/net/9p/trans_usbg.c
-> +++ b/net/9p/trans_usbg.c
-> @@ -725,8 +725,6 @@ static void usb9pfs_free_func(struct usb_function *f)
->  	struct f_usb9pfs *usb9pfs = func_to_usb9pfs(f);
->  	struct f_usb9pfs_opts *opts;
->  
-> -	kfree(usb9pfs);
-> -
->  	opts = container_of(f->fi, struct f_usb9pfs_opts, func_inst);
->  
->  	mutex_lock(&opts->lock);
-> @@ -734,6 +732,7 @@ static void usb9pfs_free_func(struct usb_function *f)
->  	mutex_unlock(&opts->lock);
->  
->  	usb_free_all_descriptors(f);
-> +	kfree(usb9pfs);
->  }
->  
->  static int usb9pfs_set_alt(struct usb_function *f,
