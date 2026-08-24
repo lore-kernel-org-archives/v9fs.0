@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C9B43F4AD
-	for <v9fs@lists.linux.dev>; Mon, 24 Aug 2026 14:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DF352C4F
+	for <v9fs@lists.linux.dev>; Mon, 24 Aug 2026 14:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787582707; cv=none; b=pGy0WUNTlfpTwIqCIWRShngIWxs9emIHCbcA4OAiZumNzhnybcqvMUfbwpf/25YJ5dY3NqqyR+fALeksavAvAHg9VjJgED1/xTycNCNnR1c1GljrT1uoanb1Rp2ouCXHhZC8n/m0Abi2y3sCa9darwxnai7rkxuz2oYGNV+hOMs=
+	t=1787582723; cv=none; b=Wm9O4zSNISUsekQxF1B6NuenUuUOkg5snTeJm0+Yf+p+GQPx1Y+gO/W63icUqVR2pUsB1UtyQHMG3hoLeP6qBexvcDw2qTmKZUX0p4vHcvnSnMCueDtCMJQcIRfBQdmaiUkAz7/GuazQe7ZpdQoqldOc7+MLGo2mJ8lWiIfIEss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787582707; c=relaxed/simple;
-	bh=UNrYDMf6eAxJ0FTwzE2bwebqez3ZBmvT7ji7dFtMFXc=;
+	s=arc-20240116; t=1787582723; c=relaxed/simple;
+	bh=5zSMz6OLTUHrQTCIhBj7aLAr9qMlQqWCFMxBwsTGFEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=sF9jvHuSD6HUzz5n2gRXgnSszlqfpDEPhIyMSMcL7osh8ug6RIvlBat0EM9uATZ6hg5Q/TF2IkWEv3oKyqcuKUOfTXCxBvMwA0Lu9rqNrQSyz+/yAv1x6PCZRWnL3MO7+GLql3tyJ6Fjz0UChjVrKj/WZgPM/H8R+srAE3Rf6kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mk2op0Q2; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=jw9lr7HWzwkB74ze2OlFz1S9QOnOzE0nnR6SN9+HGqqIbXO8wjk2VmNW6kJPYcysVBifZgdZ3hDlxwRQxDWSeLTb6e2q1JUFRut81DOlVGnTDv53G+FvIO1TPUjEwnWUjkmsUNcLB6BNlunbtyhO3b6euK+K59u+X4w/GhRI9E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XZFLJkk6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mk2op0Q2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XZFLJkk6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787582704;
+	s=mimecast20190719; t=1787582720;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Iq2/sdFHEfHQRYqyMFYXhuI1Z114QvIQc+DxaEQ93hs=;
-	b=Mk2op0Q2n8+vOCZ9Y45Ck98e3Au+3pRXxraTXryTDOc4cnESvqk7wPuPbFF2eVC4jv8aMv
-	xVyZD8wKjsfTUtSfMsx/vOJBib09AWQz7Qho7omMQYRo20/R3LeNXi3FsdgrWxa2K/UtwN
-	3r38RJU5gPO8IXshFD4riiWZu+wp5No=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=uz94seJkld4/VYmPIzePLWpyWumrSoaTR2JUNJSPhWI=;
+	b=XZFLJkk6M9dLix+ODtsGPDo/lXA8LehxZN8eYgVepqa+qhBLK9JqwwvDaN4j3KqW0qdufH
+	4OoaHxSpQufZnxwRZKGHMABebUfvNdFfDIdXJojvqF2mI20lQuwv2sRCwlF5rWgrghlyHN
+	Jp6hkU5+s01svUJGY5eYW1os1/Tvdcs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-gg_it8jhPX6GzkTumDMaMA-1; Mon,
- 24 Aug 2026 10:44:59 -0400
-X-MC-Unique: gg_it8jhPX6GzkTumDMaMA-1
-X-Mimecast-MFC-AGG-ID: gg_it8jhPX6GzkTumDMaMA_1787582695
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-mDOs-YwvM82jIQKWZb6chA-1; Mon,
+ 24 Aug 2026 10:45:16 -0400
+X-MC-Unique: mDOs-YwvM82jIQKWZb6chA-1
+X-Mimecast-MFC-AGG-ID: mDOs-YwvM82jIQKWZb6chA_1787582713
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 571F01955F3C;
-	Mon, 24 Aug 2026 14:44:55 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D3E731944B30;
+	Mon, 24 Aug 2026 14:45:12 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.15])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3EE751800348;
-	Mon, 24 Aug 2026 14:44:49 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2B9EF30002ED;
+	Mon, 24 Aug 2026 14:45:05 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Paulo Alcantara <pc@manguebit.org>
 Cc: David Howells <dhowells@redhat.com>,
@@ -65,10 +65,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v10 23/35] netfs: Add the cache object ID to netfs_read/write tracepoints
-Date: Mon, 24 Aug 2026 15:41:16 +0100
-Message-ID: <20260824144130.759997-24-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>
+Subject: [PATCH v10 25/35] smbdirect: Remove support for ITER_FOLIOQ from smbdirect_map_sges_from_iter()
+Date: Mon, 24 Aug 2026 15:41:18 +0100
+Message-ID: <20260824144130.759997-26-dhowells@redhat.com>
 In-Reply-To: <20260824144130.759997-1-dhowells@redhat.com>
 References: <20260824144130.759997-1-dhowells@redhat.com>
 Precedence: bulk
@@ -77,160 +79,125 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: 8qYDHeyO8ENqaQy0pOixGaZy9vc6mOr8Gt4CynT8iSw_1787582695
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: Sn-6xMbJxpGHe4GcdNCer5so0iAvcQbRfI3XgwAjOpg_1787582713
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Add the cache object debug ID to netfs_read/write tracepoints to make
-debugging easier as there's now a direct cross-reference with the
-cachefiles tracepoints that only log that debug ID.
+netfslib now only presents an bvecq queue and an associated ITER_BVECQ
+iterator to the filesystem, so it isn't going to see the ITER_FOLIOQ
+iterator.  So remove that code.
+
+Netfslib also won't supply ITER_BVEC/KVEC iterators, though smbdirect
+might; further in future, it won't supply iterators at all, but rather a
+bvecq slice (that can be used to construct an iterator).
 
 Signed-off-by: David Howells <dhowells@redhat.com>
+Acked-by: Stefan Metzmacher <metze@samba.org>
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Namjae Jeon <linkinjeon@kernel.org>
+cc: Stefan Metzmacher <metze@samba.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: Tom Talpey <tom@talpey.com>
+cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/cachefiles/io.c           |  1 +
- fs/netfs/fscache_io.c        |  2 +-
- include/linux/netfs.h        |  3 ++-
- include/trace/events/netfs.h | 27 +++++++++++++++------------
- 4 files changed, 19 insertions(+), 14 deletions(-)
+ fs/smb/smbdirect/connection.c | 68 -----------------------------------
+ 1 file changed, 68 deletions(-)
 
-diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-index b33ad1d21d44..a43fe168127a 100644
---- a/fs/cachefiles/io.c
-+++ b/fs/cachefiles/io.c
-@@ -927,6 +927,7 @@ bool cachefiles_begin_operation(struct netfs_cache_resources *cres,
+diff --git a/fs/smb/smbdirect/connection.c b/fs/smb/smbdirect/connection.c
+index f5e7e75dd809..f217cf127cf9 100644
+--- a/fs/smb/smbdirect/connection.c
++++ b/fs/smb/smbdirect/connection.c
+@@ -6,7 +6,6 @@
  
- 	if (!cachefiles_cres_file(cres)) {
- 		cres->ops = &cachefiles_netfs_cache_ops;
-+		cres->object_id = object->debug_id;
- 		if (object->file) {
- 			spin_lock(&object->lock);
- 			file = object->file;
-diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
-index 8bca63721eeb..056a2bae5d99 100644
---- a/fs/netfs/fscache_io.c
-+++ b/fs/netfs/fscache_io.c
-@@ -79,7 +79,7 @@ static int fscache_begin_operation(struct netfs_cache_resources *cres,
- 	cres->ops		= NULL;
- 	cres->cache_priv	= cookie;
- 	cres->cache_priv2	= NULL;
--	cres->debug_id		= cookie->debug_id;
-+	cres->cookie_id		= cookie->debug_id;
- 	cres->inval_counter	= cookie->inval_counter;
+ #include "internal.h"
+ #include <linux/bvecq.h>
+-#include <linux/folio_queue.h>
  
- 	if (!fscache_begin_cookie_access(cookie, why)) {
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 3882b6c7aaf0..ef1068a274a8 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -171,7 +171,8 @@ struct netfs_cache_resources {
- 	void				*cache_priv;
- 	void				*cache_priv2;
- 	uoff_t				cache_i_size;	/* Initial size of cache file */
--	unsigned int			debug_id;	/* Cookie debug ID */
-+	unsigned int			cookie_id;	/* Cache cookie debug ID */
-+	unsigned int			object_id;	/* Cache object debug ID */
- 	unsigned int			inval_counter;	/* object->inval_counter at begin_op */
- 	unsigned int			dio_size;	/* DIO block size */
- };
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index c395d3f5ed61..927287a7290c 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -311,6 +311,7 @@ TRACE_EVENT(netfs_read,
- 	    TP_STRUCT__entry(
- 		    __field(unsigned int,		rreq)
- 		    __field(unsigned int,		cookie)
-+		    __field(unsigned int,		object)
- 		    __field(uoff_t,			i_size)
- 		    __field(uoff_t,			start)
- 		    __field(size_t,			len)
-@@ -320,7 +321,8 @@ TRACE_EVENT(netfs_read,
+ struct smbdirect_map_sges {
+ 	struct ib_sge *sge;
+@@ -2131,70 +2130,6 @@ static ssize_t smbdirect_map_sges_from_kvec(struct iov_iter *iter,
+ 	return ret;
+ }
  
- 	    TP_fast_assign(
- 		    __entry->rreq	= rreq->debug_id;
--		    __entry->cookie	= rreq->cache_resources.debug_id;
-+		    __entry->cookie	= rreq->cache_resources.cookie_id;
-+		    __entry->object	= rreq->cache_resources.object_id;
- 		    __entry->i_size	= rreq->i_size;
- 		    __entry->start	= start;
- 		    __entry->len	= len;
-@@ -328,10 +330,10 @@ TRACE_EVENT(netfs_read,
- 		    __entry->netfs_inode = rreq->inode->i_ino;
- 			   ),
- 
--	    TP_printk("R=%08x %s c=%08x ni=%llx s=%llx l=%zx sz=%llx",
-+	    TP_printk("R=%08x %s c=%08x o=%08x ni=%llx s=%llx l=%zx sz=%llx",
- 		      __entry->rreq,
- 		      __print_symbolic(__entry->what, netfs_read_traces),
--		      __entry->cookie,
-+		      __entry->cookie, __entry->object,
- 		      __entry->netfs_inode,
- 		      __entry->start, __entry->len, __entry->i_size)
- 	    );
-@@ -555,6 +557,7 @@ TRACE_EVENT(netfs_write,
- 	    TP_STRUCT__entry(
- 		    __field(unsigned int,		wreq)
- 		    __field(unsigned int,		cookie)
-+		    __field(unsigned int,		object)
- 		    __field(unsigned int,		ino)
- 		    __field(enum netfs_write_trace,	what)
- 		    __field(uoff_t,			start)
-@@ -562,20 +565,19 @@ TRACE_EVENT(netfs_write,
- 			     ),
- 
- 	    TP_fast_assign(
--		    struct netfs_inode *__ctx = netfs_inode(wreq->inode);
--		    struct fscache_cookie *__cookie = netfs_i_cookie(__ctx);
- 		    __entry->wreq	= wreq->debug_id;
--		    __entry->cookie	= __cookie ? __cookie->debug_id : 0;
-+		    __entry->cookie	= wreq->cache_resources.cookie_id;
-+		    __entry->object	= wreq->cache_resources.object_id;
- 		    __entry->ino	= wreq->inode->i_ino;
- 		    __entry->what	= what;
- 		    __entry->start	= wreq->start;
- 		    __entry->len	= wreq->len;
- 			   ),
- 
--	    TP_printk("R=%08x %s c=%08x i=%x by=%llx-%llx",
-+	    TP_printk("R=%08x %s c=%08x o=%08x i=%x by=%llx-%llx",
- 		      __entry->wreq,
- 		      __print_symbolic(__entry->what, netfs_write_traces),
--		      __entry->cookie,
-+		      __entry->cookie, __entry->object,
- 		      __entry->ino,
- 		      __entry->start, __entry->start + __entry->len - 1)
- 	    );
-@@ -590,22 +592,23 @@ TRACE_EVENT(netfs_copy2cache,
- 		    __field(unsigned int,	rreq)
- 		    __field(unsigned int,	creq)
- 		    __field(unsigned int,	cookie)
-+		    __field(unsigned int,	object)
- 		    __field(unsigned int,	ino)
- 			     ),
- 
- 	    TP_fast_assign(
--		    struct netfs_inode *__ctx = netfs_inode(rreq->inode);
--		    struct fscache_cookie *__cookie = netfs_i_cookie(__ctx);
- 		    __entry->rreq	= rreq->debug_id;
- 		    __entry->creq	= creq->debug_id;
--		    __entry->cookie	= __cookie ? __cookie->debug_id : 0;
-+		    __entry->cookie	= rreq->cache_resources.cookie_id;
-+		    __entry->object	= rreq->cache_resources.object_id;
- 		    __entry->ino	= rreq->inode->i_ino;
- 			   ),
- 
--	    TP_printk("R=%08x CR=%08x c=%08x i=%x ",
-+	    TP_printk("R=%08x CR=%08x c=%08x o=%08x i=%x ",
- 		      __entry->rreq,
- 		      __entry->creq,
- 		      __entry->cookie,
-+		      __entry->object,
- 		      __entry->ino)
- 	    );
- 
+-/*
+- * Extract folio fragments from a FOLIOQ-class iterator and add them to an
+- * ib_sge list.  The folios are not pinned.
+- */
+-static ssize_t smbdirect_map_sges_from_folioq(struct iov_iter *iter,
+-					      struct smbdirect_map_sges *state,
+-					      ssize_t maxsize)
+-{
+-	const struct folio_queue *folioq = iter->folioq;
+-	unsigned int slot = iter->folioq_slot;
+-	ssize_t ret = 0;
+-	size_t offset = iter->iov_offset;
+-
+-	if (WARN_ON_ONCE(!folioq))
+-		return -EIO;
+-
+-	if (slot >= folioq_nr_slots(folioq)) {
+-		folioq = folioq->next;
+-		if (WARN_ON_ONCE(!folioq))
+-			return -EIO;
+-		slot = 0;
+-	}
+-
+-	do {
+-		struct folio *folio = folioq_folio(folioq, slot);
+-		size_t fsize = folioq_folio_size(folioq, slot);
+-
+-		if (offset < fsize) {
+-			size_t part = umin(maxsize, fsize - offset);
+-			bool ok;
+-
+-			ok = smbdirect_map_sges_single_page(state,
+-							    folio_page(folio, 0),
+-							    offset,
+-							    part);
+-			if (!ok)
+-				return -EIO;
+-
+-			offset += part;
+-			ret += part;
+-			maxsize -= part;
+-		}
+-
+-		if (offset >= fsize) {
+-			offset = 0;
+-			slot++;
+-			if (slot >= folioq_nr_slots(folioq)) {
+-				if (!folioq->next) {
+-					WARN_ON_ONCE(ret < iter->count);
+-					break;
+-				}
+-				folioq = folioq->next;
+-				slot = 0;
+-			}
+-		}
+-	} while (state->num_sge < state->max_sge && maxsize > 0);
+-
+-	iter->folioq = folioq;
+-	iter->folioq_slot = slot;
+-	iter->iov_offset = offset;
+-	iter->count -= ret;
+-	return ret;
+-}
+-
+ /*
+  * Extract page fragments from up to the given amount of the source iterator
+  * and build up an ib_sge list that refers to all of those bits.  The ib_sge list
+@@ -2225,9 +2160,6 @@ static ssize_t smbdirect_map_sges_from_iter(struct iov_iter *iter, size_t len,
+ 	case ITER_KVEC:
+ 		ret = smbdirect_map_sges_from_kvec(iter, state, len);
+ 		break;
+-	case ITER_FOLIOQ:
+-		ret = smbdirect_map_sges_from_folioq(iter, state, len);
+-		break;
+ 	default:
+ 		WARN_ONCE(1, "iov_iter_type[%u]\n", iov_iter_type(iter));
+ 		return -EIO;
 
