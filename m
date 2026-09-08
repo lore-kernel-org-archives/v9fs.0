@@ -1,101 +1,170 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB744999F;
-	Fri,  4 Sep 2026 13:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5444CB8B5
+	for <v9fs@lists.linux.dev>; Tue,  8 Sep 2026 09:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529065; cv=none; b=WcPeoc6/mvCfOImvPcoW2aR5bsCL99u9Z/CjgZ5PjvyuEmG4iPVb8ub3Zhb8P6h3y+Nurn5imIAaYVEnCThowwS4NbVTYls2l8QjbkzYYPXLFrFbWsh/kjaoPLcYs4269S571rGphI6Vj/my6oq7ObAwlN5HFrqWiDAHGGU8lzU=
+	t=1788858651; cv=none; b=aVCwphWHs4+uq+FfWcqwuuO+/RQC6QIuL9ZU+B2HpZQBQzViSvt4pUmQB6HVFEk95vo1+kfKpYWwuTK3VBYIFeU0uE+hN+XWLV1ats9EUpmQNVkMN50J/1c0XnyCZjdNdXzmD69d444AU+n0yPSHS9tyI3Cm7O6nWU5+K4ciivQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529065; c=relaxed/simple;
-	bh=Njjasc3IX0xlY9+6WXjjzKL0xM4yf+35381p8OsefCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oi6F/yNJIFf0HKSa1J1m156maDT3HDyU6X8am4JKw5CKuHJeUrXV43Dw16SwQiHUX8pediq+ioTd7dXwCiNPmfCIz0u6eXi5C5en/DYShjL/zT7QvQ3dBt+We8H4WB/bps1u+Vu14bQJ5HfyCp9++FvPMRbfwbYe9p01B79olPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=XHknQjvt; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1788858651; c=relaxed/simple;
+	bh=8tSqHlLIXJuWsBQYydJqqwZT5KxUO6DtIPiXjOTGxhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=G+O8r9EIm4+3HXWBqw1LAKwTIRNTYCbTWr2C1Op6DJX97S8R9517jcB+dMX4uuSqlUtFvRK4sdVcwZVYWs3DuqujmjcFgm3sA6ONgl6cMQZNvWwfS8qyK8ovg6VO7AeuROWjouYjSo1yGaeABvShKag3Y7y6QPPy5F1BlXnwEas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YNs/zS6y; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="XHknQjvt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=oSirYoF2RY8du2LiY0yBrNRVUm+QqIhfZ6Fhn2chzu8=; b=XHknQjvt0NgxRsBupg7P2PhkNT
-	D+1Ta/5ErjnUtCVk4uZKvSILseCTv9YqGiog8X/com2Sf5bCdgFMPj7tlZEAFwE8eMkajTZ6FLYtS
-	fn4E36B6a4C7qSifjje8LcAbZ2EtzfhW3s4ipyrO25meFYlu74ZIdzNvbUKO3czv/YCBWn9Q17AuC
-	VmZn2eTDDGEPuG5t+/wl1uOmQnuSw0MCnjrIqx5gQM71qkmY1tnI4oZtKUCc6XRp8WklST0QfaAE3
-	7TTzzbBV6tqQK8gn8g2GPTNXzSNeJhuRYHcm1k6vQJTDoWEt14Zlgjo1JY7JvSMje+CJH2S/82BcI
-	XC/XafggGOz8rQGGivKdDZLdezOa/zocJx3ZH9QzQyPMskYhBHAUorVTezU5gzSC1F/4fcNE3uZAI
-	CPjNa/6hPOehcMKztjodixp142mgKal9Rt+rZN/MzOYKYC006c+1aEeALKEVr2Aoee1ifNu63gBlx
-	fw8JdE3giIyDE+VPv5yc8YJJmHdfmKsGdBmn3ko9HLM6GZ6ygi4YkHL2dOH9ESgBHNayeLIMmuHYD
-	BOSBwryYimjxUeGvmZmk+zlize6xNWGXJXEm3SKwpk72HOClCsybA+46jlMbqlj8PRMhGwBTjbchY
-	Xej7eMLBAZpw7kSESRXL71JYm2C0jICTxiPiHgnio=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Hemanth Selam <hemanth.selam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: fix typos in comments
-Date: Fri, 04 Sep 2026 15:10:18 +0200
-Message-ID: <12963525.O9o76ZdvQC@weasel>
-In-Reply-To: <20260904112100.34541-1-hemanth.selam@gmail.com>
-References: <20260904112100.34541-1-hemanth.selam@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YNs/zS6y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788858648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C0xiqVZ1UP4oD+0sq73SGDSnEeFESxAGnTexw/YKrQk=;
+	b=YNs/zS6yoQAsG2k+BNW2XzI1tuq7QoI8DQUrw0KnMqhlmMVb4XoXm+4uOb5xrgCqgDWT/5
+	l+IPnZRCYw4q53wev66jDzgxpykVaipAqcqpIUtVua61OBFBG209Kt15WztDQQqNiPN9RN
+	vkinivRjLzXdp97SlGJeXcj1G/z3FQE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-Z9G_OryfNLuOMVNfyLh3Ag-1; Tue,
+ 08 Sep 2026 05:10:46 -0400
+X-MC-Unique: Z9G_OryfNLuOMVNfyLh3Ag-1
+X-Mimecast-MFC-AGG-ID: Z9G_OryfNLuOMVNfyLh3Ag_1788858644
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B2B31834595;
+	Tue,  8 Sep 2026 09:10:43 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.158])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3AA8430001A2;
+	Tue,  8 Sep 2026 09:10:34 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v12 0/8] netfs: Miscellaneous preparatory changes
+Date: Tue,  8 Sep 2026 10:10:21 +0100
+Message-ID: <20260908091031.1506798-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: 8jAh6DgmkiawWM5ZWpSqk2GAnWL2PFCZ_MjhASMJvF0_1788858644
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Friday, 4 September 2026 13:20:59 CEST Hemanth Selam wrote:
-> Fix typos in comments, reported by scripts/checkpatch.pl using the
-> misspelling list in scripts/spelling.txt.  Only touches comments, no code
-> changes.
-> 
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+Hi Christian,
 
-But didn't catch the double spaces in the commit log. ;-)
+Could you pull these patches please for -next?  This is the first of four
+batches.  This is based on your vfs.fixes as there are some prerequisite
+patches there.  This was split from v11 of a larger series[1].
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+This a collection of miscellaneous modifications to netfslib that I want to
+make ahead of bigger changes, including:
 
-> ---
->  include/net/9p/9p.h     | 2 +-
->  include/net/9p/client.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/net/9p/9p.h b/include/net/9p/9p.h
-> index fd7a034b8278..22ab7486795d 100644
-> --- a/include/net/9p/9p.h
-> +++ b/include/net/9p/9p.h
-> @@ -120,7 +120,7 @@ void _p9_debug(enum p9_debug_flags level, const char
-> *func, * @P9_RCREATE: response with file access information
->   * @P9_TREAD: request to transfer data from a file or directory
->   * @P9_RREAD: response with data requested
-> - * @P9_TWRITE: reuqest to transfer data to a file
-> + * @P9_TWRITE: request to transfer data to a file
->   * @P9_RWRITE: response with out much data was transferred to file
->   * @P9_TCLUNK: forget about a handle to an entity within the file system
->   * @P9_RCLUNK: response when server has forgotten about the handle
-> diff --git a/include/net/9p/client.h b/include/net/9p/client.h
-> index 55c6cb54bd25..f3aead8939ef 100644
-> --- a/include/net/9p/client.h
-> +++ b/include/net/9p/client.h
-> @@ -97,7 +97,7 @@ struct p9_req_t {
->   * @proto_version: 9P protocol version to use
->   * @trans_mod: module API instantiated with this client
->   * @status: connection state
-> - * @trans: tranport instance state and API
-> + * @trans: transport instance state and API
->   * @fids: All active FID handles
->   * @reqs: All active requests.
->   * @name: node name used as client id
+ (1) Convert "unsigned long long" to "uoff_t".  This makes it a little more
+     obvious as to the meaning of the value.  Also convert some "loff_t" to
+     "uoff_t" as most of the time it's used the value really should never
+     be negative.
 
+ (2) Remove the writethrough code as the locking is really tricky to get
+     right and it looks like it could deadlock with Ceph if snapshots are
+     used.
 
+ (3) Adjust some tracepoints, including adding the cache object ID to
+     certain tracepoinits.
 
+ (4) Make use of PG_private_2 opt-in.  Use of PG_private_2 is deprecated
+     and the MM people would like their page bit back, so we need to stop
+     using it soon.
+
+ (5) Add some helper functions to handle the barriering needed for the
+     NETFS_RREQ_ALL_QUEUED flag.
+
+ (6) Set the subrequest type at allocation time so that the allocation
+     trace records the proposed type.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-1
+
+Thanks,
+David
+
+Changes
+=======
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+
+David Howells (8):
+  netfs: Use uoff_t instead of unsigned long long and loff_t
+  netfs: Remove the writethrough code
+  netfs: trace: Change the "clear" folio traces to "endwb"
+  netfs: trace: Rejig a couple of the tracepoints
+  netfs: Add the cache object ID to netfs_read/write tracepoints
+  netfs: Make deprecated PG_private_2 support opt-in
+  netfs: Add some functions to wrap the all-queued handling
+  netfs: Set subrequest->source at alloc before trace emission
+
+ fs/9p/vfs_addr.c                  |   1 -
+ fs/afs/file.c                     |   5 +-
+ fs/cachefiles/interface.c         |  10 +--
+ fs/cachefiles/internal.h          |   4 +-
+ fs/cachefiles/io.c                |  25 +++---
+ fs/ceph/Kconfig                   |   1 +
+ fs/ceph/addr.c                    |   4 +-
+ fs/netfs/Kconfig                  |   3 +
+ fs/netfs/Makefile                 |   2 +-
+ fs/netfs/buffered_read.c          |  35 ++++----
+ fs/netfs/buffered_write.c         |  66 +++------------
+ fs/netfs/direct_read.c            |  14 ++--
+ fs/netfs/direct_write.c           |   8 +-
+ fs/netfs/fscache_cookie.c         |   8 +-
+ fs/netfs/fscache_io.c             |  10 +--
+ fs/netfs/internal.h               |  67 ++++++++++++---
+ fs/netfs/iterator.c               |   2 +-
+ fs/netfs/main.c                   |   1 -
+ fs/netfs/misc.c                   |  10 +--
+ fs/netfs/objects.c                |   6 +-
+ fs/netfs/read_collect.c           |  14 ++--
+ fs/netfs/read_pgpriv2.c           |  13 ++-
+ fs/netfs/read_retry.c             |   5 +-
+ fs/netfs/read_single.c            |  11 +--
+ fs/netfs/stats.c                  |   4 +-
+ fs/netfs/write_collect.c          |  25 +++---
+ fs/netfs/write_issue.c            | 123 ++-------------------------
+ fs/netfs/write_retry.c            |   5 +-
+ fs/nfs/Kconfig                    |   1 +
+ include/linux/fscache-cache.h     |   2 +-
+ include/linux/fscache.h           |  36 ++++----
+ include/linux/netfs.h             |  80 +++++++++---------
+ include/trace/events/cachefiles.h |  30 +++----
+ include/trace/events/fscache.h    |  10 +--
+ include/trace/events/netfs.h      | 134 +++++++++++++++---------------
+ 35 files changed, 324 insertions(+), 451 deletions(-)
 
