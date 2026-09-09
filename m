@@ -1,51 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5187852ED4A
-	for <v9fs@lists.linux.dev>; Tue,  8 Sep 2026 09:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82F543F08D
+	for <v9fs@lists.linux.dev>; Wed,  9 Sep 2026 07:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788858713; cv=none; b=dG9T7THcn7C03y9UW/qBjIPHY4tjbj8igYBLYwrfj8zf5p3R4A5EAFB8etW7VW4CcyjfITSRnhj+clYmPaBrk5tFsO5TOvCNAurf7qqmOJh0rumlQlZx6hpQ1kXRijgYw7xVE2keyrYaz1SQwgLnJJchDJJhE9+0tbk2dgqwBb0=
+	t=1788938499; cv=none; b=YH9WzBQaCMMiprs6Ex5AxwPzZ4Z2hvP+FCHhSFkos6ZlmPfD31qReNQ7wEOA6ibaGN0EH9U0c99foGgGYvV2VifI246LANEbR96d7ZZS3AcAS4RuvWkDFjBB3GsGD8T4lQLqOdROUSGCSvEXYf6scWER9/wPoNttZ2V65hPzERY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788858713; c=relaxed/simple;
-	bh=AfC6AN0+oRv9f00/2dtlwIkW+5nMtEfQM9UmhCLa+bE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=DLvlXbtA0+Wfytu1Bqey0SkmxlNa8KroGPUBjrvObJr+6+W1CFbD7Gu3/sm41gu+rufZofZvQ+z95KHRyEcseyyRene0tSrbkNmM2j15GnNfk2YzYwpcX7hPvb4Iv4YGGsOFRNywW/V34AAPNat2+Qe2Ipujhkx6difev4YjRrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PPBHDoXU; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1788938499; c=relaxed/simple;
+	bh=Dq9QzC4Rw+uS4zcZFxnG/iQOlbmorYFisIjxewZuk38=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=e4lJyPRq6czyQ60Aw5dhMDQpPZYYwpPD7I6OXtVi/Oc7VJtuUsx7BP5IUCiG+BVHjDokbUVC5pXrFQ4IblRzR5bvBrsU45ovEg8ODEvuFmqnIkPo4aKc+2Lt9pWTqGopn9XVPUYES66YS64YWtyRrPgc9bjuAvI1ZFl+pKHX/80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gHFGrtTD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PPBHDoXU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gHFGrtTD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788858711;
+	s=mimecast20190719; t=1788938492;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sxO7FEkCCz/20KjVrg30v5ozCynNyOtWLTOKJ0S48jc=;
-	b=PPBHDoXU2fRFpnPGHcS3R2yceXP5ApVJQsvB+Vs/n4PpckqD698Z0+lH3/fesGoGgSdUu7
-	TQQooYuyuHv0dmZ5Tjo/23KuWHNNAQouA47sQ+H/yC2+8xhAr9txHv1tmyQ0tbFe7E5wJG
-	TaxUX4pVXhGjmZqHm7a1bHgbvS9nR4o=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NwTohl+L3wBgxbiNt8Qf67OZRjLUf9WteY3EfU1JFtw=;
+	b=gHFGrtTDJaolgTC4xTiIVM4wIcqwe5H7onK5K9FaoNBGm4L0TGDgpL65P6Cq9FNXXjr3bO
+	zhflNApdxm+4YEv75SjsjRUcpuxNqd16Fj81U2liuW6eSTyHnLEPtaoDMxKr3K07LcUKz0
+	kErbtAsXDznjkw9L6V6q2oxkMWU8ha8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-8YNJsXH9MtiWIpWsQgpP2g-1; Tue,
- 08 Sep 2026 05:11:47 -0400
-X-MC-Unique: 8YNJsXH9MtiWIpWsQgpP2g-1
-X-Mimecast-MFC-AGG-ID: 8YNJsXH9MtiWIpWsQgpP2g_1788858705
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-5zXez9ViMRWllKQjIz_I_A-1; Wed,
+ 09 Sep 2026 03:21:28 -0400
+X-MC-Unique: 5zXez9ViMRWllKQjIz_I_A-1
+X-Mimecast-MFC-AGG-ID: 5zXez9ViMRWllKQjIz_I_A_1788938486
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 017AC195DB9B;
-	Tue,  8 Sep 2026 09:11:45 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97D8218005B3;
+	Wed,  9 Sep 2026 07:21:24 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 260CF1800605;
-	Tue,  8 Sep 2026 09:11:38 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C1CB01800446;
+	Wed,  9 Sep 2026 07:21:16 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-To: Paulo Alcantara <pc@manguebit.org>
+To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
-	Christian Brauner <christian@brauner.io>,
+	Paulo Alcantara <pc@manguebit.org>,
 	Matthew Wilcox <willy@infradead.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Marc Dionne <marc.dionne@auristor.com>,
@@ -61,179 +59,122 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v12 8/8] netfs: Set subrequest->source at alloc before trace emission
-Date: Tue,  8 Sep 2026 10:10:29 +0100
-Message-ID: <20260908091031.1506798-9-dhowells@redhat.com>
-In-Reply-To: <20260908091031.1506798-1-dhowells@redhat.com>
-References: <20260908091031.1506798-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v13 0/8] netfs: Miscellaneous preparatory changes
+Date: Wed,  9 Sep 2026 08:20:54 +0100
+Message-ID: <20260909072105.1663687-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 3noGKOC5bQcUWxgHNGO-D1-4Atin2w16ViVhUabQtl8_1788858705
+X-Scanned-By: MIMEDefang 3.4.1 on 127.0.0.2
+X-Mimecast-MFC-PROC-ID: vRXrfzRTrsr1lO0qcPs2ur3FdDtzYqomqgveq5gaK5U_1788938486
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Set subrequest->source in netfs_alloc_subrequest() before we emit the trace
-line indicating we allocated the subrequest.  Note that this requires the
-allocation of the subreq in netfs_read_to_pagecache() to be pushed to after
-the decision about what sort of subreq it should be.
+Hi Christian,
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
----
- fs/netfs/buffered_read.c | 4 ++--
- fs/netfs/direct_read.c   | 3 +--
- fs/netfs/internal.h      | 3 ++-
- fs/netfs/objects.c       | 4 +++-
- fs/netfs/read_retry.c    | 3 +--
- fs/netfs/read_single.c   | 2 +-
- fs/netfs/write_issue.c   | 3 +--
- fs/netfs/write_retry.c   | 3 +--
- 8 files changed, 12 insertions(+), 13 deletions(-)
+Could you pull these patches please for -next?  This is the first of four
+batches.  This is based on your vfs.fixes as there are some prerequisite
+patches there.  This was split from v11 of a larger series[1].
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index e7fa30376862..f88b87c8303e 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -276,10 +276,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 
- 	do {
- 		struct netfs_io_subrequest *subreq;
--		enum netfs_io_source source = NETFS_SOURCE_UNKNOWN;
-+		enum netfs_io_source source;
- 		ssize_t slice;
- 
--		subreq = netfs_alloc_subrequest(rreq);
-+		subreq = netfs_alloc_subrequest(rreq, NETFS_SOURCE_UNKNOWN);
- 		if (!subreq) {
- 			ret = -ENOMEM;
- 			break;
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index 5405e108b7a3..8c15f3079723 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -55,7 +55,7 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		struct netfs_io_subrequest *subreq;
- 		ssize_t slice;
- 
--		subreq = netfs_alloc_subrequest(rreq);
-+		subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 		if (!subreq) {
- 			/* Stash the error in the request if there's not
- 			 * already an error set.
-@@ -64,7 +64,6 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 			break;
- 		}
- 
--		subreq->source	= NETFS_DOWNLOAD_FROM_SERVER;
- 		subreq->start	= start;
- 		subreq->len	= size;
- 
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index e0aa0ea510e9..ec520c948420 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -92,7 +92,8 @@ void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
- void netfs_clear_subrequests(struct netfs_io_request *rreq);
- void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
- void netfs_put_failed_request(struct netfs_io_request *rreq);
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source);
- 
- static inline void netfs_see_request(struct netfs_io_request *rreq,
- 				     enum netfs_rreq_ref_trace what)
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 3460aa1c4af1..9c6ea718692a 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -207,7 +207,8 @@ void netfs_put_failed_request(struct netfs_io_request *rreq)
- /*
-  * Allocate and partially initialise an I/O request structure.
-  */
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq)
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source)
- {
- 	struct netfs_io_subrequest *subreq;
- 	mempool_t *mempool = rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool;
-@@ -224,6 +225,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	INIT_WORK(&subreq->work, NULL);
- 	INIT_LIST_HEAD(&subreq->rreq_link);
- 	refcount_set(&subreq->ref, 2);
-+	subreq->source = source;
- 	subreq->rreq = rreq;
- 	subreq->debug_index = atomic_inc_return(&rreq->subreq_counter);
- 	netfs_get_request(rreq, netfs_rreq_trace_get_subreq);
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 46810d29f0c0..396a05432a7e 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -195,12 +195,11 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 		 * and insert them after.
- 		 */
- 		do {
--			subreq = netfs_alloc_subrequest(rreq);
-+			subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 			if (!subreq) {
- 				subreq = to;
- 				goto abandon_after;
- 			}
--			subreq->source		= NETFS_DOWNLOAD_FROM_SERVER;
- 			subreq->start		= start;
- 			subreq->len		= len;
- 			subreq->stream_nr	= stream->stream_nr;
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index ccb5fc809d99..50775370d13d 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -92,7 +92,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	struct netfs_io_subrequest *subreq;
- 	int ret = 0;
- 
--	subreq = netfs_alloc_subrequest(rreq);
-+	subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 	if (!subreq)
- 		return -ENOMEM;
- 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9a528da4bf9f..e7cb496f6324 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -168,10 +168,9 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- 	    wreq_iter->folioq_slot >= folioq_nr_slots(wreq_iter->folioq))
- 		rolling_buffer_make_space(&wreq->buffer, wreq->gfp);
- 
--	subreq = netfs_alloc_subrequest(wreq);
-+	subreq = netfs_alloc_subrequest(wreq, stream->source);
- 	if (!subreq)
- 		return;
--	subreq->source		= stream->source;
- 	subreq->start		= start;
- 	subreq->stream_nr	= stream->stream_nr;
- 	subreq->io_iter		= *wreq_iter;
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 6cd584242af2..d7d5348496fc 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -149,8 +149,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		 * and insert them after.
- 		 */
- 		do {
--			subreq = netfs_alloc_subrequest(wreq);
--			subreq->source		= to->source;
-+			subreq = netfs_alloc_subrequest(wreq, stream->source);
- 			subreq->start		= start;
- 			subreq->stream_nr	= to->stream_nr;
- 			subreq->retry_count	= 1;
+This a collection of miscellaneous modifications to netfslib that I want to
+make ahead of bigger changes, including:
+
+ (1) Convert "unsigned long long" to "uoff_t".  This makes it a little more
+     obvious as to the meaning of the value.  Also convert some "loff_t" to
+     "uoff_t" as most of the time it's used the value really should never
+     be negative.
+
+ (2) Remove the writethrough code as the locking is really tricky to get
+     right and it looks like it could deadlock with Ceph if snapshots are
+     used.
+
+ (3) Adjust some tracepoints, including adding the cache object ID to
+     certain tracepoinits.
+
+ (4) Make use of PG_private_2 opt-in.  Use of PG_private_2 is deprecated
+     and the MM people would like their page bit back, so we need to stop
+     using it soon.
+
+ (5) Add some helper functions to handle the barriering needed for the
+     NETFS_RREQ_ALL_QUEUED flag.
+
+ (6) Set the subrequest type at allocation time so that the allocation
+     trace records the proposed type.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-1
+
+Thanks,
+David
+
+Changes
+=======
+ver #13)
+- Fixed some sashiko-raised issues:
+  - Fixed netfs_mark_copy_to_cache() to use netfs_using_pgpriv2() rather
+    than checking NETFS_RREQ_USE_PGPRIV2.
+  - Fixed netfs_all_subreqs_queued() to do smp_mb__after_atomic() after
+    setting the NETFS_RREQ_ALL_QUEUED bit.
+  - Fixed netfs_single_dispatch_read() to not immediately contradict its
+    own initialisation of subreq->source.
+
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+[2] https://sashiko.dev/#/patchset/20260908091031.1506798-1-dhowells%40redhat.com
+
+David Howells (8):
+  netfs: Use uoff_t instead of unsigned long long and loff_t
+  netfs: Remove the writethrough code
+  netfs: trace: Change the "clear" folio traces to "endwb"
+  netfs: trace: Rejig a couple of the tracepoints
+  netfs: Add the cache object ID to netfs_read/write tracepoints
+  netfs: Make deprecated PG_private_2 support opt-in
+  netfs: Add some functions to wrap the all-queued handling
+  netfs: Set subrequest->source at alloc before trace emission
+
+ fs/9p/vfs_addr.c                  |   1 -
+ fs/afs/file.c                     |   5 +-
+ fs/cachefiles/interface.c         |  10 +--
+ fs/cachefiles/internal.h          |   4 +-
+ fs/cachefiles/io.c                |  25 +++---
+ fs/ceph/Kconfig                   |   1 +
+ fs/ceph/addr.c                    |   4 +-
+ fs/netfs/Kconfig                  |   3 +
+ fs/netfs/Makefile                 |   2 +-
+ fs/netfs/buffered_read.c          |  37 ++++-----
+ fs/netfs/buffered_write.c         |  66 +++------------
+ fs/netfs/direct_read.c            |  14 ++--
+ fs/netfs/direct_write.c           |   8 +-
+ fs/netfs/fscache_cookie.c         |   8 +-
+ fs/netfs/fscache_io.c             |  10 +--
+ fs/netfs/internal.h               |  68 ++++++++++++---
+ fs/netfs/iterator.c               |   2 +-
+ fs/netfs/main.c                   |   1 -
+ fs/netfs/misc.c                   |  10 +--
+ fs/netfs/objects.c                |   6 +-
+ fs/netfs/read_collect.c           |  14 ++--
+ fs/netfs/read_pgpriv2.c           |  13 ++-
+ fs/netfs/read_retry.c             |   5 +-
+ fs/netfs/read_single.c            |  12 +--
+ fs/netfs/stats.c                  |   4 +-
+ fs/netfs/write_collect.c          |  25 +++---
+ fs/netfs/write_issue.c            | 123 ++-------------------------
+ fs/netfs/write_retry.c            |   5 +-
+ fs/nfs/Kconfig                    |   1 +
+ include/linux/fscache-cache.h     |   2 +-
+ include/linux/fscache.h           |  36 ++++----
+ include/linux/netfs.h             |  80 +++++++++---------
+ include/trace/events/cachefiles.h |  30 +++----
+ include/trace/events/fscache.h    |  10 +--
+ include/trace/events/netfs.h      | 134 +++++++++++++++---------------
+ 35 files changed, 326 insertions(+), 453 deletions(-)
 
