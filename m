@@ -1,183 +1,161 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971C7493D4E;
-	Thu, 10 Sep 2026 14:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAD239794B
+	for <v9fs@lists.linux.dev>; Thu, 10 Sep 2026 22:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789049243; cv=none; b=IKp+n7ZdgKijk3WzNFv0piCXglTMDzWQ2cBtSEIWU09geIlJrrpwcenLRtXfLTwcdoHM7eWWivpJXF4NkOf9knTq2G8OJg7C/TikTk/XfqlJKwckKA6L8B3+HBUnczpJAQoSpX4KQKwwQ46iHfECLKTqDiR+e3vhQmWpyNNbA98=
+	t=1789077784; cv=none; b=BTlPI2q88DS0MTVtqa+Ye+I3nqNL6QDORmFGJUKknHqBQfIcBc4R4ZwSlfL21Ng6xqAkpD3FNZH6PfpRcUhJ4jvHZoC5YMrIJldGiGYb/R5ppmIC+PmR3jlBwoVtqxbv2wMQvtkk4XXbeZxzpdkvWGU2MQQ0zWcHo0lL6Ytqvg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789049243; c=relaxed/simple;
-	bh=7AHrBlllx7CTtEZHixjBstoCtU2GH+xx1JqNfNfIt2A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jg58i9ZmNhg1lgPzk/Bu6+wXuiZ2/b27COari8Xs8cTi/RVC936YR0MAh9wlyOkXzB8Zzc2e+D59Kop46WUplVhP9I7ah9SUyajTCCdW2TvNG+Jn1amZX2xBTU5HsWF2bavWkYVwvHQDl3zE9jeNZbgv1jXH+18YFESHgFdot4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=utaqg+UL; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1789077784; c=relaxed/simple;
+	bh=BAAZhzk0dAIbmeXmLPZxSGD54t3+SbzTRmNSo8PYBJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=TXJWiydHfcDJAmYZPxUxHcv3EVUfeHR57kT7xpREGyn7gIDPgYMOy/FQMkCxsLEmQyxvvVktksaCREW+uLmQQQi/rP2gpTs/aE6/glqoYLUDAEdNc36m4oQ5BAJbSE5ga0G230p5kl8M7NJbl6alJwKFfxE+BoGTkxmPA6fU2zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f/rzWMgM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="utaqg+UL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=yVckXBT7ZkvtaRt/2Meu8jC/A0/uqyEsunIirUSTZHc=; b=utaqg+ULBFDjUrgWDK56ADnEFi
-	+fOPt3KUC1VWCk6SdJfjBhwvLYciV8l1jyIgZ7ZBF2+c4PkfcjisGoSracBN9ObFtlNM7XT7VnMEo
-	PgdwSGQuA42piRBu1PCfiXYmLHZQF9ZlJ2gCgwxYiFNYj5ftmq1BYb0fDr9Wk2JrYC7rlNC9d70g3
-	cjzV+gs7/FXMB/PKscEegj/hE7jxOumIGrTQyaiuy8MOcJX60OVVFrREcMQOEeZ+JEVT2HEbBgPJm
-	rQwuJRj99TjTkQR+wNcGllN7bYuFmqPJ6ir9MUTvYdm2VnATNnwauAO0ZzorFq76+VCy6l5+OqcRc
-	9vuL4tRcze/kFcz4nPsUcJE7cO7IxFvfVccAHO+FOpvpUO7F3rB4I78mCEfyClCve+xvjtYLyHug0
-	IwpcWKMPvGszWrNM4irJNbSuXzraKM1HlMORWW0bF1KT8s17NpT7alA3475ZK6wG0txI9EhWapjUi
-	cRmz5FlAtMZGIgjcocC5TQpGkOYPeBOCP32KdIAdrQcrQnFSniP7oay2Nf4iugq/EtZPinvZioIhl
-	jKo02CMnWxQxQQVxVFTUXoUsOhdSD/g36o4ZR/ti4uwMRiKgaCWJGYDW24qnNL7yTr4aUVxpIOAL1
-	cmhWFRhQyRdSv0bW6WO/Kn/fW88IdWpZUMIziNft8=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- dhowells@redhat.com, pc@manguebit.org, Michael Mulqueen <mike@method-b.uk>
-Cc: v9fs@lists.linux.dev, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
-Subject:
- Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL corruption of
- file data on cache modes with CACHE_WRITEBACK
-Date: Thu, 10 Sep 2026 16:06:51 +0200
-Message-ID: <10911959.nUPlyArG6x@weasel>
-In-Reply-To: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
-References: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f/rzWMgM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789077781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DVKw1I3EmpaGgSZ8G5JtCSfBramlAPLtWqMErVRVz5g=;
+	b=f/rzWMgMIrLS32kr6oCJJX5MB2X9hV7Vhp3qem66OKGcUpj81t8ghm3FWqZpQjVPoXRQqr
+	ozfTckMcRaV3dEOnN5cXUfXDbAFHEomGWdtKd43YZa4tqaXEnloKLTQY4VjGXOAFHsVvod
+	i5sBOJwxSUF1w9q9Xuo5390JnBMeOg0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-Cwu28Ar4P3K9AulwJN_yhQ-1; Thu,
+ 10 Sep 2026 18:02:58 -0400
+X-MC-Unique: Cwu28Ar4P3K9AulwJN_yhQ-1
+X-Mimecast-MFC-AGG-ID: Cwu28Ar4P3K9AulwJN_yhQ_1789077775
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 93F0E1800EFA;
+	Thu, 10 Sep 2026 22:02:53 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.54])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CBB3230002D1;
+	Thu, 10 Sep 2026 22:02:46 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily occupancy tracking-related
+Date: Thu, 10 Sep 2026 23:02:35 +0100
+Message-ID: <20260910220242.2165023-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: PBZmNHy7kOQIN77KAYWAEBCfBuyKCh2NhDn2kMh8NRI_1789077775
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Thursday, 10 September 2026 12:56:24 CEST Michael Mulqueen wrote:
-> Hi,
-> 
-> This is my first kernel bug report, so let's hope I've done it right!
-> 
-> [1.] One line summary of the problem:
-> 
-> A 9p mount returns NULs in place of file contents the server holds, and can
-> write those NULs back over the server's copy. Nothing reports an error - the
-> read succeeds and the file is the correct length. Affects CACHE_WRITEBACK
-> modes - mmap, loose and fscache - but not none or readahead.
-> 
-> [2.] Full description of the problem/report:
-> 
-> I enclose a reproducer script that shows the two presentations of this bug:
-> 
->   - Read side: a range whose folio has been evicted reads back as NULs
->     while the server's copy is intact. The whole file comes back as NULs.
->     A fresh open() on the same mount reads them too, so it is not
->     confined to one descriptor.
-> 
->   - Write side: A partial write into such a range destroys data the server
->     did hold.
-> 
-> I came across this bug on a cache=loose mount in ordinary use, I was seeing
-> this sporadically and I think git was usually the trigger. I switched to
-> cache=mmap, which made it rarer but did not stop it.
-> 
-> After the client's own writeback extends a file, zero_point appears to go
-> stale and the zero-fill branch in fs/netfs/buffered_write.c fires for
-> regions the server does have. The sites were that branch, fs/9p/vfs_inode.c
-> (use_zero_point = true to netfs_inode_init), and fs/netfs/misc.c.
-[...]
-> I then built and tested the likeliest commit and its parent:
-> 
->   - 2c8f4742bb76 ("netfs: Fix potential for tearing in ->remote_i_size and
->     ->zero_point") - clean.
-> 
->   - 4543a4d73794 ("netfs: Fix zeropoint update where i_size >
->     remote_i_size") - CORRUPT.
+Hi Christian,
 
-So that was:
+Could you pull these patches please into your vfs-7.4.netfs branch?  This
+is the second of four batches, in this case dealing with cachefiles, and is
+based upon the aforementioned branch.  This was split from v11 of a larger
+netfslib series[1].
 
-commit 4543a4d737944134a1394afe797622546fbcc98a
-Author: David Howells <dhowells@redhat.com>
-Date:   Tue May 12 13:33:43 2026 +0100
+Cachefiles is modified to better implement caching for the class of files
+that are opened new/truncated, written once sequentially with no seeking
+and then closed (ie. the most common class):
 
-    netfs: Fix zeropoint update where i_size > remote_i_size
-    
-    Fix the update of the zero point[*] by netfs_release_folio() when there is
-    uncommitted data in the pagecache beyond the folio being released but the
-    on-server EOF is in this folio (ie. i_size > remote_i_size).  The update
-    needs to limit zero_point to remote_i_size, not i_size as i_size is a local
-    phenomenon reflecting updates made locally to the pagecache, not stuff
-    written to the server.  remote_i_size tracks the server's i_size.
+ (1) The object type in the cachefiles file xattr is now correctly set to
+     CACHEFILES_CONTENT_{SINGLE,ALL,BACKFS_MAP} rather than just being 0,
+     to indicate whether we have one of: a single monolithic blob, all the
+     data up to cache i_size with no holes or a sparse file with the data
+     mapped by the backing file system (as currently upstream).
 
-[...]
+ (2) For "ALL" type files, the cache's i_size is used to track how much
+     data is saved in the cache and no longer bears any relation to the
+     netfs i_size.  The actual object size is stored in the xattr.
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index bad661ff2bec..723571ca1b88 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -307,10 +307,10 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
-                return false;
- 
-        netfs_read_sizes(inode, &i_size, &remote_i_size, &zero_point);
--       end = umin(folio_next_pos(folio), i_size);
-+       end = folio_next_pos(folio);
-        if (end > zero_point) {
-                spin_lock(&inode->i_lock);
--               end = umin(folio_next_pos(folio), inode->i_size);
-+               end = umin(end, ctx->_remote_i_size);
-                if (end > ctx->_zero_point)
-                        netfs_write_zero_point(inode, end);
-                spin_unlock(&inode->i_lock);
+ (3) For most typical files which are contiguous and written progressively,
+     the object type is now set to "ALL".  For anything else, cachefiles
+     uses SEEK_DATA/HOLE to find extent outlines at before (this is the
+     current behaviour and needs to be fixed, but in a separate set of
+     patches as it's not trivial).
 
-That would explain it, as _remote_i_size is only updated on explicit stat()
-(Tgetattr 9p request); with cache modes "loose" and "fscache" not even then.
+ (4) Reads of "ALL" type files can then skip the SEEK_DATA/HOLE step to
+     determine the occupancy; backing file i_size and the object size field
+     stored in the state xattr suffice.
 
-That's actually David's domain, but maybe something like the following might
-fix it?
+Other changes are also made:
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 210eb8f3958d..9585274b118a 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -73,6 +73,8 @@ int netfs_folio_written_back(struct folio *folio)
-                spin_lock(&ictx->inode.i_lock);
-                if (fend > ictx->_zero_point)
-                        netfs_write_zero_point(inode, fend);
-+               if (fend > ictx->_remote_i_size)
-+                       netfs_write_remote_i_size(inode, fend);
-                spin_unlock(&ictx->inode.i_lock);
- 
-                folio_detach_private(folio);
-@@ -90,6 +92,15 @@ int netfs_folio_written_back(struct folio *folio)
-                        goto end_wb;
-                }
- 
-+               {
-+                       unsigned long long wend = umin(folio_next_pos(folio),
-+                                                      i_size_read(inode));
-+                       spin_lock(&ictx->inode.i_lock);
-+                       if (wend > ictx->_remote_i_size)
-+                               netfs_write_remote_i_size(inode, wend);
-+                       spin_unlock(&ictx->inode.i_lock);
-+               }
-+
-                /* Need to detach the group pointer if the page didn't get
-                 * redirtied.  If it has been redirtied, then it must be within
-                 * the same group.
+ (1) cachefile_do_prepare_read() is merged into cachefiles_prepare_read()
+     now that the ondemand mode stuff got removed.
 
-I.e. updating _remote_i_size on client's self-inflicted size extension after
-write completed?
+ (2) Some extra traces are added for write failure and insufficient space.
 
-> I searched the v9fs and netfs public-inbox archives and did not find this
-> reported - apologies if I have missed a thread.
-> 
-> The nearest existing thread is Pierre Barre's "[BUG] 9p: data corruption
-> with cache=mmap under concurrent stat/write" (24 Dec 2025). I believe that
-> is a different bug: it needs stat racing against writes and manifests as a
-> wrong i_size. What I have here is single-threaded, deterministic, and
-> destroys data rather than mis-sizing the file. It is also absent on v6.18,
-> the release that report was made against.
+ (3) The state xattr on a cachefile is pre-set to try to avoid having to
+     deal with ENOSPC from setxattr when committing the object.
 
-Even though unrelated, that's not fixed yet either, is it?
+The patches can also be found here:
 
-/Christian
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-2
 
+Thanks,
+David
+
+Changes
+=======
+
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+
+David Howells (5):
+  cachefiles: Clean up cachefiles_do_prepare_read()
+  netfs, cachefiles: Add a couple of traces for write failure
+  cachefiles: Add a tracepoint to log insufficient space errors
+  cachefiles: Don't rely on backing fs storage map for most use cases
+  cachefiles: Preset the state xattr when creating a new file
+
+ fs/afs/file.c                     |   1 -
+ fs/cachefiles/interface.c         |  90 ++----
+ fs/cachefiles/internal.h          |  14 +-
+ fs/cachefiles/io.c                | 461 +++++++++++++++++++-----------
+ fs/cachefiles/namei.c             |  34 +--
+ fs/cachefiles/xattr.c             |  82 +++++-
+ fs/netfs/buffered_read.c          | 188 +++++++-----
+ fs/netfs/buffered_write.c         |   3 -
+ fs/netfs/internal.h               |   2 +
+ fs/netfs/objects.c                |   1 +
+ fs/netfs/read_retry.c             |   2 +
+ fs/netfs/read_single.c            |  40 +--
+ fs/netfs/write_collect.c          | 132 +++++++--
+ fs/netfs/write_issue.c            |  18 ++
+ fs/netfs/write_retry.c            |   3 +
+ include/linux/fscache.h           |  17 ++
+ include/linux/netfs.h             |  38 ++-
+ include/trace/events/cachefiles.h |  51 +++-
+ include/trace/events/netfs.h      |  11 +-
+ 19 files changed, 785 insertions(+), 403 deletions(-)
 
