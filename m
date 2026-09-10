@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAD239794B
-	for <v9fs@lists.linux.dev>; Thu, 10 Sep 2026 22:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E243B3C1D49
+	for <v9fs@lists.linux.dev>; Thu, 10 Sep 2026 22:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789077784; cv=none; b=BTlPI2q88DS0MTVtqa+Ye+I3nqNL6QDORmFGJUKknHqBQfIcBc4R4ZwSlfL21Ng6xqAkpD3FNZH6PfpRcUhJ4jvHZoC5YMrIJldGiGYb/R5ppmIC+PmR3jlBwoVtqxbv2wMQvtkk4XXbeZxzpdkvWGU2MQQ0zWcHo0lL6Ytqvg4=
+	t=1789077791; cv=none; b=DwWPqUYHWrqmhxq/7CquHXQik2VcyQHBi7VW5wAABoClmWJ+KUCkMJzKfis3+d4MO6e8rXwi+apDMCE6Y9sFW0mWBKhU2GRhRbXBHsmt3jFighwtJeLu4lJUfjd5h9ShOQFNtGe3FbZPuTX+az/tBCjOwK450PERKbm2j9dQiZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789077784; c=relaxed/simple;
-	bh=BAAZhzk0dAIbmeXmLPZxSGD54t3+SbzTRmNSo8PYBJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=TXJWiydHfcDJAmYZPxUxHcv3EVUfeHR57kT7xpREGyn7gIDPgYMOy/FQMkCxsLEmQyxvvVktksaCREW+uLmQQQi/rP2gpTs/aE6/glqoYLUDAEdNc36m4oQ5BAJbSE5ga0G230p5kl8M7NJbl6alJwKFfxE+BoGTkxmPA6fU2zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f/rzWMgM; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1789077791; c=relaxed/simple;
+	bh=v4zYEE3i1XdbFl0MNJmPClT6vCgfK1H2tqCLNzF1UCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=gE2ReBhGhaBsy7v2TXCEdAx3Sht2AK7kWGY3rcKjPjHvgrQRaGpElxwP5qsKmvaH6uX5DsQ46MA4rR5PLkYDEIPYjDx47e/B1uCUE1iyj8gb2V+xcWRwRTjl/exU1nxhxK9iJQ+CbJpq828MM288RSf0ThINmZVqrFBKCkSli2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ac7SkB8r; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f/rzWMgM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ac7SkB8r"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789077781;
+	s=mimecast20190719; t=1789077789;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=DVKw1I3EmpaGgSZ8G5JtCSfBramlAPLtWqMErVRVz5g=;
-	b=f/rzWMgMIrLS32kr6oCJJX5MB2X9hV7Vhp3qem66OKGcUpj81t8ghm3FWqZpQjVPoXRQqr
-	ozfTckMcRaV3dEOnN5cXUfXDbAFHEomGWdtKd43YZa4tqaXEnloKLTQY4VjGXOAFHsVvod
-	i5sBOJwxSUF1w9q9Xuo5390JnBMeOg0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wXRaGZyJ7r1xkDgtIbgyH0MFExVrvPsQqbcSthdUw6Q=;
+	b=ac7SkB8r9VgL1WXMXa1Rr/3Hbpd6h/l/xC06ytbOUTjs7FfmWAmiI+XknuBp60YIo/HE7b
+	smWGwhJ6oJC76kDHHXPashima8k/6tuoVR8tJcYf0a1qISE5zNNQKtZshJW242Vn7Cx/+W
+	o1C2amoh3K6fhlR8YAA3YNJxgUJ+0Yk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-Cwu28Ar4P3K9AulwJN_yhQ-1; Thu,
- 10 Sep 2026 18:02:58 -0400
-X-MC-Unique: Cwu28Ar4P3K9AulwJN_yhQ-1
-X-Mimecast-MFC-AGG-ID: Cwu28Ar4P3K9AulwJN_yhQ_1789077775
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-OKRNYd70O6CYGJtNymNBVQ-1; Thu,
+ 10 Sep 2026 18:03:03 -0400
+X-MC-Unique: OKRNYd70O6CYGJtNymNBVQ-1
+X-Mimecast-MFC-AGG-ID: OKRNYd70O6CYGJtNymNBVQ_1789077781
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 93F0E1800EFA;
-	Thu, 10 Sep 2026 22:02:53 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9E989180067D;
+	Thu, 10 Sep 2026 22:03:00 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.54])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CBB3230002D1;
-	Thu, 10 Sep 2026 22:02:46 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6BEB430001B9;
+	Thu, 10 Sep 2026 22:02:55 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -59,9 +61,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily occupancy tracking-related
-Date: Thu, 10 Sep 2026 23:02:35 +0100
-Message-ID: <20260910220242.2165023-1-dhowells@redhat.com>
+Subject: [PATCH v12 1/5] cachefiles: Clean up cachefiles_do_prepare_read()
+Date: Thu, 10 Sep 2026 23:02:36 +0100
+Message-ID: <20260910220242.2165023-2-dhowells@redhat.com>
+In-Reply-To: <20260910220242.2165023-1-dhowells@redhat.com>
+References: <20260910220242.2165023-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -69,93 +73,111 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: PBZmNHy7kOQIN77KAYWAEBCfBuyKCh2NhDn2kMh8NRI_1789077775
+X-Mimecast-MFC-PROC-ID: wTfQ141BNzUx-caW8EuZ4Ue-qjGZkqpgI9GDphRt4-8_1789077781
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Christian,
+Clean up cachefiles_do_prepare_read() by merging it into
+cachefiles_prepare_read() now that the ondemand mode stuff has been removed.
 
-Could you pull these patches please into your vfs-7.4.netfs branch?  This
-is the second of four batches, in this case dealing with cachefiles, and is
-based upon the aforementioned branch.  This was split from v11 of a larger
-netfslib series[1].
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/cachefiles/io.c | 37 +++++++++++++++----------------------
+ 1 file changed, 15 insertions(+), 22 deletions(-)
 
-Cachefiles is modified to better implement caching for the class of files
-that are opened new/truncated, written once sequentially with no seeking
-and then closed (ie. the most common class):
-
- (1) The object type in the cachefiles file xattr is now correctly set to
-     CACHEFILES_CONTENT_{SINGLE,ALL,BACKFS_MAP} rather than just being 0,
-     to indicate whether we have one of: a single monolithic blob, all the
-     data up to cache i_size with no holes or a sparse file with the data
-     mapped by the backing file system (as currently upstream).
-
- (2) For "ALL" type files, the cache's i_size is used to track how much
-     data is saved in the cache and no longer bears any relation to the
-     netfs i_size.  The actual object size is stored in the xattr.
-
- (3) For most typical files which are contiguous and written progressively,
-     the object type is now set to "ALL".  For anything else, cachefiles
-     uses SEEK_DATA/HOLE to find extent outlines at before (this is the
-     current behaviour and needs to be fixed, but in a separate set of
-     patches as it's not trivial).
-
- (4) Reads of "ALL" type files can then skip the SEEK_DATA/HOLE step to
-     determine the occupancy; backing file i_size and the object size field
-     stored in the state xattr suffice.
-
-Other changes are also made:
-
- (1) cachefile_do_prepare_read() is merged into cachefiles_prepare_read()
-     now that the ondemand mode stuff got removed.
-
- (2) Some extra traces are added for write failure and insufficient space.
-
- (3) The state xattr on a cachefile is pre-set to try to avoid having to
-     deal with ENOSPC from setxattr when committing the object.
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-2
-
-Thanks,
-David
-
-Changes
-=======
-
-ver #12)
-- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
-  chain"[1]
-
-[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
-
-David Howells (5):
-  cachefiles: Clean up cachefiles_do_prepare_read()
-  netfs, cachefiles: Add a couple of traces for write failure
-  cachefiles: Add a tracepoint to log insufficient space errors
-  cachefiles: Don't rely on backing fs storage map for most use cases
-  cachefiles: Preset the state xattr when creating a new file
-
- fs/afs/file.c                     |   1 -
- fs/cachefiles/interface.c         |  90 ++----
- fs/cachefiles/internal.h          |  14 +-
- fs/cachefiles/io.c                | 461 +++++++++++++++++++-----------
- fs/cachefiles/namei.c             |  34 +--
- fs/cachefiles/xattr.c             |  82 +++++-
- fs/netfs/buffered_read.c          | 188 +++++++-----
- fs/netfs/buffered_write.c         |   3 -
- fs/netfs/internal.h               |   2 +
- fs/netfs/objects.c                |   1 +
- fs/netfs/read_retry.c             |   2 +
- fs/netfs/read_single.c            |  40 +--
- fs/netfs/write_collect.c          | 132 +++++++--
- fs/netfs/write_issue.c            |  18 ++
- fs/netfs/write_retry.c            |   3 +
- include/linux/fscache.h           |  17 ++
- include/linux/netfs.h             |  38 ++-
- include/trace/events/cachefiles.h |  51 +++-
- include/trace/events/netfs.h      |  11 +-
- 19 files changed, 785 insertions(+), 403 deletions(-)
+diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+index e61e885784d6..2c1cd703f4bf 100644
+--- a/fs/cachefiles/io.c
++++ b/fs/cachefiles/io.c
+@@ -375,19 +375,23 @@ static int cachefiles_write(struct netfs_cache_resources *cres,
+ 				  term_func, term_func_priv);
+ }
+ 
+-static inline enum netfs_io_source
+-cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
+-			   uoff_t start, size_t *_len, loff_t i_size,
+-			   unsigned long *_flags, ino_t netfs_ino)
++/*
++ * Prepare a read operation, shortening it to a cached/uncached boundary as
++ * appropriate.
++ */
++static enum netfs_io_source
++cachefiles_prepare_read(struct netfs_io_subrequest *subreq, uoff_t i_size)
+ {
+ 	enum cachefiles_prepare_read_trace why;
++	struct netfs_cache_resources *cres = &subreq->rreq->cache_resources;
+ 	struct cachefiles_object *object = NULL;
+ 	struct cachefiles_cache *cache;
+ 	struct fscache_cookie *cookie = fscache_cres_cookie(cres);
+ 	const struct cred *saved_cred;
+ 	struct file *file = cachefiles_cres_file(cres);
+ 	enum netfs_io_source ret = NETFS_DOWNLOAD_FROM_SERVER;
+-	size_t len = *_len;
++	uoff_t start = subreq->start;
++	size_t len = subreq->len;
+ 	loff_t off, to;
+ 	ino_t ino = file ? file_inode(file)->i_ino : 0;
+ 
+@@ -400,7 +404,7 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
+ 	}
+ 
+ 	if (test_bit(FSCACHE_COOKIE_NO_DATA_TO_READ, &cookie->flags)) {
+-		__set_bit(NETFS_SREQ_COPY_TO_CACHE, _flags);
++		__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
+ 		why = cachefiles_trace_read_no_data;
+ 		goto out_no_object;
+ 	}
+@@ -441,7 +445,7 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
+ 	if (off > start) {
+ 		off = round_up(off, cache->bsize);
+ 		len = off - start;
+-		*_len = len;
++		subreq->len = len;
+ 		why = cachefiles_trace_read_found_part;
+ 		goto download_and_store;
+ 	}
+@@ -462,7 +466,7 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
+ 		else
+ 			to = round_down(to, cache->bsize);
+ 		len = to - start;
+-		*_len = len;
++		subreq->len = len;
+ 	}
+ 
+ 	why = cachefiles_trace_read_have_data;
+@@ -470,26 +474,15 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
+ 	goto out;
+ 
+ download_and_store:
+-	__set_bit(NETFS_SREQ_COPY_TO_CACHE, _flags);
++	__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
+ out:
+ 	cachefiles_end_secure(cache, saved_cred);
+ out_no_object:
+-	trace_cachefiles_prep_read(object, start, len, *_flags, ret, why, ino, netfs_ino);
++	trace_cachefiles_prep_read(object, start, len, subreq->flags, ret, why,
++				   ino, subreq->rreq->inode->i_ino);
+ 	return ret;
+ }
+ 
+-/*
+- * Prepare a read operation, shortening it to a cached/uncached
+- * boundary as appropriate.
+- */
+-static enum netfs_io_source cachefiles_prepare_read(struct netfs_io_subrequest *subreq,
+-						    uoff_t i_size)
+-{
+-	return cachefiles_do_prepare_read(&subreq->rreq->cache_resources,
+-					  subreq->start, &subreq->len, i_size,
+-					  &subreq->flags, subreq->rreq->inode->i_ino);
+-}
+-
+ /*
+  * Prepare for a write to occur.
+  */
 
