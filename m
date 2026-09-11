@@ -1,156 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984713947B5
-	for <v9fs@lists.linux.dev>; Fri, 11 Sep 2026 09:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3C8459AE6
+	for <v9fs@lists.linux.dev>; Fri, 11 Sep 2026 12:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789118719; cv=none; b=Ivk1jKe8LR1rkdk8Z0KR0T4+JGAhZGc2VXD6uieWCS8JmvreH4b/8u6f1tznrSyJEDfQxWQfO1B7puwFmEb3rY55qQ7tgrIHbKkWGq1CstKEdVVJwNQfS8555lpEQ86GLxaT7mdcsZnQGn9FoVeYc07ooEjRc2BpN2FtjcZmZMc=
+	t=1789131231; cv=none; b=gxFJVEN2EBVFg9fScN+2DF1rlO91u4j8jDbZLfGPdYtsLkuHeTrJQ40uQIobNgJL2RRxxJpOBX1VfZE6mcyRJqYDMJodLUZXnF3NcaKYrRf+/7EOy/tNEKsQj/1l/tJSKCGLGGUBTFqnNrorI6JvajZcEqsaUB9rx4bnEnGs8iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789118719; c=relaxed/simple;
-	bh=rkoI+1Cb2EhxXeM4XpNL5rePkKHHSu9QZGigcHdaI2E=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=U2hzyeYVG/jO8tSWihvo1lp1YBjKiXJx+lgR4e4kUAETXScm8AR2mHGr4zOPpOsP7lnzys64owVhOneDo/nO2x9m1dVrc09Njma4KfsdLJBdeyecyRr+Sb7D7t+NAb4MBj+I94oKpvkaIRowvlRBmffr6fE/Vmg7cysjlkkf1oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XUo63I9V; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789131231; c=relaxed/simple;
+	bh=m/ys+Oy7wZhz/DzfYhAyQcwzJEpe5j+mlbCa2sSO8is=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WmQkDaFAPktFtIbOQ859SLHexkUteNVExsP1HaNOhVWEzm5dXQ3mcY3/zkZLvuac/ExISiWDKGIuolvEROT7zrS4HXSH3nsyjjepwEs1Ozg3lCWzuD+TlhvCRAmZPSpCVRjJ6VS27szKvJgUhq01R6k2KGzpKHLuediCDJ32BaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=method-b.uk; spf=pass smtp.mailfrom=method-b.uk; dkim=pass (1024-bit key) header.d=method-b.uk header.i=@method-b.uk header.b=XWmC7zC9; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=method-b.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=method-b.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XUo63I9V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789118716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CH61iaxpsfa39dF51IILqv9VRomg97Tn5nydKyidOwQ=;
-	b=XUo63I9VG2yyQmmPadTfU1IkyvYDQndBJeDVGHKqchMU1E+d54g62H15zD4EBzdLExTyi5
-	7v16Iyil3TLwdWYKEZyQzWjbjCItWGzlP8un5gtUMF39NxDWEuPqMeNiW77IB7HNqUZB+i
-	Y1AiI+xOFXn1LMPHLvj+44pLxy4+JrA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-eaZIOypPOCSIN8c2G4TKwg-1; Fri,
- 11 Sep 2026 05:25:13 -0400
-X-MC-Unique: eaZIOypPOCSIN8c2G4TKwg-1
-X-Mimecast-MFC-AGG-ID: eaZIOypPOCSIN8c2G4TKwg_1789118711
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 99CB6195422D;
-	Fri, 11 Sep 2026 09:25:10 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 31EAD180057F;
-	Fri, 11 Sep 2026 09:25:05 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
-References: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
-To: Michael Mulqueen <mike@method-b.uk>
-Cc: dhowells@redhat.com, ericvh@kernel.org, lucho@ionkov.net,
-    asmadeus@codewreck.org, pc@manguebit.org, linux_oss@crudebyte.com,
-    v9fs@lists.linux.dev, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL corruption of file data on cache modes with CACHE_WRITEBACK
+	dkim=pass (1024-bit key) header.d=method-b.uk header.i=@method-b.uk header.b="XWmC7zC9"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cc9f581c4so3002665e9.0
+        for <v9fs@lists.linux.dev>; Fri, 11 Sep 2026 05:53:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=method-b.uk; s=google; t=1789131228; x=1789736028; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dG8HOZHtiAY98dOkyP/NeJQU/ZUjP3gwdxCbOsPTbSo=;
+        b=XWmC7zC9W+wtlo7aHsgP33Cv1/YqbsF/Oa3c2cuXRp5+d+ofOZPN9n5eIkLsUIWWUF
+         rZ4MS4wbyjnHcgG0wPuT6gsB5nP68kLug0k/ddrWuCuYH+SnB+d9vaBalWLB3kgL4QOA
+         sViCBsxhro44sT/gO4sXFaRQvfzR1aoXK6PJg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789131228; x=1789736028;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dG8HOZHtiAY98dOkyP/NeJQU/ZUjP3gwdxCbOsPTbSo=;
+        b=BNy98lpagp5LrsdwmTgKHRxVGSLGZoA+4PdBdRbo9FcbQtdukX2Jmd1qxXdsewdBqf
+         xLgzsyqcJwcgAOmutNZhZznhlHlX/OfijAxl3+Qxfyf00mVK1x6Eap0oxqXJLLyc2a9N
+         X84+Wjc8k6vT5f3oNGyl1POvwOslvpLLnF+TDCFpT0t6zWO76Jl0fMR9bZM0OcNfHGTe
+         AvxR//JTn8waG358sqwfu/U5xmg+pbylt3heQX5CloY0dtzbu3Jzv+Iwu1lEYo9TgpMs
+         7VTGSgkrCnL+VauTR1JQOMReMOFVjjvJNXHqF5nI+fHJRJVSop5c0/jRo919ug7vI3aL
+         e6tg==
+X-Forwarded-Encrypted: i=1; AKwUvBzjc/faYZyyflNzdaOQa4wwVL/yEAtnRbVjSHXxaKvt+9swJzfIjOfWL7Pff9kX+OyMZk19@lists.linux.dev
+X-Gm-Message-State: AFuF++lVtZY36EGO/AuJZixANmPq02rriiHDfRexjTJ5jxAwuJrvuZdP
+	wLg4ZaImGCRJgd+WgOvYF77UvPV6dvLpP8BsTBaA5bE3n9Zx0D5F76VMNHlRZC1JU6A=
+X-Gm-Gg: AYBFou3Rpxr98WBbcb4/N2tFFiddHFpIAoRUS3X7Ct//A9IQvIBGd0sb2yp/giwu2Nr
+	JTMFm5l1bjg9SI3z6z5rn+5vsub9/e9QRzFeJBCtZg+BMbE0K1j5HAiZmyLmKuUxB2mwI8aVIAL
+	LKlwfBmKJ84x034v83tUepmcdmidf8i7PMxzlyob5FraRyb1VGQuHeoa8KPkXANRydOLZw85tzm
+	PbHIbcjDCtuWKKYWct5SLoMjcOL6tXu0dMt4Rk6DznfmbifZ6ZwUs1aB8zz5nOKdXTZKK/czq5Q
+	3MLrWewikXTSQ3YfH6+BGjtEmAVkYy6z7fmLahD31CDXTpKaX5dgEr6DEZNqKsON7pOdChyQlFU
+	dOvQEb4XWuqvmIG2ZZQNSK+xSwKySoCS5YIna/mOpwLYX5DDlKvkaGNvoFvRku7UnczGoNuNC3V
+	5u+W378cmNcz8L83BjvoTOqXU3J1wQzc8iBoKHtoaKfHdqRTeUgbLhbOKo7znd4ErsfSU7ZsNA8
+	L/73cIUGZHTFr71qfCCcnxOiaT2GRxkXc9hFrFTUuM95t5l6BKdKOdbcVGY68nzm4YtiwKMyMpz
+	8BL7pGpUsU+Ouap/vDuu3Isj
+X-Received: by 2002:a05:600c:4ece:b0:49c:f13e:e4c with SMTP id 5b1f17b1804b1-49e610829b5mr49417265e9.9.1789131227930;
+        Fri, 11 Sep 2026 05:53:47 -0700 (PDT)
+Received: from [192.168.1.182] ([193.9.15.111])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e5765152asm105767435e9.11.2026.09.11.05.53.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2026 05:53:47 -0700 (PDT)
+Message-ID: <3faab0c3-29be-44af-9569-1e12e8ed6a74@method-b.uk>
+Date: Fri, 11 Sep 2026 13:53:46 +0100
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 10:25:04 +0100
-Message-ID: <2226525.1789118704@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: lJayanXEoVr0QPLGv3m-3_tREwOhUqEL6nzFEhLw8i8_1789118711
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2226524.1789118704.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL
+ corruption of file data on cache modes with CACHE_WRITEBACK
+To: David Howells <dhowells@redhat.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+ pc@manguebit.org, linux_oss@crudebyte.com, v9fs@lists.linux.dev,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
+ <2226525.1789118704@warthog.procyon.org.uk>
+Content-Language: en-US
+From: Michael Mulqueen <mike@method-b.uk>
+In-Reply-To: <2226525.1789118704@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Does the attached work for you?  With it I see:
+Thanks all for your replies.
 
-  cache=3Dnone       read   0/20  write   0/20  [cache=3D0x0]
-  cache=3Dreadahead  read   0/20  write   0/20  [cache=3D0x1]
-  cache=3Dmmap       read   0/20  write   0/20  [cache=3D0x5]
-  cache=3Dloose      read   0/20  write   0/20  [cache=3D0xf]
-  cache=3Dfscache    read   0/20  write   0/20  [cache=3D0x8f]
 
-David
----
-commit a7f0af2e23c3ab191c08c1041dc67afd971a8c49
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Sep 11 10:15:43 2026 +0100
+On 11/09/2026 08:16, David Howells wrote:
 
-    9p: Fix v9fs_issue_write() to update i_size and remote_i_size
-   =20
-    Fix v9fs_issue_write() to update i_size and remote_i_size to the new si=
-ze
-    of the server file if we made it larger, using the start fpos and the c=
-ount
-    returned by p9_client_write() to calculate the new minimum file size.
-   =20
-    This assumes that if the 9P server makes a short write (say it hits
-    ENOSPC), a reduced count is returned.
-   =20
-    Fixes: 5fb70e7275a6 ("netfs, 9p: Implement helpers for new write code")
-    Reported-by: Michael Mulqueen <mike@method-b.uk>
-    Closes: https://lore.kernel.org/r/fbb9e395-1e07-4212-8f70-23f3cd498074@=
-method-b.uk/
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Eric Van Hensbergen <ericvh@kernel.org>
-    cc: Latchesar Ionkov <lucho@ionkov.net>
-    cc: Dominique Martinet <asmadeus@codewreck.org>
-    cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-    cc: Paulo Alcantara <pc@manguebit.org>
-    cc: v9fs@lists.linux.dev
-    cc: netfs@lists.linux.dev
-    cc: linux-fsdevel@vger.kernel.org
+> Are you actually using this with a cache?  Or just enabling the "use a
+> cache" options?
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 1ac0b3dcc077..13cf87a5f90c 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -54,11 +54,37 @@ static void v9fs_begin_writeback(struct netfs_io_reques=
-t *wreq)
- static void v9fs_issue_write(struct netfs_io_subrequest *subreq)
- {
- =09struct p9_fid *fid =3D subreq->rreq->netfs_priv;
-+=09struct inode *inode =3D subreq->rreq->inode;
-+=09struct netfs_inode *ictx =3D netfs_inode(inode);
- =09int err, len;
-=20
- =09len =3D p9_client_write(fid, subreq->start, &subreq->io_iter, &err);
--=09if (len > 0)
-+=09if (len > 0) {
-+=09=09uoff_t end =3D subreq->start + len, i_size, remote, zp;
-+=09=09bool set =3D false;
-+
-+=09=09spin_lock(&inode->i_lock);
-+
-+=09=09/* We can read the sizes directly as we hold i_lock. */
-+=09=09i_size =3D inode->i_size;
-+=09=09remote =3D ictx->_remote_i_size;
-+=09=09zp =3D ictx->_zero_point;
-+
-+=09=09if (end > i_size) {
-+=09=09=09i_size =3D end;
-+=09=09=09set =3D true;
-+=09=09}
-+=09=09if (end > remote) {
-+=09=09=09remote =3D end;
-+=09=09=09set =3D true;
-+=09=09}
-+
-+=09=09if (set)
-+=09=09=09netfs_write_sizes(inode, i_size, remote, zp);
-+=09=09spin_unlock(&inode->i_lock);
-+
- =09=09__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
-+=09}
- =09netfs_write_subrequest_terminated(subreq, len ?: err);
- }
-=20
+This is my mistake, I hadn't set up cachefiles in my test VM. So yes, 
+I'm seeing what you've seen with the reproducer. Apologies for that
+misdirection! 
 
+For posterity all the previously tested versions that were CORRUPT, except
+v7.3-rc2 which I come to below, do this:
+
+  none             read   0/20  write   0/20  [cache=0x0]
+  readahead        read   0/20  write   0/20  [cache=0x1]
+  mmap             read  20/20  write  20/20  [cache=0x5]
+  loose            read  20/20  write  20/20  [cache=0xf]
+  fscache/unbound  read  20/20  write  20/20  [cache=0x8f]
+  fscache/bound    read   0/20  write  20/20  [cache=0x8f]
+
+Where fscache/unbound is not having cachefiles properly configured and
+fscache/bound is where it's actually active. It's the same reproducer 
+as before, just run twice for the fscache case - the difference is 
+cachefiles configuration outside the script.
+
+On the 7.3 release candidates, I get a different result:
+
+  none             read   0/20  write   0/20  [cache=0x0]
+  readahead        read   0/20  write   0/20  [cache=0x1]
+  mmap             read  20/20  write  20/20  [cache=0x5]
+  loose            read  20/20  write  20/20  [cache=0xf]
+  fscache/unbound  read  20/20  write  20/20  [cache=0x8f]
+  fscache/bound    read  20/20  write  20/20  [cache=0x8f]
+
+It appears that cachefiles isn't actually storing anything on 7.3. I've
+used the same configuration for every version, cachefiles is active, but
+seems to encounter an error when actually storing in 7.3. I haven't had 
+time to investigate that. I only mention this for completeness, it's 
+not material to fixing this bug, just affects how it presents.
+
+On 11/09/2026 10:25, David Howells wrote:
+> Does the attached work for you?
+
+Yes, thanks, I get this on patched 7.2 and on patched 7.3-rc2:
+
+  none             read   0/20  write   0/20  [cache=0x0]
+  readahead        read   0/20  write   0/20  [cache=0x1]
+  mmap             read   0/20  write   0/20  [cache=0x5]
+  loose            read   0/20  write   0/20  [cache=0xf]
+  fscache/unbound  read   0/20  write   0/20  [cache=0x8f]
+  fscache/bound    read   0/20  write   0/20  [cache=0x8f]
+
+So it looks like it's fixed. I haven't had a chance to try the patch 
+on a real workflow, only the reproducer, but I will next week and report 
+back.
+
+Cheers,
+Mike
