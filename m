@@ -1,52 +1,52 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080CA38B7D2
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 08:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC31C8EB;
+	Sun, 13 Sep 2026 08:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789289098; cv=none; b=EMS7a+asBETE9RbRWWh9h/vCKLueBsW8SKaU+jlRMxweMWJrCVEYH9vnUetTT05yJhIPjJ35Y/kVqeGES/kcGE8EYZ1GuioODfEBI01w8Cw3StLOMsbPDx9AO3lYozFZ0M1Ti6cYYUjimbYtstTXQEnRgEvbFaDSgZIvQQ0EMnA=
+	t=1789289815; cv=none; b=K6BHmWSEe8MBx7YHjFkKQa3EWvofO+2HU8YAhAYUHlrZ6a7M3e/zIcMIAQQyGL29izLSXlUITFpCCINqI4NN0cxwuzoj/4qiftgle++vIUa0PthKVrRNmHrImrhKjRdgoBhvJHuRGaWHNh8JrOOBlp4ffykANiOJsjg1ioFnxCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789289098; c=relaxed/simple;
-	bh=8m0PPlyNNCSEtp7TRfILqQQEhHq6E+jzOoqCB2lsZoU=;
+	s=arc-20240116; t=1789289815; c=relaxed/simple;
+	bh=ZfeqPtAYBOabE0FO0b6gVhk+JMZmLTBvbQjDlUu0+DA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mKi2QsLRciSWekyWa/FX7YPq5noutsdeqiVjHfMB+rcoR/VF6oSYnAJshrygoRLLea1VkPaZ8Eel0Uhv6hf/+n8dqlVfiC7Mkqn1JdwBke79AhOMOcP+PyMJ9NkPXUaA532j0ltjfS+6jwwtVhObAjTutrE+TjQQWfJiv0Szn8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=JTRDLSLF; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=oBDkpGzglR81v0euk/fWQCg3YcYfw+OTT5WBnNP7Cgur9E705n2QBBWd8w9M+wfQjg08mOgr975ZIsmliSdCnwiWG1N3nIahl0iKMQEeK2AcR/83+BasKz3QwIUXUkBTcOU3KgcBWSalqgXvHgO8k81klL9LrrKBbpi+VcYYe60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=APGDO+4p; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JTRDLSLF"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="APGDO+4p"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id AA92F14C2D6;
-	Sun, 13 Sep 2026 10:44:51 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 0E99714C2D6;
+	Sun, 13 Sep 2026 10:56:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789289095;
+	s=2; t=1789289811;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DuX0dyVxOsJkrFTZmTmdfvbvbh0Mi2dz3PNH36mjDyk=;
-	b=JTRDLSLFywKYdpWPG2scTup0cA5vWC7aGYr/VfZ7fslOwzKmM8FQDWgjZ/kTKr5GpzS9kx
-	awSXmGJXQakSLxj48Z0XpPTPNYA5urh2oaLx5EyTi38bN8qHHVKqAImInG/gR5AWroxRJz
-	1BaqVshBwsOTv1R0oPOYKoDYtfhog2BWN3qrUltXEvk1h+auDHdWmCBxUkJWTeW4yOnwxa
-	4p0S/4i4bcR4KMYNqZS3YOvwgD4246fu/OPE9bsaKCv3r3apXFdDrA5hWtaaKV7SfyvkOE
-	QtNAjvDR3qmm8HH6DntI5Gq2o/2qVU+xQvL6TphVWHX6duUYet4Xe3qny6w3Mw==
+	bh=zMyDui7pewsquYCfDccrc4Y2pVXLT1eHWR/lH2aHOHU=;
+	b=APGDO+4pwpgLMFh9FjESEZbw+bnLnGIIbtuvSrA9sagXGlag7kpb2wvyEuYfuoiEK1XE3C
+	gJLkVrildGeJ87H2O9PcEsUWJve/6zCGUlPYB7KtNtqieJ25F/zqIG1adqaZSbUo94iPeP
+	JKi9FJBo4bjpm5aru2pz+kMZSUMaIQI3e0Bd+r70eLJhdCqD0KvbZPdehmXNlxrAbWoDvE
+	Gd3QaVHUu0B8/IoqS7BQOPo8QDJlYXED+5q/FP9SkVt/oJxGNdXxg8BNyKZ1yFQ5hl/Tlc
+	3CNEDPY0/AGAqoxLNvUgB8p2ObH2LWwOqG4VwBscJX6TWQ+jZPi/KFvNvOOAfw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 26127b29;
-	Sun, 13 Sep 2026 08:44:49 +0000 (UTC)
-Date: Sun, 13 Sep 2026 17:44:34 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b77b36ff;
+	Sun, 13 Sep 2026 08:56:47 +0000 (UTC)
+Date: Sun, 13 Sep 2026 17:56:32 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Michael Grzeschik <mgr@kernel.org>
-Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Subject: Re: [PATCH] net/9p/usbg: Fix use-after-free on usb9pfs_clear_tx
-Message-ID: <aqZichSBFZgqFn8F@codewreck.org>
-References: <20260529081026.77732-1-zhaoyz24@mails.tsinghua.edu.cn>
+To: David Howells <dhowells@redhat.com>
+Cc: Michael Mulqueen <mike@method-b.uk>, ericvh@kernel.org,
+	lucho@ionkov.net, pc@manguebit.org, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL
+ corruption of file data on cache modes with CACHE_WRITEBACK
+Message-ID: <aqZlQL3-poBn-QbK@codewreck.org>
+References: <aqUIEEvKad-o-zft@codewreck.org>
+ <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
+ <2226525.1789118704@warthog.procyon.org.uk>
+ <2718782.1789286113@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -55,33 +55,20 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260529081026.77732-1-zhaoyz24@mails.tsinghua.edu.cn>
+In-Reply-To: <2718782.1789286113@warthog.procyon.org.uk>
 
-Hi Michael,
+David Howells wrote on Sun, Sep 13, 2026 at 08:55:13AM +0100:
+> Dominique Martinet <asmadeus@codewreck.org> wrote:
+> > When v9fs_issue_write() is re-entered, writing the remaining data at the
+> > original subreq->start offset rather than subreq->start + subreq->transferred
+> > would overwrite previously written data.
+> 
+> Retry should now be resetting ->transferred to 0, so actually I should remove
+> adding ->transferred from other filesystems.
 
-I'm honestly not quite sure what to do with this and others UAF usb9pfs
-patches -- you acked the first one I replied to, and the tag match is
-obviously correct so I picked these two, but I'd like your opinion on
-the rest for two reasons:
- - There seem to be plenty of rough edges around usb9pfs, and frankly I
-don't consider this a trust boundary (the usecase being developping
-embedded devices, you trust the server fully, so whatever happens
-in corner cases doesn't matter)
- - You had a rework in progress (before leaving Pengutronix, which I can
- totally understand you don't have time or want to keep carrying going
- forward, but is someone else from Pengutronix taking your place?)
+Thanks for checking.
 
-For all I know this is also correct, but I'm not sure slapping a bandaid
-is the way to go, so I'd really appreciate if you could have a look at
-this[1] and "net/9p/usbg: clear stale request context after abort"[2]
-[1] https://lore.kernel.org/r/20260529081026.77732-1-zhaoyz24@mails.tsinghua.edu.cn
-[2] https://lore.kernel.org/r/20260802152148.810390-1-marsy12010123@gmail.com
-
-If you tell me to pick them up I will, and if I don't hear back from you
-I'll take another look hopefully before the 7.4 deadline, but I honestly
-don't have enough time for this so the most likely outcome will be
-/dev/null
-
-Thanks (and sorry Yizhou Zhao / Chengfeng Ye)
+I haven't had as much time as I liked so will likely end up sending it
+tomorrow.
 -- 
 Dominique
