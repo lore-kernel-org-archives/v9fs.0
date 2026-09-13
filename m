@@ -1,54 +1,48 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4805735C6B0
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 23:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37913E0C75
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 23:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789342635; cv=none; b=QKjwm9jrWt5J4RvsigzHcoLKfyRbrsLfauv2ONWquvMtMFfL3MjdSN+f4U3/+11QqGTwFMxW+zR3gpt00F8xNm6ZTYrG0tMr4IPGBktjqSc4QiuTGg6jQhCW281qC1NP6zeZqD6e+cRdQkGmbrMdU0nHAQ1MtZYnNzb9dl0x+Y4=
+	t=1789343148; cv=none; b=thx/3O8zErq2mvHWnvaPTV0tY3KvNr5s0ig+3/3lck1H/gZJBz5BlBR4iW5xvKsR2ShTW/jqhYlvtzfVaoKl0YWEiEou0Xjh4cYkg5BDog03AO4tVxWKwK3QS4V/RZpQNWaZgaZvuimZc9wrOo3zL82C2T8pQFhzE4Ta65UZ/J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789342635; c=relaxed/simple;
-	bh=t2zhvhfVodgUoXgapbWkLn257EwJZmghPAu8AxgOCM4=;
+	s=arc-20240116; t=1789343148; c=relaxed/simple;
+	bh=pIvyuvQzIUwAk7xF8c3nNL20NcXbjGHOFvR2oLZAO3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M3TNbxNML+xVNlA5S5cBBaj+tzSF4BLX9YKzIdngzAMJVFedCKjpuYw2X+wOruJ4Li9//02Trma8XEAWCoWgXW1VsUnFlvDxwmvM1iLmgFShFDW2Po8nRJ7onxMWtfqL2UjR7wTy6VZZqBencaQx2Nywl+5t2GK63jFAygUSNv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=FFQMgCJo; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=qoEJs+EC5EtocwkTJ2gjUrbGNQrYA+e5gzpPKT1UV1PDtHDxCvj9RM5bEM8kaPcyDMCLNpBEefSSS9sf+Y4op0dxkvD2XLTK6lCyfsIv0uMvoJ7qoLgshgc+tKXmWH6mfSQe5oYEFX5GZs9XEkvmkcFoVgIzf/s8cPMHFgZ9IHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=C4htPd/w; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="FFQMgCJo"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="C4htPd/w"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 1FECC14C2D6;
-	Mon, 14 Sep 2026 01:37:05 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 5BF3F14C2D6;
+	Mon, 14 Sep 2026 01:45:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789342629;
+	s=2; t=1789343140;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C2O8L0LKx2hGeIX51IUswVSIofdl6KTJAE2rOz4nBCQ=;
-	b=FFQMgCJoOi7i6rv/+e7KrV9zLkR2+Y1FikaZzFv2j/Fu0sQyG4KKruQziO2SMkpb77LrI+
-	Ljp2X/nYud198fdZ1+rZuIj3FxoHBWyobyRw1yuNYEb5AtcnmyFc7kuaoxnsE3BGYnllaG
-	0a3m5bgrY6PD5P2hWl7VRRb9UiIOZJGqgYHoJgFhLEntud0dctcvEIUllBSkb5iI+1GQo6
-	Qic4c5jH4cqLPMw9pBZGf9PuurvNfL0bT5vSKXEl7dIc6KCjozj9ORzb8E0KCFgYm9OjcC
-	bwKm1mbZja0Axv3diAjiRNPx2aM+wV3m8jfuFi5b4m97bDURvpsCqPJtQRGzHQ==
+	bh=h44ylbH2rdPCaOucz8jQTCsVnOEZX7O3Bowqom7l/mo=;
+	b=C4htPd/wOczkji4TjN/XiA8yqWBsqIMVvz3VEzddINH9T7+w00nDn/4Vt6BASQT/2OOmfQ
+	8LURq+hfwdjTCEzDauHRQWmLgAxBSVVcLq2Uv9N4crn3+qAa6aGxB11MNfI/pueVIVW2po
+	tqV2KulPVbVbs8YfoEuNceqA0WmxX0f92BGszwpHyBVi/6UrBotcXSUHnUOIC9TXr3NwQj
+	8SM+uqNhse794MO8M5/Xx09tAiVfP8S/Uo6JqYIe+GtSgf7yn1xZstDagyVa7XTMq3SdJI
+	A3YD9GqM27NfC6gLz+HOM/1Mw1/oXg91Sf3Bxfvxq3LCCSicszG1m/+ikMcmJQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 0a35401a;
-	Sun, 13 Sep 2026 23:37:04 +0000 (UTC)
-Date: Mon, 14 Sep 2026 08:36:49 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b3313532;
+	Sun, 13 Sep 2026 23:45:36 +0000 (UTC)
+Date: Mon, 14 Sep 2026 08:45:21 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, v9fs@lists.linux.dev,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] 9p/trans_virtio: bound RERROR copy by mapped pages
-Message-ID: <aqczkXDT-thZshJr@codewreck.org>
-References: <20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn>
- <aqZwqdnm7PW8OUv-@codewreck.org>
- <23241140.EfDdHjke4D@weasel>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2] 9p/xen: Use array for data rings
+Message-ID: <aqc1kSDTP1_2HPjx@codewreck.org>
+References: <20260913192740.29668-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -57,77 +51,28 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <23241140.EfDdHjke4D@weasel>
+In-Reply-To: <20260913192740.29668-1-rosenp@gmail.com>
 
-Christian Schoenebeck wrote on Sun, Sep 13, 2026 at 08:09:05PM +0200:
-> > I'm not sure that can actually happen:
-> > If there was an "in page" (if there wasn't this is all noop anyway and
-> > data was written directly to req->rc.sdata), then req->rc.size amount of
-> > data was received into the pages, so if it does happen to span over a
-> > page boundary then there are at least two pages and we don't need to
-> > double-check here.
-> > 
-> > Christian, do you agree with me this patch is not required?
+Rosen Penev wrote on Sun, Sep 13, 2026 at 12:27:40PM -0700:
+> Store the fixed set of Xen 9p data rings in the frontend private
+> allocation instead of allocating a separate rings array.
 > 
-> req->rc.size is coming from virtio device's used-ring len, and that is written 
-> by 9p server, and this server-written value is not verified anywhere against 
-> the real sizes of the descriptors that guest provided, neither by the kernel's 
-> virtio subsystem, nor by 9p client.
-
-Wait, is it?
-req->rc.size is written in req_done() and comes from
-virtqueue_get_buf(), I assume that was the actual data obtained from the
-transport (e.g. akin to read() return value, not what is in the payload)
-Or can the server lie about this?
-
-If we can't trust req->rc.size I believe the p9pdu processing will also
-read past the end of buffer so there are much bigger "problems"
-
-
-With that said, I agree with your assessment that qemu is mostly
-trusted, and don't want to spend too much effort on this (unless
-something like me losing my job happens and I suddently find a lot of
-free time :P), so if you (or someone) can confirm rc.size isn't trusted
-then let's drop this here.
-
-FWIW I said "mostly trusted" because lately we've had things like black
-box hypervisors (I don't remember the exact name) where guest VMs memory
-is encrypted and can't be accessed even by the host: sure the server
-could still *crash* a guest, but it shouldn't be able to get arbitrary
-write/read primitives, so if someone wants to spend effort fixing such
-bugs I think it's welcome and I'll be happy to take patches.
-(although it should probably start at getting a way to trust the size
-e.g. clamp it to whatever pages we fed to the server rather than check here)
-
-This pretty much aligns with what Jürgen said for xen recently here
-=====
-https://lore.kernel.org/r/931b763d-2ee6-4fbf-9222-c5b75f35ec47@suse.com
-> Especially with driver domains malicious backends are a thing. They should
-> only be capable to deliver wrong or no data to the frontend, but ideally
-> the frontend should not trust the backend.
+> This keeps the data ring storage tied to the frontend lifetime and
+> simplifies the allocation and cleanup paths.
 > 
-> Any work towards that goal is to be supported IMHO, and there are already
-> frontends listed in Xen's support statement following this rule, so any
-> violation of that principle in those frontends will be regarded to be a
-> security issue worth an XSA.
-====
+> Assisted-by: Codex:GPT-5.5
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  v2: switch to normal array.
 
-> P.S. Remarkable backlog processing today! :)
+Thanks, looks good to me, picked up.
 
-Thanks! I _think_ I got to at reply to each mail I wanted to look at
-overnight, but I'm sure I missed some, so if you have something in
-progress that you want me to look at feel free to ping me again
-(and someday we'll be able to get through the virtio backend page
-mapping rework started in December[1] (Christoph Hellwig didn't forget and
-pinged us in May...) / your msize limit lifting work[2]... someday...
-But that should probably get priority over chasing untrusted servers)
-(The links are for myself more than anything else, my working memo is in
-flight mails)
+> -				for (j = 0; j < (1 << ring->intf->ring_order);
+> -				     j++) {
+> +			for (j = 0; j < (1 << ring->intf->ring_order);
+> +			     j++) {
 
-[1] 20251214-virtio_trans_iter-v2-1-f7f7072e8c15@codewreck.org
-[2] https://lore.kernel.org/all/cover.1657920926.git.linux_oss@crudebyte.com/
+^ now fits in a single line within 80 chars so I've rewrapped it
 
-Cheers,
 -- 
 Dominique
