@@ -1,47 +1,53 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EF94BEE2C
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 14:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FBE3290C9
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 15:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789308621; cv=none; b=K6l4kyT8Q6L5tOmMuy80SP6AUeR6QtOVoypOdWFJJZ2o+Bj9rcroiKZa1iChxuabYgILehmiMxOmHUxFE9YO0lUFfrUGETQU3T+E42+RuKzDJZ6ACIlidknYwCGl4DYnqI+jIHcbkgQ2+xCdrTH4Azd0IOshbR/4anpwu2J4w5Q=
+	t=1789312375; cv=none; b=modFGLe5Rn1vBwHVTWHhbVyFxyPp4R8S+S0c00MjmBeaUXrBmST/XkJSeUOxR16UIzycNtAh7/cBPwpLDSzivOvI0sHgjGWmblbWtDJgOEvU8HpAaBcLc2FGpFh69h1CkaAj9IlzAzw2thTwV+c+S3vSrNfsJqS2rkP3hQTpDY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789308621; c=relaxed/simple;
-	bh=Kb3/g4LT6MAUmW+CxG6LzjSrSC29LS7/vliWJBavRh8=;
+	s=arc-20240116; t=1789312375; c=relaxed/simple;
+	bh=2H9OJSydwFT0QNUjpsXuje0raC2FTKb22KZ38jpcIec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnp7VWAZ+9s/jwzrxgR407x1MrjJVOwAYSConMoWEf3UHbiv13oc+JhnMEeKNj4fU/pELzZAggsPBlbRCbQK03gKwEhKIoPEleIztv9jzGt9SbdbhrRZsb6v+ETnTbxaE+1RMJaSNZXDwksLS+2qSQAzr987ed9+ukB/5a+rQRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=i+J11+5M; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=pf/LUD/HC9VWZDMke7fKI/5gXNDNkoHJPCIBR4wULTQ6QuFz3ouxIy0xRT44ZovlMK+Fq0gJrkGIGzu8+ycYLmTEFYI2cumvLWoid0KBFQ+j6xsv441gsOifDq8iz4HPNOxMhOQWASwjI93PbWFokrkloUPSo4Hda1SYF5UnSPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xuloV4OI; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="i+J11+5M"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xuloV4OI"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 6F60F14C2D6;
-	Sun, 13 Sep 2026 16:10:14 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id D25F514C2D6;
+	Sun, 13 Sep 2026 17:12:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789308616;
+	s=2; t=1789312367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sziN5kHesZK0cgNCgNhSjvXI89zJwF9PE0JKRZ7sM1Q=;
-	b=i+J11+5MhbjV4KmDSPlzNi5XgiR+yvHrShtsh/Absxe+FxkEqXTNB/C0NlXjOsW8w9YntZ
-	V8njFfCRO+8yTs1Zaj7O9l/SiFJnAwB7ORL5U1D7WlJdJ5xj5DNAPQ3VEmSe9fpI6JxzPI
-	PqHu+pg8XEGYXaWokzoC9pjicqpwwSohYaHBbla2GgGBpP6R2PhCtdZKORReFqs5p9q1Gs
-	oEiioqbrecO6PWIOl8t+GoMP3sQvKm3llU382P3w1IdSt4a1fm1WcAHrhZcLqUvwwsEcCx
-	tlVEZBg3Gcu2XZLAd2j2D9VEt3NlzxMS0qkjPkAGmidecxVSnDd1hAJf62MsNA==
+	bh=QEd+GWAVv70/aKemk+jvfc/Ph6xxglvtYq0FXfobNZc=;
+	b=xuloV4OIoCLh7Bql1n961TUSxSFIWBwCZAhc/jS591JBVIRaWod8AZBq9la+Ybsj4NIAo3
+	xIlTfo/KQ2rF6qDOlCUJN8d7wE95O4magF7IejTlBzxSOtgYX26k1WiQDLGaoSdT4PTJQr
+	ibmWvhx74omMURs6CsRlcpgYHNIMEoyN0B7xr0/nA68kUV3PLKJny37IKwxs6mbuts7rhO
+	GOehVbynQK67P3URBzmeCBf3kgyEBBSeDDvfCM9WSZO5yQfbKBeog5X/S5GHe8VdIEoAcZ
+	vDhXMiAP8Fa2W6Z5eu09+SV5ZpCTfP6XBth8bbZlEFj5Jc1reovJbolbcQW8Qw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a8ed9073;
-	Sun, 13 Sep 2026 14:10:12 +0000 (UTC)
-Date: Sun, 13 Sep 2026 23:09:57 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ef2183fa;
+	Sun, 13 Sep 2026 15:12:40 +0000 (UTC)
+Date: Mon, 14 Sep 2026 00:12:25 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: skvarlamatus@gmail.com
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	stefanha@redhat.com, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, sgarzare@redhat.com
-Subject: Re: [PATCH v3] net/9p: add vsock transport
-Message-ID: <aqautUJPkTMvmIGU@codewreck.org>
-References: <20260709161741.15138-1-skvarlamatus@gmail.com>
+To: hoobnn <853555@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
+	linux_oss@crudebyte.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	sripathik@in.ibm.com, aneesh.kumar@linux.vnet.ibm.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] 9p: dynamically allocate directory entry names
+Message-ID: <aqa9WXmrgd_P7yxw@codewreck.org>
+References: <20260826064819.52523-1-853555@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,52 +56,56 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260709161741.15138-1-skvarlamatus@gmail.com>
+In-Reply-To: <20260826064819.52523-1-853555@gmail.com>
 
-skvarlamatus@gmail.com wrote on Thu, Jul 09, 2026 at 06:17:41PM +0200:
-> From: Matus Skvarla <skvarlamatus@gmail.com>
-> 
-> Add vsock as a transport option for 9P client connections. This
-> allows mounting 9P filesystems over VM sockets without requiring TCP/IP
-> networking or additional userspace tools.
-> 
-> The implementation extends trans_fd.c with vsock support, reusing the
-> existing socket infrastructure. A new p9_fd_create_vsock() function
-> handles vsock connection setup by parsing the CID from the mount source,
-> creating an AF_VSOCK socket, and connecting to the specified endpoint.
-> All other transport operations (close, request, cancel) use the shared
-> fd transport implementation.
-> 
-> The privport mount option is not currently implemented for vsock and
-> returns -EOPNOTSUPP if specified.
-> 
-> Add CONFIG_NET_9P_VSOCK option that conditionally compiles vsock support
-> into 9pnet_fd.ko. This follows the pattern where socket-based transports
-> (TCP, Unix, vsock) share trans_fd.c, while specialized hardware transports
-> (virtio, xen, rdma) have dedicated files.
-> 
-> Usage:
->   mount -t 9p -o trans=vsock[,port=<port>] <CID> /mnt/point
-> 
-> Signed-off-by: Matus Skvarla <skvarlamatus@gmail.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Thanks for the v3
++fsdevel@ & vfs maintainers to Cc TL;DR:
+Should the 9p .iterate_shared() dir_emit files with path
+components > NAME_LEN, as allowed in fs/readdir.c verify_dirent_name()
+only enforcing length < PATH_MAX, or should we skip any such entry given
+nothing can interact with them later anyway?
 
-I'm mostly happy with the code, but I have a few high level questions
-before sending this to Linus (I'll probably take the patch for -next
-next week anyway):
-- I've looked at v1/v2 threads and I don't actually see any rationale
-explained: what's the benefit of this over e.g. virito or xen
-transports?
-Do you have/use an hypervisor that cannot do virito 9p (or virtfs) but
-has vsock or something like that?
-- On a similar topic, do you have an actual server that works with
-vsock?
-I've seen I can test with diod+socat[1], but I expect to see a real user
-ready if this is merged, not just "this can work"
-[1] https://github.com/chaos/diod/issues/148
+
+hoobnn wrote on Wed, Aug 26, 2026 at 02:48:19PM +0800:
+> p9dirent_read() copies names into a fixed 256-byte buffer. A name that is
+> valid on the host filesystem but longer than that buffer makes strscpy()
+> fail and aborts getdents64(), hiding the remaining directory entries.
+> 
+> Keep ownership of the protocol-allocated string in p9_dirent and free it
+> after dir_emit() consumes the name.
+> 
+> Fixes: 7751bdb3a095 ("9p: readdir implementation for 9p2000.L")
+> Closes: https://github.com/microsoft/WSL/issues/41192
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: hoobnn <853555@gmail.com>
+
+Sorry, but pseudonyms are not allowed to contribute to the kernel:
+please use a real name here.
+
+
+Okay, I've just tried with a dummy server that adds a few bytes to every
+filenames, and it's weirder than I expected... The vfs only checks for
+PATH_MAX length, not NAME_MAX, so e.g. getdents64 will list the long
+file name but then any operation on that file name will fail with
+ENAMETOOLONG...
+I think it'd make sense to be more clear about this in the commit
+message.
+(The patch subject is also pretty bad, by the way, in that "dynamically
+allocate ..." sounds like it adds an extra allocation whereas it just
+reuses the one that exists, so it should be more like "9p: skip
+intermediate directory entry name copy in p9dirent_read()" and explain a
+bit more how the current readdir processing works in the commit message
+e.g. first alloc+copy in p9pdu_vreadf etc)
+
+
+Anyway, code-wise:
+- p9_dirent are very temporary and are meant to get freed immediately,
+I think it's perfectly fine to skip the strscpy here and pass the
+pointer directly.
+- I'd like a second opinion on whether it's acceptable that we return a
+file whose lenght is > NAME_MAX to userspace here; we're already calling
+strlen() again in v9fs_dir_readdir_dotl() so we could just skip the
+dir_emit() call here if required.
 
 
 Thanks,
