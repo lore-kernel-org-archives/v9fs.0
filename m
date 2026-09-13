@@ -1,101 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E26F3D16F0
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 07:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E48038C40C
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 08:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789286155; cv=none; b=inlf/r19Fk1GAoIPmI2imyxha88GGaO/S9h+sTSB3SGcB60S6GyYzVdfRKXnugH2+X/BG/qVeY+NyqRweShubqV65TlRE3d+E/MiBthGkIfbELgqkqu7Xl4hpWK3/o1jTK78xk/7kZDX8Vad+nbd1H2BckoFf4Rj/ET44A8awh8=
+	t=1789287327; cv=none; b=EiBeCeedaEv7rgCic845mKnAj3uJf1zgbpsRJB2AF50lyFYPjZdpIZRR/kFU+gfLxe5hz6YdlspI43x8XsRgnygvfLiDkRkhCNfSjXx8wqt3+vbXSW3L9YGxw/mETYVB9gdVvNYULUP1D1pnWpRSJl6l8x8idSAaFd1ePAUlEkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789286155; c=relaxed/simple;
-	bh=As5kpy/SLue7mgIjEWjGCe5iKFeH3Ak3IjbKgOi4fRU=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=boLCpE56grU4TZmoKX/AhqJ3VLyruR5D9GBHuzCwl99L6tFikWaa5YkJB76SDsRGQo75/M0KezCK59LiGtj5ouMz9TG1Z/p8/gV3fcugiMbwuVVJQex1XEl31v110gWSbLhMGWmzVBJbEaGPGHQJPS8uxmsYVbfqM/deoGeLkdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MHt4vDay; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789287327; c=relaxed/simple;
+	bh=ZwX/sKgD4G0VcC4XB1mDDk2M+5z62rV/m7lm8c/UpSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQHy896vUF6J9FsWMigXsgr9o9QgrDehYg7JzkV7ITQ/K3HNI/r3YYCqVQRj65JGmc40iG1cIJFEd8vXRgu8rnhwE6MKtInyZG+WoB1/FZdHYvIY6OmNkDKhNYyT9hirxaJHQqCTTIpPA2yA6FHdoy7kLeBMufXwAAde6iSf7Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=zdd5PH1A; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MHt4vDay"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789286125;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="zdd5PH1A"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 240A314C2D6;
+	Sun, 13 Sep 2026 10:15:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1789287322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=As5kpy/SLue7mgIjEWjGCe5iKFeH3Ak3IjbKgOi4fRU=;
-	b=MHt4vDaytStLb5OUv3U3zg4K9rJng4J+DXNPiBNTeKH6nFw4yofJ8PmtCeZLsp5ACWLvec
-	ABQnCb4NlGJyFGG0iT+ijemygL3bW+4c6etlwDfLNXqrMZWlBycEpk+DuiciwbnJmC+w3A
-	1jQLTkIfDsuItpuEL3N4iBG5VuNV14c=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-331-uI4LYe9oOUKo9uXkejPhWw-1; Sun,
- 13 Sep 2026 03:55:21 -0400
-X-MC-Unique: uI4LYe9oOUKo9uXkejPhWw-1
-X-Mimecast-MFC-AGG-ID: uI4LYe9oOUKo9uXkejPhWw_1789286120
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 51EAB18007F1;
-	Sun, 13 Sep 2026 07:55:19 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 493621956087;
-	Sun, 13 Sep 2026 07:55:15 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <aqUIEEvKad-o-zft@codewreck.org>
-References: <aqUIEEvKad-o-zft@codewreck.org> <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk> <2226525.1789118704@warthog.procyon.org.uk>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: dhowells@redhat.com, Michael Mulqueen <mike@method-b.uk>,
-    ericvh@kernel.org, lucho@ionkov.net, pc@manguebit.org,
-    linux_oss@crudebyte.com, v9fs@lists.linux.dev, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL corruption of file data on cache modes with CACHE_WRITEBACK
+	bh=dNwiMx4hsnzXWsqlz16b37QsaalOt2bbFOd/Ze1iAQM=;
+	b=zdd5PH1AHt8amEEtXEnufc2EzB3aaiKzE3TOs+egOvIkK6oiPMmhXU3HEjvXgmePQkmjGz
+	3cuhbgB6Rz4aMdjCsE4FhUqgBzwb2lvBVmuP7LHQyGQ8F8l+Nj19zbCXFMUKev80naGU8L
+	9veVYLD0Slj42savNP9y5L5CcpvrJlpeurmm7LgTQzsxUJIVeVvfpIzQokigeETQJ5Uvcy
+	bZlEx8vk12JkgfU7S090JYNCglJ5aecl6seHO4il0hGsE7WAXDrvmAurLswA4eXYo3le7X
+	ikRbHDDZ5Hfx7o2eVQbU05FyrCBnYL4ZKjxxaN/ggZ90YPIq7IURSANOdudZ1Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 2ec5db01;
+	Sun, 13 Sep 2026 08:15:17 +0000 (UTC)
+Date: Sun, 13 Sep 2026 17:15:02 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Hemanth Selam <hemanth.selam@gmail.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	v9fs@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: fix typos in comments
+Message-ID: <aqZbhtKEsHe2KY1c@codewreck.org>
+References: <20260904112100.34541-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sun, 13 Sep 2026 08:55:13 +0100
-Message-ID: <2718782.1789286113@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: NxKzfJGUWZxK842XnEBDUthDz4juKh4fYMM-lmnpe5M_1789286120
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2718781.1789286113.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260904112100.34541-1-hemanth.selam@gmail.com>
 
-Dominique Martinet <asmadeus@codewreck.org> wrote:
+Hemanth Selam wrote on Fri, Sep 04, 2026 at 04:50:59PM +0530:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
+> 
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 
-> When v9fs_issue_write() is re-entered, writing the remaining data at the
-> original subreq->start offset rather than subreq->start + subreq->transfe=
-rred
-> would overwrite previously written data.
+Thanks, picked up for 7.4
 
-Retry should now be resetting ->transferred to 0, so actually I should remo=
-ve
-adding ->transferred from other filesystems.
-
-> > +=09=09spin_lock(&inode->i_lock);
-> > +
-> > +=09=09/* We can read the sizes directly as we hold i_lock. */
-> > +=09=09i_size =3D inode->i_size;
-> Does reading and updating i_size from this asynchronous writeback path ra=
-ce
-> with concurrent truncate operations?
-
-Supposedly, you're not allowed to change i_size unless you hold
-i_lock... which we do.
-
-> Also, reading inode->i_size directly without i_size_read() bypasses
-> i_size_seqcount, which can cause torn reads on 32-bit platforms.
-
-Which should be irrelevant as we hold i_lock.
-
-David
-
+-- 
+Dominique Martinet | Asmadeus
