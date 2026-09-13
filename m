@@ -1,48 +1,63 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEEF35F16C
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 16:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CA81EB5FD
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 16:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789316132; cv=none; b=f1zrlPktJ7o1kp7fnDk0He5JHqnkvuLeW3VjbV6dfqxBELqYsF6S/J6d7R2sUuQhOcm6zhX/QuyzAxLURhzyBEVkRxQZ5ZCfWNTcSQslhBu0QPDtEQnLDgJCFKD3szOLx0SVmh2i2PssNKAG1ZlCH375pwTaT25S13fHb/5ObDE=
+	t=1789317037; cv=none; b=QXDlxBHXbY8XcIpCzOjTirJMoR2iDFwJdz+UL4F2oSHG95JOIbPdDLzEn5gDaPMzMRLQr4ZIrijgqA4D01FFzR7+UDcLwRogF9hXmTxZwtmh8D9mnoKzy8bE3o+y/oCvQyqv1G+yhkjxn+hY/UyMjHQwlSCWYK1zH61lVtKGWwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789316132; c=relaxed/simple;
-	bh=3KFYohht0JQwZND8fzTLLtwwjHHVcAiSCne43zkFVZQ=;
+	s=arc-20240116; t=1789317037; c=relaxed/simple;
+	bh=2JSp6uF2+/wqGyKdfLGQ1uBv5SoCdvqLA2/UiHxvnA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ga50LYGw6NfvkrHeJEb9MKp/Cuaa6rFCY/axGMwtmUW2CoS1RHDprtyVHlagIk7ZGvkTZTl+tFvU2Y2m4H0pFL1SLwgJOyckAmoP4KVKxeEl7XjhvJ3Yk+X8yPhkHgQZNwXFlC5qE+2eH3knaTsNeE+pzQQqatyOGBYRgO3jnnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=sNwKMBXt; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=XdKrMZypFURf591lentHtJQ+cO0A3HfB9cKsxKLZtAzht5TV/xdkQD1iJwiI+NGE4HLPt+zDhfAul0VZBKp0+eDHvkZjZDI/rnZfK4rnm5/yCDLg/4/D5yh7/uEZxYHzyLAdxf3MfPglfnG9KgD7by1qsVvY2aqtzdfSqxcaCqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=uuv6UN8q; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="sNwKMBXt"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="uuv6UN8q"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id CE09214C2D6;
-	Sun, 13 Sep 2026 18:15:21 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id C305C14C2D6;
+	Sun, 13 Sep 2026 18:30:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789316123;
+	s=2; t=1789317030;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UCD3YyhdFHmDduZ40c/fILTYv44HdWYg6GwS/dIe/bY=;
-	b=sNwKMBXtZ2/PecdpgYRyPZowXNV+aaIKuM1RNiOwrG35ep0MX6Ndn4LP4pXra629FcgzMv
-	GHXlnHz159kf3lIv87GSSdxDY5g/BuY88rS5T8BvV1mVW87Mf8wbtX/WLOlEjEQnjy1aKZ
-	25DbZYBa3toAak6TFBdiwdavHWCCfkRyjtvYbdCTdhovW+j38OoHjJALDLGMOcZir9Jwqm
-	2yg6aCaO/bagPNbnb0U957E1kD1wHNrSJ+omO18wGA/0y3sOqTYMlrj0RO4o1cgSZQztNH
-	hkbS34yeuv9mHFRl0cTX/tOFSDtvaQPfiZJwHL3m9NtibgTA0ef9VjN066FAQQ==
+	bh=tvmaiIU5PddctNQD7UfqypasD+Yj4SWTiUXRtO7KUcw=;
+	b=uuv6UN8qiqJ+HmRv28s0aZ5AqKplDFCjnjryYvhy92cpG82wRZuK2Hvqjbw2dqtGL2ZBou
+	tWGgtCm396btk/IrGwlz7F0SmmGBwukXWpSjc3isOjs6cxsdiQOfXMQOQPotnAAizPeXdd
+	v82xQH0+TY8Zvh5CFaWgtsh0DqFxZ2/HMwdlScl50r1OZmBHRuzcHY/L+X0BuTMODOckls
+	nWz9LtTYCtqRlHgvnmI5ZeLfu+tRJBsJjG9rjctg09IrZ5asn+hcLHsckbCCl/gnIQ0kMw
+	rx8yy2iX7EpnKszo1ADbECNnD2DdaGC8CcYw4hHizkPXahofRv7tFngHVtM3+Q==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 27475403;
-	Sun, 13 Sep 2026 16:15:20 +0000 (UTC)
-Date: Mon, 14 Sep 2026 01:15:05 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 266e6f96;
+	Sun, 13 Sep 2026 16:30:24 +0000 (UTC)
+Date: Mon, 14 Sep 2026 01:30:09 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Rahul Priolkar <rahul.priolkar@asu.edu>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
+To: Tingmao Wang <m@maowtm.org>
+Cc: Greg Kurz <groug@kaod.org>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [BUG] 9p: fd: p9_conn_cancel publishes status before t_err
-Message-ID: <aqbMCR3_s2m_A9we@codewreck.org>
-References: <20260911092132.3328659-1-rahul.priolkar@asu.edu>
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	qemu-devel@nongnu.org, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
+	linux-security-module@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Matthew Bobrowski <repnop@google.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	Justin Suess <utilityemal77@gmail.com>
+Subject: Re: [PATCH v2 0/7] fs/9p: Reuse inode based on path (in addition to
+ qid)
+Message-ID: <aqbPkWJBrphVwOKW@codewreck.org>
+References: <aMih5XYYrpP559de@codewreck.org>
+ <20250917.Eip1ahj6neij@digikod.net>
+ <f1228978-dac0-4d1a-a820-5ac9562675d0@maowtm.org>
+ <3061192.c3ltI2prpg@silver>
+ <20251013112424.6b93659c@bahia>
+ <15ccd30e-e5f2-4612-b0ac-e495748732e6@maowtm.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -51,41 +66,49 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260911092132.3328659-1-rahul.priolkar@asu.edu>
+In-Reply-To: <15ccd30e-e5f2-4612-b0ac-e495748732e6@maowtm.org>
+
+Tingmao Wang wrote on Tue, Jul 14, 2026 at 02:14:00AM +0100:
+> Does anyone have preferences / suggestions on whether to keep going with
+> the path-tracking based approach (perhaps subject to figuring out a way to
+> handle parent renames), or an approach where Landlock simply stores the
+> fhandle (or (i_ino, i_generation (but this is u32 whereas st_gen within 9p
+> is u64))) as the rule key?
+
+st_gen comes from FS_IOC_GETVERSION which is exactly i_generation on at
+least ext4/btrfs/xfs, so it's not like that brings you anything
+(and it's also stored in the 9p inode's i_generation afaics?)
+
+My understanding is that if the underlying filesystem supports it then
+yes mountpoint + i_ino + i_generation ought to be unique when combined
+together, but that leaves you with what to do with filesystems that
+don't support it (at least tmpfs?) and 9p mounts sharing multiple
+filesystems (even if qemu has been warning about it for a while and that
+brings its own share of bugs around cache)
+
+If you're fine not supporting them, I think that definitely looks more
+promising, but otherwise you don't have much choice
 
 
-(I didn't read 90% of that mail)
+Either way I'm afraid I don't have time to look much into it (I'm afraid
+I have to admit I didn't read your full mail, and I have to get up in 4
+hours so I should probably stop processing this 9p backlog...), and it
+doesn't look like Greg is much more reactive, so you're on your own and
+I'm really sorry about it :/
+I wish you best though!
 
-Rahul Priolkar wrote on Fri, Sep 11, 2026 at 02:21:32AM -0700:
-> Conflicting accesses
-> --------------------
-> 
-> The conflicting read is in p9_client_rpc() at net/9p/client.c:612:
-> 
->     if (READ_ONCE(req->status) == REQ_STATUS_ERROR) {
->             ...
->             err = req->t_err;          /* racing read */
->     }
-> 
-> The conflicting write is in p9_conn_cancel() at net/9p/trans_fd.c:182.
-> In the same function, req->status is published at line 169 or 173 before
-> the lock is released at line 176 (abridged):
-> 
->     spin_lock(&m->req_lock);
->     ...
->     WRITE_ONCE(req->status, REQ_STATUS_ERROR);
->     ...
->     spin_unlock(&m->req_lock);
-> 
->     ...
->     if (!req->t_err)
->             req->t_err = err;          /* racing write */
+> If I find some time over the next couple of weeks I will try out the
+> second approach since it might be turning out to be the simpler option,
+> but the drawback is that it doesn't enable i/fanotify on 9pfs, which I
+> originally hoped to achieve together with fixing Landlock on 9pfs.
 
-That looks like a bug, if someone cares we could set all the errs first,
-wmb, then set status to error before dropping the lock; at this point
-I'm starting to wonder if we could just run the cb under lock but either
-way I've given up on fighting with connection teardown bugs.
+(inotify/fanotify would need a protocol overhaul to get "right" and is a
+much bigger can of works, because if you get it to work locally then
+you'll get people to expect the server to notify clients of remote
+changes (some network filesystems can do it with leases, but 9p doesn't
+have any such mechanism);
+I can understand it is useful even if it only works within the client
+local changes but I'm not sure I want to push much here either.)
 
-Please send a patch if you have time to check what you're doing
 -- 
-Dominique
+Domnique
