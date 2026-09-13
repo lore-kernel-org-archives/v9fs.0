@@ -1,54 +1,54 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D96837DAB3
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 09:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F533E5A0E
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 13:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789293478; cv=none; b=eZL5zPgNCgM8Y1npIYt/lsvNfC+qp9ydenUUQFdR/rOMA/PlZipqS+8qDGHyD97D5xELd3pbfdrvfaYitl9ZM6w/Nz7loIJQoYuHWdXJhbcvRExxF2pzuKg4TtvXIDe/8Mb8jYRDitFiYtIYK7LjLTXEJgFmE6aY2YbRCNHjv9Q=
+	t=1789305047; cv=none; b=A8QmbpUsGsLbbM0HrdnHqlZGg4jGxvQm51Tg/N085mBKifx8UfTpUYLg6fLMKG3lZM1FsA6o6p66GMi7gdEx3BicrKCH2FZDOFh/if7LC6jHUvrBtmtnYToKykP0FJhL7a9a6Qj3iJlLxivuA7VL3DWnHfQv5/ZIKdbvypeNMpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789293478; c=relaxed/simple;
-	bh=unQ/0uzY3D7cYZwKkeOa1X7gfYdcMIvLK16kqdbWZzI=;
+	s=arc-20240116; t=1789305047; c=relaxed/simple;
+	bh=oKRATY12sMnEnSjWFEGAAU0cx7hfiK0kmulnJCGbS60=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qVES2HUAasH19ySshWiABbg9jYC7JYFQTEX6AEw8wdy4i+rlH+Z/SRTd2lpJsw4dh8dVSzAJA8PjQV4Hl53Rap7v9NbcqDBYqmIqyW2E3O/TClnz+wjRVih35IEFNGGu9x4CNJTvt7kzHCwdK/5lXmiPTL8xTMa7d3oRSYdgohk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=I8x3cEXO; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=kt2wfJVpSvpQax/cWFY7lgAWYUV97BXncc0Yav5LO3E08SBJ9YXMD53CX1UcinjQ43+Xi8HXfcg8wsrL0SQJRoaQZOHUTc6v8v233UuDuizHULrB6BHMO8pGNFbtPNoBcy1kaDABPYSk10fQ55HiYUctEaQuhNtrfonrkJFiLaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=cvprfNXy; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="I8x3cEXO"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="cvprfNXy"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3885A14C2D6;
-	Sun, 13 Sep 2026 11:57:47 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id C41B814C2D6;
+	Sun, 13 Sep 2026 15:10:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789293471;
+	s=2; t=1789305041;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ojc3Gf8XdcHrzIe5027BZcw/ZHmTep5+/EMX7/cpuQs=;
-	b=I8x3cEXOrG0+DRO4ErfU7WXllrlpn1ZY9SxOSJnGpp4NmSMqs/nI1zmAid5c87Tk04wOVz
-	9e72wxFXuw7ra/qr3Yk6tk0A0XCriYPhZORmodOQbLN5UPTMjId1z9W1oIcIZ5dM42R+vZ
-	Lu0BknfzS8Y4enR2uURKgMjLEE3jZw5uxjCrBG82XKlATKAHlZNEu9uaqsayQ4EnI3RXjI
-	ASaMCoEXB1Sn6HAXM+/C1emdjJCf5LSSxEA2dmyurrghSrLZKvFsYE7Q5Bx/DfZERSG7EX
-	ThFL/ALnEhkiqknZ57nFQWYzX/LguD+SZDvmP2WThznjfmMW/RDRBw/Sr7K4vQ==
+	bh=8eLEPccw6mZF4b+5Xtr8EKUEwESuHcReeXBXIeuoGe4=;
+	b=cvprfNXyLKf3GM/tCddF6/dDAJ+r63auAWsUsQ9iLf+cx3XCCSTFrP2e3cmyQNtnzqAICB
+	YJFts1YqTFxGPGt52fs6+RYo253FPuE3iMLydIWoG7NnKWietWPe1EvzuBY+ygUnabijvo
+	1v8WI9QRDid2D3fnl4GtQGq5GVan8AZCJKDt32vwO7in91dlEeN4lHw5nEjYhbUa4PVdiz
+	IuXtol0wS5lGRrcaMDopTWSZPmQfhmIZ4RON96vEyjRWHGVGkyPLu9Y/dW7hH0Ei54+kL6
+	FUyphgDsIfqZJANop+F/5CHiUA3+I//y5fZ20Dc2HtdM9Q2tk7nVA9H70JYubw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7a5da7f6;
-	Sun, 13 Sep 2026 09:57:46 +0000 (UTC)
-Date: Sun, 13 Sep 2026 18:57:31 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e8935d42;
+	Sun, 13 Sep 2026 13:10:36 +0000 (UTC)
+Date: Sun, 13 Sep 2026 22:10:21 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Yifei Gao <gyf161023@gmail.com>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
 	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] 9p/xen: fix refcount leak in p9_xen_response() on
- wrong tag
-Message-ID: <aqZziy3RqeiJeHKW@codewreck.org>
-References: <20260804213550.3409638-1-gyf161023@gmail.com>
- <20260806144255.4167019-1-gyf161023@gmail.com>
+	=?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Subject: Re: [PATCH] 9p/xen: drain response work after unbinding IRQ
+Message-ID: <aqagvTnrIOGl8nfi@codewreck.org>
+References: <20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -57,34 +57,76 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260806144255.4167019-1-gyf161023@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn>
 
-Yifei Gao wrote on Thu, Aug 06, 2026 at 02:42:54PM +0000:
-> p9_xen_response() looks up the request for an incoming reply with
-> p9_tag_lookup(), which takes a reference on the returned p9_req_t. When
-> the tag does not resolve to a request in REQ_STATUS_SENT, the function
-> warns and continues the loop without dropping that reference, permanently
-> leaking the p9_req_t and its msize buffers. The reply header, including
-> the tag, is supplied by the backend, so a malicious or buggy 9P backend
-> can leak kernel memory on every crafted response.
+Yizhou Zhao wrote on Tue, Jun 09, 2026 at 11:52:01PM +0800:
+> commit ea4f1009408e ("9p/xen : Fix use after free bug in
+> xen_9pfs_front_remove due to race condition") added cancel_work_sync()
+> to keep xen_9pfs_front_free() from freeing a ring while
+> p9_xen_response() is still running.
 > 
-> Drop the reference before continuing.
+> The work is currently drained before the event channel IRQ is unbound.
+> That leaves a race window where xen_9pfs_front_event_handler() can run
+> after cancel_work_sync() returns and queue p9_xen_response() again.  The
+> following unbind_from_irqhandler() synchronizes with the IRQ handler, but
+> it does not cancel work that the handler already queued.  The teardown
+> can then free the ring and private data while the response work remains
+> pending, and the worker later dereferences ring->priv and priv->client.
 > 
-> Fixes: 728356dedeff ("9p: Add refcount to p9_req_t")
+> Unbind the event channel IRQ before draining the work.  Once the IRQ is
+> unbound, no new response work can be queued by the backend event channel,
+> and cancel_work_sync() waits for any work that was queued before or
+> during the unbind.  It is then safe to release the ring resources.
+> 
+> Fixes: ea4f1009408e ("9p/xen : Fix use after free bug in xen_9pfs_front_remove due to race condition")
 > Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Yifei Gao <gyf161023@gmail.com>
-> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+> Reported-by: Ao Wang <wangao@seu.edu.cn>
+> Reported-by: Xuewei Feng <fengxw06@126.com>
+> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+> Assisted-by: GLM:GLM-5.1
+> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-Thanks, I've picked this up for 7.4
+This one makes sense to me and I've picked it up, but I think
+"9p/xen: fix use-after-free in p9_xen_request"[1] adding a refcount to
+the front_priv is too much complexity vs. my understanding of the
+current threat model -- I can pick it up if someome who understands xen
+better than me has a proper look.
 
-If someone is interested in the 9pfs xen backend security then sashiko
-had a lot of "pre-existing issues" to talk about[1]... I tend to agree
-with Stefano's point of view that the 9p backend is mostly trusted
-though, so I'll take patches if someone wants to spend the effort, but
-won't actively be able to contribute much more.
+Stefano or Jürgen if you care / have time?
 
-[1] https://sashiko.dev/#/patchset/20260806144255.4167019-1-gyf161023@gmail.com
+[1] https://lore.kernel.org/r/20260529103416.81378-1-zhaoyz24@mails.tsinghua.edu.cn
+
+Thanks,
+
+> ---
+>  net/9p/trans_xen.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+> index f9fb2db7a066..73c75fbdfa21 100644
+> --- a/net/9p/trans_xen.c
+> +++ b/net/9p/trans_xen.c
+> @@ -281,14 +281,14 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+>  		for (i = 0; i < XEN_9PFS_NUM_RINGS; i++) {
+>  			struct xen_9pfs_dataring *ring = &priv->rings[i];
+>  
+> -			cancel_work_sync(&ring->work);
+> -
+>  			if (!ring->intf)
+>  				break;
+>  			if (ring->irq >= 0) {
+>  				unbind_from_irqhandler(ring->irq, ring);
+>  				ring->irq = -1;
+>  			}
+> +			cancel_work_sync(&ring->work);
+> +
+>  			if (ring->data.in) {
+>  				for (j = 0; j < (1 << ring->intf->ring_order);
+>  				     j++) {
 
 -- 
-Dominique
+Dominique Martinet | Asmadeus
