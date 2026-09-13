@@ -1,51 +1,54 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E70335C6A4
-	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 09:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D96837DAB3
+	for <v9fs@lists.linux.dev>; Sun, 13 Sep 2026 09:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789293134; cv=none; b=ZsLM0SK4pe+a2bi3LWoArUqZpdcPIt83pe8oxGp8DGOIcq/ZJCmG4fNG7GaOnlp1m2JuKHdSHtOsR8xCDP3+ISICioK8RD4cTzJU8WDmCWzubaIqx+C1aFwVjIZ0I4uNGF0PdF/jhH2bPPEVfgl9Db7A7RbiwBNY7czOcp2LWIA=
+	t=1789293478; cv=none; b=eZL5zPgNCgM8Y1npIYt/lsvNfC+qp9ydenUUQFdR/rOMA/PlZipqS+8qDGHyD97D5xELd3pbfdrvfaYitl9ZM6w/Nz7loIJQoYuHWdXJhbcvRExxF2pzuKg4TtvXIDe/8Mb8jYRDitFiYtIYK7LjLTXEJgFmE6aY2YbRCNHjv9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789293134; c=relaxed/simple;
-	bh=+YGX0XdjDiE0elQhgVlF/aVXlUoS+/b9GZ0yBeT34HE=;
+	s=arc-20240116; t=1789293478; c=relaxed/simple;
+	bh=unQ/0uzY3D7cYZwKkeOa1X7gfYdcMIvLK16kqdbWZzI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aBc6JE/bmwUtbOMw/nSih2s1WLtfDjiApnDc1piwmOkf5Lrluv6PAiq4dW6By5GtvdB+gWGT6oZdNQgteXHTYKFFs0zKivLk/X89gQCtdEXzGks2b8FuBS1ft0hF284e1C52P6Inm72kQzpoZbSBmVaGvaHFYAfro6xwI8L0vus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=f9vLLxR6; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=qVES2HUAasH19ySshWiABbg9jYC7JYFQTEX6AEw8wdy4i+rlH+Z/SRTd2lpJsw4dh8dVSzAJA8PjQV4Hl53Rap7v9NbcqDBYqmIqyW2E3O/TClnz+wjRVih35IEFNGGu9x4CNJTvt7kzHCwdK/5lXmiPTL8xTMa7d3oRSYdgohk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=I8x3cEXO; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="f9vLLxR6"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="I8x3cEXO"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 5832814C2D6;
-	Sun, 13 Sep 2026 11:52:07 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 3885A14C2D6;
+	Sun, 13 Sep 2026 11:57:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789293129;
+	s=2; t=1789293471;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o7dmRBlyQjnMpbvmecLG1K8z0y+GwO8VR44jdX5pGYU=;
-	b=f9vLLxR6xn3y3Nmd6Qq2OpdXAmo8ZXjh+O0Ga1ykaaGC3Fgb/6kkFFWXG3/2e2cXsNRjsj
-	vskwXRr7Gxaw5f2GfTuBZPyBlG1/UfLyyKveJt6bVWaTcpkeMzn/80jgKGx/NYigSYUI8C
-	qzVE25+teN5B65KHFIdZUDNv/uzA9t91u2NPfPdCPSNS/Oh1ZHMC3CA9ItCLUojI4zyrSn
-	4HyGy0RwSWLnPORInKKnvbPAtvAb6tC5KMVXH8Iyya7BSZleCuHfCRmA/oOSCtKlr0S4gH
-	jktCQF5BkGjEi7DeyesW9hlBK43omnN8HRoomiVope0re2ZDb5oebgxtnjBZ1w==
+	bh=ojc3Gf8XdcHrzIe5027BZcw/ZHmTep5+/EMX7/cpuQs=;
+	b=I8x3cEXOrG0+DRO4ErfU7WXllrlpn1ZY9SxOSJnGpp4NmSMqs/nI1zmAid5c87Tk04wOVz
+	9e72wxFXuw7ra/qr3Yk6tk0A0XCriYPhZORmodOQbLN5UPTMjId1z9W1oIcIZ5dM42R+vZ
+	Lu0BknfzS8Y4enR2uURKgMjLEE3jZw5uxjCrBG82XKlATKAHlZNEu9uaqsayQ4EnI3RXjI
+	ASaMCoEXB1Sn6HAXM+/C1emdjJCf5LSSxEA2dmyurrghSrLZKvFsYE7Q5Bx/DfZERSG7EX
+	ThFL/ALnEhkiqknZ57nFQWYzX/LguD+SZDvmP2WThznjfmMW/RDRBw/Sr7K4vQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 326c0bf4;
-	Sun, 13 Sep 2026 09:52:05 +0000 (UTC)
-Date: Sun, 13 Sep 2026 18:51:50 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7a5da7f6;
+	Sun, 13 Sep 2026 09:57:46 +0000 (UTC)
+Date: Sun, 13 Sep 2026 18:57:31 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
-	Rosen Penev <rosenp@gmail.com>
-Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
+To: Yifei Gao <gyf161023@gmail.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, v9fs@lists.linux.dev,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] 9p/xen: Use flexible array for data rings
-Message-ID: <aqZyNoWsZp9mvrN9@codewreck.org>
-References: <20260519015739.634423-1-rosenp@gmail.com>
- <147ee577-8a72-407c-b332-45dda9f153b3@suse.com>
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] 9p/xen: fix refcount leak in p9_xen_response() on
+ wrong tag
+Message-ID: <aqZziy3RqeiJeHKW@codewreck.org>
+References: <20260804213550.3409638-1-gyf161023@gmail.com>
+ <20260806144255.4167019-1-gyf161023@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -54,44 +57,34 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <147ee577-8a72-407c-b332-45dda9f153b3@suse.com>
+In-Reply-To: <20260806144255.4167019-1-gyf161023@gmail.com>
 
-Jürgen Groß wrote on Wed, May 27, 2026 at 07:39:07AM +0200:
-> On 19.05.26 03:57, Rosen Penev wrote:
-> > Store the fixed set of Xen 9p data rings in the frontend private
-> > allocation instead of allocating a separate rings array.
-> > 
-> > This keeps the data ring storage tied to the frontend lifetime and
-> > simplifies the allocation and cleanup paths.
-> > 
-> > Assisted-by: Codex:GPT-5.5
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
-> >   net/9p/trans_xen.c | 68 ++++++++++++++++++++--------------------------
-> >   1 file changed, 30 insertions(+), 38 deletions(-)
-> > 
-> > diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-> > index f9fb2db7a066..5a110d71d18c 100644
-> > --- a/net/9p/trans_xen.c
-> > +++ b/net/9p/trans_xen.c
-> > @@ -55,7 +55,7 @@ struct xen_9pfs_front_priv {
-> >   	char *tag;
-> >   	struct p9_client *client;
-> > -	struct xen_9pfs_dataring *rings;
-> > +	struct xen_9pfs_dataring rings[];
+Yifei Gao wrote on Thu, Aug 06, 2026 at 02:42:54PM +0000:
+> p9_xen_response() looks up the request for an incoming reply with
+> p9_tag_lookup(), which takes a reference on the returned p9_req_t. When
+> the tag does not resolve to a request in REQ_STATUS_SENT, the function
+> warns and continues the loop without dropping that reference, permanently
+> leaking the p9_req_t and its msize buffers. The reply header, including
+> the tag, is supplied by the backend, so a malicious or buggy 9P backend
+> can leak kernel memory on every crafted response.
 > 
-> Any reason not to use rings[XEN_9PFS_NUM_RINGS] instead of a flex array?
+> Drop the reference before continuing.
+> 
+> Fixes: 728356dedeff ("9p: Add refcount to p9_req_t")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Yifei Gao <gyf161023@gmail.com>
+> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
-Rosen, do you intend to resend with this fixed number?
+Thanks, I've picked this up for 7.4
 
-Given that's just a two line diff from your patch (just changing the
-type and keeping kzalloc_obj instead of kzalloc_flex) I can do it myself
-but I also don't have any direct merit from it, so if I don't hear back
-I'll forget about this
-(unless Jürgen says he actually read the whole diff and it's worth
-taking for simplification, I don't have time...)
+If someone is interested in the 9pfs xen backend security then sashiko
+had a lot of "pre-existing issues" to talk about[1]... I tend to agree
+with Stefano's point of view that the 9p backend is mostly trusted
+though, so I'll take patches if someone wants to spend the effort, but
+won't actively be able to contribute much more.
 
-Thanks,
+[1] https://sashiko.dev/#/patchset/20260806144255.4167019-1-gyf161023@gmail.com
+
 -- 
-Dominique Martinet | Asmadeus
+Dominique
