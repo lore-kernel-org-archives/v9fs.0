@@ -1,47 +1,54 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D966A425CC6;
-	Mon, 14 Sep 2026 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D359133260B
+	for <v9fs@lists.linux.dev>; Mon, 14 Sep 2026 09:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789378512; cv=none; b=OP4+SLkfbYCmOjvM6m/pnmYOvFN2nKzjkrTW7eOJrLc0pS6Eqpp6WBq4YBbx5IERGVmNbnDwzN/DBP4zFMJGtMCmxAKHI0XJh2bxTsMNncj272uslGfLizBqvZckVIyX4H+2PKaq9bSKF9mFshYAfuND9Tj4rcfC6t8pjSob8C8=
+	t=1789379752; cv=none; b=Jv/rExvd8s2rf8RqGwFUpf3O94pX3GP9kKmBGhxx9l05YemW4Om4DAU4HN5myw8uiv8plTDtp+zIv9B381i112KTVR7N2xIDCeEZl0JvZD3wue790aK+jKoCYPRCJowFmnhqwZ4H/4z58DnjMuwtEgwdLdVbKVE5gk4sCul/Xo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789378512; c=relaxed/simple;
-	bh=kZfEzUE9D0r+jPRhZX1xxJv2TfU8XecSNnAfY+u4lLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=iOPRiXuykgqhsE8duzw0EpixFUdE6hpuYkqwtzJeCmInEEoHVIqTi+om5hZqJoX5n+KMWh4+QDTIKC5cz17+PFziR/zBhLyQ+pr00zCMnSSoJ5DBEJZjZhjX9KSU3xojXBvYITf0mu6ImrhHwLyarYrbint6hR7ppaZdpR1SREI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=mC6R6vj1; arc=none smtp.client-ip=62.210.214.84
+	s=arc-20240116; t=1789379752; c=relaxed/simple;
+	bh=3r2BJQUB8HgCZs0YZR2845oTtv/OoYyHC6kZRVQZriQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o+C/mRWa58yYo215rHa8Q5c1YO1nvVjB3CeCFsi/vxT60dTfABtxxpBaIx7YUD32YBG2zytacq+6v1w4Fyw8Yw7WDUyV9wO6q/VaZfIfA4u03ZxNbBDUTsybVvAvPpJZG7/UED8qLorB173CWHWxlsL09adC+BqEtIFwFxAz7Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=c8OpmHaw; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="mC6R6vj1"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="c8OpmHaw"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D32F914C2D6;
-	Mon, 14 Sep 2026 11:34:56 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 466A514C2D6;
+	Mon, 14 Sep 2026 11:55:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789378500;
+	s=2; t=1789379748;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=FQj/UbNv+AUtLk8gb9YNWkGybW6AtBdWo1xqClNzlgc=;
-	b=mC6R6vj1D7TLKo/Elv/ZqQw+iJHQ9uJJYlOd+e8w24XXlW9foPv8FSVDH30aDw+zqSg3MA
-	sFxZjHzOHq/kBEi3ajgZgURHs+E3XOL+DIFt9bfT9D6YXfq0T7TYuoeDV3BxmgU9GU6paZ
-	In+iVkb0L22FAmxcDXNtLicbAwVxYsCdFFE3iDc+n8PIJcU3RsA69KMyEGTSC5h7mqduWE
-	+jLMw22Usc5IieCUH9OCrl1qUitTFMFuYVKJtHtUKc3mhSMzaAqa+2HsM5TSVlcHUqAxrZ
-	2Gm9vvt54Yk+M32KeIQ+eoPylPzcTx2LYTHb2RuDnSFLp6zsvZnlQS0pam5JIg==
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nfIiwjwRD+eNd3rgNnbfGDvuQL880sn0b831IITwi2Q=;
+	b=c8OpmHawWwfT6tlsKiLSQ4hPaKUSce+H6M5WS2QufVyHTGM46Db3/O3VFcmghZTcCTxy8r
+	bi3PPeDMgLzjKPgQUX7Ykz0hJgqyLx0EQ5GKhxDMMPZdjyTogwDfpqnBANvzoCje280DMK
+	pP9A6+eCvEjJNkHlFO/t4ZUAfRoWAL8YNig9Yh85pIC4qnzB7DRoVJ97MFgzltAUmER242
+	u6XkGPw9+Qvplj2d1VneKUL80yJWWjnyui6n2R16MuLX2OVlD3pmYBIrn/SgL6nZ4ZWHhM
+	iqRchGyTDf5WgFD5Dc+HEjXaZkInzQzzI9JFLbDChzLf+X7AekroUQouSe4lZg==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 2a36b916;
-	Mon, 14 Sep 2026 09:34:55 +0000 (UTC)
-Date: Mon, 14 Sep 2026 18:34:40 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c58fa861;
+	Mon, 14 Sep 2026 09:55:43 +0000 (UTC)
+Date: Mon, 14 Sep 2026 18:55:28 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Michael Mulqueen <mike@method-b.uk>, ericvh@kernel.org,
-	lucho@ionkov.net, dhowells@redhat.com, pc@manguebit.org,
-	linux_oss@crudebyte.com, v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] 9p regression fix for 7.3-rc4
-Message-ID: <aqe_sF0kM6mGn_KY@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, v9fs@lists.linux.dev,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] 9p/trans_virtio: bound RERROR copy by mapped pages
+Message-ID: <aqfEkHhMUHz2s6y6@codewreck.org>
+References: <20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <23241140.EfDdHjke4D@weasel>
+ <aqczkXDT-thZshJr@codewreck.org>
+ <25205411.ouqheUzb2q@weasel>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,32 +57,76 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <25205411.ouqheUzb2q@weasel>
 
-The following changes since commit df2908090cda368b01ff43709f51890076c56157:
+Christian Schoenebeck wrote on Mon, Sep 14, 2026 at 06:01:04AM +0200:
+> And `len` field is just shared DMA memory written by server. The len value is 
+> not questioned anywhere in the call stack, it is taken as-is.
+> 
+> This is for "split" ring type which QEMU's 9p virtio device is always using 
+> (as QEMU's virtio device is not advertising "packed" ring type). Linux 9p 
+> client is agnostic about the two, but it does not matter either way, because 
+> even with "packed" ring type the call stack would be slightly different, the 
+> len field would be 32-bit instead of 16-bit, but its value was still not 
+> questioned anywhere.
 
-  Linux 7.3-rc2 (2026-09-06 15:07:20 -0700)
+Thank you for the legwork!
 
-are available in the Git repository at:
+> > If we can't trust req->rc.size I believe the p9pdu processing will also
+> > read past the end of buffer so there are much bigger "problems"
+> > 
+> > With that said, I agree with your assessment that qemu is mostly
+> > trusted, and don't want to spend too much effort on this (unless
+> > something like me losing my job happens and I suddently find a lot of
+> > free time :P), so if you (or someone) can confirm rc.size isn't trusted
+> > then let's drop this here.
+> 
+> Surprisingly though, it is not as bad as one might think first.
+> [...]
+> Or:
+> You could simply pass the bad card on to the virtio subsystem maintainers, and 
+> tell them to clamp used-ring element's `len` field against the guest provided 
+> descriptor length, then req->rc.size would be trusted - no validation to be 
+> done on 9p side. But even then I can imagine that this would be implemented by 
+> virtio maintainers as an opt-in solution for drivers like "please clamp this 
+> for me" to avoid breaking certain legacy devices.
 
-  https://github.com/martinetd/linux tags/9p-for-7.3-rc4
+Given how surprised I found this I could imagine other virtio users to
+incorrectly assume the same, so I think it's worth bringing up even if
+it doesn't end up implemented (we could actually probably cap this on
+the 9p side if we wanted to anyway)
 
-for you to fetch changes up to c60ae98c5aa64021751b38ab1313b19d620bf640:
+I think truncating rc.size is worth the effort even if most of the paths
+are correct, and more appropriate than this current patch, so let's drop
+this patch - thank you nevertheless Yizhou Zhao for starting the
+discussion.
+I'm out of steam though so will take some time to send the
+virtualization list a mail.. :)
 
-  9p: Fix v9fs_issue_write() to update i_size and remote_i_size (2026-09-12 07:49:22 +0000)
 
-----------------------------------------------------------------
-This is a single fix for a 9p/netfs regression that got in 7.1
-(and was backported to 7.0)
+> > FWIW I said "mostly trusted" because lately we've had things like black
+> > box hypervisors (I don't remember the exact name) where guest VMs memory
+> > is encrypted and can't be accessed even by the host: sure the server
+> > could still *crash* a guest, but it shouldn't be able to get arbitrary
+> > write/read primitives, so if someone wants to spend effort fixing such
+> > bugs I think it's welcome and I'll be happy to take patches.
+> 
+> "Confidential Guest Support" is the term. Wouldn't change the picture here 
+> though, as this is about a host triggered DoS. Host could still kill the guest 
+> at any time.
 
-We need to rework how cached attributes, and in particular i_size, are
-handled in 9p more thoroughly but that will take more time and this
-appears to be enough for the most obvious problems
+Hm, yeah, I was confused and considered this as a oob write but it's the
+"reading a page that doesn't exist" that fails, so it's not likely to be
+too bad even if it does happen.
 
-----------------------------------------------------------------
-David Howells (1):
-      9p: Fix v9fs_issue_write() to update i_size and remote_i_size
+> The negative dentries patches come to my mind which you might have forgotten; 
+> I think v7 is the latest one on these:
+> 
+> https://lore.kernel.org/all/cover.1779355927.git.repk@triplefau.lt/
 
- fs/9p/vfs_addr.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+I'm not sure why I didn't reply to that thread back then, but it's been
+picked up in 7.2 :)
+
+Cheers,
 -- 
 Dominique Martinet | Asmadeus
