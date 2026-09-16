@@ -1,126 +1,93 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A501A43F0A7;
-	Wed, 16 Sep 2026 20:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA564307A0
+	for <v9fs@lists.linux.dev>; Wed, 16 Sep 2026 22:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789588958; cv=none; b=LHJmeoOYJuUEJaMhGkejs8BSbRL2YOoEX1+xlRYn/Qtf14mNbdUUNpE4rTSGeXkvt+NcXH4iJjeoG/h0sWcSsNIzIak9Jb5P8rMESmTtjyIb08C7SJca05BUxiPg6EruTD3gcKsUui6OCXpJpkc0/E9k3AUnL91BiQuco4z8P7g=
+	t=1789598757; cv=none; b=t9xOOi8bhzBd1Gelo4HbOgRUu3IFzK+whYINwa6aQNlFpldJnTEVf9IEumyGox/H7CDhh4Z/oMSV5zubRCvaF9LO5ZQGg594+yZYqMgBxZ/fcPrKh23/XhKgy0eZxjiYrNRjt7KbwPvguMfFNId/DO+pc9KRAtXtOOXpcoGQTjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789588958; c=relaxed/simple;
-	bh=4VPXVRsL/JYVebZmiRbYJ9Zfe5tiRltX0zNY+++VXEs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VZIlttQVM+adlVUkT/YmDgXBb+qzFSBQP70/dBs4B65oRtq6cKQwnzBjhRsB+15o2WrgIEVNdNISgfoiTGDb4kHQqx6wcUDZrtYseyK/oaONgOUoo2mK3uNJA3AB/DaRt1x/WvBrNavZU1T3CenCb6iUr9rmsxI+sM/ajzxBBH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=vgXzLwGO; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1789598757; c=relaxed/simple;
+	bh=QPJiK86gWczwyhvPZ/RtOdPnY9Fb/B11shcZsNCWri8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sx79I+hwbb6DWM6PXr0xFApsEt2gEn6sh7rTI6yEdRWBIdD/vC6oZpS+0aaD3w9vdNBBy9sOxjJo9m5Ob5PP5AtWBSDyNAUDfS7hKDM93s9nMpcgu4nr8cQfmkuUtsxL/3nMBWBX/nZ0pvUfZciUJmnY8Ut6luPAMTQUMBEv2Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fs+hCgF7; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="vgXzLwGO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=GhMZiNqLd2dOE9/TX3oM+jpcEYp/1e6C8q1PDfzzjkQ=; b=vgXzLwGOpQOBXXPQN2pMb/CaIr
-	GlcDYeiAQJwPbmquxE+qM8BfOd5ks1JJgEos0S2/j2gDSkFaG6eXrAv8t33GrHlr8amtxGUk8BeJV
-	zhZr+sYDHAWrMZ3onDsnjJHJp+QVBpOYWiCZX8EPVKsyLem+KHPGZHxrKSZqpK7PNwlw2lMupINjV
-	O0KZhy8GHWsH5Mzxy/XtoHorUS21LmG0rdWuznFpxK3OfotX424G1biIidwij3jdCAKXQfBwOx04E
-	O1N0RgZ4z4QQOhRvQeWlqgPhQa+H95iLJGXDyts//d2OUXVhP49NhtJhgMg/0kVpkorHOBHGV5hSC
-	aUlammiDA3lczTsycz3rWx6+eyHok1DbDRxWVPEhJPB72tgyuo4CuigO579HedomojitE70NnNSsB
-	paJJ++nHZDbyVw0zln9E8t76skIOhvhMF5HrSL8lYKSRkrXNWDHeojOR/DzMCEXaATKsdh3i+j6WA
-	lk6IUT2voJdE/Ssaez3+FAtwF8B1bDA493pMmZ2CWRP/DpWGCVgzB3O7PEwt2YFGl4kSsq8/giV8Z
-	abrSWHu2uWSykGVzbDXylXTPmq4Lxj8x6ycJX2Iha/M6Ejp2Mf0vkhEWYdMyV08d2vXqlaDRfkHd8
-	oFwsiayx8QQIsrsEnpFt7u+DFKea++TobiTEh1MnU=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- v9fs@lists.linux.dev, Haobin Wu <853555@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, aneesh.kumar@linux.vnet.ibm.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org,
- dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
-Subject:
- Re: [PATCH v2 2/2] 9p: skip directory entries with names longer than NAME_MAX
-Date: Wed, 16 Sep 2026 22:02:08 +0200
-Message-ID: <3910569.MHq7AAxBmi@weasel>
-In-Reply-To: <20260916135403.15789-3-853555@gmail.com>
-References:
- <20260916135403.15789-1-853555@gmail.com>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fs+hCgF7"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id DB2DB14C2D6;
+	Thu, 17 Sep 2026 00:45:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1789598748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S0vKeMZP5O8XjD8NFaFZ+hYELsVn/1VFNg126B2KHt0=;
+	b=fs+hCgF7/LuEowH7wAbL5nKlzv1OH24p621QUlYZTo82FfDXJDAQNz7UiSEmskKXiH1nt8
+	zoqvDKRXSrtfstBCHKE07HMZ94E+S7viRMOTd3h9oZs+EM6xTFsufAegiuM3taPCCtqaWa
+	9dGTGnZ8hoZ7y0NuvdCy2S19ING1ImYye2oqJ6JYPH6P5zwHMgtyKQgn9FCFjOm0sorVKp
+	4GPZYbkaugumFBF9TrTMGowagXIRYJBjC+8sEJIOteShopY0rC1tTAfKGr32qiCdvKVFIH
+	aTnyUWlO6t6ERwO9VQEPHqH5hEAm4R3gg5u4laVBFv9Q0Qy1ZTuMx4DPDmVdmw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1d946a2e;
+	Wed, 16 Sep 2026 22:45:41 +0000 (UTC)
+Date: Thu, 17 Sep 2026 07:45:26 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
+	Haobin Wu <853555@gmail.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, aneesh.kumar@linux.vnet.ibm.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org,
+	dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
+Subject: Re: [PATCH v2 2/2] 9p: skip directory entries with names longer than
+ NAME_MAX
+Message-ID: <aqscBuQli__0XUv4@codewreck.org>
+References: <20260916135403.15789-1-853555@gmail.com>
  <20260916135403.15789-3-853555@gmail.com>
+ <3910569.MHq7AAxBmi@weasel>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3910569.MHq7AAxBmi@weasel>
 
-On Wednesday, 16 September 2026 15:54:03 CEST Haobin Wu wrote:
-> The 9p wire format carries directory entry names of up to 65535 bytes
-> and nothing on the client checks them against NAME_MAX. Since the
-> previous patch, v9fs_dir_readdir_dotl() passes such names straight to
-> dir_emit(), and the VFS only rejects names of PATH_MAX bytes or more in
-> verify_dirent_name(), as -EIO, which again fails the whole getdents64()
-> call.
+Christian Schoenebeck wrote on Wed, Sep 16, 2026 at 10:02:08PM +0200:
+> > +			if (namelen > NAME_MAX) {
+> > +				p9_debug(P9_DEBUG_VFS,
+> > +					 "skipping entry with %zu byte name\n",
+> > +					 namelen);
 > 
-> A name between NAME_MAX and PATH_MAX is therefore returned to userspace
-> even though every later operation on it fails with -ENAMETOOLONG, and
-> POSIX requires readdir() to only return components of at most NAME_MAX
-> bytes. Nothing can use such an entry, so skip it instead of returning it
-> or failing the listing, reusing the strlen() result that was already
-> computed for dir_emit().
+> Fair to say why:
 > 
-> Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
-> Link:
-> https://lore.kernel.org/all/vz5bum547fqyxf5z4m3x7tuqkuq52jlopm65t7hvynqeulh
-> 7i3@2t4wnhfxs7qv/ Assisted-by: Claude:claude-fable-5-1
-> Signed-off-by: Haobin Wu <853555@gmail.com>
-> ---
->  fs/9p/vfs_dir.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-> index af00b79d801e..ad6fdc99883d 100644
-> --- a/fs/9p/vfs_dir.c
-> +++ b/fs/9p/vfs_dir.c
-> @@ -173,6 +173,7 @@ static int v9fs_dir_readdir_dotl(struct file *file,
-> struct dir_context *ctx) }
-> 
->  		while (rdir->head < rdir->tail) {
-> +			size_t namelen;
-> 
->  			err = p9dirent_read(fid->clnt, rdir->buf + rdir->head,
->  					    rdir->tail - rdir->head,
-> @@ -182,10 +183,14 @@ static int v9fs_dir_readdir_dotl(struct file *file,
-> struct dir_context *ctx) return -EIO;
->  			}
-> 
-> -			if (!dir_emit(ctx, curdirent.d_name,
-> -				      strlen(curdirent.d_name),
-> -				      QID2INO(&curdirent.qid),
-> -				      curdirent.d_type)) {
-> +			namelen = strlen(curdirent.d_name);
-> +			if (namelen > NAME_MAX) {
-> +				p9_debug(P9_DEBUG_VFS,
-> +					 "skipping entry with %zu byte name\n",
-> +					 namelen);
+>   "skip dentry: name length %zu > NAME_MAX"
 
-Fair to say why:
+Agreed.
 
-  "skip dentry: name length %zu > NAME_MAX"
+I'd also say to keep this as P9_DEBUG_ERROR rather than VFS: it should
+be rare enough and nobody will enable DEBUG_VFS immediately, this keeps
+the message at the same log level as it was previously
 
-This is only handled for 9p2000.L so far. For legacy 9p2000(.u) this should
-then also be limited in v9fs_dir_readdir() IMO.
+(P9_DEBUG_ERROR is not printed by default, but I've been meaning to
+try to change that eventually... Someday™)
 
-/Christian
+> This is only handled for 9p2000.L so far. For legacy 9p2000(.u) this should
+> then also be limited in v9fs_dir_readdir() IMO.
 
-> +			} else if (!dir_emit(ctx, curdirent.d_name, namelen,
-> +					     QID2INO(&curdirent.qid),
-> +					     curdirent.d_type)) {
->  				kfree(curdirent.d_name);
->  				return 0;
->  			}
+In practice this was already the case because of the processing in
+p9dirent_read(), so I have no strong opinion here, but I do agree it
+makes more sense to be symetrical yes.
+If done it should be noted as a behavior change in the commit message
+(or split in yet another commit) though
 
-
-
-
+-- 
+Dominique Martinet | Asmadeus
