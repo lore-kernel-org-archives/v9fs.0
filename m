@@ -1,93 +1,95 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA564307A0
-	for <v9fs@lists.linux.dev>; Wed, 16 Sep 2026 22:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D9B48FF7B;
+	Thu, 17 Sep 2026 21:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789598757; cv=none; b=t9xOOi8bhzBd1Gelo4HbOgRUu3IFzK+whYINwa6aQNlFpldJnTEVf9IEumyGox/H7CDhh4Z/oMSV5zubRCvaF9LO5ZQGg594+yZYqMgBxZ/fcPrKh23/XhKgy0eZxjiYrNRjt7KbwPvguMfFNId/DO+pc9KRAtXtOOXpcoGQTjY=
+	t=1789679521; cv=none; b=IpIfTphDP/R9jlWZbogi1Myat9ezYiZGRmkqECJrffyOZuUTuIkqjh2ZTYw3MyUuoBXZm0j3sSyKdKGR2BwzNmadgpTgoCMlJoXy0gGCX7eVMwI2blMIiQZdJrsD1PpROrV228aAGaUlQgWowA5dJAyCb+18JjtQIqFt68Jfi8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789598757; c=relaxed/simple;
-	bh=QPJiK86gWczwyhvPZ/RtOdPnY9Fb/B11shcZsNCWri8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sx79I+hwbb6DWM6PXr0xFApsEt2gEn6sh7rTI6yEdRWBIdD/vC6oZpS+0aaD3w9vdNBBy9sOxjJo9m5Ob5PP5AtWBSDyNAUDfS7hKDM93s9nMpcgu4nr8cQfmkuUtsxL/3nMBWBX/nZ0pvUfZciUJmnY8Ut6luPAMTQUMBEv2Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fs+hCgF7; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1789679521; c=relaxed/simple;
+	bh=yYJdJktxv6SmdwbH72DdlJ7DZZjc/VLvBTn0FUqQ93M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UbN02AcEfrZTBQZ/41jcgt4ZTGELrg06eyH7P5Mc0uAK1L/REJ26W1FDKYonAFMPnXRfQdCmRUv6NSc3copWDsyxVXdHbnd6KhAexbcojaEIBXLCBxCWmZiWanF9JWtHKHFSqijJPwPb2xM+z7H4vcrq9pU9toqx7iecWkNJYJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dp4vw4aC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fs+hCgF7"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id DB2DB14C2D6;
-	Thu, 17 Sep 2026 00:45:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789598748;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S0vKeMZP5O8XjD8NFaFZ+hYELsVn/1VFNg126B2KHt0=;
-	b=fs+hCgF7/LuEowH7wAbL5nKlzv1OH24p621QUlYZTo82FfDXJDAQNz7UiSEmskKXiH1nt8
-	zoqvDKRXSrtfstBCHKE07HMZ94E+S7viRMOTd3h9oZs+EM6xTFsufAegiuM3taPCCtqaWa
-	9dGTGnZ8hoZ7y0NuvdCy2S19ING1ImYye2oqJ6JYPH6P5zwHMgtyKQgn9FCFjOm0sorVKp
-	4GPZYbkaugumFBF9TrTMGowagXIRYJBjC+8sEJIOteShopY0rC1tTAfKGr32qiCdvKVFIH
-	aTnyUWlO6t6ERwO9VQEPHqH5hEAm4R3gg5u4laVBFv9Q0Qy1ZTuMx4DPDmVdmw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1d946a2e;
-	Wed, 16 Sep 2026 22:45:41 +0000 (UTC)
-Date: Thu, 17 Sep 2026 07:45:26 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
-	Haobin Wu <853555@gmail.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, aneesh.kumar@linux.vnet.ibm.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org,
-	dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
-Subject: Re: [PATCH v2 2/2] 9p: skip directory entries with names longer than
- NAME_MAX
-Message-ID: <aqscBuQli__0XUv4@codewreck.org>
-References: <20260916135403.15789-1-853555@gmail.com>
- <20260916135403.15789-3-853555@gmail.com>
- <3910569.MHq7AAxBmi@weasel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dp4vw4aC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962C61F000FF;
+	Thu, 17 Sep 2026 21:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789679520;
+	bh=4sH8FfJgHrsFtML3yksq13yWqqfP0VV+WMgF70KYqEM=;
+	h=From:To:Cc:Subject:Date;
+	b=dp4vw4aCpF3BUue31pTDqi8sfYJ8qEsgT64kpGB3wSehRo7PqGZInljmLLvjJMtOm
+	 EUFuE8CYjCmSP4VLvAR9mq4/iD/7yIadfDIzXrd0O8ckC1kWybFwCEcs/zHeDTULzk
+	 n3UJOC/NpUml3EajQhrSoXTFuSr0AvNqXF+IdeOCGUClv0lGXqUFk2Kuww7+H2KozC
+	 D37lOIr2p5ApqdLc1bV8F0m/A4V0Jysf3DfvZMQ4r6TicvtxYXWmhkSdR1l/4wrqWw
+	 PXm/CWKpzy2lG+1a5Md2lG1qY8xx9oTMKk2sHeq1bFIUQUfVS3G+o26hgqE2xAGzeV
+	 +HmhewNY2Dn8w==
+From: Kees Cook <kees@kernel.org>
+To: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Kees Cook <kees+treewide@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] 9p: Add const and unsigned to wnames allocation type
+Date: Thu, 17 Sep 2026 14:11:59 -0700
+Message-Id: <20260917211158.i.129-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1479; i=kees@kernel.org; h=from:subject:message-id; bh=VDxcphf5qMk3sXbUDyiWqc6nSnhoFpZtrzxznn/pkK4=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlrwuc7hT06s5T1nm/gxLmWuT3ld2V/iMvLb0xp0Uk2r mcTXDino5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCJHNjAyzHVYfGVZIAfb59h6 7vPc3JxbP3ufvfEgYp5Q7wV2m5etsgz/dHP81sVFLcm69XjtHFXRI30OS62i9czmOgnq3U+/neH ODwA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3910569.MHq7AAxBmi@weasel>
 
-Christian Schoenebeck wrote on Wed, Sep 16, 2026 at 10:02:08PM +0200:
-> > +			if (namelen > NAME_MAX) {
-> > +				p9_debug(P9_DEBUG_VFS,
-> > +					 "skipping entry with %zu byte name\n",
-> > +					 namelen);
-> 
-> Fair to say why:
-> 
->   "skip dentry: name length %zu > NAME_MAX"
+From: Kees Cook <kees+treewide@kernel.org>
 
-Agreed.
+In preparation for converting the kmalloc family of allocators to the
+type-aware kmalloc_obj family, we need to make sure that the returned
+type from the allocation matches the type of the variable being
+assigned. (The kmalloc family returns "void *", which can be implicitly
+cast to any pointer type.)
 
-I'd also say to keep this as P9_DEBUG_ERROR rather than VFS: it should
-be rare enough and nobody will enable DEBUG_VFS immediately, this keeps
-the message at the same log level as it was previously
+The assigned type is "const unsigned char **", but the converted
+allocation type would be "char **", which differs in both the const
+qualifier and the signedness of the character type. Take the size from
+the assignment target instead. No change in allocation size results.
 
-(P9_DEBUG_ERROR is not printed by default, but I've been meaning to
-try to change that eventually... Someday™)
+Build tested ARCH=x86_64 allmodconfig with GCC 16.2.0:
+fs/9p/fid.o
 
-> This is only handled for 9p2000.L so far. For legacy 9p2000(.u) this should
-> then also be limited in v9fs_dir_readdir() IMO.
+Assisted-by: LLM coccinelle
+Signed-off-by: Kees Cook <kees+treewide@kernel.org>
+---
+Cc: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: <v9fs@lists.linux.dev>
+---
+ fs/9p/fid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-In practice this was already the case because of the processing in
-p9dirent_read(), so I have no strong opinion here, but I do agree it
-makes more sense to be symetrical yes.
-If done it should be noted as a behavior change in the commit message
-(or split in yet another commit) though
-
+diff --git a/fs/9p/fid.c b/fs/9p/fid.c
+index 76242d450aa7..65dc7972b396 100644
+--- a/fs/9p/fid.c
++++ b/fs/9p/fid.c
+@@ -154,7 +154,7 @@ static int build_path_from_dentry(struct v9fs_session_info *v9ses,
+ 	for (ds = dentry; !IS_ROOT(ds); ds = ds->d_parent)
+ 		n++;
+ 
+-	wnames = kmalloc_array(n, sizeof(char *), GFP_KERNEL);
++	wnames = kmalloc_array(n, sizeof(*wnames), GFP_KERNEL);
+ 	if (!wnames)
+ 		goto err_out;
+ 
 -- 
-Dominique Martinet | Asmadeus
+2.34.1
+
