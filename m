@@ -1,54 +1,56 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C4248B373
-	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96F24CDDCD
+	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066106; cv=none; b=SbtPAFOg4G5NJKOGuXaqi2zHD291LTqSwiFvBUj8bK4fsj6YdKY7+7S9drUv9V4o2CVJ/SCU2XGqJ0X7Xu/0HAev03Ah0Jfy8MMxup96UX31lVrblrYtq4H85gmUmXx85Nco227KDAm1cvxdK6exukQA4S6J0CGIuPkCCxweLPc=
+	t=1790066740; cv=none; b=D2tUE+HYIdMs6vcCOVRbXA/E1nZKcfJGiTAZeXE+w5MLwTM1jGfsGW7dvJIKoMANqcvJk4ahdmRiXo4uHUky1S5+MPbnkOA0FuD0wrgkyjXCVx38wEb+9G/uLeR/3cjtKOoffz/AikTGDCT8IbKtOAr5rqMqPd7BXAzyvn5bFW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066106; c=relaxed/simple;
-	bh=gGUIYieV24A6lUUX1gSh58XZU7HKx2PCY9euDoctP+o=;
+	s=arc-20240116; t=1790066740; c=relaxed/simple;
+	bh=z+ErQH/dLPjY+2r8NmCdjY4tyB0zuO+gYvECMucs33c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SK3QlYhvERcy71XRB22u4SepkTGI/WTSwb2A/rauoNKXAYLRvUwqdxTCMaG64ArtbLbUvKUMYbvK5/K/NUODmAU6EtY/VPwmrC+yTz8ItLjAPzE2gViIdn+1CybsuR58dsDB3KmNXmoFVWZmKCM8nLPQrKDnD3ctXapZN8FWzDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=AHlmL3yv; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=XVxuO4c/lhFFbsnchT0gl/OhFDtH4O3yyhRLOBVa2qVl2hmCYsgoZPoJUWm3vO/zDDRNsZRq6E+Dgud6Vr6KvN0WQn7F55GwssItEMxLfNVHbocMQA23vGw1EOL6rMXJC5xEVW/wZn676YtzlCM25VIhwWrVZMHOhnSEHOuDTCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=PoYMuCbD; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="AHlmL3yv"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="PoYMuCbD"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 26C0114C2D6;
-	Tue, 22 Sep 2026 10:34:56 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 8158014C2D6;
+	Tue, 22 Sep 2026 10:45:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1790066102;
+	s=2; t=1790066736;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1wp8p1aEBwAksuFVWvFD43qsY5klCVg78/py079j2N4=;
-	b=AHlmL3yvGghWeG82SismoGhcaDe1YC6MzyvPHcGQNArDWsskn4fs4iWj62tQ817vpfHASp
-	zFUiqC2cC4mQawowwydaT+x/NsNZ9HedPekT73MjsJ94bdN7JqhnR/FNpycft5C6cShlMk
-	B7U8r6TPPq/UCbsRh+IrHgzTQ520jY9OiQ/PNUZkhOQ/OlSOkv/TutmTS2C7mn7GBZS0Nu
-	gQkQmQ4SJKXKNT7OkO2jENSHrDJS3IAPAtZfz15NmcgpIsB/dkbXYh5uBtJ2RgCtjNZLe6
-	CnIkwTbdV8VT4eXEmZoSqEeZMIu/7FvXxKvMldocAVNeUPvrIdQwlATXbTN3SA==
+	bh=hMkqWegiB0G0RPwXQW4iIweHXM+gp+p17tn0BymDpW4=;
+	b=PoYMuCbD9oC73v8MabIRDQ3JYH4XeiHnm5aaAnrfKac+pcFVw4u0zG7Q5mO/e9wxlyeOe1
+	wPCpRD4zwp1eT+md7c3/W0aYzOGHlnT6XAd34OlyX3hv644M2SrlvG9My5h0E0JjR/haAm
+	ybqfvaacyuI66Ycljs6YAwFwuRtx0CHUVbs9OxdIiRyxGfXNdfcsrWzVw19u+VGcM8FNWY
+	Im0iNN6j6OH7JGsKriu7qK96ggrORz8IKbl/de/VP6+UJsZ1LQ5eAIWIK96cIou9vZpJ7X
+	62BWFHiHBNxIWrUKhHUP5AY/PpCAmhqqKAFZ0q7bndsF8kef3Gww0bAYOPxKFQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5b7922d3;
-	Tue, 22 Sep 2026 08:34:55 +0000 (UTC)
-Date: Tue, 22 Sep 2026 17:34:40 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 02e7d134;
+	Tue, 22 Sep 2026 08:45:29 +0000 (UTC)
+Date: Tue, 22 Sep 2026 17:45:14 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
-	Haobin Wu <853555@gmail.com>, jack@suse.cz, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org,
-	aneesh.kumar@linux.vnet.ibm.com, willy@infradead.org,
-	dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
-Subject: Re: [PATCH v3 3/3] 9p: skip over-long directory entry names for
- legacy 9p2000 too
-Message-ID: <arI9oOXMsB-iG7jm@codewreck.org>
-References: <20260918024851.51229-1-853555@gmail.com>
- <20260918024851.51229-4-853555@gmail.com>
- <2050867.PYKUYFuaPT@weasel>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+de6fd6789748a8aa64a0@syzkaller.appspotmail.com>,
+	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+	gourry@gourry.net, joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	matthew.brost@intel.com, rakie.kim@sk.com,
+	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+	ziy@nvidia.com, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Subject: Re: [syzbot] [mm?] WARNING in v9fs_fid_get_acl (2)
+Message-ID: <arJAGlhkDJbcy2sw@codewreck.org>
+References: <6aae188b.71f81b7d.15fa6d.0004.GAE@google.com>
+ <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -57,65 +59,30 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2050867.PYKUYFuaPT@weasel>
+In-Reply-To: <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
 
-Haobin Wu,
-Thanks, I picked up all three patches
+(+Nguyen in Cc as he tried resending sloppy patches after this)
 
-Christian Schoenebeck wrote on Fri, Sep 18, 2026 at 02:08:00PM +0200:
-> On Friday, 18 September 2026 04:48:51 CEST Haobin Wu wrote:
-> > The legacy 9p2000 and 9p2000.u readdir path, v9fs_dir_readdir(), parses
-> > each entry with p9stat_read() and, unlike the 9p2000.L path, never had
-> > a 256-byte name limit: a name of any length up to the wire maximum was
-> > handed to dir_emit(). getdents64() therefore returned names longer than
-> > NAME_MAX that no later syscall can use, and failed with -EIO for names
-> > of PATH_MAX bytes or more.
-> > 
-> > Apply the same NAME_MAX check as the previous patch does for
-> > v9fs_dir_readdir_dotl(), so both protocol variants behave the same.
-> > 
-> > Note that this is a behaviour change for 9p2000 and 9p2000.u: entries
-> > with names longer than NAME_MAX used to be listed and are now skipped.
+Andrew Morton wrote on Sat, Sep 19, 2026 at 03:14:51AM -0700:
+> > WARNING: mm/page_alloc.c:5340 at alloc_order_allowed mm/page_alloc.c:5340 [inline], CPU#0: syz.1.357/7872
+> > WARNING: mm/page_alloc.c:5340 at __alloc_frozen_pages_noprof+0x2137/0x3300 mm/page_alloc.c:5397, CPU#0: syz.1.357/7872
 > 
-> That sentence is a bit misleading, isn't it?
-> 
-> Name length 256..4095:
->   - before: listed, but unusable (ENAMETOOLONG)
->   - now: entry skipped, fetch continues
-> 
-> Name length >=4096:
->   - before: aborts the entire fetch (similar to 9p2000.L side)
->   - now: entry skipped, fetch continues
+> Thanks.  Caused by an old v9fs bug.  A fix was proposed but never merged:
+> https://lists.openwall.net/linux-kernel/2024/02/02/806?utm_source=chatgpt.com
 
-Right, I've shamelessly copied that in when applying
-https://github.com/martinetd/linux/commit/55d6732b8015705a657d96fc5bd37fbed349624a
+Right, we've been going in circle with this since forever, and nobody
+answered Christian Schoenebeck's question[1] about what the limit should
+be, and while I don't care much ultimately I sort of agree with him
+(e.g. limit should be XATTR_SIZE_MAX for anything that the VFS layer
+touches, but acl are converted within the 9p subsystem and could be
+arbitrarily large so status quo of a KMALLOC_MAX_SIZE limit because they
+could come from something else)
 
-> > @@ -126,8 +128,16 @@ static int v9fs_dir_readdir(struct file *file, struct
-> > dir_context *ctx) return -EIO;
-> >  			}
-> > 
-> > -			over = !dir_emit(ctx, st.name, strlen(st.name),
-> > -					QID2INO(&st.qid), dt_type(&st));
-> > +			namelen = strlen(st.name);
-> > +			if (namelen > NAME_MAX) {
-> 
-> ... maybe better if (namelen >= PATH_MAX) here for legacy 9p2000(.u)?
+Andrew, if you have an opinion on whether we should cap the acl sizes
+anyway, please say...
 
-Given things won't work after the name is picked up anyway (from what I
-tried at least stat didn't work), I don't think it matters much, but I'm
-fine breaking compatibility here.
-We can bring the limit back up to PATH_MAX if someone claims it's useful
-somewhere.
+[1] https://lore.kernel.org/all/Z1n-Ue19Pa_AWVu0@codewreck.org/T/#md7c1e009696501b3b87940cb613150bdebd1db28
 
-> > +				p9_debug(P9_DEBUG_ERROR,
-> > +					 "skip dentry: name length %zu > NAME_MAX\n",
-> > +					 namelen);
-> > +				over = false;
-> 
-> Nit: alternative would be init over = false and dropping explicit assignment 
-> inside loop branch here. But that's already personal taste level.
-
-(I actually had the same comment, so made the swap locally)
 
 -- 
 Dominique Martinet | Asmadeus
