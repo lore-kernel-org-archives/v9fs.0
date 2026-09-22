@@ -1,23 +1,23 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57CD551997
-	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 13:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D9559CBC
+	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 13:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082955; cv=none; b=DKGF3SGPc1O0oVLY7SK43a1b+dbKfKVKEI7tVso4N6+2m8QrvYm+3aV8ffy6cFLSwL4FX1f1XDPZ1aSzhed7EQT5Avw/jzbiVdzwDzG446uCfDGrUDx3YGCIr16pv+VomWbyS10bw00wTetAnZTuf4vLD5Wu2ylkEzJ8vYxajkc=
+	t=1790083000; cv=none; b=RV+w4/yv3mSxd8CaV8OC+RTv5J5dcIUICPEwYyozpR/GegkZXLRbjxjmNvCTXvHLwhGX+55/yMwbYDinpaw7Stn6KpWIf34/BjGTuJgCzXTJxahUiAaOeD6CS6RhZC0a1pPGxmY8raZ7hekoe+gWOPGtvqbydiQFFmOIiPR1sQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082955; c=relaxed/simple;
-	bh=+UdaCVRneIGGV5nsh9YAZ+IihSE4daXByCA2mJwAAUI=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=q/WDtvcI0HscCyerRlAwe/OfM/zmkRrEz23uvdb5HBQflAbGs/Paa0aXYhdPFJXNuljjpjTS4Uke4q5sSJrBODuViWsv9sulU8SVjHSBOkOuQoi/UG16M63xxSOAIklaz1kP/NyNBWCaLiamtOhJZdDzNgkCcvdoFntfbtt/gns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=A7xSsiBb; arc=none smtp.client-ip=45.254.49.198
+	s=arc-20240116; t=1790083000; c=relaxed/simple;
+	bh=4WbZxV4Aknx80aOP97GV1nVAXrD+X49GsJ+s3LXshEA=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=QAF3rFY/mMwxb+QRIQEGrxlKaeaKvvkKLw23nsXiDP7K4qFEBE/a0BzMoDD5CXbwpfQS7QLJY4rq0A59mRrSdhMt6kxjVtweCSnN/T7/rQFl2DdLzOMouD71SabMYgBXEgdg20fUBQXT4GfrfwbEHImXHbXchZ469MHb3OJ3Zkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=aG5rQdD7; arc=none smtp.client-ip=45.254.49.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="A7xSsiBb"
+	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="aG5rQdD7"
 Received: from smtpclient.apple (unknown [IPV6:240e:305:1b9d:c001:85f9:8c92:21c2:aa08])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4ebc6db07;
-	Tue, 22 Sep 2026 21:15:47 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4ebc6db18;
+	Tue, 22 Sep 2026 21:16:32 +0800 (GMT+08:00)
 From: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
 Content-Type: text/plain;
 	charset=us-ascii
@@ -28,9 +28,9 @@ List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: [PATCH] 9p: fall back to the normal open path for non-regular files
-Message-Id: <908FC420-EC1F-46FC-8526-698F646961A8@stu.pku.edu.cn>
-Date: Tue, 22 Sep 2026 21:15:36 +0800
+Subject: [PATCH] 9p: do not store the create fid on special files
+Message-Id: <92377346-29E9-46D3-96F5-AABA8A64CD57@stu.pku.edu.cn>
+Date: Tue, 22 Sep 2026 21:16:22 +0800
 Cc: Eric Van Hensbergen <ericvh@kernel.org>,
  Latchesar Ionkov <lucho@ionkov.net>,
  Dominique Martinet <asmadeus@codewreck.org>,
@@ -38,125 +38,95 @@ Cc: Eric Van Hensbergen <ericvh@kernel.org>,
  linux-kernel@vger.kernel.org
 To: v9fs@lists.linux.dev
 X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-HM-Tid: 0aa0c94217a903a1kunmda6e7a44938a7
+X-HM-Tid: 0aa0c942c9e803a1kunmda6e7a4493942
 X-HM-MType: 10
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHxoeVkhKSUpMSRhNGkgfSFYeHw
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaGhoeVktMHkgaS0wZTkkdHVYeHw
 	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJT0seQUhLTkFKGUIfQRhLS0pBQ04dQkFDGEJJQUlKGElBGh
-	pLQ1lXWRYaDxIVHRRZQVlPS0hVSktISk5MTlVKS0tVSkJLS1kG
+	pLQ1lXWRYaDxIVHRRZQVlPS0hVSktJSE5DQ1VKS0tVS1kG
 DKIM-Signature: a=rsa-sha256;
-	b=A7xSsiBbgmI7bsgqzkFNHz0OuFQeLugGnHFZRSoq2tT81EYOTzFK46xMLqxZIKwbXprN+lCfRobAEkV5J4hSCeiTm5MAxahoSYrlaDvn92ZGffCwNu3dyDcnYS4MnKDLz2Uo6OYrA3qReTFtq+1enSGbK0uYwuNLy7sZXlU3YR4=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
-	bh=2v4Xd3k5sr46njshCKgMazaLCM9+ouxRU88llcwTTm0=;
+	b=aG5rQdD7QfvUAikYaLSHl6XAnZ55kbhgjFcPwR+UiQqchW7SFsJoGm6cWueo0UEVITT5N02mux4u+RHfH/SPzc0NFlVv0+lXtygVAa87Dd+QNGBmPtM9+bNBo5yT+xOQEVpGFVrpT/jQvzNqk+FBJjswHMBfor+IhGWPwipQYL0=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
+	bh=y8hchbK2esqehkjjNjIUoRkxfPth210npqXQCiCPAsg=;
 	h=date:mime-version:subject:message-id:from;
 
-v9fs_vfs_atomic_open() and v9fs_vfs_atomic_open_dotl() call
-finish_open(file, dentry, generic_file_open) regardless of the file
-type the server reported for the created dentry.  The supplied
-callback replaces f_op->open in do_dentry_open(), so blkdev_open()
-never runs for a server-reported device node: an open() with O_CREAT
-succeeds with f_op =3D def_blk_fops while f_mapping still points at the
-9p inode, because the bdev mapping swap only happens inside
-blkdev_open().  The block file methods then derive their block_device
-from that inode with I_BDEV(); the loads land at the tail of a
-656-byte v9fs_inode_cache object (offsets +624 and +632), which KASAN
-reports as slab-out-of-bounds, and the garbage they read is then
-dereferenced, so the first read(), write(), ioctl() or close() ends
-in a NULL pointer write and a panic.  In the ioctl(BLKGETSIZE64)
-variant the value read this way is returned to userspace.
+v9fs_vfs_atomic_open_dotl() always stores the create fid in
+file->private_data after finish_open().  FIFO and device inodes
+already have type-specific file_operations that own that field.
+Overwriting it with the fid makes later read/write/close treat the
+p9_fid as a pipe_inode_info, which corrupts the fid and can use it
+after it has been clunked.  The non-dotl atomic_open path does not
+assign the fid this way.
 
-The server controls the file type reported for the create, so a
-malicious server can crash the client this way.  KASAN report of the
-read() variant, on a build of linux-stable 2709dd5ae32f:
+Only attach the fid for regular files and directories.  Special
+files do not need the create fid; leave it for the existing
+p9_fid_put() on the out path so it is clunked before return.
 
-BUG: KASAN: slab-out-of-bounds in blkdev_read_iter+0x3cd/0x440
-Read of size 8 at addr ffff88800828ceb0 by task repro/1
+KASAN report, linux-stable 4982d3552a3b:
+
+BUG: KASAN: slab-use-after-free in =
+anon_pipe_prefill_and_lock+0x376/0x3f0
+Read of size 4 at addr ffff88800ab30538 by task repro/1
 
 Call Trace:
  <TASK>
- dump_stack_lvl+0x7b/0xa0
- print_report+0xd0/0x630
- kasan_report+0xe5/0x120
- blkdev_read_iter+0x3cd/0x440
- vfs_read+0x718/0xa50
- ksys_read+0x10f/0x200
+ anon_pipe_prefill_and_lock+0x376/0x3f0
+ anon_pipe_write+0x127/0x1600
+ fifo_pipe_write+0x24/0x300
+ vfs_write+0x659/0xd00
+ ksys_write+0x10f/0x200
  do_syscall_64+0xdd/0x4a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
  </TASK>
 
-The buggy address belongs to the object at ffff88800828cc40
- which belongs to the cache v9fs_inode_cache of size 656
-The buggy address is located 624 bytes inside of
- allocated 656-byte region [ffff88800828cc40, ffff88800828ced0)
-
-A plain open() without O_CREAT is not affected: it runs blkdev_open()
-and either maps the device correctly or fails with -ENXIO for an rdev
-with no registered device.  When the created inode is not a regular
-file, clunk the fid the create opened.  The unopened fid is already
-on the dentry.  Set FMODE_CREATED and return finish_no_open(file, NULL)
-so the VFS keeps its dentry reference and calls the inode's ->open.
-Regular files still use finish_open() with generic_file_open.
-
-Fixes: be12af3ef5e6 ("getting rid of 'opened' argument of =
-->atomic_open() - part 1")
+Fixes: 30d904947459 ("kill struct opendata")
 Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
 
 ---
-The unopened fid is already on the dentry.  This clunks the fid
-opened by the create.  finish_no_open(file, NULL) leaves the VFS
-dentry reference alone; FMODE_CREATED makes the caller run vfs_open().
+The private_data guard was boot-tested on a 9P2000.L mount: a write
+to a FIFO reached a reader again, and regular-file I/O stayed clean.
+Without the guard the same write returned success but the reader
+saw nothing.  Skipping v9fs_open_fid_add() for special files is so
+the unused create fid is clunked by the existing put on the out
+path; that part is compile-checked on 4982d3552a3b.
 
- fs/9p/vfs_inode.c      | 10 ++++++++++
- fs/9p/vfs_inode_dotl.c | 12 ++++++++++++
- 2 files changed, 22 insertions(+)
+ fs/9p/vfs_inode_dotl.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 3829554..d7e678d 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -802,6 +802,16 @@ v9fs_vfs_atomic_open(struct inode *dir, struct =
-dentry *dentry,
- 	v9fs_invalidate_inode_attr(dir);
- 	inode =3D d_inode(dentry);
- 	v9inode =3D V9FS_I(inode);
-+	if (!S_ISREG(inode->i_mode)) {
-+		/*
-+		 * Not a regular file.  v9fs_create() already stored the
-+		 * unopened fid on the dentry.  Clunk the opened fid =
-from
-+		 * the create and let the VFS call ->open.
-+		 */
-+		p9_fid_put(fid);
-+		file->f_mode |=3D FMODE_CREATED;
-+		return finish_no_open(file, NULL);
-+	}
- 	err =3D finish_open(file, dentry, generic_file_open);
- 	if (unlikely(err)) {
- 		p9_fid_put(fid);
 diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 116b29e..1431549 100644
+index 116b29e95f21e..ff5b21e956b12 100644
 --- a/fs/9p/vfs_inode_dotl.c
 +++ b/fs/9p/vfs_inode_dotl.c
-@@ -312,6 +312,18 @@ v9fs_vfs_atomic_open_dotl(struct inode *dir, struct =
-dentry *dentry,
- 	v9fs_fid_add(dentry, &fid);
- 	d_instantiate(dentry, inode);
-
-+	if (!S_ISREG(inode->i_mode)) {
-+		/*
-+		 * Not a regular file.  The unopened fid is already on =
-the
-+		 * dentry.  Clunk the opened create fid and let the VFS =
-call
-+		 * ->open.
-+		 */
-+		p9_fid_put(ofid);
-+		ofid =3D NULL;
-+		file->f_mode |=3D FMODE_CREATED;
-+		err =3D finish_no_open(file, NULL);
-+		goto out;
-+	}
- 	/* Since we are opening a file, assign the open fid to the file =
-*/
+@@ -316,16 +316,24 @@ v9fs_vfs_atomic_open_dotl(struct inode *dir, =
+struct dentry *dentry,
  	err =3D finish_open(file, dentry, generic_file_open);
  	if (err)
-
+ 		goto out;
+-	file->private_data =3D ofid;
++	/*
++	 * Special files have type-specific fops that own
++	 * file->private_data.  The create fid is unused
++	 * there: leave it for p9_fid_put() on the out
++	 * path so it is clunked before we return.
++	 */
++	if (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode)) {
++		file->private_data =3D ofid;
+ #ifdef CONFIG_9P_FSCACHE
+-	if (v9ses->cache & CACHE_FSCACHE) {
+-		struct v9fs_inode *v9inode =3D V9FS_I(inode);
+-		fscache_use_cookie(v9fs_inode_cookie(v9inode),
+-				   file->f_mode & FMODE_WRITE);
+-	}
++		if (v9ses->cache & CACHE_FSCACHE) {
++			struct v9fs_inode *v9inode =3D V9FS_I(inode);
++			fscache_use_cookie(v9fs_inode_cookie(v9inode),
++					   file->f_mode & FMODE_WRITE);
++		}
+ #endif
+-	v9fs_fid_add_modes(ofid, v9ses->flags, v9ses->cache, flags);
+-	v9fs_open_fid_add(inode, &ofid);
++		v9fs_fid_add_modes(ofid, v9ses->flags, v9ses->cache, =
+flags);
++		v9fs_open_fid_add(inode, &ofid);
++	}
+ 	file->f_mode |=3D FMODE_CREATED;
+ out:
+ 	p9_fid_put(dfid);=
