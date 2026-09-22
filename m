@@ -1,47 +1,50 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892A3B8922
-	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9185415F17
+	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066879; cv=none; b=ZUnsTbcpcDkIAkwrwE4ZP8m0X7/Fw+N5mIre1YIPt55f6xg8IZhTkH3GQBRsfkJOL27uP1S+9Uj6VrvN2D5RYdHgtlvSEwFDB/jiPf/Y3AhU9JsZJNgeNy6OgAEJTkrqSKKScIklghCvYym7U++M9jeqCEyPSaqBk589Pgg1CNA=
+	t=1790067064; cv=none; b=bnIXm0BAkSWhOZFCjlHJ/A3TVHU3av+OlctbXe4ikTuebjMgJvxYC8Zo0UjGSluvvaJM5hKFXSt7EbumJxM6L5QKB8T1F049dMKaEKcOasehf/Gy2Vb2Z78EacJctZ5i27UVRAraEAWGIp+CCpQFxlhOinRdHHktH/gaK/OPweI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066879; c=relaxed/simple;
-	bh=HYBBPq2C8/scO5vMh5BM7GPxkjTYDwN9/krhBR0OWdQ=;
+	s=arc-20240116; t=1790067064; c=relaxed/simple;
+	bh=YKmihOtXQwvFU/pxVMgWX5/kUgobkhdA4eUMXbVYkwo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qJxFkXhZhvYS1Wt2hGoE/PWraUmvSbpDOq0eIKKECujmy8mXPqpIaB1QWPKn0KZqZSvNa2xwCD2KBKJwhq5UIwX1JrWQsSwUM5y8PQv9pdKYjO+zg4Mp1HEYkzmeeqLh3IfKJGtXxrHMig30qmq9YH/H8yqhz9WwrAPK3G0nE0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=n3e8iavL; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=PhzgWmJG1rNXYosE+z+EYf79DA0qKlXSp30tKdqvNt98BuZgHkeVFiZMoP1w1/XVYFdVsy3qlTbukOi/fdrqniTY1QnBP4059J5MU4hI/mHtxEmKCLxD+2XD7WALwVvP0kBgfzdcD5VTsKrX22bOuJWXAhQYVWwulgSm1J09/84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hkKX5Lpr; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="n3e8iavL"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hkKX5Lpr"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id A7C7D14C2D6;
-	Tue, 22 Sep 2026 10:47:54 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 58A8A14C2D6;
+	Tue, 22 Sep 2026 10:50:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1790066876;
+	s=2; t=1790067060;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0Lp/uaTJFIwfnxHOSctS/0LIEn2qNu8pB5WlDKG/3OM=;
-	b=n3e8iavL1MBV2ILxbbG0ij1hpKL/oOexDoPC2Ir1+VZQ0zZcfmUPMWZu3nJIcdhFnz4R9N
-	lYnYL6n6afBnSJWZa84pKKBej0XQERBFt/e+N0LyYOKpUWTsbxCGcbzaKYyznSAtFG/Vbp
-	byywfnEG8AhHpB1mqmoaAEfWkPBoaduNeTr75kZpwyjdQdoBBDXaqLdIGPHXdMQ2QeMKM6
-	wS9DP92B8HDUfWSoaUcSrSSc0Qy9Tf4Z1ej4dIJVKp9GOh1TBgC2k84sPsA6e1YGYR2/EO
-	/dM1YupCY/V5JagmUv4OwEuVe+NB3wtuyXIQ/KupOePxzE7uGJrn+4bun9PkJg==
+	bh=KVKfbQp3WPaMeYti+Oijt6p3rzWkk7V7JE0fk+1xfJE=;
+	b=hkKX5LprM8quVJouJCxw/+YLlRuNfhQpUTEERILasJio86JNFsXkrUkZwbAbChrAu8F1yn
+	X0rylClEd2tW0u83Ds5ZYyAd7BZHU1ZXD+PEzF65wCcBQ98nEXaaPZ3WVjxSq8RkoaZwlR
+	IgmNdflmUt/iRYnoeRhaMlZw/jJX/sKLxDv+AF9F+riy4ZNCNJu4STIvIzTsfcDfhhW1+J
+	CjgCZtzn4MlZKLTUedh5c6E83oTpnFH/0VwAYevORemWT86phy9R6XyM4SgtRPfbCtgvjZ
+	Nz7buYL5EUykmTzKpckwYKYYqOiy3g6AZBJJGkSorP9TpcWiRzXwVefXA+ZsnA==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7f290b15;
-	Tue, 22 Sep 2026 08:47:52 +0000 (UTC)
-Date: Tue, 22 Sep 2026 17:47:37 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ad68f3e2;
+	Tue, 22 Sep 2026 08:50:56 +0000 (UTC)
+Date: Tue, 22 Sep 2026 17:50:41 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Hui Peng <benquike@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 9p: reject RERROR/RLERROR with zero errcode and guard
- 0-link drop_nlink()
-Message-ID: <arJAqVPrm1XfL1w-@codewreck.org>
-References: <20260919221734.3708000-1-benquike@gmail.com>
+To: Michael Grzeschik <mgr@kernel.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Hyungjung Joo <jhj140711@gmail.com>
+Subject: Re: [PATCH 0/7] usb9pfs: stable fixes
+Message-ID: <arJBYTbo3Vyagunu@codewreck.org>
+References: <20260922-usb9pfsfixes-v1-0-9d8dcc52904c@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -50,28 +53,27 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260919221734.3708000-1-benquike@gmail.com>
+In-Reply-To: <20260922-usb9pfsfixes-v1-0-9d8dcc52904c@kernel.org>
 
-Hui Peng wrote on Sat, Sep 19, 2026 at 10:17:34PM +0000:
-> Fix two issues in 9p client and VFS inode handling:
+Michael Grzeschik wrote on Tue, Sep 22, 2026 at 12:25:53AM +0200:
+> This is a breakout series with some additional fixes of the
+> first series of fixes I did sent out earlier this year.
+> 
+> https://lore.kernel.org/all/20260319-9pfixes-v1-0-c977a7433185@pengutronix.de/
+> 
+> It only addresses the stability of the driver and left out
+> the interface rework. Therefor I put all changes into a new
+> series beginning as v1.
 
-Please split this in two commits.
+Thanks!
+Also thanks for picking up a patch I had missed earlier.
+This didn't apply cleanly but nothing a fuzzy `patch` command couldn't
+handle (unfortunately sashiko gives up too easily on the whole
+series... but there's nothing controversial in here anyway so I won't
+ask you to resend)
 
-> 1. In p9_check_errors() (net/9p/client.c), a malicious or buggy 9p
->    server returning P9_RERROR or P9_RLERROR with ecode == 0 causes
->    p9_check_errors() to return 0 (success) while leaving the unparsed
->    response payload as if the expected reply message type succeeded. Map
->    ecode == 0 on RERROR / RLERROR to -EPROTO.
-
-Sure
-
-> 2. In v9fs_dec_count() (fs/9p/vfs_inode.c), only call drop_nlink() when
->    inode->i_nlink > 0 so unlinking an inode whose server-reported nlink
->    was already 0 does not underflow i_nlink and trigger
->    WARN_ON(inode->i_nlink == 0).
-
-I'm pretty sure this is racy but the dir case already is anyway, so meh,
-why not, ok.
+I fixed a typo in one of the messages but that aside this looks good to
+me, I've picked this up and will send to -next in a bit
 
 -- 
 Dominique Martinet | Asmadeus
