@@ -1,56 +1,47 @@
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96F24CDDCD
-	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892A3B8922
+	for <v9fs@lists.linux.dev>; Tue, 22 Sep 2026 08:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066740; cv=none; b=D2tUE+HYIdMs6vcCOVRbXA/E1nZKcfJGiTAZeXE+w5MLwTM1jGfsGW7dvJIKoMANqcvJk4ahdmRiXo4uHUky1S5+MPbnkOA0FuD0wrgkyjXCVx38wEb+9G/uLeR/3cjtKOoffz/AikTGDCT8IbKtOAr5rqMqPd7BXAzyvn5bFW8=
+	t=1790066879; cv=none; b=ZUnsTbcpcDkIAkwrwE4ZP8m0X7/Fw+N5mIre1YIPt55f6xg8IZhTkH3GQBRsfkJOL27uP1S+9Uj6VrvN2D5RYdHgtlvSEwFDB/jiPf/Y3AhU9JsZJNgeNy6OgAEJTkrqSKKScIklghCvYym7U++M9jeqCEyPSaqBk589Pgg1CNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066740; c=relaxed/simple;
-	bh=z+ErQH/dLPjY+2r8NmCdjY4tyB0zuO+gYvECMucs33c=;
+	s=arc-20240116; t=1790066879; c=relaxed/simple;
+	bh=HYBBPq2C8/scO5vMh5BM7GPxkjTYDwN9/krhBR0OWdQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XVxuO4c/lhFFbsnchT0gl/OhFDtH4O3yyhRLOBVa2qVl2hmCYsgoZPoJUWm3vO/zDDRNsZRq6E+Dgud6Vr6KvN0WQn7F55GwssItEMxLfNVHbocMQA23vGw1EOL6rMXJC5xEVW/wZn676YtzlCM25VIhwWrVZMHOhnSEHOuDTCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=PoYMuCbD; arc=none smtp.client-ip=62.210.214.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=qJxFkXhZhvYS1Wt2hGoE/PWraUmvSbpDOq0eIKKECujmy8mXPqpIaB1QWPKn0KZqZSvNa2xwCD2KBKJwhq5UIwX1JrWQsSwUM5y8PQv9pdKYjO+zg4Mp1HEYkzmeeqLh3IfKJGtXxrHMig30qmq9YH/H8yqhz9WwrAPK3G0nE0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=n3e8iavL; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="PoYMuCbD"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="n3e8iavL"
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8158014C2D6;
-	Tue, 22 Sep 2026 10:45:31 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id A7C7D14C2D6;
+	Tue, 22 Sep 2026 10:47:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1790066736;
+	s=2; t=1790066876;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hMkqWegiB0G0RPwXQW4iIweHXM+gp+p17tn0BymDpW4=;
-	b=PoYMuCbD9oC73v8MabIRDQ3JYH4XeiHnm5aaAnrfKac+pcFVw4u0zG7Q5mO/e9wxlyeOe1
-	wPCpRD4zwp1eT+md7c3/W0aYzOGHlnT6XAd34OlyX3hv644M2SrlvG9My5h0E0JjR/haAm
-	ybqfvaacyuI66Ycljs6YAwFwuRtx0CHUVbs9OxdIiRyxGfXNdfcsrWzVw19u+VGcM8FNWY
-	Im0iNN6j6OH7JGsKriu7qK96ggrORz8IKbl/de/VP6+UJsZ1LQ5eAIWIK96cIou9vZpJ7X
-	62BWFHiHBNxIWrUKhHUP5AY/PpCAmhqqKAFZ0q7bndsF8kef3Gww0bAYOPxKFQ==
+	bh=0Lp/uaTJFIwfnxHOSctS/0LIEn2qNu8pB5WlDKG/3OM=;
+	b=n3e8iavL1MBV2ILxbbG0ij1hpKL/oOexDoPC2Ir1+VZQ0zZcfmUPMWZu3nJIcdhFnz4R9N
+	lYnYL6n6afBnSJWZa84pKKBej0XQERBFt/e+N0LyYOKpUWTsbxCGcbzaKYyznSAtFG/Vbp
+	byywfnEG8AhHpB1mqmoaAEfWkPBoaduNeTr75kZpwyjdQdoBBDXaqLdIGPHXdMQ2QeMKM6
+	wS9DP92B8HDUfWSoaUcSrSSc0Qy9Tf4Z1ej4dIJVKp9GOh1TBgC2k84sPsA6e1YGYR2/EO
+	/dM1YupCY/V5JagmUv4OwEuVe+NB3wtuyXIQ/KupOePxzE7uGJrn+4bun9PkJg==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 02e7d134;
-	Tue, 22 Sep 2026 08:45:29 +0000 (UTC)
-Date: Tue, 22 Sep 2026 17:45:14 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7f290b15;
+	Tue, 22 Sep 2026 08:47:52 +0000 (UTC)
+Date: Tue, 22 Sep 2026 17:47:37 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: syzbot <syzbot+de6fd6789748a8aa64a0@syzkaller.appspotmail.com>,
-	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
-	gourry@gourry.net, joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	matthew.brost@intel.com, rakie.kim@sk.com,
-	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
-	ziy@nvidia.com, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Subject: Re: [syzbot] [mm?] WARNING in v9fs_fid_get_acl (2)
-Message-ID: <arJAGlhkDJbcy2sw@codewreck.org>
-References: <6aae188b.71f81b7d.15fa6d.0004.GAE@google.com>
- <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
+To: Hui Peng <benquike@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: reject RERROR/RLERROR with zero errcode and guard
+ 0-link drop_nlink()
+Message-ID: <arJAqVPrm1XfL1w-@codewreck.org>
+References: <20260919221734.3708000-1-benquike@gmail.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
@@ -59,30 +50,28 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
+In-Reply-To: <20260919221734.3708000-1-benquike@gmail.com>
 
-(+Nguyen in Cc as he tried resending sloppy patches after this)
+Hui Peng wrote on Sat, Sep 19, 2026 at 10:17:34PM +0000:
+> Fix two issues in 9p client and VFS inode handling:
 
-Andrew Morton wrote on Sat, Sep 19, 2026 at 03:14:51AM -0700:
-> > WARNING: mm/page_alloc.c:5340 at alloc_order_allowed mm/page_alloc.c:5340 [inline], CPU#0: syz.1.357/7872
-> > WARNING: mm/page_alloc.c:5340 at __alloc_frozen_pages_noprof+0x2137/0x3300 mm/page_alloc.c:5397, CPU#0: syz.1.357/7872
-> 
-> Thanks.  Caused by an old v9fs bug.  A fix was proposed but never merged:
-> https://lists.openwall.net/linux-kernel/2024/02/02/806?utm_source=chatgpt.com
+Please split this in two commits.
 
-Right, we've been going in circle with this since forever, and nobody
-answered Christian Schoenebeck's question[1] about what the limit should
-be, and while I don't care much ultimately I sort of agree with him
-(e.g. limit should be XATTR_SIZE_MAX for anything that the VFS layer
-touches, but acl are converted within the 9p subsystem and could be
-arbitrarily large so status quo of a KMALLOC_MAX_SIZE limit because they
-could come from something else)
+> 1. In p9_check_errors() (net/9p/client.c), a malicious or buggy 9p
+>    server returning P9_RERROR or P9_RLERROR with ecode == 0 causes
+>    p9_check_errors() to return 0 (success) while leaving the unparsed
+>    response payload as if the expected reply message type succeeded. Map
+>    ecode == 0 on RERROR / RLERROR to -EPROTO.
 
-Andrew, if you have an opinion on whether we should cap the acl sizes
-anyway, please say...
+Sure
 
-[1] https://lore.kernel.org/all/Z1n-Ue19Pa_AWVu0@codewreck.org/T/#md7c1e009696501b3b87940cb613150bdebd1db28
+> 2. In v9fs_dec_count() (fs/9p/vfs_inode.c), only call drop_nlink() when
+>    inode->i_nlink > 0 so unlinking an inode whose server-reported nlink
+>    was already 0 does not underflow i_nlink and trigger
+>    WARN_ON(inode->i_nlink == 0).
 
+I'm pretty sure this is racy but the dir case already is anyway, so meh,
+why not, ok.
 
 -- 
 Dominique Martinet | Asmadeus
