@@ -1,102 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B43D5C05;
-	Fri, 25 Sep 2026 14:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD733C342B
+	for <v9fs@lists.linux.dev>; Mon, 28 Sep 2026 07:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790345711; cv=none; b=rvRii15Ay70crZaPYXdKbpBxRqxurAgjwIB76fsHnybJ/ynTSW+kSlitbizTLlug+Asyuq2p/cNPShQXw3dm1dL+0lQSFJcc58VXUs3KgrGfmucGo4vZ8OVO/N2ihuWquKEAbUIK7Y5IMrpW0t2b/HsQ8CGKYjzzwWAQ/N8enOk=
+	t=1790580368; cv=none; b=J7suWlImOw6McG8lQ++a/mk39TZ7Y4qmvleN13QGjPHXoZ8STVAB6j39z1WqSUZFWxT+LY5lBlqMAAYGhs8W17gBvX+dPz8zqiogEJ+FUeQw7Ffeyz0DGaAYN8fmrqhxgoZ8DPVKklvN7Jtffiyjzy1d/9qWKtDFE5Uo8eXwqZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790345711; c=relaxed/simple;
-	bh=Nhzcuaa19S/4QH0u1yNemZrARjjDFHHWAbX7Sg/uii0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=D/2KrouqD0jD9bEsQZpTQgcewr/kb+sTk3bRkCntoFP/oi8pmJW7auCxBW02mv6x8lKAQb1UZI7DQbxtZz3IWLj0Yd8C4F4n3F17aumpKk6XkcAtCtsHbCwIqK+q0AbW7MFY9fEbFZEsz4ckRCEcQeuQZRuztVKn7PgRZXjdiFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcaC0h6T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790580368; c=relaxed/simple;
+	bh=z5Yd3ofejUyoc6HtISU3dTbcxyj8g9BrWUa/kQzVemE=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=musmlh1Ii0/LEVV/AZf22HTvst1lGHiG/KwhX2KXMfp28r3XcBi8HX6201l9FXZs5Wqyh+2eMzlqfYrjsEPX2eG5S0JYEeITP5j902LSSO3Yrv7Skijoc20MM2ScI4U4lpzKlbhGD3dYHKlgZWos+Y8AcqcYLHF0knlDjud2FnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=Q1MQgjhY; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcaC0h6T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3141F000FF;
-	Fri, 25 Sep 2026 14:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790345709;
-	bh=MIe23nsde5XC5yVj3zneg2fItu+VCNKw2E2wq5yQiZ8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=VcaC0h6ThfWLU0dY3RnDbS/2UX9Srn1tRcz0irJM91BitNgejZb5rkFkfp6LAr4hs
-	 JVNORK4Uq6TEQeFcmJBrtMVsP5Dnq+c3EE7hJG5bf7EdI1X4tJMGxa+Wf0SoqcQE4s
-	 tsJRuCEs8LpR0opajlU/v5Dhx5dnIEm2OqWeN5pZeOX0/gE7CPDuhq79HGUgKhRRoi
-	 IDuzzmBbJgwLU2AV4BhhsMG1Y0/tcG50oqt0+1G4b13TzeeMMnh5bh1ZdP6RRYlu2t
-	 xFuYpHSzMMjM8TXj5d1GJiYONvv3crgvc2HFcmlF1HQkvA03AU9W1GHh5YedZZkIGI
-	 /OVlmA/pHjshA==
-From: Christian Brauner <brauner@kernel.org>
-To: Christian Brauner <brauner@kernel.org>, 
- David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, 
- Matthew Wilcox <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, 
- Marc Dionne <marc.dionne@auristor.com>, Stefan Metzmacher <metze@samba.org>, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
- linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260910220242.2165023-1-dhowells@redhat.com>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
-Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily
- occupancy tracking-related
-Message-Id: <20260925-entbehren-dasein-toben-4bb08888fa6a@brauner>
-Date: Fri, 25 Sep 2026 16:15:01 +0200
+	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="Q1MQgjhY"
+Received: from smtpclient.apple (unknown [124.126.139.86])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4f50f8e19;
+	Mon, 28 Sep 2026 15:25:58 +0800 (GMT+08:00)
+From: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1696; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Nhzcuaa19S/4QH0u1yNemZrARjjDFHHWAbX7Sg/uii0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRta3zu9ejPksnvHCdsrAyaqDf31UaOw0H+30O8DY96/
- c24ZLnoX0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE8kMZ/nBZ1n0LnC6Tz/DA
- fK/MoRtt33Q9ZDWLPptVOP9nN/1gY8rI8IPFWylD066JLyLn4Cq3vRP//WANW3Dc8U2Dm6ry2rB
- NvAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: [PATCH] 9p: don't decrement a server-owned zero nlink
+Message-Id: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
+Date: Mon, 28 Sep 2026 15:25:48 +0800
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+ v9fs@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-HM-Tid: 0aa0e6e7fd9903a1kunm6258c4181eb549
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSRoeVhpPGU0fH0xDHR4fSFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKSU9VSklNVUpIQlVDTVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	5MTlVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=Q1MQgjhYsCBsZcXRPuM3SYmmfK5+wMqaRTXPwRmYj+tib//7ahC9tVLJEjXLQTppRgQiYhcaTzM2Dn2ESdu0/FbzQCuqW7yfDaJsRZ7sKAel8j0ZANQbLdXb+z4009RUbNq9Bj/Zb9RW7rChZK5csRDpOTzXnjAGf2cjWVRMoO0=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
+	bh=t5LvP+tltYINo1sKhAAn4aqSaeTM4DOIvH0S4xyaEiM=;
+	h=date:mime-version:subject:message-id:from;
 
-On Thu, 10 Sep 2026 23:02:35 +0100, David Howells wrote:
-> netfs, cachefiles: Changes for next, primarily occupancy tracking-related
-> 
-> Hi Christian,
-> 
-> Could you pull these patches please into your vfs-7.4.netfs branch?  This
-> is the second of four batches, in this case dealing with cachefiles, and is
-> based upon the aforementioned branch.  This was split from v11 of a larger
-> netfslib series[1].
-> 
-> [...]
+A 9P2000.L server can report nlink=3D0 for a regular file that still
+exists.  On a cache=3Dloose or cache=3Dfscache mount, lookup stores that
+value with set_nlink().  A later successful unlink calls
+v9fs_dec_count(), which still calls drop_nlink() for a non-directory.
+drop_nlink() warns, and the unsigned link count wraps to 4294967295.
+fstat() on a descriptor opened before the unlink shows 0 before and
+4294967295 after.
 
-Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
+The warning on the unpatched kernel, trimmed:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+WARNING: fs/inode.c:408 at drop_nlink+0xac/0xd0, CPU#1: trigger/188
+CPU: 1 UID: 0 PID: 188 Comm: trigger Tainted: G                 N  =
+7.3.0-rc4-00537-ga3ff15db6820 #1 PREEMPT(lazy)
+RIP: 0010:drop_nlink+0xac/0xd0
+Call Trace:
+ <TASK>
+ v9fs_remove+0x529/0x750
+ vfs_unlink+0x2f0/0xbd0
+ filename_unlinkat+0x340/0x6c0
+ __x64_sys_unlink+0x46/0x70
+ do_syscall_64+0xe8/0x4f0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+---[ end trace 0000000000000000 ]---
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Directories whose cached nlink is at most 2 already skip this
+decrement, because the exported filesystem may not maintain nlink
+(commit ac89b2ef9b559).  cache=3Dnone skips it as well (commit
+574aa0b479947).  cache=3Dmmap does not take this path: it sets neither
+CACHE_META nor CACHE_LOOSE.  A regular file on cache=3Dloose or
+cache=3Dfscache still does.  Its count came from GETATTR and may
+already be zero, so skip the decrement when i_nlink is already 0.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Verified on 7.3-rc4-00537-ga3ff15db6820 with only this change.  A
+server that advertises nlink=3D0 and accepts the unlink no longer
+warns, and the open descriptor stays at nlink 0.  An honest server
+on the same mount still goes from 1 to 0.  A rejected unlink leaves
+the count unchanged.  cache=3Dnone is unchanged.  With panic_on_warn
+the unpatched kernel panics on the warning; the patched kernel does
+not.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.4.netfs
+Fixes: ac89b2ef9b559 ("9p: don't maintain dir i_nlink if the exported fs =
+doesn't either")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
+---
+ fs/9p/vfs_inode.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-[1/5] cachefiles: Clean up cachefiles_do_prepare_read()
-      https://git.kernel.org/vfs/vfs/c/c9e86618da69
-[2/5] netfs, cachefiles: Add a couple of traces for write failure
-      https://git.kernel.org/vfs/vfs/c/4f973d314d59
-[3/5] cachefiles: Add a tracepoint to log insufficient space errors
-      https://git.kernel.org/vfs/vfs/c/dd79f8c90ea8
-[4/5] cachefiles: Don't rely on backing fs storage map for most use cases
-      https://git.kernel.org/vfs/vfs/c/c8d890e089a1
-[5/5] cachefiles: Preset the state xattr when creating a new file
-      https://git.kernel.org/vfs/vfs/c/f96cbb18159f
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index d7e678de0a036..347739b81513f 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -495,6 +495,12 @@ static int v9fs_at_to_dotl_flags(int flags)
+  * nothing and races with concurrent metadata fetches that may already
+  * have observed the post-unlink value (nlink =3D=3D 0).
+  *
++ * The same applies to a regular file whose cached nlink has already =
+been
++ * driven to zero by the server: in the cached modes the attributes =
+come
++ * from GETATTR and are applied verbatim, so decrementing a link count =
+the
++ * server does not maintain only trips the drop_nlink() WARN_ON and
++ * underflows i_nlink.
++ *
+  * @inode: inode whose nlink is being dropped
+  */
+ static void v9fs_dec_count(struct inode *inode)
+@@ -503,6 +509,8 @@ static void v9fs_dec_count(struct inode *inode)
+=20
+ 	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
+ 		return;
++	if (inode->i_nlink =3D=3D 0)
++		return;
+ 	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+ 		drop_nlink(inode);
+ }
 
