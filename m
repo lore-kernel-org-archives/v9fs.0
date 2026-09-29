@@ -1,131 +1,78 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD733C342B
-	for <v9fs@lists.linux.dev>; Mon, 28 Sep 2026 07:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80573803D6
+	for <v9fs@lists.linux.dev>; Tue, 29 Sep 2026 06:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580368; cv=none; b=J7suWlImOw6McG8lQ++a/mk39TZ7Y4qmvleN13QGjPHXoZ8STVAB6j39z1WqSUZFWxT+LY5lBlqMAAYGhs8W17gBvX+dPz8zqiogEJ+FUeQw7Ffeyz0DGaAYN8fmrqhxgoZ8DPVKklvN7Jtffiyjzy1d/9qWKtDFE5Uo8eXwqZQ=
+	t=1790664162; cv=none; b=EREf6cJKfJm2z37kCejXB3FVTOCoVtO85B/cjbpka5W8XDGEOmkMj/YQvfuGSOp1NWs+KS3e4efZtsUvkvYXm1x7lBiRcOzQqoiupXD46flrSv458Y1h3ehJsIFvxZyI59t9uU2kBu4fyrHPLfjgnVj+0i5mOP7+w5HHz/ksuQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580368; c=relaxed/simple;
-	bh=z5Yd3ofejUyoc6HtISU3dTbcxyj8g9BrWUa/kQzVemE=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=musmlh1Ii0/LEVV/AZf22HTvst1lGHiG/KwhX2KXMfp28r3XcBi8HX6201l9FXZs5Wqyh+2eMzlqfYrjsEPX2eG5S0JYEeITP5j902LSSO3Yrv7Skijoc20MM2ScI4U4lpzKlbhGD3dYHKlgZWos+Y8AcqcYLHF0knlDjud2FnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=Q1MQgjhY; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1790664162; c=relaxed/simple;
+	bh=eD3aM0hTN885DZDJGbILVdaFcCSySeWIFbdgXoX2TFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i/FNCqTwliRp4LDWHYxXpzeomLXEOSfGQMdd51aKWQ5imn6z+UxKNFlKRCzGYO2nEBeX/oRjEbvcOl3VIjtpZOLnFnlk9zX09t/JYnbY+BNyoJAkrVkW18xlzhsU1+FZdIwK0+4el3qRp4oDRDcieSKyHWby0cMJIA+cGeunXj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NKiosH33; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="Q1MQgjhY"
-Received: from smtpclient.apple (unknown [124.126.139.86])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4f50f8e19;
-	Mon, 28 Sep 2026 15:25:58 +0800 (GMT+08:00)
-From: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NKiosH33"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790664160; x=1822200160;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eD3aM0hTN885DZDJGbILVdaFcCSySeWIFbdgXoX2TFg=;
+  b=NKiosH33xre0vUEI5jdGq4rjj7+bEGGfp82+r1aqgrhzalKZvBTJZe68
+   B6ltlpz01NUVhogy0OoYs+u9FUbyDV0AFuxIyhEi9TRlIjpmqzUC1s8wq
+   Rum559kjMZohcgh9MchI+CWzmxMXFlg/PtRS+wVp08zIIo9B3XBhT7Q1D
+   EOfOtmTB77txZdh3utvug1yvqVnq2Lb9BPoyxSZz93WlpUT5KOQ7szLqk
+   E+zY0pffYa/C4KLvbqHbTKCGkRLdR49MImDf01sE6hnun6ZodZW697+sG
+   ybkLIvt1Hshbqk2p96gc4+AXvu2Dc6X5mY6HjgQf7KN6EYX0ThyzS/ZB7
+   g==;
+X-CSE-ConnectionGUID: ++E/8JwmTmWLb9bG3ZPwOQ==
+X-CSE-MsgGUID: ZAcdvjyGRhOCgTYCwYMhMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90239253"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="90239253"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 23:42:40 -0700
+X-CSE-ConnectionGUID: gjeF6tBaS3q+98OnTRjoOg==
+X-CSE-MsgGUID: J4Cas1MXQ6ivk9g3xD4M9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="313220375"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa001.jf.intel.com with ESMTP; 28 Sep 2026 23:42:38 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 2216299; Tue, 29 Sep 2026 08:42:37 +0200 (CEST)
+Date: Tue, 29 Sep 2026 08:42:37 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+	andreas.noever@gmail.com, YehezkelShB@gmail.com, corbet@lwn.net,
+	linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux_oss@crudebyte.com
+Subject: Re: [PATCH 1/3] thunderbolt: stream: Add tbstream_dev_from_file()
+Message-ID: <20260929064237.GL106095@black.igk.intel.com>
+References: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
+ <20260924162333.147033-2-alan.borzeszkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: [PATCH] 9p: don't decrement a server-owned zero nlink
-Message-Id: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
-Date: Mon, 28 Sep 2026 15:25:48 +0800
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
- v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-HM-Tid: 0aa0e6e7fd9903a1kunm6258c4181eb549
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSRoeVhpPGU0fH0xDHR4fSFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKSU9VSklNVUpIQlVDTVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	5MTlVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=Q1MQgjhYsCBsZcXRPuM3SYmmfK5+wMqaRTXPwRmYj+tib//7ahC9tVLJEjXLQTppRgQiYhcaTzM2Dn2ESdu0/FbzQCuqW7yfDaJsRZ7sKAel8j0ZANQbLdXb+z4009RUbNq9Bj/Zb9RW7rChZK5csRDpOTzXnjAGf2cjWVRMoO0=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
-	bh=t5LvP+tltYINo1sKhAAn4aqSaeTM4DOIvH0S4xyaEiM=;
-	h=date:mime-version:subject:message-id:from;
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260924162333.147033-2-alan.borzeszkowski@linux.intel.com>
 
-A 9P2000.L server can report nlink=3D0 for a regular file that still
-exists.  On a cache=3Dloose or cache=3Dfscache mount, lookup stores that
-value with set_nlink().  A later successful unlink calls
-v9fs_dec_count(), which still calls drop_nlink() for a non-directory.
-drop_nlink() warns, and the unsigned link count wraps to 4294967295.
-fstat() on a descriptor opened before the unlink shows 0 before and
-4294967295 after.
+On Thu, Sep 24, 2026 at 06:23:31PM +0200, Alan Borzeszkowski wrote:
+> Add tbstream_dev_from_file() which returns USB4STREAM device behind a
+> file. Expose it to in-kernel users via separate header.
+> 
+> Required by the 9P Thunderbolt transport driver to validate mount
+> source.
+> 
+> Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 
-The warning on the unpatched kernel, trimmed:
-
-WARNING: fs/inode.c:408 at drop_nlink+0xac/0xd0, CPU#1: trigger/188
-CPU: 1 UID: 0 PID: 188 Comm: trigger Tainted: G                 N  =
-7.3.0-rc4-00537-ga3ff15db6820 #1 PREEMPT(lazy)
-RIP: 0010:drop_nlink+0xac/0xd0
-Call Trace:
- <TASK>
- v9fs_remove+0x529/0x750
- vfs_unlink+0x2f0/0xbd0
- filename_unlinkat+0x340/0x6c0
- __x64_sys_unlink+0x46/0x70
- do_syscall_64+0xe8/0x4f0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace 0000000000000000 ]---
-
-Directories whose cached nlink is at most 2 already skip this
-decrement, because the exported filesystem may not maintain nlink
-(commit ac89b2ef9b559).  cache=3Dnone skips it as well (commit
-574aa0b479947).  cache=3Dmmap does not take this path: it sets neither
-CACHE_META nor CACHE_LOOSE.  A regular file on cache=3Dloose or
-cache=3Dfscache still does.  Its count came from GETATTR and may
-already be zero, so skip the decrement when i_nlink is already 0.
-
-Verified on 7.3-rc4-00537-ga3ff15db6820 with only this change.  A
-server that advertises nlink=3D0 and accepts the unlink no longer
-warns, and the open descriptor stays at nlink 0.  An honest server
-on the same mount still goes from 1 to 0.  A rejected unlink leaves
-the count unchanged.  cache=3Dnone is unchanged.  With panic_on_warn
-the unpatched kernel panics on the warning; the patched kernel does
-not.
-
-Fixes: ac89b2ef9b559 ("9p: don't maintain dir i_nlink if the exported fs =
-doesn't either")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
----
- fs/9p/vfs_inode.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index d7e678de0a036..347739b81513f 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -495,6 +495,12 @@ static int v9fs_at_to_dotl_flags(int flags)
-  * nothing and races with concurrent metadata fetches that may already
-  * have observed the post-unlink value (nlink =3D=3D 0).
-  *
-+ * The same applies to a regular file whose cached nlink has already =
-been
-+ * driven to zero by the server: in the cached modes the attributes =
-come
-+ * from GETATTR and are applied verbatim, so decrementing a link count =
-the
-+ * server does not maintain only trips the drop_nlink() WARN_ON and
-+ * underflows i_nlink.
-+ *
-  * @inode: inode whose nlink is being dropped
-  */
- static void v9fs_dec_count(struct inode *inode)
-@@ -503,6 +509,8 @@ static void v9fs_dec_count(struct inode *inode)
-=20
- 	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
- 		return;
-+	if (inode->i_nlink =3D=3D 0)
-+		return;
- 	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
- 		drop_nlink(inode);
- }
-
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
