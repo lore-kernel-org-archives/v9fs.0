@@ -1,90 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19AD352019
-	for <v9fs@lists.linux.dev>; Thu,  1 Oct 2026 13:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8077341660
+	for <v9fs@lists.linux.dev>; Fri,  2 Oct 2026 03:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862735; cv=none; b=A2vnpcOgq25byX1qcpRolvfakBdFw2icx/Aw9ip1Um/lVX3WPmUFtH8MUS6P46Qt1ggb2XGGHV9TwdFnoEmwy/YcBRTc/P2AwTo/a2EjSgGjwSvWByqHLN4aLKQKXpAjG2b53iMzIveiNFpgkyWfwg8A09Gl5eGY0MP6rqvUYVM=
+	t=1790913529; cv=none; b=Td0SHRmpielMF9m1/YZrl7KHNV3Hh/sPpfFvLj5cJz/HAcIo3E5QzyDkJ5TelA8WDLMhT8AlLLVac0xp/+Vf4nwMbHuzq+0mhTha2I2Y/n6A+FHEAkp6dOrWMR1jLFwwvfhPo3qOshJCNkVHPTcF8+z9SNV635ylagyrF+j4p+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862735; c=relaxed/simple;
-	bh=0geIIBAtChqx0SPrXodBDN0wwm8n774sD/kCINfRRVI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=X8zxy5BtOAdfybgtwD6iK/tr/8dhRW0FHEa3VlwtNg83UZ4nsF4g0hzdzBqkgD9R9pk7wsxTJJgbDwf/9Z9pfc87pwjQONBQLj0iyQbWK+0LlrTq/ZNvAtar8KOmX3W2umAYAaDWilcSSxeISmpFV0G9GMMKBB52oQ0v38SpSLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LQN68QZ1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790913529; c=relaxed/simple;
+	bh=wMnyD5HW/0+oeOMABNSibQxEPNUGvv38NIwnLfvPREU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/AvR1yN8OgT6fIeSQKNqz/BkaopYY0fN6l2OMvpv5f9hF8VRuhCiWEYafK9g80on6sNbHyHsJA2/pT4SCv+HjqVpFcYzRXUh32FpaH+/QuDPVIIXTPV7VwMVpTDXzTv/qHuw/w6Y7lZWgOWESViAyft7DqDejMCMXmxCmCctb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nESgUWKD; arc=none smtp.client-ip=74.125.225.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LQN68QZ1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790862733;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JjcPPUA2+KSJwXDBVE75ZLKJDqcpCkUXLHxsXrz7loQ=;
-	b=LQN68QZ11mTlchu9QlwyXY7jzZdqXcNVIAMLBWgj7ximMGhQVxGAjaGv2wQi7sW5nF8mNQ
-	TjPO19+Jn9GcX4Hpo+LtnM8o88oxjOABEMbTPeap12p9jcAnbCMzHCVdbX8YqksPEsTxlC
-	GFfJh9msFfQK7AGSU7xkmDfW7Z5AtFg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-uJbyo1fROuqS7vWfhzcp3A-1; Thu,
- 01 Oct 2026 09:52:08 -0400
-X-MC-Unique: uJbyo1fROuqS7vWfhzcp3A-1
-X-Mimecast-MFC-AGG-ID: uJbyo1fROuqS7vWfhzcp3A_1790862726
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26FDD18011FE;
-	Thu,  1 Oct 2026 13:52:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC61E1800299;
-	Thu,  1 Oct 2026 13:51:57 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20261001091239.3343034-4-dhowells@redhat.com>
-References: <20261001091239.3343034-4-dhowells@redhat.com> <20261001091239.3343034-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Stefan Metzmacher <metze@samba.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v15 03/10] netfs: Add some tools for managing bvecq chains
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nESgUWKD"
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48afe625404so382775f8f.1
+        for <v9fs@lists.linux.dev>; Thu, 01 Oct 2026 20:58:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790913526; x=1791518326; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vpDDKCvPSY4yYLTf3+YiBg6CMQROJc3t3myCmtwmjZQ=;
+        b=nESgUWKDafJDIJvu/AgqCQOSaF06teGWYbCEHyXXT7TDPj+QKz5Rm4QA+gBfimNEbw
+         bI1Zkgf7ybMBV0MxJOwfAaNzjsPqn5F8zWEDRDomlDMEkpMXxLHov7DejdrpGVyTqshK
+         yHnghp/5TmsEX4ZdhHan1gSdJh6NPuvVB7PVy/HaSjhQvlQ2cfMVW4IDc8vlP0W/L3xY
+         OvkOqIPMW5emnKNu1dOkLSqUVr8iiA2MVGZJu3/dBhFi7+trFHld536tHE4SD9nhtL/P
+         TJOyHcfBSpHB/hLRHFtlFYTKWNU/xyzjLMpAmyqA4X0QetHuGaFtzwx1UvXSA1rcuCAP
+         X1jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790913526; x=1791518326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vpDDKCvPSY4yYLTf3+YiBg6CMQROJc3t3myCmtwmjZQ=;
+        b=L+kQglPpVE6/X2PHiZvXa3QBEqdqgo94qV7Gccve+eBnhkWABTbJ3mrh1lCZFSv5qj
+         k3qi11dasyfUeJh5o8OLoq2wW1OHUiRFewTY42l2aqwrjtbjCvyuTOyt5XEYPnJBkfZb
+         Pp7a/GtcwfmZg/drycPZtHpVslO098HGg0sy7UqVnaFvNwoXcZ2cq4jgS17MMKpZgGS3
+         wqNMwxJ76XDGsl3MuhwfZCPpXMFE3TRO8IPmskznyP3xPWK9rJZAOlMMARk2rvXwl7vA
+         hvCeZXEZLT06gGhjT0xANIgRgKmkEzWC49B2m8ViU/UkMZlSWhARjiz3E1FlCFWmFs5E
+         SC9A==
+X-Forwarded-Encrypted: i=1; AKwUvByJjhfDH2KI4T+0xLIVMENpcthFweE8BzGQKGSBXOSlWc041kxg3eZquRuasLk4xI0Wn/0B@lists.linux.dev
+X-Gm-Message-State: AFq9FYIgcu4U80gTjVtfrT6qEcRPPxUIROyTd6dmR8KtKwtVHwMHs/j0
+	vWUTqDGTXmJy4r2XIRn27f7AEQddtkcGf/uk3aFV7tgWW22kO3sIS3G2
+X-Gm-Gg: AYBFou2gfJk3z30rqkNU1hapM+2WVQTe176h9Q0C4wXRQM+Cjw9WF6GO6+qUatRY6ua
+	zY1y/uEP/445wlN5By0jK9dQZdrP7V0F8dRmoWKYZkhnmCLURFEo9StCU5wDa+ZI5tYn1B/7+5M
+	Wu8rYn6CviMUOC0l9Nd9Xax6ijIQTsPMOALcZ6pgTM/GyolShcN27XafsdDB6P1P8qAjh9dksX2
+	DA0r5n+f5/mLuc0DOTbW5MhoyxbSb4QkPCPYSVce/FZBIdZsLkVs1lWip7j10i9ixxR7uQ+Xlfh
+	7rSSwsWRhjev/qWp1OhpXeInS1eGiHG91Nm3P/NM6vzCEYPNdH33RLaRnKbo3TIIXpNcUwOraj7
+	p6u3Fe3kJdr3rbrwwKLdTificRm5+DtJ74L30M/vvoZUMdxfC9uoINFx1xMgW+GZ97abvuLTyGq
+	O7l0xGm7vTQtRClgH0zKVqgemYEFYg/CMPggcvWvVKbY5Wcw0o4mlarp7DK3lp97zcOt23vOTKj
+	40SRFkyz7P887wFAoOHNQ==
+X-Received: by 2002:a05:6000:618:b0:48a:f41d:846 with SMTP id ffacd0b85a97d-48b12719b80mr2478947f8f.3.1790913525869;
+        Thu, 01 Oct 2026 20:58:45 -0700 (PDT)
+Received: from Nuel20.localdomain ([105.118.71.106])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b82253e5bsm1998601f8f.1.2026.10.01.20.58.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 20:58:45 -0700 (PDT)
+From: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
+To: ericvh@gmail.com,
+	aneesh.kumar@linux.vnet.ibm.com,
+	jvrao@linux.vnet.ibm.com,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com,
+	skhan@linuxfoundation.org,
+	Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
+Subject: [PATCH] 9p: fix kernel-doc warning for enum p9_session_flags
+Date: Fri,  2 Oct 2026 04:58:37 +0100
+Message-ID: <20261002035837.39703-1-emmaonana18@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 01 Oct 2026 14:51:56 +0100
-Message-ID: <3609012.1790862716@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: urkk5oj-Uo8Eo-1O01K_BCHB8s1iXCjqcRazIcrEYHQ_1790862726
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3609011.1790862716.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+kernel-doc cannot parse enum p9_session_flags, since its documentation
+comment is followed by #define lines instead of the enum declaration:
 
-Could you add:
+  fs/9p/v9fs.h:31 : error: Cannot parse enum!
 
-	#include <linux/mempool.h>
+Move the three #define lines below the enum whose values they are
+derived from, and give V9FS_ACCESS_ANY and V9FS_ACCESS_MASK their own
+kernel-doc comments with the descriptions they had in the enum comment.
 
-to fs/netfs/internal.h if you apply this?  One of the headers I'm using must
-bring it in conditionally because it's not pulled in when Paulo builds it.
+Also document the four enum members that had no description, using the
+corresponding mount option wording from
+Documentation/filesystems/9p.rst.
 
-Thanks,
-David
+Fixes: 76381a42e4a5 ("fs/9p: Add access = client option to opt in acl evaluation.")
+Assisted-by: LLM
+Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
+---
+ fs/9p/v9fs.h | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
+index a462bcbfc7da..2f18e75f0ed0 100644
+--- a/fs/9p/v9fs.h
++++ b/fs/9p/v9fs.h
+@@ -21,20 +21,16 @@
+  * @V9FS_ACCESS_SINGLE: only the mounting user can access the hierarchy
+  * @V9FS_ACCESS_USER: a new attach will be issued for every user (default)
+  * @V9FS_ACCESS_CLIENT: Just like user, but access check is performed on client.
+- * @V9FS_ACCESS_ANY: use a single attach for all users
+- * @V9FS_ACCESS_MASK: bit mask of different ACCESS options
+  * @V9FS_POSIX_ACL: POSIX ACLs are enforced
++ * @V9FS_NO_XATTR: do not offer xattr functions on this mount
++ * @V9FS_IGNORE_QV: ignore qid.version==0 as a marker to ignore cache
++ * @V9FS_DIRECT_IO: bypass page cache on all read/write operations
++ * @V9FS_SYNC: flush writes synchronously to the server
+  * @V9FS_NDENTRY_TIMEOUT_SET: Has negative dentry timeout retention time been
+  *                            overridden by negtimeout mount option
+  *
+  * Session flags reflect options selected by users at mount time
+  */
+-#define	V9FS_ACCESS_ANY (V9FS_ACCESS_SINGLE | \
+-			 V9FS_ACCESS_USER |   \
+-			 V9FS_ACCESS_CLIENT)
+-#define V9FS_ACCESS_MASK V9FS_ACCESS_ANY
+-#define V9FS_ACL_MASK V9FS_POSIX_ACL
+-
+ enum p9_session_flags {
+ 	V9FS_PROTO_2000U         = 0x01,
+ 	V9FS_PROTO_2000L         = 0x02,
+@@ -49,6 +45,20 @@ enum p9_session_flags {
+ 	V9FS_NDENTRY_TIMEOUT_SET = 0x400,
+ };
+ 
++/**
++ * V9FS_ACCESS_ANY - use a single attach for all users
++ */
++#define	V9FS_ACCESS_ANY (V9FS_ACCESS_SINGLE | \
++			 V9FS_ACCESS_USER |   \
++			 V9FS_ACCESS_CLIENT)
++
++/**
++ * V9FS_ACCESS_MASK - bit mask of different ACCESS options
++ */
++#define V9FS_ACCESS_MASK V9FS_ACCESS_ANY
++
++#define V9FS_ACL_MASK V9FS_POSIX_ACL
++
+ /**
+  * enum p9_cache_shortcuts - human readable cache preferences
+  * @CACHE_SC_NONE: disable all caches
+-- 
+2.43.0
 
