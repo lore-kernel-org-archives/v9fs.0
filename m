@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA9A37BE93
-	for <v9fs@lists.linux.dev>; Mon,  5 Oct 2026 07:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA0537756C
+	for <v9fs@lists.linux.dev>; Mon,  5 Oct 2026 07:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791184411; cv=none; b=MRobZhJj2v1N1eZM3CmmaP5bMM4tdg6hQlGCc6cVrT/v04JGHHjdL0lYByPtRGDPDStEWHcwfZwh5lh+oQRte7qCw81/81oeEVq1pFaCNb7h6cJoU3bk1i+IYaNTkhHB2xxADcve1DhEZBN73br2zDg6XmCLJcOA2IfXb/svAjo=
+	t=1791184425; cv=none; b=UWwej4uBEm1wYnOZ9SYDtfUDiB7whXkxelIrIJTEr6pFNsE3ycRhg24jUY/UUWchVFEao36ZAUE4Lc34DZcgXQKMcFBV2IW9Fn5ev7u+6MrB1ljjnOsxPulq+Qm1YHJLufyvlgh+ofQVgqEzYchABsDnv+qFcLi6cQOOL7e3hIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791184411; c=relaxed/simple;
-	bh=HZA5CFOFD887ZTFSGIWLrvWV55ELOg3W3Gbq+RYIH5U=;
+	s=arc-20240116; t=1791184425; c=relaxed/simple;
+	bh=QmbwIUEU1/BIV4XnO9+D+x/3uPwpISkYCiby9Sl6SZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=jIj53HtE6jh8KG7HeEqNGRaAt/Rj4Z9Qh7q29kVNMqG8T+LkbsgBhaXvTCZZ42oX+DCuMioQd/RG8TIawfhSw8Df/wtKWes28F3JO6OTXh5di+8kyXm9ty8c6MGBNaAepWx/QsrS52rQ0oj99nytU+tvWVbQULt6lk0K4hqgmY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GD+V0Kt3; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=A8cNOsMRFMud4PPOA/liFIDCW3t6MUHyP6+4g69VvoYNkwV2iMsqsISQF8hSLX+NKg5i3f8wwuvam3y0yyg7eGQCeQpyXXSQ7x851/c/TYNmMoJ6acr/tUXgWVzHGnd12Kgv0xb6/3t+G/jOIftcowveaiSB/dSoPBCU/RKZ2eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YT36I+/W; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GD+V0Kt3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YT36I+/W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791184409;
+	s=mimecast20190719; t=1791184421;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FVmWyzHrsJfkLiiTwuWnaVPVIFsXKntmftTzOmV6DXQ=;
-	b=GD+V0Kt32guwUwlvhZHJfbyM/ei0wJRQS7E+lq0b0428ucSQ7w7tlUjyq0Esl2+SH3gHhl
-	LTaRxIiYLrh7bwDfqd6eZI/PPaQBUHQAJEPxx3ObU8OCxEUYeXY+mLrc4PQr8eUF3AIJLF
-	KnAp2bewBEA0D7vJ02YLPPsAWpkPGGE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=aFCv42shAN9CtxW8YLKjhfnjVRE1qLNA6Uycn3wedTo=;
+	b=YT36I+/W7qbdALygJwB27/2IBCUHzFZ32KimcUHyZL52Sbypdeseb5F8xY5HZlBCzeyOqF
+	IyaV79E/9m736ECCYm7rx1xr0YYKFfJZAHUWwBRdljBfFDzvsh8uVE/uDRIU+Mz9yGwBBE
+	tm6KZW7d55unvlQmNTRIBL5HkaGYxRE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-VCidjrCbMV6HA-brrefZKA-1; Mon,
- 05 Oct 2026 03:13:23 -0400
-X-MC-Unique: VCidjrCbMV6HA-brrefZKA-1
-X-Mimecast-MFC-AGG-ID: VCidjrCbMV6HA-brrefZKA_1791184401
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-Yi5BYKS-MpGRqK1q5uOjbA-1; Mon,
+ 05 Oct 2026 03:13:37 -0400
+X-MC-Unique: Yi5BYKS-MpGRqK1q5uOjbA-1
+X-Mimecast-MFC-AGG-ID: Yi5BYKS-MpGRqK1q5uOjbA_1791184415
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 606A91800D8D;
-	Mon,  5 Oct 2026 07:13:21 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7468E180035C;
+	Mon,  5 Oct 2026 07:13:35 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 929C030000E3;
-	Mon,  5 Oct 2026 07:13:16 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9CEBD30000E3;
+	Mon,  5 Oct 2026 07:13:30 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -61,9 +61,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v12 5/8] netfs: Provide a func to load the readahead buffers into a bvecq chain
-Date: Mon,  5 Oct 2026 08:12:22 +0100
-Message-ID: <20261005071227.147182-6-dhowells@redhat.com>
+Subject: [PATCH v12 7/8] netfs: Remove the rolling_buffer implementation
+Date: Mon,  5 Oct 2026 08:12:24 +0100
+Message-ID: <20261005071227.147182-8-dhowells@redhat.com>
 In-Reply-To: <20261005071227.147182-1-dhowells@redhat.com>
 References: <20261005071227.147182-1-dhowells@redhat.com>
 Precedence: bulk
@@ -73,104 +73,265 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: GPrasZ9yx9XmzjGFhlhCHvfmYmcm1nOF0Yt2FsLfYBM_1791184401
+X-Mimecast-MFC-PROC-ID: Mqoq9B3SawZhfN_Ln9qwu0y5Yl02DuulptJ1hqtpLYs_1791184415
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-In netfslib, provide a function to load the readahead buffers into a bvecq
-chain by preallocating the bvecq chain and then iterating directly over the
-pagecache to extract all the folios.  This builds on the preceding patch to
-note the folio count in the readahead_control struct.
+Remove the rolling_buffer implementation as it has been replaced with the
+use of bvecq_pos.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+cc: Paulo Alcantara <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/bvecq.c      | 60 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/bvecq.h |  1 +
- 2 files changed, 61 insertions(+)
+ fs/netfs/rolling_buffer.c      | 182 ---------------------------------
+ include/linux/rolling_buffer.h |  47 ---------
+ 2 files changed, 229 deletions(-)
+ delete mode 100644 fs/netfs/rolling_buffer.c
+ delete mode 100644 include/linux/rolling_buffer.h
 
-diff --git a/fs/netfs/bvecq.c b/fs/netfs/bvecq.c
-index 1493e028bb17..2edc0045c245 100644
---- a/fs/netfs/bvecq.c
-+++ b/fs/netfs/bvecq.c
-@@ -592,3 +592,63 @@ size_t bvecq_slice(struct bvecq_pos *pos, size_t max_size,
- 	pos->offset = offset;
- 	return size;
- }
-+
-+/**
-+ * bvecq_load_from_ra - Allocate a bvecq chain and load from readahead
-+ * @pos: Blank position object to attach the new chain to.
-+ * @ractl: The readahead control context.
-+ *
-+ * Decant the set of folios to be read from the readahead context into a bvecq
-+ * chain.  Each folio occupies one bio_vec element.
-+ *
-+ * Return: Amount of data loaded or -ENOMEM on allocation failure.
-+ */
-+ssize_t bvecq_load_from_ra(struct bvecq_pos *pos, struct readahead_control *ractl)
-+{
-+	XA_STATE(xas, &ractl->mapping->i_pages, ractl->_index);
-+	struct folio *folio;
-+	struct bvecq *bq;
-+	unsigned int slot = 0;
-+	size_t loaded = 0;
-+
-+	bq = bvecq_alloc_chain(ractl->_nr_folios, GFP_KERNEL, false);
-+	if (!bq)
-+		return -ENOMEM;
-+
-+	pos->bvecq  = bq;
-+	pos->slot   = 0;
-+	pos->offset = 0;
-+
-+	rcu_read_lock();
-+
-+	xas_for_each(&xas, folio, ractl->_index + ractl->_nr_pages - 1) {
-+		size_t len;
-+
-+		if (xas_retry(&xas, folio))
-+			continue;
-+		VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+
-+		len = folio_size(folio);
-+		bvec_set_folio(&bq->bv[slot], folio, len, 0);
-+		loaded += len;
-+		slot++;
-+		trace_netfs_folio(folio, netfs_folio_trace_read);
-+
-+		if (slot >= bq->max_slots) {
-+			bvecq_filled_to(bq, slot);
-+			bq = bq->next;
-+			if (!bq)
-+				break;
-+			slot = 0;
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+
-+	if (bq)
-+		bvecq_filled_to(bq, slot);
-+
-+	ractl->_index += ractl->_nr_pages;
-+	ractl->_nr_pages = 0;
-+	return loaded;
-+}
-diff --git a/include/linux/bvecq.h b/include/linux/bvecq.h
-index f1513f507cfb..389f6407cb84 100644
---- a/include/linux/bvecq.h
-+++ b/include/linux/bvecq.h
-@@ -77,6 +77,7 @@ void bvecq_pos_advance(struct bvecq_pos *pos, size_t amount);
- ssize_t bvecq_zero(struct bvecq_pos *pos, size_t amount);
- size_t bvecq_slice(struct bvecq_pos *pos, size_t max_size,
- 		   unsigned int max_slots, unsigned int *_nr_slots);
-+ssize_t bvecq_load_from_ra(struct bvecq_pos *pos, struct readahead_control *ractl);
- 
- /**
-  * bvecq_alloc_buffer - Allocate a bvecq chain and populate with buffers
+diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
+deleted file mode 100644
+index 66ce9add4012..000000000000
+--- a/fs/netfs/rolling_buffer.c
++++ /dev/null
+@@ -1,182 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/* Rolling buffer helpers
+- *
+- * Copyright (C) 2024 Red Hat, Inc. All Rights Reserved.
+- * Written by David Howells (dhowells@redhat.com)
+- */
+-
+-#include <linux/bitops.h>
+-#include <linux/mempool.h>
+-#include <linux/pagemap.h>
+-#include <linux/rolling_buffer.h>
+-#include <linux/slab.h>
+-#include "internal.h"
+-
+-/*
+- * Initialise a rolling buffer.  We allocate an empty folio queue struct to so
+- * that the pointers can be independently driven by the producer and the
+- * consumer.
+- */
+-int rolling_buffer_init(struct rolling_buffer *roll, unsigned int direction,
+-			gfp_t gfp, bool for_writeback)
+-{
+-	struct bvecq *bq;
+-
+-	roll->for_writeback = for_writeback;
+-
+-	bq = bvecq_alloc_one(BVECQ_POOL_SLOTS, gfp, for_writeback);
+-	if (!bq)
+-		return -ENOMEM;
+-
+-	roll->head = bq;
+-	roll->tail = bq;
+-	iov_iter_bvec_queue(&roll->iter, direction, bq, 0, 0, 0);
+-	return 0;
+-}
+-
+-/*
+- * Add another bvecq to a rolling buffer if there's no space left.
+- */
+-int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp)
+-{
+-	struct bvecq *bq, *head = roll->head;
+-
+-	if (!bvecq_is_full(head))
+-		return 0;
+-
+-	bq = bvecq_alloc_one(BVECQ_POOL_SLOTS, gfp, roll->for_writeback);
+-	if (!bq)
+-		return -ENOMEM;
+-
+-	roll->head = bq;
+-	if (bvecq_is_full(head)) {
+-		/* Make sure we don't leave the master iterator pointing to a
+-		 * block that might get immediately consumed.
+-		 */
+-		if (roll->iter.bvecq == head &&
+-		    roll->iter.bvecq_slot == head->nr_slots) {
+-			roll->iter.bvecq = bq;
+-			roll->iter.bvecq_slot = 0;
+-		}
+-	}
+-
+-	/* Make sure the initialisation is stored before the next pointer.
+-	 *
+-	 * [!] NOTE: After we set head->next, the consumer is at liberty to
+-	 * immediately delete the old head.
+-	 */
+-	bvecq_append(head, bq);
+-	return 0;
+-}
+-
+-/*
+- * Decant the entire list of folios to read into a rolling buffer.
+- */
+-ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
+-					 struct readahead_control *ractl,
+-					 gfp_t gfp)
+-{
+-	struct bvecq *bq;
+-	size_t loaded = 0;
+-
+-	while (ractl->_nr_pages - ractl->_batch_count > 0) {
+-		struct page **pages;
+-		unsigned int nr;
+-
+-		/* Allocate a bvecq to put some folios into and attach it to
+-		 * the rolling buffer.
+-		 */
+-		bq = bvecq_alloc_one(BVECQ_POOL_SLOTS, gfp, false);
+-		if (!bq)
+-			goto nomem_unlock;
+-		bq->mem_type = BVECQ_MEM_EXTERNAL; /* Folio cleanup handled separately. */
+-
+-		if (!roll->tail)
+-			roll->tail = bq;
+-		else
+-			bvecq_append(roll->head, bq);
+-		roll->head = bq;
+-
+-		/* Get a bunch of folios and note their sizes. */
+-		pages = (struct page **)(bq->bv + bq->max_slots);
+-		pages -= bq->max_slots;
+-		nr = __readahead_batch(ractl, pages, bq->max_slots);
+-		if (WARN_ON_ONCE(!nr))
+-			break;
+-
+-		for (int slot = 0; slot < nr; slot++) {
+-			struct folio *folio = page_folio(pages[slot]);
+-			size_t len = folio_size(folio);
+-
+-			bvec_set_folio(&bq->bv[slot], folio, len, 0);
+-			loaded += len;
+-			trace_netfs_folio(folio, netfs_folio_trace_read);
+-		}
+-
+-		bvecq_filled_to(bq, nr);
+-	}
+-
+-	WRITE_ONCE(roll->iter.count, loaded);
+-	iov_iter_bvec_queue(&roll->iter, ITER_DEST, roll->tail, 0, 0, loaded);
+-	return loaded;
+-
+-nomem_unlock:
+-	for (bq = roll->tail; bq; bq = bq->next) {
+-		for (int slot = 0; slot < bq->nr_slots; slot++) {
+-			struct folio *folio = bvec_folio(&bq->bv[slot]);
+-
+-			folio_unlock(folio);
+-			folio_put(folio);
+-		}
+-	}
+-	rolling_buffer_clear(roll);
+-	roll->head = NULL;
+-	roll->tail = NULL;
+-	return -ENOMEM;
+-}
+-
+-/*
+- * Append a folio to the rolling buffer.
+- */
+-ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio,
+-			      gfp_t gfp)
+-{
+-	ssize_t size = folio_size(folio);
+-	int slot;
+-
+-	if (rolling_buffer_make_space(roll, gfp) < 0)
+-		return -ENOMEM;
+-
+-	slot = roll->head->nr_slots;
+-	bvec_set_folio(&roll->head->bv[slot], folio, size, 0);
+-	bvecq_filled_to(roll->head, slot + 1);
+-
+-	WRITE_ONCE(roll->iter.count, roll->iter.count + size);
+-	return size;
+-}
+-
+-/*
+- * Delete a spent buffer from a rolling queue and return the next in line.  We
+- * don't return the last buffer to keep the pointers independent, but return
+- * NULL instead.
+- */
+-struct bvecq *rolling_buffer_delete_spent(struct rolling_buffer *roll)
+-{
+-	struct bvecq *spent = roll->tail, *next = bvecq_next(spent);
+-
+-	if (!next)
+-		return NULL;
+-	next->prev = NULL;
+-	roll->tail = next;
+-	spent->next = NULL;
+-	bvecq_put(spent);
+-	return next;
+-}
+-
+-/*
+- * Clear out a rolling queue.
+- */
+-void rolling_buffer_clear(struct rolling_buffer *roll)
+-{
+-	bvecq_put(roll->tail);
+-}
+diff --git a/include/linux/rolling_buffer.h b/include/linux/rolling_buffer.h
+deleted file mode 100644
+index 5c0bc4221f01..000000000000
+--- a/include/linux/rolling_buffer.h
++++ /dev/null
+@@ -1,47 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/* Rolling buffer of folios
+- *
+- * Copyright (C) 2024 Red Hat, Inc. All Rights Reserved.
+- * Written by David Howells (dhowells@redhat.com)
+- */
+-
+-#ifndef _ROLLING_BUFFER_H
+-#define _ROLLING_BUFFER_H
+-
+-#include <linux/bvecq.h>
+-#include <linux/uio.h>
+-
+-/*
+- * Rolling buffer.  Whilst the buffer is live and in use, folios and bvecq
+- * segments can be added to one end by one thread and removed from the other
+- * end by another thread.  The buffer isn't allowed to be empty; it must always
+- * have at least one bvecq in it so that neither side has to modify both queue
+- * pointers.
+- *
+- * The iterator in the buffer is extended as buffers are inserted.  It can be
+- * snapshotted to use a segment of the buffer.
+- */
+-struct rolling_buffer {
+-	struct bvecq		*head;		/* Producer's insertion point */
+-	struct bvecq		*tail;		/* Consumer's removal point */
+-	struct iov_iter		iter;		/* Iterator tracking what's left in the buffer */
+-	u8			first_tail_slot; /* First slot in ->tail */
+-	bool			for_writeback;	/* T if being used for writeback */
+-};
+-
+-int rolling_buffer_init(struct rolling_buffer *roll, unsigned int direction,
+-			gfp_t gfp, bool for_writeback);
+-int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp);
+-ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
+-					 struct readahead_control *ractl,
+-					 gfp_t gfp);
+-ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio, gfp_t gfp);
+-struct bvecq *rolling_buffer_delete_spent(struct rolling_buffer *roll);
+-void rolling_buffer_clear(struct rolling_buffer *roll);
+-
+-static inline void rolling_buffer_advance(struct rolling_buffer *roll, size_t amount)
+-{
+-	iov_iter_advance(&roll->iter, amount);
+-}
+-
+-#endif /* _ROLLING_BUFFER_H */
 
