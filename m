@@ -1,115 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1089E374A12;
-	Fri,  2 Oct 2026 10:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E662641FC
+	for <v9fs@lists.linux.dev>; Mon,  5 Oct 2026 02:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790935663; cv=none; b=lRSGM8bT1G3gnk+YdWFafFkD8vif8IMDn64B2yJSqTeg96rD21H1cc7hhuQyT2QSdGqpR8EBBdfsTLe86NCL9INwm1Wt7W+ODpwznU24/0atChT5hJCBvybiRd9v7N7lmlgpVCvevlS11kBKZ0Mo4TM8y6ZaBDLDHKCXIJmmFpM=
+	t=1791166358; cv=none; b=XQb8XBl3fWtXIf5ukUZfoe7iD4t217ig+iCypN2vLJtwDO7XstOuZKIjSE+pMbtNtzoglOjDkaYQuXGXTt1+DqbspWx+mNqD4rRJfXPg8BPTrcbczOnaP29LjQ+tj+uNHrbV/iXPhlLpSxKvYRMbR/Yr/JRihS9J+ln7H6VQVWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790935663; c=relaxed/simple;
-	bh=0mTU4GXrzawN6cP4nmnSp0HVBlilX5z+tSvo0yS7r1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HhdrhDeXQv/N9c5Bu8mT+0v17vtMT9jpD9roHULZOSCP1C8Jt9it/5tqCEUorsU+ayvaS0LX/CzwPARg4I7ajUDP4s3r6ZlWYnytIOk09CpVE+8qow1wlx+1ouknFzxvjCEgFjkK4ihi37j1s7bwYLWGuntVXatAJ47flBR1MvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llK4AeWe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791166358; c=relaxed/simple;
+	bh=BGUhXXXtcnuShkA03X+V+8ParF89SYrXypmzAkwkIi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u+6tvE+1U8fafBh5lOLTHDQVddPp4PX9BStQN4g9N4YMW0N8bhhrb96MvzmSToS26rLPnVeXY4DUBYnhN62h835ZAma8aNMRNEJicbWRuImnhm7NhOlPvNkBK4W0Nl0XTpWp5En5MGDIn1Eku7WYFqB/MGLJpyMqyoOpdRCOPPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=IO9ZhcMG; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llK4AeWe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88951F000FF;
-	Fri,  2 Oct 2026 10:07:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790935661;
-	bh=u1r9CsebzekmHkUWNJ3ne/263jxtn1b01RsvPf0B/JQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=llK4AeWe82evvjfhPvoLp2Z0aiSjCR/QWdh6SsroPBJMnxYma70OWt7dlFdvXn+f0
-	 +s4qQ7aPwiNjRr5bRrZQ2zRjlsZsrgMIlyuA9aY1BZiCrCidngSwEf4EkmW0REQag5
-	 xn+tZCOdl/C96oCXNKe2MLyRQvUgvU8vZQGjUTtr4wLcJtOMlAwXsPcvkfJ8n9Yjj4
-	 l7nwRBk13YQG1Kb27SpsBO76f4VpkCwE1lVqTmEViMmxV7MgCTEdnj9TBvcAh2Ow6w
-	 VUSqTzZleN/6E8YNP9dOm+bVlaHCjP4Dk6lBS1uQhqSfV+EjQ9f2/vLKqQyitWZn+U
-	 1MACGMpAkqzPQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="IO9ZhcMG"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398beb616f5so443173a91.1
+        for <v9fs@lists.linux.dev>; Sun, 04 Oct 2026 19:12:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791166355; x=1791771155; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F8BtH1wOi3R0dL1LEJcbfIDWWZE0ydiC1A3fSU2odtA=;
+        b=IO9ZhcMGSfQ5oJ9spFYMdWZHq0A3UpDhG1hFyRKjPXLsSvKI59+XWiRlXviLysG0zI
+         R/kSYXUnbjmuGd2/oLjfeef3oomvWmOSqTF3Bed7Rm2ur86CEVTWcYTU1dGmPfxP4JzU
+         7sO1FOeCfLHXX45/uYyOnQ7K0JxXHFh6DrdwVadTyDp+kCXnX64O+ctSjWwSti7OXvYx
+         yuYJd9iCBBVQLgIjl++MDmYH6oxgsL07ihoAnXEf1r7eiddRF7cp+DHnkLRh5sHHyxEp
+         ZkurXklqC1fRb3TJrRnSlE5iVRP8huLuc+wmsv8BsuDmfDK8HRCSa+zzapJw+gLiSEC9
+         eL3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791166355; x=1791771155;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F8BtH1wOi3R0dL1LEJcbfIDWWZE0ydiC1A3fSU2odtA=;
+        b=JK5KQIArhY3WMe2vLqyyZ8SgvotbQXlwbZPDh9sxkP8QGbWbD8+ayUcoRRdRcrObz4
+         7uelm+0qjQ+XC0P7JFMxUdf5O71jKQkqU/c3/p1LExNJO+VCrE5Mv+G09U+hyqgX1/Eu
+         Rlqa6cwK2QlgNI66ySEGY1kOhjiPzyByrtONY5oEPiHzVi+Bktcn3kjCGUvLVkL1S/Za
+         dEpmWlDKC9xQL7oGDC4hlx9mCKfcTmM8ULr1N8WW4ivhcz+1deaA6bQxTg50DsnbwjOA
+         Lr3nFbmwtd+lllQwEyz8ziBxjSfSH2ud78RxC+a/87dtIUItPlTWMJj2OAExgsR0bi29
+         ji5A==
+X-Forwarded-Encrypted: i=1; AKwUvBz+pTBpI6YEm+zK9bjFlohJ2F09tpY2UTG+DgL3Wduga6sL+8tFuBB1luqtZrvYRFHbCAFp@lists.linux.dev
+X-Gm-Message-State: AFq9FYIRPMzPSteIlQD9FP2n53f7A2ehn0NfGffRsmqqy54bsGNlt0Zb
+	0nQebM00Uc6Q+2RBuRenvu4OE/AGP5mpIdqhlVxNyJcFLNDHNguyCeoYpT9Eyv2+Jr0=
+X-Gm-Gg: AYBFou2Cl6qtsLtmm0jVCQkhN5+Pdf8kh6TGszRDsjjDo5iHctjpeVPfXkWTb7Mepvq
+	gkvJHmRAyPAeQwfJHTSd3fwG1YM2nYlOFu8RZIZfoH0iXoUyhF1BEKUvqtOSkIiI3+M/pZTFErm
+	JVDTPgOF7nvvLCARA1wp35eDIQWfvvG0umCBWyl9hybcEq8OwNRO4R+D4YmiCRfYFa8YW9p2HBD
+	I27V4vuiNXyI+8mU529mimVucsrMF6VAjp5LWi2FNe+mgJIMEWPJNw348n2ItpTPB8ZqXa4Iosp
+	Mt2YgHqvSF8VXSelQkaEzRvv+t4n6NoyXo/LLPwR97VB7X0qAnOKMdeQptYqaU9g6kUmclNMN9q
+	tql/TuQBBAZfD0IX+UXm9CCnVqbXB30KA+Z8g57sKJBKyv8UEuTiagQlUI3VO1gC1Uxt15RRS6o
+	AIbhL58Mpc8Bx/nJ9HbKXS8dZy4vJNbwlYI7876YUD5VIGil770ObQNecVk/N3kOKnVC3/9j9+B
+	U2Mgu+cFkD07BMOk4dBtg==
+X-Received: by 2002:a17:90a:701:b0:3a6:d2ac:74ce with SMTP id 98e67ed59e1d1-3a6d2ac75d9mr3440094a91.19.1791166355134;
+        Sun, 04 Oct 2026 19:12:35 -0700 (PDT)
+Received: from yhlee-960QFG.Davolink ([2406:5900:1044:110c:7020:baaa:df0e:eada])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e61386csm9241660a91.17.2026.10.04.19.12.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 19:12:34 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
 	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v15 00/10] netfs, iov_iter: Use a chain of bio_vec arrays instead of folio_queue
-Date: Fri,  2 Oct 2026 12:07:29 +0200
-Message-ID: <20261002-fachsimpeln-hasten-situation-84f466b5d3cb@brauner>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261001091239.3343034-1-dhowells@redhat.com>
-References: <20261001091239.3343034-1-dhowells@redhat.com>
+Cc: xen-devel@lists.xenproject.org,
+	stable@vger.kernel.org
+Subject: [PATCH] 9p/xen: validate the response size from the backend
+Date: Mon,  5 Oct 2026 11:11:55 +0900
+Message-ID: <20261005021157.207947-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2644; i=brauner@kernel.org; h=from:subject:message-id; bh=0mTU4GXrzawN6cP4nmnSp0HVBlilX5z+tSvo0yS7r1g=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTtb0oz8mVJ/rZu5oWEsKQzaYzdQo3mBlNteabbf8wSe pZi3721o5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCLq+owMF22b3r8V2TvvxOu/ nPJ3fY8xODx0vT4lVHhS7Nw56x6/rWL4K7ZH4p7wAudjvx6z3BPa3GMnc+3J66Ka8ilPghfYLgo 4xgIA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Thu, 01 Oct 2026 10:12:28 +0100, David Howells wrote:
-> Could you pull these patches please into your vfs-7.4.netfs branch?  This
-> is the third of four (maybe five) batches, in this case replacing the
-> folio_queue struct with a bvecq struct, and is based upon the
-> aforementioned branch.  This was split from v11 of a larger netfslib
-> series[1].  I've fixed some issues spotted by sashiko[5-7].
-> 
-> This series adds a new type, struct bvecq.  This points to a bounded array
-> of bio_vecs with information about how to clean up the memory they point
-> to.  A number of bvecq structs can be linked together to form a chain and
-> an iterator type, ITER_BVECQ, is provided that can be pointed at the chain
-> and can walk it.  Netfslib is then switched to use the new type and
-> folio_queue is removed along with ITER_FOLIOQ.
-> 
-> [...]
+p9_xen_response() takes the length of an incoming response from the ring
+-- the first field of the 9p header, which the Xen transport reuses as
+its framing header -- and uses it to advance the consumer index, but
+never checks that it is at least the header size or no larger than the
+number of bytes the backend has actually produced.
 
-Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
+A malicious or buggy backend can post a response whose size is smaller
+than the header (for example 0). The consumer index then never advances,
+so the response work re-reads the same ring contents instead of making
+progress. In testing this raced with the teardown that the malformed
+reply triggers and dereferenced a freed p9_client:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+  9pfs 9pfs-0: Wrong req tag=ffff
+  BUG: kernel NULL pointer dereference, address: 0000000000000060
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 7.2.0-rc5 #6 PREEMPT(lazy)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+  Workqueue: events p9_xen_response
+  RIP: 0010:idr_find+0x4/0x10
+  RSP: 0018:ffffbf5d80063de8 EFLAGS: 00010202
+  RAX: 0000000000000001 RBX: ffffa229c21195a0 RCX: ffffa229c2400000
+  RDX: ffffa229c11c2200 RSI: 000000000000ffff RDI: 0000000000000050
+  RBP: 000000000000ffff R08: 3fffffffffffdfff R09: ffffffffffffffff
+  R10: 3fffffffffffdfff R11: ffffffff87a60e80 R12: 0000000000000050
+  R13: 0000000000000000 R14: 000000000000ffff R15: 0000000000100000
+  FS:  0000000000000000(0000) GS:ffffa22a7661c000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000060 CR3: 000000003ac34002 CR4: 0000000000770ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   p9_tag_lookup+0x2b/0x90
+   p9_xen_response+0x17c/0x2e0
+   process_one_work+0x16a/0x3a0
+   worker_thread+0x172/0x2e0
+   kthread+0xdd/0x110
+   ret_from_fork+0x18b/0x240
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+  Modules linked in:
+  CR2: 0000000000000060
+  ---[ end trace 0000000000000000 ]---
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Reject a response whose size is outside [sizeof(header), queued] before
+using it, matching the validation the backend already applies to
+incoming requests.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Fixes: f66c72bea129 ("xen/9pfs: receive responses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+---
+ net/9p/trans_xen.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.4.netfs
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index f9fb2db7a0663..685523be16f0a 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -200,6 +200,14 @@ static void p9_xen_response(struct work_struct *work)
+ 				     masked_prod, &masked_cons,
+ 				     XEN_9PFS_RING_SIZE(ring));
+ 
++		if (h.size < sizeof(h) ||
++		    h.size > xen_9pfs_queued(prod, cons,
++					     XEN_9PFS_RING_SIZE(ring))) {
++			dev_warn(&priv->dev->dev,
++				 "bad response size %u from backend\n", h.size);
++			break;
++		}
++
+ 		req = p9_tag_lookup(priv->client, h.tag);
+ 		if (!req || req->status != REQ_STATUS_SENT) {
+ 			dev_warn(&priv->dev->dev, "Wrong req tag=%x\n", h.tag);
+-- 
+2.43.0
 
-[01/10] Add a function to kmap one page of a multipage bio_vec
-        https://git.kernel.org/vfs/vfs/c/a6a7576e126e
-[02/10] iov_iter: Add a segmented queue of bio_vec[]
-        https://git.kernel.org/vfs/vfs/c/05f94143ca30
-[03/10] netfs: Add some tools for managing bvecq chains
-        https://git.kernel.org/vfs/vfs/c/29d66a06098a
-[04/10] afs: Use a bvecq to hold dir content rather than folioq
-        https://git.kernel.org/vfs/vfs/c/cac55bc34a56
-[05/10] cifs: Use a bvecq for buffering instead of a folioq
-        https://git.kernel.org/vfs/vfs/c/b84e753bb326
-[06/10] smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
-        https://git.kernel.org/vfs/vfs/c/787366e144a5
-[07/10] netfs: Switch folioq to bvecq
-        https://git.kernel.org/vfs/vfs/c/f6da2ecbfbce
-[08/10] smbdirect: Remove support for ITER_FOLIOQ from smbdirect_map_sges_from_iter()
-        https://git.kernel.org/vfs/vfs/c/e85d0262d3c1
-[09/10] iov_iter: Remove ITER_FOLIOQ
-        https://git.kernel.org/vfs/vfs/c/e488bc1d0deb
-[10/10] netfs: Remove folio_queue
-        https://git.kernel.org/vfs/vfs/c/f71507811163
