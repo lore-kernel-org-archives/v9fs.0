@@ -1,166 +1,163 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187AD48164E
-	for <v9fs@lists.linux.dev>; Mon,  5 Oct 2026 12:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088274A262D
+	for <v9fs@lists.linux.dev>; Tue,  6 Oct 2026 21:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791205020; cv=none; b=PbAQP74GsAi5BWJW0CwOvgty/FugBq3TfCKPanCTX/EdT+7grIP5hsN8qqFYo8ougHY7dA6uDQG6VK4PtiJ48fhV9Gxxyb9ur7aNHTW4kyhARfyVr/PTUxaGtVkmUQ/x9f2Gn64ZyH0wx3nxVwYpvh/P6u06i4wNJLBflx7OIuQ=
+	t=1791320409; cv=none; b=PzaAq8AkjYA6gYE29/0NCqIDEAM5lvS7at8iqENjC0RRRVteorzJM0tnF3XnscCS0+z6+GhwIyXBQT7xnVmw2TbU5fFVow1dx3oNVsZiSV5DxuZKmtDDRZS6DU3vqvSX+huDcR2ngWf3IR/DiKn3AJKjDhMPFvcwmbUMbDv8V8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791205020; c=relaxed/simple;
-	bh=HI9Ca2Fo2tkQcb4WshVMmwmxrgJVc/dv7UEoTbCUW/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d7ecIapR7pfXuLsOg4LJgU02WaOixR9UH5d1O7zPn0SfKDTItbkfV7NGQgrO47u1pAOgjZHZN7Nh6yp/dY0xWUYVzfVxciDBer70XRJBktQnzkoTh2TnWBRwaYE1nxvGdoQpU065nUbYw3Y0VNUQJHdZ9zvU7b798A2o48vxk3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=yw/7Niwn; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	s=arc-20240116; t=1791320409; c=relaxed/simple;
+	bh=H2FmTP0VWiKuvmUZWBnJoF4rBt8lms4tNq1kNCnaFDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=HsVhzfXjEd9vjNgBQK9sE5hiEd2DhsMccfIKM7fz2tSMu2p99dd9fcl8Ay11gbrznDotlUEtisdmDvDll/aKQvdiBdxUAU/iToliQqqe40BpWjx75IG53agrqeBpDQacbZJriMTRNip1nNwcj25Y1FPBYorUcPXPqN4DNgzhltY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tru5tUjQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="yw/7Niwn"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc73a80ede5so589040a12.1
-        for <v9fs@lists.linux.dev>; Mon, 05 Oct 2026 05:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791205018; x=1791809818; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4pdPpjclY/Qu2NFmchOm2ms5jkg4XhM0PjITCIKS9/s=;
-        b=yw/7Niwna0cZYagegQ8Ql/J6U387gYU7ao0dn2mCDk4jm+yNAOSAdAbw4hnLhf5Kx9
-         HpMda3C5zLvKXgttlfHIp+reeeAoIFaIVyowBgmdb0EniRpLGPYi0RpawqElPz/kFeCP
-         C+Yedzh7KVEdcrSZ5v8IRHO9zL8EwTRuKSUj6XTvy4T4hRyskcS0nqNsSE+jR6Vmobal
-         8rwBK8+zEozRvwAwKDzPIMfSGguVkD3Onw0URr4n3/vwJRnm7liHW+uMwZ3g7KpBDo9o
-         z95bwueBGngI9/vYUtNc/G2gQMrWUqXbfmPi2VczgjWO5rgvK7JilxNv8FTruu8QrVfS
-         wUWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791205018; x=1791809818;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4pdPpjclY/Qu2NFmchOm2ms5jkg4XhM0PjITCIKS9/s=;
-        b=NqOQacRvf4afQ9wsITSQIdVmbWpzY1O1CfxSV3aCdCH2x+rbu1CLrRwd1RXOiocSTi
-         RdvpbkiUcU2CskndcODu6PnWF1DwI4NvNadypvgjLCJCzEopLWAdwVRLORpAj2Sba2iD
-         qrKajFtZf1ZREzxYhUAqDXYNqrENTE65Bvlq/LTBCDjQqwZeQe+tAQZlvNwn0vSoKT2I
-         FYwMxv6My33zD00jJDXCyB5Jv8Vpc3aV+pdbsL1y1rOXVcUNerJTqrsqeJYhmk/yx7d/
-         JS+1570FDOVytBFGCedQwwhXnHtviCqkbl5bkIZmQRKY+kBuqUvyH5hJvu46+2pk1Dix
-         v15w==
-X-Forwarded-Encrypted: i=1; AKwUvBzZ0sOJVifhzhyx+awXdy1Vqg53NrThA4laCeMeMe1P1rLE7VTAxgWiPBQO2qESrEcSf53N@lists.linux.dev
-X-Gm-Message-State: AFq9FYIkbd9Jz42AVnY5CuTRD4rFz925JnBid5leUSjWqXcb7HhfT2Up
-	txzMm1R4yJJn/z3h17zpY2GNwyLYVUXBJxLcVd5EI+niQJWiiVgEW9aJ/In43IpXUAE=
-X-Gm-Gg: AYBFou0sOAvMzD78CHVYPO16K4VSQlGJTD42xg5mkphaezVg7kvkhtzNi8oG9ADO3ZG
-	JegS5X3/iDHlm77Zj6IDt8wxmJIsyzToqLrTqDnf0NbNf7cUq3wIMFQF8fawM4jUzn5AhfWFNzt
-	SKGt1/KZuIINB1ex/SVSnwLTJaMEq2iYjXxQY0P5A+J2+9Yl3YGlVsbK/uadqqBTongLbGkGErB
-	Ns/b5jKS1pIsJq80zMPprxsop2sTO/7pVAKx02fOAszkxUWQIG43jrMIZ8mQSU8tzhSVkmo0TuJ
-	IRFt5VBNwajcdp0141QJGuFNJGFaaaTgZEXfuqJbXEh2J9UJryHQ0rekd3ywx6QfcphabcrhXtV
-	Uq2+lVm3L9LZaMaSeEmQtaO2e8+kJveS/f8uAsWw/mTik59Jd0oUzfXqoJwwMM9+/hZuWTggR00
-	t/kU7tkOYfLjCeKsQAfymzgBOzJQan/xFtoSZkXHr9xT63awsPOfPCPss8U/Ql7nQrfP988Hcns
-	81gtzV9dx0d8LVKhFA66Q==
-X-Received: by 2002:a17:90b:35c8:b0:3a8:2046:7e5f with SMTP id 98e67ed59e1d1-3a82046834amr1284780a91.12.1791205017933;
-        Mon, 05 Oct 2026 05:56:57 -0700 (PDT)
-Received: from yhlee-960QFG.Davolink ([2406:5900:1044:110c:5364:bba9:2adf:d611])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6e3a7470sm761661a12.30.2026.10.05.05.56.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 05:56:57 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tru5tUjQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791320406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3UTBequP+2ece8Flw/LLZvFi64Wq0UqNMDxKFvdMi4Q=;
+	b=Tru5tUjQLjl5PY/wrDZ+N8FTbzzEPbjJaRlDnDbMx4vgwuievpZMT/6vrwlTbBtG3oJjxV
+	Azh9oyOqqWUvW9QcYCbS+WaFEGn3oWdG3Olddm2zKiC5N+eJReIXS7El9Hk1xrRVJO4lqz
+	+vRY9yO9tufsc/wd5b7Su7DU8qunOtM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-OEPpxjTLNkucTpIWnjS7-A-1; Tue,
+ 06 Oct 2026 17:00:02 -0400
+X-MC-Unique: OEPpxjTLNkucTpIWnjS7-A-1
+X-Mimecast-MFC-AGG-ID: OEPpxjTLNkucTpIWnjS7-A_1791320400
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CD3F1977303;
+	Tue,  6 Oct 2026 20:59:59 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.90])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 16CA1180058D;
+	Tue,  6 Oct 2026 20:59:50 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
 	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] 9p/xen: validate the response size from the backend
-Date: Mon,  5 Oct 2026 21:56:38 +0900
-Message-ID: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v13 0/8] netfs: Use a bvecq chain position abstraction
+Date: Tue,  6 Oct 2026 21:59:36 +0100
+Message-ID: <20261006205947.608356-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: TJw97gADDAEy-BaKfiI6-OGgQeZeCv3vFyPpbIskCyE_1791320400
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-p9_xen_response() takes the length of an incoming response from the ring
--- the first field of the 9p header, which the Xen transport reuses as
-its framing header -- and uses it to advance the consumer index, but
-never checks that it is at least the header size or no larger than the
-number of bytes the backend has actually produced.
+Hi Christian,
 
-A malicious or buggy backend can post a response whose size is smaller
-than the header (for example 0). The consumer index then never advances,
-so the response work re-reads the same ring contents instead of making
-progress. In testing this raced with the teardown that the malformed
-reply triggers and dereferenced a freed p9_client:
+Could you pull these patches please into your vfs-7.4.netfs branch?  This
+is the fourth of five batches.  The primary purpose of this batch is to add
+an abstraction for a position in a bvecq chain and make use of it.
 
-  9pfs 9pfs-0: Wrong req tag=ffff
-  BUG: kernel NULL pointer dereference, address: 0000000000000060
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 7.2.0-rc5 #6 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-  Workqueue: events p9_xen_response
-  RIP: 0010:idr_find+0x4/0x10
-  RSP: 0018:ffffbf5d80063de8 EFLAGS: 00010202
-  RAX: 0000000000000001 RBX: ffffa229c21195a0 RCX: ffffa229c2400000
-  RDX: ffffa229c11c2200 RSI: 000000000000ffff RDI: 0000000000000050
-  RBP: 000000000000ffff R08: 3fffffffffffdfff R09: ffffffffffffffff
-  R10: 3fffffffffffdfff R11: ffffffff87a60e80 R12: 0000000000000050
-  R13: 0000000000000000 R14: 000000000000ffff R15: 0000000000100000
-  FS:  0000000000000000(0000) GS:ffffa22a7661c000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000060 CR3: 000000003ac34002 CR4: 0000000000770ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   p9_tag_lookup+0x2b/0x90
-   p9_xen_response+0x17c/0x2e0
-   process_one_work+0x16a/0x3a0
-   worker_thread+0x172/0x2e0
-   kthread+0xdd/0x110
-   ret_from_fork+0x18b/0x240
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-  Modules linked in:
-  CR2: 0000000000000060
-  ---[ end trace 0000000000000000 ]---
+With that in mind, this patchset does the following:
 
-Reject a response whose size is outside [sizeof(header), queued] before
-using it, matching the validation the backend already applies to
-incoming requests.
+ (1) Add a struct, bvecq_pos, to refer to a position in a bvecq chain.
+     This is a tuple of ( bvecq pointer, slot and offset } and the position
+     struct holds (for now) a ref on the bvecq pointed to.
 
-Fixes: f66c72bea129 ("xen/9pfs: receive responses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
----
-v2: use dev_warn_ratelimited() so a backend that keeps re-triggering the
-    event channel cannot flood the log.
-v1: https://lore.kernel.org/all/20261005021157.207947-1-yhlee@isslab.korea.ac.kr/
+ (2) Change unbuffered/DIO to extract the supplied user buffers into a
+     bvecq chain rather than a bio_vec[] up front.  This means that
+     netfslib then uses bvecq chains for everything.
 
- net/9p/trans_xen.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ (3) Add a folio count to the readahead_control struct and then makes
+     readahead pre-create its buffer using that count to determine how many
+     slots are required.
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index f9fb2db7a0663..0ea8e17725c24 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -200,6 +200,14 @@ static void p9_xen_response(struct work_struct *work)
- 				     masked_prod, &masked_cons,
- 				     XEN_9PFS_RING_SIZE(ring));
- 
-+		if (h.size < sizeof(h) ||
-+		    h.size > xen_9pfs_queued(prod, cons,
-+					     XEN_9PFS_RING_SIZE(ring))) {
-+			dev_warn_ratelimited(&priv->dev->dev,
-+					     "bad response size %u from backend\n", h.size);
-+			break;
-+		}
-+
- 		req = p9_tag_lookup(priv->client, h.tag);
- 		if (!req || req->status != REQ_STATUS_SENT) {
- 			dev_warn(&priv->dev->dev, "Wrong req tag=%x\n", h.tag);
--- 
-2.43.0
+ (4) Change netfslib to use the bvecq_pos struct to keep track of the whole
+     request buffer and various points in it where loading, dispatch and
+     collection are taking place and to also keep track of the slice given
+     to each subrequest.
+
+This was split from v11 of a larger netfslib series[1].
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-4
+
+Thanks,
+David
+
+Changes
+=======
+ver #13)
+- Rebased on -rc6 to account for some conflicting fixes.
+- Fixed a bug in netfs_prepare_read_iterator() where comparison was being
+  made against the wrong thing when limiting a subreq's size.
+
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+
+David Howells (8):
+  mm: Make readahead store folio count in readahead_control
+  netfs: Add a function to extract from an iter into a bvecq
+  netfs: Make unbuffered/DIO read and write use bvecq
+  netfs: Add some tools for managing a position in a bvecq chain
+  netfs: Provide a func to load the readahead buffers into a bvecq chain
+  netfs: Use bvecq_pos to hold the buffer positions
+  netfs: Remove the rolling_buffer implementation
+  netfs: Remove netfs_extract_user_iter()
+
+ fs/afs/dir.c                   |   5 +-
+ fs/afs/symlink.c               |   6 +-
+ fs/cachefiles/io.c             |  12 -
+ fs/netfs/Makefile              |   1 -
+ fs/netfs/buffered_read.c       | 178 ++++++++-------
+ fs/netfs/bvecq.c               | 310 ++++++++++++++++++++++++++
+ fs/netfs/direct_read.c         |  77 +++----
+ fs/netfs/direct_write.c        |  67 +++---
+ fs/netfs/internal.h            |   4 +-
+ fs/netfs/iterator.c            | 392 ++++++++++-----------------------
+ fs/netfs/misc.c                |  18 --
+ fs/netfs/objects.c             |  16 +-
+ fs/netfs/read_collect.c        | 106 +++++----
+ fs/netfs/read_pgpriv2.c        |  87 +++++---
+ fs/netfs/read_retry.c          |  86 ++++----
+ fs/netfs/read_single.c         |  16 +-
+ fs/netfs/rolling_buffer.c      | 182 ---------------
+ fs/netfs/write_collect.c       |  55 ++---
+ fs/netfs/write_issue.c         | 166 +++++++++-----
+ fs/netfs/write_retry.c         |  61 +++--
+ include/linux/bvecq.h          | 184 ++++++++++++++++
+ include/linux/netfs.h          |  25 ++-
+ include/linux/pagemap.h        |  10 +
+ include/linux/rolling_buffer.h |  47 ----
+ include/trace/events/netfs.h   |  32 ++-
+ mm/readahead.c                 |   5 +
+ 26 files changed, 1208 insertions(+), 940 deletions(-)
+ delete mode 100644 fs/netfs/rolling_buffer.c
+ delete mode 100644 include/linux/rolling_buffer.h
 
