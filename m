@@ -1,415 +1,297 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAF5493D37
-	for <v9fs@lists.linux.dev>; Thu,  8 Oct 2026 10:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5C74973BC
+	for <v9fs@lists.linux.dev>; Thu,  8 Oct 2026 10:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791455050; cv=none; b=rz4JtyqTtAFQAWtyt73kuLq8bSbczpObmiZ5zMv/eCY37HUVbH8FqyciN6yHj+rspzE8f7J3iiKptLaAhdqjEzQqefcgmkrbZmJ+gsKiu5vzy+inq24jszHpPFte0f0bs7EwZGGddvjBYuOOrNzHv6LJpKTPUL4sy/EMSdgTlsE=
+	t=1791456146; cv=none; b=qNWY9KN+mqeM64jlNe+LBbBFUiGG1YqHUhzSG0y4m9ZeXCyTLijdOPwcJv0ZUNlrWosZp1RZiDCdmxl8O0uJjymyFglkSiGSwZPC5YKzmhDZFygGZmVKe9Uc+xA5WPphKeF+vjw0/QLyT7DEfVeaqp3dRguzEwHhqkFUkiAmkG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791455050; c=relaxed/simple;
-	bh=ClCUdk81cZk4pVxj+ERQ4XC4vdFYrCdEayQPaaNm4mo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=ZCY6lnr4scAwpf3Kgpw2qpXzf7NPTAUVWOKiVzFWfJOUNkBq0IY3y50Gb5BMxuXgrOWu2TDV0YAFnvaPc4T43yemMOKyIz8Rc94bOibI9XTi8kw2JR8LDWIgXaWl7zYOOUD1BKcyNXFlGi1Y5Wc/NsJm3ALcwwkXhoFnyMYFsQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=epl2Hs5X; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791456146; c=relaxed/simple;
+	bh=eoI1FEozjJg4EnkzMM5yYgPekd5qbolFDYT/6/hc/tw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UHx6Q5NkSpQVIja3OvkAXjjEkCrbDbMuBOjJQ5ALOxbjPDBOk+iYlOa5fHVMnt3fLqziebSBQH+HPkK67jhz7AyAGfOB/NkW3w7JcJREoKSQSdBKTL6+sCrn5TuOfIRR7EMCL/rTy9iNINLceMt+DQKIChT63HWQ4tdjWxgoCgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RLup9rsk; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RLup9rsk; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="epl2Hs5X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791455046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dhUChjftbbUORUyJn0QdHcvziOACv2RyPij5apElEWE=;
-	b=epl2Hs5XKSebC6vmpK0cfpuKpQ9TBwShw19YHexSqHO/iB58VttK5a+IjxIWYfaeaHKp6V
-	8k7jeZGZkdzmbV01RmKSwH2ky83PnXfxyhMSoJ247RlbeAiOWSzRiwEiUyrYbjRGtVRyPK
-	lje3+U1oRNiQ9x0WvLDPw4+HjqxPDEA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-OwttBHizPGO77X53R2akkQ-1; Thu,
- 08 Oct 2026 06:24:03 -0400
-X-MC-Unique: OwttBHizPGO77X53R2akkQ-1
-X-Mimecast-MFC-AGG-ID: OwttBHizPGO77X53R2akkQ_1791455041
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RLup9rsk";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RLup9rsk"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B8DB1800620;
-	Thu,  8 Oct 2026 10:24:01 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 685461956086;
-	Thu,  8 Oct 2026 10:23:56 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v17 8/8] netfs: Remove netfs_extract_user_iter()
-Date: Thu,  8 Oct 2026 11:22:52 +0100
-Message-ID: <20261008102253.1003776-9-dhowells@redhat.com>
-In-Reply-To: <20261008102253.1003776-1-dhowells@redhat.com>
-References: <20261008102253.1003776-1-dhowells@redhat.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 962E221C1A;
+	Thu,  8 Oct 2026 10:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1791456142; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eoI1FEozjJg4EnkzMM5yYgPekd5qbolFDYT/6/hc/tw=;
+	b=RLup9rskSabgbEvEvLb4y/0leudSkl7gJTPZdiW4iDeMA2+KG/i9Ili8X/loqDFOy1Zi9B
+	c4ycpQh4TiJgQ2QzhgvZOEMIOpC05akErgLkjJIjtBsqrxlB4SgY4O4LOKZqzl2nCqH+Uj
+	zWJFBpwnu8mYI+JWe7iSkv3T8R0CC10=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1791456142; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eoI1FEozjJg4EnkzMM5yYgPekd5qbolFDYT/6/hc/tw=;
+	b=RLup9rskSabgbEvEvLb4y/0leudSkl7gJTPZdiW4iDeMA2+KG/i9Ili8X/loqDFOy1Zi9B
+	c4ycpQh4TiJgQ2QzhgvZOEMIOpC05akErgLkjJIjtBsqrxlB4SgY4O4LOKZqzl2nCqH+Uj
+	zWJFBpwnu8mYI+JWe7iSkv3T8R0CC10=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CA621339F;
+	Thu,  8 Oct 2026 10:42:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id W4/EOo1zx2oVTwAAD6G6ig
+	(envelope-from <jgross@suse.com>); Thu, 08 Oct 2026 10:42:22 +0000
+Message-ID: <4d97500e-a489-4e64-aa11-29c3430909f3@suse.com>
+Date: Thu, 8 Oct 2026 12:42:21 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: uedlB-AFKUkrHjLYYMbLfZNJoEyWtgH0oIfQSDHi41U_1791455041
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] 9p/xen: drain response work after unbinding IRQ
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>,
+ Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>,
+ Ke Xu <xuke@tsinghua.edu.cn>, Stefano Stabellini <sstabellini@kernel.org>
+References: <20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <aqagvTnrIOGl8nfi@codewreck.org>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <aqagvTnrIOGl8nfi@codewreck.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------l8KNOMf2PfPTKuamRy9w54Mo"
+X-Spam-Flag: NO
+X-Spam-Score: -2.62
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.62 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_SPAM_LONG(2.56)[0.731];
+	SIGNED_PGP(-2.00)[];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	NEURAL_HAM_SHORT(-0.19)[-0.970];
+	MIME_UNKNOWN(0.10)[application/pgp-keys];
+	MIME_BASE64_TEXT(0.10)[];
+	XM_UA_NO_VERSION(0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[126.com];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,kernel.org,ionkov.net,crudebyte.com,vger.kernel.org,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	HAS_ATTACHMENT(0.00)[]
 
-Remove netfs_extract_user_iter() as it has been replaced with
-netfs_extract_iter().
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------l8KNOMf2PfPTKuamRy9w54Mo
+Content-Type: multipart/mixed; boundary="------------gVcOBNeZMJ3pK29BomJKytZ9";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Dominique Martinet <asmadeus@codewreck.org>,
+ Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>,
+ Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>,
+ Ke Xu <xuke@tsinghua.edu.cn>, Stefano Stabellini <sstabellini@kernel.org>
+Message-ID: <4d97500e-a489-4e64-aa11-29c3430909f3@suse.com>
+Subject: Re: [PATCH] 9p/xen: drain response work after unbinding IRQ
+References: <20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <aqagvTnrIOGl8nfi@codewreck.org>
+In-Reply-To: <aqagvTnrIOGl8nfi@codewreck.org>
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/iterator.c   | 297 ------------------------------------------
- include/linux/netfs.h |   5 -
- 2 files changed, 302 deletions(-)
+--------------gVcOBNeZMJ3pK29BomJKytZ9
+Content-Type: multipart/mixed; boundary="------------fTMD43gl6ZYvBy00XAlzVJyI"
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index d9ff6646d5d1..5e9de06c1cad 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -155,300 +155,3 @@ ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pag
- 
- }
- EXPORT_SYMBOL_GPL(netfs_extract_iter);
--
--#if 0 // TODO: Remove in subsequent patch
--/**
-- * netfs_extract_user_iter - Extract the pages from a user iterator into a bvec
-- * @orig: The original iterator
-- * @orig_len: The amount of iterator to copy
-- * @new: The iterator to be set up
-- * @extraction_flags: Flags to qualify the request
-- *
-- * Extract the page fragments from the given amount of the source iterator and
-- * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to be disposed of.
-- *
-- * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-- * allowed on the pages extracted.
-- *
-- * On success, the number of elements in the bvec is returned, the original
-- * iterator will have been advanced by the amount extracted.
-- *
-- * The iov_iter_extract_mode() function should be used to query how cleanup
-- * should be performed.
-- */
--ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
--				struct iov_iter *new,
--				iov_iter_extraction_t extraction_flags)
--{
--	struct bio_vec *bv = NULL;
--	struct page **pages;
--	unsigned int cur_npages;
--	unsigned int max_pages;
--	unsigned int npages = 0;
--	unsigned int i;
--	ssize_t ret = 0;
--	size_t count = orig_len, offset, len;
--	size_t bv_size, pg_size;
--
--	if (WARN_ON_ONCE(!iter_is_ubuf(orig) && !iter_is_iovec(orig)))
--		return -EIO;
--
--	max_pages = iov_iter_npages(orig, INT_MAX);
--	bv_size = array_size(max_pages, sizeof(*bv));
--	bv = kvmalloc(bv_size, GFP_KERNEL);
--	if (!bv)
--		return -ENOMEM;
--
--	/* Put the page list at the end of the bvec list storage.  bvec
--	 * elements are larger than page pointers, so as long as we work
--	 * 0->last, we should be fine.
--	 */
--	pg_size = array_size(max_pages, sizeof(*pages));
--	pages = (void *)bv + bv_size - pg_size;
--
--	while (count && npages < max_pages) {
--		ret = iov_iter_extract_pages(orig, &pages, count,
--					     max_pages - npages, extraction_flags,
--					     &offset);
--		if (unlikely(ret <= 0)) {
--			ret = ret ?: -EIO;
--			break;
--		}
--
--		if (WARN(ret > count,
--			 "%s: extract_pages overrun %zd > %zu bytes\n",
--			 __func__, ret, count)) {
--			ret = -EIO;
--			break;
--		}
--
--		cur_npages = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
--		if (WARN(cur_npages > max_pages - npages,
--			 "%s: extract_pages overrun %u > %u pages\n",
--			 __func__, npages + cur_npages, max_pages)) {
--			ret = -EIO;
--			break;
--		}
--
--		count -= ret;
--		ret += offset;
--
--		for (i = 0; i < cur_npages; i++) {
--			len = ret > PAGE_SIZE ? PAGE_SIZE : ret;
--			bvec_set_page(bv + npages + i, *pages++, len - offset, offset);
--			ret -= len;
--			offset = 0;
--		}
--
--		npages += cur_npages;
--	}
--
--	/* Note: Don't try to clean up after EIO.  Either we got no pages, so
--	 * nothing to clean up, or we got a buffer overrun, memory corruption
--	 * and can't trust the stuff in the buffer (a WARN was emitted).
--	 */
--
--	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
--		for (i = 0; i < npages; i++)
--			unpin_user_page(bv[i].bv_page);
--		kvfree(bv);
--		return ret;
--	}
--
--	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
--	return npages;
--}
--EXPORT_SYMBOL_GPL(netfs_extract_user_iter);
--
--/*
-- * Select the span of a bvec iterator we're going to use.  Limit it by both maximum
-- * size and maximum number of segments.  Returns the size of the span in bytes.
-- */
--static size_t netfs_limit_bvec(const struct iov_iter *iter, size_t start_offset,
--			       size_t max_size, size_t max_segs)
--{
--	const struct bio_vec *bvecs = iter->bvec;
--	unsigned int nbv = iter->nr_segs, ix = 0, nsegs = 0;
--	size_t len, span = 0, n = iter->count;
--	size_t skip = iter->iov_offset + start_offset;
--
--	if (WARN_ON(!iov_iter_is_bvec(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--
--	while (n && ix < nbv && skip) {
--		len = bvecs[ix].bv_len;
--		if (skip < len)
--			break;
--		skip -= len;
--		n -= len;
--		ix++;
--	}
--
--	while (n && ix < nbv) {
--		len = min3(n, bvecs[ix].bv_len - skip, max_size);
--		span += len;
--		nsegs++;
--		ix++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--		skip = 0;
--		n -= len;
--	}
--
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of a kvec iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  Returns the size of the span
-- * in bytes.
-- */
--static size_t netfs_limit_kvec(const struct iov_iter *iter, size_t start_offset,
--			       size_t max_size, size_t max_segs)
--{
--	const struct kvec *kvecs = iter->kvec;
--	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
--	size_t len, span = 0, n = iter->count;
--	size_t skip = iter->iov_offset + start_offset;
--
--	if (WARN_ON(!iov_iter_is_kvec(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--
--	while (n && ix < nkv && skip) {
--		len = kvecs[ix].iov_len;
--		if (skip < len)
--			break;
--		skip -= len;
--		n -= len;
--		ix++;
--	}
--
--	while (n && ix < nkv) {
--		len = min3(n, kvecs[ix].iov_len - skip, max_size);
--		span += len;
--		nsegs++;
--		ix++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--		skip = 0;
--		n -= len;
--	}
--
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of an xarray iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  It is assumed that segments
-- * can be larger than a page in size, provided they're physically contiguous.
-- * Returns the size of the span in bytes.
-- */
--static size_t netfs_limit_xarray(const struct iov_iter *iter, size_t start_offset,
--				 size_t max_size, size_t max_segs)
--{
--	struct folio *folio;
--	unsigned int nsegs = 0;
--	uoff_t pos = iter->xarray_start + iter->iov_offset;
--	pgoff_t index = pos / PAGE_SIZE;
--	size_t span = 0, n = iter->count;
--
--	XA_STATE(xas, iter->xarray, index);
--
--	if (WARN_ON(!iov_iter_is_xarray(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--	max_size = min(max_size, n - start_offset);
--
--	rcu_read_lock();
--	xas_for_each(&xas, folio, ULONG_MAX) {
--		size_t offset, flen, len;
--		if (xas_retry(&xas, folio))
--			continue;
--		if (WARN_ON(xa_is_value(folio)))
--			break;
--		if (WARN_ON(folio_test_hugetlb(folio)))
--			break;
--
--		flen = folio_size(folio);
--		offset = offset_in_folio(folio, pos);
--		len = min(max_size, flen - offset);
--		span += len;
--		nsegs++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--	}
--
--	rcu_read_unlock();
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of a bvecq iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  Returns the size of the span
-- * in bytes.
-- */
--static size_t netfs_limit_bvecq(const struct iov_iter *iter, size_t start_offset,
--				size_t max_size, size_t max_segs)
--{
--	const struct bvecq *bq = iter->bvecq;
--	unsigned int nsegs = 0;
--	unsigned int slot = iter->bvecq_slot;
--	size_t span = 0, n = iter->count;
--
--	if (WARN_ON(!iov_iter_is_bvecq(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--	max_size = umin(max_size, n - start_offset);
--
--	if (!bvecq_acquire_slot(bq, slot)) {
--		bq = bvecq_next(bq);
--		slot = 0;
--	}
--
--	start_offset += iter->iov_offset;
--	do {
--		size_t flen;
--
--		flen = bq->bv[slot].bv_len;
--		if (start_offset < flen) {
--			span += flen - start_offset;
--			nsegs++;
--			start_offset = 0;
--		} else {
--			start_offset -= flen;
--		}
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--
--		slot++;
--		if (!bvecq_acquire_slot(bq, slot)) {
--			bq = bvecq_next(bq);
--			slot = 0;
--		}
--	} while (bq);
--
--	return umin(span, max_size);
--}
--
--size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
--			size_t max_size, size_t max_segs)
--{
--	if (iov_iter_is_bvecq(iter))
--		return netfs_limit_bvecq(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_bvec(iter))
--		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_xarray(iter))
--		return netfs_limit_xarray(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_kvec(iter))
--		return netfs_limit_kvec(iter, start_offset, max_size, max_segs);
--	BUG();
--}
--EXPORT_SYMBOL(netfs_limit_iter);
--#endif
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index f3249d0573c4..0340c9ee587b 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -460,11 +460,6 @@ void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
- ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
- 			   struct bvecq **_bvecq_head,
- 			   iov_iter_extraction_t extraction_flags, gfp_t gfp);
--ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
--				struct iov_iter *new,
--				iov_iter_extraction_t extraction_flags);
--size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
--			size_t max_size, size_t max_segs);
- void netfs_prepare_write_failed(struct netfs_io_subrequest *subreq);
- void netfs_write_subrequest_terminated(void *_op, ssize_t transferred_or_error);
- 
+--------------fTMD43gl6ZYvBy00XAlzVJyI
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+T24gMTMuMDkuMjYgMTU6MTAsIERvbWluaXF1ZSBNYXJ0aW5ldCB3cm90ZToNCj4gWWl6aG91
+IFpoYW8gd3JvdGUgb24gVHVlLCBKdW4gMDksIDIwMjYgYXQgMTE6NTI6MDFQTSArMDgwMDoN
+Cj4+IGNvbW1pdCBlYTRmMTAwOTQwOGUgKCI5cC94ZW4gOiBGaXggdXNlIGFmdGVyIGZyZWUg
+YnVnIGluDQo+PiB4ZW5fOXBmc19mcm9udF9yZW1vdmUgZHVlIHRvIHJhY2UgY29uZGl0aW9u
+IikgYWRkZWQgY2FuY2VsX3dvcmtfc3luYygpDQo+PiB0byBrZWVwIHhlbl85cGZzX2Zyb250
+X2ZyZWUoKSBmcm9tIGZyZWVpbmcgYSByaW5nIHdoaWxlDQo+PiBwOV94ZW5fcmVzcG9uc2Uo
+KSBpcyBzdGlsbCBydW5uaW5nLg0KPj4NCj4+IFRoZSB3b3JrIGlzIGN1cnJlbnRseSBkcmFp
+bmVkIGJlZm9yZSB0aGUgZXZlbnQgY2hhbm5lbCBJUlEgaXMgdW5ib3VuZC4NCj4+IFRoYXQg
+bGVhdmVzIGEgcmFjZSB3aW5kb3cgd2hlcmUgeGVuXzlwZnNfZnJvbnRfZXZlbnRfaGFuZGxl
+cigpIGNhbiBydW4NCj4+IGFmdGVyIGNhbmNlbF93b3JrX3N5bmMoKSByZXR1cm5zIGFuZCBx
+dWV1ZSBwOV94ZW5fcmVzcG9uc2UoKSBhZ2Fpbi4gIFRoZQ0KPj4gZm9sbG93aW5nIHVuYmlu
+ZF9mcm9tX2lycWhhbmRsZXIoKSBzeW5jaHJvbml6ZXMgd2l0aCB0aGUgSVJRIGhhbmRsZXIs
+IGJ1dA0KPj4gaXQgZG9lcyBub3QgY2FuY2VsIHdvcmsgdGhhdCB0aGUgaGFuZGxlciBhbHJl
+YWR5IHF1ZXVlZC4gIFRoZSB0ZWFyZG93bg0KPj4gY2FuIHRoZW4gZnJlZSB0aGUgcmluZyBh
+bmQgcHJpdmF0ZSBkYXRhIHdoaWxlIHRoZSByZXNwb25zZSB3b3JrIHJlbWFpbnMNCj4+IHBl
+bmRpbmcsIGFuZCB0aGUgd29ya2VyIGxhdGVyIGRlcmVmZXJlbmNlcyByaW5nLT5wcml2IGFu
+ZCBwcml2LT5jbGllbnQuDQo+Pg0KPj4gVW5iaW5kIHRoZSBldmVudCBjaGFubmVsIElSUSBi
+ZWZvcmUgZHJhaW5pbmcgdGhlIHdvcmsuICBPbmNlIHRoZSBJUlEgaXMNCj4+IHVuYm91bmQs
+IG5vIG5ldyByZXNwb25zZSB3b3JrIGNhbiBiZSBxdWV1ZWQgYnkgdGhlIGJhY2tlbmQgZXZl
+bnQgY2hhbm5lbCwNCj4+IGFuZCBjYW5jZWxfd29ya19zeW5jKCkgd2FpdHMgZm9yIGFueSB3
+b3JrIHRoYXQgd2FzIHF1ZXVlZCBiZWZvcmUgb3INCj4+IGR1cmluZyB0aGUgdW5iaW5kLiAg
+SXQgaXMgdGhlbiBzYWZlIHRvIHJlbGVhc2UgdGhlIHJpbmcgcmVzb3VyY2VzLg0KPj4NCj4+
+IEZpeGVzOiBlYTRmMTAwOTQwOGUgKCI5cC94ZW4gOiBGaXggdXNlIGFmdGVyIGZyZWUgYnVn
+IGluIHhlbl85cGZzX2Zyb250X3JlbW92ZSBkdWUgdG8gcmFjZSBjb25kaXRpb24iKQ0KPj4g
+Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4+IFJlcG9ydGVkLWJ5OiBZaXpob3UgWmhh
+byA8emhhb3l6MjRAbWFpbHMudHNpbmdodWEuZWR1LmNuPg0KPj4gUmVwb3J0ZWQtYnk6IFl1
+eGlhbmcgWWFuZyA8eWFuZ3l4MjJAbWFpbHMudHNpbmdodWEuZWR1LmNuPg0KPj4gUmVwb3J0
+ZWQtYnk6IEFvIFdhbmcgPHdhbmdhb0BzZXUuZWR1LmNuPg0KPj4gUmVwb3J0ZWQtYnk6IFh1
+ZXdlaSBGZW5nIDxmZW5neHcwNkAxMjYuY29tPg0KPj4gUmVwb3J0ZWQtYnk6IFFpIExpIDxx
+bGkwMUB0c2luZ2h1YS5lZHUuY24+DQo+PiBSZXBvcnRlZC1ieTogS2UgWHUgPHh1a2VAdHNp
+bmdodWEuZWR1LmNuPg0KPj4gQXNzaXN0ZWQtYnk6IEdMTTpHTE0tNS4xDQo+PiBTaWduZWQt
+b2ZmLWJ5OiBZaXpob3UgWmhhbyA8emhhb3l6MjRAbWFpbHMudHNpbmdodWEuZWR1LmNuPg0K
+PiANCj4gVGhpcyBvbmUgbWFrZXMgc2Vuc2UgdG8gbWUgYW5kIEkndmUgcGlja2VkIGl0IHVw
+LCBidXQgSSB0aGluaw0KPiAiOXAveGVuOiBmaXggdXNlLWFmdGVyLWZyZWUgaW4gcDlfeGVu
+X3JlcXVlc3QiWzFdIGFkZGluZyBhIHJlZmNvdW50IHRvDQo+IHRoZSBmcm9udF9wcml2IGlz
+IHRvbyBtdWNoIGNvbXBsZXhpdHkgdnMuIG15IHVuZGVyc3RhbmRpbmcgb2YgdGhlDQo+IGN1
+cnJlbnQgdGhyZWF0IG1vZGVsIC0tIEkgY2FuIHBpY2sgaXQgdXAgaWYgc29tZW9tZSB3aG8g
+dW5kZXJzdGFuZHMgeGVuDQo+IGJldHRlciB0aGFuIG1lIGhhcyBhIHByb3BlciBsb29rLg0K
+PiANCj4gU3RlZmFubyBvciBKw7xyZ2VuIGlmIHlvdSBjYXJlIC8gaGF2ZSB0aW1lPw0KPiAN
+Cj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAyNjA1MjkxMDM0MTYuODEzNzgt
+MS16aGFveXoyNEBtYWlscy50c2luZ2h1YS5lZHUuY24NCg0KSSB0aGluayBbMV0gc2hvdWxk
+IGJlIHRha2VuLg0KDQpXZSB0cnkgdG8gaGFyZGVuIGZyb250ZW5kcyBhZ2FpbnN0IHBvdGVu
+dGlhbGx5IG1hbGljaW91cyBiYWNrZW5kcyBydW5uaW5nDQppbiBhIGRyaXZlciBkb21haW4u
+IFN1Y2ggYSBiYWNrZW5kIGNvdWxkIGNhdXNlIHRoZSBkZXZpY2UgdG8gYmUgcmVtb3ZlZCBv
+bg0KdGhlIGZyb250ZW5kIHNpZGUsIHNvIHRoZSBhdHRhY2sgdmVjdG9yIGlzIHByZXNlbnQu
+DQoNClRoZSBvbmx5IHJlYXNvbiB0aGlzIGRvZXNuJ3QgcXVhbGlmeSBhcyBhIFhlbiBzZWN1
+cml0eSBpc3N1ZSBpcyB0aGF0IHRoZQ0KOXBmcyBmcm9udGVuZCBoYXNuJ3QgYmVlbiB5ZXQg
+ZGVjbGFyZWQgdG8gYmUgc2VjdXJpdHkgc3VwcG9ydGVkIHJlZ2FyZGluZw0KYXR0YWNrcyBi
+eSB0aGUgYmFja2VuZC4gSG9wZWZ1bGx5IHdlIHdpbGwgZ2V0IHRoZXJlLg0KDQoNCkp1ZXJn
+ZW4NCg==
+--------------fTMD43gl6ZYvBy00XAlzVJyI
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------fTMD43gl6ZYvBy00XAlzVJyI--
+
+--------------gVcOBNeZMJ3pK29BomJKytZ9--
+
+--------------l8KNOMf2PfPTKuamRy9w54Mo
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmrHc40FAwAAAAAACgkQsN6d1ii/Ey+N
+lAf7BC4ICeOCBge/EbgFuwV7/MOC+boPkx/R/Awse3NqkGgm1hEIYNj35ugamqZOmFELjpYC3FZF
+/gZPziL2C4qH1mCXHQXu9P4vsZ0OeExGsfYK3Qqw/uED/UTbAZmzdY+0Bsowy3YweyUSY/rG3tb0
++OOtvUGvqNSdeWmQGZGjlfug7GaVh2xqrmlMwZ0bxadhlWuHRVtKejwcSXp2lL9fHLWnpJrL9Hr3
+P99VqT6ZlFh+bSRQzATXNUoO9Ci2D22VkD9+lR4ieMyKfijehujtyxSnkCwCKbiNuAQSnONx+E4p
+y05NrkZawfvCITgy7Mw6Sv7ImdLmS6jq981qGrZolg==
+=fJBp
+-----END PGP SIGNATURE-----
+
+--------------l8KNOMf2PfPTKuamRy9w54Mo--
