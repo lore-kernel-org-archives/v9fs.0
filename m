@@ -1,260 +1,605 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B613ACEF9
-	for <v9fs@lists.linux.dev>; Thu,  8 Oct 2026 11:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06784AA594
+	for <v9fs@lists.linux.dev>; Thu,  8 Oct 2026 13:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791459611; cv=none; b=h3dq/JQNQGLDwpqRd+aO1NUXSClVSYur5ZvDhsnkA+ZfDHaQRMaDQx5mjTQN5x/1X55s7MA4TxitsplVXb7lYmozbkYmKh5Zv2RDBB5gFagIpK0I8K6M1lbv8xek6j5++qGpLK9Si7LGNIMJOnCpcFidXQ4biZmO8bF5JzYOgsA=
+	t=1791466511; cv=none; b=CwzgF0yY+a+ao3APNLBwkPFH2NdliWgoDeUcTyXOCm0mAbKM1LYf9itTw2fc629AGKEu00EniqKApOUn3RsaceCEvsC0Q31GM/I0PXqZ4czk36wXdZZWPP3geRXoQ2k0BLzaLvz08mIJ+P+5S+f50sNWaxQ9UAhMk2G2o7cYhsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791459611; c=relaxed/simple;
-	bh=+aXmEO1w3V4VZ55yTGF6zej6634uFQcGRm2czAc8pb0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dxubFFCSJ7wX9mJdTn1RuERAS6QPmsUZ2J+EENIAL7JRPXiLkkkN9tg27JxdJVUti++8H9Sm2sfzZkFNt4gStk8O+La4KXGT6Uq1kV000sUT/PouQDYfXyPKf/VubM6sIQwZ8K6rFHpzWdpHStvu+k7nLCB4F+JNaUeevA4IVBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1791466511; c=relaxed/simple;
+	bh=jXsHnZV0/tcCcfrJju5kyg71a3vF6Vrft0sxeKX/W04=;
+	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=kqttjfFvz2Df4pc+gL6dcw4ISXQgtTRysoP40zuYEj1u9+NR4aHXDbqCGkTYT4dZ6sVbdB9VekwDsd3oVtbgS4kP35peA55qWe+izqS3SVBcpMWUkIlNGIEUgAlDOGGx0ZIIYnivY/p8QBNw90aDzvm7FtyKiGZbbbUh3q8kR8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FYyJmSIx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FYyJmSIx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791466504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zuNDuRnE9PiW7cHzivE5hl0YoPOGoEbhF0yagPxF51w=;
+	b=FYyJmSIxMTVmrrWQ47o1ClmpAWS30YEdEZHzb3tikHHf3T1F6T7FUKLhDADOBlApPrROv1
+	R2wqTqMmG25xXn3vPj870bBpd7F2tZEA1BaLL5itKPhuUYLsrzkpvMTrY31U19K90omcxC
+	wzD5qvpi1H547mZ0XYwy66kGNb00pOI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-RWkYOKOvNM2f_x1zIoKe-w-1; Thu,
+ 08 Oct 2026 09:35:00 -0400
+X-MC-Unique: RWkYOKOvNM2f_x1zIoKe-w-1
+X-Mimecast-MFC-AGG-ID: RWkYOKOvNM2f_x1zIoKe-w_1791466494
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B9AA61F441;
-	Thu,  8 Oct 2026 11:40:08 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5757213354;
-	Thu,  8 Oct 2026 11:40:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uhdvCxiBx2opDwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Thu, 08 Oct 2026 11:40:08 +0000
-Message-ID: <bd207068-5674-4ffa-aa34-57b07b2bcffa@suse.com>
-Date: Thu, 8 Oct 2026 13:40:07 +0200
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02E8B1954AE8;
+	Thu,  8 Oct 2026 13:34:54 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.90])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 11F761956044;
+	Thu,  8 Oct 2026 13:34:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    Alex Markuze <amarkuze@redhat.com>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Matthew Wilcox <willy@infradead.org>, v9fs@lists.linux.dev,
+    linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] fscache, cachefiles: Fix resize handling
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] 9p/xen: validate the response size from the backend
-To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
-Content-Language: en-US
-From: Juergen Gross <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------NKrglBsC0aAZ6c1B0MVJWGg1"
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.00 / 50.00]
-X-Spamd-Bar: /
-X-Rspamd-Queue-Id: B9AA61F441
-X-Spam-Flag: NO
-X-Spam-Score: 0.00
-X-Rspamd-Action: no action
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------NKrglBsC0aAZ6c1B0MVJWGg1
-Content-Type: multipart/mixed; boundary="------------zqUPvcSS6vhyB85GtT2GhYD3";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Message-ID: <bd207068-5674-4ffa-aa34-57b07b2bcffa@suse.com>
-Subject: Re: [PATCH v2] 9p/xen: validate the response size from the backend
-References: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
-In-Reply-To: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
-
---------------zqUPvcSS6vhyB85GtT2GhYD3
-Content-Type: multipart/mixed; boundary="------------hL1VfzHEAdLrx4MoPokcJqMG"
-
---------------hL1VfzHEAdLrx4MoPokcJqMG
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T24gMDUuMTAuMjYgMTQ6NTYsIFllaHllb25nIExlZSB3cm90ZToNCj4gcDlfeGVuX3Jlc3Bv
-bnNlKCkgdGFrZXMgdGhlIGxlbmd0aCBvZiBhbiBpbmNvbWluZyByZXNwb25zZSBmcm9tIHRo
-ZSByaW5nDQo+IC0tIHRoZSBmaXJzdCBmaWVsZCBvZiB0aGUgOXAgaGVhZGVyLCB3aGljaCB0
-aGUgWGVuIHRyYW5zcG9ydCByZXVzZXMgYXMNCj4gaXRzIGZyYW1pbmcgaGVhZGVyIC0tIGFu
-ZCB1c2VzIGl0IHRvIGFkdmFuY2UgdGhlIGNvbnN1bWVyIGluZGV4LCBidXQNCj4gbmV2ZXIg
-Y2hlY2tzIHRoYXQgaXQgaXMgYXQgbGVhc3QgdGhlIGhlYWRlciBzaXplIG9yIG5vIGxhcmdl
-ciB0aGFuIHRoZQ0KPiBudW1iZXIgb2YgYnl0ZXMgdGhlIGJhY2tlbmQgaGFzIGFjdHVhbGx5
-IHByb2R1Y2VkLg0KPiANCj4gQSBtYWxpY2lvdXMgb3IgYnVnZ3kgYmFja2VuZCBjYW4gcG9z
-dCBhIHJlc3BvbnNlIHdob3NlIHNpemUgaXMgc21hbGxlcg0KPiB0aGFuIHRoZSBoZWFkZXIg
-KGZvciBleGFtcGxlIDApLiBUaGUgY29uc3VtZXIgaW5kZXggdGhlbiBuZXZlciBhZHZhbmNl
-cywNCj4gc28gdGhlIHJlc3BvbnNlIHdvcmsgcmUtcmVhZHMgdGhlIHNhbWUgcmluZyBjb250
-ZW50cyBpbnN0ZWFkIG9mIG1ha2luZw0KPiBwcm9ncmVzcy4gSW4gdGVzdGluZyB0aGlzIHJh
-Y2VkIHdpdGggdGhlIHRlYXJkb3duIHRoYXQgdGhlIG1hbGZvcm1lZA0KPiByZXBseSB0cmln
-Z2VycyBhbmQgZGVyZWZlcmVuY2VkIGEgZnJlZWQgcDlfY2xpZW50Og0KPiANCj4gICAgOXBm
-cyA5cGZzLTA6IFdyb25nIHJlcSB0YWc9ZmZmZg0KPiAgICBCVUc6IGtlcm5lbCBOVUxMIHBv
-aW50ZXIgZGVyZWZlcmVuY2UsIGFkZHJlc3M6IDAwMDAwMDAwMDAwMDAwNjANCj4gICAgI1BG
-OiBzdXBlcnZpc29yIHJlYWQgYWNjZXNzIGluIGtlcm5lbCBtb2RlDQo+ICAgICNQRjogZXJy
-b3JfY29kZSgweDAwMDApIC0gbm90LXByZXNlbnQgcGFnZQ0KPiAgICBQR0QgMCBQNEQgMA0K
-PiAgICBPb3BzOiBPb3BzOiAwMDAwIFsjMV0gU01QIE5PUFRJDQo+ICAgIENQVTogMCBVSUQ6
-IDAgUElEOiAxMSBDb21tOiBrd29ya2VyLzA6MSBOb3QgdGFpbnRlZCA3LjIuMC1yYzUgIzYg
-UFJFRU1QVChsYXp5KQ0KPiAgICBIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChR
-MzUgKyBJQ0g5LCAyMDA5KSwgQklPUyByZWwtMS4xNy4wLTAtZ2I1MmNhODZlMDk0ZC1wcmVi
-dWlsdC5xZW11Lm9yZyAwNC8wMS8yMDE0DQo+ICAgIFdvcmtxdWV1ZTogZXZlbnRzIHA5X3hl
-bl9yZXNwb25zZQ0KPiAgICBSSVA6IDAwMTA6aWRyX2ZpbmQrMHg0LzB4MTANCj4gICAgUlNQ
-OiAwMDE4OmZmZmZiZjVkODAwNjNkZTggRUZMQUdTOiAwMDAxMDIwMg0KPiAgICBSQVg6IDAw
-MDAwMDAwMDAwMDAwMDEgUkJYOiBmZmZmYTIyOWMyMTE5NWEwIFJDWDogZmZmZmEyMjljMjQw
-MDAwMA0KPiAgICBSRFg6IGZmZmZhMjI5YzExYzIyMDAgUlNJOiAwMDAwMDAwMDAwMDBmZmZm
-IFJESTogMDAwMDAwMDAwMDAwMDA1MA0KPiAgICBSQlA6IDAwMDAwMDAwMDAwMGZmZmYgUjA4
-OiAzZmZmZmZmZmZmZmZkZmZmIFIwOTogZmZmZmZmZmZmZmZmZmZmZg0KPiAgICBSMTA6IDNm
-ZmZmZmZmZmZmZmRmZmYgUjExOiBmZmZmZmZmZjg3YTYwZTgwIFIxMjogMDAwMDAwMDAwMDAw
-MDA1MA0KPiAgICBSMTM6IDAwMDAwMDAwMDAwMDAwMDAgUjE0OiAwMDAwMDAwMDAwMDBmZmZm
-IFIxNTogMDAwMDAwMDAwMDEwMDAwMA0KPiAgICBGUzogIDAwMDAwMDAwMDAwMDAwMDAoMDAw
-MCkgR1M6ZmZmZmEyMmE3NjYxYzAwMCgwMDAwKSBrbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+
-ICAgIENTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMN
-Cj4gICAgQ1IyOiAwMDAwMDAwMDAwMDAwMDYwIENSMzogMDAwMDAwMDAzYWMzNDAwMiBDUjQ6
-IDAwMDAwMDAwMDA3NzBlZjANCj4gICAgUEtSVTogNTU1NTU1NTQNCj4gICAgQ2FsbCBUcmFj
-ZToNCj4gICAgIDxUQVNLPg0KPiAgICAgcDlfdGFnX2xvb2t1cCsweDJiLzB4OTANCj4gICAg
-IHA5X3hlbl9yZXNwb25zZSsweDE3Yy8weDJlMA0KPiAgICAgcHJvY2Vzc19vbmVfd29yaysw
-eDE2YS8weDNhMA0KPiAgICAgd29ya2VyX3RocmVhZCsweDE3Mi8weDJlMA0KPiAgICAga3Ro
-cmVhZCsweGRkLzB4MTEwDQo+ICAgICByZXRfZnJvbV9mb3JrKzB4MThiLzB4MjQwDQo+ICAg
-ICByZXRfZnJvbV9mb3JrX2FzbSsweDFhLzB4MzANCj4gICAgIDwvVEFTSz4NCj4gICAgTW9k
-dWxlcyBsaW5rZWQgaW46DQo+ICAgIENSMjogMDAwMDAwMDAwMDAwMDA2MA0KPiAgICAtLS1b
-IGVuZCB0cmFjZSAwMDAwMDAwMDAwMDAwMDAwIF0tLS0NCj4gDQo+IFJlamVjdCBhIHJlc3Bv
-bnNlIHdob3NlIHNpemUgaXMgb3V0c2lkZSBbc2l6ZW9mKGhlYWRlciksIHF1ZXVlZF0gYmVm
-b3JlDQo+IHVzaW5nIGl0LCBtYXRjaGluZyB0aGUgdmFsaWRhdGlvbiB0aGUgYmFja2VuZCBh
-bHJlYWR5IGFwcGxpZXMgdG8NCj4gaW5jb21pbmcgcmVxdWVzdHMuDQo+IA0KPiBGaXhlczog
-ZjY2YzcyYmVhMTI5ICgieGVuLzlwZnM6IHJlY2VpdmUgcmVzcG9uc2VzIikNCj4gQ2M6IHN0
-YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU2lnbmVkLW9mZi1ieTogWWVoeWVvbmcgTGVlIDx5
-aGxlZUBpc3NsYWIua29yZWEuYWMua3I+DQoNClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3Nz
-IDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0KSnVlcmdlbg0K
---------------hL1VfzHEAdLrx4MoPokcJqMG
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
+Date: Thu, 08 Oct 2026 14:34:44 +0100
+Message-ID: <1029097.1791466484@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: sNrOwpL8UXMpVKvTmAoDHmSE9NmU_bZVfEkRAPL8hkA_1791466494
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1029096.1791466484.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+   =20
+Fix the resize handling in fscache and cachefiles by passing down a flag to
+indicate if the file is being shrunk as the cache's idea of how big the
+file should be may be stale and thus not useful in comparison to the
+object's size.
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+The issue is that netfs_perform_write() updates the network filesystem's
+file's i_size as it adds data to the pagecache, but the cache isn't updated
+until writeback flushes that data.  A truncation may then scrap that data
+and so the cache never sees it and doesn't update before it is told to
+resize.  In the resize, cachefiles was comparing the new size against the
+current cache size and then thinking the file was being expanded.
 
---------------hL1VfzHEAdLrx4MoPokcJqMG--
+Note that this is a bit more complicated for ceph than other filesystems as
+ceph splits the truncation of the local pagecache and fscache to after the
+RPC reply handler has updated the inode record - the reply handler
+communicates the need for the truncation finalisation through ceph inode
+flags.  Further, the same mechanism appears to be used to handle truncation
+in response to CAP changes and might actually be better off invalidating
+the cache rather than just resizing it.
 
---------------zqUPvcSS6vhyB85GtT2GhYD3--
+To this end, ceph is changed such that the outstanding truncation count in =
+the
+inode turns into a bool and just set instead of being incremented (the code
+only cares if it's zero or non-zero) and then a second bool is added to rec=
+ord
+if the file was being shrunk.
 
---------------NKrglBsC0aAZ6c1B0MVJWGg1
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Fixes: 1a9fe4b6e787 ("cachefiles: Don't rely on backing fs storage map for =
+most use cases")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: ceph-devel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---   =20
+ Changes
+ =3D=3D=3D=3D=3D=3D=3D
+ ver #2)
+ - Fix issues reported by sashiko[1]:
+   - In cifs_file_copychunk_range(), use the old size of the target inode,
+     not the source inode.
+   - Switch to passing down a flag to indicate if the file shrank rather
+     than the old file size.
+   - In ceph, cache the truncate-shrank flag in the ceph inode.
+=20
+ [1] https://sashiko.dev/#/patchset/938341.1791446974%40warthog.procyon.org=
+.uk
 
------BEGIN PGP SIGNATURE-----
+ Documentation/filesystems/caching/backend-api.rst |    2 +-
+ Documentation/filesystems/caching/netfs-api.rst   |    2 +-
+ fs/9p/vfs_inode.c                                 |    4 +++-
+ fs/9p/vfs_inode_dotl.c                            |    3 ++-
+ fs/afs/inode.c                                    |    4 ++--
+ fs/cachefiles/interface.c                         |    8 ++++----
+ fs/ceph/cache.h                                   |    6 +++---
+ fs/ceph/inode.c                                   |   20 ++++++++++++++---=
+---
+ fs/ceph/super.h                                   |    3 ++-
+ fs/netfs/fscache_io.c                             |    4 ++--
+ fs/smb/client/cifsfs.c                            |   11 +++++++----
+ fs/smb/client/inode.c                             |    2 +-
+ fs/smb/client/smb2ops.c                           |   14 ++++++++------
+ include/linux/fscache-cache.h                     |    2 +-
+ include/linux/fscache.h                           |   11 ++++++-----
+ 15 files changed, 57 insertions(+), 39 deletions(-)
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmrHgRcFAwAAAAAACgkQsN6d1ii/Ey/t
-EAf/XBgankpH8qdLe8DgGf39b5ab+6BzYx5OlXWAf8qxotpqE9e8mcqZ9+Q/kldR5v3DsXJZwIO8
-JNT16WHOXpNnvHRulFkWQfNXoFXsN8HnkAy05C+11iddrrEOgiPvjcXKo0d/S+Xz4xvEB0084E3a
-/1BamP/5Ql87UZfvZhDrn9+eOSYtj/LL9fbrb8qCxNOj25dLi3Fge1POkw8mT2odf4Qn/7Stcdrz
-grlX0Mm6ZPlPu2FIOd8VjccFFa/vrxI01OG9bx5P7MhHOmbBHMjymDaGeay4V2/HoNC9oS/qLcI4
-9sqv7vG4qFr189kLr7TRDzXeGqbjI3inIFz1DrzGsA==
-=d1PV
------END PGP SIGNATURE-----
+diff --git a/Documentation/filesystems/caching/backend-api.rst b/Documentat=
+ion/filesystems/caching/backend-api.rst
+index 3a199fc50828..df837531b3fd 100644
+--- a/Documentation/filesystems/caching/backend-api.rst
++++ b/Documentation/filesystems/caching/backend-api.rst
+@@ -339,7 +339,7 @@ pointers to methods to allow fscache to request managem=
+ent of the cache:
+    * Change the size of a data storage object [mandatory]::
+=20
+ =09void (*resize_cookie)(struct netfs_cache_resources *cres,
+-=09=09=09      loff_t new_size);
++=09=09=09      loff_t new_size, bool shrank);
+=20
+      This method is called to inform the cache backend of a change in size=
+ of
+      the netfs file due to local truncation.  The cache backend should mak=
+e all
+diff --git a/Documentation/filesystems/caching/netfs-api.rst b/Documentatio=
+n/filesystems/caching/netfs-api.rst
+index 665b27f1556e..3154a1686480 100644
+--- a/Documentation/filesystems/caching/netfs-api.rst
++++ b/Documentation/filesystems/caching/netfs-api.rst
+@@ -226,7 +226,7 @@ If a network filesystem file is resized locally by trun=
+cation, the following
+ should be called to notify the cache::
+=20
+ =09void fscache_resize_cookie(struct fscache_cookie *cookie,
+-=09=09=09=09   loff_t new_size);
++=09=09=09=09   loff_t new_size, bool shrank);
+=20
+ The caller must have first marked the cookie in-use.  The cookie and the n=
+ew
+ size are passed in and the cache is synchronously resized.  This is expect=
+ed to
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 3829554ca369..5216c3267e9b 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -1022,6 +1022,7 @@ static int v9fs_vfs_setattr(struct mnt_idmap *idmap,
+ =09struct v9fs_session_info *v9ses;
+ =09struct p9_fid *fid =3D NULL;
+ =09struct p9_wstat wstat;
++=09uoff_t old_size =3D i_size_read(inode);
+=20
+ =09p9_debug(P9_DEBUG_VFS, "\n");
+ =09retval =3D setattr_prepare(&nop_mnt_idmap, dentry, iattr);
+@@ -1086,7 +1087,8 @@ static int v9fs_vfs_setattr(struct mnt_idmap *idmap,
+ =09=09if (v9ses->cache & CACHE_FSCACHE) {
+ =09=09=09struct v9fs_inode *v9inode =3D V9FS_I(inode);
+=20
+-=09=09=09fscache_resize_cookie(v9fs_inode_cookie(v9inode), iattr->ia_size)=
+;
++=09=09=09fscache_resize_cookie(v9fs_inode_cookie(v9inode),
++=09=09=09=09=09      iattr->ia_size, iattr->ia_size < old_size);
+ =09=09}
+ #endif
+ =09}
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 116b29e95f21..06ed94c2a497 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -519,6 +519,7 @@ int v9fs_vfs_setattr_dotl(struct mnt_idmap *idmap,
+ =09=09.uid =3D INVALID_UID,
+ =09=09.gid =3D INVALID_GID,
+ =09};
++=09uoff_t old_size =3D i_size_read(inode);
+=20
+ =09p9_debug(P9_DEBUG_VFS, "\n");
+=20
+@@ -580,7 +581,7 @@ int v9fs_vfs_setattr_dotl(struct mnt_idmap *idmap,
+ #ifdef CONFIG_9P_FSCACHE
+ =09=09if (v9ses->cache & CACHE_FSCACHE)
+ =09=09=09fscache_resize_cookie(v9fs_inode_cookie(V9FS_I(inode)),
+-=09=09=09=09iattr->ia_size);
++=09=09=09=09=09      iattr->ia_size, iattr->ia_size < old_size);
+ #endif
+ =09}
+=20
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 634fbf8eb212..ed908d051bd0 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -744,7 +744,7 @@ static void afs_setattr_edit_file(struct afs_operation =
+*op)
+ =09=09if (size !=3D old) {
+ =09=09=09truncate_pagecache(inode, size);
+ =09=09=09netfs_resize_file(&vnode->netfs, size, true);
+-=09=09=09fscache_resize_cookie(afs_vnode_cache(vnode), size);
++=09=09=09fscache_resize_cookie(afs_vnode_cache(vnode), size, size < old);
+ =09=09}
+ =09}
+ }
+@@ -817,7 +817,7 @@ int afs_setattr(struct mnt_idmap *idmap, struct dentry =
+*dentry,
+ =09=09=09truncate_setsize(inode, attr->ia_size);
+ =09=09=09netfs_resize_file(&vnode->netfs, size, false);
+ =09=09=09fscache_resize_cookie(afs_vnode_cache(vnode),
+-=09=09=09=09=09      attr->ia_size);
++=09=09=09=09=09      attr->ia_size, i_size < attr->ia_size);
+ =09=09=09ret =3D 0;
+ =09=09=09goto out_unlock;
+ =09=09}
+diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
+index 789ff6abe926..4a31904aaf0e 100644
+--- a/fs/cachefiles/interface.c
++++ b/fs/cachefiles/interface.c
+@@ -204,7 +204,7 @@ static bool cachefiles_shorten_object(struct cachefiles=
+_object *object,
+  * Resize the backing object.
+  */
+ static void cachefiles_resize_cookie(struct netfs_cache_resources *cres,
+-=09=09=09=09     uoff_t new_size)
++=09=09=09=09     uoff_t new_size, bool shrank)
+ {
+ =09struct cachefiles_object *object =3D cachefiles_cres_object(cres);
+ =09struct cachefiles_cache *cache =3D object->volume->cache;
+@@ -215,10 +215,10 @@ static void cachefiles_resize_cookie(struct netfs_cac=
+he_resources *cres,
+=20
+ =09_enter("%llu->%llu", object->object_size, new_size);
+=20
+-=09/* If the file is being shrunk, we need to downsize the backing file
+-=09 * and clear the end of the final block.
++=09/* If the file shrank, we need to downsize the backing file and clear
++=09 * the end of the final block.
+ =09 */
+-=09if (new_size < object->object_size) {
++=09if (shrank) {
+ =09=09if (new_size >=3D i_size)
+ =09=09=09goto out;
+ =09=09cachefiles_begin_secure(cache, &saved_cred);
+diff --git a/fs/ceph/cache.h b/fs/ceph/cache.h
+index 20efac020394..892b18c31741 100644
+--- a/fs/ceph/cache.h
++++ b/fs/ceph/cache.h
+@@ -31,14 +31,14 @@ static inline struct fscache_cookie *ceph_fscache_cooki=
+e(struct ceph_inode_info
+ =09return netfs_i_cookie(&ci->netfs);
+ }
+=20
+-static inline void ceph_fscache_resize(struct inode *inode, loff_t to)
++static inline void ceph_fscache_resize(struct inode *inode, loff_t to, boo=
+l shrank)
+ {
+ =09struct ceph_inode_info *ci =3D ceph_inode(inode);
+ =09struct fscache_cookie *cookie =3D ceph_fscache_cookie(ci);
+=20
+ =09if (cookie) {
+ =09=09ceph_fscache_use_cookie(inode, true);
+-=09=09fscache_resize_cookie(cookie, to);
++=09=09fscache_resize_cookie(cookie, to, shrank);
+ =09=09ceph_fscache_unuse_cookie(inode, true);
+ =09}
+ }
+@@ -96,7 +96,7 @@ static inline struct fscache_cookie *ceph_fscache_cookie(=
+struct ceph_inode_info
+ =09return NULL;
+ }
+=20
+-static inline void ceph_fscache_resize(struct inode *inode, loff_t to)
++static inline void ceph_fscache_resize(struct inode *inode, loff_t to, boo=
+l shrank)
+ {
+ }
+=20
+diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
+index d52e2b389e0b..eb8c4ec1a594 100644
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -680,7 +680,7 @@ struct inode *ceph_alloc_inode(struct super_block *sb)
+ =09mutex_init(&ci->i_truncate_mutex);
+ =09ci->i_truncate_seq =3D 0;
+ =09ci->i_truncate_size =3D 0;
+-=09ci->i_truncate_pending =3D 0;
++=09ci->i_truncate_pending =3D false;
+ =09ci->i_truncate_pagecache_size =3D 0;
+=20
+ =09ci->i_max_size =3D 0;
+@@ -847,7 +847,9 @@ int ceph_fill_file_size(struct inode *inode, int issued=
+,
+ =09=09=09=09       CEPH_CAP_FILE_BUFFER)) ||
+ =09=09=09    mapping_mapped(inode->i_mapping) ||
+ =09=09=09    __ceph_is_file_opened(ci)) {
+-=09=09=09=09ci->i_truncate_pending++;
++=09=09=09=09ci->i_truncate_pending =3D true;
++=09=09=09=09if (size < isize)
++=09=09=09=09=09ci->i_truncate_shrank =3D true;
+ =09=09=09=09queue_trunc =3D 1;
+ =09=09=09}
+ =09=09}
+@@ -2303,13 +2305,13 @@ void __ceph_do_pending_vmtruncate(struct inode *ino=
+de)
+ {
+ =09struct ceph_client *cl =3D ceph_inode_to_client(inode);
+ =09struct ceph_inode_info *ci =3D ceph_inode(inode);
+-=09u64 to;
++=09uoff_t to;
+ =09int wrbuffer_refs, finish =3D 0;
+=20
+ =09mutex_lock(&ci->i_truncate_mutex);
+ retry:
+ =09spin_lock(&ci->i_ceph_lock);
+-=09if (ci->i_truncate_pending =3D=3D 0) {
++=09if (!ci->i_truncate_pending) {
+ =09=09doutc(cl, "%p %llx.%llx none pending\n", inode,
+ =09=09      ceph_vinop(inode));
+ =09=09spin_unlock(&ci->i_ceph_lock);
+@@ -2339,12 +2341,18 @@ void __ceph_do_pending_vmtruncate(struct inode *ino=
+de)
+ =09      ci->i_truncate_pending, to);
+ =09spin_unlock(&ci->i_ceph_lock);
+=20
+-=09ceph_fscache_resize(inode, to);
++=09/*
++=09 * TODO: This needs fixing to pass in the old inode size - or an
++=09 * indication that the file shrank.  Possibly this should actually be
++=09 * invalidating the file for some of its callers.
++=09 */
++=09ceph_fscache_resize(inode, to, ci->i_truncate_shrank);
+ =09truncate_pagecache(inode, to);
+=20
+ =09spin_lock(&ci->i_ceph_lock);
+ =09if (to =3D=3D ci->i_truncate_pagecache_size) {
+-=09=09ci->i_truncate_pending =3D 0;
++=09=09ci->i_truncate_shrank =3D false;
++=09=09ci->i_truncate_pending =3D false;
+ =09=09finish =3D 1;
+ =09}
+ =09spin_unlock(&ci->i_ceph_lock);
+diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+index 72d4e30304dc..e6eaf1647fe5 100644
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -481,7 +481,8 @@ struct ceph_inode_info {
+ =09struct mutex i_truncate_mutex;
+ =09u32 i_truncate_seq;        /* last truncate to smaller size */
+ =09u64 i_truncate_size;       /*  and the size we last truncated down to *=
+/
+-=09int i_truncate_pending;    /*  still need to call vmtruncate */
++=09bool i_truncate_pending;   /*  still need to call vmtruncate */
++=09bool i_truncate_shrank;=09=09/* Truncate shrank the file */
+ =09/*
+ =09 * For none fscrypt case it equals to i_truncate_size or it will
+ =09 * equals to fscrypt_file_size
+diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
+index 056a2bae5d99..ea0b11807034 100644
+--- a/fs/netfs/fscache_io.c
++++ b/fs/netfs/fscache_io.c
+@@ -267,7 +267,7 @@ EXPORT_SYMBOL(__fscache_write_to_cache);
+ /*
+  * Change the size of a backing object.
+  */
+-void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
+e)
++void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
+e, bool shrank)
+ {
+ =09struct netfs_cache_resources cres;
+=20
+@@ -281,7 +281,7 @@ void __fscache_resize_cookie(struct fscache_cookie *coo=
+kie, uoff_t new_size)
+ =09=09 * netfs's inode lock so that we're serialised with respect to
+ =09=09 * writes.
+ =09=09 */
+-=09=09cookie->volume->cache->ops->resize_cookie(&cres, new_size);
++=09=09cookie->volume->cache->ops->resize_cookie(&cres, new_size, shrank);
+ =09=09fscache_end_operation(&cres);
+ =09} else {
+ =09=09fscache_stat(&fscache_n_resizes_null);
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 98b610b2a114..86ae1154bd58 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1314,6 +1314,7 @@ static int cifs_precopy_set_eof(struct inode *src_ino=
+de, struct cifsInodeInfo *s
+ =09=09=09=09unsigned int xid, loff_t src_end)
+ {
+ =09struct cifsFileInfo *writeable_srcfile;
++=09uoff_t old_size =3D i_size_read(src_inode);
+ =09int rc =3D -EINVAL;
+=20
+ =09writeable_srcfile =3D find_writable_file(src_cifsi, FIND_FSUID_ONLY);
+@@ -1332,7 +1333,7 @@ static int cifs_precopy_set_eof(struct inode *src_ino=
+de, struct cifsInodeInfo *s
+ =09=09goto set_failed;
+=20
+ =09netfs_resize_file(&src_cifsi->netfs, src_end, true);
+-=09fscache_resize_cookie(cifs_inode_cookie(src_inode), src_end);
++=09fscache_resize_cookie(cifs_inode_cookie(src_inode), src_end, src_end < =
+old_size);
+ =09return 0;
+=20
+ set_failed:
+@@ -1538,6 +1539,7 @@ ssize_t cifs_file_copychunk_range(unsigned int xid,
+ =09struct cifs_tcon *src_tcon;
+ =09struct cifs_tcon *target_tcon;
+ =09ssize_t rc;
++=09uoff_t old_size, new_size;
+=20
+ =09if (len =3D=3D 0)
+ =09=09return 0;
+@@ -1621,14 +1623,15 @@ ssize_t cifs_file_copychunk_range(unsigned int xid,
+=20
+ =09rc =3D file_modified(dst_file);
+ =09if (!rc) {
++=09=09old_size =3D netfs_read_remote_i_size(target_inode);
+ =09=09rc =3D target_tcon->ses->server->ops->copychunk_range(xid,
+ =09=09=09smb_file_src, smb_file_target, off, len, destoff);
+ =09=09if (rc > 0 && destoff + rc > i_size_read(target_inode)) {
+ =09=09=09truncate_setsize(target_inode, destoff + rc);
+-=09=09=09netfs_resize_file(&target_cifsi->netfs,
+-=09=09=09=09=09  i_size_read(target_inode), true);
++=09=09=09new_size =3D i_size_read(target_inode);
++=09=09=09netfs_resize_file(&target_cifsi->netfs, new_size, true);
+ =09=09=09fscache_resize_cookie(cifs_inode_cookie(target_inode),
+-=09=09=09=09=09      i_size_read(target_inode));
++=09=09=09=09=09      new_size, new_size < old_size);
+ =09=09}
+ =09=09if (rc > 0) {
+ =09=09=09spin_lock(&target_inode->i_lock);
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index f29555f3c7d0..fb1afe72e6d2 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -3097,7 +3097,7 @@ void cifs_resize_file_locked(struct inode *inode, lof=
+f_t old_size,
+ =09=09return;
+=20
+ =09fscache_use_cookie(cookie, true);
+-=09fscache_resize_cookie(cookie, offset);
++=09fscache_resize_cookie(cookie, offset, offset < old_size);
+ =09cifs_fscache_unuse_inode_cookie(inode, true);
+ }
+=20
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 1e9018880639..1f3b352201aa 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3545,7 +3545,7 @@ static long smb3_zero_range(struct file *file, struct=
+ cifs_tcon *tcon,
+ =09struct inode *inode =3D file_inode(file);
+ =09struct cifsInodeInfo *cifsi =3D CIFS_I(inode);
+ =09struct cifsFileInfo *cfile =3D file->private_data;
+-=09unsigned long long i_size, new_size, remote_i_size, zero_point;
++=09unsigned long long i_size, old_size, new_size, remote_i_size, zero_poin=
+t;
+ =09long rc;
+ =09unsigned int xid;
+=20
+@@ -3554,8 +3554,9 @@ static long smb3_zero_range(struct file *file, struct=
+ cifs_tcon *tcon,
+ =09trace_smb3_zero_enter(xid, cfile->fid.persistent_fid, tcon->tid,
+ =09=09=09      ses->Suid, offset, len);
+=20
++=09old_size =3D i_size_read(inode);
+ =09new_size =3D offset + len;
+-=09if (!keep_size && i_size_read(inode) < new_size) {
++=09if (!keep_size && old_size < new_size) {
+ =09=09rc =3D inode_newsize_ok(inode, new_size);
+ =09=09if (rc)
+ =09=09=09goto out;
+@@ -3611,7 +3612,8 @@ static long smb3_zero_range(struct file *file, struct=
+ cifs_tcon *tcon,
+ =09=09=09if (offset < cifsi->netfs._zero_point)
+ =09=09=09=09netfs_write_zero_point(inode, offset);
+ =09=09=09spin_unlock(&inode->i_lock);
+-=09=09=09fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
++=09=09=09fscache_resize_cookie(cifs_inode_cookie(inode),
++=09=09=09=09=09      new_size, new_size < old_size);
+ =09=09}
+ =09}
+=20
+@@ -4146,7 +4148,7 @@ static long smb3_collapse_range(struct file *file, st=
+ruct cifs_tcon *tcon,
+ =09netfs_resize_file(&cifsi->netfs, new_eof, true);
+ =09netfs_write_zero_point(inode, new_eof);
+ =09spin_unlock(&inode->i_lock);
+-=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof);
++=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof, new_eof < old_=
+eof);
+ out_2:
+ =09filemap_invalidate_unlock(inode->i_mapping);
+ out:
+@@ -4206,9 +4208,9 @@ static long smb3_insert_range(struct file *file, stru=
+ct cifs_tcon *tcon,
+=20
+ =09truncate_setsize(inode, new_eof);
+ =09spin_lock(&inode->i_lock);
+-=09netfs_resize_file(&cifsi->netfs, i_size_read(inode), true);
++=09netfs_resize_file(&cifsi->netfs, new_eof, true);
+ =09spin_unlock(&inode->i_lock);
+-=09fscache_resize_cookie(cifs_inode_cookie(inode), i_size_read(inode));
++=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof, new_eof < old_=
+eof);
+=20
+ =09/*
+ =09 * Move [off, old_eof) right by len. The helper copies backwards if the
+diff --git a/include/linux/fscache-cache.h b/include/linux/fscache-cache.h
+index ee524c863fa9..2b83ffa4510e 100644
+--- a/include/linux/fscache-cache.h
++++ b/include/linux/fscache-cache.h
+@@ -67,7 +67,7 @@ struct fscache_cache_ops {
+=20
+ =09/* Change the size of a data object */
+ =09void (*resize_cookie)(struct netfs_cache_resources *cres,
+-=09=09=09      uoff_t new_size);
++=09=09=09      uoff_t new_size, bool shrank);
+=20
+ =09/* Invalidate an object */
+ =09bool (*invalidate_cookie)(struct fscache_cookie *cookie);
+diff --git a/include/linux/fscache.h b/include/linux/fscache.h
+index f2d958bd1f48..ecd14d645690 100644
+--- a/include/linux/fscache.h
++++ b/include/linux/fscache.h
+@@ -184,7 +184,7 @@ extern struct fscache_cookie *__fscache_acquire_cookie(
+ extern void __fscache_use_cookie(struct fscache_cookie *, bool);
+ extern void __fscache_unuse_cookie(struct fscache_cookie *, const void *, =
+const uoff_t *);
+ extern void __fscache_relinquish_cookie(struct fscache_cookie *, bool);
+-extern void __fscache_resize_cookie(struct fscache_cookie *, uoff_t);
++void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
+e, bool shrank);
+ extern void __fscache_invalidate(struct fscache_cookie *, const void *, uo=
+ff_t, unsigned int);
+ extern int __fscache_begin_read_operation(struct netfs_cache_resources *, =
+struct fscache_cookie *);
+ extern int __fscache_begin_write_operation(struct netfs_cache_resources *,=
+ struct fscache_cookie *);
+@@ -394,8 +394,9 @@ void fscache_update_cookie(struct fscache_cookie *cooki=
+e, const void *aux_data,
+=20
+ /**
+  * fscache_resize_cookie - Request that a cache object be resized
+- * @cookie: The cookie representing the cache object
+- * @new_size: The new size of the object (may be NULL)
++ * @cookie: The cookie representing the cache object (may be NULL)
++ * @new_size: The new size of the object
++ * @shrank: True if the file shrank; false if it expanded
+  *
+  * Request that the size of an object be changed.
+  *
+@@ -403,10 +404,10 @@ void fscache_update_cookie(struct fscache_cookie *coo=
+kie, const void *aux_data,
+  * description.
+  */
+ static inline
+-void fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_size)
++void fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_size,=
+ bool shrank)
+ {
+ =09if (fscache_cookie_enabled(cookie))
+-=09=09__fscache_resize_cookie(cookie, new_size);
++=09=09__fscache_resize_cookie(cookie, new_size, shrank);
+ }
+=20
+ /**
 
---------------NKrglBsC0aAZ6c1B0MVJWGg1--
