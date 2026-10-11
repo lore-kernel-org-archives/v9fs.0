@@ -1,77 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C57B3BE64B;
-	Sat, 10 Oct 2026 12:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EBD3C65F4
+	for <v9fs@lists.linux.dev>; Sun, 11 Oct 2026 05:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791636907; cv=none; b=C21mwFKdbDtcVP/Y8Hu5Ql1rerXKA3O6mhoqwzSKqXeOY1G3KsyTAQOglUUDPoM29Ua+q6v2Y/5dhxy0qxGowe+PJTtFCTfohzpD4tZIFY7PeDeSvfN3bjWnUMtBUTunxIZI2v8MVSPHodqij00CyyG3q8TZorn4T1mFwWQqvfc=
+	t=1791696588; cv=none; b=u+CqQMj2n9VFJpfL1xPC7XKd4z44RwPTZVL4BVCw1DiodJ8YrwVwisynAEiOo8MXwSGqeCOCbUAoyd1/OC8Fi4lc28Gw7IHhOmvYg2j0IGSdOrWa+N3gxu7wjX5HBtEnZ4Rc03Ebs0OegYG1sHmwKgfy/8oLE80t9NjWLsSVZvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791636907; c=relaxed/simple;
-	bh=Q5+aMWgY55Clan6SoRPJddFiutENi32J1rMwr/lqb50=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F27Ae6XGMU5ipxwrnlrTD6JBFouG9AozqkMHCAq64mlkoCZzGYEKX7Cs4sX81pDLOIuMlcGcLzki1B/AiKY4zJ7K4Kkfp/ZHaBWNWVgtPB473qoaGlNBgRPXffsG6uB8uQrLj32vdo84l9JH9vnnCay4K6VqceWUTGttsmH8Gwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGxxiP1l; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791696588; c=relaxed/simple;
+	bh=sIbRso6W6WqLNYE6yLPCDLJ+kUhhHofo7p2mjFJFouk=;
+	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=PfhlSu0wRdB81Es9lqYA+PyzFY8lnnsoOa7sJdQLYv8Rz/R6ZfFWcvfel08LpDVHxsIcSaKiS5ut309atSSzOEYxEoxfvazMIDGpkwzH2UT28+/4BJgOlrv/uOMIFk1+Nq7mcAvL3kexKz8IwnmyqLx5VyVbA3MoysRgKzHActU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=bWs6mx5m; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGxxiP1l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA8D1F000FF;
-	Sat, 10 Oct 2026 12:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791636905;
-	bh=Q5+aMWgY55Clan6SoRPJddFiutENi32J1rMwr/lqb50=;
-	h=Date:From:To:Subject:References:In-Reply-To;
-	b=SGxxiP1lxnZTv/3wZ1ooOOGNeYcAC7UMCYwG1+D3dSewJ/Irh8AWZ+yn7aaldV8XU
-	 BrFsH+5N6uNLrcaUKNhqVlBLbONUWoiF0MWj8wYZKgUkSFwMSbTOWC1UKsMZmp1sKU
-	 IbS/T9a6Oc+4yJKNnoek7f2pz06+vxutT3zQGCg+KNX/EUiR4LA79C/xZNXNZfAkla
-	 NqX+mPjMEIyyp8jWnap+S8he54jlefn/ZiYZvum004Qx1mDFqJB5xeljDIn2HxLivQ
-	 R3h33DVG8yZON6SuE0cTwjPquMiBTZOGF2Ey6ZAPVv+KqZrVrX8qupdi1vB175Pspv
-	 6lfKNYPMs8ivg==
-Date: Sat, 10 Oct 2026 14:55:01 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: sashiko-reviews@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
-	linux-afs@lists.infradead.org, v9fs@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
-	ntfs3@lists.linux.dev, tytso@mit.edu, stable@vger.kernel.org
-Subject: Re: [PATCH 8/8] ntfs3: free replaced mount options after a grace
- period
-Message-ID: <20261010-kampagne-jubilieren-piloten-0c00c1f26aba@brauner>
-References: <20261009-work-fixes-rcu-v1-0-7446d2d335e6@kernel.org>
- <20261009-work-fixes-rcu-v1-8-7446d2d335e6@kernel.org>
- <sashiko-outbox-166120@kernel.org>
+	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="bWs6mx5m"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a16af2a232so7701945e9.1
+        for <v9fs@lists.linux.dev>; Sat, 10 Oct 2026 22:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innovatrics.com; s=google; t=1791696585; x=1792301385; darn=lists.linux.dev;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EwJQAcrSA8vm2/QDhj4tfogkpVMYET7O/tmaR0Uw6Xg=;
+        b=bWs6mx5mn612s8rIAAaKenRTjP2YKqiMABBEhR4YFb58f0mFnCKCRQaKI76mWupMmo
+         yPFZGsifFzZyQF/JVjLPqKUAiM4mPFV+d8U9DqGXpPemFEJHi/Q+tojmVNCU+orsAG39
+         Vr2et82o3FFU9NHc0eD+1+6vFF1rafR2LKc6I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791696585; x=1792301385;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EwJQAcrSA8vm2/QDhj4tfogkpVMYET7O/tmaR0Uw6Xg=;
+        b=a1JBuolitnZ5MfUkEOf5CLAWyhkoJacT4kg8LvOSbCrtuA3we0/yANwgFge7s8/+Ua
+         oWcwxOdWL4zKfA1ds7wh3MpVThzbhFcvKXi73Taujh0Dm9zJFx2nj4UzMW8qy1ZJlhiT
+         +O9fTKA/nPsHXeuzMNtJ9rIEUF7+2l+IT+EBHS/R0+7J8cvlNFuPslEJ5V6v9Ssqi6/E
+         zp8SK/uPNGr7EbjTRXS5TuSDZkiCSFCZ1ul+mCmqLXmvgDmeM4RgZeiPumSym8LrFIHu
+         UjN35ys8v580OtQMi5EOduqHpV5Y3wB7s5Y5kr5yKtK5j66v/UieUnfC6D8tVk81ZbhM
+         FOWg==
+X-Forwarded-Encrypted: i=1; AKwUvByERak29ojgGqpg7hpmHSXG84gGBu728hN7f6SVe0kz787u7akmjKoIIoklEZIlydT0u1or@lists.linux.dev
+X-Gm-Message-State: AFq9FYLNMpbsFHG6CsN6MXQOLJ7grcfQ37pJMx4vGrOlFxrpBNSqN6KL
+	SKGvYD41xh86Ub+bE0As4FGuNITx77TsIwN+xYNDA7/HSuiFv75lu6bv3hutBPCfLQ==
+X-Gm-Gg: AYBFou2GHgCeXiOpM73e0QyH0jFtT97K/yB9cLKPqmeF3zh+GJqbw3Xt+Ea5enT+IGA
+	KjaPGRTbjpTtJrkblRbfNZKJd0YBsROeOV7lO4ih6rAHV9BtYg8kVwKxJzolW31mIaSmVglvdEd
+	WlAU5OjPfali0G8I7LmDulnstQa0DMIznj4G0eNbo+cGomqFXTP0ExLrAsOaFVIxdwFUeeGTUda
+	QlaxBM1DquswN1NGZRRQNemF81Gtg8/BVzo0UzIQbgKTMRJGbZDPEmTJonnTuH2hAi0zOyMUQo+
+	cAIP7JgPyGsIHABXW+5Jg+Eyr0JwXhDqhoRxiztJLFh3LSxUr3awFYHj7x7+pYZJ8pKlwAmIGR5
+	KOQSHyM0W9fuQLJB/KzZ4PKbLoxkAwjaQo01G7c2dzy55VD7mQFVajSZUphYqZSqJPKM2dvYzc0
+	0de8RGTtCrbXCDbzdwVKAuRl6J/PgKV2jPyKnmUM8VzqgoK49wKutjmCTk3WaErJETFYBrCTHh2
+	WzPdIOB3BqKJd9KFn28BhotF7lTlO8i1+Px3Fr0lPmd1PkcH6a0CfyDBlpDa1Rm3dwCSTHLllY4
+	AgHI8yYQqF9UDFQ5kdk8rcAhbcnlfKo=
+X-Received: by 2002:a05:600c:e558:20b0:4a1:946c:953f with SMTP id 5b1f17b1804b1-4a1946c9744mr30278845e9.20.1791696585122;
+        Sat, 10 Oct 2026 22:29:45 -0700 (PDT)
+Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a193f2c992sm107606015e9.5.2026.10.10.22.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 22:29:44 -0700 (PDT)
+From: Petr Chmelar <petr.chmelar@innovatrics.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map
+ for most use cases
+Message-ID: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
+In-Reply-To: <20260910220242.2165023-5-dhowells@redhat.com>
+References: <20260910220242.2165023-1-dhowells@redhat.com>
+ <20260910220242.2165023-5-dhowells@redhat.com>
+Date: Sun, 11 Oct 2026 05:29:43 +0000
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-166120@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Oct 09, 2026 at 10:02:47PM +0000, sashiko-bot@kernel.org wrote:
-> Does this change leave other readers of sbi->options vulnerable to a
-> use-after-free?
->
-> While this patch protects ntfs_nls_to_utf16(), other VFS operations appear
-> to access sbi->options without holding rcu_read_lock() or s_umount. If a
-> thread is preempted immediately after loading the sbi->options pointer, and
-> a concurrent mount -o remount calls ntfs_fs_reconfigure() which replaces
-> sbi->options and schedules its destruction via call_rcu(), the grace period
-> can complete before the first thread resumes.
+Hi David,
 
-This is pre-existing. Before this patch ntfs_fs_reconfigure() swapped
-the options and put_fs_context() freed the old ones right when the
-remount returned. So all of these readers could already see freed
-options and now they at least have to stay preempted for a whole grace
-period.
+With this patch, reading a file whose cache object is only partly
+filled returns wrong data, mostly whole 64 KiB blocks of zeros.  A
+second full read returns the same wrong blocks.  It reproduces over
+NFS and 9p on vfs-7.4.netfs (9f8b64f66).  Over 9p it bisects to this
+patch, 13e340e397 in that branch; over NFS its parent is clean and the
+branch tip is not.
 
-Making every sbi->options reader safe against a concurrent remount is a
-separate ntfs3 problem. This patch only cares about ntfs_nls_to_utf16()
-because that's what rcu pathwalk calls.
+#regzbot introduced: 13e340e397
 
-> This problem wasn't introduced by this patch, but doesn't replacing
-> sbi->options with new_opts cause a silent loss of mount options during
-> remount?
+Reproducer: random 64 KiB reads covering half of a 256 MiB file of
+random data, then a full read after dropping the page cache, compared
+with the original per 64 KiB block:
 
-That's how ntfs3 remount has worked since it switched to the new mount
-api. Unrelated to this series.
+  fio --name=half --filename=/mnt/part.bin --rw=randread --bs=64k \
+      --ioengine=psync --fadvise_hint=random --size=256m --io_size=128m \
+      --randrepeat=1
+  sync; echo 3 > /proc/sys/vm/drop_caches
+  cmp /mnt/part.bin /path/to/original
+
+Setup: QEMU 8.2.2 (TCG, 4 vCPUs), cache on a fresh XFS on a loop device
+(2 GiB for 9p, 4 GiB for NFS), cachefilesd 0.10.10 with brun 10%, bcull
+7%, bstop 3%, fio 3.36.  Mounts:
+
+  NFS: NFSv4.2 loopback export of a tmpfs, vers=4.2,fsc,actimeo=1
+  9p:  trans=virtio,version=9p2000.L,cache=fscache,msize=1048576
+
+Wrong 64 KiB blocks out of 4096, first full read / second full read:
+
+  kernel                mount     wrong       all zeros
+  v7.3-rc6              9p        0 / 0       0
+  e0aa90eb8c            9p        0 / 0       0
+  98e0cd700d (parent)   9p        0 / 0       0
+  98e0cd700d (parent)   NFS       0 / 0       0
+  13e340e397 (this)     9p        936 / 936   825
+  8097a263bd (merge)    9p        936 / 936   825
+  9f8b64f66             9p        936 / 936   825
+  9f8b64f66             NFS       817 / 817   817
+  9f8b64f66             9p loose  0 / 0       0
+
+  "9p loose" is the 9p mount with cache=loose, without fscache.
+
+On 9f8b64f66 over 9p, three runs gave the same counts and the same
+first wrong blocks.  The first wrong blocks are 10, 13, 15, 24, 26 and
+27 over 9p, and 50, 51, 53, 54, 55 and 56 over NFS.
+
+Two more observations, in case they help:
+
+ - Over 9p, after the random fill and both full reads, the backing
+   object has 451 extents with this patch and 28 on v7.3-rc6 (37 on
+   98e0cd700d).
+
+ - Over NFS on 9f8b64f66, the fscache counters after the fill and both
+   full reads are IO rd=371 wr=2189.  I haven't traced whether the
+   zeros come from reads over holes in the backing file or from what
+   was written to it.
+
+Over NFS, a server-side rewrite of the file (invalidation) and a shrink
+and regrow through the mount both read back correctly on 9f8b64f66 and
+98e0cd700d.
+
+I found this while testing a workaround for slow reads from fragmented
+cache objects, which I describe in a reply to the cover letter:
+
+  https://lore.kernel.org/r/20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com
+
+It reproduces without that workaround.  The reproducer and the
+bisection were done with LLM assistance.
+
+Thanks,
+Petr
