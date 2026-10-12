@@ -1,169 +1,241 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2F13C873B
-	for <v9fs@lists.linux.dev>; Sun, 11 Oct 2026 05:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14435355F42;
+	Mon, 12 Oct 2026 10:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791696595; cv=none; b=QKIwZd+wAvbL8F/ZFrILvcbHcEz3D0gSF3vpHIZMosoIJSVEM1zYNrh+jz2k/QwJOW0sXKEYDQWVVifAXYYkWDj2U4p09V5/rQ3klXc5giE2y0w9Bk+AQKPYqR3ulGNCjGLXOnU/xIXr9IAqOatY4NuY9SKvwqteAjAXQi30IA4=
+	t=1791801385; cv=none; b=hH+6GGOBSemazpschLnkDhrqmZUDAdCyAbbHbnELt1YMpp/993dRiCobA09Qa5M96AxoLRteg/WXSKogtYyUaHPGBJLFUBNJhMutxFx5nTyIF7sdACQmrps9IFTokY7YXeUd7DEHokv39q0xUQEpvIqxZUtTKEfDKChzj9cW/eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791696595; c=relaxed/simple;
-	bh=1haV4dNMWDdQWqZsUuA0TFAZtQMdcpLXPmSnhiji0ao=;
-	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=uPyiX0RYcdQe7v9Hwq1SRHNoIKOcCUa22e7aUOGAFqWKNOm6BUqejwdF5t8oIp6mwVa45ZeBokndgB9i7ALAOkUc1juid4rNepjijq8QTqQ1UAx/B+HXe7MoIfYf1ne4KNzxj2gXFWZ5SnjH3fsb/XgQe1TbDmUBmi+LLSFPz+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=Dai8Og6g; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
+	s=arc-20240116; t=1791801385; c=relaxed/simple;
+	bh=LR1jPtqkg9jW/G0Y91UfipnCztpFiDR6LFNaOSkvH30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kUzDGwQxe/LZSMqACTne6FlIC/lCiUKyewP9/6IwwuRVMEn6cnB7usjk6xPuJmErnfOlOTDQ+YmJlf5AfncrKYovRYbQyS9jspvP0hrtARxKYv+9R/jJhyjPP3lRhJdfu9oaPJu8p5ZT/T11lLpmZ5wboql64O5rbe8uIR7+e1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=RbRYAb+q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AVKrPIfk; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GiinLOx9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1e/O+mIO; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="Dai8Og6g"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a166199820so5244325e9.1
-        for <v9fs@lists.linux.dev>; Sat, 10 Oct 2026 22:29:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innovatrics.com; s=google; t=1791696592; x=1792301392; darn=lists.linux.dev;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q2LSr6tsQNBQXJylfG8nOPgyPFtDzDbVgLjnyN+NvOY=;
-        b=Dai8Og6gkGNV/4jrUqexlNsWK4ghUIwDHVm34ywi7P6vTgF0QDIuRph0P9Ud2IlhYQ
-         Fj8uiOtqG2w5DcN/yUFTL7DhA+10JinUazM2oNL6ioEUIzd5oTUWxf/gINdCjA4rKAi9
-         pmme7InSAIH1h8DKEc2Jhooq8Y6/h9bnQPEPM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791696592; x=1792301392;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q2LSr6tsQNBQXJylfG8nOPgyPFtDzDbVgLjnyN+NvOY=;
-        b=tV+F0TaMfqx6g8U1569W8pUdSL9QyLd7C96jXLCdzE0XaHKVzdbIbVBaTvc0sVjtUU
-         FdHj2f18Rk7CiUstIeURmh9mKt3Q+NsKUv/NTy7j5a+3Gpcm5ZmL2BOTOgJMxc2i0uD2
-         Qmw6DVFFZpI1uT5iviWSbrXXhsxxhS4vAk5WC9gTQqRViXv7Gk3pYH0e2vtlf/SGjlyh
-         HQhfCUmihG7qtuHD+26Amp6M5xYdXZshlNr3GjIjHgJNSrAIAALvdLXW09IzJiZWq/I2
-         N8oQgJMbvGwxEVn6y+0tqHHBjstQQdSgTnjNWxh6u8rc/I+euU3mknartjVcpswdnup4
-         WreA==
-X-Forwarded-Encrypted: i=1; AKwUvByalbRb8Nh//wGH4jB3dFZbgiYTLWHxr69sVRFbQ2q2XsQt4O/wcfpk8+pDQT+6LaF4JEnI@lists.linux.dev
-X-Gm-Message-State: AFq9FYL8JOw0KyL1TrzeXJR071AR37FCfi3BdSke8RnXNiaE956+xY+Y
-	QqTyFtNjfQTt1bzGaV+9u6IawDb1hv2tfVUnnzk3qRKgCQUYBwMw1ZIu4gT1IllRUw==
-X-Gm-Gg: AYBFou275TobKPhfoLlpyQhy4p+FPIUfrix9pm7p6Cxpz6JmUeczGseBJY9j/eIj2s+
-	K8giaGGg/8N9pcaQn2CM13eZlJVrLzdAdR8RmPxGmOhjhH28/Ku7MCLAmzfkZJZeL0IsA3WK1vV
-	76apPd8AMHtcFvtsePRbgeicyHPRi/Xk7uUW9/u5lblwEc0g0sYfYbub/QI1idhmIL60Umzqdkn
-	8Q/O4zu+icchXmIyPHpH+hVOhk1FKf6mfXnlqkOA+CONVWah+aDkH/n2FL6PPXKnLfvCeWT6jmi
-	abI5FkuJwi3ZBJO4+2FeXX4qxmT59/vN+jlkWImIAmGMcWL0pNKiPoYCdJsNfJLC8zQrNB0FTaV
-	Ofh4eBFVT7I7taqRAodmvekctbI20tb7alzdU7AOvTIaXccglJCTwZpLlcl45MtNmNBQgZH2fGJ
-	3Fi7y8f/DdJhCwzJiHzZGT9AS4v6tDwkoNtr2H9rxS6FJCFPmDCxcvQnfTEeMROG8uZV/o/UxcE
-	j/tlO8vozIt71Fj4xYHCLj8DxzdjbfOpGrk2YS8lXZ2Zlg+PDydlVrM7Gq3t9+N8FEcrLo+kNkl
-	/xEkh/HoVdHvgwbUI2SzfzlHTYVw0sE=
-X-Received: by 2002:a05:600c:3146:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a18e4a7cb9mr117216165e9.14.1791696591843;
-        Sat, 10 Oct 2026 22:29:51 -0700 (PDT)
-Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm277235065e9.9.2026.10.10.22.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 22:29:51 -0700 (PDT)
-From: Petr Chmelar <petr.chmelar@innovatrics.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-    Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Stefan Metzmacher <metze@samba.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily
- occupancy tracking-related
-Message-ID: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
-In-Reply-To: <20260910220242.2165023-1-dhowells@redhat.com>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
-Date: Sun, 11 Oct 2026 05:29:50 +0000
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="RbRYAb+q";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AVKrPIfk";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GiinLOx9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1e/O+mIO"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C7B2321E8A;
+	Mon, 12 Oct 2026 10:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791801380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KREL/caDlw8KygqYKHSXUfDNV/PSdIiEqTWyohX+v7o=;
+	b=RbRYAb+qOnCDXgiW5whf11bdt8zB3m8YNeqauwZVv+XNa9xWE18KEdGXzKhd996DOT489Q
+	KTnZYsdduHVLbSntzjiK1mEAbBFwt+R7r7CRqck8SXnuAenZhwOK0v0Xf6NNBRbJ0y05K2
+	tWHQfaL7+BB+wKNLjr4UVAg8/1EWlOk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791801380;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KREL/caDlw8KygqYKHSXUfDNV/PSdIiEqTWyohX+v7o=;
+	b=AVKrPIfkY8Mk4bxTadBA/ZQztv/JGhYarrA7/3zt4iqYUmQA6gBcxPbspUN6VH3NpYzoBZ
+	bPC61Y5lRvNcEwDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GiinLOx9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="1e/O+mIO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1791801379; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KREL/caDlw8KygqYKHSXUfDNV/PSdIiEqTWyohX+v7o=;
+	b=GiinLOx9IRkGEYB++4djJHc2CrQlM8Xdvu2IaeB0nQsdW0vZ0d2zVpo69/DYjG8TwcQf3P
+	I+iLN+U0hogM6b0BqnfXbpE7JPFIcZkA29AJk17KD2hkn4NVcZuWbzIEsJXpLYkVI5+ndm
+	sAgdjSliAT1ni1R0iPwBnuU+30C+Ask=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1791801379;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KREL/caDlw8KygqYKHSXUfDNV/PSdIiEqTWyohX+v7o=;
+	b=1e/O+mIOnXJoGxIzCBdKYdqRmnkP0cqqpJpXNOO3+5IyRf7wRzEYdqbRSDheByXyWFPrz9
+	tDKwObrnHZLpUhAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9CC4913408;
+	Mon, 12 Oct 2026 10:36:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UWlcHiO4zGrtMgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 12 Oct 2026 10:36:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 24B05A1403; Mon, 12 Oct 2026 12:36:15 +0200 (CEST)
+Date: Mon, 12 Oct 2026 12:36:15 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
+	linux-afs@lists.infradead.org, v9fs@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
+	ntfs3@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 0/8] fs: fix a range of UAFs during rcu pathwalk caused
+ by non-rcu frees
+Message-ID: <r72foycb4ol4hywl5m2sj6h6yxee3nladaw7g2zdxhejmhrkgc@v24cfppcak2h>
+References: <20261009-work-fixes-rcu-v1-0-7446d2d335e6@kernel.org>
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261009-work-fixes-rcu-v1-0-7446d2d335e6@kernel.org>
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: C7B2321E8A
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
 
-Hi David,
+On Fri 09-10-26 23:51:50, Christian Brauner wrote:
+> While working on eliding the grace period in namespace_unlock() I went
+> through what filesystems free when they're shut down and what a pathwalk
+> in rcu mode can still read at that point. Since 66a97c2ec953's rcu
+> pathwalk fixes that's the filesystem's job. Whatever ->permission(),
+> ->d_revalidate(), ->get_link(), ->d_hash() and ->d_compare() look at in
+> rcu mode has to be freed after a grace period. A few filesystems don't
+> do that.
+> 
+> Most of it is hidden by umount(2). namespace_unlock() waits for a grace
+> period before it drops the mounts, so a walker that was inside the
+> filesystem is gone by the time the filesystem is shut down.
+> 
+> But the last reference to a mount doesn't have to go away in umount(2).
+> A chdir() out of a lazily unmounted directory or the close() of the last
+> file on it drops it without a grace period. A walker can then still be
+> in the filesystem while ->put_super() and ->kill_sb() free what it
+> reads.
 
-The cover letter leaves non-contiguous objects, which still use
-SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
-production, so here are numbers in case they help with its priority.
+Good catches! But I find it very counter-intuitive that pathname lookups
+can still be running against a filesystem while its ->put_super is called.
+People will keep forgetting about that and as a result these UAF bugs will
+be introduced again. Isn't it feasible we'd guarantee to the filesystem
+->put_super() gets called only after all lookups are done (i.e., after RCU
+grace period expires)?
 
-Objects get into that state when a large file is read at random
-offsets, as training jobs do with data sets on NFS.  Each read is
-copied to the cache at its own offset, and with other files being
-cached at the same time most pieces end up in separate XFS extents.  The
-object is BACKFS_MAP from the first discontiguous write and stays so
-once it has filled in.
+I understand this is a hairy bussiness because this has userspace visible
+implications (like when filesystem's sysfs files disappear, when the bdev
+really gets unused, etc.) but keeping all filesystems safe to run RCU
+lookup after ->put_super() will be IMHO a headache.
 
-SEEK_HOLE has no upper bound.  On XFS, iomap_seek_hole() calls
-xfs_seek_iomap_begin() once per extent until it finds a hole, and in a
-fully populated object the only hole is EOF.  cachefiles probes the
-occupancy at least once per read request, so a sequential read of such
-an object walks the rest of its extent list for every readahead batch.
+								Honza
 
-On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
-fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.  In
-a 15 s trace of one of the affected readers, each SEEK_HOLE took 64 ms
-to 1 s, XFS did 58.5 million extent lookups, and nothing was read from
-the server.  After xfs_fsr brought the object down to a few hundred
-extents, a traced read of it ran at 369 MB/s from the cache.  On
-another machine, v6.14 does the same walk at about 220 ns per extent,
-against 520 ns on v6.8.
 
-It's the same on vfs-7.4.netfs (9f8b64f66).  In QEMU (TCG, 4 vCPUs),
-over an NFSv4.2 loopback mount with fsc and the cache on XFS, a 1 GiB
-object filled by random 64 KiB reads, while a second file is filled
-the same way, ends up with about 16,300 extents.  A sequential read of
-it after dropping the page cache makes 4,098 SEEK_HOLE calls that take
-176 s in total, and runs at 4.3 MiB/s.
-
-To confirm that the walk is the whole problem, I wrote a naive
-workaround with LLM assistance.  I don't know the cachefiles and netfs
-internals well, so take it as a probe rather than a proposal:
-
- - Each cachefiles_object remembers the last region that SEEK_DATA/
-   SEEK_HOLE found to be contiguous data.  cachefiles_query_occupancy()
-   answers a query that starts inside that region without seeking, and
-   overlapping or abutting regions merge.  A sequential read then pays
-   for one walk instead of one per request.
-
- - The region is forgotten after every place where cachefiles removes
-   data from a backing file: the punch on low space in
-   __cachefiles_prepare_write(), the padding clear and the truncation in
-   cachefiles_collect_write(), cachefiles_shorten_object() and
-   invalidation.  A sequence number sampled before the seeks stops a
-   query that raced with a removal from recording what it saw, and
-   cookie->inval_counter ties the region to the backing file.
-
-In the same test, the workaround makes one SEEK_HOLE call taking 61 ms,
-and the read runs at 17 MiB/s.  A debug build that checked every
-remembered answer against a fresh SEEK_DATA/SEEK_HOLE saw no mismatch in
-more than 7,000 checks over NFS and 9p.  It only helps fully or mostly
-populated objects read in order; random reads of a partly cached object
-still seek.
-
-I expect the right fix is for cachefiles to track what it has written
-itself, as CONTENT_ALL now does for contiguous files, rather than
-something like the above.  I can send the workaround if it's useful as
-a reference, and I'm happy to test whatever you plan for this case on
-our workload.
-
-While testing it I hit a data corruption on partly cached objects that
-bisects to patch 4/5 of this series and reproduces without the
-workaround; I've reported it in a reply to that patch:
-
-  https://lore.kernel.org/r/20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com
-
-The numbers on vfs-7.4.netfs and the debug cross-check were also
-produced with LLM assistance.
-
-Thanks,
-Petr
+> 
+> With KASAN on vfs.fixes:
+> 
+> - ext4_get_link() reads sb->s_fs_info and the extent status counters in
+>   rcu mode for a symlink that keeps its target in a data block.
+> 
+>   ext4_put_super() destroys the counters, clears s_fs_info and frees the
+>   sbi right away. That's a NULL dereference, a use-after-free of the sbi
+>   or a fault on a destroyed percpu counter, depending on where the
+>   walker sits.
+> 
+> - The unicode map of casefolded ext4, f2fs and tmpfs is freed from
+>   ->put_super() while generic_ci_d_hash() and generic_ci_d_compare() use
+>   it.
+> 
+> - ntfs3 with nocase frees its sbi and mount options under ntfs_d_hash()
+>   and ntfs_d_compare(). A remount frees the old mount options right away
+>   too, that one needs no unmount at all.
+> 
+> - eventfs frees an eventfs_inode after an SRCU grace period only, but
+>   tracefs_d_revalidate() reads it under rcu_read_lock(). No unmount
+>   needed either.
+> 
+> The ipc patch is a different kind of bug. create_ipc_ns() leaks the
+> mqueue mount and its superblock when it fails after mq_init_ns(). I ran
+> into it while looking at the kern_unmount() users.
+> 
+> afs and 9p look just as broken but nothing can reach it today. Both
+> have a private bdi, and generic_shutdown_super() calls bdi_unregister(),
+> which waits for a grace period before ->kill_sb() frees their private
+> data. That grace period is there for the rcu readers of bdi_list and
+> covers afs and 9p by accident. I don't want them to depend on that, so
+> they free their private data after a grace period of their own as well.
+> 
+> I appended the reproducers. The race reproducers hold a pathwalk inside
+> the filesystem's callback for two seconds with a kprobe while the other
+> side frees what it reads. For the ntfs3 remount the window is a single
+> load and its dereference, so that one needs an mdelay() in the kernel.
+> ext4 with a journal needs a kernel without lockdep since
+> jbd2_journal_destroy() calls lockdep_unregister_key(), which waits for a
+> grace period too.
+> 
+> Clean this all up.
+> 
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+> Christian Brauner (8):
+>       ext4: free the sbi after a grace period
+>       afs: free the super info after a grace period
+>       9p: free the session after a grace period
+>       eventfs: free the eventfs_inode after an rcu grace period too
+>       ipc: drop the mqueue mount with kern_unmount() on setup failure
+>       unicode: free the map after a grace period
+>       ntfs3: free the sbi after a grace period
+>       ntfs3: free replaced mount options after a grace period
+> 
+>  fs/9p/v9fs.h             |  1 +
+>  fs/9p/vfs_super.c        |  4 ++--
+>  fs/afs/internal.h        |  2 ++
+>  fs/afs/super.c           |  2 +-
+>  fs/ext4/ext4.h           |  2 ++
+>  fs/ext4/extents-test.c   |  2 ++
+>  fs/ext4/extents.c        |  1 +
+>  fs/ext4/extents_status.c |  7 ++++++-
+>  fs/ext4/extents_status.h |  1 +
+>  fs/ext4/super.c          | 13 +++++++++++--
+>  fs/ntfs3/dir.c           | 13 +++++++++++--
+>  fs/ntfs3/ntfs_fs.h       |  3 +++
+>  fs/ntfs3/super.c         | 49 +++++++++++++++++++++++++++++++++++-------------
+>  fs/tracefs/event_inode.c | 10 +++++++++-
+>  fs/unicode/utf8-core.c   | 21 +++++++++++++++++----
+>  include/linux/unicode.h  |  1 +
+>  ipc/namespace.c          |  2 +-
+>  17 files changed, 107 insertions(+), 27 deletions(-)
+> ---
+> base-commit: 3d399224425573875b6f6f1181bd8cf9a28cc7d1
+> change-id: 20261009-work-fixes-rcu-cd9c1eec0769
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
