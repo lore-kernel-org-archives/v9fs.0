@@ -1,88 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60D339EB5B;
-	Mon, 12 Oct 2026 10:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB743955CA
+	for <v9fs@lists.linux.dev>; Tue, 13 Oct 2026 07:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791801732; cv=none; b=eh3UYGRq+fa3n/jHxY8Qx2L+Epo8nXpkG9y4MKOKfN4tAzL4OLCAN0+zBUFEFRTE4UT5g0BD5SrqI52zX98g9CXm9/bUuV+du3bI2IUHcu8t4FI2L1yxKu+a4FbcJh6dCCawYIaI6Ly8xp6IA1ZlBNtAWm/m6qKFxGV7zLfNcas=
+	t=1791878123; cv=none; b=Ac//Pc+/hdtF8WHBgF1mYMGzZqO273WWMMRiyYW3OvbS/6KlaoWmfiwkacgQ+liJveY6qZYtgFz0ZjxMe8+JeR59JW9gnU2N++I1qbz61jjvo0EkfB/kWAqAHoVmPkcv8QPs/nZyVZQJ0BWmpTCnILR2r0+WGrFwaRNi4ujagKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791801732; c=relaxed/simple;
-	bh=o27eM5988rmeHc6Wl/ktBGCOoh6BTZxx0Tx40pDWtnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cdzvCnV6sB+hwbvvTz87ZVJTk4OKmgPiGRewhlKDxvASPHgkNE090BRQ/J2LcRSXpMIqH8JPk2SZDvgDloaJWwiKIYSseGgXpcWNNTHaB7VBndVa/Nc8Emc3FjTxdZ1TFBhvZNw2MnOyoh7tjbkQddybDe97ds0Gg6OSM77NVZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RuUr3tDd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791878123; c=relaxed/simple;
+	bh=VHRHfn+lNRqLr2KFYksEOm2u41ma05X3vjcvBZ09xhM=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=C8AZygJOJ9hr7aOYrHMkTOn8UfZHluzYlOFJPO/clo5d9lQoofoPP1V6lTMhHmxPYCV+eh7vteln3tRfbfa5shW1mmLFhT2xNzIrcBaTxrif5fMDM/KxNSEPz4jbVIp4TpbHBBIioGcuuD10supk0Vl1Ry+n4baOrv+DDHReRg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b7lbvJEK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RuUr3tDd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EC41F0089B;
-	Mon, 12 Oct 2026 10:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791801731;
-	bh=k7JPldLcVG1lkMzLDS2nPfYwi1SwyLu22FtP8Z5jWgM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RuUr3tDdDXg+pCOzmOMcVxwWhySLjEB4oaYo/KMOudemt5kLpDA2P3NUDxNPuWnC2
-	 42jZE0FKQ8a/2trIGhWlW4JMNePTL/sgzdJN/7xbqdB/NSCGzoIUcnZz1B8rOzwyiU
-	 qclXTTiFvWu1Nbt3iBwR4wNG+IqUgFaWd9M0eWiaWlJMcnbzlnchKzeR08tmR74rb3
-	 nelzbn25y7NuhVKVHG9arq/5EC+YvApGxVJhYfuO8VB1sgYhfMr43poOyVagkrmShC
-	 dOZKhXoBQv/X0/XMgg9H6OJxHGqdfyuC7xMHOLq3NbYMGJ0K0Sje/EYcX2cJxWM3rV
-	 LHuQxW9rZhArA==
-Date: Mon, 12 Oct 2026 12:42:06 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-afs@lists.infradead.org, 
-	v9fs@lists.linux.dev, linux-trace-kernel@vger.kernel.org, ntfs3@lists.linux.dev, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/8] fs: fix a range of UAFs during rcu pathwalk caused
- by non-rcu frees
-Message-ID: <20261012-gaukeln-zeltlager-etikettieren-73ae50ccac01@brauner>
-References: <20261009-work-fixes-rcu-v1-0-7446d2d335e6@kernel.org>
- <r72foycb4ol4hywl5m2sj6h6yxee3nladaw7g2zdxhejmhrkgc@v24cfppcak2h>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b7lbvJEK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791878120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWpCDO0AA+sEZzr3VsDUDjssf+Zo8tluNrapGjgiY5o=;
+	b=b7lbvJEKGlTJpfXIqlcVUZLIDggN8oxjVn9FCcLJ17WF4XLxeYkwpBaSItOfs3nPc5wGKB
+	LDijGtiPsAX1471+sbEBq7nir265LtYUcv+gVKBuNz5kNCoIqMTtTrRa4ioKIyZEukYxNw
+	TuGlYE7JGUbUJ2T3fJtqYCnv+lT+bgA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-rUZAsi6DMcieVbVMGWpCBQ-1; Tue,
+ 13 Oct 2026 07:55:12 +0000
+X-MC-Unique: rUZAsi6DMcieVbVMGWpCBQ-1
+X-Mimecast-MFC-AGG-ID: rUZAsi6DMcieVbVMGWpCBQ_1791878109
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 972E618009D3;
+	Tue, 13 Oct 2026 07:55:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3345430001B9;
+	Tue, 13 Oct 2026 07:54:59 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
+References: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com> <20260910220242.2165023-5-dhowells@redhat.com>
+To: Petr Chmelar <petr.chmelar@innovatrics.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map for most use cases
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <r72foycb4ol4hywl5m2sj6h6yxee3nladaw7g2zdxhejmhrkgc@v24cfppcak2h>
+Date: Tue, 13 Oct 2026 08:54:58 +0100
+Message-ID: <1655268.1791878098@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: s2pmBc3QS4IcqllM0YapPojxPa6QuEiNwf5MJ-fwWA4_1791878109
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1655267.1791878098.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 12:36:15PM +0200, Jan Kara wrote:
-> On Fri 09-10-26 23:51:50, Christian Brauner wrote:
-> > While working on eliding the grace period in namespace_unlock() I went
-> > through what filesystems free when they're shut down and what a pathwalk
-> > in rcu mode can still read at that point. Since 66a97c2ec953's rcu
-> > pathwalk fixes that's the filesystem's job. Whatever ->permission(),
-> > ->d_revalidate(), ->get_link(), ->d_hash() and ->d_compare() look at in
-> > rcu mode has to be freed after a grace period. A few filesystems don't
-> > do that.
-> > 
-> > Most of it is hidden by umount(2). namespace_unlock() waits for a grace
-> > period before it drops the mounts, so a walker that was inside the
-> > filesystem is gone by the time the filesystem is shut down.
-> > 
-> > But the last reference to a mount doesn't have to go away in umount(2).
-> > A chdir() out of a lazily unmounted directory or the close() of the last
-> > file on it drops it without a grace period. A walker can then still be
-> > in the filesystem while ->put_super() and ->kill_sb() free what it
-> > reads.
-> 
-> Good catches! But I find it very counter-intuitive that pathname lookups
-> can still be running against a filesystem while its ->put_super is called.
-> People will keep forgetting about that and as a result these UAF bugs will
-> be introduced again. Isn't it feasible we'd guarantee to the filesystem
-> ->put_super() gets called only after all lookups are done (i.e., after RCU
-> grace period expires)?
-> 
-> I understand this is a hairy bussiness because this has userspace visible
-> implications (like when filesystem's sysfs files disappear, when the bdev
-> really gets unused, etc.) but keeping all filesystems safe to run RCU
-> lookup after ->put_super() will be IMHO a headache.
+Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
 
-I don't think delaying put_super() or freeing the superblock helps.
-That's not where the issue is. The issue is with sb->s_fs_info being
-available after a grace period and that can go away in different
-locations ->put_super() or ->kill_sb(). Bringing put_super() into the
-argument was maybe not my best idea. We also need to backport this
-stuff.
+> Reproducer: random 64 KiB reads covering half of a 256 MiB file of
+> random data, then a full read after dropping the page cache, compared
+> with the original per 64 KiB block:
+>=20
+>   fio --name=3Dhalf --filename=3D/mnt/part.bin --rw=3Drandread --bs=3D64k=
+ \
+>       --ioengine=3Dpsync --fadvise_hint=3Drandom --size=3D256m --io_size=
+=3D128m \
+>       --randrepeat=3D1
+>   sync; echo 3 > /proc/sys/vm/drop_caches
+>   cmp /mnt/part.bin /path/to/original
+
+Unfortunately, I can't reproduce this.  Can you get me some tracing?
+
+echo 65536 >/sys/kernel/tracing/buffer_size_kb
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_read/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_write/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_rreq/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_sreq/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_failure/enable
+echo 1 >/sys/kernel/tracing/events/cachefiles/cachefiles_coherency/enable
+
+before running, then after running do:
+
+cat /sys/kernel/tracing/trace | bzip2 -9 >/tmp/cachefiles-bug.trace.bz2
+
+When I do this and grep the trace output for 'WRITEBACK\|WRIT TERM\|cachefi=
+les'
+it all looks reasonable, looking something like:
+
+fio-5895 : netfs_write: R=3D00001301 WRITEBACK c=3D00000006 o=3D00000004 i=
+=3Dc6a742 by=3D0-ffffffffffffffff
+fio-5895 : netfs_sreq: R=3D00001301[2] WRIT TERM  f=3D100 s=3D0 100000/1000=
+00 s=3D7 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[4] WRIT TERM  f=3D100 s=3D100000 100000=
+/100000 s=3D15 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[6] WRIT TERM  f=3D100 s=3D200000 100000=
+/100000 s=3D23 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[8] WRIT TERM  f=3D100 s=3D300000 100000=
+/100000 s=3D0 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[a] WRIT TERM  f=3D100 s=3D400000 100000=
+/100000 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[c] WRIT TERM  f=3D100 s=3D500000 100000=
+/100000 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[e] WRIT TERM  f=3D100 s=3D600000 100000=
+/100000 s=3D24 e=3D0
+...
+fio-5895 : netfs_sreq: R=3D00001301[1f4] WRIT TERM  f=3D100 s=3Df900000 100=
+000/100000 s=3D15 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1f6] WRIT TERM  f=3D100 s=3Dfa00000 100=
+000/100000 s=3D23 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1f8] WRIT TERM  f=3D100 s=3Dfb00000 100=
+000/100000 s=3D0 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fa] WRIT TERM  f=3D100 s=3Dfc00000 100=
+000/100000 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fc] WRIT TERM  f=3D100 s=3Dfd00000 100=
+000/100000 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fe] WRIT TERM  f=3D100 s=3Dfe00000 100=
+000/100000 s=3D24 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[200] WRIT TERM  f=3D100 s=3Dff00000 100=
+000/100000 s=3D1 e=3D0
+ kworker : cachefiles_coherency: o=3D00000004 SET ok   B=3D46012e oz=3D1000=
+0000 c=3D2 aux=3D0 dsk=3D0
+
+You can see the writes to the cache terminating and then the cache is set c=
+=3D2
+which is CACHEFILES_CONTENT_ALL indicating that the cache file has no holes=
+ in
+it.
+
+That happens pretty much as soon as fio lays out its file and then all futu=
+re
+accesses are just reads from the cache.
+
+Looking at the UPLD lines is interesting:
+
+fio-5895 : netfs_sreq: R=3D00001301[185] UPLD TERM  f=3D110 s=3Dc1fedd0 fff=
+e8/fffe8 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[187] UPLD TERM  f=3D110 s=3Dc2fedb8 fff=
+e8/fffe8 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[189] UPLD TERM  f=3D110 s=3Dc3feda0 fff=
+e8/fffe8 s=3D24 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[18b] UPLD TERM  f=3D110 s=3Dc4fed88 fff=
+e8/fffe8 s=3D1 e=3D0
+
+I guess 9P can't quite squeeze 1M of data in a packet as metadata has to go=
+ in
+as well.
+
+One further question occurs to me: does the entire 256M file fit in the tes=
+t
+VM's memory?
+
+Thanks,
+David
+
