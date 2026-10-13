@@ -1,166 +1,182 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E13A545E
-	for <v9fs@lists.linux.dev>; Tue, 13 Oct 2026 09:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885403; cv=none; b=f2lWgukjxym+dTpQARGARpe3SEf5v+oPTUU+arZ/maDFL+roedMk0y2JnEHml2490YtbJia9LGHWXwbg17WiTOpFNDjrFDJtMt1TNtlFfL42CvEwtm7rODQfoqJXPcNPCtgyunafr/kQQrokMci+DqQ6JHkrrwnTuWXdhtgRKDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885403; c=relaxed/simple;
-	bh=HFJ4UjRCkhaihkIH92sybsRJA7S5NLo3OntK/t8+1bY=;
-	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=PawlDWLLlXc4KtxLqZ7crqKEY5nd35bpWl1vznkAvlJFhhEJS584NBD6M0RAQB+g7on50Gn9dzeq1jGvUp1yytO3ul7VHiWgwtmwrHgimgac5rS08DrRw/YNRYNAAJklvv3VnBBKQxMWrANZAG2fnLncSfeZ56jpPLD6c38FD+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=mppJpghm; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82866471432
+	for <v9fs@lists.linux.dev>; Tue, 13 Oct 2026 10:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791888269; cv=pass; b=bjhwnvFuUf6TD3P5aLsLuook6Az1wiXmvkejWqR5ikymFa0Zj3W9osRJVdGOKhTGz0NgYT9Drb07kqQotCYZOU+ixc7SFwa6Jo7mSD1uQj3Kk3lmuyf6Fpf5SIFFh5SJxHM0IPjfu+B7eOb6NGVgK1BPWEf69ylevp9OQ9zxpDE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791888269; c=relaxed/simple;
+	bh=PelTeFwd5ud7mnoUu0LqIyINYO9v9og7hyCKjE+gurc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W/w+13uW3lFLJXX84XJk4qrX8SULLeG3kupk+IjcW1AbCufXH84o5JmBKQfsVUElzbJuLBlvywa6plxxQAQBD4UcfLPUwAJWBAtVZG1DhFUBHN4Hn+OgQ/b6DWbGwocl7x/aLfyXXoXxh8JMGh01Wcd98kjdqsv0UMg/2DWdwnY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com; spf=pass smtp.mailfrom=dneg.com; dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b=OGQQQM3P; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dneg.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="mppJpghm"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a171b677d2so16280905e9.0
-        for <v9fs@lists.linux.dev>; Tue, 13 Oct 2026 02:56:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b="OGQQQM3P"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2acc1e170cso451046266b.1
+        for <v9fs@lists.linux.dev>; Tue, 13 Oct 2026 03:44:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791888265; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YQtbVcfAH253gQZgISFb+Oud7KbOjpHaqAjS+TLGuCJoSlg3nF+qf9xirfGMR68JWB
+         XCufxSRFqL8wRyZ/9q/crNpXmjN4ZSR0e2FOt96g4vr/+e//fKfLqT7Ji1HXgc1vf7Sh
+         PdaBPymTiGvUkHIvrt+xtJIAknw5sudnLqebZGWceIgyhnEop+sdAD57FU8dWK2uHK2c
+         s4wZ0eUs2nGO2L5XJmtHsu2JJmM0Si7CLW55Y0tOZsASZ5SYWRto8iZihEeSk745w5pb
+         oJi1YfZLJJlH4fEI0T8t+gpjKibNRzl4tjlFwTvftMtaFmqwwRgPv6nnRgettWU0JB+7
+         aWeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
+        fh=btoaByZWkVvBdmWvHJVDZ9qnoH7qIblDupNwEkc0gac=;
+        b=sF3oibs/PU42rMuFeAmvzA3ptXbxjnla+IfcinEDbuJvhNOhp2rcQ59hOUqmzNWbIB
+         SWKOpskSIN3BikdYzEREzClnFjvCXF9aV7+y/GUFdfKawJQamQHHnlagnERMowlCFWzF
+         +62ma7GaNsPlO/wriUZKe/gRCoHogOjzuMQWbzdvYngnUd4erhv4wo5KGvIb250WD+TH
+         3/71oyG7Bt5Ve/OeXq/QKH7TbvdwC1hUCb2JVTVM+939bGujXql566K1F4oInAtTRhpl
+         yrTU2kQ9suTK8oYllL20DMwDK5FhsEkIzdRk5CLZTvputFila7poKC24hy9E8p1ZjFZs
+         znVg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innovatrics.com; s=google; t=1791885399; x=1792490199; darn=lists.linux.dev;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+        d=dneg.com; s=google; t=1791888265; x=1792493065; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=St+5KkhKptBQbmhWMvm7sQZJ2JL6wlGqGqKQDJo/9iM=;
-        b=mppJpghmRNl/8Le2KloMgW9wI7x+UfP51y3UAvaUgQAYE5VC06qVqHfW50df7Ko8cD
-         ENzbrNWkLMW6kc0O7Nse2+8TgPe0UbGcFBMIPTgdlU+YOHqekqf92l8oD15/Ci/s6wkD
-         1ztvotSn888t9+aIhzsRnU8ExlmuGNbDdGlfU=
+        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
+        b=OGQQQM3PUyu4CQ5E/1nnXNW2eBfMfrSdGachTzeKK/5T8UBmyMeOaEcIZ1ZzySM4wG
+         dSiMiqmb/3FMCgyLEUQvqm0JIWz2SQAysiyAoZMIzH9JvsjQaq+Lux6qpPQ7cYKpPSd+
+         1a2JDkCsPmAkRSKZOweIC9kgtgfHSMDhR8EJNV1I7Ftdl83HjWYF2wqwm/IvKwPrkCwO
+         NKBeNtx766FIqVCgtgU2Yi+ddJpY7D6iS2iCs0ngdhtnNy4y4PbPSLqjccmWOpehC7zx
+         MIeoqSSREAx2NCBE1RKnt70tbafuG7ep+qOYzR1QcJTKsHD6vARTF8qydb7tLFy1jQA1
+         fgnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791885399; x=1792490199;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=St+5KkhKptBQbmhWMvm7sQZJ2JL6wlGqGqKQDJo/9iM=;
-        b=U1hDSTm7jyIoP6Q18KfvQW96wlCLHEEFG90zrpYpu1mu5lX/zQhQ4LD9ZBifenwDWv
-         6WKKzPveBvOOVVJhcU6THWz+/Hphfi692tz6lFaf/CFCnjOZzddsafG+6Pnkzos/XOhc
-         f6h5MSV7BGRZlrDa7R0zLnM4gVbGPomU6MsPJVANE0vgjLOSpCRfVWIZC5tt/4A3m5D2
-         CoBBMse3rQ6NajPKxr7hWIRdFCQ/Of/2NXYJxGPjNIRolJtrnkbPq17artkgOicnR0oy
-         F6RZUQ1Oj9aW3olpHh5tbZbgIOQVFFoGlIZtaddPbfD0Vkv6qAX3RKAfLqK1rP9tsGSn
-         WCmg==
-X-Forwarded-Encrypted: i=1; AKwUvBxfZkgNPxcFLaGVNeXKcooNWAEshnkE1BwjXUjlAUtheBQrOcDHTawYgg/CyW5TebFGqvs0@lists.linux.dev
-X-Gm-Message-State: AFq9FYLrkx7x+oRgLMqCPwzUu/oW5+Ulw1ZipiG1D/oiYCSplHISlJ7t
-	Ei9l5YdFlxWUpp8+5sZ8duB5tzpGjkEjLaHo+7KAWab1CO8UTaJj1XruBWXTNqQBOQ==
-X-Gm-Gg: AYBFou1tZ4tvvBijk1FtnVdYCmFKeXb9K3Ea+qM4KCM3wqCBr5BrRlV2Ej5BO851Mnl
-	BBVSCOxNtGOtKKwNlfJP4JpqhsU+DU5J1+2EmFSI+2UlbcBDiwdRNILelLZUIy35eaVdJ/HqP7c
-	6kUws03StW2562G3gTlIchCEiLd/LuGGsXQiBDTieyzsIY1ukZKWaAx4q29A8FlZxT+erLv9mW7
-	EbsQK4fbiDIEZBBKX6qptJDFdJaeG6rMfsmHGlvBd5Mb8XIADg3GrdPQ7W0gW1I51oxSsKG9sMa
-	1sKLypMvcugH9ebAwCUDMVPy7zudCB8x4nXHkmz+y3clqm6O+E4LAe7qEFzEFT/EJWPaV12Z3WG
-	nPcS+A+beFVeT1ZdNX7zRME1nSG1X1Dz8q5QPbP1uz3wx9+5LwWs1oHyK9I1CodboovqRh5+r+h
-	7PBgXzvsNzyTmJFS5HUTmdWKSF3G5BthWoA6kGTO4LKvLGyGh8fajQd06t5JlRnYjzd8iWR8FHd
-	fMezj8Pj4UmgxEjHjDkrrXLcejc1PB5gwelTTXxcyulUdqFscXWyL+ZVyRj5tT+Uz1P2VZSxpu0
-	qsw6BB4xAkKwkJcT3Iz5+yLgBIC6Sjk=
-X-Received: by 2002:a05:600c:1c07:b0:4a1:b044:9ccd with SMTP id 5b1f17b1804b1-4a1b0449d00mr3292955e9.28.1791885399299;
-        Tue, 13 Oct 2026 02:56:39 -0700 (PDT)
-Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f249692sm289830295e9.3.2026.10.13.02.56.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 02:56:38 -0700 (PDT)
-From: Petr Chmelar <petr.chmelar@innovatrics.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-    Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Stefan Metzmacher <metze@samba.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map
- for most use cases
-Message-ID: <20261013.cachefiles-partial-zeros-trace.pchmelar@innovatrics.com>
-In-Reply-To: <1655268.1791878098@warthog.procyon.org.uk>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
- <20260910220242.2165023-5-dhowells@redhat.com>
- <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
- <1655268.1791878098@warthog.procyon.org.uk>
-Date: Tue, 13 Oct 2026 09:56:37 +0000
+        d=1e100.net; s=20260707; t=1791888265; x=1792493065;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
+        b=qjDt04/u165QSFD6TbXLLYg71sm3yUkXbK2iUFFY4bZLuM35DAVfKclmw36CNZstHX
+         NjxfKHsIjRW3u57iXBNelyxChpVerK4ovOqKkgYUAP7w0VTAlpOvhSE5JikAYu2B7BHH
+         IO3bzblc1T82YGV+gG3XNl0bBt/WKOyT7E3i7+XVFwpBxpqC+UwCrPvl+9YRkm8uqWzJ
+         03pcJYA7bzvSv2hSEUNejfgU+gVK73OzacjdityAVEBtbvRCnh0egsOJ4PDYEiptlUbY
+         T+Q/UGdwRVNrWhr+555MkabLp3VRW/Ydh2+3TLMNNsjTmmsDxhcbHPOZz9zfbA90C8GV
+         b+ew==
+X-Forwarded-Encrypted: i=1; AKwUvBxQHIL43WJNpU8dnjcr6uPGKEhHhDFhH170Ih/MLBUHbHC7TqLzy2CKliu1GBZ9xjLeoWEB@lists.linux.dev
+X-Gm-Message-State: AFq9FYKiTefe1LdRyL/B7npWiz4vX6Lvz3rY0ubfXNouf67918hYuds9
+	b5x5AetqK3tJAHD9zKF5dadgrWSb87DSyPhwOEX8B9+VzIhsvIgCrpyVxYcmmXskyol1o2ZyAFL
+	FIdeVlipOLr44O6i1dAKi5YoVB65d6hzQRYf7Oi2cSQ==
+X-Gm-Gg: AYBFou3yJxsXsIxjCLPsowh/bH8+aGgLlerNE8uJhb92AqUqfTsSTQYWk00YLXH0wO9
+	gV5GIQlVRIqK6eETHWk4alfIsplPICnA6ffu28JCUOwhb+o5fHt7Va1kDe3jZ5fGlzJCMU8eo5y
+	Xsy/35q0CNqh0QVsHayOBAkiCWKqHG+A/4/t8t0kj1Eo/VTmyNhokT9uTD1uQZvPUp+xNQWeoM4
+	MLlEB2O7IsdTqD/PZIc/XwzYX0LXRC8sOG1o2HpDPCHQce6lRXF17aQpi2PHc02seuF75WTc1JQ
+	5uZjCXmw0mP30o44/drE0x5Zp+mO7nJEUAd/pND9H3ANbs1iyPjImKb7OB5uR54i20O6wMSbuXQ
+	R0ex4o26RNN8=
+X-Received: by 2002:a17:907:e158:b0:c34:e9fe:82ed with SMTP id
+ a640c23a62f3a-c34e9fe8db4mr344907066b.28.1791888264638; Tue, 13 Oct 2026
+ 03:44:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+References: <20260910220242.2165023-1-dhowells@redhat.com> <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
+ <1655915.1791879248@warthog.procyon.org.uk>
+In-Reply-To: <1655915.1791879248@warthog.procyon.org.uk>
+From: Daire Byrne <daire@dneg.com>
+Date: Tue, 13 Oct 2026 11:43:48 +0100
+X-Gm-Features: AclHuK_oVCRmnPd9NH08Wt-JPyd6g1EMor68YJAilUyzKCf7DPZ-awFW_Pr3mM8
+Message-ID: <CAPt2mGPPYTv=mBo=ysFt49t9=6AVh=P4uvHh4EwZ4Xh=ZULo=Q@mail.gmail.com>
+Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily
+ occupancy tracking-related
+To: David Howells <dhowells@redhat.com>
+Cc: Petr Chmelar <petr.chmelar@innovatrics.com>, Christian Brauner <christian@brauner.io>, 
+	Paulo Alcantara <pc@manguebit.org>, Matthew Wilcox <willy@infradead.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Marc Dionne <marc.dionne@auristor.com>, 
+	Stefan Metzmacher <metze@samba.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-David Howells <dhowells@redhat.com> wrote:
+Hi,
 
-> Unfortunately, I can't reproduce this.  Can you get me some tracing?
+I don't know if it's particularly useful (or relevant), but we set an
+extent hint size of 8MB on the backing XFS filesystem for
+fscache/cachefiles.
 
-Thanks for looking.  The trace shows reads served from the cache over
-ranges that were never written to it; details below.
+For our workloads (mostly larger files), this seems to work quite well
+in keeping down the extent counts on the cachefiles objects. It's
+perhaps not very space efficient at first, but it seems to improve
+over time as more data is cached.
 
-I think the reason you don't see it is how the file gets into the cache,
-which I should have said in the report.  In your run, fio lays the file
-out through the mount, so the client fills its cache sequentially and the
-object ends up CONTENT_ALL.  In ours, the client never writes the file:
-it is written on the server side beforehand, and the client's cache fills
-only as the client reads it, at random offsets, so the object stays
-BACKFS_MAP.  That is how our training nodes use the cache: they read data
-sets that they didn't write, mostly at random offsets.
+Also, compared to XFS, ext4 seems to do a better job of keeping the
+extent counts lower even without an extent hint.
 
-I reran it on 9f8b64f66 over 9p with your tracepoints enabled, with the
-same result: 936 of 4096 64 KiB blocks wrong, 825 of them zeros, first
-wrong blocks 10, 13, 15, 24, 26 and 27.  I'm sending you the trace
-off-list; it is 790 KB as bzip2.
+In terms of granularity, I think we'd be fine with something like 256k
+(as we are with 8MB). But we would still want to be able to cache a
+wide range of file sizes (4k -> TBs).
 
-What the trace shows:
+We also have a particularly horrible random IO 4k workload where the
+files are MBs on disk but get read in random 4k chunks over a few
+hours. We specifically detect these reads and have a (readahead)
+daemon that goes and reads the entire file into cache rather than
+waiting for it to grow organically (in 4k chunks).
 
- - After the random reads the object is set to BACKFS_MAP:
+Daire
 
-     cachefiles_coherency: o=00000001 SET ok   B=c4 oz=10000000 c=3
 
-   After dropping the page cache it is looked up again (o=00000002 OK,
-   c=3) and set to c=4.
-
- - Before the full read, WRIT TERM subrequests cover 2048 of the 4096
-   64 KiB blocks, as expected for half the file.
-
- - During the full read, READ subrequests from the cache cover 2143
-   blocks, and 936 of those never had a WRIT: the same count as the wrong
-   blocks, starting with the same blocks, 10, 13, 15, 24, 26 and 27.
-   For example this one read:
-
-     R=0000285a[1] READ TERM  f=110 s=7c000 7c000/7c000 s=7 e=0
-
-   covers 0xa0000-0xb0000, 0xd0000-0xe0000 and 0xf0000-0xf8000, and no
-   write ever reached those ranges.  The writes around it were:
-
-     R=00002291[3] WRIT TERM  f=100 s=70000 20000/20000 s=6 e=0
-     R=000024dc[1] WRIT TERM  f=100 s=90000 10000/10000 s=16 e=0
-     R=00002291[4] WRIT TERM  f=100 s=b0000 20000/20000 s=9 e=0
-     R=000024dc[2] WRIT TERM  f=100 s=e0000 10000/10000 s=3 e=0
-
-So for the BACKFS_MAP object, the occupancy the read is based on treats
-the holes between those writes as data.
-
-> One further question occurs to me: does the entire 256M file fit in the
-> test VM's memory?
-
-Yes.  The VM has 7946 MiB of memory with 7498 MiB available, and the page
-cache is dropped before the full read.
-
-The setup, for reference:
-
- - 9f8b64f66 with netfs, fscache, cachefiles, 9p and 9p fscache built in;
-   QEMU without KVM, 4 vCPUs, 8 GiB RAM
- - 9p: QEMU virtfs local, security_model=none, the host directory on XFS;
-   mounted with trans=virtio,version=9p2000.L,cache=fscache,msize=1048576
- - part.bin: 256 MiB from /dev/urandom, written on the host before the
-   mount
- - cache: XFS on a loop device in the guest, cachefilesd 0.10.10
-
-The trace analysis was done with LLM assistance.
-
-Thanks,
-Petr
+On Tue, 13 Oct 2026 at 09:28, David Howells <dhowells@redhat.com> wrote:
+>
+> Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
+>
+> > The cover letter leaves non-contiguous objects, which still use
+> > SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
+> > production, so here are numbers in case they help with its priority.
+>
+> I know.  But it's a tricky problem to solve as I need to store a map of the
+> content somewhere.  xattrs are painful as I can only read or write them
+> atomically and as whole blobs - and also I'm not sure if I need to limit the
+> size of any given xattr to 512 bytes.  Further, the xattr wangling interface
+> inside the kernel assumes a flat virtual buffer rather than taking an I/O
+> iterator.
+>
+> I have patches that store a bitmap in an xattr, with 1 bit per 256K block of
+> cachefile, for a 512 byte xattr able to map up to 1G of file size.  I need to
+> revisit this at some point soon.  It may be better to switch to storing an
+> extent list, but:
+>
+> > On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
+> > fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.
+>
+> Trying to store a million+ extent records in a single xattr would kind of
+> suck.  Now, it might be possible to collapse that somewhat if a lot of the
+> extents are virtually sequential within the file, since I don't care about
+> physical sequentiality.
+>
+> Also, can you tell if you have a preferred cache granularity?  Would a 256K
+> granularity, say, use too much space?
+>
+> > I expect the right fix is for cachefiles to track what it has written
+> > itself, as CONTENT_ALL now does for contiguous files, rather than
+> > something like the above.
+>
+> Indeed - as mentioned above.
+>
+> > I can send the workaround if it's useful as a reference,
+>
+> If you could, that would be great!
+>
+> > and I'm happy to test whatever you plan for this case on our workload.
+>
+> Thanks.  Now I just need to reproduce your bug.  Note that I posted another
+> cachefiles patch that Christian hasn't picked up yet:
+>
+> https://lore.kernel.org/linux-fsdevel/1091807.1791483394@warthog.procyon.org.uk/T/#u
+>
+> David
+>
+>
