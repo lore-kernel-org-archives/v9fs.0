@@ -1,59 +1,85 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35E14CA779
-	for <v9fs@lists.linux.dev>; Thu, 15 Oct 2026 23:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31467377EAC;
+	Fri, 16 Oct 2026 08:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792106934; cv=none; b=R/pK1vARk6yTgQC2v9Q9owzMy5h5A5pSV9RJ+aEsiK06Vyt7QpJ8SgpfYwhuEYAnIgn+QG/3vEO1/1voAHDhW2YJyDz5lkBC3rgXhZVkNCKdTU9cQfNWFsWPL0ax7img8CxPFyg5StaQ6GFxfUgc+DZs3PCmpTV1MJPqO4LmGPM=
+	t=1792141181; cv=none; b=kgToQ4Z6mo5nB2HWKkXyBzaqS7c9rKuVXD+rY3wFfR7JjR0jgPYu9tsNAFEfUoFTLfJtqDJ07u7hIlDYvY5il6UAubmSU0NHD89CGRIBcOG3rbL+5os5p/lIXtlHc8KaGzxYxa8nAarXXKF3YCdHOa9raf6JiCeX8PJP1Y3xSEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792106934; c=relaxed/simple;
-	bh=JneeYzqCv/oOdNYpw16kvgOfgfvyeDhWV4Vz4P7+2uY=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FjvVIK+4HIpudUOPyDPEUXQNGFIR0+DTFoe6EEMdIapfjUCtjmsfCNGSeUGXxn432BkAkrxtya9BeslyGUOcsPPYSPYFr1Eu6oxch6z7dMiF8QPhqI52mzPRhid3MhhGCHCDSJ0tKDWwZQwffmME43gdSgsWkYFrsj+MGdzJ1JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=z9fUovrW; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1792141181; c=relaxed/simple;
+	bh=NeGmjayS22zWnD1WnDqIK44ygvIXtCwzs8PUMbdojAk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nNicKicZKUP2WzPS3XliYkPreONopI4l0ecpEEU5oDzFE7EQC8l4GNqunWoVQD6w2xc5g3y0CZoUkjUpgsINxQLL2LH83ckO28AvGA671oEHc0aY7Preo/nYKo9STnFpWGB8G54wM0PRxN2jUtWFBpjRBr35JAMRWwna3w8ifHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7bZ4agY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="z9fUovrW"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3A3E114C2D6
-	for <v9fs@lists.linux.dev>; Fri, 16 Oct 2026 01:28:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1792106923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=+TG9gu9SAHK5L/6RpTa8jNPOkl8EWOtowAQHM2GTErc=;
-	b=z9fUovrWj7lkFI8rdWNMKm0r9Ah7t5cVVJeiCxCDIy6ViNlWn59Waem/fO3aPWx1i43vbN
-	9OIMk+Llna276haAC74v3iRdFpg2zCa6caYij6b84yf9Gz5CBoAgN8Jg5nnAaH2qivvMXa
-	h4s/fh9JHDRg/oL6IX2uTR1AIERfADFgqBXoUuOdebOmFodOuJPzKTrL5LXAxLssagBdtS
-	yOqNbLyRRuawwLaxOBCY3+oPomq1yQWALkGilWcZ9soxXhEMCAOKoGMEuzVQLHjFpRTO+d
-	1lzqowVljVWspE6sFw1Pf7XgZ4gnam7ER3bb5QfB5CuZuekbzvDOuZy1tLLtjA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7693f032
-	for <v9fs@lists.linux.dev>;
-	Thu, 15 Oct 2026 23:28:41 +0000 (UTC)
-Date: Fri, 16 Oct 2026 08:28:26 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: v9fs@lists.linux.dev
-Subject: 9p sashiko reviews
-Message-ID: <atFhmm3tPZJsWEw4@codewreck.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7bZ4agY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93F1F000C4;
+	Fri, 16 Oct 2026 08:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792141179;
+	bh=ygPqvTu0MZgnk+/Kb6/16DzoVjrOgynRG8deEIsJd64=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=m7bZ4agYIMispujf5L370KG15bRIqUoeSyxTGdIctuS2r7xWF36CBfEBhe9KRGvVq
+	 i/Pv8f67AF5QF/yIhkhjPFuMyYWqPZOtOW9/hgwjsIKcNxyy9/MIJ46hEscejW7i/g
+	 FDHBsAOfkUeSG0jZzaRWjachh22tG3vqK1hpudZDN0lp52jNh4uyHss03SDLh43pN3
+	 N/9YwfIuhX29rz19vcMa8fMOhFmeU2h3CyJRAKAj6bAubZuwx/ioHZ2rgvNo7ND80c
+	 GTZYkYcJgzeKFgNOrIpHChbdnx8Xj9/ewFHY1Pgl4RP0A6gNUBcPpDW/PD83pamUsF
+	 wMyTg7y8fW3xA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Marc Dionne <marc.dionne@auristor.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+ Viacheslav Dubeyko <slava@dubeyko.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Matthew Wilcox <willy@infradead.org>, v9fs@lists.linux.dev, 
+ linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org, 
+ linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1091807.1791483394@warthog.procyon.org.uk>
+References: <1091807.1791483394@warthog.procyon.org.uk>
+Subject: Re: [PATCH v3] fscache, cachefiles: Fix resize handling
+Message-Id: <20261016-betagten-raspel-gepunktet-718b691298d2@brauner>
+Date: Fri, 16 Oct 2026 10:59:33 +0200
 Precedence: bulk
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-3d1b8
 
-Hi all,
+On Thu, 08 Oct 2026 19:16:34 +0100, David Howells wrote:
+> Fix the resize handling in fscache and cachefiles by passing down a flag to
+> indicate if the file is being shrunk as the cache's idea of how big the
+> file should be may be stale and thus not useful in comparison to the
+> object's size.
+> 
+> The issue is that netfs_perform_write() updates the network filesystem's
+> file's i_size as it adds data to the pagecache, but the cache isn't updated
+> until writeback flushes that data.  A truncation may then scrap that data
+> and so the cache never sees it and doesn't update before it is told to
+> resize.  In the resize, cachefiles was comparing the new size against the
+> current cache size and then thinking the file was being expanded.
+> 
+> [...]
 
-just a head's up I've asked Sashiko to send mails to the list going forward:
-https://github.com/sashiko-dev/sashiko/pull/690/changes
+Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
 
-Let's see how that turns out, if someone has an opinion/wants a change
-feel free to ask
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
--- 
-Dominique
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.4.netfs
+
+[1/1] fscache, cachefiles: Fix resize handling
+      https://git.kernel.org/vfs/vfs/c/f65f6269cd37
+
