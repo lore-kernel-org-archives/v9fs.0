@@ -1,85 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792482362;
+	b=0ChDaKfaREU6iXYbtK4xxgHQteYf8YLRtDGOmRQ2I9Yry6oQHKLDnVhT5yr6Za9T77Mg
+	 /VBq5ROOlT5sswDgEJ5lSqWBHhfPTHOWI273apxHrIQR3ZJhNFT5LzuPnDLDQ2G3oikCl
+	 UkrEpbmZHrVD6GKyDmSuY73/BeIhUj3fVvBATILgZZyIV+BNt4j8SInyO+9u1wvzGAbiv
+	 W9HnWNNOZrP1jYTWQtxQ++nN5Lf7awrMcuNr8sztpmmCaBWcnAUDhREAhUyr1XRPU+SBZ
+	 HfRqwFsWQH98FGylwfcK7T5GSMCFbVqFNAZXpfBzT6eoVA4Tj39KIEqKcn4ZvSdNNxw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792482362;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Organization:From:In-Reply-To:
+	 References:To:Cc:Subject:MIME-Version:Date:Message-ID:X-Scanned-By:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:Content-ID;
+	bh=etJHoXzss+lLgalBskXJJBLUzw7KY5e4yuY8e35KdUo=;
+	b=aSw3gk2erNO6L47KTuEOxpdeSWi2nsrLW95tH5HPGrPz1AXmcl2NKMipj6XkMuzCaZFJ
+	 6599NbGt6/4rfW9k7QT6EBqf8/6Vr3vBv930C5yM1IwRa4x4mIyRfr2DafkocjMRdzR5Q
+	 MsWRP0VTjkPAZoUexduYA9rxz0Ct815MoaQ2X7UXF6plWWamQ46frv9xkhXXY+yoGqQjF
+	 KPDrOa+dUyyiK6diV/ONEXmSRtn1LUDL8pnbHU5wtmB5B9LZZWXdlEKMLbr0Mvgtj2FfZ
+	 BNOv1vPNqHozFXo7KDQEI6QrXSn7gybxZ26NLOu6kUUt3Fwu9mGABoOw61pPkHhle2Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J6bi+HON;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31467377EAC;
-	Fri, 16 Oct 2026 08:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141181; cv=none; b=kgToQ4Z6mo5nB2HWKkXyBzaqS7c9rKuVXD+rY3wFfR7JjR0jgPYu9tsNAFEfUoFTLfJtqDJ07u7hIlDYvY5il6UAubmSU0NHD89CGRIBcOG3rbL+5os5p/lIXtlHc8KaGzxYxa8nAarXXKF3YCdHOa9raf6JiCeX8PJP1Y3xSEQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141181; c=relaxed/simple;
-	bh=NeGmjayS22zWnD1WnDqIK44ygvIXtCwzs8PUMbdojAk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nNicKicZKUP2WzPS3XliYkPreONopI4l0ecpEEU5oDzFE7EQC8l4GNqunWoVQD6w2xc5g3y0CZoUkjUpgsINxQLL2LH83ckO28AvGA671oEHc0aY7Preo/nYKo9STnFpWGB8G54wM0PRxN2jUtWFBpjRBr35JAMRWwna3w8ifHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7bZ4agY; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA4A606A323
+	for <v9fs@lists.linux.dev>; Tue, 20 Oct 2026 07:46:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BA4A606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7bZ4agY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93F1F000C4;
-	Fri, 16 Oct 2026 08:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792141179;
-	bh=ygPqvTu0MZgnk+/Kb6/16DzoVjrOgynRG8deEIsJd64=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=m7bZ4agYIMispujf5L370KG15bRIqUoeSyxTGdIctuS2r7xWF36CBfEBhe9KRGvVq
-	 i/Pv8f67AF5QF/yIhkhjPFuMyYWqPZOtOW9/hgwjsIKcNxyy9/MIJ46hEscejW7i/g
-	 FDHBsAOfkUeSG0jZzaRWjachh22tG3vqK1hpudZDN0lp52jNh4uyHss03SDLh43pN3
-	 N/9YwfIuhX29rz19vcMa8fMOhFmeU2h3CyJRAKAj6bAubZuwx/ioHZ2rgvNo7ND80c
-	 GTZYkYcJgzeKFgNOrIpHChbdnx8Xj9/ewFHY1Pgl4RP0A6gNUBcPpDW/PD83pamUsF
-	 wMyTg7y8fW3xA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>, 
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
- Viacheslav Dubeyko <slava@dubeyko.com>, Paulo Alcantara <pc@manguebit.org>, 
- Matthew Wilcox <willy@infradead.org>, v9fs@lists.linux.dev, 
- linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org, 
- linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1091807.1791483394@warthog.procyon.org.uk>
-References: <1091807.1791483394@warthog.procyon.org.uk>
-Subject: Re: [PATCH v3] fscache, cachefiles: Fix resize handling
-Message-Id: <20261016-betagten-raspel-gepunktet-718b691298d2@brauner>
-Date: Fri, 16 Oct 2026 10:59:33 +0200
-Precedence: bulk
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J6bi+HON
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792482360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=etJHoXzss+lLgalBskXJJBLUzw7KY5e4yuY8e35KdUo=;
+	b=J6bi+HON5JEnEMRX4uOvqdwDXS7ecIx6hyDTRJVovu6FbalX7eAdrSjo4SaufbB99bwMc4
+	ZVeQ+FmeBBA3/nGVcanI+wP/2abli5Rs7jPe7x/3Lpjp3gzpF2RvhclPpdKNc3uhx07bQo
+	UDuetjF7Rf9bjzFYT7oumkehhE0VOMc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-y-UzeCQONTON4CooZ3kcPw-1; Tue,
+ 20 Oct 2026 07:45:55 +0000
+X-MC-Unique: y-UzeCQONTON4CooZ3kcPw-1
+X-Mimecast-MFC-AGG-ID: y-UzeCQONTON4CooZ3kcPw_1792482352
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B27DD1955DC3;
+	Tue, 20 Oct 2026 07:45:50 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CED701800446;
+	Tue, 20 Oct 2026 07:45:43 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <1995693.1791971125@warthog.procyon.org.uk>
+References: <1995693.1791971125@warthog.procyon.org.uk> <20261013.cachefiles-partial-zeros-trace.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com> <20260910220242.2165023-5-dhowells@redhat.com> <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com> <1655268.1791878098@warthog.procyon.org.uk>
+To: Petr Chmelar <petr.chmelar@innovatrics.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map for most use cases
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
+List-Post: <mailto:v9fs@lists.linux.dev>
+List-Help: <mailto:v9fs+help@lists.linux.dev>
 List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
+List-Owner: <mailto:v9fs+owner@lists.linux.dev>
+Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev-3d1b8
+Date: Tue, 20 Oct 2026 08:45:42 +0100
+Message-ID: <2648476.1792482342@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: vqGjxmBcmf7PowkFsK9D0f95OmvtLrf6BO0daYNpsJU_1792482352
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2648475.1792482342.1@warthog.procyon.org.uk>
 
-On Thu, 08 Oct 2026 19:16:34 +0100, David Howells wrote:
-> Fix the resize handling in fscache and cachefiles by passing down a flag to
-> indicate if the file is being shrunk as the cache's idea of how big the
-> file should be may be stale and thus not useful in comparison to the
-> object's size.
-> 
-> The issue is that netfs_perform_write() updates the network filesystem's
-> file's i_size as it adds data to the pagecache, but the cache isn't updated
-> until writeback flushes that data.  A truncation may then scrap that data
-> and so the cache never sees it and doesn't update before it is told to
-> resize.  In the resize, cachefiles was comparing the new size against the
-> current cache size and then thinking the file was being expanded.
-> 
-> [...]
+Hi Petr,
 
-Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
+Note that these patches are now upstream with this change incorporated.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.4.netfs
-
-[1/1] fscache, cachefiles: Fix resize handling
-      https://git.kernel.org/vfs/vfs/c/f65f6269cd37
+David
 
