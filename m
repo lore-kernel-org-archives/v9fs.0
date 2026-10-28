@@ -1,99 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793131528;
-	b=deDIZ7l4TTbqSseBsyeWN9/ZQCg7oXhG1G0AzDIDUPZ8VS7pFA6+7wlTGGV6BSOzzx7E
-	 0oIfVZ5rSYNZAOjC9p8zhSOFI61a59LKVX0y2TOBDT2X1h61grwYKiChYDgn77VsyjEr9
-	 D5bE0I0AWo5M7zfOU2wGOTogh75tTMILM6TdZwDZgGxxLiUHG5dG9r3YnzAIGRTL3/IgG
-	 sfZFK3640HjJ6Mw2/Li8VquK8esiph/5ozVgP6TryDK95zQl3eV0ymPYOcPop/V0ElN3M
-	 vldqkpiadzkriB0gZgTTkc2pYJozmG0Bc3TdTSt94giGjoMQPr9XoJBobQAtaUsK5Ow==
+	t=1793221466;
+	b=RdQL9RU0ylQrjq99Mz6WUab/QAlZKAej9kCbJ0JUem5ekTjTfx8/CS38U9Gq5W7xb/iH
+	 u12KGNHJbHMrYTrdEeU0gT5IAxyUWsPHvct+nNQU6n4UJUy9H3EsCnGp7jQyJK8vR7IAE
+	 MZZa41UFK5ociUNG5AhaJf0pfIFf9TrhTL3vErVfzIpkDGxepFsXLB+T7YPZ23khmNFU8
+	 Q5PmEajwjKe/RtBOCOH23M633EzfAFt09JkLxPfoy489Hz2Aaz1eEBU/1PmRYemxbOYru
+	 DQA9SxRGSsaSoUy+5MGBQ75YCXPR+1j+ujvQJVPPyN7JwLZHVGV+EcE8q717qUBiaIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793131528;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=a3lIrKPVMhtRYL/RcRw+WlUdjpRNkiI37olf2kGdOFU=;
-	b=KNICdDSVazM6VAkcXu8vGn5koKlxMgngo6OWfcjPEj4xQNUw40OzKFo1rM++XPZK63ui
-	 oEHm+acfh5sgZ4i4MOoflU7rpYFZIswx1bUAFhNsJbz0MKDDUK8mXCURrxDBGgunVvDWn
-	 c8C43yLby83rCiknpPHa2eCuHnqfssz4uEQwLMTDRpBE+AC4RwL/BixG6hftJyD65xOsX
-	 E0D6aG515b/CfwTC+RQ3mn0+RdCNcwCC4Jr5xiZZmWUz+dxfVpHvPjf+IziW0anEN8bOn
-	 ZExc18x47xVlNMoifqwjyPJIx4kDjaBa8IFr8FbqJwa/EYJ9eyY4bzya4/SfD/Ng5Gw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793221466;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=nQlwCq7l7ZSqCYPBLdBGqEjchNlsUXYVT1C1dmxvQG4=;
+	b=pvRLjB2voBZhls4sfR7IU/gwvHrnGwBwCybuED+bR7c/9F12q6mGcAD/U/yJwjD7sU0H
+	 dlnVwVWwsvno8i3R0g0p0yuHTBD2D3sFURe0V81n7x7F0YVhQYZlBtSymhP1WL7fwXUe/
+	 IO7+vDtCIkWwpoA9epr117oFCLdTsfElnmiwQj26oCW7bgWJTuO3/SujMPz4vHm1rf7kL
+	 CspgSd90zF0xrNmiwA2OTuNHnCq5nZ94USLh8mO4GOFnaDk3pm5ABghA+DHnS4QXn6ljN
+	 Cpg+URLfHgqxlAABN/DpyRJPZ64as82uiwhLxPcC7D7XHLB8HkD/lexxlt++hqYURhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OY1NPAJA;
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=codewreck.org;
+	spf=pass smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=tgKSYjRf;
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09836606A31D
-	for <v9fs@lists.linux.dev>; Tue, 27 Oct 2026 20:05:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09836606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE23606A31C
+	for <v9fs@lists.linux.dev>; Wed, 28 Oct 2026 21:04:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EE23606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OY1NPAJA
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso2614145e9.3
-        for <v9fs@lists.linux.dev>; Tue, 27 Oct 2026 13:05:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793131526; x=1793736326; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a3lIrKPVMhtRYL/RcRw+WlUdjpRNkiI37olf2kGdOFU=;
-        b=OY1NPAJALPz8aQRWAWDSEgyWX6vccijcEWMQdF6PDj2k6LTtrg+O0hKjfOVHMkLKaA
-         9we6MnHAldMwXtEdo/u8umVb3qROZoiLby7ogo9mtSXZ7wOHlgeMdAX1OBkSbPNyu1fp
-         i2aCHVZkcWx4tVa1rkuiVBvRP5+nbqHf2GCgjIw5kmnHH97cYWBQBc25FpSZ9OPV6U3+
-         q04eVi7KWXhD5y5KvYahnZZFCosH43R61nTL7TC7+X18aD7iiLm06mMLMbTNKpW8LHFO
-         jkfVMymGSw1iTVG1Tz0CwAJusXxTncxRQa3m8RZh0AkyJhYli6RBvJ5maK6PRD8ddbXQ
-         gOgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793131526; x=1793736326;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a3lIrKPVMhtRYL/RcRw+WlUdjpRNkiI37olf2kGdOFU=;
-        b=fXZ8o9YE2DPk1J/Jzwjwvw81GyhZKOtFXsyj/W1LtFnJ3BbOKsQa21Mo+BAauDfMCS
-         f9PdQftWykd2MugA194AwZ0IyrJLrEe8IVMO4pHXMmUuORmyRrNHOi175WaJjrVf0rYb
-         DkHJk2bHvhP7BiJZWZqGVvMVOtrbIdhNl4r5d1HC0t8oyNJFU6F4RY3lNpdUJtQCdMmq
-         sfBlUiI44IOfgcoJGqtSNXHQEUpGJCzytMrTPG3/ntukxORsHR6TjkCPRZ2NU5LyzVtW
-         qKhrYIKHsCpfKyhVENQzomnitRglTLoxeQUagggEey5ZzEFRacKCwNWtLfK6eP3lxkhh
-         QT5w==
-X-Forwarded-Encrypted: i=1; AKwUvBwRMjwYHdP8n2Bc2xHTYU/mA0SQIZ7vA/xqPziOOzKxYRssb1FCw3kuMVu1mZZ1Y5mEx2/n@lists.linux.dev
-X-Gm-Message-State: AFq9FYL49ptDOWT2cxdhsu5PV8SCuNopiMXRDvZVOT5ORxnOXAc2H+mU
-	BboPunS7HsVRfBFWR+jXqga6/6VYWJWK9BL1NMMd61HZyANSAFKZMxdx
-X-Gm-Gg: AYBFou2LpB6gdQ/AIS42Xw0zP8spNF7YkupQk2irpjNqZ6/c1OnKc4NWt7rM9ZWaAmz
-	mu9lwWbmfp6ZgCvhA6okCFHU325InCnyN65lSqvSvFc5sYIaMbi58BCrHw85APPXdXQpYQi/GNx
-	fdbirdEQDq+7aeTXSsMtxDPspubUbv2kCr+1WeEndGq2ilSXTfVRMEZcBYuXYrONgjqKv99lhm2
-	joYKtUuvKGTv0HOzoeh2U00vhqPXkBche583j1psoQ+OtHds+uHECuJVS4quoAlcLWfvDnNQNBH
-	5gvSHp58q/iR2zXGQgssb1VS7AhEfb/IdW2GQHg5EekCydPl+FeoqVWgURlUdsNtG9xH+hTCY1w
-	a4EIid/i2Ve/2RHfJBfTQbc2njxqOOgrGQAuOWRoJhXc9+XVttq7Iy6DjKv9auNogGag4a3KY5X
-	IHi/noQu57XYEHduIqNYYO6MaMFcK0xkE+89vgoNij0ClY+Gqru2AWuJ5mzwGCVmcH9e4LDSwyW
-	rGtSAPkauNEli7HRrCjY3e5ggkbKgNijzxHI3Lr5bwi4BdSTU4Agvvtc81/ZXGBIlG4Au9Y2HsT
-	kr9jpk7kIClNfsizVFchTIXXgDKfrQRZmqObwmE8Wb9CscmskoydwFMH
-X-Received: by 2002:a05:600c:b99:b0:4a1:f99e:f22d with SMTP id 5b1f17b1804b1-4a96667bb22mr94245e9.6.1793131526167;
-        Tue, 27 Oct 2026 13:05:26 -0700 (PDT)
-Received: from localhost.localdomain ([45.152.96.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94e3c638csm4183685e9.8.2026.10.27.13.05.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 27 Oct 2026 13:05:25 -0700 (PDT)
-From: skvarlamatus@gmail.com
-To: asmadeus@codewreck.org
-Cc: ericvh@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com,
-	lucho@ionkov.net,
-	sgarzare@redhat.com,
-	skvarlamatus@gmail.com,
-	stefanha@redhat.com,
-	v9fs@lists.linux.dev
-Subject: Re: [PATCH v3] net/9p: add vsock transport
-Date: Tue, 27 Oct 2026 21:05:22 +0100
-Message-ID: <20261027200522.94192-1-skvarlamatus@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <arI7p2EinDektW0n@codewreck.org>
-References: <arI7p2EinDektW0n@codewreck.org>
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=tgKSYjRf
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 48CFC14C2D6;
+	Wed, 28 Oct 2026 22:04:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1793221456;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nQlwCq7l7ZSqCYPBLdBGqEjchNlsUXYVT1C1dmxvQG4=;
+	b=tgKSYjRf89HgLOvPe6URrKmUypjyhwG5+lzp97At6k2jZHRIA4M7LUQfGXsHsKuK6s1hMb
+	rkEmV7y6BfIg/pVvaVXxAkOjMtck/6CBFadxcMUwODqlPUpdDMTN6wALVWssSm+zc5Ijbb
+	nf9Fo8hfcok7cHA8DfZzCHWB5Xkok1Z7+jdfb3mXZTtaYVvGAdTAnMy/3YdCOKE0q45CHt
+	vOV5np0gCPxFNtzg16zWGNeRdPS7VA+UpiDvtXjWANC0mhfNJscfFyHoecfUfHOh7pT/sN
+	t4oH9/sWchDWhNF6JXtuxX3D7mU3U1P0SlMAl+rUHaL5CYoxxsKDfazcyFcYlA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 0620b481;
+	Wed, 28 Oct 2026 21:04:11 +0000 (UTC)
+Date: Thu, 29 Oct 2026 06:03:56 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] 9p/xen: validate the response size from the backend
+Message-ID: <auJjPAJxzvz1uBvS@codewreck.org>
+References: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -103,16 +72,66 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261005125640.274054-1-yhlee@isslab.korea.ac.kr>
 
-Hi Dominique,
+Yehyeong Lee wrote on Mon, Oct 05, 2026 at 09:56:38PM +0900:
+> p9_xen_response() takes the length of an incoming response from the ring
+> -- the first field of the 9p header, which the Xen transport reuses as
+> its framing header -- and uses it to advance the consumer index, but
+> never checks that it is at least the header size or no larger than the
+> number of bytes the backend has actually produced.
+> 
+> A malicious or buggy backend can post a response whose size is smaller
+> than the header (for example 0). The consumer index then never advances,
+> so the response work re-reads the same ring contents instead of making
+> progress. In testing this raced with the teardown that the malformed
+> reply triggers and dereferenced a freed p9_client:
+> 
+>   9pfs 9pfs-0: Wrong req tag=ffff
+>   BUG: kernel NULL pointer dereference, address: 0000000000000060
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   PGD 0 P4D 0
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 7.2.0-rc5 #6 PREEMPT(lazy)
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+>   Workqueue: events p9_xen_response
+>   RIP: 0010:idr_find+0x4/0x10
+>   RSP: 0018:ffffbf5d80063de8 EFLAGS: 00010202
+>   RAX: 0000000000000001 RBX: ffffa229c21195a0 RCX: ffffa229c2400000
+>   RDX: ffffa229c11c2200 RSI: 000000000000ffff RDI: 0000000000000050
+>   RBP: 000000000000ffff R08: 3fffffffffffdfff R09: ffffffffffffffff
+>   R10: 3fffffffffffdfff R11: ffffffff87a60e80 R12: 0000000000000050
+>   R13: 0000000000000000 R14: 000000000000ffff R15: 0000000000100000
+>   FS:  0000000000000000(0000) GS:ffffa22a7661c000(0000) knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: 0000000000000060 CR3: 000000003ac34002 CR4: 0000000000770ef0
+>   PKRU: 55555554
+>   Call Trace:
+>    <TASK>
+>    p9_tag_lookup+0x2b/0x90
+>    p9_xen_response+0x17c/0x2e0
+>    process_one_work+0x16a/0x3a0
+>    worker_thread+0x172/0x2e0
+>    kthread+0xdd/0x110
+>    ret_from_fork+0x18b/0x240
+>    ret_from_fork_asm+0x1a/0x30
+>    </TASK>
+>   Modules linked in:
+>   CR2: 0000000000000060
+>   ---[ end trace 0000000000000000 ]---
+> 
+> Reject a response whose size is outside [sizeof(header), queued] before
+> using it, matching the validation the backend already applies to
+> incoming requests.
+> 
+> Fixes: f66c72bea129 ("xen/9pfs: receive responses")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 
-I noticed the batch you applied to 9p-test on Sep 22 (including
-the vsock transport) hasn't made it to 9p-next yet, so I just wanted to
-check whether it's still planned for the 7.4 merge window or if
-it's waiting on something.
+Thanks, picked up
 
-If I can help with anything, e.g. testing, just let me know.
-
---
-Matus
+-- 
+Dominique Martinet | Asmadeus
