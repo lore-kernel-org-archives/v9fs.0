@@ -1,65 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793236563;
-	b=nM9ox1Wr35mhVRcCbvnrsibbL/KM14cW7BcNLGMOl22sTLf9eYtsnM9F3f2FYIJnZr6Y
-	 z54+KPNPLXRhivEmaUyD5JV9zKRUfVe5/9rul4du0v7VU706Gijx+p38iN1TDDWMPU6xI
-	 BXCSble0b+ZN6t+WVoRhE7KgrAYq9htOjoVkkh0QoObTyRhn5NLD0HGghuJD5Dv5cdPuj
-	 qgv1uFw/+mJJarSzQ1rh7hSX7rtaw7UekYO/IpxnY06b8pNBDqa5N89+PRxpjpPUcSSL6
-	 xOW5usTaHYihaR2OJhjnfnw93T+C+zKoMrAWnRTmQv1FxUeR98a8AukVSKs2WF7vfiw==
+	t=1793238777;
+	b=G0ZTWk3ifcE/lhn1rBE6DHO8/Bhwk+63F0wDPHL1yteMJcuJsxwKkqNu2x86Pd8hMoO/
+	 fa5QuA/Rtr9JdCY2UA+SpLAeQzW2J6glaW5qVF4el+PKNPFKJRqb79rBaET0M7eT/6g7i
+	 eqwMsn9zGtyWyFoi2Wr2T/39pj398ncRH6rmqkXERb2UvoI9aqTUpsgr6rZn3gZO6p0Tv
+	 1VyLgB9ihYBH6nkNIzPqjp4gbP7gEyCkYS7DkGE8CwWCozRYL/w3lbJUpTxRHtLkS21Z7
+	 dIRrge6EyXd/1Yy1gf6R/ngiTJoXugfPBOYKyIUXS4q+H+Z+Uv04zImd39uy6pt2uAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793236563;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793238777;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=EXPvvC5QiNbOqwxZ8W0rt5FetRvZVeTJ+6Boqil85iw=;
-	b=CSl1A0HSXAPlBL4QX7ASknZ/UG6y5UaHmbL8Nwd1m63c5K45fMX4bm2zHvEFe+9UTRmk
-	 YeAOJ46BJx7e4G7fahlopA2RoWzV5jb0Q/9X10iq710E3Baag4QEvypl2GZ8eCwlSAx7l
-	 61m+9rITYHHhYAC8JU+AJeP4m94z5ooQB/Zuk6m+kqHDSZruy/aunxa+fOq+JAayt3EaD
-	 MuIKWb3DjUIn+tWSRc5NvOrScU6cICgEa+gm5STz2KkHsfUayBCLi/CogXppSUlv9iRDZ
-	 1kvE2OT2CPXT+VXnwDRClitkyRQUjVdLQk3FjzdFSraxqZv/m5nTAF4Xlfji03zYHAw==
+	bh=C9c/FinTKni5fjiOAL3dhHGyqemiEY429uzOPHxoiic=;
+	b=IVJSn5mioIRRYoIe4GDizayeASr2FU9wwBb9pDrOkSqAkZvXJsLwlBZoUae2dbzeIiRh
+	 J6sGxF0X3jr8VvxvQIFwp9Q4ek8MX50/Ag84mPBfXFInruswYzIArBgIfv5jmVrcIx+KD
+	 v4gaP9ssKRqNpsscH1Lr3nilyOxyQ1bOTuF04yHROW+xXCdVBsd9Ep0Fz2mTbXXnQXz3e
+	 kRTxFJi+OsprP12ZY7jomvnUmPe0Gk9sTufr8Dbdc65ruUDCM40jPADruTlgRa3nmOC8/
+	 XogDH8BCwO77Gn1aBEG6ruVSC2njAWiXBmAzdw5Jtc8yX3fLknDHoipoc+Kkls3eiSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=codewreck.org;
 	spf=pass smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=OWuswSp8;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=WdSJVkYE;
 	arc=none smtp.remote-ip=62.210.214.84
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1CB606A31E
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 01:16:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C1CB606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B098606A31A
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 01:52:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B098606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=OWuswSp8
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=WdSJVkYE
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 15D4914C2D6;
-	Thu, 29 Oct 2026 02:15:51 +0100 (CET)
+	by submarine.notk.org (Postfix) with ESMTPS id 4452414C2D6;
+	Thu, 29 Oct 2026 02:52:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1793236555;
+	s=2; t=1793238773;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EXPvvC5QiNbOqwxZ8W0rt5FetRvZVeTJ+6Boqil85iw=;
-	b=OWuswSp8PGk1/0K/bsBaN3BWvDR9MFhuAIkGQQbWqrSyhZrn+Ua7ljQREV5DlfaGzPoMwJ
-	1xqVtaTpqwlLzJYAk86B04vqZ5wL355dk5Rq6Al2xD6jJlcGrUBc+FMWYFKGTYhY+2av5A
-	Ois36fLNcSHwf+Le4OmZpdV8Sp9cDk8DEPjdJbSqGdrZmHtoYXlNPh90MkbgzWDQVfrdlW
-	do+XnFGf3goJa8gdiz7FrCAGwa+DjiFF6/K92as6IZBtbSA1YIxkg8htc/5XXAQ2mPpHRH
-	cDw1AUVDLJghKHLhAxjQb4MPd8LGJO/blHPbWeFKhhjVC7GdUniQhTUiHYfUCg==
+	bh=C9c/FinTKni5fjiOAL3dhHGyqemiEY429uzOPHxoiic=;
+	b=WdSJVkYEncQ7JoKxIzgAvvzPNkdA0CDsHhEVEvxglGObX3NhvLvjgp4Q6ZGdIFB2lysLJ4
+	LUL4seZVg/mEDPfqxDzlGFtLG85LcefQiiQKKVHUlq6Lgrpwj7YTjpZYAwG1ZuiWDX9Iq+
+	qqxKvobBBCVzRvkSJh7rEyEUozTJg/CC0X3WMUoIHTPjuvgXWeMS+4huQNF/UEGapMnClY
+	/3GzyqFaLMKyT9q9nEduSPXCBHH6zFCf7iENQDTQlRxjn0CcpT2uYrFkKjSdHMwijt8C0N
+	L1pYG2mFMbMnbK2tkg/yqq9p84A8uiGgSLEVN9NbjfHz858YO1cBrXlmAWyxQA==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c4ec0c14;
-	Thu, 29 Oct 2026 01:15:50 +0000 (UTC)
-Date: Thu, 29 Oct 2026 10:15:35 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 66ff3547;
+	Thu, 29 Oct 2026 01:52:49 +0000 (UTC)
+Date: Thu, 29 Oct 2026 10:52:34 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
-Cc: ericvh@gmail.com, aneesh.kumar@linux.vnet.ibm.com,
-	jvrao@linux.vnet.ibm.com, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, ericvh@kernel.org, lucho@ionkov.net,
-	linux_oss@crudebyte.com, skhan@linuxfoundation.org
-Subject: Re: [PATCH] 9p: fix kernel-doc warning for enum p9_session_flags
-Message-ID: <auKeN8lGQMw5yYJt@codewreck.org>
-References: <20261002035837.39703-1-emmaonana18@gmail.com>
+To: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] 9p: don't decrement a server-owned zero nlink
+Message-ID: <auKm4tewzgNX6VLh@codewreck.org>
+References: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -71,53 +72,91 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261002035837.39703-1-emmaonana18@gmail.com>
+In-Reply-To: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
 
-Omokefe Emmanuel Onanaroghene wrote on Fri, Oct 02, 2026 at 04:58:37AM +0100:
-> kernel-doc cannot parse enum p9_session_flags, since its documentation
-> comment is followed by #define lines instead of the enum declaration:
+Yuanfu Xie wrote on Mon, Sep 28, 2026 at 03:25:48PM +0800:
+> A 9P2000.L server can report nlink=0 for a regular file that still
+> exists.  On a cache=loose or cache=fscache mount, lookup stores that
+> value with set_nlink().  A later successful unlink calls
+> v9fs_dec_count(), which still calls drop_nlink() for a non-directory.
+> drop_nlink() warns, and the unsigned link count wraps to 4294967295.
+> fstat() on a descriptor opened before the unlink shows 0 before and
+> 4294967295 after.
 > 
->   fs/9p/v9fs.h:31 : error: Cannot parse enum!
+> The warning on the unpatched kernel, trimmed:
 > 
-> Move the three #define lines below the enum whose values they are
-> derived from, and give V9FS_ACCESS_ANY and V9FS_ACCESS_MASK their own
-> kernel-doc comments with the descriptions they had in the enum comment.
+> WARNING: fs/inode.c:408 at drop_nlink+0xac/0xd0, CPU#1: trigger/188
+> CPU: 1 UID: 0 PID: 188 Comm: trigger Tainted: G                 N  7.3.0-rc4-00537-ga3ff15db6820 #1 PREEMPT(lazy)
+> RIP: 0010:drop_nlink+0xac/0xd0
+> Call Trace:
+>  <TASK>
+>  v9fs_remove+0x529/0x750
+>  vfs_unlink+0x2f0/0xbd0
+>  filename_unlinkat+0x340/0x6c0
+>  __x64_sys_unlink+0x46/0x70
+>  do_syscall_64+0xe8/0x4f0
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  </TASK>
+> ---[ end trace 0000000000000000 ]---
 > 
-> Also document the four enum members that had no description, using the
-> corresponding mount option wording from
-> Documentation/filesystems/9p.rst.
+> Directories whose cached nlink is at most 2 already skip this
+> decrement, because the exported filesystem may not maintain nlink
+> (commit ac89b2ef9b559).  cache=none skips it as well (commit
+> 574aa0b479947).  cache=mmap does not take this path: it sets neither
+> CACHE_META nor CACHE_LOOSE.  A regular file on cache=loose or
+> cache=fscache still does.  Its count came from GETATTR and may
+> already be zero, so skip the decrement when i_nlink is already 0.
 > 
-> Fixes: 76381a42e4a5 ("fs/9p: Add access = client option to opt in acl evaluation.")
-> Assisted-by: LLM
-> Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
+> Verified on 7.3-rc4-00537-ga3ff15db6820 with only this change.  A
+> server that advertises nlink=0 and accepts the unlink no longer
+> warns, and the open descriptor stays at nlink 0.  An honest server
+> on the same mount still goes from 1 to 0.  A rejected unlink leaves
+> the count unchanged.  cache=none is unchanged.  With panic_on_warn
+> the unpatched kernel panics on the warning; the patched kernel does
+> not.
+> 
+> Fixes: ac89b2ef9b559 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
 
-Sure, why not; picked up.
+
+This is the same as part of what was sent in [1], but they never
+bothered resending split commits, so picking this up instead
+
+[1] https://lore.kernel.org/r/20260919221734.3708000-1-benquike@gmail.com
 
 > ---
->  fs/9p/v9fs.h | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
+>  fs/9p/vfs_inode.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/fs/9p/v9fs.h b/fs/9p/v9fs.h
-> index a462bcbfc7da..2f18e75f0ed0 100644
-> --- a/fs/9p/v9fs.h
-> +++ b/fs/9p/v9fs.h
-> @@ -21,20 +21,16 @@
->   * @V9FS_ACCESS_SINGLE: only the mounting user can access the hierarchy
->   * @V9FS_ACCESS_USER: a new attach will be issued for every user (default)
->   * @V9FS_ACCESS_CLIENT: Just like user, but access check is performed on client.
-> - * @V9FS_ACCESS_ANY: use a single attach for all users
-> - * @V9FS_ACCESS_MASK: bit mask of different ACCESS options
->   * @V9FS_POSIX_ACL: POSIX ACLs are enforced
-> + * @V9FS_NO_XATTR: do not offer xattr functions on this mount
-> + * @V9FS_IGNORE_QV: ignore qid.version==0 as a marker to ignore cache
-> + * @V9FS_DIRECT_IO: bypass page cache on all read/write operations
-> + * @V9FS_SYNC: flush writes synchronously to the server
-
-I reworded these a bit as 'flush writes' sounded a bit off.
-
-+ * @V9FS_IGNORE_QV: ignore qid.version==0 as a marker to disable data cache
-+ * @V9FS_DIRECT_IO: disable data read/write cache
-+ * @V9FS_SYNC: disable data write cache
+> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+> index d7e678de0a036..347739b81513f 100644
+> --- a/fs/9p/vfs_inode.c
+> +++ b/fs/9p/vfs_inode.c
+> @@ -495,6 +495,12 @@ static int v9fs_at_to_dotl_flags(int flags)
+>   * nothing and races with concurrent metadata fetches that may already
+>   * have observed the post-unlink value (nlink == 0).
+>   *
+> + * The same applies to a regular file whose cached nlink has already been
+> + * driven to zero by the server: in the cached modes the attributes come
+> + * from GETATTR and are applied verbatim, so decrementing a link count the
+> + * server does not maintain only trips the drop_nlink() WARN_ON and
+> + * underflows i_nlink.
+> + *
+>   * @inode: inode whose nlink is being dropped
+>   */
+>  static void v9fs_dec_count(struct inode *inode)
+> @@ -503,6 +509,8 @@ static void v9fs_dec_count(struct inode *inode)
+>  
+>  	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
+>  		return;
+> +	if (inode->i_nlink == 0)
+> +		return;
+>  	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
+>  		drop_nlink(inode);
+>  }
+> 
+> 
 
 -- 
 Dominique Martinet | Asmadeus
