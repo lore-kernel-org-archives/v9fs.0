@@ -1,67 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793253038;
-	b=Jrs4wwT0qRoTOMbb4mzFk7LCIanH3Tzkt05Jaoygqw9WqWRt9pIF3sfu1eD7HuIGuKKj
-	 WnC4HN4pelpAmGDGttBsdYysi0YuAYsDh4HNzquZ94WT5fDaibSnuCPoJkJeY1rGpXKF6
-	 hP7+yQ6+iRNcitQdU3gQZBOQX8gFvowPVA/vjg9G45xszFFfvFDvttRadHuBuADJqdekU
-	 SFZgaDlv8gtaENakZOT5wTX3bo01ogQP0435hQzPqZ1LFZS29quPpvYt/DjDeOSe2VdTf
-	 uokJccGmcrozastTvKKk7RtjyKlGTx7P8N+vrTNqw8KSIqp6vPc2jblp9de8F47v7fg==
+	t=1793253510;
+	b=4JjmQAvuMuPVKAeylMmoZBweyoG8aW3qbrYmleoFCn7GYUEuu+pOqeRVO93hnz16AlD9
+	 OI9BX2Pvf4KeTW9kUtzv9uq1QRX4esgvOVzlk2VOv7qtORKzz/oaQfERkCBrBlIyshnlf
+	 2DZC10wYjvDXiVW0hFtpVVJPB07vxUE9ZeTlIvBVdR0Zv0iQNMKBMtKE705WD+D5QQshq
+	 bIE2VL+0x29v1Qs8RTYBBntyla0r7uyyv/0BfeAjWRjj2LO9nc9p6AaPYMn8H/4RHfMDe
+	 5PpE3nxJqbK3tGO8Wb7yx4YhWylL0lhmNpxaL8t2fyuTtRpcRXxMSv4u6uglZSuw7eA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793253038;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=P3PE2FvQDeDg47lUY+c1B4hlYkYPfpXvssIQ1cU0Aro=;
-	b=zli5IwkP9H9YHIwJikRYBDW4etqsR7x4F1FpNZqmJ2JAl7lvno0vuinEf1AHt22JNrap
-	 XH13OxpSGmYEvKsZXhoPWHigsMfHX+3NOQBdmOat5vBoQOYalaH8wbWPbKMhQP49lx3LE
-	 xKnkXvn3I2nSoGWvLZUACXKlFYYCJhBlb7syF7sPa2TDK64rUblXYFhPtC5FTfgxymxjF
-	 0ipV151kfCavx9dBC+8/zkMbknWwLo0dFEpjaU363WB9WCNNu1OJAaT71deQSo+MvqSYc
-	 AFqp7/jTWFpbiv/zB1NpF0guDCwArkh2ubWrGuubWfeRHeXpKBZtqbkrq0Cj4N6vv+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793253510;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=uccmeCHaHJdMWir67NKZcEGmBbvnIupxOj2VL9Ao9Ls=;
+	b=4PyjIOAfysVBZqd4RbiOMzUi5BRwv6dGvAuCdp9uF48KeW4gJg0TJpBjbnZbwEqGBVOh
+	 oQk4Fx/WvBd8CmkpNIcTI71AqoOWylE8S6gaTlFXg9V5273BJVNLXLE7FMcSXicbzyHPo
+	 f9XLvbxJmf2vN4cu3oGh4fZ/kVAlaFXu6ni+w1KIxhOANtplEJDch2FCHOqIQKXQQA9Bs
+	 WVvJu29GJzynD8ULgkhkfdR5KRzHY0MoWWA26rjDSkvpnkJ6q3RR5uLmLpoTJKHfLoVtE
+	 cSqkJOBaeO7J4j2KFJGcSR6TkzNCHeY2aLbDmM/ALAkQrEpXa0mhcTOlYtA2KfbMjyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=codewreck.org;
 	spf=pass smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=pBBE1z0c;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b="gxFdJpr/";
 	arc=none smtp.remote-ip=62.210.214.84
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E3A606A31C
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 05:50:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6E3A606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E2A606A31A
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 05:58:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00E2A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=pBBE1z0c
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=gxFdJpr/
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id C9B3214C2D6;
-	Thu, 29 Oct 2026 06:50:23 +0100 (CET)
+	by submarine.notk.org (Postfix) with ESMTPS id A3F0714C2D6;
+	Thu, 29 Oct 2026 06:58:24 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1793253025;
+	s=2; t=1793253506;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P3PE2FvQDeDg47lUY+c1B4hlYkYPfpXvssIQ1cU0Aro=;
-	b=pBBE1z0cN+HxlacBpE2IQ5462goyyiey+AqDOHAWTl1ejch4s34DaA7TG+MWKDfd4GduZy
-	AEXLHnvae3qUUVfCOw05R5KdoWygZ61ukfQBpKZ6qIhg9R9jMn2L/itqdtEd/oufsGYet8
-	HBOhTRsAplaTWNBFbip1WRdLt+m2lzYKaWNH8i9y/ow7xypoieBqa/ufExB3J5CiDmcxyY
-	b4fZOGWwNPy7625PiWZ01j9LB1LQ5XSHOx2jylPH8xrUQ08AEZm0V+bn7dbKUN3YzgwrfH
-	GtNBGQ3wryUAsyBcqGB9/A0IPTW2Ae5TQtDq12tGMndt5iK8/ZgH7o9Rxn0UKA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id eddc34aa;
-	Thu, 29 Oct 2026 05:50:22 +0000 (UTC)
-Date: Thu, 29 Oct 2026 14:50:07 +0900
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uccmeCHaHJdMWir67NKZcEGmBbvnIupxOj2VL9Ao9Ls=;
+	b=gxFdJpr/0LBsrQYke7wZ6t4B2VNnOwI0omJ147Z0+pdSwNm44kqk/YxP5STLT/xM6g7eUj
+	QhCDnx/OXQbZbhrpEpKq6hlADsraoxbTw+kAsi17u7qWjlg0o0sp1ej/L62ImdjRhdQK3T
+	0fwmP1D5v9IuqFSfgGKFJOKOPE8pUXp+omMmIDqx1BIeHeigXxvHuApuAUGTXpaFuezW/G
+	/UcvGhLwF4hQf0lT8Rjm6/8bzuoME+8+uQ3/hFVm4SRuSUAW1FqYgeHcOO1z5sdMS33FzV
+	vOwn75RlmYCTlFDGRop3qDaLoBwGP5q58SnInH+gx7nmVrC1fGbsPJccffg2oA==
+Received: from gaia.codewreck.org (localhost.lan [127.0.0.1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 51c5776a;
+	Thu, 29 Oct 2026 05:58:22 +0000 (UTC)
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH] 9p: pin request under client lock in p9_tag_lookup
-Message-ID: <auLejxGRgVLKlLuL@codewreck.org>
-References: <20260930201357.590469-2-Jeremy.Jean@oss.cyber.gouv.fr>
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Hui Peng <benquike@gmail.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] 9p: reject RERROR/RLERROR with zero errcode
+Date: Thu, 29 Oct 2026 05:58:00 +0000
+Message-ID: <20261029055801.3-1-asmadeus@codewreck.org>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -71,31 +70,43 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260930201357.590469-2-Jeremy.Jean@oss.cyber.gouv.fr>
 
-Jérémy Jean wrote on Wed, Sep 30, 2026 at 08:13:58PM +0000:
-> 9P clients keep separate request tables but share one request cache.
-> p9_tag_lookup() can race with the final p9_req_put() and pin a request
+From: Hui Peng <benquike@gmail.com>
 
-Ah.. Right, just checking the tag isn't enough, we also need to check
-the client... I'm not sure why I had assumed the caches were not merged,
-they're only not merged with different types..
+In p9_check_errors() (net/9p/client.c), a malicious or buggy 9p server
+returning P9_RERROR or P9_RLERROR with ecode == 0 causes
+p9_check_errors() to return 0 (success) while leaving the unparsed
+response payload as if the expected reply message type succeeded.
 
-So technically we could add a reference or some kind of id for the
-client and check that, but given SLAB_TYPESAFE_BY_RCU is hard to grok I
-guess it's much simpler to just take the lock and be done with it...
-(in that case we can get rid of SLAB_TYPESAFE_BY_RCU altogether, the
-lock is enough guarantee that the memory is valid until we get the ref
-here)
+Map ecode == 0 on RERROR / RLERROR to -EPROTO.
 
-It's far from a new bug so I'd rather not rush this just to go back to
-rcu a few weeks later, give me a bit of time to check how much impact
-taking the lock here adds so we can decide. There's enough leeway in the
-p9_req_t struct that we can check the client for free if we care...
+Link: https://lore.kernel.org/all/20260919221734.3708000-1-benquike@gmail.com/
+Signed-off-by: Hui Peng <benquike@gmail.com>
+---
+This is a resend of the other half of that commit, since the original
+author never bothered to do it.
+It's valid enough to be worth the 5 minutes to resend it...
 
-Meanwhile, if someone else has an opinon feel free to chip in
+I kept their commit message & code verbatim so kept them author
+
+ net/9p/client.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/9p/client.c b/net/9p/client.c
+index ef64546c6d52..e63e8c2a853d 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -448,6 +448,9 @@ static int p9_check_errors(struct p9_client *c, struct p9_req_t *req)
+ 		p9_debug(P9_DEBUG_9P, "<<< RLERROR (%d)\n", -ecode);
+ 	}
+ 
++	if (!err)
++		err = -EPROTO;
++
+ 	return err;
+ 
+ out_err:
 -- 
-Dominique Martinet | Asmadeus
+2.56.0
+
