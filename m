@@ -1,55 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793253914;
-	b=X8MnYrza0o2K617YPA7kgrI/TMc3q1mgxytRtMmW8YaiqAodGoe0lrP/TuETrlNGzqWg
-	 yeFgWN+XKmBFss9Kcs6um9mWD3mbz2BrThiNDjAl/S498mIqX2nbAkZfUxGNE8TGls/av
-	 LzvIGrQkmmDcnRJPwLu8mQu8iolU6wLcROSimB6C2g4oEbXkTJkUqGi9EDnAf1NI8NKU4
-	 fO6elD8C7UdoyBfsn8/wWA0ozktXhNOZxnR9XWKzz9RsAPCXW5QJOOI8BbtTdmySwujWa
-	 n8qTbRL35SxixkCZ7bAY2BPxAQb1+015HXS0pnvlcjqw564t6TBx1U5Z9xRYewmYttg==
+	t=1793253964;
+	b=1qkRHkFlEV/oRPjDxv0yRRhxZJNN/m3t3CJ0feY5wZxv4W8yBR/5kcg5AiCptY0b1SO9
+	 vH1CU47bVjafgniDnGRFaEUxKjhl2cN/77GCZGrHk3TLXGt88/cFxEYp82CYXYihUGPCG
+	 16C9m1Srj7kvV0pm+G79q0lcHPVS1oG2+GTjWTL2wejvga9yYzJ9tjHupJeV+FSuQ5CTZ
+	 vOGeSyg2H5Om6v5PNF5/WSlOHG5+ocoPVdsidajgZMPEfbrXGjrX4JI9hqP+c32/c6Uwr
+	 wJFc2HFZOSLUWPqLUT99Kwr97GUMycfeIvGk55Df40wCXf7iJ/A+/DLzUWzyNMO2FyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793253914;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=RhWSRkx7PvODuPDJav0DD8D71ISyb27AyGFn7PsZggU=;
-	b=PmKGShs7uHh9hFl/YnqQBI1HAHH5t18iN4R2BYEjKSOFlmHyYAw6uTSn99VPrHFRJlr4
-	 +Xee693+uxaJSo1/RGPnPY+Py1o774oRHg1LnPxexN3DB9EPjQuGgfKZk0SrfWACwuphP
-	 4XAa2VDQsKf5gdZ5NZtWYmLb00sNNGXVyqG3uq4p/kLWYe8v8u+jEUKa5Q4QrA1LIK9rQ
-	 5Y3VTDXdluwCMhqr+qKd5PS3ZLTXLa4Tn9m0wWJK5TgkZyUPpjmFbEvGW3b8Ttb3+lmlE
-	 RUFayLI8efKYm45K9xfTCtadhUfY1A2YE/HwpFP2t4D4YUp3EruofF7jlK8mVKy3lYg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793253964;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=TVw3BohKuLMa7W+lADfBwRsku9YoKiKZKOxm1/KhoH4=;
+	b=P+impdhB0p0mOmPyoieCmhEjJOTdppczTkYq+pTkWdqERw3g14bKdk1bDoQW8Jo3+1Wg
+	 yh/7PKLhLFlrdFzXwUZcgaz1hqVR1TPtpRh9lAd0J7QWud33HQdakGm6L3jiZ1mT0Yph+
+	 FwPB7/FA22kgd07Mu+VEV5U4cWEmxu5kQMvW5o++rHGCu/Z+BCmT0tc3TQKbWQ4x7zNZp
+	 KJtCwNnjSU+9xMcVXQQZYkDCT5IDEY+AFsgDnJwWML2UKW/BcBkw+29gO2hWJdByy68lT
+	 m792K4wO1cHPi07ihOU8pE3a9Y1CripSfJKnkQVlUty2JOdTbrW64tgGAJ5CLnxQUTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EOq7Rv7O;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=codewreck.org;
+	spf=pass smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=XfGeKiAJ;
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB62B606A31A
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 06:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B902606A31F
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 06:06:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B902606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EOq7Rv7O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5D51F01828;
-	Thu, 29 Oct 2026 06:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793253913;
-	bh=RhWSRkx7PvODuPDJav0DD8D71ISyb27AyGFn7PsZggU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EOq7Rv7OGbEPLjwpNiukxGQFe8M5YU4NoBg3eTY82qEYY+UvobPkCDCkHZlsemnRT
-	 XWxzlLm/N9F756N+69F27LnDnD0O00N5tUSDkCH+yI8t8KjmU+PSM3TX7B+bcasY5M
-	 IO7UWhFlYgCvzh6AaCRWQJ8yYcyyF44GomwnK3EVmKLaX04x28kh3Sin1ilVM5DcAy
-	 ARNC/o7CxNUG1PGWJnFYwmnvnuDRJVEx2jxnYZC2LwPSCl4OF6qLB60FSF0lW2x/1x
-	 SmJiw5pdirPk2CTdCSjwKK5L27DcLFizGkhrsnybnqoOwQ7yIo4EKgWczcUL9cqSd0
-	 X7HhM4jUDkMgA==
-Message-ID: <sashiko-outbox-188790@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] 9p: reject RERROR/RLERROR with zero errcode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dominique Martinet" <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261029055801.3-1-asmadeus@codewreck.org>
-References: <20261029055801.3-1-asmadeus@codewreck.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 29 Oct 2026 06:05:12 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=XfGeKiAJ
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id EA86914C2DE;
+	Thu, 29 Oct 2026 07:05:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1793253961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TVw3BohKuLMa7W+lADfBwRsku9YoKiKZKOxm1/KhoH4=;
+	b=XfGeKiAJRMTyb5BFZKDXvcC78UdYBJc/q8U7/DUOnispkb58psA16jIRFs6n2uIci6Qj0d
+	YZ5ylWY1SaXdZcfhQ4gcRF1nadR721uvmVL4ajmh3ofbB/jwgN4iPtJufy8cb7thjA1F0Y
+	PHhp5bwM/CyTyJQPYzF+le9Xm/0qyyz19s0AicfCjw6u/I/sPHgwXS/4tXrf2XiHqjX8cW
+	GJpxfweAQCuYwNyutbcpYaQFNEhQfWmqYICd0u+m7dPGfuUwz2R1mKX0GNQMHtRnKMTkJX
+	5DqjIm3x61nDvZ4JN0sANM4PtTg9Mnbl9b42700IgW66OOvBrD641FsrLf+DCQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b67bafad;
+	Thu, 29 Oct 2026 06:05:58 +0000 (UTC)
+Date: Thu, 29 Oct 2026 15:05:43 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Ankit Thakur <codeankit.thakur@gmail.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] 9p: fix header guard comment in acl.h
+Message-ID: <auLiN_HvzFiEOUDh@codewreck.org>
+References: <20261024092154.1844-1-codeankit.thakur@gmail.com>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -58,23 +68,12 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261024092154.1844-1-codeankit.thakur@gmail.com>
 
-> From: Hui Peng <benquike@gmail.com>
->=20
-> In p9_check_errors() (net/9p/client.c), a malicious or buggy 9p server
-> returning P9_RERROR or P9_RLERROR with ecode =3D=3D 0 causes
-> p9_check_errors() to return 0 (success) while leaving the unparsed
-> response payload as if the expected reply message type succeeded.
->=20
-> Map ecode =3D=3D 0 on RERROR / RLERROR to -EPROTO.
->=20
-> Link: https://lore.kernel.org/all/20260919221734.3708000-1-benquike@gmail=
-.com/
-> Signed-off-by: Hui Peng <benquike@gmail.com>
+Thanks, I've picked up the 4 patches
 
-Sashiko has reviewed this patch and found no issues.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029055801.3-1-=
-asmadeus@codewreck.org?part=3D1
-
+-- 
+Dominique Martinet | Asmadeus
