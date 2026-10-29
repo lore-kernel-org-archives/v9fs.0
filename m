@@ -1,55 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793253791;
-	b=cBRsPOE8lV5ll+uX5+UGcgv9RmM01J5Fz9wAH7/ai6lD/Lbp6MkPRUPS2pcZ13lniuLt
-	 a1fe6GVgCXkgW+xsSFDXEyEHHvRWkUUonJX0rod+IjdQEjy6ggQlrZdQihS0THi9w5bH6
-	 V97D2PkgREOvRPidiKP3A+684nW79AowC3kBx9dF+TcNbJOSx6Nf1GA+4AwOrrWNqQxAY
-	 2kCKkFFRkXzp34SRvzDHdtYNUZaFIBEW6iCXKlkrKFujezsHWEnzK+dJmN6Lm18wK9P1E
-	 NFZjOxpYr/OU4ndsICzWbtDz1U1yRqmINiU5KkSJSFg0LE+Xe6Y+1jigJAo4ZeS3JBg==
+	t=1793253897;
+	b=5d4Z/kKUL81a/MlZXZWaldlDwvng8jEeal3jKqpfYzh4ASqZICge76f0Sf6ZZXp/1w7Q
+	 HUDGLwK5Wa4hrbVZJQ7TBDGEcaReE2wkNnsinZHzSpoGymBufqluMeuyAMidm80dpvfwG
+	 M8ltJlxLqA7BK9+tIGUd4j/ivkwMgj7uTdAaAWhiDnfe9tEyOpwEVohWY+PJMkkT+OxDV
+	 G9heMRg0cVctX0Pz8s6DAgWtQce9/4XkufOGiOuFm84TxKNipbZnUy5d50W71/hMjRtLh
+	 XdlzBDfa1iOBL1pbfxhP2+ozMzi6nnIwCIcZclhkmlalwIBdHJ9jyCbPZZuUqg6POew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793253791;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=kn/3NKgh2nSkHRrNMc5Xiz9B6ou4t90HP8GFBRYFYc8=;
-	b=TIs580YrX7+521l2SfVLmklNQVxaJq7qki5hr8fTdDDDQTlN0E0ShCbzvXPlCUX7EvFx
-	 gMm9H5gWHEpVLiEv0KRGEn4YyXtWhg8ROmbNKqtLEk8lcItS4SD0PY9sELS3G7kI3NbYI
-	 FSZKREKWLQoN8zt0AU2PvmDLtydhYsKw1qyxoPCQ/ZUJ2E+QgBnOP6ECW4PRaFsayNgyI
-	 +Q9P9Qzn3JrZdY+MuTJ6nfaGBokt9N+J6cgotodoIWulN+FDaH3skfExZQnJYsB3TEt29
-	 vC1LjbnfBJcoRNSBZ4aMYz8hTCELSlsJ+cLdGZj+OsB+eUeogBLF5zLyQ6yzV/iFOvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793253897;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=MI842OMXovR+56TJ0REGTtFqRIUEY+IlN9+CViJwxzw=;
+	b=NeucVj0KHyeb2GCmJZrCTXVER9gWINoiwvZH/tZCyDrdJK8XMj3175eI1Xz+YLvh0p3i
+	 FAsyONpF/uRcJWsst9UvCgupJATsUBME+FZGMnnov2OrkqogUQ5yCqzKwtPdAMBXhuPyI
+	 xtsxiMxBG+1zWlIvtHFHzcvONlbvvDaIf3L6W9KaHQ60MiA8W0FwRd/6Kc+zpIXT9Z2YW
+	 ydH+Fqq7snPfRPMkLsFZZggP/42nwGgbvJQLFWHQC1CeO7mN4xdLA6CtdD7+g4kAwxKDL
+	 GZWHdWecagTGyE8mZg6GFtegPNj3dm42MyD7p2LdaBCXfUiv7or705IsRgCSTf5YT8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nzO+m7HC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=codewreck.org;
+	spf=pass smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b="UXvP/VSH";
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB92606A31A
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 06:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464F0606A31C
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 06:04:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 464F0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nzO+m7HC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BF81F01825;
-	Thu, 29 Oct 2026 06:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793253790;
-	bh=kn/3NKgh2nSkHRrNMc5Xiz9B6ou4t90HP8GFBRYFYc8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nzO+m7HCFGmTd2zlrqdP4/TX1o0dTuaBnQkcYCVaNk2bSPHvAAbPy8ghMItkRdTFq
-	 DMJ2VKElugYbFu8FTbb70L0UanLT46SDMWVeJ7FRJjAOTfod9kMHD2itFqEf3mPsRs
-	 R1aveIRl6V/bDbl5KMsgksb0IPlOImh9q7TWyt6sHrfuzVjqZqZq1IfvfNl4PJ0G47
-	 /9HTZ3M19SSX3rNBIY+o4RS6h4Vs/sGLGsl2cEhsYs7FNifKzdhMsia/SH3kBf+3aK
-	 nsEdXjHHmL68timQaHMr4NLgwqbIceqMPqM444PCji2swuU2sirYDJwIakYOtBBreE
-	 Tm2hytfDq2uxA==
-Message-ID: <sashiko-outbox-188787@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] 9p: optimize p9_fcall struct
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dominique Martinet" <asmadeus@codewreck.org>
-Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261029060014.3-1-asmadeus@codewreck.org>
-References: <20261029060014.3-1-asmadeus@codewreck.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 29 Oct 2026 06:03:10 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=UXvP/VSH
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 1E2C414C2D6;
+	Thu, 29 Oct 2026 07:04:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1793253894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MI842OMXovR+56TJ0REGTtFqRIUEY+IlN9+CViJwxzw=;
+	b=UXvP/VSH/0Ypf7ybIVsUs4dH0dcJu8xdRx8p6bv71T2W+9P9S5MPPdQa21fDkriLMzH79n
+	YgXVSvwDD3B6VIToAcTj9ClfADPEw+QLwxvsYbrY880y8rdVvTcm5LfKjc/HWxFF3DdOr3
+	GWwL1WbDj02//nRSIwOm96KLU7Pab/QiA5J8C1igm6ed1aSTnUD89VLa/9E5awWQH3cDC+
+	+jvX8Ddwo27UwQwWbnqN5k8TPxWYPdZQ8CZomU5dBgEtWiRurRhFu0d+QYimFkPBeCOcaf
+	BRsc0LRMvnKMz9S18l14u3WN5OOji5fX5WqVMnrHSIjSD19Y8VE5SjVFzcdAVg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 9ad4268e;
+	Thu, 29 Oct 2026 06:04:50 +0000 (UTC)
+Date: Thu, 29 Oct 2026 15:04:35 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Barret Rhoden <brho@google.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] 9p: treat read return values of 0 as EOF
+Message-ID: <auLh89BhlBRC2G6E@codewreck.org>
+References: <akfHGcqke9qixd3Q@codewreck.org>
+ <20260702090941.1298188-1-brho@google.com>
+ <2237820.1783934942@warthog.procyon.org.uk>
+ <f7005841-80a9-4c21-a114-6cfd6ee63a58@google.com>
+ <aqbGBMJ6bntYB1t2@codewreck.org>
+ <3d5f70fa-64e6-4df5-bda9-6d3cdd00682b@google.com>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -58,32 +75,32 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3d5f70fa-64e6-4df5-bda9-6d3cdd00682b@google.com>
 
-> p9_fcall has a 1 byte hole followed by more data and then a single byte
-> element:
->=20
-> struct p9_fcall {
-> 	u32                        size;                 /*     0     4 */
-> 	u8                         id;                   /*     4     1 */
->=20
-> 	/* XXX 1 byte hole, try to pack */
->=20
-> 	u16                        tag;                  /*     6     2 */
-> 	size_t                     offset;               /*     8     8 */
-> 	size_t                     capacity;             /*    16     8 */
-> 	struct kmem_cache *        cache;                /*    24     8 */
-> 	u8 *                       sdata;                /*    32     8 */
-> 	bool                       zc;                   /*    40     1 */
-> [ ... ]
->=20
-> This in turn also makes p9_req_t 16 bytes smaller (152 -> 136) as it
-> contains two of these.
->=20
-> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Barret Rhoden wrote on Fri, Oct 23, 2026 at 08:19:33AM -0400:
+> On 9/13/26 11:49 AM, Dominique Martinet wrote:
+> > Sorry for dropping the ball here, I haven't had any time to do 9p stuff
+> > at all recently and the wave of LLM generated patches hasn't helped...
+> 
+> no problem.
+> 
+> as far as resolving the underlying netfs stuff goes, i don't know how much
+> of the logic about "are we at EOF" should be in netfs or in the servers
+> (9p).
 
-Sashiko has reviewed this patch and found no issues.
+Right, I don't either which is why I was hoping for David to follow up
+:-D
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029060014.3-1-=
-asmadeus@codewreck.org?part=3D1
+> would you be OK with merging my original patch so that at least 9p works?
 
+Well, it's certainly better than returning ENODATA to userspace, so
+let's go forward with that.
+It still leaves much to be desired (cache enabled, symlinks...), but
+that can come later if someone has energy to fight this windmill
+
+Thank you for your time,
+-- 
+Dominique Martinet | Asmadeus
