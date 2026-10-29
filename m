@@ -1,65 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793241981;
-	b=PaQJjnRRQPRbRMermsBtcudO7jBgG1RQ1NOB7ksM8vcLFbs8Ol3/vTFx5pAnCttg5Wed
-	 bzSE1NI008xwCXHcJgVl4yLqOw+QSm39+wAGZy7oCbJnh577Z4ye2GHd/XbXqe+w8qlxV
-	 p8tVOCclU5125vwtYIicE6375ATnvaNLWhoKdx95PaIlSaf5fKg8mGFifZEtDwUzsfk8k
-	 /wiy70LW8JVbX0pL9KWwwBReY/KsBy98MW3wMa47E/GgqTE8YItj7fNNOTBP4MM/8Db1Z
-	 XAw1zZly5MVVa8AOrcRP55Y5Qr4p6eIboilqyJr/lrDgv+kD8+ccFJ3gtLnhQQByvNQ==
+	t=1793243391;
+	b=LZ+mihjfD+VgykTanvnu2GKq1iCH9y5aM4c6dOF0F1iDH12aRIgC5OS8ywZDfFBKrbtm
+	 lemy0ltkU6dR3tn/znDMBhT99iKJ6AYYssDa281ZXQrLs3JobNHNVnNkOHeg5g7gPK6qd
+	 EfdvnqRyd6dd0N+RMq/T0NMh4VfOuECXI57Nw/fStxwEIBzW+ZAv50ICCWYHExibpd+fm
+	 Njrw4E26GUUpJP40bFAoMsOWqDoe9AgeSjV/NDCjrScBVZZiQckIFIo40guurBoSrcZ6J
+	 7XxxivYXiOuTNc3Lu07fAACCqG1mNAVmYTWOZYBTih6sgMV9D35AGAmu3klz/qo4v2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793241981;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793243391;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=PABQUNtwzA7tp2WIdIkVm8tzuMcr4y+wWPxd8RLkMGk=;
-	b=gjB/TFdpS17xAAzNoF66w2wPZI9hG5qY4XlW3+LDX/rbLxOla6Ww0n1zyoqbCjUxWKZh
-	 JUqAle0AOkV/8+7urNRtzDaePCE6h6UexCCOw/vFZVzkZAq5eKQUboMvEVFMW2OE+FBtv
-	 2ETgvByqEn5tMQQY2eMf803xvrHHAD5ccDo/n4nOB5Qiove5OInG9KJ0S2WHG/e4FQaGX
-	 TBnTDEsrJ7hfdJtq29F92r9MVAJF7qJ0QBP9OEqNfkk4jpVXgG7rmA/CJ/CT0jdAboT8D
-	 p4rHLlr4H9RKokIt971ik8eJgfDB+6/aoKoZXVsn9YPcwagdrrNYKTASZsF7f5mjWnA==
+	bh=MJRVYapJx4nbwT76nv618mDu68+p05gA77AZl7Oc3T8=;
+	b=y9j48xkpYO/TEMGTkDNaQI4q6vMbq/N25k8Yqu4J0PNLl9GZ/yzwS5m4VqPoelKWpYAu
+	 x8XFNLPBMtxPUFAdWf9GbqO65EspOQ3XorxqUtyYvG2bIJngqL4ehrYQAXPwz4wL3K8s4
+	 dY6kKuuzkITF4EIMgwtExJ4rqduA2TC6dGAJB745XaNqu/S2zzW0YozYE3ls6b5mAdXcq
+	 Ojz92v5WlUp6zgW9uGgJctIC/EG+cmrpA5nruS4JWvVVbPQtsVAWu5sY79YonxzFSsEb8
+	 ltNlx3ryfot99d36/6A0d1qR4rp5lMGWjlU+d5jD482N5o3e9ha30xyzDVXWsikpSnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=codewreck.org;
 	spf=pass smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=SayRpoU0;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=o++yEMxs;
 	arc=none smtp.remote-ip=62.210.214.84
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFE1606A31C
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 02:46:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBFE1606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2745606A31C
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 03:09:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2745606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=SayRpoU0
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=o++yEMxs
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 99A0B14C2D6;
-	Thu, 29 Oct 2026 03:46:13 +0100 (CET)
+	by submarine.notk.org (Postfix) with ESMTPS id AC50914C2DE;
+	Thu, 29 Oct 2026 04:09:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1793241976;
+	s=2; t=1793243387;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PABQUNtwzA7tp2WIdIkVm8tzuMcr4y+wWPxd8RLkMGk=;
-	b=SayRpoU0s+/TQ1WuZe4o/5liJzEtyY0Ch/PDlpO9NxyVwx7wBoIwb6jSmg1hmjWXSkV4hJ
-	4JzHeZSHMtuRZqHGVoRJgpaOCo1K3WAM0AmqQUK5SJD0dreuMVeEV1EcMg28060HokvO0l
-	luhnibaYFzKSkxsF/AzWQUu0ZZWpKg9nZUKjRI3xLgdA9D8jdi8mogTt4H8mkQvntdY1Kh
-	aUE8rRpDDwCdwQ2Qo1PSqUY02t9w5+uvBQ7ESivCc/jxPpMnwGZGU1eBL7n15UNt4oLFXd
-	n0hkQJl8mCxEVLo1nZ9UCziAU7jpmF3pXWy0cSg/jdZCHpkulq9Vqj0CX+dGzw==
+	bh=MJRVYapJx4nbwT76nv618mDu68+p05gA77AZl7Oc3T8=;
+	b=o++yEMxskNnDGwaYaFTVQC5iiqAkfh/Az4+lIZwvSK9qpjo/biNZ8q5OOb6jzzkJE6/VHn
+	jQfV5qn/uP7w9TthIKa3n3J09aBk1jrwdMUJGI3C1R48AprZALFYMdjU5tu4DLTR8CC9TV
+	qHQXp3ZyN1dui6arOB4r9t/PtWErRTsEv80FS70t5RtqGUQLyhJLD7N00H1AxEz+aSu/Jt
+	p6ZLoxfc/yerA9TAPcPQYbyGl2t2cky2eCvespdyDRdQKh8YeJOoTtO8xj+kqZ2mpLazO8
+	Du0+9a+BbSzZBpRZF7b5T1JJSBsbtk1vr7h2RfsnihjyI7I1+WWlcN9XDonNtQ==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 438811e2;
-	Thu, 29 Oct 2026 02:46:11 +0000 (UTC)
-Date: Thu, 29 Oct 2026 11:45:56 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 46211ad8;
+	Thu, 29 Oct 2026 03:09:43 +0000 (UTC)
+Date: Thu, 29 Oct 2026 12:09:28 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, mika.westerberg@linux.intel.com,
-	andreas.noever@gmail.com, YehezkelShB@gmail.com, corbet@lwn.net,
-	linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux_oss@crudebyte.com
-Subject: Re: [PATCH 0/3] net/9p: Add 9P transport over USB4STREAM
-Message-ID: <auKzZIyFW2CTci1b@codewreck.org>
-References: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
+To: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
+Cc: v9fs@lists.linux.dev, Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: fall back to the normal open path for non-regular
+ files
+Message-ID: <auK46EAL4VU4JV4a@codewreck.org>
+References: <908FC420-EC1F-46FC-8526-698F646961A8@stu.pku.edu.cn>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -71,52 +72,59 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
+In-Reply-To: <908FC420-EC1F-46FC-8526-698F646961A8@stu.pku.edu.cn>
 
-Alan Borzeszkowski wrote on Thu, Sep 24, 2026 at 06:23:30PM +0200:
-> This series adds trans=thunderbolt, a 9P transport over the
-> Thunderbolt/USB4 DMA tunnels exposed by the tbstream character devices
-> (USB4STREAM). It's designed for simple host-to-host file sharing over
-> single Thunderbolt/USB4 cable.
+Yuanfu Xie wrote on Tue, Sep 22, 2026 at 09:15:36PM +0800:
+> v9fs_vfs_atomic_open() and v9fs_vfs_atomic_open_dotl() call
+> finish_open(file, dentry, generic_file_open) regardless of the file
+> type the server reported for the created dentry.  The supplied
+> callback replaces f_op->open in do_dentry_open(), so blkdev_open()
+> never runs for a server-reported device node: an open() with O_CREAT
+> succeeds with f_op = def_blk_fops while f_mapping still points at the
+> 9p inode, because the bdev mapping swap only happens inside
+> blkdev_open().  The block file methods then derive their block_device
+> from that inode with I_BDEV(); the loads land at the tail of a
+> 656-byte v9fs_inode_cache object (offsets +624 and +632), which KASAN
+> reports as slab-out-of-bounds, and the garbage they read is then
+> dereferenced, so the first read(), write(), ioctl() or close() ends
+> in a NULL pointer write and a panic.  In the ioctl(BLKGETSIZE64)
+> variant the value read this way is returned to userspace.
 > 
-> Today the only practical way to use 9P over a USB4 link is trans=fd
-> which, due to its design, cannot fully utilize USB4STREAM capabilities.
-> Thunderbolt transport offers a simpler mount (no fd redirection required),
-> busy-poll support and substantial throughput increase compared to FD
-> transport.
+> The server controls the file type reported for the create, so a
+> malicious server can crash the client this way.  KASAN report of the
+> read() variant, on a build of linux-stable 2709dd5ae32f:
 > 
-> User may mount 9P export with following command:
+> BUG: KASAN: slab-out-of-bounds in blkdev_read_iter+0x3cd/0x440
+> Read of size 8 at addr ffff88800828ceb0 by task repro/1
 > 
-> mount -t 9p -o trans=thunderbolt,aname=<exported_remote> /dev/tbstreamX /mnt
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x7b/0xa0
+>  print_report+0xd0/0x630
+>  kasan_report+0xe5/0x120
+>  blkdev_read_iter+0x3cd/0x440
+>  vfs_read+0x718/0xa50
+>  ksys_read+0x10f/0x200
+>  do_syscall_64+0xdd/0x4a0
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  </TASK>
 > 
-> Thunderbolt transport achieves a median 1.21x more throughput compared
-> to FD transport under same conditions, and the advantage grows with
-> concurrency: 1.03-1.09x at 1-2 threads, 1.14-1.27x at 4, and 1.34-2.28x
-> at 8-16.
+> The buggy address belongs to the object at ffff88800828cc40
+>  which belongs to the cache v9fs_inode_cache of size 656
+> The buggy address is located 624 bytes inside of
+>  allocated 656-byte region [ffff88800828cc40, ffff88800828ced0)
 > 
-> As an example, 4K random reads, 4 worker threads. FD transport achieves
-> ~53k IOPS, Thunderbolt transport ~66k (+24.7%). 4K random writes follow:
-> FD ~28k IOPS, Thunderbolt ~33k (+19.4%).
+> A plain open() without O_CREAT is not affected: it runs blkdev_open()
+> and either maps the device correctly or fails with -ENXIO for an rdev
+> with no registered device.  When the created inode is not a regular
+> file, clunk the fid the create opened.  The unopened fid is already
+> on the dentry.  Set FMODE_CREATED and return finish_no_open(file, NULL)
+> so the VFS keeps its dentry reference and calls the inode's ->open.
+> Regular files still use finish_open() with generic_file_open.
+> 
+> Fixes: be12af3ef5e6 ("getting rid of 'opened' argument of ->atomic_open() - part 1")
+> Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
 
-Thanks for the patches
-
-We've kept adding new transports for 9p lately but maintenance is
-becoming a burden so let me push back a bit: is the increased
-performance really worth it over trans=fd ?
-
-If this could be used to bringup a system with a root filesystem like it
-was done for trans=usbg I'd see the point, but otherwise the simpler
-usage could be addressed with a simple mount.9p helper, and at this
-point I'd consider usb4stream to be used for perhaps one-shot copy and
-not care too much about 4k random IOs (so less affected by latency
-if msize is large enough, and for a one-shot backup it doesn't matter
-too much if it takes 6 instead of 5 minutes)
-
-If you can convince me this is worth it and can take care of the
-transport for the forseable future I'm not dead set to refuse this, but
-I can't say I'm convinced right now, especially as I can't even test
-this (I don't own two computers with working usb-c...)
-
-Thanks,
+Thanks, looks good to me, picked up
 -- 
-Dominique Martinet | Asmadeus
+Dominique
