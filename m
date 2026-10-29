@@ -1,66 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793238777;
-	b=G0ZTWk3ifcE/lhn1rBE6DHO8/Bhwk+63F0wDPHL1yteMJcuJsxwKkqNu2x86Pd8hMoO/
-	 fa5QuA/Rtr9JdCY2UA+SpLAeQzW2J6glaW5qVF4el+PKNPFKJRqb79rBaET0M7eT/6g7i
-	 eqwMsn9zGtyWyFoi2Wr2T/39pj398ncRH6rmqkXERb2UvoI9aqTUpsgr6rZn3gZO6p0Tv
-	 1VyLgB9ihYBH6nkNIzPqjp4gbP7gEyCkYS7DkGE8CwWCozRYL/w3lbJUpTxRHtLkS21Z7
-	 dIRrge6EyXd/1Yy1gf6R/ngiTJoXugfPBOYKyIUXS4q+H+Z+Uv04zImd39uy6pt2uAQ==
+	t=1793241981;
+	b=PaQJjnRRQPRbRMermsBtcudO7jBgG1RQ1NOB7ksM8vcLFbs8Ol3/vTFx5pAnCttg5Wed
+	 bzSE1NI008xwCXHcJgVl4yLqOw+QSm39+wAGZy7oCbJnh577Z4ye2GHd/XbXqe+w8qlxV
+	 p8tVOCclU5125vwtYIicE6375ATnvaNLWhoKdx95PaIlSaf5fKg8mGFifZEtDwUzsfk8k
+	 /wiy70LW8JVbX0pL9KWwwBReY/KsBy98MW3wMa47E/GgqTE8YItj7fNNOTBP4MM/8Db1Z
+	 XAw1zZly5MVVa8AOrcRP55Y5Qr4p6eIboilqyJr/lrDgv+kD8+ccFJ3gtLnhQQByvNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793238777;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793241981;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=C9c/FinTKni5fjiOAL3dhHGyqemiEY429uzOPHxoiic=;
-	b=IVJSn5mioIRRYoIe4GDizayeASr2FU9wwBb9pDrOkSqAkZvXJsLwlBZoUae2dbzeIiRh
-	 J6sGxF0X3jr8VvxvQIFwp9Q4ek8MX50/Ag84mPBfXFInruswYzIArBgIfv5jmVrcIx+KD
-	 v4gaP9ssKRqNpsscH1Lr3nilyOxyQ1bOTuF04yHROW+xXCdVBsd9Ep0Fz2mTbXXnQXz3e
-	 kRTxFJi+OsprP12ZY7jomvnUmPe0Gk9sTufr8Dbdc65ruUDCM40jPADruTlgRa3nmOC8/
-	 XogDH8BCwO77Gn1aBEG6ruVSC2njAWiXBmAzdw5Jtc8yX3fLknDHoipoc+Kkls3eiSg==
+	bh=PABQUNtwzA7tp2WIdIkVm8tzuMcr4y+wWPxd8RLkMGk=;
+	b=gjB/TFdpS17xAAzNoF66w2wPZI9hG5qY4XlW3+LDX/rbLxOla6Ww0n1zyoqbCjUxWKZh
+	 JUqAle0AOkV/8+7urNRtzDaePCE6h6UexCCOw/vFZVzkZAq5eKQUboMvEVFMW2OE+FBtv
+	 2ETgvByqEn5tMQQY2eMf803xvrHHAD5ccDo/n4nOB5Qiove5OInG9KJ0S2WHG/e4FQaGX
+	 TBnTDEsrJ7hfdJtq29F92r9MVAJF7qJ0QBP9OEqNfkk4jpVXgG7rmA/CJ/CT0jdAboT8D
+	 p4rHLlr4H9RKokIt971ik8eJgfDB+6/aoKoZXVsn9YPcwagdrrNYKTASZsF7f5mjWnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=codewreck.org;
 	spf=pass smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=WdSJVkYE;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=SayRpoU0;
 	arc=none smtp.remote-ip=62.210.214.84
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B098606A31A
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 01:52:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B098606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFE1606A31C
+	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 02:46:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBFE1606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=WdSJVkYE
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=SayRpoU0
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 4452414C2D6;
-	Thu, 29 Oct 2026 02:52:51 +0100 (CET)
+	by submarine.notk.org (Postfix) with ESMTPS id 99A0B14C2D6;
+	Thu, 29 Oct 2026 03:46:13 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1793238773;
+	s=2; t=1793241976;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C9c/FinTKni5fjiOAL3dhHGyqemiEY429uzOPHxoiic=;
-	b=WdSJVkYEncQ7JoKxIzgAvvzPNkdA0CDsHhEVEvxglGObX3NhvLvjgp4Q6ZGdIFB2lysLJ4
-	LUL4seZVg/mEDPfqxDzlGFtLG85LcefQiiQKKVHUlq6Lgrpwj7YTjpZYAwG1ZuiWDX9Iq+
-	qqxKvobBBCVzRvkSJh7rEyEUozTJg/CC0X3WMUoIHTPjuvgXWeMS+4huQNF/UEGapMnClY
-	/3GzyqFaLMKyT9q9nEduSPXCBHH6zFCf7iENQDTQlRxjn0CcpT2uYrFkKjSdHMwijt8C0N
-	L1pYG2mFMbMnbK2tkg/yqq9p84A8uiGgSLEVN9NbjfHz858YO1cBrXlmAWyxQA==
+	bh=PABQUNtwzA7tp2WIdIkVm8tzuMcr4y+wWPxd8RLkMGk=;
+	b=SayRpoU0s+/TQ1WuZe4o/5liJzEtyY0Ch/PDlpO9NxyVwx7wBoIwb6jSmg1hmjWXSkV4hJ
+	4JzHeZSHMtuRZqHGVoRJgpaOCo1K3WAM0AmqQUK5SJD0dreuMVeEV1EcMg28060HokvO0l
+	luhnibaYFzKSkxsF/AzWQUu0ZZWpKg9nZUKjRI3xLgdA9D8jdi8mogTt4H8mkQvntdY1Kh
+	aUE8rRpDDwCdwQ2Qo1PSqUY02t9w5+uvBQ7ESivCc/jxPpMnwGZGU1eBL7n15UNt4oLFXd
+	n0hkQJl8mCxEVLo1nZ9UCziAU7jpmF3pXWy0cSg/jdZCHpkulq9Vqj0CX+dGzw==
 Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 66ff3547;
-	Thu, 29 Oct 2026 01:52:49 +0000 (UTC)
-Date: Thu, 29 Oct 2026 10:52:34 +0900
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 438811e2;
+	Thu, 29 Oct 2026 02:46:11 +0000 (UTC)
+Date: Thu, 29 Oct 2026 11:45:56 +0900
 From: Dominique Martinet <asmadeus@codewreck.org>
-To: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] 9p: don't decrement a server-owned zero nlink
-Message-ID: <auKm4tewzgNX6VLh@codewreck.org>
-References: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
+To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, mika.westerberg@linux.intel.com,
+	andreas.noever@gmail.com, YehezkelShB@gmail.com, corbet@lwn.net,
+	linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux_oss@crudebyte.com
+Subject: Re: [PATCH 0/3] net/9p: Add 9P transport over USB4STREAM
+Message-ID: <auKzZIyFW2CTci1b@codewreck.org>
+References: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -72,91 +71,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8B490036-EBB0-4A36-AE39-F294F7C79649@stu.pku.edu.cn>
+In-Reply-To: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
 
-Yuanfu Xie wrote on Mon, Sep 28, 2026 at 03:25:48PM +0800:
-> A 9P2000.L server can report nlink=0 for a regular file that still
-> exists.  On a cache=loose or cache=fscache mount, lookup stores that
-> value with set_nlink().  A later successful unlink calls
-> v9fs_dec_count(), which still calls drop_nlink() for a non-directory.
-> drop_nlink() warns, and the unsigned link count wraps to 4294967295.
-> fstat() on a descriptor opened before the unlink shows 0 before and
-> 4294967295 after.
+Alan Borzeszkowski wrote on Thu, Sep 24, 2026 at 06:23:30PM +0200:
+> This series adds trans=thunderbolt, a 9P transport over the
+> Thunderbolt/USB4 DMA tunnels exposed by the tbstream character devices
+> (USB4STREAM). It's designed for simple host-to-host file sharing over
+> single Thunderbolt/USB4 cable.
 > 
-> The warning on the unpatched kernel, trimmed:
+> Today the only practical way to use 9P over a USB4 link is trans=fd
+> which, due to its design, cannot fully utilize USB4STREAM capabilities.
+> Thunderbolt transport offers a simpler mount (no fd redirection required),
+> busy-poll support and substantial throughput increase compared to FD
+> transport.
 > 
-> WARNING: fs/inode.c:408 at drop_nlink+0xac/0xd0, CPU#1: trigger/188
-> CPU: 1 UID: 0 PID: 188 Comm: trigger Tainted: G                 N  7.3.0-rc4-00537-ga3ff15db6820 #1 PREEMPT(lazy)
-> RIP: 0010:drop_nlink+0xac/0xd0
-> Call Trace:
->  <TASK>
->  v9fs_remove+0x529/0x750
->  vfs_unlink+0x2f0/0xbd0
->  filename_unlinkat+0x340/0x6c0
->  __x64_sys_unlink+0x46/0x70
->  do_syscall_64+0xe8/0x4f0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->  </TASK>
-> ---[ end trace 0000000000000000 ]---
+> User may mount 9P export with following command:
 > 
-> Directories whose cached nlink is at most 2 already skip this
-> decrement, because the exported filesystem may not maintain nlink
-> (commit ac89b2ef9b559).  cache=none skips it as well (commit
-> 574aa0b479947).  cache=mmap does not take this path: it sets neither
-> CACHE_META nor CACHE_LOOSE.  A regular file on cache=loose or
-> cache=fscache still does.  Its count came from GETATTR and may
-> already be zero, so skip the decrement when i_nlink is already 0.
+> mount -t 9p -o trans=thunderbolt,aname=<exported_remote> /dev/tbstreamX /mnt
 > 
-> Verified on 7.3-rc4-00537-ga3ff15db6820 with only this change.  A
-> server that advertises nlink=0 and accepts the unlink no longer
-> warns, and the open descriptor stays at nlink 0.  An honest server
-> on the same mount still goes from 1 to 0.  A rejected unlink leaves
-> the count unchanged.  cache=none is unchanged.  With panic_on_warn
-> the unpatched kernel panics on the warning; the patched kernel does
-> not.
+> Thunderbolt transport achieves a median 1.21x more throughput compared
+> to FD transport under same conditions, and the advantage grows with
+> concurrency: 1.03-1.09x at 1-2 threads, 1.14-1.27x at 4, and 1.34-2.28x
+> at 8-16.
 > 
-> Fixes: ac89b2ef9b559 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yuanfu Xie <yuanfuxie@stu.pku.edu.cn>
+> As an example, 4K random reads, 4 worker threads. FD transport achieves
+> ~53k IOPS, Thunderbolt transport ~66k (+24.7%). 4K random writes follow:
+> FD ~28k IOPS, Thunderbolt ~33k (+19.4%).
 
+Thanks for the patches
 
-This is the same as part of what was sent in [1], but they never
-bothered resending split commits, so picking this up instead
+We've kept adding new transports for 9p lately but maintenance is
+becoming a burden so let me push back a bit: is the increased
+performance really worth it over trans=fd ?
 
-[1] https://lore.kernel.org/r/20260919221734.3708000-1-benquike@gmail.com
+If this could be used to bringup a system with a root filesystem like it
+was done for trans=usbg I'd see the point, but otherwise the simpler
+usage could be addressed with a simple mount.9p helper, and at this
+point I'd consider usb4stream to be used for perhaps one-shot copy and
+not care too much about 4k random IOs (so less affected by latency
+if msize is large enough, and for a one-shot backup it doesn't matter
+too much if it takes 6 instead of 5 minutes)
 
-> ---
->  fs/9p/vfs_inode.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> index d7e678de0a036..347739b81513f 100644
-> --- a/fs/9p/vfs_inode.c
-> +++ b/fs/9p/vfs_inode.c
-> @@ -495,6 +495,12 @@ static int v9fs_at_to_dotl_flags(int flags)
->   * nothing and races with concurrent metadata fetches that may already
->   * have observed the post-unlink value (nlink == 0).
->   *
-> + * The same applies to a regular file whose cached nlink has already been
-> + * driven to zero by the server: in the cached modes the attributes come
-> + * from GETATTR and are applied verbatim, so decrementing a link count the
-> + * server does not maintain only trips the drop_nlink() WARN_ON and
-> + * underflows i_nlink.
-> + *
->   * @inode: inode whose nlink is being dropped
->   */
->  static void v9fs_dec_count(struct inode *inode)
-> @@ -503,6 +509,8 @@ static void v9fs_dec_count(struct inode *inode)
->  
->  	if (!(v9ses->cache & (CACHE_META | CACHE_LOOSE)))
->  		return;
-> +	if (inode->i_nlink == 0)
-> +		return;
->  	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
->  		drop_nlink(inode);
->  }
-> 
-> 
+If you can convince me this is worth it and can take care of the
+transport for the forseable future I'm not dead set to refuse this, but
+I can't say I'm convinced right now, especially as I can't even test
+this (I don't own two computers with working usb-c...)
 
+Thanks,
 -- 
 Dominique Martinet | Asmadeus
