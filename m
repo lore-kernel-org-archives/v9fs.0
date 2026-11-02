@@ -1,69 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793280673;
-	b=uGAf4gBL5cKbZNFh1NgXUG6rh7V8AvnLsY8mfEZPu2kWhQAkD/lcPs6oBSYjgr4kx1a4
-	 KnRkhbnLwv9q1CfSqGjtdXLuSUN82xT2H5qd1wxAgdMDzpr8vnr35oimrRYvC7jT1fCbW
-	 3SKkZs3r+e44cstl2wnQndVxy+n8T1J/ZcBWWG3Pw4wr+kKugYubXcZ/BahO3SjmR/aXh
-	 0cht0EK+f3i7ZY9KC7mEu34LGASrxIFmJPtWh8Yw/AkrPtBTZlJhD+exaAyxzYWWDGp0m
-	 vG8HTd716sVR44s/Rgq9ohIPnyjgexk5nfX0/dFWhYlaTGpxyJ71EeHKh4+naG8xBQw==
+	t=1793633961;
+	b=R4SSHREpNYa8+83aeIAD0R+U2bCPznHs1ABf6n4/j/G/bf+cnpHwj8piJGeaEfOIk/6y
+	 EqX6ISkfVv+B2P/xST7bwM4ghwXixOaW1zgc3KKjYRk1vT+bitu+oCGaCtFZwxV3iWuGG
+	 OMxbGrpnjHV3KgYGlk+Q1bZ3n0PFEb3Bkq8ZX0acUkqrOKDuDC9Ax+3pM1uftv411W7P9
+	 5Fhajw5kqe8zEDdv9Rg5cFzhLM149fxBBicpX9wPjMCA2AHE4LLWqqYpypA0p/Hqaq8/z
+	 XuicSzvElX5cugUKenCL9xMsn601lz1TTfA7h/JGtieEKmyN9SyEtJOHaahBBNMxxEQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793280673;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=By2eJ4XZKUqe0XFvU6d2eOG56783Xnvs7crtTDE4A/Q=;
-	b=JS8bkkrnyU5WqDBYee/riifOMYPJuUYI1IjjX3pLK5XviETciKSti38JmEOKsr7pLIJc
-	 ZJtTlyleiDGKyLK0VbB8XkpkR1+3tgo2YDGLI6/U8h31YTFHTnbUxGXjIemOkH8AfUaGq
-	 cYlErrG96vf/BvCVfNwNweuvBpmrcOSizSezIZFyXq0RJQpBrr5dtPeEk/389Q2toNSLg
-	 lUwqC9U2swUCfqzqUhK4mkLhHFQ2Ux64FNno4H4j7PfxOpglF1hNoyEtaddLEzkd5TWZx
-	 txLjoRMv+yg0HhnsYBPt8C/hEZfHweb1m+2GEaz/4QVuzHN2wUA3ZRdrSXcC6Pul0aQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633961;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=3z10U433DwI2NalH8ue402kAARNkdDeazFddhhDDLcY=;
+	b=sHS1QeYjR/3moSyAuVI7jcNC9OJwMEZUdzGDR0diSi5sfSC6PQIj6BjvDn4VfOAa4UHQ
+	 zJP8IgWk/MUSp91WJWV62dqsjuWXWMkon4sWetUFsud2BGxoLG+39S4aC9DWUiOJH6QUN
+	 yRfrgYAqAa/1ZyozyTlqWnqJz8v4DQfWGkRRFQnoFTymWYXBMEb8Nc48mFR1Yslu1JnV+
+	 KiLhYQsUmVvfN3Kjya4L2dCa6X9sphBgDwezERp2bcgF7Kav0p6AukeHTVSdN0ej/ZXD6
+	 CpRN3wgTFNtHWuqtyST/NksaHsNxcxADtMNvCmkbyKxhqaNn5S0OJbL3OtmYy862Pzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=codewreck.org;
-	spf=pass smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=4blu9VVn;
-	arc=none smtp.remote-ip=62.210.214.84
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iF5Ua7cd;
+	arc=none smtp.remote-ip=198.175.65.19
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A61606A323
-	for <v9fs@lists.linux.dev>; Thu, 29 Oct 2026 13:31:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06A61606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41A3608C257
+	for <v9fs@lists.linux.dev>; Mon,  2 Nov 2026 15:39:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B41A3608C257
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=4blu9VVn
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 20CCF14C2D6;
-	Thu, 29 Oct 2026 14:31:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1793280664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=By2eJ4XZKUqe0XFvU6d2eOG56783Xnvs7crtTDE4A/Q=;
-	b=4blu9VVnEkx41UKwf9Fa/DKS/Sql1ttVu7MO+n6fYm4irZ+d82xmx40d5pqc8kZvKM0AgV
-	5C8HqNlHLYclxelyMRfyE6EBf+iywb64piZo/XxMDPnMJrGVdkD9DfPwwrLrY99//a9pzo
-	rrdzzW0tTCQzhNARHC2kaHgc7kforBAEFCFErJxwErNiTcdGPrLbsTQCg7+t+jC784mQkb
-	/vJwcLHLROF6K5IB0XWxJgf2ygVofe99i8VNw34fI1AFbdqPYufwJv0ug4jyrIP54j3D6S
-	1UFyM2K5Arw4vpItCtfI6Wxv1xpz8oNFRoMja8CknuyxIe4Rh4D8lHLeZXL3wg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d8a33568;
-	Thu, 29 Oct 2026 13:31:00 +0000 (UTC)
-Date: Thu, 29 Oct 2026 22:30:45 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <jeremy.jean@oss.cyber.gouv.fr>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH] 9p: pin request under client lock in p9_tag_lookup
-Message-ID: <auNKhWf9nWaGq14c@codewreck.org>
-References: <20260930201357.590469-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <auLejxGRgVLKlLuL@codewreck.org>
- <08dad2f67457cf97eedff42e57312bd2@oss.cyber.gouv.fr>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iF5Ua7cd
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793633960; x=1825169960;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=3z10U433DwI2NalH8ue402kAARNkdDeazFddhhDDLcY=;
+  b=iF5Ua7cdQ4sKfClCSfXAlo+xgL6xGpwqkxMXGPy9Yf+Y3srLoHW0qKqU
+   tKtbBuM2SojXwMbyTDKYfgPq8zjPw1t0u4LxLfvB+R8WyKQiS+/dDRZEt
+   d+Zj9g1VTzqUacQr3U8N3LVSZJ6vpFW/pe0s8m7YRzZsPi9dFR+1dNejU
+   nmezOuxiTi2OdLCt0jhWWmkyE7L5OSJOj1XRNs9ODNjT+PRZPz+yrcocM
+   EIy/LPr2KXNCf4hBa+XMX04wydLpIF4+wDYtwJjzzFh1iUhw3YMSPyjQQ
+   CA9yGMLXN5vDzipxk7SYYCRgBayebbZMQyl1WArwMdJj9RS0Cr4WyIU4p
+   g==;
+X-CSE-ConnectionGUID: K23Sg6chRV++JI9MMSiB6A==
+X-CSE-MsgGUID: iAvJotDeSPebhSDHQWffKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2358063"
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="2358063"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 07:39:20 -0800
+X-CSE-ConnectionGUID: +bmjxZgpR7SyKjSvrnwfeQ==
+X-CSE-MsgGUID: sAZlDl/NR3+AD5q/97o2jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="7987351"
+Received: from aborzesz-mobl3.igk.intel.com ([10.237.140.23])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 07:39:18 -0800
+Message-ID: <bc1ec916278d94116bd9b60e40b549612e3ff3a4.camel@linux.intel.com>
+Subject: Re: [PATCH 0/3] net/9p: Add 9P transport over USB4STREAM
+From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: ericvh@kernel.org, lucho@ionkov.net, mika.westerberg@linux.intel.com, 
+	andreas.noever@gmail.com, YehezkelShB@gmail.com, corbet@lwn.net, 
+	linux-usb@vger.kernel.org, v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
+ 	linux_oss@crudebyte.com
+Date: Mon, 02 Nov 2026 16:39:15 +0100
+In-Reply-To: <auKzZIyFW2CTci1b@codewreck.org>
+References: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
+			 <auKzZIyFW2CTci1b@codewreck.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -73,57 +85,90 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <08dad2f67457cf97eedff42e57312bd2@oss.cyber.gouv.fr>
 
-Jérémy Jean wrote on Thu, Oct 29, 2026 at 11:56:03AM +0100:
-> I am not so familiar with that code base and I have a hard time
-> deciding the actual impact of the lock.
+Hi,
 
-Each request is already taking the lock twice (when allocating/freeing
-the tag in the idr), so I'm honestly not sure how much adding a third
-locking call will change in practice without testing (and if I wanted to
-be pedantic I'd say I can't even test this properly as I don't have any
-numa hardware that'd be impacted more strongly by this)...
+On Thu, 2026-10-29 at 11:45 +0900, Dominique Martinet wrote:
+> Alan Borzeszkowski wrote on Thu, Sep 24, 2026 at 06:23:30PM +0200:
+> > This series adds trans=3Dthunderbolt, a 9P transport over the
+> > Thunderbolt/USB4 DMA tunnels exposed by the tbstream character
+> > devices
+> > (USB4STREAM). It's designed for simple host-to-host file sharing
+> > over
+> > single Thunderbolt/USB4 cable.
+> >=20
+> > Today the only practical way to use 9P over a USB4 link is trans=3Dfd
+> > which, due to its design, cannot fully utilize USB4STREAM
+> > capabilities.
+> > Thunderbolt transport offers a simpler mount (no fd redirection
+> > required),
+> > busy-poll support and substantial throughput increase compared to
+> > FD
+> > transport.
+> >=20
+> > User may mount 9P export with following command:
+> >=20
+> > mount -t 9p -o trans=3Dthunderbolt,aname=3D<exported_remote>
+> > /dev/tbstreamX /mnt
+> >=20
+> > Thunderbolt transport achieves a median 1.21x more throughput
+> > compared
+> > to FD transport under same conditions, and the advantage grows with
+> > concurrency: 1.03-1.09x at 1-2 threads, 1.14-1.27x at 4, and 1.34-
+> > 2.28x
+> > at 8-16.
+> >=20
+> > As an example, 4K random reads, 4 worker threads. FD transport
+> > achieves
+> > ~53k IOPS, Thunderbolt transport ~66k (+24.7%). 4K random writes
+> > follow:
+> > FD ~28k IOPS, Thunderbolt ~33k (+19.4%).
+>=20
+> Thanks for the patches
+>=20
+> We've kept adding new transports for 9p lately but maintenance is
+> becoming a burden so let me push back a bit: is the increased
+> performance really worth it over trans=3Dfd ?
 
-One of my worries was that some transports call this lookup function in
-a irq (e.g. rdma depending on hardware), but that's another thing I
-can't test /shrug
+From the data I've collected, yes. trans=3Dthunderbolt is at worst on par
+with trans=3Dfd and with increasing amount of threads, trans=3Dfd lags
+behind.
 
-> As you said, it might be possible to keep p9_tag_lookup() lockless by
-> storing the owning client in each request and then validating both the
-> client and the tag after successfully incrementing the refcount.
-> 
-> The two helpers refcount_inc_not_zero_acquire() and
-> refcount_set_release() should ensure that the client and tag checks
-> see the newly initialized request state after reuse. Then, the
-> mismatched reference could be dropped through req->client. This
-> should stop a stale lookup from mistaking a recycled request from
-> another client for the original one.
-> 
-> Below is a tentative patch that applies this strategy. I have
-> verified with my reproducer that it indeed fixed the UAF. What
-> do you think of it? Let me know if you'd want me to send a v2.
+Thunderbolt transport also offers busy-poll support, which boosts
+performance significantly at low thread counts. It cannot be used by
+trans=3Dfd due to its design around polling.
 
-That's pretty much what I had in mind, yes.
-I wasn't thinking of the _aquire/_release refcount variants but after
-checking I agree they're needed, so I'm tempted to say it's another
-argument in favor of stopping SLAB_TYPESAFE_BY_RCU...!
+And regarding maintenance, this transport is simple and much smaller
+than existing ones.
 
-On the opposite side if we keep your current v1 then I'd get rid of all
-references to SLAB_TYPESAFE_BY_RCU - it's no longer needed with the
-lock, and the allocation no longer needs to split refcount init and set
-either.
+>=20
+> If this could be used to bringup a system with a root filesystem like
+> it
+> was done for trans=3Dusbg I'd see the point, but otherwise the simpler
+> usage could be addressed with a simple mount.9p helper, and at this
+> point I'd consider usb4stream to be used for perhaps one-shot copy
+> and
+> not care too much about 4k random IOs (so less affected by latency
+> if msize is large enough, and for a one-shot backup it doesn't matter
+> too much if it takes 6 instead of 5 minutes)
 
-Anyway, please give me a bit of time to run some quick benchmark with
-and without lock even if it likely won't mean much, and we can iterate
-from there; I don't think this warrants a v2 patch at this point.
+In case of one-shot backup, I think my drag&drop scenario from cover-
+letter fits it well. Assuming single thread copy, both transports
+achieve similar results, but with busy-poll enabled, trans=3Dthunderbolt
+cuts about 1/3rd of copy time:
+Copy from 9P client to a server, using trans=3Dfd, takes 22m29s while
+trans=3Dthunderbolt + busy-poll takes 14m50s (~1.5x faster).
+Reverse direction, same improvement: reducing copy time from 41m07s to
+26m56s. All done on default msize.
 
-(It will be at best a few days, I'm not expecting to take this in for
-7.4)
+>=20
+> If you can convince me this is worth it and can take care of the
+> transport for the forseable future I'm not dead set to refuse this,
+> but
+> I can't say I'm convinced right now, especially as I can't even test
+> this (I don't own two computers with working usb-c...)
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+I would be happy to maintain Thunderbolt transport.
+
+>=20
+> Thanks,
