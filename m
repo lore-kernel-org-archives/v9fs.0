@@ -1,81 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633961;
-	b=R4SSHREpNYa8+83aeIAD0R+U2bCPznHs1ABf6n4/j/G/bf+cnpHwj8piJGeaEfOIk/6y
-	 EqX6ISkfVv+B2P/xST7bwM4ghwXixOaW1zgc3KKjYRk1vT+bitu+oCGaCtFZwxV3iWuGG
-	 OMxbGrpnjHV3KgYGlk+Q1bZ3n0PFEb3Bkq8ZX0acUkqrOKDuDC9Ax+3pM1uftv411W7P9
-	 5Fhajw5kqe8zEDdv9Rg5cFzhLM149fxBBicpX9wPjMCA2AHE4LLWqqYpypA0p/Hqaq8/z
-	 XuicSzvElX5cugUKenCL9xMsn601lz1TTfA7h/JGtieEKmyN9SyEtJOHaahBBNMxxEQ==
+	t=1793708069;
+	b=RkX2W9AImci6RFyIJXHcZyxXBL8T6wPFUOHtTxnaM0b5n/l4kZK4OUYiJSzc8aCtnBRb
+	 VU9ecLyLi1oFnqnp9ezg9D4gJpZamjIVdqoZC7bBBCvm03ng8imVGvrOlevQzk8H8+14r
+	 2QSWKaULzZNnxUK0pOYv68xuZLpu0HXV9+KIjhUBvaKtZTstkjxcHB4cvAniVI79begwf
+	 cFKTVDKDrB6ZZez/LavzaxenBwGTMVz+9TrdIIzFjuxS6wR+h4bzNQseNdBn54KhIQrT/
+	 2o8ZO9eA20zK0T5A4eVa/J5B7U4oY6EWdAYLCZ+2IiVykAx4Wq5htUEnnjoTE68Jtew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633961;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Subject:
-	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=3z10U433DwI2NalH8ue402kAARNkdDeazFddhhDDLcY=;
-	b=sHS1QeYjR/3moSyAuVI7jcNC9OJwMEZUdzGDR0diSi5sfSC6PQIj6BjvDn4VfOAa4UHQ
-	 zJP8IgWk/MUSp91WJWV62dqsjuWXWMkon4sWetUFsud2BGxoLG+39S4aC9DWUiOJH6QUN
-	 yRfrgYAqAa/1ZyozyTlqWnqJz8v4DQfWGkRRFQnoFTymWYXBMEb8Nc48mFR1Yslu1JnV+
-	 KiLhYQsUmVvfN3Kjya4L2dCa6X9sphBgDwezERp2bcgF7Kav0p6AukeHTVSdN0ej/ZXD6
-	 CpRN3wgTFNtHWuqtyST/NksaHsNxcxADtMNvCmkbyKxhqaNn5S0OJbL3OtmYy862Pzg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708069;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition:
+	 List-Id;
+	bh=2VuRkx1ifV+1qy8E2tw7ebAsUaRcxKdh18yyLgfwynU=;
+	b=iH+rFj2G6mYslNll3ze9v9onTtm7tW3t8WKlUeue7gNWeFA5VFuAx7MOG/Vq4WuM99p6
+	 eRQCztpO4iqT6Lk0/rEfuk+dI0p+8vcJiUb+Lr0qZSTTC6Pdoev6xBm+wMobzegh8Rx4V
+	 okNLUsQZA/7yFPfVCAqgo6Rqdv/9tW6TO2GT+vZ26oyJqFiKg5du2jdaYIFPAK9LsXNrT
+	 3Ix5PVv+jVNlKIfmoD94oaQyoTIAEvcyZSXtPdIXs+teRPPNjHcMyl+Pktt63LIuSzU++
+	 madHFAlDI6XHRuOhr/F1Dv5jCK2HFSeTWfmFID//K079jRLEUNqsS2zNuQTeWUEMPCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iF5Ua7cd;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=codewreck.org;
+	spf=pass smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=kCUPi9ZX;
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41A3608C257
-	for <v9fs@lists.linux.dev>; Mon,  2 Nov 2026 15:39:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B41A3608C257
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8482C606A326
+	for <v9fs@lists.linux.dev>; Tue,  3 Nov 2026 12:14:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8482C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iF5Ua7cd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793633960; x=1825169960;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=3z10U433DwI2NalH8ue402kAARNkdDeazFddhhDDLcY=;
-  b=iF5Ua7cdQ4sKfClCSfXAlo+xgL6xGpwqkxMXGPy9Yf+Y3srLoHW0qKqU
-   tKtbBuM2SojXwMbyTDKYfgPq8zjPw1t0u4LxLfvB+R8WyKQiS+/dDRZEt
-   d+Zj9g1VTzqUacQr3U8N3LVSZJ6vpFW/pe0s8m7YRzZsPi9dFR+1dNejU
-   nmezOuxiTi2OdLCt0jhWWmkyE7L5OSJOj1XRNs9ODNjT+PRZPz+yrcocM
-   EIy/LPr2KXNCf4hBa+XMX04wydLpIF4+wDYtwJjzzFh1iUhw3YMSPyjQQ
-   CA9yGMLXN5vDzipxk7SYYCRgBayebbZMQyl1WArwMdJj9RS0Cr4WyIU4p
-   g==;
-X-CSE-ConnectionGUID: K23Sg6chRV++JI9MMSiB6A==
-X-CSE-MsgGUID: iAvJotDeSPebhSDHQWffKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2358063"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2358063"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 07:39:20 -0800
-X-CSE-ConnectionGUID: +bmjxZgpR7SyKjSvrnwfeQ==
-X-CSE-MsgGUID: sAZlDl/NR3+AD5q/97o2jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="7987351"
-Received: from aborzesz-mobl3.igk.intel.com ([10.237.140.23])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 07:39:18 -0800
-Message-ID: <bc1ec916278d94116bd9b60e40b549612e3ff3a4.camel@linux.intel.com>
-Subject: Re: [PATCH 0/3] net/9p: Add 9P transport over USB4STREAM
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: ericvh@kernel.org, lucho@ionkov.net, mika.westerberg@linux.intel.com, 
-	andreas.noever@gmail.com, YehezkelShB@gmail.com, corbet@lwn.net, 
-	linux-usb@vger.kernel.org, v9fs@lists.linux.dev, linux-doc@vger.kernel.org,
- 	linux_oss@crudebyte.com
-Date: Mon, 02 Nov 2026 16:39:15 +0100
-In-Reply-To: <auKzZIyFW2CTci1b@codewreck.org>
-References: <20260924162333.147033-1-alan.borzeszkowski@linux.intel.com>
-			 <auKzZIyFW2CTci1b@codewreck.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=kCUPi9ZX
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id CB2AB14C2D6;
+	Tue,  3 Nov 2026 13:14:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1793708050;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 list-id; bh=2VuRkx1ifV+1qy8E2tw7ebAsUaRcxKdh18yyLgfwynU=;
+	b=kCUPi9ZXiw4H+Y0/iTwMHLMHvkSKqnZK+dhM0GkxEOJM5Q2wxrXl8404938h+olRG8nz/1
+	JLJ/ojeqWijKidbS1AunJAAyOkO+S6b7NGzNyLut5i4/js8SWtgXpqwJXuT9d5BWDDIWm7
+	HZ2pd5rPbhJBRKtxGqZm69QQQuDnTP7/sObFlWssusp9VUKNtaxWfXrWH7OfOu4fC7mrOQ
+	MYnGi7UyB727p7eHV1AvjX+1udF54jHEtpL1Q9kiNwsgTHq5uOXVgfTzzUWLIvmWgjnGkq
+	F/7DQdTz7L295Bh2NxMlLaX+eE/q0bTGdux/RV2QIut/AlsRXJ7EBxPqmESxqQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id baf2ab49;
+	Tue, 3 Nov 2026 12:14:07 +0000 (UTC)
+Date: Tue, 3 Nov 2026 21:13:52 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] 9p fixes for 7.4-rc2
+Message-ID: <aunQAEOa6mn2E5wm@codewreck.org>
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -85,90 +66,151 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Hi,
+Hi Linus,
 
-On Thu, 2026-10-29 at 11:45 +0900, Dominique Martinet wrote:
-> Alan Borzeszkowski wrote on Thu, Sep 24, 2026 at 06:23:30PM +0200:
-> > This series adds trans=3Dthunderbolt, a 9P transport over the
-> > Thunderbolt/USB4 DMA tunnels exposed by the tbstream character
-> > devices
-> > (USB4STREAM). It's designed for simple host-to-host file sharing
-> > over
-> > single Thunderbolt/USB4 cable.
-> >=20
-> > Today the only practical way to use 9P over a USB4 link is trans=3Dfd
-> > which, due to its design, cannot fully utilize USB4STREAM
-> > capabilities.
-> > Thunderbolt transport offers a simpler mount (no fd redirection
-> > required),
-> > busy-poll support and substantial throughput increase compared to
-> > FD
-> > transport.
-> >=20
-> > User may mount 9P export with following command:
-> >=20
-> > mount -t 9p -o trans=3Dthunderbolt,aname=3D<exported_remote>
-> > /dev/tbstreamX /mnt
-> >=20
-> > Thunderbolt transport achieves a median 1.21x more throughput
-> > compared
-> > to FD transport under same conditions, and the advantage grows with
-> > concurrency: 1.03-1.09x at 1-2 threads, 1.14-1.27x at 4, and 1.34-
-> > 2.28x
-> > at 8-16.
-> >=20
-> > As an example, 4K random reads, 4 worker threads. FD transport
-> > achieves
-> > ~53k IOPS, Thunderbolt transport ~66k (+24.7%). 4K random writes
-> > follow:
-> > FD ~28k IOPS, Thunderbolt ~33k (+19.4%).
->=20
-> Thanks for the patches
->=20
-> We've kept adding new transports for 9p lately but maintenance is
-> becoming a burden so let me push back a bit: is the increased
-> performance really worth it over trans=3Dfd ?
+Sorry for being late to the merge window, I still don't have much time
+for this and the flu hit at a bad time.
+At least the LLM fixes sort of slowed down recently? Or maybe it's just
+the time of the cycle and/or I got used to it, time will tell...
 
-From the data I've collected, yes. trans=3Dthunderbolt is at worst on par
-with trans=3Dfd and with increasing amount of threads, trans=3Dfd lags
-behind.
 
-Thunderbolt transport also offers busy-poll support, which boosts
-performance significantly at low thread counts. It cannot be used by
-trans=3Dfd due to its design around polling.
+The following changes since commit c60ae98c5aa64021751b38ab1313b19d620bf640:
 
-And regarding maintenance, this transport is simple and much smaller
-than existing ones.
+  9p: Fix v9fs_issue_write() to update i_size and remote_i_size (2026-09-12 07:49:22 +0000)
 
->=20
-> If this could be used to bringup a system with a root filesystem like
-> it
-> was done for trans=3Dusbg I'd see the point, but otherwise the simpler
-> usage could be addressed with a simple mount.9p helper, and at this
-> point I'd consider usb4stream to be used for perhaps one-shot copy
-> and
-> not care too much about 4k random IOs (so less affected by latency
-> if msize is large enough, and for a one-shot backup it doesn't matter
-> too much if it takes 6 instead of 5 minutes)
+are available in the Git repository at:
 
-In case of one-shot backup, I think my drag&drop scenario from cover-
-letter fits it well. Assuming single thread copy, both transports
-achieve similar results, but with busy-poll enabled, trans=3Dthunderbolt
-cuts about 1/3rd of copy time:
-Copy from 9P client to a server, using trans=3Dfd, takes 22m29s while
-trans=3Dthunderbolt + busy-poll takes 14m50s (~1.5x faster).
-Reverse direction, same improvement: reducing copy time from 41m07s to
-26m56s. All done on default msize.
+  https://github.com/martinetd/linux tags/9p-for-7.4-rc2
 
->=20
-> If you can convince me this is worth it and can take care of the
-> transport for the forseable future I'm not dead set to refuse this,
-> but
-> I can't say I'm convinced right now, especially as I can't even test
-> this (I don't own two computers with working usb-c...)
+for you to fetch changes up to 35ecd40c0d7e4f772d00dfec9f7077315ba5ca82:
 
-I would be happy to maintain Thunderbolt transport.
+  9p: optimize p9_fcall struct (2026-10-29 06:05:56 +0000)
 
->=20
-> Thanks,
+----------------------------------------------------------------
+This is mostly a huge wave of LLM-driven fixes
+
+A few exceptions:
+- a new vsock transport was added, since it's a variant of the existing
+fd/tcp transport there is little harm in taking it in
+- there's an incomplete fix for when file actual size doesn't match
+the size attribute (e.g. exports of sysfs), the fix addresses when
+st_size > actual size with cache=none but just about everything else
+is still broken (st_size=0 with actual data regardless of cache, or
+with data cache st_size > actual is still wrong and so are symlinks
+with 0 size)... Maybe at some point I'll find time to understand how
+netfs works and address these :|
+- some fixes for the usbg transport by its author, thank you!
+
+----------------------------------------------------------------
+Ankit Thakur (4):
+      9p: fix header guard comment in acl.h
+      9p: fix typos and wrong parameter docs in vfs_inode.c
+      9p: remove duplicated assignment in v9fs_fill_super()
+      9p: fix typo in file header comments
+
+Barret Rhoden (1):
+      9p: treat read return values of 0 as EOF
+
+Chengfeng Ye (1):
+      net/9p/usbg: clear stale request context after abort
+
+Deepanshu Kartikey (1):
+      9p: don't WARN_ONCE on racy symlink fid lookup failure
+
+Dmitry Antipov (1):
+      9p: simplify v9fs_cache_session_get_cookie()
+
+Dominique Martinet (1):
+      9p: optimize p9_fcall struct
+
+Haobin Wu (3):
+      9p: skip intermediate directory entry name copy in p9dirent_read()
+      9p: skip directory entries with names longer than NAME_MAX
+      9p: skip over-long directory entry names for legacy 9p2000 too
+
+Hemanth Selam (1):
+      net/9p: fix typos in comments
+
+Hui Peng (1):
+      9p: reject RERROR/RLERROR with zero errcode
+
+Hyungjung Joo (1):
+      net/9p/usbg: clear stale client pointer on close
+
+Kees Cook (1):
+      9p: Add const and unsigned to wnames allocation type
+
+Matus Skvarla (1):
+      net/9p: add vsock transport
+
+Michael Bommarito (1):
+      9p/trans_virtio: reject mount tags longer than NAME_MAX at probe
+
+Michael Grzeschik (6):
+      net/9p/usbg: also disable endpoints on p9_usbg_close
+      net/9p/usbg: set client to Disconnected on usb9pfs_disable
+      net/9p/usbg: always reset completion when disconnecting
+      net/9p/usbg: call disable_usb9pfs() from usb9pfs_disable()
+      net/9p/usbg: fix out_req buffer leak in disable_usb9pfs
+      net/9p/usbg: remove bogus context initialization in alloc_requests
+
+Omokefe Emmanuel Onanaroghene (1):
+      9p: fix kernel-doc warning for enum p9_session_flags
+
+Rosen Penev (1):
+      9p/xen: Use array for data rings
+
+Stefano Garzarella (1):
+      9p: fix privport option setting wrong RDMA field
+
+Yehyeong Lee (1):
+      9p/xen: validate the response size from the backend
+
+Yifei Gao (1):
+      9p/xen: fix refcount leak in p9_xen_response() on wrong tag
+
+Yizhou Zhao (6):
+      9p: use fc->net_ns for network namespace in RDMA and socket transports
+      net/9p/usbg: fix descriptor cleanup use-after-free
+      net/9p/usbg: fix prefix matching in device lookup
+      net/9p/usbg: Fix use-after-free on usb9pfs_clear_tx
+      9p/xen: drain response work after unbinding IRQ
+      net/9p/usbg: Fix use-after-free in disable_usb9pfs()
+
+Yuanfu Xie (3):
+      9p: don't decrement a server-owned zero nlink
+      9p: fall back to the normal open path for non-regular files
+      9p: do not store the create fid on special files
+
+Zhao Zhang (1):
+      9p: fix caches_show() out-of-bounds write
+
+ Documentation/filesystems/9p.rst |  12 ++++++++-
+ fs/9p/acl.h                      |   2 +-
+ fs/9p/cache.c                    |   7 ++----
+ fs/9p/fid.c                      |   2 +-
+ fs/9p/v9fs.c                     |  18 +++++--------
+ fs/9p/v9fs.h                     |  26 +++++++++++++------
+ fs/9p/vfs_addr.c                 |  10 ++++++--
+ fs/9p/vfs_dentry.c               |   2 +-
+ fs/9p/vfs_dir.c                  |  32 +++++++++++++++++------
+ fs/9p/vfs_file.c                 |   2 +-
+ fs/9p/vfs_inode.c                |  26 ++++++++++++++++---
+ fs/9p/vfs_inode_dotl.c           |  36 ++++++++++++++++++++------
+ fs/9p/vfs_super.c                |   2 +-
+ include/net/9p/9p.h              |   4 +--
+ include/net/9p/client.h          |  14 +++++++----
+ net/9p/Kconfig                   |  10 ++++++++
+ net/9p/client.c                  |   3 +++
+ net/9p/protocol.c                |  12 ++-------
+ net/9p/trans_fd.c                | 109 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ net/9p/trans_rdma.c              |   2 +-
+ net/9p/trans_usbg.c              | 101 ++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------
+ net/9p/trans_virtio.c            |   5 ++++
+ net/9p/trans_xen.c               |  79 +++++++++++++++++++++++++++++----------------------------
+ 23 files changed, 372 insertions(+), 144 deletions(-)
+-- 
+Dominique Martinet | Asmadeus
