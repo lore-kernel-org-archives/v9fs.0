@@ -1,64 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793724759;
-	b=TkqEZ06BxhApzoF+t7NxYfOxI7W74yGNDGgd56PqxXUf9xY6/O1LmBawtPAgL4Us5Z01
-	 hhByeilN99vYKHsRbYOlbrHH6YUrIQcKB+LpB35gG48mwGujalYFl6Dl3J4KI+nH4ploh
-	 fR/lZbuf0Or4LE3w/98mzTDgFBJ6KKLbImoVl23OaWebJd8OOr6BMD9EM2rvXOYj7wiIS
-	 lWl67ywSo/iSEgZRKXF0hL5USK3thBU+4rtr9qGGy0+ExWi2yzoBRf76cnWsQcaJEtHff
-	 l39l0jZvwp+URSJeQkJW1m0E8tixoRgEHx7VguvlSlRf+f/UF5YDyE4QjIHCcO7Kj9g==
+	t=1793759287;
+	b=omzmOYLGBL57tubz9bU4q07uN3hus1+XnnYFj4hSDbfcnmFIKMI9qH74kojLVuCj8U/M
+	 jrlbGu68nf3yb0r6sxUkb0S74pRyViOkt1m2R+QvyyxWr9X0djHe4B+kKXQi1aerSIwge
+	 0U4+g+ISYgsQsy8v+CtauPZXlWajfmJzYA1a820emCaIwT/KTlSxI0DDyZJBmXI9/zIGg
+	 TXa6I8NCvIYnkf5ZjUvt0U886jp8ocS7JiCXvEAVGPxCk2681zsNM8YICtewAxD4SCjjq
+	 7vzgmQsF9anqZjt++VeJAKy0m90vhDIBNBFR95/J2SFMyJcVBsSjk0AiffygG4hvySg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793724759;
-	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
-	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
-	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
-	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
-	bh=0g9dEUSEI5x5REmXFQDg69jxmtFS1t4EqLRxPPkxmf8=;
-	b=43tAOgyM2AFFpkQWlRYizBx6L/mjnMC2KzPtrRdsUTD6RVrHngkpL7RPqy5sxv8lt9ae
-	 +ttINHrrsRezks2f5tUmjeM6BpHH5HvVsOYk5KdyCezDkyzVDqPAGZffOhCJuIbQ6AXpO
-	 pvuAImclI5uhG744LYch9to9NwL8Ec4mR3KYtFIgwiFzzJbopEFFTiXMbxkDrYUzy4JKp
-	 OvZ+/a+wysQGY9hhYJCztzTuwgg6LVhwMXJ9FnEWRqFeHmKjiaMRiyFb6ObuONg7QgwbC
-	 VYDXxV6bRsTIDmhPlR3V6YREKBlwdvlvPZPXuc18QCZonrtjPIiTIH8uyAaBnhXr88w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793759287;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=BguzeApHRl4b+y9uwqLXWv1DRqfKWfV3tJ5gTwlZcww=;
+	b=IeK8kY7in2Qg4+8RE769UA43PoV8ikumMGnRms/HSdijhV2LdeEjFgaDttIGpscheBFv
+	 O9eybsYJ1YiX/RmoWruy8N6xAs2tLdUXp2AtC9xtAv5MNEmyGQLGmHXgIZtITngG0w2O+
+	 Ku/Od6ylS20ZK+BGW08F5rxx0JVmBwyOBHsR7u2cMzi5Oj5sIoDTsIj7dmVxUuRsMaEAU
+	 5SdNcR2vVJgkhihBQnp0IBfUND3PqO3Yi9GljMA+G7JiQd8a65uUGOB2QiBd2W9DTj21O
+	 pqkrZm6c3lG1p4s6ZUpz+sVZRcggYlUuJ7FtKDmHEgZ58qdEzMLxJd+a4UnI7oQY9jQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Op88QJ/E";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.21
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB51606A334;
-	Tue,  3 Nov 2026 16:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Op88QJ/E
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91721F000C1;
-	Tue,  3 Nov 2026 16:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793724758;
-	bh=0g9dEUSEI5x5REmXFQDg69jxmtFS1t4EqLRxPPkxmf8=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=Op88QJ/EohVbq+/GrKi/jArzmVpzn/cXomFqWpUiWbavzfsnpndCICnOxunvAWoxI
-	 hjYq6HPM2zH+Q85x2xUhw0i/FstK5851aM1fWI7Rs+HqRon/r7wlDfA46Qos7BUIsM
-	 ZwdoVuFmn3sg7/AjPWNGDtT9oxvmqVeohfp2Ue44tFqYXGHqKsIICL0b8jyFOhYYRd
-	 xs2ypox44VNDNJFX0pnrOcTST1Y+tLUQO0AFDI2Eekv2YOzPHt9UDKVDaIJGFhktBX
-	 f2fc8fiYfj13BdG2uYdjkUWquSCV12Qy2DFH5EpLdki7t+XF7EEcC5K4II7LkLQo2p
-	 pxaU3Apf5iw7A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA2F1391AFFF;
-	Tue,  3 Nov 2026 16:52:38 +0000 (UTC)
-Subject: Re: [GIT PULL] 9p fixes for 7.4-rc2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aunQAEOa6mn2E5wm@codewreck.org>
-References: <aunQAEOa6mn2E5wm@codewreck.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aunQAEOa6mn2E5wm@codewreck.org>
-X-PR-Tracked-Remote: https://github.com/martinetd/linux tags/9p-for-7.4-rc2
-X-PR-Tracked-Commit-Id: 35ecd40c0d7e4f772d00dfec9f7077315ba5ca82
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 7d1471e50943196f909674d2d22eb4196c7df48e
-Message-Id: <179372475729.1755341.2720045239524431603.pr-tracker-bot@kernel.org>
-Date: Tue, 03 Nov 2026 16:52:37 +0000
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Eric Van Hensbergen <ericvh@kernel.org>, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0D0606A333
+	for <v9fs@lists.linux.dev>; Wed,  4 Nov 2026 02:28:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE0D0606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAD3H_oumOpqh5s+AA--.29137S2;
+	Wed, 04 Nov 2026 10:27:58 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev
+Subject: [PATCH] 9p: release the request when the response tag is not in flight
+Date: Wed,  4 Nov 2026 02:28:07 +0000
+Message-Id: <20261104022807.1484097-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -67,16 +51,69 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAD3H_oumOpqh5s+AA--.29137S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr18Kw1kur4fKFy3tF1DJrb_yoW8AF4xpa
+	n8G390gr98Wr12yas7Jr4kXF10yFWfKw12gayIkw13Zan5Gw48KrWFgrW09F13Cw4kta4D
+	Kryqqr97JFyDZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvGb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+	AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14
+	v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
+	McIj6xIIjxv20xvE14v26Fy26r45twAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij
+	64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW7JVWDJwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa
+	73UjIFyTuYvjxUknaBUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAIBA2rqY+TJdAAAs2
 
-The pull request you sent on Tue, 3 Nov 2026 21:13:52 +0900:
+usb9pfs_rx_header() takes a reference on the request returned by
+p9_tag_lookup(), but the shared error check returns NULL without
+dropping it when the lookup succeeds and the request is no longer in
+REQ_STATUS_SENT. That state is reachable: a cancelled request can still
+be found in the idr with REQ_STATUS_FLSHD, and a duplicate reply can
+arrive while the client still holds the request in REQ_STATUS_RCVD.
+Only the parse and lookup failures may return without a reference.
 
-> https://github.com/martinetd/linux tags/9p-for-7.4-rc2
+Split the check and put the reference on the unexpected tag path, like
+the other error paths in the function.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/7d1471e50943196f909674d2d22eb4196c7df48e
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+Cc: stable@vger.kernel.org
+Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ net/9p/trans_usbg.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Thank you!
-
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 419cda13a7b5..c677ca0e4440 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -203,11 +203,17 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs, void *buf)
+ 		 usb9pfs, rc.size, rc.tag);
+ 
+ 	p9_rx_req = p9_tag_lookup(usb9pfs->client, rc.tag);
+-	if (!p9_rx_req || p9_rx_req->status != REQ_STATUS_SENT) {
++	if (!p9_rx_req) {
+ 		p9_debug(P9_DEBUG_ERROR, "Unexpected packet tag %d\n", rc.tag);
+ 		return NULL;
+ 	}
+ 
++	if (p9_rx_req->status != REQ_STATUS_SENT) {
++		p9_debug(P9_DEBUG_ERROR, "Unexpected packet tag %d\n", rc.tag);
++		p9_req_put(usb9pfs->client, p9_rx_req);
++		return NULL;
++	}
++
+ 	if (rc.size > p9_rx_req->rc.capacity) {
+ 		p9_debug(P9_DEBUG_ERROR,
+ 			 "requested packet size too big: %d for tag %d with capacity %zd\n",
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
