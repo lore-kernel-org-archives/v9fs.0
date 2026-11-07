@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794076491;
-	b=1363RzlZllEsTbWnwc1O/VoHWpqMYSOChc74ew5jIpk4fpOs4DGSUrYaGJZq8I/HomTP
-	 PC56OU5K8kaN7XnA2gAy4Q38aYsnVmhIb2NPbo+FQVNkubyHTWwKv2cjOfvrBSMgjRRmm
-	 X+fFvXwHLhgO8PveSHSzLfLiytKB0JFbt2zwQhxlTFnNYeXAmARMgc7/8T92Xii/O0VT6
-	 MkxxMEXsoNsdIngnXCp4cG6aAjYiER+sylKDTvJzWJ0OZ/aYFR+yn+80nX3Ocx05lXjQY
-	 7D/cE/NTSdqhvKx9fpMEDgnOIiySZTjAQcYPkPUmlyLaSFSGIV+nQ5Y6tASd5FaxAtQ==
+	t=1794077517;
+	b=tbjngoEeN+/LU3LC4IWgWg2ms0yrNEoGZ8n8KNU5mux9lgFjHAfemTmhWsMzpIh04ueR
+	 cNcJwougMn21lQceR58biYnxQwmV6MAVC0krJmSKZEH1Omua2gVuvnfQkt4+snbHgouOF
+	 LgxeBoRUc6vKaXfRTK8tohDqGF1btxMzjKazpF0w3U32dC4zLaS2wYyotGW5+W8baOh9T
+	 /Yy8opJ6dnvSJyvmjecOtHM2w8cN6M0pySvf3orXbSXIgxQ+yzbk/ytqyRmV4ajTgmFKA
+	 JZMOgDA4DJbkyNPkFFNms7GEDzwanuEd+x4QsHddWhdeV5m35PNbDMXExRhQNgbaQXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794076491;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077517;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=V0X17Ide7auKYvEurdpX+QNjCzxtO+zsjKMG2Q/rHXc=;
-	b=hgKFxtK/wtzdL7uSzBLhnFGDTPj8L8QwkK0roDHoVDgo9OlPmrGck0ubB2TDa/dJUd4A
-	 00Gdg7aWzUsjBlkYb/jJWCuJRQ6esVdlVAn5V48I1W2Urh1MiywxE2OWFfxUza6WuqIHF
-	 fPze27YRbdeJ1zHq+ZXWccBQXE62jaBGSZUJbIvuCRre6y8qaNPKNB1QrhDnVM2s9Ukn/
-	 BXFjURabORzYL1STYl2KyBsGz8R7fJZASu9DT1D2g0T6ow9qtW2An7ei4hrwoS9xZtpYU
-	 wJsKOIIhJmiHSm8MSNx5bvYCkEsywrIWamIsEZhfNmFotOPZIQrSibzCO8GvF1JG4VA==
+	bh=HZRYi8qUyQ4M1U91DbCOXEPZ21Xj8Rcj0Be0VWSyP+U=;
+	b=DD60fYZ/rx7QgsAkqQuHGjS8j5MkHhvDXuFKWGkUht2HDuelg1MnsGMeremYEBYJw+HI
+	 MtE9uSbBNDcHWVPn6hkn0s00FA+AgVO7vMpp2FNda5tAkAyK3n/D6pjIRJFbCAuFUUEqU
+	 bVHwblvt31X3fPxLjq3uL7pZqmbFtSxPRECnxAiSEBLuIJ54p22V9HtZrelUQdpV0g4oy
+	 kRxkNiskcr3J3KnBcWuesCO3TSlfs0Fw9o08vCdqdIQNSZ2X9lfXyq68S4s+R4gWMTul7
+	 4d050IrDtBOWhbHXR2uilA8CrvLQMfHi3ecDhXHYSctUikoTVFXaAbYXXaVJHe7b4ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FtHE7IEy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dDKhQke/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FC4606A32C
-	for <v9fs@lists.linux.dev>; Sat,  7 Nov 2026 18:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C053606A32C
+	for <v9fs@lists.linux.dev>; Sat,  7 Nov 2026 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FtHE7IEy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC141F0089F;
-	Sat,  7 Nov 2026 18:34:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dDKhQke/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826361F0089F;
+	Sat,  7 Nov 2026 18:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794076491;
-	bh=V0X17Ide7auKYvEurdpX+QNjCzxtO+zsjKMG2Q/rHXc=;
+	s=k20260515; t=1794077516;
+	bh=HZRYi8qUyQ4M1U91DbCOXEPZ21Xj8Rcj0Be0VWSyP+U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FtHE7IEy2BSiwCBZtiTvpduq/6+8GKnZ0xsvs05sFrxkd7suZTlZAq5GBur4b2SsP
-	 IwEmpraFw94uby+J7GoImK+UZ45w/1/bSouej5SVcz5ZvHNsnoryZjXuN4s50i8Kae
-	 x9elZ/oOUuT6JRP3vk9atflW/JfkXRgRHAk5EP+gzniai+E3A0v04XrPkGq9U8EK/U
-	 8vE19s8eFQVD2S9tk9wkX6hN4PiqZb6gID2ArHcgvZwBiScEZRbr8McA1Dz+S74z+D
-	 lHA9CUKk6iVFtrKzEfaI9uaNk0+0K/J8AzznLw8P+xetXTw1VVkZyPO1PvCiZeMpTM
-	 TrITMyH/BSywA==
-Message-ID: <sashiko-outbox-203171@kernel.org>
+	b=dDKhQke/YKAVnYVxDteZ1MroUQVDgxhFlO0iegIOvbOB99re9Yf6yvcvmZPLgmgEU
+	 6MYEQ7PB+JDtvUNGE6gjlOtDO8R15yVXIqGtbZAC+V4Rfd0BXMhZlgDMIilFHGJldV
+	 Hs+eJA0G3vI0sHa+60V+7h9/JjWVYoAbuyVbozYIB797zaFBPBo6RTjYsVNjHcqEfs
+	 ZQBb8Yssl+VbzFB46kKy8Fze8PxNkm/ZLfwCL1AR6FLmjDVl0Bi1FatXDskLqH5Qhx
+	 WawSTCS4lo+Wvs55IRYYnLADRxjdCTF5yK2gR5xDzhw5N/aoG2wzc7RRRrwU2eYWxT
+	 zmu21cCx8RfXA==
+Message-ID: <sashiko-outbox-203189@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v16 09/15] afs: Use a bvecq to hold dir content rather
- than folioq
+Subject: Re: [PATCH v16 10/15] cifs: Use a bvecq for buffering instead of a
+ folioq
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Howells" <dhowells@redhat.com>
 Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261107160823.1465553-10-dhowells@redhat.com>
+In-Reply-To: <20261107160823.1465553-11-dhowells@redhat.com>
 References: <20261107160823.1465553-1-dhowells@redhat.com>
- <20261107160823.1465553-10-dhowells@redhat.com>
+ <20261107160823.1465553-11-dhowells@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 18:34:50 +0000
+Date: Sat, 07 Nov 2026 18:51:56 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -61,10 +61,8 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 
-> Use a bvecq to hold the contents of a directory rather than the folioq so
-> that the latter can be phased out.  This is also applied to the symlink I=
-/O
-> buffer.
+> Use a bvecq for internal buffering for crypto purposes instead of a folioq
+> so that the latter can be phased out.
 >=20
 > Signed-off-by: David Howells <dhowells@redhat.com>
 
@@ -72,5 +70,5 @@ Sashiko has reviewed this patch and found no issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107160823.1465=
-553-1-dhowells@redhat.com?part=3D9
+553-1-dhowells@redhat.com?part=3D10
 
