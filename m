@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794221581;
-	b=bKujfh0/x/nLP2ed2njM6geWPV1g5ii45vy+nQiGW7zAOYFZ9z68oeYuODEn9cb9WN0o
-	 lTDXHtQGlkqGWmtBkjysrNnGWHuS3+YGJDQT5V7sVLGtJPYT59xICmjNsehGCovNljbgS
-	 p1+3E2ri1nQ6XQjappAFUUhopcd2NiY9dyh3u6k2LBzSPDv9R9Kj5FU3xZPa3q5LrEIoF
-	 aD80Hwx5gYMKYCr3MLcLPyjhsMrJQLdcLfoLsIr/5U04fYE0RHBWoBDqTeswhcAARneIl
-	 GGXC9yG+w6kq5/M1tJxYsM0umXLaZ933d0HMsSXNpP6X8PuE0e/joMZn5Dl4Udg87Mw==
+	t=1794221584;
+	b=Zh6eJpplIpGDrWrAbOw3b84BLyWEnpFymKT35/UrzDWkRl/LgPjPZ1hK2jYzAqGKY7/R
+	 m0lhXNMHZ0ULnYHMxwsuyYKuQPVxLp/iwurOiVlrLRfnbEkOxt8QiRbywLjCCV3D8QKNI
+	 O6dQd47V7G8ZMcNQeuyt1p0d7aj1Le5EiVAwIfvQnlG7zkMgRzUHNppF4XzVSqESC6i5Z
+	 mf9jK/V3TX7HVxOOTUzH5MJDwzdT0jo98l377zzaPda1S6DlO2na/gS8VSvZNqhJbo26o
+	 3Ay7NajpBor6egLTXwtM/vehiUyvl6IzJVFP3VKegRp0dFqug917753jzd9bG03TGWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794221581;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794221584;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=P/abH821CfjTbteejdVkVCp6wEUnORlLvnsQVPFmNfs=;
-	b=lOBKNuQ6ebP0949KWr3qSh+/rS+DniGGnUdRfXFkgVb/prfwGH0Pf/XuSnfexkIIA7eo
-	 yjIeL/MN4H8oWlrO4F/FHa6rVyNQmCBM37IvSRKYZ3hobf8Jn/3VBzYx59NHS6HSDbBOY
-	 YmMs91zdbEcYUJziXRYWl81TEdgY7Vsf9zoqiyRMZsdnW3aHtRXRsT/Kn2Uf4s6DLNjv5
-	 zsnVZ7bkYUoLuaHajSdpKiVYsicBIz948kyx43jyvZg9Sr62Bg2aJeXKseszofOdmaHRI
-	 ULlj3C2CX5BvSLLO6neDImaRASpVLYfH4+a0RfBeJmxP8znJRM0hROLhmRhciZg5xTw==
+	bh=7gQkAftGc6feY9izPoJt+dP0xjoWhSwyQPi0WVN939U=;
+	b=J3gWLz31JJo2h8DFawLIsE0onHIGLmMpr2IJ4N/Hpy2kvQOVeAO05X0kevKFk0SdvVi3
+	 oaLhmiYA79rwAZCSwkFqQdDZ+OkO+Ok27PNZGP53mFWnNsya13F+Cks+DxjlLKS68MCG7
+	 oQhVRq3jg4ajfg0DX924B8n9uZvbKCc3fJYmU4SMd4TWjb07MgKciZkNVvSTs06ejEBQX
+	 p0543WzM4qDxQCSsETYTkjbG1CJJ5yLPKHdEw8NNO72h2da/CxKyF5XEgs738hNYHxToH
+	 aHsT+xojG8ZJhOiBbjtk283KJ2S7J/lk2XEYKEPsYVUoC3MSO0eg//9BgQ/OEqUGbcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=is.s.u-tokyo.ac.jp;
 	spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp;
-	dkim=pass header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=CNmob+fK;
-	arc=none smtp.remote-ip=74.125.82.54
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	dkim=pass header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=hwm+cKB3;
+	arc=none smtp.remote-ip=74.125.82.47
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD344606A326
-	for <v9fs@lists.linux.dev>; Mon,  9 Nov 2026 10:53:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD344606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA4A606A325
+	for <v9fs@lists.linux.dev>; Mon,  9 Nov 2026 10:53:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CA4A606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=is.s.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=CNmob+fK
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b3acec6677so839910c88.1
-        for <v9fs@lists.linux.dev>; Mon, 09 Nov 2026 02:53:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=hwm+cKB3
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-170135e43c7so1008401c88.0
+        for <v9fs@lists.linux.dev>; Mon, 09 Nov 2026 02:53:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=is.s.u-tokyo.ac.jp; s=google; t=1794221580; x=1794826380; darn=lists.linux.dev;
+        d=is.s.u-tokyo.ac.jp; s=google; t=1794221583; x=1794826383; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=P/abH821CfjTbteejdVkVCp6wEUnORlLvnsQVPFmNfs=;
-        b=CNmob+fKGACFYEXG8yc1Cl/8wxo+VyYKS4tPz1fReCXkqfeM3112S7uo3XRN7oC6jS
-         u3tgkOo1279uo7mG+4bEzHkeF+swstwI/3a8eRn7EWfLkJEblXcCqp0iiLJRVGaThINX
-         Et1USwOpHCIT0WdQAJ/X0OwqGZqpjvSX6LiZGSJV8gIJDawFrWwQJG1WGb6PS1aIiH4p
-         VqPPoQxIaREg4wHKFfI9YVoAbJvApal+cVCzOHVYXh3jG6axq2HiR5Ktkm77uRA3inVr
-         BnQxYDU5lW9N/Bl3TVG5kI0OmBqE6iFlo8V9W0RXvj2KEX5W0KyDo8hSopB+NMytEf0V
-         6D2w==
+        bh=7gQkAftGc6feY9izPoJt+dP0xjoWhSwyQPi0WVN939U=;
+        b=hwm+cKB3estAmpEPvhPZedvckSQC05R6rZk1SGcrpuvfC9mzlXX6DpC/80WPDlUnND
+         0xZjO9Bn/1V25f54PG99bTHLkOgacaoJ3nSpXdqetHiWbKrQCugAvQoR5kwI97DYkZz7
+         i6uu0ypiqyuAL7fE0NW8GTArAHBxmIf3Y9xuWWyFMnSAuBd8WotH6yWRLUqO/Nt3O71i
+         pz1AfaT6y9HCOqAch9+6z05k12eVbwP0qCeh4YZYA0UfXn8L7NPVZP/lyt/LTwiK8itQ
+         ywr4dnFVaXWGC80QWVuQBAAee3mv6mL8y73zHHjN8I4KWcI2fl24eta07ZxmzLSkXSk1
+         fcOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794221580; x=1794826380;
+        d=1e100.net; s=20260707; t=1794221583; x=1794826383;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P/abH821CfjTbteejdVkVCp6wEUnORlLvnsQVPFmNfs=;
-        b=fb3rsmPFHNkY887iUWWADKvYOcOq4/gUlLWKaALqnwl09pgXeoG8Nsjh+yqSrE7mOn
-         I9XeB/vX5UcgosPAC8K23XFxDhCybbc1uUxpS0zzA/kq+9l7P3JPJkR/XoOPbl84uqeL
-         ZYH0yoWdWa+R8eQw11UhFM+iWU9s9fWHuDbNX2hXpBEGks3pdiyueEfRdcBEQt+GsYor
-         JAyN2xxWQGitoZI7rHx2tq1rffvgTcmXGSgc2xUWcZtsvofxQwJD/7EaGJcCaXdDoZoP
-         bGyNmcO6R5pg1YFww57/v5v0lUs3MoYrPOZfUtfvjvhpncmW/RCVPu8FsQtlZaFuX4bt
-         c+pQ==
-X-Forwarded-Encrypted: i=1; AL+hErFzWS8iY9vP5volF2wNCwF/PLP+gbWkIwnrDzy4ENc1XhQgYq5qFlt6xhiYY0UFhUZC7uVJ@lists.linux.dev
-X-Gm-Message-State: APuU4Z/244hPmB4yah4RScuTdNMzgnnXUtx99Lh9gjFgACIBA6LDNod/
-	/Z6r4G4HduARiPHDPJPHxIpCJC8pQa4fsJ0LSyBb4fwS4rrMHBaLdLiWBdvbLdv6gg==
-X-Gm-Gg: AYBFou3TGVXfF6pvwrXmsSytPlbdb/CfFJujEvIiSangGg6esp1ab6M6HFoWZy8Bo4P
-	aefM3CBkyKk0WTIIYwaODu6AEfkUhUDQA7m6ACC0t3NdftvA+PKbvwMQOpJBV0bYUnCi5c0W7wf
-	QnYR88628bElIV77LO2AKUWy+yVgZbx7fbZP4urFspGtbjTS48ODLZRPU2kZC7txq23p/ATdaQC
-	tPSi6vl2XdHE0rg9/1JMZKZxSKPCHyT8wfSQFsRRmbokiFnc3j6YiIQ30mK2/KSDb2qxX5+JNkN
-	cJ2Yj0R+6uodVwzdiCBwHdDr6dUHRTJSv+xN3rvu+6UShIxJD6hU06jGt/hWTaeuNg8bLR4NYRD
-	AMLx83DCZTrKndqZ43eKnogQ8lpXtHBipEQcRQT2syUvH/qc04GNVgfMWF8gMnfRxDr179B6DnQ
-	63ZDkVdfpu2WYNg6BS6JYnVZ5fdG/6PdlS5EgnTdBoUStcsyhsegniNcVxLw3O2E6Bk+9hyKFN1
-	NcYtsFjt92KHXYQ2iGOIwQAoLsqtcrhYfC9jl6VDRX3781jKJDWpaeT46xui4F3dTdN+SscbfiR
-	0cZgPRiIQLCY6URfujZQX2g3w6ghsjq7hRQElQ==
-X-Received: by 2002:a05:7022:4588:b0:144:fb42:52 with SMTP id a92af1059eb24-1b39feb42f0mr8095312c88.28.1794221579708;
-        Mon, 09 Nov 2026 02:52:59 -0800 (PST)
+        bh=7gQkAftGc6feY9izPoJt+dP0xjoWhSwyQPi0WVN939U=;
+        b=KiOCxbabcWG9VQE+2RB+TkpaovfZF8X7JfWvxpbWha2gZ07Vxjv81KPBUf5k70SqyE
+         gUUXDbX+KTs9H16Ow9vdZibcaXbH9ZoEdhHlJPcR8PaRWbLcVvjAVFU2l+fnhXtznXGh
+         ZXU/dlUM5zY+P45/EeH+Zw4/PROrRNLbF3AhPk/Hm3FrYFGEN16v4YuvbGJQ2Vdb0Wdf
+         Wea3MIJDoUBPd2dBK/SS2EFVHbAnklHY1qvU6yWr1q19b6tiUnLzS08g4Yiq9ip/Ap2Y
+         rXRDh1LaJdTx+VpxBonAOVxisrZJfjbz/jBMjSBMedroUT1s3KHd2dmOOtEUZLcoB3iT
+         R7EQ==
+X-Forwarded-Encrypted: i=1; AL+hErHDa0eIY0Aq+zS6Y7scCtBqD97vfgv4JppdwJsbwzsKDulE8V4kbwCR+ShpM3w8GKElm+Fu@lists.linux.dev
+X-Gm-Message-State: APuU4Z9bCljbv7KVcXuSgjfciVa5lbRIrFCEUHSsRee9MS/q52vW6E4/
+	UloqAKs6vyFi7vbWx5+5p/DhPByq8y28/tRS0Rh7K4Beh34MxOdSUaY2CWEsZIr3kg==
+X-Gm-Gg: AYBFou1YBbDdvKNI+RXSNTlx+SCygVQ6lNftASW1Xa2YGas1IiRGNszZC7v9+pwdyC9
+	Fs9nRRtI/blRA8jYRYtFzU6sPtZFXLbJhFJVQRKDvHiOJLM/6ashLutxbjbyqkm3k6t0vB38S8d
+	IXJEP18XvkO41tUX2mwNhHMWaYc/4E75rA0VaNCj3GeuCP0OARq11KI45J5szkY+EG91DclI19y
+	iltvwaRTh3a4qORnLD34kdi/dm0r5omQAGz5veO4yPLCkLQ9iBMGMSgbWqMJsZ1DdjxYATlKhwO
+	qP2V1oA9Mtsff4tihSpXwZgELUvNk1mtAWbHaU8YHvHMxPleB59r70EOFMM5azmrjruAZ8B7fw+
+	JEkMf/iDd6wL/lsrtlDt108ASnNi+xAfrRpwlH9s4xC9T2ENqr1Ht800tBVLdPcZtwleuEaaAAe
+	oYGmR8dgJZlnINx4ibpaHfmMy8lDpOocZ5JPXGkpr3hKcut2f+06arNZIHQmozlhTEG08zsShZw
+	3kbmeNsRac4NpQqZZV0Daj+Bcobc7cAHy+gLQT251NmkkSUrTd4CaD9wh3G1iNByFeI94TzrcD0
+	Gup11gd+14pAT/J4vhE+xfCrkuBAcsM2J+yVMc3mTEqPmdXOqUpR7KIQgQeL
+X-Received: by 2002:a05:701b:2214:b0:16d:1e24:5cc3 with SMTP id a92af1059eb24-1b39feda859mr6171128c88.19.1794221582983;
+        Mon, 09 Nov 2026 02:53:02 -0800 (PST)
 Received: from wang0.localdomain ([133.11.33.33])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b375726fd1sm12228744c88.14.2026.11.09.02.52.56
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b375726fd1sm12228744c88.14.2026.11.09.02.53.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 02:52:59 -0800 (PST)
+        Mon, 09 Nov 2026 02:53:02 -0800 (PST)
 From: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
 To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
@@ -98,11 +98,10 @@ Cc: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Takahiro Shinagawa <shina@is.s.u-tokyo.ac.jp>,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/5] 9p/virtio: clamp the reply size of a zero-copy request
-Date: Mon,  9 Nov 2026 19:52:47 +0900
-Message-ID: <20261109105251.2545764-2-lian@is.s.u-tokyo.ac.jp>
+Subject: [PATCH 2/5] 9p: ignore a zero-copy reply that arrives after a fatal signal
+Date: Mon,  9 Nov 2026 19:52:48 +0900
+Message-ID: <20261109105251.2545764-3-lian@is.s.u-tokyo.ac.jp>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109105251.2545764-1-lian@is.s.u-tokyo.ac.jp>
 References: <20261109105251.2545764-1-lian@is.s.u-tokyo.ac.jp>
@@ -117,64 +116,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-req_done() takes the used length from the device as the reply size
-without checking it against the posted buffers, and p9_check_errors()
-skips its size check for zero-copy requests, so reading an oversized
-error reply to a zero-copy request can overrun the posted buffers:
+When a fatal signal ends the wait of p9_virtio_zc_request() for a
+zero-copy TREAD or TREADDIR, the device can still answer the request
+before the RFLUSH, and p9_client_zc_rpc() parses that reply.
+p9_virtio_zc_request() has returned by then, so it neither bounds the
+reply size nor moves the error string of an RERROR from the reply pages
+into rc.sdata, and p9_check_errors() skips its size check for zero-copy
+requests, so it parses the error string of an oversized reply past the
+end of rc.sdata:
 
-  BUG: KASAN: slab-out-of-bounds in handle_rerror+0x144/0x230
-  Read of size 8 at addr ffff888003065768 by task zc9p/157
+  BUG: KASAN: slab-out-of-bounds in p9pdu_readf+0x151e/0x1c50
+  Read of size 8179 at addr ffff888004724009 by task zc9p/155
   Call Trace:
-   handle_rerror+0x144/0x230
-   p9_virtio_zc_request+0xb8e/0xd70
-   p9_client_zc_rpc+0x21c/0x970
+   p9pdu_readf+0x151e/0x1c50
+   p9_check_errors+0x23d/0x510
+   p9_client_zc_rpc+0x4f0/0x970
    p9_client_read_once+0x237/0x6c0
-  The buggy address is located 0 bytes to the right of
-   allocated 8-byte region [ffff888003065760, ffff888003065768)
 
-Also, handle_rerror() returns before truncating the reply size of a
-zero-copy TWRITE, which posts no reply pages, so p9_check_errors() can
-parse the error string of an oversized error reply past the end of
-rc.sdata.
+Also, the error string that fits within rc.sdata is parsed from
+rc.sdata, but the device wrote only the header there, so
+p9_errstr2errno() can print the error from uninitialized memory.
 
-Fix this by clamping the reply size to the posted buffers upon getting
-the reply.
+Fix this by ignoring the reply when a fatal signal ends the wait of a
+zero-copy request, since p9_client_zc_rpc() already returns -ERESTARTSYS
+when the server cancels such a request.
 
 This patch is assisted by Claude Opus 5.5.
 
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Closes: https://lore.kernel.org/all/20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn/
-Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
 Fixes: f615625a44c4 ("9p: handling Rerror without copy_from_iter_full()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
 ---
- net/9p/trans_virtio.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/9p/client.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index 9fa63e3ebf673..53046668c16b1 100644
---- a/net/9p/trans_virtio.c
-+++ b/net/9p/trans_virtio.c
-@@ -537,10 +537,14 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
- 	 * threads - echoes to wmb() in the callback
- 	 */
- 	smp_rmb();
--	// RERROR needs reply (== error string) in static data
--	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
--	    unlikely(req->rc.sdata[4] == P9_RERROR))
--		handle_rerror(req, in_hdr_len, offs, in_pages);
-+	if (READ_ONCE(req->status) == REQ_STATUS_RCVD) {
-+		// The device may report more than the buffers we posted
-+		req->rc.size = umin(req->rc.size, in_hdr_len + inlen);
-+
-+		// RERROR needs reply (== error string) in static data
-+		if (unlikely(req->rc.sdata[4] == P9_RERROR))
-+			handle_rerror(req, in_hdr_len, offs, in_pages);
-+	}
+diff --git a/net/9p/client.c b/net/9p/client.c
+index e63e8c2a853df..66980ad52bca8 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -706,10 +706,11 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
  
- 	/*
- 	 * Non kernel buffers are pinned, unpin them
+ 		if (c->trans_mod->cancel(c, req))
+ 			p9_client_flush(c, req);
+-
+-		/* if we received the response anyway, don't signal error */
+-		if (READ_ONCE(req->status) == REQ_STATUS_RCVD)
+-			err = 0;
++		/*
++		 * err stays -ERESTARTSYS even if the reply has arrived, since
++		 * the transport moves the error string of a zero-copy reply
++		 * into rc only while it waits.
++		 */
+ 	}
+ recalc_sigpending:
+ 	if (sigpending) {
 -- 
 2.56.0
 
