@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794307995;
-	b=3jDHs7uLa+LuAISZS9NcmGvFJbIETIiWr8TNWmiifxuKQHoMu1Go44YG1N0yhuolnp/c
-	 sRZH+GkbdAszzLutFY9XjA1qnAHpWEzlU9q44CndHeAX7uspaQOlIVGOz4nQr8JJ58Djv
-	 KTjXiuHZNnvZuSRz7/cqGANvinCHzt/cZ8+vgkPFEF2It05vCPrC5G3vl2hb7yRonf7Zk
-	 McG6lxcicYXz/r90/VcsJd8u22Q1AXkn5bSw1vzv2x9fTBZugj5hHcCbs3nKrnVQ0zAs2
-	 y2Qz3EecuqhAuZtQ7y3IFGrjzg6T0CIdbdoG/KLrA4tzjvS3zsFhDGDQkifR02LerrA==
+	b=sj6JZkkfzZtZoFrKUpT9+mf861Nmy5o6GkkCtJjIFozWwlLJ21VIRYiPrT1lQTfI3L+u
+	 6ttYC10wOFRL1bUATZVfab67j+JJDp5O3qstaOUT24rR0394ue7WwVCAfhz49jkfFkpgL
+	 lxnsplTpnuDkMU5Nvsb9hHTjbPwuuCJU7P3oexiNaOl/mnRU0gREZ3kDEqHWXyQMsecT3
+	 W4WGgs8fJziuVD9K5gtMmeghKKlRlIGvkpGgVwj/RmjQOmsq+7QDfvBzPjicyKsVB8O+m
+	 KH8Xy8v46xY2EgJ3HNMV9a8Rc7NAkxNrIa2r5DyVwVmoZ9gXgc5rRKo7L19WslMNrsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794307995;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=OADRfp/lToK0d62pH4PG6Qctpkt3Yy+E/djkgSCY54A=;
-	b=Pf1BreaHBd8dQaaR2q9dUNeSvhHWmgEeei2BN3GI2BwaA8aj399rk4Gn55Y/0I15Ms6h
-	 W4sem7VjVqGcaTbbTmOa9oOP2TAe47Swzgb5/whSer/7Dtjhf9mYjpsp9faqpeg2Lav0x
-	 9Ar2zuFTEV0aLqgKzALitjqRrVsVjnP0oM+4+Z02Mi1GCpbRRga3upN7unJXHoeY9p9rr
-	 ECYIsUmP2Ns1Tjmo53GQy70CsM47qfM0uwHY0ZsPWtxmvENaofR01HHe99FuDfaUjrQSl
-	 q87UwlHjsuPzeVcxysExa+FxWvXNZyGwuRBR4vALXr8HiFdvTh2YHQiy1j7JB4lGYqQ==
+	bh=/GklD8OlqdJ8tD3FPtskAvq1S4s7aMpCC8kittf8DMA=;
+	b=uMu9g40Jo4R6Bxcm09gc/ZBMPAJRT49nRy+ffs9H3IoEN5GU9JrFEfB94lw/2pxrJ1KU
+	 6qwaJVvQZbzZdAL1cF5O+9tiygIqQHCNm9WG/UBHqATg2QC50EQ/w1/00YWg3JGyjFjku
+	 mZWkChJVBfK6DIwmoBZBSYhnDMsi7qwLMLy3qOZKPqFd8YzFHa5NT25L13jOj67kr9RI5
+	 VqlnOezmVfqfa9wF2Bs/vn3aUdaBBBSL6kNY5nW5RlqpSh+IJa5PnSsZdbJDIBlbzYkDM
+	 JnI2LVl2tUGnvaDeIoOoqUmcMttqkrrieQ4qtstA77cmSYbDNmwm1qO+T4NEN7/7LKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGSKozPv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9ItnrDl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1EA606A325
-	for <v9fs@lists.linux.dev>; Tue, 10 Nov 2026 10:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C54606A31C
+	for <v9fs@lists.linux.dev>; Tue, 10 Nov 2026 10:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGSKozPv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6101F008A1;
-	Tue, 10 Nov 2026 10:53:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9ItnrDl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EB51F008A1;
+	Tue, 10 Nov 2026 10:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794307994;
-	bh=OADRfp/lToK0d62pH4PG6Qctpkt3Yy+E/djkgSCY54A=;
+	s=k20260515; t=1794307995;
+	bh=/GklD8OlqdJ8tD3FPtskAvq1S4s7aMpCC8kittf8DMA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iGSKozPv0yoaQLhdDK8C0GIGFf8z3c9zd7FNKSm0KNahEzOiB76qjswTZoHFRmrMf
-	 VBcNetcciWV8gpS8EoF1MG7QMGaAiOh4Zs+x0vyvj1pibDvfRNy9IA+wma1XUyBIvB
-	 5OR290QRP7xOdVefji9qg5JDrWsrdMbInvl40v214bJpN6ZnFxMTnbaThp4gqzXssY
-	 7xzsv5IW4uYWige4HAnRozt3oU8MHpTt+Tk0Tkwt94xYu7H8falJ7Ago7Xgim5pZUh
-	 vP/kPnavEy8iR6PnPcDSdTcO0IB5dT/UngEtmmkx8sTLUUIdfKPw0/UVK4A8r1G1z3
-	 kNl2LTUuE367Q==
-Message-ID: <sashiko-outbox-206903@kernel.org>
+	b=E9ItnrDlMp2aNpU0wEDP9DI0+4mTztL9t5+Z3w2c1N6bojHx3C+JiMP9YHXf8GFIY
+	 holX+mw+aduayLMZrhgtT3m9P6mpmFUs4BgdmAoEOjPu4GmSPLSyYeIz8pExf4FT9J
+	 kpH2C7NOUm5ia9Ikqf7u+mKDYLHouTLlk/a0JPdHqcpDb0GSFEnL7RSJ3KPKgOky99
+	 bhjKXh+ysclZOQ7AgEjgbAXoqo34H9R+TaOhmBCP0SX0ugP2uLDTr3pxQ+UZ6y/sLa
+	 8L6d0QnIPoD6lyNTb4FOxS8apUG9hzpfwuukW2K3GkfSLVOMEjQkh491WBkLDGnIbe
+	 4ZGyJJvdtnZAA==
+Message-ID: <sashiko-outbox-206904@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/5] 9p: take the tag of a flushed request from the
- request
+Subject: Re: [PATCH 5/5] 9p/virtio: keep zero-copy buffers until the device
+ returns them
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Lianjie Wang" <lian@is.s.u-tokyo.ac.jp>
 Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261109105251.2545764-5-lian@is.s.u-tokyo.ac.jp>
+In-Reply-To: <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
 References: <20261109105251.2545764-1-lian@is.s.u-tokyo.ac.jp>
- <20261109105251.2545764-5-lian@is.s.u-tokyo.ac.jp>
+ <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 10:53:13 +0000
+Date: Tue, 10 Nov 2026 10:53:14 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -61,21 +61,31 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 
-> p9_client_flush() finds the tag of the request to cancel by parsing the
-> header of oldreq->tc. For a zero-copy TWRITE, however,
-> p9_virtio_zc_request() adds the payload length to the size in the header
-> after marshalling, so p9_parse_header() fails on the mismatch with
-> tc.size and no TFLUSH is sent. As a result, a zero-copy write
-> interrupted by a fatal signal returns without waiting for the RFLUSH,
-> and the server can still write the data after the writer is killed,
-> overwriting a later write to the same file.
+> When a fatal signal ends the wait of p9_virtio_zc_request() while the
+> device still holds the request, the payload pages are released, and
+> p9_client_zc_rpc() returns to its caller once the RFLUSH arrives. Since
+> the caller may free the buffers, a misbehaving device can answer the
+> request after the RFLUSH and write the reply into freed memory. With the
+> payload bounced through swiotlb, the guest itself copies the reply into
+> the freed memory when req_done() unmaps the returned buffers:
 >=20
-> Use the tag in oldreq->tc.tag and drop the parse, so a TFLUSH is sent.
+>   BUG: KASAN: use-after-free in swiotlb_bounce+0x236/0x270
+>   Write of size 4080 at addr ffff888004800010 by task swapper/1/0
+>   Call Trace:
+>    swiotlb_bounce+0x236/0x270
+>    req_done+0xb2/0x280
+>=20
+> Fix this by releasing the pages in req_done() once the device returns
+> the request, when the wait ends without a reply. req_done() can find the
+> pages only through the request, so the page arrays, their page counts
+> and need_drop are gathered into struct p9_zc_pages allocated for each
+> zero-copy request. p9_client_zc_rpc() now waits until the device returns
+> the request, since the caller may reuse or free the buffers after
+> p9_client_zc_rpc() returns.
 >=20
 > This patch is assisted by Claude Opus 5.5.
 >=20
-> Fixes: d28c756caee6 ("9p/net: Fix zero-copy path in the 9p virtio transpo=
-rt")
+> Fixes: abfa034e4b8e ("fs/9p: Update zero-copy implementation in 9p")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
 
@@ -83,5 +93,5 @@ Sashiko has reviewed this patch and found no issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109105251.2545=
-764-1-lian@is.s.u-tokyo.ac.jp?part=3D4
+764-1-lian@is.s.u-tokyo.ac.jp?part=3D5
 
