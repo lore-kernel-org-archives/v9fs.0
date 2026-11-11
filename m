@@ -1,56 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794433592;
-	b=NxC5niE+P6ow3Nsro+vxyLyyfwXeQlIKQG9pPQeRnlR6R5Od7UuxDjTkIrgxAXa8COE+
-	 M7EbPTOe865t5c4y0ch0FfGeqUlsNzRoGesGZJGC2bBWFta55NPZ0DaXfLyYPj/f9zL+m
-	 p/rW53rxPD/RfuEk8A19Io1s/HW6sCDIV3y1Wh5aHd0FPebEaOqWRol2TiZGsnySX7eAH
-	 0chmvZiq9A6OnHfWOEaoGWGf2tm35hJyaZAIBNbab9Suz2l23Cx7lRTNMrRgJLKooJBO+
-	 SpMdcjMYEKidDQvEEprcJP5asNrMpNYa7xBjzr0Df1vzsCcC4Dv6CcdMJOmEU3LlTmg==
+	t=1794435467;
+	b=lBsYnXlK/Lm2x6kDX3T6Ts4qmH3AWeQ0WEPRsuMFVayOaHLXSXXo1tsNETLYla0gfJeZ
+	 Zq8bT9Gc7fF+Q3bSEZEIpnuThM+uo8+qTLb17NccNHZW72IjXRbbULqijF9F2PugjATWn
+	 5KLcsLgN2v8X7CmdV/3+C66VNb5MoJB6tGon23zw9HUjcSaiVo46xJhJCmzq6Vf4txjpJ
+	 CBqd4PMmyE67UNAfLW+IxlWxJCjEOOpf23gfVxtnAqyNXlenusrVjs9gs5dM+1SBuTWKp
+	 smisefKGI/l7bB9XY+Ih4FpveeVKH5Xet8Wy6BAzdBaa5pp7+32YJHGFXuchh9pfiYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794433592;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794435467;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=UBNMCUGUyyOxFFihinuKtlmAkERxCYStE0xFKbmmdUY=;
-	b=A1D+6GitOhuRqWtMKjtwEwtRStPAp/GRSH2iK8nrgwC9ORFhT9L7GWmj7f/boKEKPkll
-	 yec8IPMUqM02+VKBJnKAbNSaWCzm2gR9oV1I+CDcgpkWkWnOBLxUrauUwzCF/3Re2NeBH
-	 PJJ3HHbfnJEnOFD7OlKiLlxM8S3hnQxMwn02zsemGsbnT8nh4Y29sTS+ui5J18CsT7SXO
-	 voJNdplv+Z8n4BhFKatjJ9rV0J7r367yZ2y7jGIOGlBQVTtOwj9djPu425D4DaHXP4AmD
-	 0XYOcVmmj1Cw+uTgU7U59h61PuNVQvh+djEutRSmbTWpggC9HO9agKzZsn0jdm6RLpg==
+	bh=GY10JfC1cfZ5rkupC0drmGiIKb7kkjISbKkgJwA2YHU=;
+	b=LAk4MQWQyPgGzoH+2bm5V0y3ghtct8xhBOq2CeqW0IM2ira5ZZr2Jk/ki0sfV316katO
+	 E2WgJUIkzDb5n78ggsAajAYxYIYYphxe4AiGpjGjt+ovcr9sIi/dWlwFI4hES71b+i0YU
+	 6HXWKMGX98CDKmHw5HUDMwjTrHttGQTalIQ8972dwPQrdvxagtHKkGi2nE+j5sHmCfpuX
+	 Loju5fzfPr/grgF6tquTNwRv6IbhowOdaBYfPSRdwLEMUAAptYfI8W7lgQgmsu5995k9F
+	 W4c416BWr8rbpEjZRLmdZCuNlPyL9/SxzDaSUiQ+BWzrRH9YykNGR+tpvcpXamO01yA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+1mFTva;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F7co2xck;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0C1606A31C
-	for <v9fs@lists.linux.dev>; Wed, 11 Nov 2026 21:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70F0606A321
+	for <v9fs@lists.linux.dev>; Wed, 11 Nov 2026 22:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+1mFTva
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29F41F00A06;
-	Wed, 11 Nov 2026 21:46:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F7co2xck
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3EB1F00A05;
+	Wed, 11 Nov 2026 22:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794433592;
-	bh=UBNMCUGUyyOxFFihinuKtlmAkERxCYStE0xFKbmmdUY=;
+	s=k20260515; t=1794435467;
+	bh=GY10JfC1cfZ5rkupC0drmGiIKb7kkjISbKkgJwA2YHU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n+1mFTvaAGKJsu6spnPxdLf2SbBHkUYU/6lUcZF94FgfhEChcrBNJe7HXNlmxH4hQ
-	 SkP/OV7ngYC1W9DQ3+1qk/1554QdP2fTHYd1d0Ne5zmJBmKS5uxhC6czt3R2upLeEA
-	 5wKxPpCV7o4BCR8ua23ElPn39E4lMMTTXz0JkpZwGLV1zHD9dt08BJ7WDUeKFGQAN4
-	 AOpFpD9YZ4pm8G4KLnpGBTUFhJ+gKC0MxxsX9auW66rgCfRxBCC4Gf9nOo0iT4DFfG
-	 9rESXYm0sJjRRqjffBlRFRkujhjk0h5QzjqKJ7KhAN8qavfhwsnd6WcASyEIy+COLo
-	 kURBpapXlSA9A==
-Message-ID: <sashiko-outbox-209723@kernel.org>
+	b=F7co2xck4hA6TQBtbC96D+8eUeuKqgpe1sWK0cyF4Z+kW9p/dizHgH5ywloVpv3Ei
+	 JnJErcz2Cftyip+vXBrHN2REDjMeiGUO/LrNpmUitNjfp3X7u5naFa3t08Nab8JExQ
+	 nZQiX8Mp/21lbMxIOLR/zZIhDpVMEHbR1WEtWWl/oWhKFJmWAcfMangwZMYWcVXmnC
+	 XUb1xgc/KeGJg8r5EPd79lU7CJhVDE8yPTBo4rj3TALXKqBMEb8PnBSbw2bObsywEB
+	 FCB3piLU+WasCcZxXLqJpdc6auqvlZVIY7lSArtT7gjuvXYzF5glQSZE+O8wCmIIFB
+	 dMYPH7GxZAd8Q==
+Message-ID: <sashiko-outbox-209778@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v17 03/17] iov_iter: Add a segmented queue of bio_vec[]
+Subject: Re: [PATCH v17 04/17] netfs: Add some tools for managing bvecq
+ chains
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Howells" <dhowells@redhat.com>
-Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261111203034.2126314-4-dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev, "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
+ Schumaker" <anna@kernel.org>
+In-Reply-To: <20261111203034.2126314-5-dhowells@redhat.com>
 References: <20261111203034.2126314-1-dhowells@redhat.com>
- <20261111203034.2126314-4-dhowells@redhat.com>
+ <20261111203034.2126314-5-dhowells@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 21:46:31 +0000
+Date: Wed, 11 Nov 2026 22:17:46 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -60,33 +62,138 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 
-> Add the concept of a segmented queue of bio_vec[] arrays.  This allows an
-> indefinite quantity of elements to be handled and allows things like
-> network filesystems and crypto drivers to glue bits on the ends without
-> having to reallocate the array.
->=20
-> The bvecq struct that defines each segment also carries capacity/usage
-> information along with flags indicating whether the constituent memory
-> regions need freeing or unpinning.  The bvecq structs are refcounted to
-> allow a queue to be extracted in batches and split between a number of
-> subrequests.
->=20
-> The bvecq can have the bio_vec[] it manages allocated in with it, but this
-> is not required.  A flag is provided for if this is the case as comparing
-> ->bv to ->__bv is not sufficient to detect this case.
->=20
-> Add an iterator type ITER_BVECQ for it.  This is intended to replace
-> ITER_FOLIOQ (and ITER_XARRAY).
->=20
-> Note that the prev pointer is only really needed for iov_iter_revert() and
-> could be dispensed with if struct iov_iter contained the head information
-> as well as the current point.
->=20
-> Signed-off-by: David Howells <dhowells@redhat.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] netfs: mempool deadlock in bvecq_alloc_chain() when
+  for_writeback is true
+--
 
-Sashiko has reviewed this patch and found no issues.
+commit e5b9a085f1bcfd322d1044543745cbe0c1ae3076
+Author: David Howells <dhowells@redhat.com>
+
+netfs: Add some tools for managing bvecq chains
+
+This commit adds helpers for allocating, populating, refcounting, and
+freeing bvecq nodes and chains, along with an emergency mempool for
+writeback allocations.
+
+> diff --git a/fs/netfs/bvecq.c b/fs/netfs/bvecq.c
+> new file mode 100644
+> index 0000000000000..1d4da3de9b9d2
+> --- /dev/null
+> +++ b/fs/netfs/bvecq.c
+
+[ ... ]
+
+> +struct bvecq *bvecq_alloc_one(size_t nr_slots, gfp_t gfp, bool for_write=
+back)
+> +{
+> +	struct bvecq *bq;
+> +	size_t size;
+> +	bool from_pool =3D false;
+> +
+> +	/* Don't overrun ->max_slots or ->nr_slots. */
+> +	if (nr_slots > BVECQ_MAX_INLINE_SLOTS)
+> +		nr_slots =3D BVECQ_MAX_INLINE_SLOTS;
+> +
+> +	size =3D kmalloc_size_roundup(struct_size(bq, __bv, nr_slots));
+> +	gfp &=3D ~(GFP_ZONEMASK | __GFP_THISNODE);
+> +
+> +	if (for_writeback) {
+> +		if (size !=3D BVECQ_POOL_SIZE) {
+> +			gfp_t gfp_temp =3D gfp;
+> +
+> +			gfp_temp |=3D __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
+> +			gfp_temp &=3D ~(__GFP_DIRECT_RECLAIM | __GFP_IO);
+> +			bq =3D kmalloc(size, gfp_temp);
+> +			if (bq)
+> +				goto success;
+> +		}
+> +
+> +		bq =3D mempool_alloc(&netfs_bvecq_pool, gfp);
+> +		if (!bq)
+> +			return bq;
+> +		from_pool =3D true;
+> +		size =3D BVECQ_POOL_SIZE;
+> +	} else {
+> +		bq =3D kmalloc(size, gfp);
+> +		if (!bq)
+> +			return bq;
+> +	}
+> +
+> +success:
+> +	*bq =3D (struct bvecq) {
+> +		.ref		=3D REFCOUNT_INIT(1),
+> +		.bv		=3D bq->__bv,
+> +		.inline_bv	=3D true,
+> +		.max_slots	=3D min((size - sizeof(*bq)) / sizeof(bq->__bv[0]),
+> +				      BVECQ_MAX_INLINE_SLOTS),
+> +		.from_pool	=3D from_pool,
+> +	};
+> +	netfs_stat(&netfs_n_bvecq);
+> +	return bq;
+> +}
+> +EXPORT_SYMBOL(bvecq_alloc_one);
+> +
+> +/**
+> + * bvecq_alloc_chain - Allocate an unpopulated bvecq chain
+> + * @nr_slots: Number of slots to allocate
+> + * @gfp: The allocation constraints.
+> + * @for_writeback: True if allocating for writeback
+> + *
+> + * Allocate a chain of bvecq nodes providing at least the requested cumu=
+lative
+> + * number of slots.  Each node is a maximum of 4KiB in size.
+> + *
+> + * Return: The first node pointer or NULL on allocation failure.
+> + */
+> +struct bvecq *bvecq_alloc_chain(size_t nr_slots, gfp_t gfp, bool for_wri=
+teback)
+> +{
+> +	struct bvecq *head =3D NULL, *tail =3D NULL;
+> +
+> +	_enter("%zu", nr_slots);
+> +
+> +	for (;;) {
+> +		struct bvecq *bq;
+> +
+> +		bq =3D bvecq_alloc_one(min(nr_slots, BVECQ_4KB_SLOTS), gfp, for_writeb=
+ack);
+> +		if (!bq)
+> +			goto oom;
+> +
+> +		if (tail)
+> +			bvecq_append(tail, bq);
+> +		else
+> +			head =3D bq;
+> +		tail =3D bq;
+> +		if (tail->max_slots >=3D nr_slots)
+> +			break;
+> +		nr_slots -=3D tail->max_slots;
+> +	}
+> +
+> +	return head;
+> +oom:
+> +	bvecq_put(head);
+> +	return NULL;
+> +}
+
+[Severity: High]
+Can bvecq_alloc_chain() deadlock on netfs_bvecq_pool when for_writeback is
+true and gfp permits direct reclaim?
+
+Under memory pressure, bvecq_alloc_one() falls back to
+mempool_alloc(&netfs_bvecq_pool, gfp), which yields a 512-byte node holding
+BVECQ_POOL_SLOTS (29 slots on 64-bit).  bvecq_alloc_chain() loops calling
+bvecq_alloc_one() while holding previously allocated pool elements in head.
+
+Because netfs_bvecq_pool has 100 elements, a single chain requesting more
+than 2900 slots (~11.3 MiB of 4 KiB pages) or concurrent writeback threads
+building chains at the same time can exhaust the pool midway through the
+loop.  Each thread then sleeps in mempool_alloc() waiting for elements to
+be freed while pinning the elements already attached to head, before any
+I/O can be submitted to release them.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111203034.2126=
-314-1-dhowells@redhat.com?part=3D3
-
+314-1-dhowells@redhat.com?part=3D4
