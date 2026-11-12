@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794469989;
-	b=0/Ec/ygH1XLA4ico6XZmHhJa6+VFPdFzKsYpspCgygl57wQj+ht47+hFhQ4qW6R8P7xp
-	 OmWRQAcjWhMPGonNNVtC+k6aKZi97ucZ0W/9AlRAk6Sdl45OFsWWW+3ixuaiyx2J6BR+4
-	 8weE2NrM9DpW9MWRGKTuLrqummOhOO9ll8HTICb1MuczvMhBy23w1LkCJJRtXUs1lWiAE
-	 HwhNIrZwkzA/Z6XeVfkEvhWE36G2hqPWIx5dWNa/3brKvDfL1Sk9o6O7alPhTIkqgXcHB
-	 P0PylKYn9jXOGTu6OG8NAvM/XdiMM4cXzo8cgvtu2nYXyzAo+49g34ikfbxdY98W7Pw==
+	t=1794469991;
+	b=HeCSyATCCKPAmf49pt0n4dUzs4ftLWt75QRmLgAxXLo/q2Wt4854jXvyjrGlRBWFOmS8
+	 uddFwV8G8+dZ0a56v5q8GKeO/RvUHZxJpESrRgiPCvqu01oBB3cduGX4ZcR6AaB/0PaLD
+	 3KcY5pDGTYPylA+N0uxrjvSfGnKi5uNnNYwzqu29Uy+edMoA7ChBgGWEK83rYS9ROD4yP
+	 kifFaKs2us0rJ1i/XzeniFmRNXc2KA/2pJlsCWGJSN3VUfKYSBkTdgJyUF7/twjswEwq0
+	 voupg6vpNwvD2n722GC1EKFr+NJ3Kxfkat9EhQMS3e0umAEM34DxQqsSd3PdqeIKHxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794469989;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794469991;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=kUvWL3Dc/xCMK7UgSfWYY6w0DOd38KkDU0iyRvpQV4I=;
-	b=izwliCIkNt/tRadghyvYG6p5XBuBoB11E8Dbxel3wXBdZnoxiGLlJpkHzUviLvCj94GP
-	 vm3bbNaL87COBWxBONxTrvEweoLDVMNcq6HliPtCP7GuqKiroXSsFfCc6I3/fn5eVgh9n
-	 LVkqQzDMFl6YOx7j0bJZ9YV3hjzIIHDOIMTW+XUvVmTIXbTafUpaD9svTqwcKk8FBQcVg
-	 T5lQVYG105QwYs3eljfyqBJUlzQ2UZbvYXQUvKPwWqYaAoPzdee6IGahbKN4u9yvQxrEL
-	 nqWJRO9IrN6pf7THLyW63FOGJCLe4HzvbQA9Dw9IWDHxzdU66wiM0a/xfAo9VwI8ytw==
+	bh=0unfv0KMYJXaahpkJei6eupejSm6FcA6NRlrbk9HZWU=;
+	b=diKNpXQ+hdhVnUCrc8J8T1rm/08BHWT6r/vASKH1iZP+QVLqre6eeAhDM4xUb3qvVx2Z
+	 hw1U0eJIiCK52ZygQKkNpESEqeup+Gj6E+RUD/59Lo4fsVDBo0CKn7new3lJfQa1olHHv
+	 HQut+0WxjRoXL+oTY/DRecp7adYLYCuBbCH9vw7aMA9So2fWEqsCEX79jvg1YoTxyYk6V
+	 H6+yKxwAVYyjQfheSdjbFPJPGrErutMqpigHI4CtWc6b8UHlPYQUo/y6dq/Is6CeAQ8MD
+	 bfUvFfu/10xKmJAbNOtgc16ABSP79eXfTi50Fb8ioyMjOAyvFANxS1kLSWL38bWDXKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWn9LN8M;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="KecnwKw/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB64606A884;
-	Thu, 12 Nov 2026 07:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCFE60A261B;
+	Thu, 12 Nov 2026 07:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWn9LN8M
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1311F00A06;
-	Thu, 12 Nov 2026 07:53:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KecnwKw/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB67E1F00A05;
+	Thu, 12 Nov 2026 07:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794469989;
-	bh=kUvWL3Dc/xCMK7UgSfWYY6w0DOd38KkDU0iyRvpQV4I=;
+	s=k20260515; t=1794469991;
+	bh=0unfv0KMYJXaahpkJei6eupejSm6FcA6NRlrbk9HZWU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aWn9LN8MWh913RlwjA17H1ftSjSxW47O7GOln4Bks4GfPv0JpNUGTmzf7IiDJAMWg
-	 draWg1gmh9nSjbhpiCxn26Ev1W7yngYlMn7dN0ybBbFoHrySTwpPxdbgr5BLA2LhfI
-	 8d4eKdhU5E/jRyBJLfYvoovn1QagYUEGoNYyL8yYvCr/4DN9lMEdRf3I0B/tgsdh1g
-	 TxxDPr8EiIFchYJ1TJa8PB05CTgPS41O2eW4qj6MST0nKD0mGkJrjoJELGYaqLC3r7
-	 +jBGB1CbHJK0pDFQVHmFndv56nD7ifUcnXa2BYMiYq3kUSCsNHOFwSTW9VSz278MFy
-	 KFsJ7/fc+YOkQ==
-Subject:
- Re: [PATCH 1/5] 9p/virtio: clamp the reply size of a zero-copy request
+	b=KecnwKw/f9irB6CzUQqSyyR+cBttP2b5M1Pc37vdz51g5wWCyMBsV7YecyBe7fzNA
+	 qoAOFd1OJGg7rrBsWfIANO3JxaKUOjAT1OxkObuN+WbB2bZf1d42ZiwQYUdhD9dSJt
+	 gvzFjEqQZ7BK8P6bzYVrQdTSsJYdEpGvD49a2U7g3qxWcl6n6J7iqwU4HDda5VPRFl
+	 YkfxojjTuF0lcFLX6icuqC0wEYVfxRDH+n0cXJPXN/Mb7B20gnz0z5l744oMybdjWM
+	 l4fHTFo0w18hvWslSvFh6WMEI5nRP+DoH5yKGsbUuhmp8W1NbAVwpOHEYrMKIIH4qy
+	 qz5V3XJuxBb8g==
+Subject: Re: [PATCH 2/5] 9p: ignore a zero-copy reply that arrives after a
+ fatal signal
 From: netdev-bot+sashiko@kernel.org
 To: lian@is.s.u-tokyo.ac.jp
 Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
@@ -51,11 +51,11 @@ Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
  aneesh.kumar@linux.vnet.ibm.com, v9fs@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, shina@is.s.u-tokyo.ac.jp,
  stable@vger.kernel.org
-Date: Thu, 12 Nov 2026 07:53:07 +0000
-Message-ID: <179446998758.2199510.14994914047354508278@kernel.org>
-In-Reply-To: <20261109105251.2545764-2-lian@is.s.u-tokyo.ac.jp>
-References: <20261109105251.2545764-2-lian@is.s.u-tokyo.ac.jp>
-X-sashiko-severity: High
+Date: Thu, 12 Nov 2026 07:53:09 +0000
+Message-ID: <179446998948.2199510.3182298225630042557@kernel.org>
+In-Reply-To: <20261109105251.2545764-3-lian@is.s.u-tokyo.ac.jp>
+References: <20261109105251.2545764-3-lian@is.s.u-tokyo.ac.jp>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: v9fs@lists.linux.dev
@@ -71,7 +71,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -79,101 +79,107 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The clamp added to p9_virtio_zc_request()
-  (net/9p/trans_virtio.c) is `req->rc.size = umin(req->rc.size,…
+- [Medium] p9_client_zc_rpc() (net/9p/client.c) no longer runs `if
+  (READ_ONCE(req->status) == REQ_STATUS_RCVD) err = 0;` after the flush.
 
 --
 
-9p/virtio: clamp the reply size of a zero-copy request
+9p: ignore a zero-copy reply that arrives after a fatal signal
 
-This commit clamps req->rc.size in p9_virtio_zc_request() to the total
-size of the buffers posted to the device (in_hdr_len + inlen). The clamp
-happens before handle_rerror() runs. The aim is to stop oversized error
-replies to zero-copy requests from being parsed past the posted buffers.
+This patch changes p9_client_zc_rpc() so that err stays -ERESTARTSYS
+after a fatal signal ends the transport wait, even if the reply arrived
+before the RFLUSH. It does this to avoid parsing an unbounded or
+uninitialized RERROR string from a zero-copy TREAD or TREADDIR reply that
+p9_virtio_zc_request() never post-processed.
 
-Closes: https://lore.kernel.org/all/20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn/
-
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index 9fa63e3ebf673..53046668c16b1 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -537,10 +537,14 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
->  	 * threads - echoes to wmb() in the callback
->  	 */
->  	smp_rmb();
-> -	// RERROR needs reply (== error string) in static data
-> -	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
-> -	    unlikely(req->rc.sdata[4] == P9_RERROR))
-> -		handle_rerror(req, in_hdr_len, offs, in_pages);
-> +	if (READ_ONCE(req->status) == REQ_STATUS_RCVD) {
-> +		// The device may report more than the buffers we posted
-> +		req->rc.size = umin(req->rc.size, in_hdr_len + inlen);
-> +
-> +		// RERROR needs reply (== error string) in static data
-> +		if (unlikely(req->rc.sdata[4] == P9_RERROR))
-> +			handle_rerror(req, in_hdr_len, offs, in_pages);
-> +	}
-
-[Severity: High]
-Can an oversized P9_RLERROR reply to a zero-copy TREAD still make
-p9_check_errors() read past the end of rc.sdata?
-
-For a zero-copy TREAD, p9_client_read_once() passes in_hdr_len = 11 and
-inlen = rsize, which can be up to msize - 24. So the new bound can be
-much larger than rc.capacity. rc.sdata is a P9_ZC_HDR_SZ (4096) byte
-allocation, and only its first 11 bytes are posted to the device.
-
-The only truncation to the rc.sdata size is in handle_rerror():
-
-    if (unlikely(req->rc.size > P9_ZC_HDR_SZ))
-        req->rc.size = P9_ZC_HDR_SZ;
-
-That runs only when sdata[4] == P9_RERROR. p9_check_errors() skips its
-capacity check for zc replies, and it handles both error types:
-
-    if (req->rc.size > req->rc.capacity && !req->rc.zc) {
-    ...
-    if (type != P9_RERROR && type != P9_RLERROR)
-        return 0;
-
-On a non-.L client, both types are parsed with "s?d". The client can be
-non-.L because of the mount option. It can also be non-.L because the
-device answers RVERSION with "9P2000" or "9P2000.u", which
-p9_client_version() accepts.
-
-Here is the case. The device answers a zero-copy TREAD with an 11-byte
-header that has type P9_RLERROR and size = 11 + inlen, plus a large
-string length, and it reports used len = 11 + inlen. Then:
-
-    p9_virtio_zc_request()
-        rc.size stays 11 + inlen, handle_rerror() is skipped
-    p9_check_errors()
-        p9pdu_readf(&req->rc, ..., "s?d", &ename, &ecode)
-            pdu_read()
-                len = min(pdu->size - pdu->offset, size);
-                memcpy(data, &pdu->sdata[pdu->offset], len);
-
-pdu_read() is bounded by pdu->size, not pdu->capacity. Could that read
-tens of KiB past the 4096-byte rc.sdata object?
-
-With legacy 9P2000, the string then goes to p9_errstr2errno(), which
-calls pr_err() for unknown error strings. Would that put adjacent slab
-contents into the kernel log?
-
-The commit message says the patch prevents p9_check_errors() from
-parsing "the error string of an oversized error reply past the end of
-rc.sdata". This case still seems reachable after the patch.
-
-Clamping rc.size to rc.capacity for every zc reply would break
-successful reads. p9_client_read_once() bounds the received count by
-rc.size via "D". Would it work better to give P9_RLERROR the same
-truncation and copy that P9_RERROR gets in handle_rerror()? Another
-option is to bound the error-string parse in p9_check_errors() by
-rc.capacity for zc replies.
-
+> diff --git a/net/9p/client.c b/net/9p/client.c
+> index e63e8c2a853df..66980ad52bca8 100644
+> --- a/net/9p/client.c
+> +++ b/net/9p/client.c
+> @@ -706,10 +706,11 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
 >  
->  	/*
->  	 * Non kernel buffers are pinned, unpin them
+>  		if (c->trans_mod->cancel(c, req))
+>  			p9_client_flush(c, req);
+> -
+> -		/* if we received the response anyway, don't signal error */
+> -		if (READ_ONCE(req->status) == REQ_STATUS_RCVD)
+> -			err = 0;
+> +		/*
+> +		 * err stays -ERESTARTSYS even if the reply has arrived, since
+> +		 * the transport moves the error string of a zero-copy reply
+> +		 * into rc only while it waits.
+> +		 */
+>  	}
+
+[Severity: Medium]
+
+This change applies to every zero-copy request type, not only TREAD and
+TREADDIR. Does it also drop a completed zero-copy TWRITE?
+
+On virtio, p9_client_write() and p9_client_write_subreq() both send
+P9_TWRITE through p9_client_zc_rpc() when the write is over 1024 bytes:
+
+net/9p/client.c:p9_client_write_subreq() {
+    ...
+	if (clnt->trans_mod->zc_request && len > 1024) {
+		req = p9_client_zc_rpc(clnt, P9_TWRITE, NULL, &subreq->io_iter,
+				       0, wreq->len, P9_ZC_HDR_SZ, "dqd",
+				       fid->fid, start, len);
+    ...
+}
+
+Here is the sequence. A fatal signal ends io_wait_event_killable() in
+p9_virtio_zc_request(). The server then finishes the write and sends
+RWRITE before it handles the TFLUSH. p9_client_flush() returns with
+req->status == REQ_STATUS_RCVD.
+
+Before this patch, err was reset to 0 at that point. Now the RWRITE is
+dropped and the caller gets -ERESTARTSYS, even though the server state has
+changed. Under 9P flush semantics, a reply that arrives before Rflush
+should be honoured.
+
+On the netfs path, v9fs_issue_write() then sees len == 0:
+
+fs/9p/vfs_addr.c:v9fs_issue_write() {
+    ...
+	netfs_write_subrequest_terminated(subreq, len ?: err);
+}
+
+So it skips the i_size/remote_i_size update and does not set
+NETFS_SREQ_MADE_PROGRESS. netfs_collect_write_results() then calls
+mapping_set_error(wreq->mapping, front->error) with -ERESTARTSYS.
+
+Could a later fsync() from another opener then report a writeback error
+for data the server already has? In the same way, v9fs_xattr_set() via
+p9_client_write() would report failure for an xattr value that was
+written.
+
+The new comment says the transport moves the error string into rc only
+while it waits. For TWRITE, inlen is 0 and no reply pages are posted. Isn't
+the whole reply, including any RERROR string, already in rc.sdata then?
+
+The commit message says:
+
+  "since p9_client_zc_rpc() already returns -ERESTARTSYS when the server
+  cancels such a request."
+
+A cancelled write leaves the server unchanged, but a completed write does
+not, so this reasoning doesn't seem to cover TWRITE.
+
+For TWRITE, the only late-reply risk seems to be an rc.size that was never
+clamped, because p9_check_errors() skips its size check when rc.zc is set.
+On the late REQ_STATUS_RCVD path, would checking rc.size against
+rc.capacity (or the posted in_hdr_len + inlen) fix the KASAN report while
+keeping a valid RWRITE?
+
+Also, the later commit "9p: take the tag of a flushed request from the
+request" in this series makes a zero-copy TWRITE actually send a TFLUSH and
+wait for RFLUSH. That widens the window for an RWRITE to arrive first, and
+p9_client_zc_rpc() at the end of the series still leaves err as
+-ERESTARTSYS in this case.
+
+>  recalc_sigpending:
+>  	if (sigpending) {
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109105251.2545764-1-lian%40is.s.u-tokyo.ac.jp
