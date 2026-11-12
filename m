@@ -1,95 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794451562;
-	b=fDiT+epmDJpKQS0AFaQO/q7QrS2HD+fEaIjvD3aasdLFnbq071idsUQgmjT/kvLoxCMi
-	 JYD5xnG7ewfLsujkx7Zwa01UFcIX/+WQYJINDme+fxN8lJzmUJUwdrbJg508ONuNAfT8W
-	 /nHhZxkme49fwQAyBTnb+LlL4hvTBhgmMSvxS1ciUmiuv8/xdOPpYLSnwJnR26+PdGV7k
-	 x/RF4NvdDTCMW0S11zFwYsPt7jMKnJPZuNMTPEdzNKE58Dqk9SGcUeKrswSnGy8GBg3bK
-	 NNr5rZPPrsLU3oUnb2yYXvcrVD6yiTr4e8d/RxBOPU9ypLkTu8hraofznQwK7cLt5dA==
+	t=1794469989;
+	b=0/Ec/ygH1XLA4ico6XZmHhJa6+VFPdFzKsYpspCgygl57wQj+ht47+hFhQ4qW6R8P7xp
+	 OmWRQAcjWhMPGonNNVtC+k6aKZi97ucZ0W/9AlRAk6Sdl45OFsWWW+3ixuaiyx2J6BR+4
+	 8weE2NrM9DpW9MWRGKTuLrqummOhOO9ll8HTICb1MuczvMhBy23w1LkCJJRtXUs1lWiAE
+	 HwhNIrZwkzA/Z6XeVfkEvhWE36G2hqPWIx5dWNa/3brKvDfL1Sk9o6O7alPhTIkqgXcHB
+	 P0PylKYn9jXOGTu6OG8NAvM/XdiMM4cXzo8cgvtu2nYXyzAo+49g34ikfbxdY98W7Pw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794451562;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=O0Wzh/H6cUYHlQzokf7YPQu3CTXbAI/owZLe5svmt0Q=;
-	b=tn6u5zwjTuuvR+db65DC8H1rCFT22eV0sccr/co6RfAxibIwK92vXlZaU2AjvU5qx04R
-	 BruqHGp0Qt9lXvzojwn/uACOkdkFmbivov80HBxGto/Yd5SI3VsdFEdmWoCPhn4YL1lfl
-	 JlSvdhUl469X2u/r2/yxdvRNnnkSX/qqhnHZ0iFDhE9qWjdArU7KkcbQvViPepOCitHx7
-	 PVxdQEKSHkO4054qKa9nK4YbsObuLqbbIz1IAyvIIYJUTU7Z4ClCq3RvAthlh601oPDEP
-	 p6ScOhwzjXlq7ZWXaeh24nKkEGR586Y+hpqpaYFQmyjq2XFbFgqorPAnpY2S3O405kQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794469989;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=kUvWL3Dc/xCMK7UgSfWYY6w0DOd38KkDU0iyRvpQV4I=;
+	b=izwliCIkNt/tRadghyvYG6p5XBuBoB11E8Dbxel3wXBdZnoxiGLlJpkHzUviLvCj94GP
+	 vm3bbNaL87COBWxBONxTrvEweoLDVMNcq6HliPtCP7GuqKiroXSsFfCc6I3/fn5eVgh9n
+	 LVkqQzDMFl6YOx7j0bJZ9YV3hjzIIHDOIMTW+XUvVmTIXbTafUpaD9svTqwcKk8FBQcVg
+	 T5lQVYG105QwYs3eljfyqBJUlzQ2UZbvYXQUvKPwWqYaAoPzdee6IGahbKN4u9yvQxrEL
+	 nqWJRO9IrN6pf7THLyW63FOGJCLe4HzvbQA9Dw9IWDHxzdU66wiM0a/xfAo9VwI8ytw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V0vqv9wK;
-	arc=none smtp.remote-ip=209.85.160.182
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWn9LN8M;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204DE606A323
-	for <v9fs@lists.linux.dev>; Thu, 12 Nov 2026 02:46:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 204DE606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB64606A884;
+	Thu, 12 Nov 2026 07:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V0vqv9wK
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5495d549924so38688911cf.1
-        for <v9fs@lists.linux.dev>; Wed, 11 Nov 2026 18:46:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794451561; x=1795056361; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O0Wzh/H6cUYHlQzokf7YPQu3CTXbAI/owZLe5svmt0Q=;
-        b=V0vqv9wKe4qnXHJQRYFehdlOs4hUEN3Wj7mRnJNErqpciumcbZB99U3TpQAwgMMCwM
-         MjtjhQhoUB62Fs7JewW2RyXZnhd30+ICvFwEjPCldox+ajYc70tIyjiVm1xA88B+8HxR
-         pZ8C894jM5jsTI2ESYGT4wRFtlFTW8ngmCSLmreCTMxvmNhtGng8znaKDhhGaA07Yr3a
-         Je6WR31pySqGBlqpI/kEWWuYIKOwUrJi6zENmAPhM6uj17HQsIKm+vQJhZbX7dxgxIqo
-         fvAY+fHAFdnS6B8k659qrkcERxw5UT8lLa1F60C5Mohjg0gNx7OtEnU8g/yhkG93AQKs
-         iLQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794451561; x=1795056361;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O0Wzh/H6cUYHlQzokf7YPQu3CTXbAI/owZLe5svmt0Q=;
-        b=JV3nEifxStuHR0BIounIgd6WRwbRexBTD+Mh7jV9LYNZCiEYy2JMlgsfmdIRkDANFf
-         VZOoYjbpPp58X7NT5lQETduTE/oGUkTiJ0+uhuAbkjscAhRPafIHeAG8OItszp6FNFOo
-         Pil5ftdPnxZ9kCfQ17EQQ03CYJxoii6N/equ3EfjNIdxP4AfL+M5oLDfKF/tRCx4He6z
-         7KAkViOhjiVou/zZTLOYHoTqy3Rm3JQ7PZvlhgHMIWyHFWN0kcvJddtRM9TJrF4hEBm3
-         ++rMk5fG4v29laLVlrCMWRClIIJCAZ3qnrRDjw3rjmStcoKJaK1ofKCkw0bX+TubwPa5
-         Botw==
-X-Forwarded-Encrypted: i=1; AL+hErGRo5jCFzpXMcD+04FHpwYIRGhaeVrpnocM58ks0x9mA6HwfrUQUjeFs+46VB+/hyD/ST27@lists.linux.dev
-X-Gm-Message-State: APuU4Z9kRu3CNP+C5q7OB0hFR8UYW/BoAhcrzJF3Df8ac/FMlN2CEi/v
-	6/pAu6iiAPQcmyDFZzZiVRmT6dFoCjNVeM7xbAyhig/CLTyzGKlzT8JV
-X-Gm-Gg: AYBFou2Hg3JzcY7ANjBz51oM1r40ENg6yu3TqVg8Ou4x6ff2QVmPJkyxJOZgCWPudNa
-	W61O+sd8kkzJNyJ8ChaDOoVe9wj6F3vJ0ZdvQVmuZw1PhWlaR9Qp6pEtG77aU1i6ZQ+TcKJRppL
-	Wqhel1bkXS7oG5r1hfENyfTHmVXWA484u6KMdHyR21QE71NORTxxtCEVBbObUm+U10zI8xcuKkV
-	lSV8eVAfvdA5W5KAN5Iax6AX4hd6m5z0tTWqObUn1ezyWo8DnRaGcQd1LRtBW+JMpbbj8MmNfmY
-	O5O2QZ75FJNDPrk/RmEqIpk8EY+2cMMfVhzX5Csr31kR316R7X+mrWO8k5RO1M5VdbOGJQAdLxb
-	nxuy9p9zVNCOk5H7KaC4rQI+0mXFbkC3tREts5LLn+gbCTtCwpDIt0M7bA5re0whnplPJU1mpKr
-	fywFg29Qb4srFINrpleWFElB+qPbZwi5fpaDDbUoLZblF+2pU/Vszp1ZYnGf72wN1yR+6UoKs4g
-	/1q8k3004wBdUD8Ge9YcGTMmFypFjxjT+AhhPdCRDZx4PggAJIwYJ9S1s6a5i24fXqPDtpHCzY1
-	vE0/O8bzGOXxuh5KTJBhYVU7pzPNRZ7KVXXXvS9eZcfLidDpO5n81UyVEQna5o/7C4RbujOCeQ=
-	=
-X-Received: by 2002:a05:622a:994:b0:537:a19c:6e52 with SMTP id d75a77b69052e-556c1f42ed3mr70735681cf.56.1794451560904;
-        Wed, 11 Nov 2026 18:46:00 -0800 (PST)
-Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550af60493sm64922411cf.4.2026.11.11.18.45.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 18:45:59 -0800 (PST)
-From: Yuho Choi <oss.patchbox@gmail.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Cc: Yuho Choi <oss.patchbox@gmail.com>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [Question] 9p/virtio: zero-copy pages after interrupted request
-Date: Wed, 11 Nov 2026 21:45:50 -0500
-Message-ID: <20261112024555.1201300-2-oss.patchbox@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWn9LN8M
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1311F00A06;
+	Thu, 12 Nov 2026 07:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794469989;
+	bh=kUvWL3Dc/xCMK7UgSfWYY6w0DOd38KkDU0iyRvpQV4I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aWn9LN8MWh913RlwjA17H1ftSjSxW47O7GOln4Bks4GfPv0JpNUGTmzf7IiDJAMWg
+	 draWg1gmh9nSjbhpiCxn26Ev1W7yngYlMn7dN0ybBbFoHrySTwpPxdbgr5BLA2LhfI
+	 8d4eKdhU5E/jRyBJLfYvoovn1QagYUEGoNYyL8yYvCr/4DN9lMEdRf3I0B/tgsdh1g
+	 TxxDPr8EiIFchYJ1TJa8PB05CTgPS41O2eW4qj6MST0nKD0mGkJrjoJELGYaqLC3r7
+	 +jBGB1CbHJK0pDFQVHmFndv56nD7ifUcnXa2BYMiYq3kUSCsNHOFwSTW9VSz278MFy
+	 KFsJ7/fc+YOkQ==
+Subject:
+ Re: [PATCH 1/5] 9p/virtio: clamp the reply size of a zero-copy request
+From: netdev-bot+sashiko@kernel.org
+To: lian@is.s.u-tokyo.ac.jp
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux_oss@crudebyte.com, horms@kernel.org, viro@zeniv.linux.org.uk,
+ tomasbortoli@gmail.com, chirantan@chromium.org, groug@kaod.org,
+ aneesh.kumar@linux.vnet.ibm.com, v9fs@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, shina@is.s.u-tokyo.ac.jp,
+ stable@vger.kernel.org
+Date: Thu, 12 Nov 2026 07:53:07 +0000
+Message-ID: <179446998758.2199510.14994914047354508278@kernel.org>
+In-Reply-To: <20261109105251.2545764-2-lian@is.s.u-tokyo.ac.jp>
+References: <20261109105251.2545764-2-lian@is.s.u-tokyo.ac.jp>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -99,45 +67,113 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-I have a question about the zero-copy page lifetime in
-p9_virtio_zc_request() (mainline 067c5c24cef2) and would appreciate your
-view.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-After virtqueue_add_sgs() and virtqueue_kick(), the function waits for the
-response with io_wait_event_killable().  If a signal interrupts that wait,
-it reaches err_out and calls p9_release_pages() before returning
--ERESTARTSYS.  Only after the transport returns does p9_client_zc_rpc()
-send TFLUSH.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-If I read this correctly, the sequence can be:
+- [High] The clamp added to p9_virtio_zc_request()
+  (net/9p/trans_virtio.c) is `req->rc.size = umin(req->rc.size,…
 
-  publish the zero-copy scatterlist to the virtqueue
-  interrupt the wait with a signal
-  drop the user page references
-  send TFLUSH
-  finish or cancel the original backend request
+--
 
-The virtio backend still owns the original descriptor when the page
-references are dropped, so it seems able to access pages that can meanwhile
-be unmapped and reused.
+9p/virtio: clamp the reply size of a zero-copy request
 
-I also checked QEMU's 9p backend (71f25c75417d).  v9fs_flush() marks
-the original PDU cancelled and waits on cancel_pdu->complete.
-pdu_complete() calls push_and_notify() for the original PDU before
-waking that waiter, and the flush coroutine then completes RFLUSH.  A
-successfully cancelled PDU is returned with a zero used length.  This
-ordering suggests that the original request can remain active after
-Linux has released the pages.
+This commit clamps req->rc.size in p9_virtio_zc_request() to the total
+size of the buffers posted to the device (in_hdr_len + inlen). The clamp
+happens before handle_rerror() runs. The aim is to stop oversized error
+replies to zero-copy requests from being parsed past the posted buffers.
 
-Is there a 9p or virtio guarantee I am missing that makes it safe to
-release the pages as soon as the killable wait returns?  Or should the
-pages and the transport's request reference remain alive until
-req_done() consumes the original used buffer, including a zero-length
-completion after TFLUSH?
+Closes: https://lore.kernel.org/all/20260607140603.24342-1-zhaoyz24@mails.tsinghua.edu.cn/
 
-Thanks,
-Yuho
+> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+> index 9fa63e3ebf673..53046668c16b1 100644
+> --- a/net/9p/trans_virtio.c
+> +++ b/net/9p/trans_virtio.c
+> @@ -537,10 +537,14 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
+>  	 * threads - echoes to wmb() in the callback
+>  	 */
+>  	smp_rmb();
+> -	// RERROR needs reply (== error string) in static data
+> -	if (READ_ONCE(req->status) == REQ_STATUS_RCVD &&
+> -	    unlikely(req->rc.sdata[4] == P9_RERROR))
+> -		handle_rerror(req, in_hdr_len, offs, in_pages);
+> +	if (READ_ONCE(req->status) == REQ_STATUS_RCVD) {
+> +		// The device may report more than the buffers we posted
+> +		req->rc.size = umin(req->rc.size, in_hdr_len + inlen);
+> +
+> +		// RERROR needs reply (== error string) in static data
+> +		if (unlikely(req->rc.sdata[4] == P9_RERROR))
+> +			handle_rerror(req, in_hdr_len, offs, in_pages);
+> +	}
+
+[Severity: High]
+Can an oversized P9_RLERROR reply to a zero-copy TREAD still make
+p9_check_errors() read past the end of rc.sdata?
+
+For a zero-copy TREAD, p9_client_read_once() passes in_hdr_len = 11 and
+inlen = rsize, which can be up to msize - 24. So the new bound can be
+much larger than rc.capacity. rc.sdata is a P9_ZC_HDR_SZ (4096) byte
+allocation, and only its first 11 bytes are posted to the device.
+
+The only truncation to the rc.sdata size is in handle_rerror():
+
+    if (unlikely(req->rc.size > P9_ZC_HDR_SZ))
+        req->rc.size = P9_ZC_HDR_SZ;
+
+That runs only when sdata[4] == P9_RERROR. p9_check_errors() skips its
+capacity check for zc replies, and it handles both error types:
+
+    if (req->rc.size > req->rc.capacity && !req->rc.zc) {
+    ...
+    if (type != P9_RERROR && type != P9_RLERROR)
+        return 0;
+
+On a non-.L client, both types are parsed with "s?d". The client can be
+non-.L because of the mount option. It can also be non-.L because the
+device answers RVERSION with "9P2000" or "9P2000.u", which
+p9_client_version() accepts.
+
+Here is the case. The device answers a zero-copy TREAD with an 11-byte
+header that has type P9_RLERROR and size = 11 + inlen, plus a large
+string length, and it reports used len = 11 + inlen. Then:
+
+    p9_virtio_zc_request()
+        rc.size stays 11 + inlen, handle_rerror() is skipped
+    p9_check_errors()
+        p9pdu_readf(&req->rc, ..., "s?d", &ename, &ecode)
+            pdu_read()
+                len = min(pdu->size - pdu->offset, size);
+                memcpy(data, &pdu->sdata[pdu->offset], len);
+
+pdu_read() is bounded by pdu->size, not pdu->capacity. Could that read
+tens of KiB past the 4096-byte rc.sdata object?
+
+With legacy 9P2000, the string then goes to p9_errstr2errno(), which
+calls pr_err() for unknown error strings. Would that put adjacent slab
+contents into the kernel log?
+
+The commit message says the patch prevents p9_check_errors() from
+parsing "the error string of an oversized error reply past the end of
+rc.sdata". This case still seems reachable after the patch.
+
+Clamping rc.size to rc.capacity for every zc reply would break
+successful reads. p9_client_read_once() bounds the received count by
+rc.size via "D". Would it work better to give P9_RLERROR the same
+truncation and copy that P9_RERROR gets in handle_rerror()? Another
+option is to bound the error-string parse in p9_check_errors() by
+rc.capacity for zc replies.
+
+>  
+>  	/*
+>  	 * Non kernel buffers are pinned, unpin them
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109105251.2545764-1-lian%40is.s.u-tokyo.ac.jp
