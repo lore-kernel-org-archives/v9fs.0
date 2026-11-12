@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794469993;
-	b=22GlSalvTA+SL5eE2owIhdn6ycXj+2zGKRSyTgM3o0g74l8xaHQqg0tLIplBV7nhKOEu
-	 8JFQ1W+z28G/DMBMngIga2NRWOhACAfcoiakux96meALxYnT0lKILeLndk0B4yw9dGqtW
-	 XwPgaD0R5TQr57gE9anVVRro6HjgDD3KGcONtVxJ+IsJeX0dZhhcmbJnN+FcxVNo6wZx+
-	 PliM/R/Ex/Wj8DGv5GQxO0M0vG/5KbPqwAnxKBPu3Dydx8dL2Ba7HCHNCssUIQiRdxgDY
-	 wOy7oP5YTR0wH9E8HgH/Z186aZse8GQ23t1BMpAvqXdJrNtnBxhZARZ0HBzvRSQAA2w==
+	t=1794469995;
+	b=TTdMgzBXJbsUjbZboaCNW4AX9MLf+mg6zRMBtXvSoOMIz6PDfn0SWDS2CR5UYOe9l5qI
+	 FB6FjjbYCVzRbZxtWSwC/Y/koofOOofhpqi9TQA75+EuvpP5AZfBbEL/KaytTTwpJri/h
+	 OjCsXjeOL6QFDO+s6YS5sX+Lvin7ADGhjBdaQPtqEIoly3FvZTBAWU6u+L+1DkeBR7fXA
+	 LPj3kbj8YAD1z1Qm9HH0hrLiHD6eJmBfDEdZl0Vjx0YVNok6735GIyBJu8nho0WG4sIjU
+	 0NKXTSLQN2+SAWojYlOlWIh+J51T5WBwZQv9srL1AfYczof+DewBKL+2SamJwV8vaLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794469993;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794469995;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=71PKivdAwOSBBlvUSmJBCa4SkBlLU3GWY5ZqAIO/Hmo=;
-	b=cPC2pMvvDdPfVtRphF49hvFPDULZ2lZKyrsCUHPL0VCz5U0uljtM3Im0hcERjtkq/p3s
-	 6s4xCSeiIckCTd8TwRmURQG9GqBfDsROXLETuGjW8esAUPGGeReH4SUSq9NNGEYzU8Br4
-	 TbXvupL7F2jEdXZxQthWq8i7C4DIq13N9my9QIaHUB4P5ZtLjwfvAJmibhJ6GJWK1xUIj
-	 OMJZIbMKvZszRQkY9yi/na6MPX148aSfN9wlON50rWmMvJhvofXb2WKI/p2Fsr/DPi7bO
-	 cPr5pn42lys6IytEkIamh0rwsgrNvGGmBwSWytehPVkBpDbzermEIUhKUtttZ0oOAYw==
+	bh=zQHNkAvN/1ynVe3zD3+jO9CA7hfyjYhk47iEo0nnWpw=;
+	b=ILum3h/ceK9Pp3HlSnmyx7YhXcXeh0EUB70masLunBZxaAAmKo/2fVntx58h3mEM3rXc
+	 sdPjVSlm5KM/rcTaN4vc+iOF32hU/OP2MdCzk/rIaLJhE7B0Gm0RRKiMMizdxhYRGdP9F
+	 CHX4eNrIe/G9yZuCgLA+r2tLNahVhMRTVZS8w6h9y8biXeMSSRvriLAichIB/JSImUoOz
+	 zw+XP5CmyQAMgKDWo72xYwr8Fl60i/9z/QuDaHf8EcU94BbX3fDkeyhgwQGuX7817uAns
+	 1xTgNg5U7ssm5JLxU9wlxLYMWiu93Su/FdGxbkVFCNvaS60chO9eyYvzM5Czg14JPrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EvmHw23l;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k6TAwTah;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532CA60A2639;
-	Thu, 12 Nov 2026 07:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE4460A3804;
+	Thu, 12 Nov 2026 07:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EvmHw23l
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB751F00A05;
-	Thu, 12 Nov 2026 07:53:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k6TAwTah
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5B41F00A05;
+	Thu, 12 Nov 2026 07:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794469992;
-	bh=71PKivdAwOSBBlvUSmJBCa4SkBlLU3GWY5ZqAIO/Hmo=;
+	s=k20260515; t=1794469994;
+	bh=zQHNkAvN/1ynVe3zD3+jO9CA7hfyjYhk47iEo0nnWpw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EvmHw23lThNMVCAbbTD3OCKKjZYnLaXMtEd4JQwjY8BTKo9pXYsR6hlL39mlDyxKy
-	 biuOo2rcxQm916YYtMXulFuBOgqjM9ebP3Yy2ZRytSu6EVrZsjuejKuSb7cg3uzRy2
-	 EFLMd4eMdbo1h1XGxrgByTvTFBWTS1/fcrNI86G7Yi5Ybf8H2/gkazXB+IAz2o4tP1
-	 mMOoPgSDvL+n+2RIxLGa8TwH6RmtN6k543ebsdZjHxqgzcfqLKvRsIpRthckOqyWZz
-	 IE3OkOdxBOcVzJlIoi6y6ej6d1tRu7sHA1qhMNgExP+lL7Ywnden7AOvuN8V+ywm/p
-	 xc1S1YkjXBn5A==
-Subject: Re: [PATCH 3/5] 9p/virtio: keep a request until the device returns it
+	b=k6TAwTahZ3Dm8p0vnPazApfqV2rKsVGAVmzVs2fBLVwWRK/K3ffUg03EbJyetQvb2
+	 /1fCsfNMey8nUhVS+8Ni6KsQkVStQ8shZY7m+VK5pEnaj5btuCp1yUE3Y5WXE4Rz/7
+	 t6RJ2HVPuZ95m2WP5UlLpc+PEOTDOO4/BVAYBOwHmvecju95KXgpqBvV2W0IkRv/tu
+	 Zxo7Z5G4bVySX3Tr9wBUVsjGJHmCXiF7xkoVJonLR5ULk/0gWuIfAx93kARohhEsqm
+	 cfYjseyaZoYFC5LwcDt/6SbrDiBqKvKoU0SYDBDUZQ7h+viaXLGXid5yjXGOWAqScg
+	 YYvIiCoZZzCnQ==
+Subject: Re: [PATCH 5/5] 9p/virtio: keep zero-copy buffers until the device
+ returns them
 From: netdev-bot+sashiko@kernel.org
 To: lian@is.s.u-tokyo.ac.jp
 Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
@@ -50,10 +51,10 @@ Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
  aneesh.kumar@linux.vnet.ibm.com, v9fs@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, shina@is.s.u-tokyo.ac.jp,
  stable@vger.kernel.org
-Date: Thu, 12 Nov 2026 07:53:11 +0000
-Message-ID: <179446999129.2199510.15094266003962078465@kernel.org>
-In-Reply-To: <20261109105251.2545764-4-lian@is.s.u-tokyo.ac.jp>
-References: <20261109105251.2545764-4-lian@is.s.u-tokyo.ac.jp>
+Date: Thu, 12 Nov 2026 07:53:13 +0000
+Message-ID: <179446999308.2199510.11222629754827394625@kernel.org>
+In-Reply-To: <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
+References: <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,7 +71,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 (1) · High: 1 · Medium: 0 · Low: 0 (1)
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,190 +79,120 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Client teardown still frees requests the virtio device has not
-  returned.
-
-Pre-existing issues:
-- [Critical] At this commit, p9_virtio_zc_request() releases the zero-
-  copy payload pages while the device may still own them.
-- [Low] The refcount comment in p9_tag_alloc() (net/9p/client.c:205-214)
-  says that for virtio 'p9_client_cb eats the second ref there as the…
+- [High] The patch adds an unconditional `wait_event_idle(req->wq,
+  !smp_load_acquire(&req->zc_pages))` to p9_client_zc_rpc()…
 
 --
 
-9p/virtio: keep a request until the device returns it
+9p/virtio: keep zero-copy buffers until the device returns them
 
-This patch removes p9_virtio_cancelled(), so a flushed request no longer
-loses its virtio transport reference twice. Instead, req_done() drops
-that reference when the device returns a buffer with no reply. The aim is
-to keep the request alive until the device hands its buffer back, which
-fixes a refcount underflow and a use-after-free on a late return.
+This patch fixes a use-after-free. If a fatal signal ends the wait in
+p9_virtio_zc_request() while the device still holds the request, a
+misbehaving device can later write into zero-copy buffers that have
+already been freed. Freeing of the pinned pages moves to req_done() via
+a per-request struct p9_zc_pages, and p9_client_zc_rpc() now waits until
+the device returns the request.
 
-> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-> index 53046668c16b1..68c3457bec401 100644
-> --- a/net/9p/trans_virtio.c
-> +++ b/net/9p/trans_virtio.c
-> @@ -145,6 +145,9 @@ static void req_done(struct virtqueue *vq)
->  		if (len) {
->  			req->rc.size = len;
->  			p9_client_cb(chan->client, req, REQ_STATUS_RCVD);
-> +		} else {
-> +			/* No reply, so put the ref that p9_client_cb() puts */
-> +			p9_req_put(chan->client, req);
->  		}
+> diff --git a/net/9p/client.c b/net/9p/client.c
+> index 15bb939087165..34be0d2652d4e 100644
+> --- a/net/9p/client.c
+> +++ b/net/9p/client.c
+
+[ ... ]
+
+> @@ -707,6 +708,8 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
+>  		 * into rc only while it waits.
+>  		 */
+>  	}
+> +	/* The caller may reuse the payload once the transport releases it */
+> +	wait_event_idle(req->wq, !smp_load_acquire(&req->zc_pages));
 
 [Severity: High]
-Is the request still kept until the device returns it when the client
-is torn down?
 
-On umount, p9_client_destroy() calls ->close() and then frees the
-outstanding requests and the client:
+Can this wait leave a killed task stuck forever?
 
-net/9p/client.c:p9_client_destroy() {
-	if (clnt->trans_mod)
-		clnt->trans_mod->close(clnt);
-	...
-	p9_tag_cleanup(clnt);
+wait_event_idle() sleeps in TASK_IDLE and has no timeout, so SIGKILL
+cannot end it. khungtaskd also skips TASK_NOLOAD tasks, so the hang
+would never be reported.
 
-	kmem_cache_destroy(clnt->fcall_cache);
-	kfree(clnt);
-}
+The only code that clears req->zc_pages and wakes req->wq is in
+req_done(). It runs only after virtqueue_get_buf() returns this exact
+request:
 
-p9_virtio_close() only clears inuse:
-
-net/9p/trans_virtio.c:p9_virtio_close() {
-	mutex_lock(&virtio_9p_lock);
-	if (chan)
-		chan->inuse = false;
-	mutex_unlock(&virtio_9p_lock);
-}
-
-It does not reset the device, detach posted buffers, wait for
-outstanding tokens, or clear chan->client. Its kernel-doc also says it
-frees the channel's resources, which doesn't match the code.
-
-p9_tag_cleanup() then calls p9_req_put() on every request still in the
-IDR. That includes a flushed request whose last reference now belongs
-to the device. So the request and its tc/rc sdata are freed while the
-vring still points at them.
-
-If the device returns that buffer later, vring_interrupt()->req_done()
-gets the stale pointer from virtqueue_get_buf():
-
-  len == 0: the new branch calls p9_req_put(chan->client, req) on freed
-            memory
-  len != 0: p9_client_cb() writes req->rc.size and the status, wakes
-            req->wq and drops a reference
-
-chan->client is then either the freed client or, if the tag was
-remounted, a new client. p9_virtio_create() reassigns chan->client
-without taking chan->lock.
-
-p9_req_cache is a single SLAB_TYPESAFE_BY_RCU cache, so the freed
-request may already be a live request of the new mount. Can the stray
-put then decrement a live refcount and p9_tag_remove() a live tag from
-the new client's IDR?
-
-This looks like the case the commit message describes:
-
-  "a misbehaving device can return the request after the RFLUSH, so
-  req_done() writes into the freed request"
-
-Here it is reached by unmounting between the RFLUSH and the late return.
-
-A well-behaved device can hit the same problem if a request is abandoned
-without a completed flush and the device is still working on it at
-umount. This happens when the client is no longer Connected (for
-example, BeginDisconnect after umount -f) or when a fatal signal aborts
-the TFLUSH wait.
-
-The later patch "9p/virtio: keep zero-copy buffers until the device
-returns them" adds wait_event_idle() on req->zc_pages in
-p9_client_zc_rpc(). That only covers zero-copy requests. Requests sent
-through p9_client_rpc(), TFLUSH included, still return without waiting
-for the device. Neither p9_virtio_close() nor p9_tag_cleanup() changes
-in the series.
-
-Before the request pool and the client are freed, should the close path
-take back the posted buffers, either by resetting the device and
-detaching them or by waiting for outstanding tokens? Or should
-chan->client be cleared, or kept valid, under chan->lock?
-
-[Severity: Low]
-This is a pre-existing issue, but the refcount comment in p9_tag_alloc()
-still names p9_client_cb() as the only place that drops the second
-virtio reference:
-
-net/9p/client.c:p9_tag_alloc() {
-	...
-	 * (the write happens synchronously in the request/zc_request
-	 * callback), so p9_client_cb eats the second ref there
-	 * as the pointer is duplicated directly by virtqueue_add_sgs()
-	 */
-	refcount_set(&req->refcount, 2);
-	...
-}
-
-After this patch, req_done() also drops that reference directly when
-len == 0. The comment also leaves out existing puts: in
-p9_virtio_zc_request() when the request was not kicked, and in
-p9_client_rpc() when ->request() fails. It never mentioned
-p9_virtio_cancelled() either, and it is unchanged at the end of the
-series.
-
-Could it be updated to list the current places that drop this
-reference?
-
->  	}
->  	spin_unlock_irqrestore(&chan->lock, flags);
-> @@ -195,13 +198,6 @@ static int p9_virtio_cancel(struct p9_client *client, struct p9_req_t *req)
->  	return 1;
->  }
->  
-> -/* Reply won't come, so drop req ref */
-> -static int p9_virtio_cancelled(struct p9_client *client, struct p9_req_t *req)
-> -{
-> -	p9_req_put(client, req);
-> -	return 0;
-> -}
-> -
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but it is in the same fatal
-signal handling in p9_virtio_zc_request(). After the kick, a fatal
-signal during the reply wait falls through to err_out. That path then
-releases the zero-copy pages while the device may still own them:
-
-net/9p/trans_virtio.c:p9_virtio_zc_request() {
-	...
-	virtqueue_kick(chan->vq);
-	spin_unlock_irqrestore(&chan->lock, flags);
-	kicked = 1;
-	...
-	err = io_wait_event_killable(req->wq,
-				     READ_ONCE(req->status) >= REQ_STATUS_RCVD);
-	...
-err_out:
-	if (need_drop) {
-		if (in_pages) {
-			p9_release_pages(in_pages, in_nr_pages);
-			atomic_sub(in_nr_pages, &vp_pinned);
+net/9p/trans_virtio.c:req_done() {
+    ...
+	while ((req = virtqueue_get_buf(chan->vq, &len)) != NULL) {
+		...
+		if (req->zc_pages) {
+			if (req->zc_pages->held)
+				p9_zc_release(req->zc_pages);
+			smp_store_release(&req->zc_pages, NULL);
+			wake_up(&req->wq);
 		}
-	...
-	kvfree(in_pages);
-	kvfree(out_pages);
-	...
+    ...
 }
 
-TFLUSH has not been sent at this point. Can the device still DMA the
-read payload into pages that are unpinned and possibly reused? Or into
-a kvec buffer that the caller frees once the call returns?
+On a fatal signal, p9_virtio_zc_request() hands the pages to req_done()
+and returns with req->zc_pages still set:
 
-The later patch in this series, "9p/virtio: keep zero-copy buffers until
-the device returns them", appears to fix this. It attaches the pages to
-req->zc_pages before the kick and leaves p9_zc_release() to req_done()
-after a fatal signal. p9_client_zc_rpc() then waits with
-wait_event_idle() until the device returns the buffers.
+		held = req->zc_pages;
+		if (held)
+			zc->held = true;
+		spin_unlock_irqrestore(&chan->lock, flags);
+		if (held)
+			return err;
+
+p9_client_zc_rpc() sends a TFLUSH only when c->status == Connected.
+There are two cases where no flush is sent but the new wait still runs:
+
+  - after umount -f, via
+    v9fs_session_begin_cancel()->p9_client_begin_disconnect()
+  - after an earlier -EIO has set Disconnected
+
+If a flush is sent, p9_client_rpc(TFLUSH) can itself return early on the
+fatal signal. In every case the wait above runs.
+
+If the device never returns the original descriptor, nothing else clears
+zc_pages. That can happen in several ways:
+
+  - virtqueue_kick() fails and sets vq->broken. Its return value is
+    ignored right after req->zc_pages = zc in p9_virtio_zc_request().
+  - surprise PCI removal. virtio_pci_remove() calls
+    virtio_break_device(), and vring_interrupt() then stops calling the
+    callback.
+  - a hung backend, or a device that answers the TFLUSH but keeps the
+    original descriptor. This is the misbehaving-device case the commit
+    message describes.
+
+Before this patch, a killed task always left this path.
+
+Once stuck, the task keeps any VFS locks its caller holds and cannot
+finish exiting or coredumping. Its pinned pages stay counted in
+vp_pinned, which throttles p9_get_mapped_pages() on other mounts. It
+also keeps the mount busy, so p9_virtio_close() never runs and
+chan->inuse stays true. p9_virtio_remove() then loops here and never
+reaches virtio_reset_device()/del_vqs():
+
+	while (chan->inuse) {
+		mutex_unlock(&virtio_9p_lock);
+		msleep(250);
+
+That is a circular wait. Remove waits for umount, umount waits for the
+task, and the task waits for a req_done() that never runs for this
+request.
+
+For pinned user pages (need_drop == 1), the zc->held hand-off already
+keeps the pages alive until req_done(), so the unconditional wait seems
+to be needed only for kvec buffers. Could the wait be limited to that
+case, or bounded or made killable? Alternatively, could the transport
+clear zc_pages and wake waiters when the vq is broken or torn down?
+
+The commit message also does not mention that killed tasks can now
+block on the device with no time limit. Should it?
+
+>  recalc_sigpending:
+>  	if (sigpending) {
+>  		spin_lock_irqsave(&current->sighand->siglock, flags);
 
 [ ... ]
 
