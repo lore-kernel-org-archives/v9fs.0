@@ -1,63 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794469995;
-	b=TTdMgzBXJbsUjbZboaCNW4AX9MLf+mg6zRMBtXvSoOMIz6PDfn0SWDS2CR5UYOe9l5qI
-	 FB6FjjbYCVzRbZxtWSwC/Y/koofOOofhpqi9TQA75+EuvpP5AZfBbEL/KaytTTwpJri/h
-	 OjCsXjeOL6QFDO+s6YS5sX+Lvin7ADGhjBdaQPtqEIoly3FvZTBAWU6u+L+1DkeBR7fXA
-	 LPj3kbj8YAD1z1Qm9HH0hrLiHD6eJmBfDEdZl0Vjx0YVNok6735GIyBJu8nho0WG4sIjU
-	 0NKXTSLQN2+SAWojYlOlWIh+J51T5WBwZQv9srL1AfYczof+DewBKL+2SamJwV8vaLw==
+	t=1794687459;
+	b=BG8bcUw0l4ayqzc978AmPepUd1jt/yI/lRzk4IYcDDK+sGGeUaharKm8JzuTMBgJtsY9
+	 DFcDcHHJoMdcFmO/uIh6yT+/L72uF4QM2QqZjN73dAQ6Ff2ddfWmNG/i+dq2eE0Fvz1Fn
+	 3V6lkdh1OXPonR7yD8BcB6BGZdoM1/PeT01PbP1SUPfqzAjerW8XGI1Cl8LyOJD00H7uO
+	 Kt7naR0AGSm8bIIweE9hwtq0SVOQoX0ojkBerdZIR3E7SmwaLdEvV+YXoGwkBme3bznXT
+	 GhWD+hRWkVjiXunh0kTT0Jv9WaLdyAfybAqK1kT8vsMOPU4fxzEXvRna8aNDrnnsrQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794469995;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=zQHNkAvN/1ynVe3zD3+jO9CA7hfyjYhk47iEo0nnWpw=;
-	b=ILum3h/ceK9Pp3HlSnmyx7YhXcXeh0EUB70masLunBZxaAAmKo/2fVntx58h3mEM3rXc
-	 sdPjVSlm5KM/rcTaN4vc+iOF32hU/OP2MdCzk/rIaLJhE7B0Gm0RRKiMMizdxhYRGdP9F
-	 CHX4eNrIe/G9yZuCgLA+r2tLNahVhMRTVZS8w6h9y8biXeMSSRvriLAichIB/JSImUoOz
-	 zw+XP5CmyQAMgKDWo72xYwr8Fl60i/9z/QuDaHf8EcU94BbX3fDkeyhgwQGuX7817uAns
-	 1xTgNg5U7ssm5JLxU9wlxLYMWiu93Su/FdGxbkVFCNvaS60chO9eyYvzM5Czg14JPrQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794687459;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=hxZtScjc23srK4XQG9qTJWS0pbU3WOLgEX045sllTfw=;
+	b=VvX9ofzxM5FXEeABpQ7espZuR3wmLn+JVSq8WCXTJub5pC0qGXjfMEZjmezltB9CWsbB
+	 7a6KHQ0XYHKkesU5fg83rSJc82kF1dJd0kG4RZpIT5budwapTeXg16R/E6asB6lq25cTb
+	 VF21QKQW5gPYCKCNYcl7iI2IWI8NiGDmKv/TGUlyR3o39UMMpzwPL01Lx1tiL/boqRbrF
+	 Cjam4UCiY/q0TMR5FmnL7wblPg7QsmXA3u61cLS/+fYtfvhBqWR0EjjgQXiY1fSsHnrKq
+	 JIEkFl4xyyG3dxwA0Y4aHaff+t+6m5BpvKfpRrVW9q34NIRb2m1wd4Sb/mvYHqKKHuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k6TAwTah;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE4460A3804;
-	Thu, 12 Nov 2026 07:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k6TAwTah
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5B41F00A05;
-	Thu, 12 Nov 2026 07:53:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794469994;
-	bh=zQHNkAvN/1ynVe3zD3+jO9CA7hfyjYhk47iEo0nnWpw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=k6TAwTahZ3Dm8p0vnPazApfqV2rKsVGAVmzVs2fBLVwWRK/K3ffUg03EbJyetQvb2
-	 /1fCsfNMey8nUhVS+8Ni6KsQkVStQ8shZY7m+VK5pEnaj5btuCp1yUE3Y5WXE4Rz/7
-	 t6RJ2HVPuZ95m2WP5UlLpc+PEOTDOO4/BVAYBOwHmvecju95KXgpqBvV2W0IkRv/tu
-	 Zxo7Z5G4bVySX3Tr9wBUVsjGJHmCXiF7xkoVJonLR5ULk/0gWuIfAx93kARohhEsqm
-	 cfYjseyaZoYFC5LwcDt/6SbrDiBqKvKoU0SYDBDUZQ7h+viaXLGXid5yjXGOWAqScg
-	 YYvIiCoZZzCnQ==
-Subject: Re: [PATCH 5/5] 9p/virtio: keep zero-copy buffers until the device
- returns them
-From: netdev-bot+sashiko@kernel.org
-To: lian@is.s.u-tokyo.ac.jp
-Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux_oss@crudebyte.com, horms@kernel.org, viro@zeniv.linux.org.uk,
- tomasbortoli@gmail.com, chirantan@chromium.org, groug@kaod.org,
- aneesh.kumar@linux.vnet.ibm.com, v9fs@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, shina@is.s.u-tokyo.ac.jp,
- stable@vger.kernel.org
-Date: Thu, 12 Nov 2026 07:53:13 +0000
-Message-ID: <179446999308.2199510.11222629754827394625@kernel.org>
-In-Reply-To: <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
-References: <20261109105251.2545764-6-lian@is.s.u-tokyo.ac.jp>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7910606A329
+	for <v9fs@lists.linux.dev>; Sat, 14 Nov 2026 20:17:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7910606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab8b4887d4so1467458b6e.1
+        for <v9fs@lists.linux.dev>; Sat, 14 Nov 2026 12:17:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794687458; x=1795292258;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hxZtScjc23srK4XQG9qTJWS0pbU3WOLgEX045sllTfw=;
+        b=Dyhksl1mtlAvbpwkTXB01yrO/AfqgzxTOt7GTTjvrH+RoPLRgikAFqQcq3bOD0BQHO
+         c97JGgJlwdgQYzsTN7xZLo5tSHdvVKgXgUqkxSwaPIrBabzFpmfgUjgqxJjX7USLc7KF
+         juFxX2yOeGhjucHKYPXC3BFRUf2qtyKsHfnuzl8xMykkdIE9Z/KVk0p/H1Ai6qXsNHYu
+         j8EcZYpn5ZqgEvrsEPc6dTTEkD6oMA4T+Z5VzGrpOQMqfChwQfdFeBpGP8U9gX9QhoBE
+         2zCWYkuercOuAjtoq39c2e86V1FLZRUqNDSc6k3unkgBLU3NaIvKrce0rn2xhOzxWN/i
+         VnGg==
+X-Forwarded-Encrypted: i=1; AL+hErE52Laj/Rbg1z2r8v96cHkPzMbkJRf6O4LieZv6o/7UsAvzbu4KBrgAs9lSlRZDGVoW0tK8@lists.linux.dev
+X-Gm-Message-State: APuU4Z8RBmrlyZaWYdVj/3cf/qyvhQQDFT9Kl0we52POWVCy8zQIUXZx
+	rTcj5WxEYjthiDyl8u9thPC2pBYKL4idG2cmQGm4vQfcWgPAhxWViooiBXdKYZToOj9h2tUQjiQ
+	fPzsu5PQVA+C8pya4l29ILLPx1+ZAaSoto+Ly/CJRxoYRt45nPkINqSSw2Pc=
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -67,134 +58,261 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:1a0b:b0:4d6:90f3:74b4 with SMTP id
+ 5614622812f47-56e6500f37bmr5812399b6e.52.1794687457766; Sat, 14 Nov 2026
+ 12:17:37 -0800 (PST)
+Date: Sat, 14 Nov 2026 12:17:37 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6af8c1e1.aa201734.33d248.0007.GAE@google.com>
+Subject: [syzbot] [v9fs?] possible deadlock in __cachefiles_write
+From: syzbot <syzbot+b8ae5f37f5baa84cb085@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, ericvh@kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, syzkaller-bugs@googlegroups.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hello,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+syzbot found the following issue on:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+HEAD commit:    2800868f6322 Merge tag 'sound-7.4-rc3' of git://git.kernel..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=110f4b69580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+dashboard link: https://syzkaller.appspot.com/bug?extid=b8ae5f37f5baa84cb085
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-- [High] The patch adds an unconditional `wait_event_idle(req->wq,
-  !smp_load_acquire(&req->zc_pages))` to p9_client_zc_rpc()…
+Unfortunately, I don't have any reproducer for this issue yet.
 
---
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-2800868f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7a4b1a29003d/vmlinux-2800868f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/02da498b013d/bzImage-2800868f.xz
 
-9p/virtio: keep zero-copy buffers until the device returns them
+AI-generated root cause summary:
+A false-positive circular locking dependency is reported by lockdep between the
+backing filesystem's freeze protection lock (`sb_writers`), the IMA integrity
+cache mutex (`&ima_iint_mutex_key[depth]`), and the upper network filesystem
+inode lock (`&sb->s_type->i_mutex_key`). In `do_open()` with `O_TRUNC`,
+`mnt_want_write()` is held across `security_file_post_open()`, establishing
+`sb_writers -> ima_iint_mutex`. During IMA file measurement on 9p,
+`integrity_kernel_read()` takes 9p's `i_rwsem`, establishing `ima_iint_mutex ->
+9p i_rwsem`. Finally, truncating a 9p file (`do_truncate()`) flushes dirty pages
+through `netfs_writepages()` to cachefiles, where `__cachefiles_write()`
+acquires `sb_writers` on the local backing filesystem. Because neither 9p nor
+the local backing filesystem increments `s_stack_depth`, their distinct
+per-inode `iint->mutex` instances share lockdep class `&ima_iint_mutex_key[0]`,
+producing a spurious circular dependency report even though the actual lock
+objects differ and cannot deadlock.
 
-This patch fixes a use-after-free. If a fatal signal ends the wait in
-p9_virtio_zc_request() while the device still holds the request, a
-misbehaving device can later write into zero-copy buffers that have
-already been freed. Freeing of the pinned pages moves to req_done() via
-a per-request struct p9_zc_pages, and p9_client_zc_rpc() now waits until
-the device returns the request.
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=b8ae5f37f5baa84cb085
 
-> diff --git a/net/9p/client.c b/net/9p/client.c
-> index 15bb939087165..34be0d2652d4e 100644
-> --- a/net/9p/client.c
-> +++ b/net/9p/client.c
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b8ae5f37f5baa84cb085@syzkaller.appspotmail.com
 
-[ ... ]
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Tainted: G             L     
+------------------------------------------------------
+syz.7.1192/10055 is trying to acquire lock:
+ffff88802d3a6478 (sb_writers#5){.+.+}-{0:0}, at: __cachefiles_write+0x56f/0xd40 fs/cachefiles/io.c:355
 
-> @@ -707,6 +708,8 @@ static struct p9_req_t *p9_client_zc_rpc(struct p9_client *c, int8_t type,
->  		 * into rc only while it waits.
->  		 */
->  	}
-> +	/* The caller may reuse the payload once the transport releases it */
-> +	wait_event_idle(req->wq, !smp_load_acquire(&req->zc_pages));
+but task is already holding lock:
+ffff88810b968140 (&sb->s_type->i_mutex_key#30){++++}-{4:4}, at: inode_lock_killable include/linux/fs.h:1032 [inline]
+ffff88810b968140 (&sb->s_type->i_mutex_key#30){++++}-{4:4}, at: do_truncate+0x14e/0x240 fs/open.c:63
 
-[Severity: High]
+which lock already depends on the new lock.
 
-Can this wait leave a killed task stuck forever?
 
-wait_event_idle() sleeps in TASK_IDLE and has no timeout, so SIGKILL
-cannot end it. khungtaskd also skips TASK_NOLOAD tasks, so the hang
-would never be reported.
+the existing dependency chain (in reverse order) is:
 
-The only code that clears req->zc_pages and wakes req->wq is in
-req_done(). It runs only after virtqueue_get_buf() returns this exact
-request:
+-> #2 (&sb->s_type->i_mutex_key#30){++++}-{4:4}:
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       down_read_interruptible+0x97/0x520 kernel/locking/rwsem.c:1584
+       netfs_start_io_read+0x1f/0x100 fs/netfs/locking.c:67
+       netfs_buffered_read_iter+0xf3/0x190 fs/netfs/buffered_read.c:940
+       netfs_file_read_iter+0x10f/0x190 fs/netfs/buffered_read.c:978
+       v9fs_file_read_iter+0x9b/0x100 fs/9p/vfs_file.c:369
+       __kernel_read+0x397/0xac0 fs/read_write.c:512
+       integrity_kernel_read+0x7e/0xb0 security/integrity/iint.c:28
+       ima_calc_file_hash_tfm+0x25e/0x350 security/integrity/ima/ima_crypto.c:222
+       ima_calc_file_hash+0x1e3/0x380 security/integrity/ima/ima_crypto.c:280
+       ima_collect_measurement+0x952/0xb30 security/integrity/ima/ima_api.c:300
+       process_measurement+0xe04/0x2360 security/integrity/ima/ima_main.c:425
+       ima_file_check+0xbf/0x110 security/integrity/ima/ima_main.c:686
+       security_file_post_open+0xc4/0x210 security/security.c:2777
+       do_open fs/namei.c:4853 [inline]
+       path_openat+0x5d0/0x23f0 fs/namei.c:5016
+       do_file_open+0x20e/0x430 fs/namei.c:5045
+       do_sys_openat2+0x163/0x1d0 fs/open.c:1443
+       do_sys_open fs/open.c:1449 [inline]
+       __do_sys_open fs/open.c:1457 [inline]
+       __se_sys_open fs/open.c:1453 [inline]
+       __x64_sys_open+0xfe/0x1d0 fs/open.c:1453
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-net/9p/trans_virtio.c:req_done() {
-    ...
-	while ((req = virtqueue_get_buf(chan->vq, &len)) != NULL) {
-		...
-		if (req->zc_pages) {
-			if (req->zc_pages->held)
-				p9_zc_release(req->zc_pages);
-			smp_store_release(&req->zc_pages, NULL);
-			wake_up(&req->wq);
-		}
-    ...
-}
+-> #1 (&ima_iint_mutex_key[depth]){+.+.}-{4:4}:
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19f/0x1c10 kernel/locking/mutex.c:821
+       process_measurement+0x5ab/0x2360 security/integrity/ima/ima_main.c:319
+       ima_file_check+0xbf/0x110 security/integrity/ima/ima_main.c:686
+       security_file_post_open+0xc4/0x210 security/security.c:2777
+       do_open fs/namei.c:4853 [inline]
+       path_openat+0x5d0/0x23f0 fs/namei.c:5016
+       do_file_open+0x20e/0x430 fs/namei.c:5045
+       do_sys_openat2+0x163/0x1d0 fs/open.c:1443
+       do_sys_open fs/open.c:1449 [inline]
+       __do_sys_open fs/open.c:1457 [inline]
+       __se_sys_open fs/open.c:1453 [inline]
+       __x64_sys_open+0xfe/0x1d0 fs/open.c:1453
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-On a fatal signal, p9_virtio_zc_request() hands the pages to req_done()
-and returns with req->zc_pages still set:
+-> #0 (sb_writers#5){.+.+}-{0:0}:
+       check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
+       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+       validate_chain kernel/locking/lockdep.c:3952 [inline]
+       __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
+       percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
+       __sb_start_write include/linux/fs/super.h:19 [inline]
+       sb_start_write include/linux/fs/super.h:125 [inline]
+       kiocb_start_write include/linux/fs.h:2799 [inline]
+       vfs_iocb_iter_write+0x1fe/0xa50 fs/read_write.c:929
+       __cachefiles_write+0x56f/0xd40 fs/cachefiles/io.c:355
+       cachefiles_write+0xc2/0x150 fs/cachefiles/io.c:395
+       cachefiles_issue_write+0x513/0x810 fs/cachefiles/io.c:607
+       netfs_do_issue_write+0xee/0x340 fs/netfs/write_issue.c:256
+       netfs_issue_write fs/netfs/write_issue.c:290 [inline]
+       netfs_advance_write fs/netfs/write_issue.c:331 [inline]
+       netfs_advance_write+0x37e/0x4c0 fs/netfs/write_issue.c:299
+       netfs_write_folio fs/netfs/write_issue.c:510 [inline]
+       netfs_writepages+0x10bb/0x2390 fs/netfs/write_issue.c:600
+       do_writepages+0x278/0x600 mm/page-writeback.c:2562
+       filemap_writeback+0x22d/0x2e0 mm/filemap.c:386
+       v9fs_vfs_setattr+0x9d6/0xb80 fs/9p/vfs_inode.c:1087
+       notify_change+0xb09/0x1350 fs/attr.c:556
+       do_truncate+0x1df/0x240 fs/open.c:68
+       handle_truncate fs/namei.c:4306 [inline]
+       do_open fs/namei.c:4855 [inline]
+       path_openat+0x1e93/0x23f0 fs/namei.c:5016
+       do_file_open+0x20e/0x430 fs/namei.c:5045
+       do_sys_openat2+0x163/0x1d0 fs/open.c:1443
+       do_sys_open fs/open.c:1449 [inline]
+       __do_sys_open fs/open.c:1457 [inline]
+       __se_sys_open fs/open.c:1453 [inline]
+       __x64_sys_open+0xfe/0x1d0 fs/open.c:1453
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-		held = req->zc_pages;
-		if (held)
-			zc->held = true;
-		spin_unlock_irqrestore(&chan->lock, flags);
-		if (held)
-			return err;
+other info that might help us debug this:
 
-p9_client_zc_rpc() sends a TFLUSH only when c->status == Connected.
-There are two cases where no flush is sent but the new wait still runs:
+Chain exists of:
+  sb_writers#5 --> &ima_iint_mutex_key[depth] --> &sb->s_type->i_mutex_key#30
 
-  - after umount -f, via
-    v9fs_session_begin_cancel()->p9_client_begin_disconnect()
-  - after an earlier -EIO has set Disconnected
+ Possible unsafe locking scenario:
 
-If a flush is sent, p9_client_rpc(TFLUSH) can itself return early on the
-fatal signal. In every case the wait above runs.
+       CPU0                    CPU1
+       ----                    ----
+  lock(&sb->s_type->i_mutex_key#30);
+                               lock(&ima_iint_mutex_key[depth]);
+                               lock(&sb->s_type->i_mutex_key#30);
+  rlock(sb_writers#5);
 
-If the device never returns the original descriptor, nothing else clears
-zc_pages. That can happen in several ways:
+ *** DEADLOCK ***
 
-  - virtqueue_kick() fails and sets vq->broken. Its return value is
-    ignored right after req->zc_pages = zc in p9_virtio_zc_request().
-  - surprise PCI removal. virtio_pci_remove() calls
-    virtio_break_device(), and vring_interrupt() then stops calling the
-    callback.
-  - a hung backend, or a device that answers the TFLUSH but keeps the
-    original descriptor. This is the misbehaving-device case the commit
-    message describes.
+locks held by syz.7.1192/10055: 2, on CPU#0:
+ #0: ffff88802ed0c478 (sb_writers#15){.+.+}-{0:0}, at: do_open fs/namei.c:4838 [inline]
+ #0: ffff88802ed0c478 (sb_writers#15){.+.+}-{0:0}, at: path_openat+0x1920/0x23f0 fs/namei.c:5016
+ #1: ffff88810b968140 (&sb->s_type->i_mutex_key#30){++++}-{4:4}, at: inode_lock_killable include/linux/fs.h:1032 [inline]
+ #1: ffff88810b968140 (&sb->s_type->i_mutex_key#30){++++}-{4:4}, at: do_truncate+0x14e/0x240 fs/open.c:63
 
-Before this patch, a killed task always left this path.
+stack backtrace:
+CPU: 0 UID: 0 PID: 10055 Comm: syz.7.1192 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_circular_bug.cold+0x178/0x1be kernel/locking/lockdep.c:2087
+ check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2219
+ check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
+ check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+ validate_chain kernel/locking/lockdep.c:3952 [inline]
+ __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
+ lock_acquire kernel/locking/lockdep.c:5942 [inline]
+ lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+ percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
+ percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
+ __sb_start_write include/linux/fs/super.h:19 [inline]
+ sb_start_write include/linux/fs/super.h:125 [inline]
+ kiocb_start_write include/linux/fs.h:2799 [inline]
+ vfs_iocb_iter_write+0x1fe/0xa50 fs/read_write.c:929
+ __cachefiles_write+0x56f/0xd40 fs/cachefiles/io.c:355
+ cachefiles_write+0xc2/0x150 fs/cachefiles/io.c:395
+ cachefiles_issue_write+0x513/0x810 fs/cachefiles/io.c:607
+ netfs_do_issue_write+0xee/0x340 fs/netfs/write_issue.c:256
+ netfs_issue_write fs/netfs/write_issue.c:290 [inline]
+ netfs_advance_write fs/netfs/write_issue.c:331 [inline]
+ netfs_advance_write+0x37e/0x4c0 fs/netfs/write_issue.c:299
+ netfs_write_folio fs/netfs/write_issue.c:510 [inline]
+ netfs_writepages+0x10bb/0x2390 fs/netfs/write_issue.c:600
+ do_writepages+0x278/0x600 mm/page-writeback.c:2562
+ filemap_writeback+0x22d/0x2e0 mm/filemap.c:386
+ v9fs_vfs_setattr+0x9d6/0xb80 fs/9p/vfs_inode.c:1087
+ notify_change+0xb09/0x1350 fs/attr.c:556
+ do_truncate+0x1df/0x240 fs/open.c:68
+ handle_truncate fs/namei.c:4306 [inline]
+ do_open fs/namei.c:4855 [inline]
+ path_openat+0x1e93/0x23f0 fs/namei.c:5016
+ do_file_open+0x20e/0x430 fs/namei.c:5045
+ do_sys_openat2+0x163/0x1d0 fs/open.c:1443
+ do_sys_open fs/open.c:1449 [inline]
+ __do_sys_open fs/open.c:1457 [inline]
+ __se_sys_open fs/open.c:1453 [inline]
+ __x64_sys_open+0xfe/0x1d0 fs/open.c:1453
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4b4eba94d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4b4f9a7028 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007f4b4ee25fa0 RCX: 00007f4b4eba94d9
+RDX: 000000000000015b RSI: 00000000001e3342 RDI: 00002000000009c0
+RBP: 00007f4b4ec3804e R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4b4ee26038 R14: 00007f4b4ee25fa0 R15: 00007ffd7b80c5f8
+ </TASK>
 
-Once stuck, the task keeps any VFS locks its caller holds and cannot
-finish exiting or coredumping. Its pinned pages stay counted in
-vp_pinned, which throttles p9_get_mapped_pages() on other mounts. It
-also keeps the mount busy, so p9_virtio_close() never runs and
-chan->inuse stays true. p9_virtio_remove() then loops here and never
-reaches virtio_reset_device()/del_vqs():
 
-	while (chan->inuse) {
-		mutex_unlock(&virtio_9p_lock);
-		msleep(250);
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-That is a circular wait. Remove waits for umount, umount waits for the
-task, and the task waits for a req_done() that never runs for this
-request.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-For pinned user pages (need_drop == 1), the zc->held hand-off already
-keeps the pages alive until req_done(), so the unconditional wait seems
-to be needed only for kvec buffers. Could the wait be limited to that
-case, or bounded or made killable? Alternatively, could the transport
-clear zc_pages and wake waiters when the vq is broken or torn down?
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-The commit message also does not mention that killed tasks can now
-block on the device with no time limit. Should it?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
->  recalc_sigpending:
->  	if (sigpending) {
->  		spin_lock_irqsave(&current->sighand->siglock, flags);
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109105251.2545764-1-lian%40is.s.u-tokyo.ac.jp
+If you want to undo deduplication, reply with:
+#syz undup
