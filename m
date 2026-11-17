@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936888;
-	b=DjFqU9DTGnWjP3HMdQW+auv2/f+YUR5iSidMQREhYJfbxJ5cc7fUbHf9NkVz6zFkgjDK
-	 ewfF2EmCaSQSlt+F7uyUo6fpSG2RbG6X1sJZh4UoB3Q6+fjzVGereRAk7+PAiLt/f+ZMR
-	 PtdAOFS/6+2plQ239Gew+dJHm2NQ4J4/vZnutKaXjXHVZTvrLtVPNsQ8krBdu17qldLhU
-	 I6Iwg7F90ChCoQBQC2H+I53JDnwTU4J+LL8dIGhC+EIavVrs1DNs0rTDDcavWmreYM2fh
-	 tfu1QEU6UDLDcR2IW+tGenBlhu6eBY81EwIOfiANjLJivgqCZFgsaaff8Q7sWatxgtA==
+	t=1794936908;
+	b=SsEVuPy6msHM/Zjw2hgnRg3/MQBAxv1wRAQzrnevHfEE/6kUzQWflE1bXxs3tx2TUgOn
+	 CRaeJprlE+gG3NB6V+maBupruv1cUdZm9VWAYEW+IGPKp6Wq6Z3O8K/qSj8Sfo4UaWhpS
+	 gDFdVkpE7vqyHzCxcKHpYAib3VbFZB85xVdyRwuluTsdjWE2jk2cz7PUeDkVzRSPOGdBw
+	 aM1Q0IZSGoYhq9TkxEe0W9IscNH4vKt4yJ8O43nnC6z7S+H40f9irjXRxnHmXhoLbrk9Z
+	 KITzlcT4Yy41DHYzysbNjWk8sVMpD/SRfVlY64ZmgfRWYMrxETWYX9m1NqjL11DxCkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936888;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794936908;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=BRRiPWwUWz0l2GNTM3QTkLYpzCBeSjHMZOXBgieH4Mg=;
-	b=wOMxYBmEiEGSqBSeWdshpZQMsw7V2PxPeYn/iT0OLNZrkhKFbyv6FmHgvr9YWD3LewNL
-	 CaI6g+l5q8CUqyWf4qUTwkvKCBYaJZ6Lt1Fm9o5Q+LXxB9ePa0qnx0ggTwahV8DF4wZYo
-	 Kno8eiBlLrntllWUJX40uTHXXrUUYqoh0lpVnXc0Jez0v9CgykbW6u+XgRpZTiOSeYf0v
-	 J6mZyAm8mO6ZsYa3j6f0V+yc3ueYJGqnib8G2cJLJXRBOsWaipCy7E7voJebUVC1faxyD
-	 x8Qt8dLObeIFdrwrRRWSNaYvZMKgVVobIUWsYppw9j+VVwkuJC+p0EyGkTQf4/zdntg==
+	bh=g1DO02J45L1rxEnZ7mA3SQv9BTy03U9/yGEG7zoyspE=;
+	b=kJb34DVR1pA50wCSHdwha7KQ+mbP9pnfMgRiz701yjgIEOnbLMJw8UW/r/NuLeDHsmka
+	 g/xIOLzJWSJIhJUMr2UCOLAZYWltatJ1NPXTC/KIGZ1RYxSOE+Kx4l68YQjZZ8lC1KSBp
+	 x8sG2e1P5GX8coqEXA+BWekTclDCv7rFJVbcoZWjCWTcikG6qqlGKGwgMzOaSTJ/HhmDk
+	 muTnyzdEJZw7lUIIZC4/PRfXH6w7yMpKAqqMoqfwVOZlbOt4dapJ9S7Hm2dST9rrSTJPf
+	 tiuSOXEscjtRxibJ21C4I6JFlqZHKaRA1VO7en+tzmsD+iyqZs61EZbIS4EoynYWPPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UuWC+WcP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VpEVNOhj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F027D606A31C
-	for <v9fs@lists.linux.dev>; Tue, 17 Nov 2026 17:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5418606A31C
+	for <v9fs@lists.linux.dev>; Tue, 17 Nov 2026 17:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UuWC+WcP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A664D1F000C4;
-	Tue, 17 Nov 2026 17:34:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VpEVNOhj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FD21F000C4;
+	Tue, 17 Nov 2026 17:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794936887;
-	bh=BRRiPWwUWz0l2GNTM3QTkLYpzCBeSjHMZOXBgieH4Mg=;
+	s=k20260515; t=1794936908;
+	bh=g1DO02J45L1rxEnZ7mA3SQv9BTy03U9/yGEG7zoyspE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UuWC+WcPi78vAUaO1oZmB2y0v3TxpcaJxFymZwRF5x98LQ57AeEHbM828zhS62F4K
-	 kW3S1pAy8Ok8WkVIpBMOGx27Vrwx+Nr55sXbCqzaql0P85zHzlPqB99jdpNuvP+WdL
-	 nhVobDi7dvNLU1yysE13g9mRNVO6Cz8Ky1jXd8ROUiUT02XDjWM5A1bq0WsX2RRiN2
-	 GBZ/NrHWpLsuFCd8w26mRBol67EmEG141uSG9GyJjc6V8okl5236DpsH9Kaa3CJsYp
-	 HFhFjD0QrqJQVNGXCqSm8XxIyncebLns+R5mPMwNxjXi6wRos5Xig7JskjntmT6NM9
-	 t0AmrBgeDQaCQ==
-Message-ID: <sashiko-outbox-219242@kernel.org>
+	b=VpEVNOhjUjl3iUVCsQjFN54mcgpjzbAtMIAaG+CEXdf+bDrRxgczUM6CBQBD2c9bD
+	 bSjGA9IMdfzmGeskXSG7TakFeJ3SCvKYh5ekiDk1B85rPAg2Npp3fnwFwc+/cxwGpZ
+	 AEr7E0X9h7nu5znHuq6lfn9Qnba1qZLs5mSTzOFbenfTOTMYqrAqIpGKO/sMLcxCwC
+	 2fgc1/HlaPPFc2IO6Gy72nTWgPVz0nf3UQ1NYN6Pr9N/CrqjbS3ShaEqbGE8LAGGIt
+	 ycrmBRhXvfBi9gd9m8JuJM6kfpP3zlW9xLYU8QNfA6cmnT4GwNl3O5MZWNPdRW5kjA
+	 niOmfytrmDTvg==
+Message-ID: <sashiko-outbox-219243@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v18 01/17] iov_iter: Fix kunit test to remove __init and
- __refdata marks
+Subject: Re: [PATCH v18 15/17] smbdirect: Remove support for ITER_FOLIOQ
+ from smbdirect_map_sges_from_iter()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Howells" <dhowells@redhat.com>
 Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261117171958.2982801-2-dhowells@redhat.com>
+In-Reply-To: <20261117171958.2982801-16-dhowells@redhat.com>
 References: <20261117171958.2982801-1-dhowells@redhat.com>
- <20261117171958.2982801-2-dhowells@redhat.com>
+ <20261117171958.2982801-16-dhowells@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 17:34:47 +0000
+Date: Tue, 17 Nov 2026 17:35:07 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -61,22 +61,19 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 
-> Remove the __init marks from the functions in the iov_iter kunit test so
-> that they don't get removed after the module is loaded or if the test is
-> built in as the tests can be triggered through debugfs too.
+> netfslib now only presents an bvecq queue and an associated ITER_BVECQ
+> iterator to the filesystem, so it isn't going to see the ITER_FOLIOQ
+> iterator.  So remove that code.
 >=20
-> Also remove the __refdata mark which is unnecessary if the table so marked
-> doesn't point at any __init funcs.
+> Netfslib also won't supply ITER_BVEC/KVEC iterators, though smbdirect
+> might; further in future, it won't supply iterators at all, but rather a
+> bvecq slice (that can be used to construct an iterator).
 >=20
-> This was found by claude-opus-5-5 run locally.
->=20
-> Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterat=
-or")
 > Signed-off-by: David Howells <dhowells@redhat.com>
 
 Sashiko has reviewed this patch and found no issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117171958.2982=
-801-1-dhowells@redhat.com?part=3D1
+801-1-dhowells@redhat.com?part=3D15
 
