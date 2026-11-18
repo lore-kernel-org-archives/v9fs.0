@@ -1,61 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.59.206.189
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795005362;
-	b=MArhJEPGoyl1yEnb3veQ5PkEK4KOdZWz4Un5MQpAxQDwz244UdFjyZMWmdTtXHhlS4X+
-	 DFa9gOouM5XWoC/8/rNzUkSKUXpbZHcxEW/3idHV6Ct0FQIsqqEn37X0hBy4yOii9Rrg2
-	 8PmZW7fZsM70ltCUXUSzwFTQkS5QaDzhjHqKUD9UPK9DiwOZzSlADkaUbaKXImzIVhn3Q
-	 Em3FJJJEhWZ0rMrl7vKiwlVM5GEpy1NBICHkCkDQXghVODctVE/f0aMRyqvQ34jJ4Tm48
-	 oYFTZ7nNB0/a4U4SMCelynk+1XInLm5XPKVYSyQayO6/8swseGKg1f4wHufVsODLkNg==
+	t=1795007656;
+	b=5io5yEvnvwkmRxA1BfO0E6eDzsiqEi2FjRDWO1JueLA000jLA3x97Kn/tmg1ozuHs5Rc
+	 Lt3rDnjS4geWwudqdEqnkbzIJPFSpMQ2ZzHVWPDkO/cgL1fhcn+7vFRozYz7jEpHRCWz9
+	 F295FzBAV3NH9M9ug9A0SFe5QhqZP+xj7G/Vu8bGeyMtSDXVGtqZbCux52KFdC7tO4hoN
+	 wDAld7Ae2goN4rxBOwPTHIIpb0sfcUbALte0jrufShpmRbzCbWKxDft3iZhHiZV1YSO2J
+	 3lNk2f0Soq1pvGSbszOJeRMpBT7ssbd4gSJM+MLD1zt66CG/dg1jrPea9rmQD574VwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795005362;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=CVVMPE+j7KjW39jvyf6/oFfejt3hTMTeayg9+QfA8JM=;
-	b=jmmW7vD2SjD7LlgDBpvfw0Fk3VUPpIDpHD9EHfEMKSEY/OzfDHLKxaAq4J8piL5+W95O
-	 8ehzi9cZWCkOeiEBZ0J1bzDjMFXGfJLmbX4ChJAEFJGNSkO8+LZ02iRPbHVPQxnoQnRfE
-	 qpNBAMRc2y5ZD/R8P830Pr9ObFvCUk0HAndY1gRgZoIs7YnaSAEX9Ny+KHHYBpuEPGwZj
-	 LM+f3Ps1qHyik2VKuVa0yjUdSIa2+TkoRcFWXNu1KkVjKG1PQzeAE4QgEm+BE/SE0xN1L
-	 4XWUSYf+ChKjcmO8X4NssgP9597GZQZr/zwdHm59UXS/6GHCsJfxxoEy6OT+/uUBFqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795007656;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-PPP-Message-ID:X-NC-CID;
+	bh=jfqiFSSFUtLpubMeYazVtBiAKSCsMWfxFdymjZV2kbA=;
+	b=QpOD/Drh8zWdcgZ2PEh5q8ng5Ct3ZOgjNuWk3XwdaK6By1k78CTKFbe1LhPkO/nuRq3F
+	 sR71OLs8AN+mS69cpv26KoU0Ek4vUvBw4MRndlDXp0W5/9fyCY38tjgHDT5qQegiwtwvi
+	 loFAnRjYgMu5NbIFdF6Dqcqi58IO2eQuSZJkPIgjOPoEdBod1nuct5m++LsFboyDsCiBv
+	 qBxjmrnvTT5GCRNh4Z8E5wil5uD8IewWsRFqTldVVtP2VGSwjAtrkFC7eNHFJsFU31oZs
+	 gmRiTshJt25JCsKXtVQAmPkkXQrRoTa9w4Yxb4A9i3kb2pLOKezl3078FdWHtNJrv8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmhFiyIL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=leemhuis.info;
+	spf=pass smtp.mailfrom=leemhuis.info;
+	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b="T9/RB7wO";
+	arc=none smtp.remote-ip=194.59.206.189
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECC8606A31C;
-	Wed, 18 Nov 2026 12:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D418D606A31C
+	for <v9fs@lists.linux.dev>; Wed, 18 Nov 2026 13:14:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D418D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmhFiyIL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE051F000C4;
-	Wed, 18 Nov 2026 12:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795005362;
-	bh=CVVMPE+j7KjW39jvyf6/oFfejt3hTMTeayg9+QfA8JM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cmhFiyILoty0S/ImExh0a7qYIzr9QxLGbi3BPcVks5rTwq7n4h5eX1E+wtvxecs6I
-	 MICCZIaiZxXPWwL+28p6tfmmoutV1DIq5J14Vkrf1CM5EZ2wqvwX3vLoZKgjMx5D75
-	 KMkyjRhDRpoP/TDY0jxEdlESD4QZAi8dMz/qCheRb7NWLzGd9w71fQfwy519efZtSN
-	 mF4xpdK3Zso7ZVFiTFq3gufRyriGirqmZwg+cd/5bzbaCqo52hnGwXaMIdxdJMQq4M
-	 +nBFYYeTqQSFzMzDB+cmQ77NGLzRNP8L9Bn1nPmZIhdN1rsfL6Fl/FjYvdqjJ2q/QZ
-	 OctztNUtUxvNw==
-Date: Wed, 18 Nov 2026 13:35:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Paulo Alcantara <pc@manguebit.org>, 
-	David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>, 
-	Matthew Wilcox <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Marc Dionne <marc.dionne@auristor.com>, Stefan Metzmacher <metze@samba.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 5/5] cachefiles: Preset the state xattr when creating
- a new file
-Message-ID: <20261118-hebamme-virtuell-boten-055bf85097a3@brauner>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
- <20260910220242.2165023-6-dhowells@redhat.com>
- <920f0b50480231f1af8a9c8e7f118f5c@manguebit.org>
+	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=T9/RB7wO
+Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4jV2970lzTz4Hx2;
+	Wed, 18 Nov 2026 14:13:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1795007611;
+	bh=N97bBK4e1wdhkPXJ9UymJ0KcG94sTetJEBypKucc5a4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=T9/RB7wOAqq8VleQEublMKH3Pzu1I0KWWm6EBovTi4FuBsv2lMJSWzVj1KhASvNAk
+	 rL+BtpqhFbMBFSVHZhME4yi5CrpBsmWao8sjpN+NZvyCyn2jvWwszZGgs+6372AZ+0
+	 1Ii5wDncNOMGgcqSuh5kzVrx8Bh28We/ZoIFJaadmT7CruFbfQawOrVW2lA0ECJJeg
+	 SoObLy0ESGh5cJ83XbUOnysGtZt/9jwzcFIZrmOyUHY7d5S/OnzLBnEkFwgMiYcY8C
+	 ossdIX/0LI63S9wKlMysFEep2jSj6vzIGwQHLYH35/8IkB3Cv3SLw3n5w3uYBbO/3r
+	 LsWONk9wQJRgQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4jV27S6NDPz7yQm;
+	Wed, 18 Nov 2026 14:12:04 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4jV27Q6rhMz8tL0;
+	Wed, 18 Nov 2026 14:12:02 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id ABFA95FA08;
+	Wed, 18 Nov 2026 14:11:41 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <80eace12-17a9-4bae-a923-67174c663fc6@leemhuis.info>
+Date: Wed, 18 Nov 2026 14:11:40 +0100
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -65,52 +73,39 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <920f0b50480231f1af8a9c8e7f118f5c@manguebit.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] 9p: fix data corruption with writeback caching during
+ concurrent stat
+To: Michael Mulqueen <mike@method-b.uk>, David Howells <dhowells@redhat.com>,
+ Pierre Barre <pierre@barre.sh>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+ linux_oss@crudebyte.com, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20251227083751.715152-1-pierre@barre.sh>
+ <1667424.1771432276@warthog.procyon.org.uk>
+ <e2c960ca-7b29-45e1-b650-849fc357f8b0@method-b.uk>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <e2c960ca-7b29-45e1-b650-849fc357f8b0@method-b.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <179500750219.2145202.12078122543303060447@mxe9fb.netcup.net>
+X-NC-CID: 3htsrNuz0alture0GSC5CM6gSzXmyH3PNGuvJBarrD5ZcY2ImA0=
 
-On Fri, Sep 11, 2026 at 05:21:38PM -0300, Paulo Alcantara wrote:
-> David Howells <dhowells@redhat.com> writes:
-> > +	buf = kzalloc(sizeof(struct cachefiles_xattr) + min(len, sizeof(__be64)), GFP_KERNEL);
->
-> You should use max() here.
+On 11/18/26 13:22, Michael Mulqueen wrote:
+> 
+> I've encountered this bug and have spent some time confirming it and
+> writing a minimal reproducer script for it.
 
-Meh, this is in mainline since v7.4-rc1:
+Thx for this.
+> I've bisected it with my reproducer script and found it was introduced
+> in v6.4, specifically commit d9bc0d11e33b. I wasn't sure about the
+> etiquette of jumping straight into a discussion and tagging regzbot, so
+> I haven't, [...]
 
-KASAN catches it reading a file through an -o fsc mount with an ext4
-cache gives:
+FWIW reg. regzbot: given that this is a regression that apparently
+happened years ago, there is nothing much regzbot or I can do for you,
+so I'd say it's not really worth telling regzbot about.
 
-  BUG: KASAN: slab-out-of-bounds in ext4_xattr_set_entry+0xf3d/0x1bd0
-  Read of size 58 by task kworker/u32:1/63
-  Workqueue: fscache fscache_cookie_worker
-  Call Trace:
-   __asan_memcpy+0x23/0x60
-   ext4_xattr_set_entry+0xf3d/0x1bd0
-   ext4_xattr_block_set+0x647/0x3080
-   ext4_xattr_set_handle+0xd19/0x1420
-   ext4_xattr_set+0x12a/0x380
-   __vfs_setxattr+0x10a/0x160
-   __vfs_setxattr_noperm+0xef/0x5d0
-   vfs_setxattr+0x148/0x3d0
-   cachefiles_preset_object_xattr+0x191/0x5e0
-   cachefiles_create_tmpfile+0x2c1/0x7f0
-   cachefiles_create_file+0x6a/0x2f0
-   cachefiles_look_up_object+0x715/0x8a0
+Ciao, Thorsten
 
-With max() it's gone. David, unless you want to send it yourself I'll
-put this into vfs.fixes:
-
-diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
---- a/fs/cachefiles/xattr.c
-+++ b/fs/cachefiles/xattr.c
-@@ -44,7 +44,7 @@ int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file *file)
- 	unsigned int len = object->cookie->aux_len;
- 	int ret;
- 
--	buf = kzalloc(sizeof(struct cachefiles_xattr) + min(len, sizeof(__be64)), GFP_KERNEL);
-+	buf = kzalloc(sizeof(struct cachefiles_xattr) + max(len, sizeof(__be64)), GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
-
--- 
