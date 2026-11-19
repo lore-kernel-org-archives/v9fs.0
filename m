@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795078390;
-	b=KQJXfjJCEMlNuvb2uSc/RzylTlkT6BwjIc0Jd5nIN8R2pWA5eavmPQFgy4e4eFHHs0dj
-	 yQxxZxR9On4XbdTondI8WhXlowsbOhKNRLAiOdNNOAT+Frz31a2PwO0ZGdfFnQBpk/AJt
-	 qvSKWLs7R8iPWHfM75efbQ5GVTbiRV0MrZpX2DsIYWuhax9h6Li5xZIU1pkzxtaUzlJUL
-	 JvA4ZbKq3rUZy/5o4NWHY5hnOtk3lhSEUwIvBjP2QOOm82TkXlt3MdNP7G0wI5TCLLkch
-	 VLMPe7qtom5YxFZfDR9AUj8Jylg+Jydbc7gal4IFyGMzf+0FwrBnN4oPWxvfR0zPvOQ==
+	t=1795078564;
+	b=bgzZnnCUG5pkoJwrw4zAcWEJ+ah/xbdFx5+fyCGW1o8KpgnkKQJd10oJsJipHgFCSzU+
+	 U/lS4rwKjOm8QiaYHnDM+b0X5ZazbcctaN1FC9Wig9vFwE5SmVzg4xwu0ydR37wr1ZBUs
+	 upLHn7VwZiPUS/lUz+XH4XRx2ez8v151FN+FWJVnTW+qO/XQ3111fQnO53TuP3ty+V5YT
+	 Vs91HknJo9q8S/XP9CnGQmwPYV8gIqEDqxdqyzo+y/VX3aW9Yiqaj7nRrW/iBE5RALhhk
+	 J5Yr8dFohmB13K0558r0cLstzXv8ZjYME0gGYMK/7FolElEIpqHH+H4aPoTXIqXbCvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795078390;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795078564;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=L/v6upENLqWKVODY9CXdlpCWs7vFmC0HzkXvbYLmAv4=;
-	b=0Kgqm+jm/IGyz3k8KtAgY4vtV/MgLMTVXkhiMPiDNyq3d0LskKWIeB3TEDmvKjBQL1H9
-	 QPP3+4Qg1TNgKpTc22Tp33xA8GqflXQKrw4qYJMAjPFKvUTfQpQwtOgODgO4hLO2jXTzt
-	 tK3gu2ReljmpaFwlbNBJ0NlWMMdOOpZg6aImJP6/ocIt4n91etyz/TGdLHdQG859Gdvyf
-	 rxWLndENHkOD63TDOmNhRJQ89qnsByAZ+wSAikpYM4EjYN8CRs2Sr9FBmkBPi8vi21o5r
-	 cH1o/UtRBSPHD5/IjpbIiPhYq/JN3GglrR3l9tRtSqPb0Icu0HQtIFKv1QEYb97AQVA==
+	bh=0gmQ/Eq5t+TpgDGY5RHJdYDsrsF3deOvnjxZueqCn3o=;
+	b=wmoxtTCrjHepKOM1zTiybCvj47jZHCETK15TxmGDNwDbFruAN0no7QI63nomcaBlAM2b
+	 4HNW7QpiRX/Mdf4/URlL/sQJVbmZ9KmG+M2515u001DimgZczqHWNgwTdSTEOfK6amxB1
+	 4+To4c/A34dTa23//S+4TY5sNMb5NeASoJ0NZ6ir5B5diSX1ONQfP02XEimbqdFLOlfX7
+	 U98ooGkJzAEEWUBaEQt2p/wQ/yUA6JwLlJ8PbVpGWvVz6fRfr+aPRgrELA06KMhjFTADi
+	 kIGhwLt3HE2qQXwpUI+mOhlEnvSSlebDlfhke5d7TU6aD7Ls2xiv4/6WLzO4Te0RWWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=im8NDxwT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LOsGBY+s;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90552606A320
-	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 08:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04D0606A320
+	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 08:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=im8NDxwT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2458D1F000C4;
-	Thu, 19 Nov 2026 08:53:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LOsGBY+s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FC11F000C4;
+	Thu, 19 Nov 2026 08:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795078390;
-	bh=L/v6upENLqWKVODY9CXdlpCWs7vFmC0HzkXvbYLmAv4=;
+	s=k20260515; t=1795078564;
+	bh=0gmQ/Eq5t+TpgDGY5RHJdYDsrsF3deOvnjxZueqCn3o=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=im8NDxwTBXdSBXgBLFUqlVhI3vg1HU0OLlGnrDslhnIbejZptCoAqGXNIg6MklTah
-	 +4wkR8btTgUPVnL5mwXr4+32DG1rFtF8dA7wQ773KWQVVT0B0B8YypXIb00ab+NXDI
-	 YkatAKHss8BGZ6eCPdOPXO3zX8xOP706XViu3ibxOIvGxn6eBOZaOG80+DmjlV9YE6
-	 9zhQ3/ab02xKVjH8JQH6vF0zXELWjZUeHOk1d1M2ZLUhMf12lVyW+qcefdwzkx3bCa
-	 WfQt4e1pBcEtbJrok26HTis5GqVQ4abERJbG8V+SJvbcapxL95U5zCbd22lCm0OSGk
-	 K9lI2sqnWa1bw==
-Message-ID: <sashiko-outbox-222734@kernel.org>
+	b=LOsGBY+s5hRoe840SQYIIOEAC1aTQEoW0xvvsJg3hmrabiC+KOTNSV9tR0IMEYxNN
+	 jRqzdWGCk5K+ZApUagjeGEmIwrZL3CVHLEsgrxgCNU6G1o0piWKP9LHsMaxwIIQNek
+	 R4Z+4fvtJNxtD1clhjx/0o4JRRU+4w/m6PhwBlw7GUg/yCNpIprihREov8yvP9atpv
+	 SOfD1VaidXH7nWcZjhoU+cxGLs7ngtQmDPwk9IV9A9zKiFJIs/2TXuHC27qe8/Cflo
+	 c+JMG47vB1jdxKVO1serKG8/kt19dkYhgYBNat+Fmhtbl8QE0i9xPNdrIEcHew3hnE
+	 VNbM2sH3dzdxA==
+Message-ID: <sashiko-outbox-222745@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v19 05/17] iov_iter: Add an API document for the bvecq
- structure
+Subject: Re: [PATCH v19 10/17] netfs: Pass the write length to request
+ creation where appropriate
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Howells" <dhowells@redhat.com>
-Cc: v9fs@lists.linux.dev, "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
- Schumaker" <anna@kernel.org>
-In-Reply-To: <20261119083851.3306418-6-dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev
+In-Reply-To: <20261119083851.3306418-11-dhowells@redhat.com>
 References: <20261119083851.3306418-1-dhowells@redhat.com>
- <20261119083851.3306418-6-dhowells@redhat.com>
+ <20261119083851.3306418-11-dhowells@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 08:53:09 +0000
+Date: Thu, 19 Nov 2026 08:56:03 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -62,63 +61,24 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] docs: bvecq: malformed kernel-doc markup in bvecq.c and bvecq.h
---
+> For unbuffered/DIO writes and writes to single-type objects, pass the
+> length down into the request creation function so that wreq->len gets set
+> correctly.  For buffered writeback and pgpriv2 copying, this remains 0 as
+> we don't know in advance how big the request will be.
+>=20
+> A subsequent patch will use this to set as the i_size on single-type
+> objects (e.g. afs directories) as we don't care what the old i_size was a=
+nd
+> we don't want to see inode->i_size in the netfs file changing due to
+> third-party invalidation before we update fscache to say how big the obje=
+ct
+> is going to be.
+>=20
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-commit 4351a64f55127d5c3a801238a9cedf6a1d7b17ac
-Author: David Howells <dhowells@redhat.com>
-
-iov_iter: Add an API document for the bvecq structure
-
-This commit adds Documentation/core-api/bvecq.rst documenting the bvecq
-structure and its API, and links it into the core-api index and
-MAINTAINERS.
-
-> diff --git a/Documentation/core-api/bvecq.rst b/Documentation/core-api/bv=
-ecq.rst
-> new file mode 100644
-> index 0000000000000..7e06ca81512ab
-> --- /dev/null
-> +++ b/Documentation/core-api/bvecq.rst
-[ ... ]
-> +API Function Reference
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +.. kernel-doc:: include/linux/bvecq.h
-> +.. kernel-doc:: fs/netfs/bvecq.c
-
-[Severity: Low]
-Pulling these two files into the documentation build exposes a few
-kernel-doc issues in the comments introduced earlier in the series.
-
-In fs/netfs/bvecq.c, the kernel-doc comments for bvecq_alloc_one(),
-bvecq_alloc_chain() and bvecq_alloc_buffer2() write *flags and *%flags
-instead of *@flags, which leaves unmatched single asterisks in the
-generated reStructuredText and triggers docutils inline emphasis warnings
-during make htmldocs:
-
-fs/netfs/bvecq.c:bvecq_alloc_chain()
- * Allocate a chain of bvecq nodes providing at least the requested cumulat=
-ive
- * number of slots.  Each node is a maximum of 4KiB in size.  If
- * %BVECQ_SHORT_OKAY is set in *%flags, then the chain may be shortened on =
-OOM.
- *
- * Return: The first node pointer or NULL on allocation failure.  BVECQ_HIT=
-_OOM
- * is set in *flags if an allocation failure occurs.
-
-Also, in include/linux/bvecq.h, the kernel-doc summary line for
-bvecq_append() appears to be copy-pasted from bvecq_next():
-
-include/linux/bvecq.h:bvecq_append()
-/**
- * bvecq_append - Get the next bvecq with appropriate barrier
- * @to: The bvecq to append to
- * @add: The bvecq to append
+Sashiko has reviewed this patch and found no issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119083851.3306=
-418-1-dhowells@redhat.com?part=3D5
+418-1-dhowells@redhat.com?part=3D10
+
