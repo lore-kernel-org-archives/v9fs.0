@@ -1,83 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795080087;
-	b=MQMguSdo5saIsyc/IL4qfPCa/pNWQbdW/xsxqxlqRjtEu0TrHjDoMCWSVlJI3UAW7Z+X
-	 F63YBB2s41sN7vFJipk6p9EOuTTYgHmdQ5euldGAnhwc0JH3KmWd6MHZ2F+WAcZnZ2Y++
-	 zHP/sSwPjYnS5mvE79q3Y967O3heSy7K7c4FPiU4UlpIRGfW0thgUsd5UcODFASexj7v9
-	 GdU4SLBeEHobQMekoqyrX61VsTyp7jC5anWtA3xoE4dJco9DcA6ZXDeZPTUwCYt7irEJ6
-	 0WXJlWnoXf/UcdgJCQ/xKPXYz3Ey3k2QOxMDuhargSPXSajneFDe9aIIxOtFcGYKx4Q==
+	t=1795080553;
+	b=nGPHsqV0bwwmu3smfu6sULjkpIQsjUupnUg2ou7LaGAa6N1drYnoj91l8VRJ2fMmX2qa
+	 de+e3IcUdUMDVDI+O8VNQtdLcuHnl16BIxHOExZLQ8wzijdhAwQ3XUjSEkhONinI014JG
+	 PitlPnChlW3qEmg0/E2rNui4Q9UNyCSbuUf5bCaAtKmUkjg9OB12P67u0VcmFjCyJGteD
+	 XioUgSJWvYdet/973Y+6G0aKwg24PV8WYoKzKvuVAcGoE979/Iz3GVhe8SfGoD+GZChdu
+	 rBQeQ9t3GtdmMwhmkO236MkCbUjxfpTYKtyxrT+RJJE9UVb2lHeiPsLcEN2FGRWV/eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795080087;
-	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:X-CID-BVR:
-	 X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:From:To:Cc:
-	 Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=phJmb426aoRooYkR2Gofxf73gCjIrRfzoC/1uf618JI=;
-	b=B4JQq3l0A5YTRWQbXA7xLhR9pezLEBAHW9yv+VumWQNjA4aDy1+uwtJvdLeZfwLA1e2d
-	 Hsx/GIfm9BkQiJmTpF89dfcTGfXu1cIkAXJRig5BG1oxor2/zyYKWb+O8bGrTJ7amn+9/
-	 9K7N29gGP5i1Y1JggZSlQdxdHgTmv7Nn865uvvPqoTdqtozUlfsEkEQF8mN5ULO8CVNk7
-	 NaA1qPHr3op3anOrpDLFfHVvBnSJnShcHJLymkXg+OQA2tshUsfMgGKVAVDdT3xK73npA
-	 tI66QLqSuoALOpGIds1ztrejjDRCKqNHuiUphWvfi79Dfl1NGuGQIRWZ0h8J0OIPl5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795080553;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=54Xg+31GAwGDocjA4VNSymHKNP7tDrjDmp2DIIV80fY=;
+	b=WYW1+NZbBrPxUsQjMMIofGGsOzvIEjdWxv3e2VYocHcZ6HjUvXNKo5esf5WoUo1imEyC
+	 cHUzW5pnaGGQtfylAI+L5armgnPv5Xr4GU9tNdgX12SEXJk46B7MFds7rejxP4mvR0FOh
+	 4Wc9bbV56jgmnp7sFY0BfMdxwpvEHWXByJN17Svn616zJ1nw46G4F2S6T5Ul9O/GZuiZC
+	 9Of0XupWhFmr0As07aprjsIExBNL7kaLffxmq+Xrq5KxY8vKkHh2x1WQ8Esc4IB8B6h9J
+	 3fs4uKJwGD+TetvgsLpKz/82WoQmVtD6YcCqyi9UYJGiyelc25hJHIOy5SK89pVjaTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HtXvJ3LK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A558C606A320;
-	Thu, 19 Nov 2026 09:21:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A558C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 93cdc67ee3fa11f19a56ed5b684f684d-20261119
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:3e6c968f-f40c-41d1-b7b3-9939313b65b4,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:7db8b62,CLOUDID:6521bea9981703ccd9b9ae390e9a61cd,BulkI
-	D:nil,BulkQuantity:0,SF:81|82|83|102|850|865|898,TC:nil,Content:0|15|50|99
-	|100|102|153,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 93cdc67ee3fa11f19a56ed5b684f684d-20261119
-X-User: wangyibo@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <wangyibo@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 727782934; Thu, 19 Nov 2026 17:21:18 +0800
-From: Wang Yibo <wangyibo@kylinos.cn>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v19 01/17] iov_iter: Fix kunit test to remove __init and __refdata marks
-Date: Thu, 19 Nov 2026 17:21:15 +0800
-Message-Id: <20261119092115.3957212-1-wangyibo@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261119083851.3306418-2-dhowells@redhat.com>
-References: <20261119083851.3306418-2-dhowells@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9E3606A320
+	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 09:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HtXvJ3LK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB4D1F000C4;
+	Thu, 19 Nov 2026 09:29:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795080553;
+	bh=54Xg+31GAwGDocjA4VNSymHKNP7tDrjDmp2DIIV80fY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HtXvJ3LK24AiEnKtQ8/DHZMJsOnAgfSEOT6m+VI0dTq4ib+VSWRYX55l8v+sRUrBK
+	 ZyiIPbm5jSpX52HgQFQvQ37yzycoiBwb8KqVV5YyqXHWXGMpemx3BuuvsjmTI1w1SO
+	 TBzHkXkqeUsE1Gs1pgv6bhDrvbI0OVjaXYat+xBlVcHtu/MVxV8BIoI0S1MRslNBsm
+	 WyaGEhuEFZ5NRkgfR/tQLIbMBOQxKqYqfoNUO/StfiFPKNGfbU8GEC3WFsHuAugHlC
+	 QpCDJ32oqW3vn5HN9jCtloj5B1YWGT5TdH4CVj43RLJfczlYXyYuqS7zxXwtMUiy/M
+	 8Gg6f1bcQC0Qg==
+Message-ID: <sashiko-outbox-222836@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v19 11/17] afs: Use a bvecq to hold dir content rather
+ than folioq
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Howells" <dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev, "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
+ Schumaker" <anna@kernel.org>
+In-Reply-To: <20261119083851.3306418-12-dhowells@redhat.com>
+References: <20261119083851.3306418-1-dhowells@redhat.com>
+ <20261119083851.3306418-12-dhowells@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 19 Nov 2026 09:29:12 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -86,41 +61,208 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi David,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] afs: inconsistent i_size and uninitialized buffer in
+  afs_symlink_writepages()
+- [Medium] afs: inconsistent directory state and size in
+  afs_dir_writepages()
+--
 
-> Remove the __init marks from the functions in the iov_iter kunit test so
-> that they don't get removed after the module is loaded or if the test is
-> built in as the tests can be triggered through debugfs too.
+commit 38825177e122ffa7a8e67a676f8d6170b75ad709
+Author: David Howells <dhowells@redhat.com>
 
-The reasoning looks right to me.  The suite is registered with
-kunit_test_suites(), so it gets a debugfs "run" file and can be re-run
-after the init sections have been freed; calling into an __init function
-from there is a use-after-free, and __refdata on the case array keeps
-modpost from flagging the reference to init text.
+afs: Use a bvecq to hold dir content rather than folioq
 
-There is one more file in the tree with the same problem:
+This commit replaces folio_queue buffers with bvecq buffers for AFS
+directories and symlinks, and snapshots the buffer, buffer size, and
+inode size under cb_lock during writeback.
 
-  lib/tests/bitfield_kunit.c:60   __init test_bitfields_constants()
-  lib/tests/bitfield_kunit.c:103  __init test_bitfields_variables()
-  lib/tests/bitfield_kunit.c:140  __refdata bitfields_test_cases[]
-  lib/tests/bitfield_kunit.c:151  kunit_test_suites(&bitfields_test_suite)
+Link: https://sashiko.dev/#/patchset/20261107160823.1465553-1-dhowells%40re=
+dhat.com
 
-(line numbers from v7.4-rc1; test_bitfields_compile() is also marked
-__init but is only built under TEST_BITFIELD_COMPILE and is not in the
-case array)
+> diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+> index 51c158d8f723f..b75a26b312291 100644
+> --- a/fs/afs/dir.c
+> +++ b/fs/afs/dir.c
+[ ... ]
+> @@ -2220,12 +2220,11 @@ static int afs_dir_writepages(struct address_spac=
+e *mapping,
+>  			      struct writeback_control *wbc)
+>  {
+>  	struct afs_vnode *dvnode =3D AFS_FS_I(mapping->host);
+> +	struct bvecq *directory =3D NULL;
+>  	struct iov_iter iter;
+>  	int ret =3D 0;
+> =20
+> -	/* Need to lock to prevent the folio queue and folios from being thrown
+> -	 * away.
+> -	 */
+> +	/* Need to lock to prevent the bvecq and folios from being discarded. */
+>  	if (!down_read_trylock(&dvnode->validate_lock)) {
+>  		if (wbc->sync_mode =3D=3D WB_SYNC_NONE) {
+>  			/* The VFS will have undirtied the inode. */
+> @@ -2235,15 +2234,23 @@ static int afs_dir_writepages(struct address_spac=
+e *mapping,
+>  		down_read(&dvnode->validate_lock);
+>  	}
+> =20
+> +	read_seqlock_excl(&dvnode->cb_lock);
+>  	if (test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags)) {
+> -		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory,
+> -				     0, 0, dvnode->directory_size);
+> -		ret =3D netfs_writeback_single(mapping, wbc, &iter,
+> -					     i_size_read(&dvnode->netfs.inode));
+> +		size_t i_size =3D i_size_read(&dvnode->netfs.inode);
+> +		size_t d_size =3D dvnode->directory_size;
+> +
+> +		directory =3D bvecq_get(dvnode->directory);
+> +		read_sequnlock_excl(&dvnode->cb_lock);
+> +
+> +		iov_iter_bvec_queue(&iter, ITER_SOURCE, directory, 0, 0, d_size);
+> +		ret =3D netfs_writeback_single(mapping, wbc, &iter, i_size);
+>  		if (ret =3D=3D 1)
+>  			ret =3D 0; /* Skipped write due to lock conflict. */
+> +	} else {
+> +		read_sequnlock_excl(&dvnode->cb_lock);
+>  	}
 
-I went through the other suites that still have __init case functions --
-drivers/char/misc_minor_kunit.c, init/initramfs_test.c,
-security/landlock/id.c and lib/kunit/kunit-example-test.c -- and they
-are fine: they are all registered with
-kunit_test_init_section_suites(), which does not create a "run" file, so
-keeping __init there is correct.
+[Severity: Medium]
+Can afs_dir_writepages() still observe i_size > d_size or write an
+unvalidated directory buffer to fscache?
 
-Do you want the bitfields one folded into this series, or would you
-rather I send it separately?
+In afs_read_dir(), set_bit(AFS_VNODE_DIR_VALID, &dvnode->flags) runs
+outside cb_lock after afs_read_single() has dropped AFS_VNODE_IO_LOCK:
 
-Thanks,
-Wang Yibo
+CPU0                              CPU1
+afs_read_dir()
+  afs_read_single()
+    ... (allocates d_size)
+                                  afs_do_lookup() (FS.InlineBulkStatus)
+                                    afs_vnode_commit_status()
+                                      write_seqlock(&dvnode->cb_lock)
+                                      afs_apply_status()
+                                        afs_invalidate_dir()
+                                        i_size_write(..., new_size)
+                                      write_sequnlock(&dvnode->cb_lock)
+  set_bit(AFS_VNODE_DIR_VALID)
+  downgrade_write(&validate_lock)
+                                  afs_dir_writepages()
+                                    netfs_writeback_single(..., i_size)
+                                      <-- WARN_ON_ONCE(d_size < i_size)
+
+Also, new directory vnodes start with AFS_VNODE_DIR_VALID set and
+AFS_VNODE_DIR_READ clear.  If afs_do_read_single() fails in
+afs_dir_check() after netfs_read_single() has already dirtied the inode,
+afs_read_dir() unlocks validate_lock without clearing AFS_VNODE_DIR_VALID,
+and afs_dir_writepages() (which does not check AFS_VNODE_DIR_READ) writes
+the corrupt buffer into fscache.
+
+[ ... ]
+
+> diff --git a/fs/afs/symlink.c b/fs/afs/symlink.c
+> index c18e4f8064234..823a9ba82eb7f 100644
+> --- a/fs/afs/symlink.c
+> +++ b/fs/afs/symlink.c
+> @@ -56,7 +56,7 @@ void afs_evict_symlink(struct afs_vnode *vnode)
+>  void afs_init_new_symlink(struct afs_vnode *vnode, struct afs_operation =
+*op)
+>  {
+>  	struct afs_symlink *symlink =3D op->create.symlink;
+> -	size_t dsize =3D 0;
+> +	unsigned int alloc_flags =3D 0;
+>  	size_t size =3D strlen(symlink->content) + 1;
+>  	char *p;
+> =20
+> @@ -66,12 +66,15 @@ void afs_init_new_symlink(struct afs_vnode *vnode, st=
+ruct afs_operation *op)
+>  	if (!fscache_cookie_enabled(netfs_i_cookie(&vnode->netfs)))
+>  		return;
+> =20
+> -	if (netfs_alloc_folioq_buffer(NULL, &vnode->directory, &dsize, size,
+> -				      mapping_gfp_mask(vnode->netfs.inode.i_mapping)) < 0)
+> +	vnode->directory =3D
+> +		bvecq_alloc_buffer(PAGE_SIZE,
+> +				   mapping_gfp_mask(vnode->netfs.inode.i_mapping),
+> +				   &alloc_flags);
+> +	if (!vnode->directory)
+>  		return;
+> =20
+> -	vnode->directory_size =3D dsize;
+> -	p =3D kmap_local_folio(folioq_folio(vnode->directory, 0), 0);
+> +	vnode->directory_size =3D PAGE_SIZE;
+> +	p =3D bvec_kmap_partial(&vnode->directory->bv[0], 0);
+>  	memcpy(p, symlink->content, size);
+>  	kunmap_local(p);
+>  	netfs_single_mark_inode_dirty(&vnode->netfs.inode);
+[ ... ]
+> @@ -249,27 +251,39 @@ int afs_symlink_writepages(struct address_space *ma=
+pping,
+>  		down_read(&vnode->validate_lock);
+>  	}
+> =20
+> +	read_seqlock_excl(&vnode->cb_lock);
+>  	if (vnode->directory &&
+>  	    atomic64_read(&vnode->cb_expires_at) !=3D AFS_NO_CB_PROMISE) {
+> +		struct bvecq *bq =3D bvecq_get(vnode->directory);
+>  		size_t i_size =3D i_size_read(&vnode->netfs.inode);
+> +		size_t d_size =3D vnode->directory_size;
+> =20
+> -		if (i_size < vnode->directory_size) {
+> -			iov_iter_folio_queue(&iter, ITER_DEST, vnode->directory, 0, 0,
+> -					     vnode->directory_size);
+> +		read_sequnlock_excl(&vnode->cb_lock);
+> +
+> +		if (i_size < d_size) {
+> +			iov_iter_bvec_queue(&iter, ITER_DEST, bq, 0, 0, d_size);
+>  			iov_iter_advance(&iter, i_size);
+> -			iov_iter_zero(vnode->directory_size - i_size, &iter);
+> +			iov_iter_zero(d_size - i_size, &iter);
+>  		}
+> -		iov_iter_folio_queue(&iter, ITER_SOURCE, vnode->directory, 0, 0,
+> -				     vnode->directory_size);
+> +
+> +		iov_iter_bvec_queue(&iter, ITER_SOURCE, bq, 0, 0, d_size);
+>  		ret =3D netfs_writeback_single(mapping, wbc, &iter, i_size);
+> +		bvecq_put(bq);
+> +	} else {
+> +		read_sequnlock_excl(&vnode->cb_lock);
+>  	}
+
+[Severity: High]
+Can afs_symlink_writepages() write uninitialized page memory to fscache or
+pass i_size > d_size to netfs_writeback_single()?
+
+Both afs_init_new_symlink() and afs_do_read_symlink() allocate
+vnode->directory via bvecq_alloc_buffer() without __GFP_ZERO and only
+populate the initial symlink length.  Unlike directories (which clear
+AFS_VNODE_DIR_VALID in afs_apply_status()), when a status update arrives
+for a symlink with a new data version, afs_vnode_commit_status() sets
+AFS_VNODE_ZAP_DATA, updates inode->i_size, and installs a new valid
+cb_expires_at !=3D AFS_NO_CB_PROMISE:
+
+fs/afs/inode.c:afs_apply_status() {
+    ...
+		if (vnode->status.type =3D=3D AFS_FTYPE_DIR)
+			afs_invalidate_dir(vnode, afs_dir_invalid_dv_mismatch);
+		else
+			set_bit(AFS_VNODE_ZAP_DATA, &vnode->flags);
+		change_size =3D true;
+    ...
+}
+
+Because afs_symlink_writepages() does not check AFS_VNODE_ZAP_DATA (and
+afs_invalidate_symlink() only clears vnode->symlink, not
+vnode->directory), an updated i_size larger than the old symlink length
+causes afs_symlink_writepages() to zero only from the new i_size to
+d_size, writing stale content plus uninitialized kernel memory in
+[old_size, i_size) into fscache.  If the server reports i_size >
+PAGE_SIZE (including when afs_do_read_symlink() returns -EFBIG after
+netfs_read_single() has updated i_size and dirtied the inode), i_size >
+d_size triggers WARN_ON_ONCE(iov_iter_count(iter) < len) in
+netfs_writeback_single().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119083851.3306=
+418-1-dhowells@redhat.com?part=3D11
