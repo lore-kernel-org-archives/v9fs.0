@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795077555;
-	b=EBtYiv56xenqYK0x86dHJc72iK3q8mQAaOZVVh+/qz8QMrlFWmxC6H857ny5p6xx/R9K
-	 35+JUSBibB1qKIWBsrjBecPy+bKTXFybUN5vOdOEq0Kgo6v1xzMqvYoFbcyVKFGxd+lH9
-	 b6EeCyrJMSVjf+gBtdqlrnG+a25wNgQGp7nEAuWsNaqzkLpwk5Mqbl2YhlwVmQQjLgsGz
-	 TP3wc8M6WsYCicFwSW3VrFG4tmCHnTQyL6Yx4Pue+5lVX66XhBR8GsTEhO96YjfENC5O3
-	 5zu+amYr21uaV6nGhJFUKvRmq8CuN1wveP8nU32rdtyGGy0x/8Vl0AnJ8FH7NmDUaeg==
+	t=1795077560;
+	b=SFwoEhovr5PXAiX8BgzJPsXhnjLo35uZjgW/cJ01VGO0lgnThdRQCq1HlIlZkY19R0D3
+	 NeMEpqPekaFqmp/Khw9oFj16FIKtcZnfpJJN1WlhyvFbBYCg7IB8I4yE9KODgDjAaZhi1
+	 BTW+4HCaUwV+9GyAx8bQ5PqRExoNzbm+DS1YEqrq1jba3uJOeTq/A28ww7ZWEeusphQ3R
+	 v1joM1PL6gIBhI73uYKgTsucrX1zBneg2YNdUZrsUDR+BZCJ1lhwUGmw+OzlFl/7XgmYb
+	 0eyFaZsyICgFX304YT+OnP5ID/8AU79OH6yQbUPMrwwpls7j7C1tYIyvB/cvtZvSCBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795077555;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795077560;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:X-Scanned-By:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
 	 Content-Transfer-Encoding:content-type;
-	bh=y3TtDW1WKRbGF0ZusHGDdMsHnXiCQqqrodTZSz3UVtw=;
-	b=CYIxHgAAJHS7ffwmQojg4KglAr94xyN45VIMSCEpXqaPgA+WcjgP4DCFJiAXC/yuO2xV
-	 PzfUhqYFH9h2GDNsGHX3mfR5Cxy7XmNxjMd4euaR+6V1u6fQwN8FMKRaRIyrCmLi6jB0B
-	 ufLUbwdPfsWg3/3T41CBK82IKvqW08wddIcSejmq9rkbF4Hg0bGrlmfx1p+geiU9tF5T6
-	 tSiNdZEk0tk2jIk1UAB6QyPmCx1iHlyU4VNVWg521iIY0rARtv/t06sVGbCQOUdBOH+WZ
-	 pL/zKPTrGFZtGm/RsyTUZFLs8Kq4Pbt0h14kzxfUd+FMGXeBn25lJGgn/KszaUbSPmQ==
+	bh=PhNajVV4YOAVa6HzjBax5Vzcm0CeXg6v0Uflf51EUrc=;
+	b=FDdDPoTLVcjhvA91SPS8MtxiXpxqZ7vzGYIhoz96fKM/vQVFwDrheot8HtqodIk4YDiL
+	 LgOpgo8t5c7SLAJv42+NOWzcG2f3+aeAGoGCgVN6CrLvOqOG+W+GDGCTV4/rtUVxjQSv8
+	 /ZJ7+fu4R87nEz7b6f7HmwhBF+jFpF3b6Sz1igMdhmqKSrK58dLVNY/qS8/pWgI7V8UZi
+	 kexMxAXPPvTPf8Zht5p4CLrrkkghaw24dQUzN2jr3o8loZu/CCUlr3uvEy9IukQQf4ydd
+	 C59JYMdS5qIU1FRVAJpK0u883VuDok25O6Lepc1oBNwuGQzNVxLVPsoYE215jx+wvGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Li2BxS6j;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J9Fea37v;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2009B60A2607
-	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 08:39:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2009B60A2607
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA7606A324
+	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 08:39:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5DA7606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Li2BxS6j
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J9Fea37v
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795077553;
+	s=mimecast20190719; t=1795077558;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y3TtDW1WKRbGF0ZusHGDdMsHnXiCQqqrodTZSz3UVtw=;
-	b=Li2BxS6jZtTGj8IzKCdtcd3HDWZhmvkht+5pnJgipc5XjtKhCMbofqf9LnugvCg7Zm1+UW
-	9syiWnfim4xG40I7vCu0uX7MG6o8N+S5XueMw9qXYnGcFxNO+QDbE8Tg7r6bkeZu/j+INy
-	qawokDEV6sCef6WA/6hdN8jFvT+TTJI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=PhNajVV4YOAVa6HzjBax5Vzcm0CeXg6v0Uflf51EUrc=;
+	b=J9Fea37v+qtck1pgEhK/q0T6OxmxZaRK1kQB8ISuNcQ/XuRy+stvRCl86pbLuV++4LK/aa
+	5IbJ3M2ppxRoTBsMla7FG4Bb92AJ0wFqjxCgqnMB3Vu1K4rVQ0hWUmDODYxqkRFvYp7aoj
+	5nGmxo9hixXcaZWW8I/wQ64EBMeETLk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-569-HsE9A_8xNgOpa4zQ7C4pEA-1; Thu,
- 19 Nov 2026 03:39:08 -0500
-X-MC-Unique: HsE9A_8xNgOpa4zQ7C4pEA-1
-X-Mimecast-MFC-AGG-ID: HsE9A_8xNgOpa4zQ7C4pEA_1795077546
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-J86VbOqoNfq-SFhEQJNgdA-1; Thu,
+ 19 Nov 2026 03:39:15 -0500
+X-MC-Unique: J86VbOqoNfq-SFhEQJNgdA-1
+X-Mimecast-MFC-AGG-ID: J86VbOqoNfq-SFhEQJNgdA_1795077553
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AD7F2180034F;
-	Thu, 19 Nov 2026 08:39:05 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DD92518004FE;
+	Thu, 19 Nov 2026 08:39:11 +0000 (UTC)
 Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EB40A1956088;
-	Thu, 19 Nov 2026 08:38:59 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E23171956088;
+	Thu, 19 Nov 2026 08:39:06 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -83,9 +83,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Christoph Hellwig <hch@infradead.org>,
 	linux-block@vger.kernel.org
-Subject: [PATCH v19 01/17] iov_iter: Fix kunit test to remove __init and __refdata marks
-Date: Thu, 19 Nov 2026 08:38:32 +0000
-Message-ID: <20261119083851.3306418-2-dhowells@redhat.com>
+Subject: [PATCH v19 02/17] block: Add a function to kmap one page of a multipage bio_vec
+Date: Thu, 19 Nov 2026 08:38:33 +0000
+Message-ID: <20261119083851.3306418-3-dhowells@redhat.com>
 In-Reply-To: <20261119083851.3306418-1-dhowells@redhat.com>
 References: <20261119083851.3306418-1-dhowells@redhat.com>
 X-Mailing-List: v9fs@lists.linux.dev
@@ -98,23 +98,17 @@ List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: wW_F6EDMDzNsfSLsyQjZFLn7lnC1m5FKsXYwO11NiH4_1795077546
+X-Mimecast-MFC-PROC-ID: DxXec_RK-47e64bFCL3Ieu1fzjdHno250KPzWwdWHyk_1795077553
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Remove the __init marks from the functions in the iov_iter kunit test so
-that they don't get removed after the module is loaded or if the test is
-built in as the tests can be triggered through debugfs too.
+Add a function to kmap one page of a multipage bio_vec by offset (which is
+added to the offset in the bio_vec internally).  The caller is responsible
+for calculating how much of the page is then available.
 
-Also remove the __refdata mark which is unnecessary if the table so marked
-doesn't point at any __init funcs.
-
-This was found by claude-opus-5-5 run locally.
-
-Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: Jens Axboe <axboe@kernel.dk>
 cc: Christoph Hellwig <hch@infradead.org>
@@ -122,289 +116,34 @@ cc: linux-block@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- lib/tests/kunit_iov_iter.c | 96 +++++++++++++++++++-------------------
- 1 file changed, 47 insertions(+), 49 deletions(-)
+ include/linux/bvec.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/lib/tests/kunit_iov_iter.c b/lib/tests/kunit_iov_iter.c
-index 32e42d8c7ca1..b4ad38d1a4bd 100644
---- a/lib/tests/kunit_iov_iter.c
-+++ b/lib/tests/kunit_iov_iter.c
-@@ -48,9 +48,9 @@ static void iov_kunit_unmap(void *data)
- 	vfree(data);
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index b63914ff56e3..7ea62643cfb7 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -344,4 +344,22 @@ static inline phys_addr_t bvec_phys(const struct bio_vec *bvec)
+ 	return page_to_phys(bvec->bv_page) + bvec->bv_offset;
  }
  
--static void *__init iov_kunit_create_buffer(struct kunit *test,
--					    struct page ***ppages,
--					    size_t npages)
-+static void *iov_kunit_create_buffer(struct kunit *test,
-+				     struct page ***ppages,
-+				     size_t npages)
- {
- 	struct page **pages;
- 	unsigned long got, last;
-@@ -90,11 +90,11 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
- 	return buffer;
- }
- 
--static void __init iov_kunit_load_kvec(struct kunit *test,
--				       struct iov_iter *iter, int dir,
--				       struct kvec *kvec, unsigned int kvmax,
--				       void *buffer, size_t bufsize,
--				       const struct kvec_test_range *pr)
-+static void iov_kunit_load_kvec(struct kunit *test,
-+				struct iov_iter *iter, int dir,
-+				struct kvec *kvec, unsigned int kvmax,
-+				void *buffer, size_t bufsize,
-+				const struct kvec_test_range *pr)
- {
- 	size_t size = 0;
- 	int i;
-@@ -116,7 +116,7 @@ static void __init iov_kunit_load_kvec(struct kunit *test,
- /*
-  * Test copying to a ITER_KVEC-type iterator.
-  */
--static void __init iov_kunit_copy_to_kvec(struct kunit *test)
-+static void iov_kunit_copy_to_kvec(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -166,7 +166,7 @@ static void __init iov_kunit_copy_to_kvec(struct kunit *test)
- /*
-  * Test copying from a ITER_KVEC-type iterator.
-  */
--static void __init iov_kunit_copy_from_kvec(struct kunit *test)
-+static void iov_kunit_copy_from_kvec(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -234,12 +234,12 @@ static const struct bvec_test_range bvec_test_ranges[] = {
- 	{ -1, -1, -1 }
- };
- 
--static void __init iov_kunit_load_bvec(struct kunit *test,
--				       struct iov_iter *iter, int dir,
--				       struct bio_vec *bvec, unsigned int bvmax,
--				       struct page **pages, size_t npages,
--				       size_t bufsize,
--				       const struct bvec_test_range *pr)
-+static void iov_kunit_load_bvec(struct kunit *test,
-+				struct iov_iter *iter, int dir,
-+				struct bio_vec *bvec, unsigned int bvmax,
-+				struct page **pages, size_t npages,
-+				size_t bufsize,
-+				const struct bvec_test_range *pr)
- {
- 	struct page *can_merge = NULL, *page;
- 	size_t size = 0;
-@@ -275,7 +275,7 @@ static void __init iov_kunit_load_bvec(struct kunit *test,
- /*
-  * Test copying to a ITER_BVEC-type iterator.
-  */
--static void __init iov_kunit_copy_to_bvec(struct kunit *test)
-+static void iov_kunit_copy_to_bvec(struct kunit *test)
- {
- 	const struct bvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -328,7 +328,7 @@ static void __init iov_kunit_copy_to_bvec(struct kunit *test)
- /*
-  * Test copying from a ITER_BVEC-type iterator.
-  */
--static void __init iov_kunit_copy_from_bvec(struct kunit *test)
-+static void iov_kunit_copy_from_bvec(struct kunit *test)
- {
- 	const struct bvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -392,10 +392,10 @@ static void iov_kunit_destroy_folioq(void *data)
- 	}
- }
- 
--static void __init iov_kunit_load_folioq(struct kunit *test,
--					struct iov_iter *iter, int dir,
--					struct folio_queue *folioq,
--					struct page **pages, size_t npages)
-+static void iov_kunit_load_folioq(struct kunit *test,
-+				  struct iov_iter *iter, int dir,
-+				  struct folio_queue *folioq,
-+				  struct page **pages, size_t npages)
- {
- 	struct folio_queue *p = folioq;
- 	size_t size = 0;
-@@ -429,7 +429,7 @@ static struct folio_queue *iov_kunit_create_folioq(struct kunit *test)
- /*
-  * Test copying to a ITER_FOLIOQ-type iterator.
-  */
--static void __init iov_kunit_copy_to_folioq(struct kunit *test)
-+static void iov_kunit_copy_to_folioq(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -491,7 +491,7 @@ static void __init iov_kunit_copy_to_folioq(struct kunit *test)
- /*
-  * Test copying from a ITER_FOLIOQ-type iterator.
-  */
--static void __init iov_kunit_copy_from_folioq(struct kunit *test)
-+static void iov_kunit_copy_from_folioq(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -560,10 +560,10 @@ static void iov_kunit_destroy_xarray(void *data)
- 	kfree(xarray);
- }
- 
--static void __init iov_kunit_load_xarray(struct kunit *test,
--					 struct iov_iter *iter, int dir,
--					 struct xarray *xarray,
--					 struct page **pages, size_t npages)
-+static void iov_kunit_load_xarray(struct kunit *test,
-+				  struct iov_iter *iter, int dir,
-+				  struct xarray *xarray,
-+				  struct page **pages, size_t npages)
- {
- 	size_t size = 0;
- 	int i;
-@@ -591,7 +591,7 @@ static struct xarray *iov_kunit_create_xarray(struct kunit *test)
- /*
-  * Test copying to a ITER_XARRAY-type iterator.
-  */
--static void __init iov_kunit_copy_to_xarray(struct kunit *test)
-+static void iov_kunit_copy_to_xarray(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -649,7 +649,7 @@ static void __init iov_kunit_copy_to_xarray(struct kunit *test)
- /*
-  * Test copying from a ITER_XARRAY-type iterator.
-  */
--static void __init iov_kunit_copy_from_xarray(struct kunit *test)
-+static void iov_kunit_copy_from_xarray(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -712,7 +712,7 @@ static void __init iov_kunit_copy_from_xarray(struct kunit *test)
- /*
-  * Test the extraction of ITER_KVEC-type iterators.
-  */
--static void __init iov_kunit_extract_pages_kvec(struct kunit *test)
-+static void iov_kunit_extract_pages_kvec(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -792,7 +792,7 @@ static void __init iov_kunit_extract_pages_kvec(struct kunit *test)
- /*
-  * Test the extraction of ITER_BVEC-type iterators.
-  */
--static void __init iov_kunit_extract_pages_bvec(struct kunit *test)
-+static void iov_kunit_extract_pages_bvec(struct kunit *test)
- {
- 	const struct bvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -870,7 +870,7 @@ static void __init iov_kunit_extract_pages_bvec(struct kunit *test)
- /*
-  * Test the extraction of ITER_FOLIOQ-type iterators.
-  */
--static void __init iov_kunit_extract_pages_folioq(struct kunit *test)
-+static void iov_kunit_extract_pages_folioq(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct folio_queue *folioq;
-@@ -949,7 +949,7 @@ static void __init iov_kunit_extract_pages_folioq(struct kunit *test)
- /*
-  * Test the extraction of ITER_XARRAY-type iterators.
-  */
--static void __init iov_kunit_extract_pages_xarray(struct kunit *test)
-+static void iov_kunit_extract_pages_xarray(struct kunit *test)
- {
- 	const struct kvec_test_range *pr;
- 	struct iov_iter iter;
-@@ -1033,8 +1033,7 @@ struct iov_kunit_iter_to_sg_data {
- 	size_t npages;
- };
- 
--static void __init
--iov_kunit_iter_unpin_sgt(void *data)
-+static void iov_kunit_iter_unpin_sgt(void *data)
- {
- 	struct sg_table *sgt = data;
- 
-@@ -1042,9 +1041,9 @@ iov_kunit_iter_unpin_sgt(void *data)
- 		unpin_user_page(sg_page(&sgt->sgl[i]));
- }
- 
--static void __init
--iov_kunit_iter_to_sg_init(struct kunit *test, size_t bufsize, bool user,
--			  struct iov_kunit_iter_to_sg_data *data)
-+static void iov_kunit_iter_to_sg_init(struct kunit *test, size_t bufsize,
-+				      bool user,
-+				      struct iov_kunit_iter_to_sg_data *data)
- {
- 	struct page **spages;
- 	struct scatterlist *sg;
-@@ -1080,10 +1079,9 @@ iov_kunit_iter_to_sg_init(struct kunit *test, size_t bufsize, bool user,
- 	memset(data->scratch, 0, bufsize);
- }
- 
--static void __init
--iov_kunit_iter_to_sg_check(struct kunit *test, struct iov_iter *iter,
--			   size_t bufsize,
--			   struct iov_kunit_iter_to_sg_data *data)
-+static void iov_kunit_iter_to_sg_check(struct kunit *test, struct iov_iter *iter,
-+				       size_t bufsize,
-+				       struct iov_kunit_iter_to_sg_data *data)
- {
- 	static const size_t tail = 16 * PAGE_SIZE;
- 	size_t i;
-@@ -1128,7 +1126,7 @@ iov_kunit_iter_to_sg_check(struct kunit *test, struct iov_iter *iter,
- 	KUNIT_EXPECT_EQ(test, i, bufsize);
- }
- 
--static void __init iov_kunit_iter_to_sg_kvec(struct kunit *test)
-+static void iov_kunit_iter_to_sg_kvec(struct kunit *test)
- {
- 	struct iov_kunit_iter_to_sg_data data;
- 	struct iov_iter iter;
-@@ -1145,7 +1143,7 @@ static void __init iov_kunit_iter_to_sg_kvec(struct kunit *test)
- 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
- }
- 
--static void __init iov_kunit_iter_to_sg_bvec(struct kunit *test)
-+static void iov_kunit_iter_to_sg_bvec(struct kunit *test)
- {
- 	struct iov_kunit_iter_to_sg_data data;
- 	struct page *p, *can_merge = NULL;
-@@ -1173,7 +1171,7 @@ static void __init iov_kunit_iter_to_sg_bvec(struct kunit *test)
- 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
- }
- 
--static void __init iov_kunit_iter_to_sg_folioq(struct kunit *test)
-+static void iov_kunit_iter_to_sg_folioq(struct kunit *test)
- {
- 	struct iov_kunit_iter_to_sg_data data;
- 	struct folio_queue *folioq;
-@@ -1190,7 +1188,7 @@ static void __init iov_kunit_iter_to_sg_folioq(struct kunit *test)
- 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
- }
- 
--static void __init iov_kunit_iter_to_sg_xarray(struct kunit *test)
-+static void iov_kunit_iter_to_sg_xarray(struct kunit *test)
- {
- 	struct iov_kunit_iter_to_sg_data data;
- 	struct xarray *xarray;
-@@ -1207,7 +1205,7 @@ static void __init iov_kunit_iter_to_sg_xarray(struct kunit *test)
- 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
- }
- 
--static void __init iov_kunit_iter_to_sg_ubuf(struct kunit *test)
-+static void iov_kunit_iter_to_sg_ubuf(struct kunit *test)
- {
- 	struct iov_kunit_iter_to_sg_data data;
- 	struct iov_iter iter;
-@@ -1221,7 +1219,7 @@ static void __init iov_kunit_iter_to_sg_ubuf(struct kunit *test)
- 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
- }
- 
--static struct kunit_case __refdata iov_kunit_cases[] = {
-+static struct kunit_case iov_kunit_cases[] = {
- 	KUNIT_CASE(iov_kunit_copy_to_kvec),
- 	KUNIT_CASE(iov_kunit_copy_from_kvec),
- 	KUNIT_CASE(iov_kunit_copy_to_bvec),
++/**
++ * bvec_kmap_partial - Map part of a bvec into the kernel virtual address space
++ * @bvec: bvec to map
++ * @offset: Offset into bvec
++ *
++ * Map the page containing the byte at @offset into the kernel virtual address
++ * space.  The caller is responsible for making sure this doesn't overrun.
++ *
++ * Call kunmap_local on the returned address to unmap.
++ */
++static inline void *bvec_kmap_partial(const struct bio_vec *bvec, size_t offset)
++{
++	offset += bvec->bv_offset;
++
++	return kmap_local_page(bvec->bv_page + (offset >> PAGE_SHIFT)) +
++		(offset & ~PAGE_MASK);
++}
++
+ #endif /* __LINUX_BVEC_H */
 
