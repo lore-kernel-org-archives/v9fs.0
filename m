@@ -1,87 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795088991;
-	b=UeLVRtbnekpT1CVJwpS4K0hzBLVkYGG2n90kZOJ9wiM0CiuRA1EXFDKavMDrvGhX6fBM
-	 9ob34GH+GyCZIytBgR8hnbk0sfG/TDqId5nwaRBrMno0vtHoVHPN8DaJl7FFfcTDUMn9l
-	 f4ipjUI95svRT9ypwiW8z+PpS//zsnor30SwsFVr2QEDsQXJm0hIRDkvXsql5DXsgPpm2
-	 K/xjS5unWb4IAGfSiWD0LH7XvzG9HgpqbYTE4ofix0ct4D/tEwVR3YUB7CPBAup8s/ibx
-	 h9jbq+n7baST9mScqXklN8B3aH6PpTa5Q1kGgOwrzpsVW1tMaPSAyXZsssDtNbkiU7w==
+	t=1795155602;
+	b=b425rb+HJiGiFc82ao21ZGVIWM7/UHUpTXuAZa2dIaFS7FvHPwDfKKvc9t+QAns4jj6m
+	 p/rlKSDJzl3fbOgiu91IboZQ+0BVE0vkh9Ea5jCrgTRe0UY3toFIWgbJBWN0meVny0XsF
+	 +znBb7BOMTgdMMZIO3WS9IbWEuoU9RJ6lGiaT3lm7KKPT6TX5MY4wqnPNoZkBjodTs1ui
+	 tDfl/z4hsXzvDMj3kTxUWUqLSygYyvKtes9oWfEeJXWA9EIiLOmRDWcUcUwlyklRviJb5
+	 LzrIziTHBD6B24VfA3W0CT2tnB8v/ipZq5OE/IzltXwQusinGURq4DzXe+8HQXNPY6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795088991;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Organization:In-Reply-To:
-	 References:To:Cc:Subject:MIME-Version:From:Date:Message-ID:
-	 X-Scanned-By:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Type:Content-ID:Content-Transfer-Encoding;
-	bh=P1uN/SEgbAkVV9dKO+jCKjxyD1xLzFCMYsGORPFd330=;
-	b=dk6kcI6uYy+dAYXihMxF1IbsappvPDYvGuGEIH89t6EvInn7XplhsqPBC22sB7O+eigQ
-	 oeS3MBbuO60VnmyRcbHBQ5r/7p0PQ/Ho1YRwJPNeCzKVXz724momCva75xIyfzDY3IeQn
-	 hZ0JQwHd3QC8LpYEyz4RBBxowYl/Nl+UxlLgMBR2qVoJylDMy3afpOju60Y78vidlUacF
-	 u+axcBgOV58QQh2XhMb2E1MJQEIztbLbe2PF8uNBRwfsm808A0RezTu76fYGdwBCGhodN
-	 wmq8W8siV50nsYEabLbptUJzPYedZd1Et2bkVOcs5fpUbIu1wJ13Bk8f9Ij2dKF1e/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795155602;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xmvQzEMIemlYEhT1xs9weXJwUze0K1vOuhFskwSIB94=;
+	b=KPpRPAyHr1NXYfZ5mZWslOEmHCNTU32SFxvAY6vXzYft5zMttIINANqmct9AuCAj77uT
+	 EEi/NjcShCZ70B/pxX4s0HILzrdK8SpvD/oDJUmawjx6lLQejK+1rdI9mjr10vQt3ioa5
+	 su6AZxpgeDc4Ycn++j+GAXQtkaocypNLRv3GilEC/jL4z5H7IVx55MW0zEyXuDvOVvh45
+	 77pK6Ds73Kimvg+94XEjom/uVShzsmYpHxEjmXYP+qgMh7jSCjyjV0UZTCBBDt393Oo/W
+	 KkWbfgovfc7Hu6h/AwGqVPvUtfIJUfZ7pbbmVoPF5UMz1tosdA1C+oSJ+XyfdEcSXvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJAkxi06;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4762860A260F
-	for <v9fs@lists.linux.dev>; Thu, 19 Nov 2026 11:49:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4762860A260F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=mZy9uWNk;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C63606A505
+	for <v9fs@lists.linux.dev>; Fri, 20 Nov 2026 06:19:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76C63606A505
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJAkxi06
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795088990;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P1uN/SEgbAkVV9dKO+jCKjxyD1xLzFCMYsGORPFd330=;
-	b=aJAkxi06PdC6I5v2hNe9hNa1EO6kZUvt9hCy9KQZjwXTegdOa9ITbaSidQ+GTehlLSdX9t
-	BKavEDHMrMbi7lgmjzKdo5sQr+7ppl2CgrR0kR53Wg18JscwMQm8YyC2AAuwgsbc+D88ks
-	bL4G1aptbZZSiIao7VHknCa7V3Ta3B0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-tJa0fbcpOc2FEqPbTXJloQ-1; Thu,
- 19 Nov 2026 06:49:47 -0500
-X-MC-Unique: tJa0fbcpOc2FEqPbTXJloQ-1
-X-Mimecast-MFC-AGG-ID: tJa0fbcpOc2FEqPbTXJloQ_1795088984
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5DBA19560AA;
-	Thu, 19 Nov 2026 11:49:43 +0000 (UTC)
-Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1C098195B3C6;
-	Thu, 19 Nov 2026 11:49:38 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-In-Reply-To: <20261119083851.3306418-15-dhowells@redhat.com>
-References: <20261119083851.3306418-15-dhowells@redhat.com> <20261119083851.3306418-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Stefan Metzmacher <metze@samba.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Shyam Prasad N <sprasad@microsoft.com>,
-    Tom Talpey <tom@talpey.com>, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v19 14/17] netfs: Switch folioq to bvecq
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=mZy9uWNk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=mZy9uWNkGBJDgfBXZD8+GaF8ZQ0wKd06tNccuM3qQX01zXm96twYO4lOR6jpOBSTKEZqHheDUeaHn
+	 r3BLUX1mzfXsexMfQ8Vxm6HdmdhvH8bQkjo2+TqMIWkuNfd4ifHvlxT5lrbTlW2iox+Ih2FGaQWUOY
+	 RXYzmR5aVZE/2sWw=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46affe67974a-c4cf9;
+	Fri, 20 Nov 2026 14:19:39 +0800 (CST)
+X-RM-TRANSID:2ee46affe67974a-c4cf9
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from devin-VMware-Virtual-Platform.localdomain (unknown[10.55.1.71])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86affe67a1c7-80cec;
+	Fri, 20 Nov 2026 14:19:39 +0800 (CST)
+X-RM-TRANSID:2ee86affe67a1c7-80cec
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+To: mgr@kernel.org
+Cc: nkapron@google.com,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>
+Subject: [PATCH] tools: usb: p9_fwd: Send complete requests to the TCP server
+Date: Fri, 20 Nov 2026 14:19:37 +0800
+Message-ID: <20261120061937.98224-1-zhujun2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -91,48 +71,31 @@ List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-From: David Howells <dhowells@redhat.com>
-Date: Thu, 19 Nov 2026 11:49:38 +0000
-Message-ID: <3331469.1795088978@dhowells-thinkpadp1gen8.rmtgb.csb>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: dJXengsmlB3ox1KGrK1ggsHdX1ZR4jOes7Qr_NCMJDA_1795088984
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3330894.1795088857.1@dhowells-thinkpadp1gen8.rmtgb.csb>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+socket.send() can return after sending only a prefix of a request.
+The forwarder ignores that result and waits for a response to an
+incomplete message. Use sendall() so request forwarding completes
+only once all bytes have been sent or a write error is reported.
 
-If you apply this patch, can you apply the attached change to it to fix a
-potential NULL deref spotted by Sashiko[1]?
-
-Thanks,
-David
-   =20
-[1] https://sashiko.dev/#/patchset/20261119083851.3306418-1-dhowells%40redh=
-at.com
+Fixes: 673f0c3ffc75 ("tools: usb: p9_fwd: add usb gadget packet forwarder script")
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
 ---
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 852b2cb73435..d229e797ef23 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -277,14 +277,15 @@ static void netfs_read_to_pagecache(struct netfs_io_r=
-equest *rreq)
- =09=09.cached_to[1]=09=3D ULLONG_MAX,
- =09};
- =09struct fscache_occupancy *occ =3D &_occ;
--=09struct bvecq *mark_bq =3D rreq->buffer.tail, *mark_pin;
-+=09struct bvecq *mark_bq =3D rreq->buffer.tail, *mark_pin =3D NULL;
- =09unsigned int mark_offset =3D 0;
- =09ssize_t size =3D rreq->len;
- =09uoff_t start =3D rreq->start;
- =09int ret =3D 0, mark_slot =3D 0;
-=20
- =09/* Pin the bvecq whilst we mark folios for copying to the cache. */
--=09mark_pin =3D bvecq_get(mark_bq);
-+=09if (mark_bq)
-+=09=09mark_pin =3D bvecq_get(mark_bq);
-=20
- =09do {
- =09=09int (*prepare_read)(struct netfs_io_subrequest *subreq) =3D NULL;
+ tools/usb/p9_fwd.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/usb/p9_fwd.py b/tools/usb/p9_fwd.py
+index 12c76cbb046b..d5ffb2f0c5ab 100755
+--- a/tools/usb/p9_fwd.py
++++ b/tools/usb/p9_fwd.py
+@@ -124,7 +124,7 @@ class Forwarder:
+             data += self.ep_in.read(size - len(data))
+         logging.log(logging.TRACE, "c2s: writing")
+         self._log_hexdump(data)
+-        self.s.send(data)
++        self.s.sendall(data)
+         logging.debug("c2s: forwarded %i bytes", size)
+         self.stats["c2s packets"] += 1
+         self.stats["c2s bytes"] += size
+
 
