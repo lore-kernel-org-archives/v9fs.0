@@ -1,55 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795394791;
-	b=cqvqYKzq6PrApobkpC4wWuNU//6vqvehBU4obPrnUQ1rRK5UxBmLJWhZU/PATbYDJFTz
-	 3qTk4UkfPrrJ6OZ0ViWqTuehY47bTSPplRk0ut99vmi48eFpfi/5UhWgiyV58NY01pHUM
-	 nOkValDmE6L5HtrXm0BTDno3csMKTs83kcbdFKT9pKA+tVxkzWN6Hxq6sN6DFx2qYGdix
-	 CFSd5uq4jco8+RjXouxSGS4E6zRNQ4bm7xBT+7P4AWgCBeS/SbAM5Gxe7neOBRDkSCLZ+
-	 91RookIf/eTKaYj45727JUYfncN530DkYLSXRK4QZ7NWuyOttNKNdNG90NSMbX0RKCg==
+	t=1795395613;
+	b=nQI/o6GMtp/iUHU6a2pepM+8yHH8+bWqSNHSZLlOudtslZgUhsKL5px+zWvCB6Be/L/N
+	 Wj7vDnP88i02kWZS5s05+ZFeSc/jhmNLy4n/9Ikl25DuwXXFQosePsrWsRCbJHOlqRzhg
+	 eM+rACq3vXXY/UzEkbMqwWqevkbj6TqqPI1pMTipnEzd6Mb19ic2XTywXrjt1jxWJHXHa
+	 WS1ZakewG0P7J+H+MDD4AnR8r+YJWMhNIlUXJ1iobzaAO3fm6Y2jy5KS7XPU3LJyD/qjh
+	 XKC9TZWCdkdQ15I0fMwnajdDP9h63Jb1zsKO5oy34YAhtMiEg88ogx5aZXxs/uO6YlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795394791;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=TM+dWC6XSykhdT4jgOfhnAuWSmeY6qnSURZHzc45mo8=;
-	b=2AvWrYi/KRPLs2g0hC++QV34gxULz2AnOTzlkRxVK4+Aib9O4L3iGR0Qfrib0TLhXenS
-	 GabeaNU5CITrMIWjufsM+ILr7Jn/vRad+0IgZ6tHK5hmYppN4P498L5iz3HqHxwxReDLA
-	 QyrwengEBEGecmNYZCB5RuOT59yWaEnlyj/gVTB5O8KeIMgmmtFddfrmQ+aH/gxwBrDWt
-	 otZrD52BQ4C9Th5re07fWA82qEWYPul6r8Q7IKHT9DqEcqOor2JH91Q3GdFwUJpZTaN5o
-	 FOIdnKMtvMDIG2Z8pjVqdaTwiuywEKp3HSJvF7UdRUBJTr75Yo8QWQCyhcj4keIxXlw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795395613;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=LQaMs4m0GH1lFeKfuT3qI/9/G/+BZoDLQMFq+/2UF8M=;
+	b=Yn/Yx9N9tcHs7z9elrr7U/MzRbyV1prf1FXpNimX7eKUZfEvD6V+tg9HnVr7WHKxdDXX
+	 ZEKPMitvpzWWb3LwbNG8qmgl+erEkQahAauiYN7fG6cxup1XKqNBejTH9V9pxRLAQGWNr
+	 D4vy9ORkap7dP8fcr54wB0U+vZGjkZkooh+p62TXodmqJlHYeoxqdc419U17KEICC7jGm
+	 BSFAwPt55UXPY8OqI/bMaoyZTtAELnKOBORgnSxySfmu5n+6AVsZE9UnDCHoUfRzwTMQc
+	 iNx+3BVo3Lq0aR72vznjsbmcXFK7kIfccW7Fd+zqg6kSVumtcFhzBXbQBVTsf2TVpfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CP3vgFtY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=codewreck.org;
+	spf=pass smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=AHGky8Vx;
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA76606A332
-	for <v9fs@lists.linux.dev>; Mon, 23 Nov 2026 00:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC79606A31A
+	for <v9fs@lists.linux.dev>; Mon, 23 Nov 2026 01:00:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CC79606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CP3vgFtY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EAD1F000F2;
-	Mon, 23 Nov 2026 00:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795394791;
-	bh=TM+dWC6XSykhdT4jgOfhnAuWSmeY6qnSURZHzc45mo8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CP3vgFtYTplRUK4j4F4Ci9rurQIvUFCW+4vaA8MoEFvL0MzIxutlTxdVJ/9j3psCX
-	 8e2p4KgqTl+sbNR5BeV3b0c5HiamMdhR3Cr/N72OE8ujN/MV87/GlbV6nVPStpGBGv
-	 K78yV6t1Ihz2Ud2e5qDRym3BiKmU0oHKcctTYi7QJW7sFdt1WQzTSMxNrY3SmiolYl
-	 qMVzVtIxOZOWtlpgrHsKsp/vka/N18zT2pBDCfJ8ktPo6xNdjCkp+ll0KLpJ+OrUSP
-	 /0njQUctoX3TbBBbyD0rzI8l93YwKuGIYnz+XdjTlFTxEnqUCW2GZG7U2V0uf4AIiK
-	 xJbe4v3QbGXGg==
-Message-ID: <sashiko-outbox-228488@kernel.org>
-From: sashiko-bot@kernel.org
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=AHGky8Vx
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 6051914C2DE;
+	Mon, 23 Nov 2026 02:00:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1795395602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LQaMs4m0GH1lFeKfuT3qI/9/G/+BZoDLQMFq+/2UF8M=;
+	b=AHGky8VxGQMpG5+CbhSEMlv6yHQTRzMXqvtnc+lhWEYAAHLJ6ZvFVaUyzzdNMDQ2iDuEi/
+	h1Ge+zpKfnGentriE0fu7YxVFCQ68o/qEWz0Jh9R9T/9A1tYdIB/mRp61+fQUftuz9xTw0
+	Jg/Lv9n4WZgOqdwKNsnOPXyMs7BUmDaQMfhMCa7MvoAtTNIYgi/pWSs+J+dhdLD0kwaX8u
+	Ium97QQ20D9Sg74sDcWNoJzb4xkgqKdI4+8hYDoiDIgEGYK/ZR7QdfAc/DY2skflybrUOP
+	Pu6llsVxrj4RUUumN/oTRQSGo65EZeiWj8UkLooU/v6cpngXdbl+uLXOeBWWHg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 47c69b9e;
+	Mon, 23 Nov 2026 00:59:58 +0000 (UTC)
+Date: Mon, 23 Nov 2026 09:59:43 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev
 Subject: Re: [PATCH] net/9p: client.h: clean up kernel-doc warnings
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Randy Dunlap" <rdunlap@infradead.org>
-Cc: v9fs@lists.linux.dev
-In-Reply-To: <20261123004425.1770155-1-rdunlap@infradead.org>
+Message-ID: <awOP_4jvEyebmc75@codewreck.org>
 References: <20261123004425.1770155-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 00:46:31 +0000
 X-Mailing-List: v9fs@lists.linux.dev
 List-Id: <v9fs.lists.linux.dev>
 List-Post: <mailto:v9fs@lists.linux.dev>
@@ -58,26 +70,24 @@ List-Subscribe: <mailto:v9fs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:v9fs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:v9fs+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261123004425.1770155-1-rdunlap@infradead.org>
 
+Randy Dunlap wrote on Sun, Nov 22, 2026 at 04:44:25PM -0800:
 > Repair all kernel-doc warnings:
->=20
-> Warning: include/net/9p/client.h:52 Enum value 'BeginDisconnect' not desc=
-ribed in enum 'p9_trans_status'
-> Warning: include/net/9p/client.h:90 struct member 'refcount' not describe=
-d in 'p9_req_t'
-> Warning: include/net/9p/client.h:132 struct member 'fcall_cache' not desc=
-ribed in 'p9_client'
-> Warning: include/net/9p/client.h:132 struct member 'trans_opts' not descr=
-ibed in 'p9_client'
-> Warning: include/net/9p/client.h:147 expecting prototype for struct p9_fd=
-_opts. Prototype was for struct p9_client_opts instead
-> Warning: include/net/9p/client.h:243 enum fid_source { FID_FROM_OTHER, FI=
-D_FROM_INODE, FID_FROM_DENTRY, }; error: Cannot parse struct or union!
->=20
+> 
+> Warning: include/net/9p/client.h:52 Enum value 'BeginDisconnect' not described in enum 'p9_trans_status'
+> Warning: include/net/9p/client.h:90 struct member 'refcount' not described in 'p9_req_t'
+> Warning: include/net/9p/client.h:132 struct member 'fcall_cache' not described in 'p9_client'
+> Warning: include/net/9p/client.h:132 struct member 'trans_opts' not described in 'p9_client'
+> Warning: include/net/9p/client.h:147 expecting prototype for struct p9_fd_opts. Prototype was for struct p9_client_opts instead
+> Warning: include/net/9p/client.h:243 enum fid_source { FID_FROM_OTHER, FID_FROM_INODE, FID_FROM_DENTRY, }; error: Cannot parse struct or union!
+> 
 > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Sashiko has reviewed this patch and found no issues.
+Thanks, picked up!
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123004425.1770=
-155-1-rdunlap@infradead.org?part=3D1
+-- 
+Dominique
